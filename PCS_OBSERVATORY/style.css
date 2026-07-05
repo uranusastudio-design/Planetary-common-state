@@ -25,14 +25,38 @@ body {
 }
 
 .observatory-shell {
-  width: min(1220px, calc(100% - 32px));
+  width: min(1080px, calc(100% - 36px));
   margin: 0 auto;
-  padding: 44px 0 56px;
+  padding: 52px 0 64px;
 }
 
 .site-header {
-  padding: 18px 0 34px;
+  display: grid;
+  grid-template-columns: minmax(300px, 0.9fr) minmax(0, 1.25fr);
+  align-items: center;
+  gap: 44px;
+  padding: 18px 0 46px;
   border-bottom: 1px solid var(--border);
+}
+
+.earth-panel {
+  display: grid;
+  place-items: center;
+  min-height: 320px;
+  border: 1px solid var(--border);
+  border-radius: 30px;
+  background: radial-gradient(circle at 50% 42%, #ffffff 0%, #f2fbff 52%, #e4f6ff 100%);
+  box-shadow: var(--shadow);
+}
+
+.earth-illustration {
+  width: min(270px, 84%);
+  height: auto;
+  display: block;
+}
+
+.header-copy {
+  min-width: 0;
 }
 
 .eyebrow,
@@ -55,9 +79,17 @@ h2 {
 h1 {
   margin-top: 10px;
   color: var(--accent-strong);
-  font-size: clamp(2.7rem, 7vw, 6.2rem);
-  line-height: 0.95;
-  max-width: 980px;
+  font-size: clamp(3rem, 7vw, 5.6rem);
+  line-height: 0.98;
+  max-width: 760px;
+}
+
+.subtitle {
+  max-width: 640px;
+  margin: 20px 0 0;
+  color: var(--muted);
+  font-size: clamp(1.08rem, 2vw, 1.35rem);
+  line-height: 1.5;
 }
 
 h2 {
@@ -74,9 +106,13 @@ h2 {
 }
 
 .dashboard-grid {
-  grid-template-columns: minmax(320px, 1.5fr) repeat(3, minmax(190px, 1fr));
-  margin-top: 28px;
+  grid-template-columns: minmax(0, 1.65fr) minmax(250px, 0.9fr);
+  margin-top: 40px;
   align-items: stretch;
+  grid-template-areas:
+    "state status"
+    "state coverage"
+    "state update";
 }
 
 .card {
@@ -87,18 +123,35 @@ h2 {
 }
 
 .state-card {
-  min-height: 260px;
-  padding: 32px;
+  grid-area: state;
+  min-height: 430px;
+  padding: 40px;
   background: linear-gradient(180deg, #ffffff 0%, var(--surface-strong) 100%);
+}
+
+.status-card {
+  grid-area: status;
+}
+
+.metric-card {
+  min-height: 132px;
+}
+
+.metric-card:nth-of-type(3) {
+  grid-area: coverage;
+}
+
+.metric-card:nth-of-type(4) {
+  grid-area: update;
 }
 
 .status-card,
 .metric-card {
-  min-height: 260px;
-  padding: 26px;
+  padding: 24px;
 }
 
 .status-card {
+  min-height: 132px;
   background: var(--surface);
 }
 
@@ -115,48 +168,55 @@ h2 {
   display: block;
   margin-top: 18px;
   color: var(--text);
-  font-size: clamp(2rem, 4vw, 3.7rem);
+  font-size: clamp(1.9rem, 4vw, 3.25rem);
   line-height: 1;
   overflow-wrap: anywhere;
 }
 
 .state-value {
   display: block;
-  margin-top: 26px;
+  margin-top: 42px;
   color: var(--accent-blue);
-  font-size: clamp(3.8rem, 9vw, 7.5rem);
+  font-size: clamp(4.6rem, 10vw, 8.5rem);
   line-height: 0.9;
   overflow-wrap: anywhere;
 }
 
 .status-card strong {
   display: block;
-  margin-top: 20px;
+  margin-top: 16px;
   color: var(--accent-strong);
-  font-size: clamp(1.9rem, 3.5vw, 3rem);
-  line-height: 1;
+  font-size: clamp(1.28rem, 2vw, 1.72rem);
+  line-height: 1.15;
+}
+
+.status-dot {
+  font-size: 0.72em;
+  vertical-align: 0.05em;
 }
 
 .metric-date {
-  font-size: clamp(1.2rem, 2.3vw, 1.8rem);
-  line-height: 1.18;
+  white-space: pre-line;
+  font-size: clamp(1.25rem, 2.4vw, 1.9rem);
+  line-height: 1.22;
 }
 
 .projection-section {
-  margin-top: 64px;
+  margin-top: 78px;
 }
 
 .section-heading {
-  margin-bottom: 22px;
+  margin-bottom: 28px;
 }
 
 .projection-grid {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
 }
 
 .projection-card {
-  min-height: 236px;
-  padding: 26px;
+  min-height: 220px;
+  padding: 30px;
   background: linear-gradient(180deg, #ffffff 0%, var(--surface) 100%);
 }
 
@@ -196,30 +256,84 @@ h2 {
 
 .data-message {
   min-height: 24px;
-  margin: 18px 0 0;
+  margin: 24px 0 0;
   color: var(--muted);
   font-size: 0.95rem;
+}
+
+.data-source-panel {
+  display: grid;
+  gap: 10px;
+  margin-top: 18px;
+  padding: 24px 26px;
+  background: linear-gradient(180deg, #ffffff 0%, var(--surface) 100%);
+}
+
+.data-source-panel strong {
+  color: var(--accent-strong);
+  font-size: clamp(1.2rem, 2.2vw, 1.8rem);
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.data-source-panel span:not(.card-label) {
+  color: var(--muted);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.observatory-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 18px;
+  align-items: center;
+  margin-top: 36px;
+  padding-top: 22px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.96rem;
+}
+
+.observatory-footer strong {
+  color: var(--accent-strong);
 }
 
 @media (max-width: 880px) {
   .observatory-shell {
     width: min(100% - 24px, 720px);
-    padding: 24px 0;
+    padding: 28px 0 42px;
   }
 
+  .site-header,
   .dashboard-grid,
   .projection-grid {
     grid-template-columns: 1fr;
+  }
+
+  .dashboard-grid {
+    grid-template-areas:
+      "state"
+      "status"
+      "coverage"
+      "update";
+  }
+
+  .earth-panel {
+    min-height: 250px;
   }
 
   .state-card,
   .status-card,
   .metric-card,
   .projection-card {
-    min-height: 142px;
+    min-height: 156px;
+  }
+
+  .state-card {
+    padding: 30px;
   }
 
   .projection-section {
-    margin-top: 42px;
+    margin-top: 52px;
   }
 }

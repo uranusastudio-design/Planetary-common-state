@@ -1,4 +1,6 @@
 const STATE_SOURCE = "../PCS_ENGINE/output/latest_state.json";
+const REFRESH_INTERVAL_MS = 10000;
+let latestStateSignature = "";
 
 const selectors = {
   currentState: document.querySelector("#current-state"),
@@ -26,14 +28,70 @@ const observatoryModules = {
   futureCharts: null,
 };
 
-function displayRawValue(element, value) {
+function formatDisplayValue(value) {
+  if (value === null || typeof value === "undefined" || Number.isNaN(value)) {
+    return "Waiting for data";
+  }
+
+  if (typeof value === "number") {
+    return value.toFixed(3);
+  }
+
+  return String(value);
+}
+
+function formatLatestUpdate(value) {
   if (value === null || typeof value === "undefined") {
-    element.textContent = "Waiting for data";
+    return "Waiting for data";
+  }
+
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return String(value);
+  }
+
+  const day = date.toISOString().slice(0, 10);
+  const time = date.toISOString().slice(11, 16);
+  return `${day}\n${time} UTC`;
+}
+
+function updateText(element, value) {
+  if (element.textContent !== value) {
+    element.textContent = value;
+  }
+}
+
+function displayRawValue(element, value) {
+  if (value === null || typeof value === "undefined" || Number.isNaN(value)) {
+    updateText(element, "Waiting for data");
     element.classList.add("is-missing");
     return;
   }
 
-  element.textContent = String(value);
+  updateText(element, formatDisplayValue(value));
+  element.classList.remove("is-missing");
+}
+
+function displayCoverage(element, value) {
+  if (value === null || typeof value === "undefined" || Number.isNaN(value)) {
+    updateText(element, "Waiting for data");
+    element.classList.add("is-missing");
+    return;
+  }
+
+  updateText(element, `${value} / 4`);
+  element.classList.remove("is-missing");
+}
+
+function displayLatestUpdate(element, value) {
+  if (value === null || typeof value === "undefined") {
+    updateText(element, "Waiting for data");
+    element.classList.add("is-missing");
+    return;
+  }
+
+  updateText(element, formatLatestUpdate(value));
   element.classList.remove("is-missing");
 }
 
@@ -49,9 +107,18 @@ function displayProgressBar(element, value) {
 }
 
 function renderState(state) {
+  const stateSignature = JSON.stringify(state);
+
+  if (stateSignature === latestStateSignature) {
+    observatoryModules.summary.dataMessage.textContent = `Read-only source: ${STATE_SOURCE}`;
+    return;
+  }
+
+  latestStateSignature = stateSignature;
+
   displayRawValue(observatoryModules.summary.currentState, state.S_demo);
-  displayRawValue(observatoryModules.summary.coverage, state.coverage_count);
-  displayRawValue(observatoryModules.summary.latestUpdate, state.metadata?.generated_at_utc);
+  displayCoverage(observatoryModules.summary.coverage, state.coverage_count);
+  displayLatestUpdate(observatoryModules.summary.latestUpdate, state.metadata?.generated_at_utc);
 
   displayRawValue(observatoryModules.projectionCards.L_T, state.projections?.L_T);
   displayRawValue(observatoryModules.projectionCards.L_C, state.projections?.L_C);
@@ -82,3 +149,4 @@ async function loadLatestState() {
 }
 
 loadLatestState();
+setInterval(loadLatestState, REFRESH_INTERVAL_MS);

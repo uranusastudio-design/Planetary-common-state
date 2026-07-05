@@ -1,14 +1,18 @@
-# PCS Observatory v1.0
+# PCS Observatory v1.1
 
-PCS Observatory v1.0 is a static, read-only observatory page for the Planetary Common State platform.
+PCS Observatory v1.1 is a static, read-only observatory page for the Planetary Common State platform.
 
 ## Scope
 
 - Reads `../PCS_ENGINE/output/latest_state.json`.
 - Displays a scientific observatory dashboard with current state, status, coverage, latest update, and projection cards for Thermal `L_T`, Chemical `L_C`, Structural `L_S`, and Informational `L_I`.
 - Displays status as `Operational Prototype`.
+- Displays coverage as an observed-dimension count out of four projection dimensions.
 - Displays `Waiting for data` when source JSON values are null or unavailable.
 - Shows horizontal progress bars for numeric projection values.
+- Reloads `../PCS_ENGINE/output/latest_state.json` every 10 seconds without refreshing the page.
+- Includes a static SVG Earth illustration.
+- Includes a read-only data source panel and footer.
 - Does not compute values.
 - Does not interpolate missing values.
 - Does not make prediction claims.
