@@ -1,0 +1,16 @@
+analysis,metric,target,value,n,units,notes
+correlation,pearson,Temperature_vs_PCS,0.9778512591,25,dimensionless,Temperature compared with S_demo over paired non-missing years
+correlation,spearman,Temperature_vs_PCS,0.9561203757,25,dimensionless,Temperature compared with S_demo over paired non-missing years
+correlation,pearson,CO2_vs_PCS,0.9708912865,25,dimensionless,CO2 compared with S_demo over paired non-missing years
+correlation,spearman,CO2_vs_PCS,0.9753846154,25,dimensionless,CO2 compared with S_demo over paired non-missing years
+variance,sample_variance,L_T,0.02032487353,25,projection_units_squared,NaN if fewer than two valid values are available
+variance,sample_variance,L_C,0.01551989474,25,projection_units_squared,NaN if fewer than two valid values are available
+variance,sample_variance,L_S,NaN,0,projection_units_squared,NaN if fewer than two valid values are available
+variance,sample_variance,L_I,NaN,0,projection_units_squared,NaN if fewer than two valid values are available
+variance,sample_variance,S_demo,0.0169468784,25,state_units_squared,NaN if fewer than two valid values are available
+leave_one_out,mean_change,Temperature,0.0409484,25,state_units,S_without_Temperature minus S_demo
+leave_one_out,mean_absolute_change,Temperature,0.04319992,25,state_units,Absolute S_without_Temperature minus S_demo
+leave_one_out,maximum_absolute_change,Temperature,0.09135,25,state_units,Maximum absolute S_without_Temperature minus S_demo
+leave_one_out,mean_change,CO2,-0.04094828,25,state_units,S_without_CO2 minus S_demo
+leave_one_out,mean_absolute_change,CO2,0.0431998,25,state_units,Absolute S_without_CO2 minus S_demo
+leave_one_out,maximum_absolute_change,CO2,0.091349,25,state_units,Maximum absolute S_without_CO2 minus S_demo

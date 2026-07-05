@@ -1,0 +1,50 @@
+# Missing-Reference Report
+
+Source-control priority used: Master Reference Database v2.0, Verified Reference List + Citation Placement Map (1), Master Reference Database v1.0, ??. No bibliographic fields were invented; missing metadata is listed below.
+
+- `AmariNagaoka2000` (book): missing isbn. Supplied fields: author=Shun-ichi Amari and Hiroshi Nagaoka; title=Methods of Information Geometry; publisher=AMS / Oxford; year=2000
+- `ArmstrongMcKay2022Tipping` (article): missing volume, number, pages, doi. Supplied fields: author=David I. Armstrong McKay and others; title=Exceeding 1.5 degrees C global warming could trigger multiple climate tipping points; journal=Science; year=2022
+- `Barabasi2016` (book): missing isbn. Supplied fields: author=Albert-Laszlo Barabasi; title=Network Science; year=2016; publisher=Cambridge University Press
+- `Berkooz1993POD` (article): missing volume, number, pages. Supplied fields: author=G. Berkooz and P. Holmes and J. L. Lumley; title=The Proper Orthogonal Decomposition in the Analysis of Turbulent Flows; journal=Annual Review of Fluid Mechanics; year=1993; doi=10.1146/annurev.fl.25.010193.002543
+- `Boccaletti2014Multilayer` (article): missing volume, number, pages, doi. Supplied fields: author=Stefano Boccaletti and others; title=The Structure and Dynamics of Multilayer Networks; journal=Physics Reports; year=2014
+- `Brier1950` (article): missing volume, number, pages. Supplied fields: author=Glenn W. Brier; title=Verification of Forecasts Expressed in Terms of Probability; journal=Monthly Weather Review; year=1950; doi=10.1175/1520-0493(1950)078<0001:VOFEIT>2.0.CO;2
+- `CopernicusC3S` (misc): missing year, year, url. Supplied fields: author=Copernicus Climate Change Service; title=Climate observations and indicators
+- `Dakos2008Slowing` (article): missing volume, number, pages, doi. Supplied fields: author=Vasilis Dakos and others; title=Slowing Down as an Early Warning Signal; journal=PNAS; year=2008
+- `Fawcett2006ROC` (article): missing volume, number, pages. Supplied fields: author=Tom Fawcett; title=An Introduction to ROC Analysis; journal=Pattern Recognition Letters; year=2006; doi=10.1016/j.patrec.2005.10.010
+- `Folke2004Resilience` (article): missing volume, number, pages, doi. Supplied fields: author=Carl Folke and others; title=Resilience, adaptability and transformability in social-ecological systems; journal=Ecology and Society; year=2004
+- `Goldenfeld1992` (book): missing publisher. Supplied fields: author=Nigel Goldenfeld; title=Lectures on Phase Transitions and the Renormalization Group; year=1992; isbn=978-0-201-55409-0
+- `Haken1977Synergetics` (book): missing isbn. Supplied fields: author=Hermann Haken; title=Synergetics; year=1977; publisher=Springer
+- `Hersbach2020ERA5` (article): missing volume, number, pages. Supplied fields: author=Hersbach and others; title=The ERA5 Global Reanalysis; journal=Quarterly Journal of the Royal Meteorological Society; year=2020; doi=10.1002/qj.3803
+- `Holling1973Resilience` (article): missing volume, number, pages. Supplied fields: author=C. S. Holling; title=Resilience and Stability of Ecological Systems; journal=Annual Review of Ecology and Systematics; year=1973; doi=10.1146/annurev.es.04.110173.000245
+- `IPCCAR6WG1` (report): missing year, institution, year, url. Supplied fields: author=IPCC Working Group I; title=IPCC AR6 Working Group I Assessment Report
+- `Jaynes1957I` (article): missing volume, number, pages. Supplied fields: author=E. T. Jaynes; title=Information Theory and Statistical Mechanics; journal=Physical Review; year=1957; doi=10.1103/PhysRev.106.620
+- `Jolliffe2002PCA` (book): missing year, isbn. Supplied fields: author=Ian T. Jolliffe; title=Principal Component Analysis; publisher=Springer
+- `JolliffeStephenson2012` (book): missing publisher, isbn. Supplied fields: author=Ian T. Jolliffe and David B. Stephenson; title=Forecast Verification: A Practitioner's Guide in Atmospheric Science; edition=2; year=2012
+- `JusticeMODIS` (article): missing year, journal, volume, number, pages, doi. Supplied fields: author=Justice and others; title=MODIS Land Products Overview
+- `Kalman1960` (article): missing volume, number, pages. Supplied fields: author=Rudolf E. Kalman; title=A New Approach to Linear Filtering and Prediction Problems; journal=Journal of Basic Engineering; year=1960; doi=10.1115/1.3662552
+- `Kalnay2003Assimilation` (book): missing publisher, isbn. Supplied fields: author=Eugenia Kalnay; title=Atmospheric Modeling, Data Assimilation and Predictability; year=2003
+- `Kivela2014Multilayer` (article): missing volume, number, pages, doi. Supplied fields: author=Mikko Kivela and others; title=Multilayer Networks; journal=Journal of Complex Networks; year=2014
+- `Koopman1931` (article): missing journal, volume, number, pages. Supplied fields: author=Bernard O. Koopman; title=Hamiltonian Systems and Transformation in Hilbert Space; year=1931; doi=10.1073/pnas.17.5.315
+- `Lee1997Riemannian` (book): missing isbn. Supplied fields: author=John M. Lee; title=Riemannian Manifolds: An Introduction to Curvature; publisher=Springer; year=1997
+- `Lee2012Smooth` (book): missing isbn. Supplied fields: author=John M. Lee; title=Introduction to Smooth Manifolds; edition=2; publisher=Springer; year=2012
+- `Lenton2008Tipping` (article): missing volume, number, pages. Supplied fields: author=Timothy M. Lenton and others; title=Tipping elements in the Earth's climate system; journal=PNAS; year=2008; doi=10.1073/pnas.0705414105
+- `LoebCERES` (article): missing year, volume, number, pages, doi. Supplied fields: author=Norman G. Loeb and others; title=Clouds and the Earth's Radiant Energy System (CERES): Energy Balanced and Filled (EBAF) Top-of-Atmosphere Data Product; journal=Journal of Climate
+- `Mezic2005Koopman` (article): missing volume, number, pages, doi. Supplied fields: author=Igor Mezic; title=Spectral Properties of Dynamical Systems, Model Reduction and Decompositions; journal=Nonlinear Dynamics; year=2005
+- `Mitchell2009` (book): missing publisher. Supplied fields: author=Melanie Mitchell; title=Complexity: A Guided Tour; year=2009; isbn=978-0-19-512441-5
+- `MurphyWinkler1987` (article): missing volume, number, pages, doi. Supplied fields: author=Murphy and Winkler; title=A General Framework for Forecast Verification; journal=Monthly Weather Review; year=1987
+- `NOAAGML` (misc): missing year, year, url. Supplied fields: author=NOAA Global Monitoring Laboratory; title=Atmospheric greenhouse gas observations
+- `NewmanNetworks` (book): missing year, publisher, isbn. Supplied fields: author=M. E. J. Newman; title=Networks
+- `NicolisPrigogine1977` (book): missing publisher. Supplied fields: author=G. Nicolis and I. Prigogine; title=Self-Organization in Nonequilibrium Systems; year=1977; isbn=0-471-02401-5
+- `Preisendorfer1988EOF` (book): missing year, publisher, isbn. Supplied fields: author=Rudolf W. Preisendorfer; title=Principal Component Analysis in Meteorology and Oceanography
+- `Rao1945` (article): missing journal, volume, number, pages, doi. Supplied fields: author=C. R. Rao; title=Information and the Accuracy Attainable; year=1945
+- `Richardson2023` (article): missing volume, number, pages. Supplied fields: author=Katherine Richardson and others; title=Earth beyond six of nine planetary boundaries; journal=Science Advances; year=2023; doi=10.1126/sciadv.adh2458
+- `Rockstrom2009` (article): missing volume, number, pages. Supplied fields: author=Johan Rockstrom and others; title=A safe operating space for humanity; journal=Nature; year=2009; doi=10.1038/461472a
+- `RoemmichArgo` (misc): missing year, year, url. Supplied fields: author=Roemmich and others; title=The Argo Program
+- `Saltelli2008GSA` (book): missing publisher, isbn. Supplied fields: author=Andrea Saltelli and others; title=Global Sensitivity Analysis; year=2008
+- `Scheffer2001Catastrophic` (article): missing volume, number, pages. Supplied fields: author=Marten Scheffer and others; title=Catastrophic shifts in ecosystems; journal=Nature; year=2001; doi=10.1038/35098000
+- `Scheffer2009EarlyWarning` (article): missing volume, number, pages. Supplied fields: author=Marten Scheffer and others; title=Early-warning signals for critical transitions; journal=Nature; year=2009; doi=10.1038/nature08227
+- `Schmid2010DMD` (article): missing volume, number, pages. Supplied fields: author=P. J. Schmid; title=Dynamic Mode Decomposition; journal=Journal of Fluid Mechanics; year=2010; doi=10.1017/S0022112010001217
+- `Steffen2015` (article): missing volume, number, pages. Supplied fields: author=Will Steffen and others; title=Planetary boundaries: Guiding human development on a changing planet; journal=Science; year=2015; doi=10.1126/science.1259855
+- `Tapley2004GRACE` (article): missing volume, number, pages, doi. Supplied fields: author=Tapley and others; title=GRACE Measurements of Mass Variability; journal=Science; year=2004
+- `WilksAtmosphericStats` (book): missing year, publisher, isbn. Supplied fields: author=Wilks; title=Statistical Methods in the Atmospheric Sciences
+- `Wilson1983RG` (article): missing volume, number, pages. Supplied fields: author=Kenneth G. Wilson; title=The Renormalization Group and Critical Phenomena; journal=Reviews of Modern Physics; year=1983; doi=10.1103/RevModPhys.55.583

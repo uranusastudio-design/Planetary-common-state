@@ -1,0 +1,59 @@
+﻿\section{Numerical Framework and Validation}
+
+Figure~\ref{fig:fig07_validation_workflow} summarizes the validation workflow. The workflow links historical observations, state estimation, forecasts, independent verification, and early-warning diagnostics.
+
+\begin{figure}[tb]
+\centering
+\includegraphics[width=\columnwidth]{figures/fig07_validation_workflow.png}
+\caption{Validation workflow of the Planetary Common State (PCS).}
+\label{fig:fig07_validation_workflow}
+\end{figure}
+
+
+\subsection{10.1 Numerical Workflow}
+
+The numerical workflow begins by defining observation spaces \(\Omega_i\) and specifying projection operators \(\mathcal{P}_i\). These choices determine the projected components \(L_i\), the estimated operator \(\hat{\mathbb{L}}\), and the coupling matrix \(C_{ij}(t)\). The constraint metric \(g_{ij}(\mathbf{L})\) is then constructed or calibrated before prediction, diagnostic evaluation, hindcasting, and comparison with baseline models.
+
+\subsection{10.2 Calibration}
+
+Projection operators, normalization functions, scalar aggregation, coupling coefficients, and metric components require empirical calibration. Calibration should be performed on training periods or training systems, with independent validation where possible.
+
+\subsection{10.3 Validation Metrics}
+
+Predictive performance may be evaluated using root-mean-square error, correlation, likelihood, Brier score, receiver-operating-characteristic measures, calibration curves, and temporal prediction skill. For continuous targets, a common metric is
+
+\[ \mathrm{RMSE}=\sqrt{\frac{1}{N}\sum_{k=1}^N (y_k-\hat{y}_k)^2}. \]
+
+Table~\ref{tab:validation_metrics} summarizes validation metrics.
+\input{tables/tab04_validation_metrics.tex}
+
+
+Here \(y_k\) denotes the validation target and \(\hat{y}_k\) the corresponding prediction or diagnostic estimate.
+
+\subsection{10.4 Hindcasting}
+
+Hindcasting evaluates whether estimated constraint states and coupling measures recover known historical changes or regime shifts. A successful hindcast is not sufficient for validation, but failure to hindcast relevant events would challenge the usefulness of the framework.
+
+\subsection{10.5 Baseline Comparisons}
+
+UCT must be compared with simpler and established baselines. Relevant baselines include:
+
+global mean surface temperature \cite{IPCCAR6WG1};
+
+top-of-atmosphere energy imbalance \cite{LoebCERES};
+
+AMOC indices \cite{IPCCAR6WG1,RoemmichArgo};
+
+planetary-boundary indicators \cite{Rockstrom2009,Steffen2015,Richardson2023};
+
+PCA/EOF composite indices \cite{Jolliffe2002PCA,Preisendorfer1988EOF}.
+
+The framework is justified only if it offers interpretable or predictive advantages relative to such baselines.
+
+\subsection{10.6 Falsifiability}
+
+UCT is empirically testable. The framework would be challenged if no statistically significant mapping \(\Omega\rightarrow\hat{\mathbb{L}}\) can be established, if coupling estimates do not improve prediction or interpretation, if independent datasets yield inconsistent projections, or if simpler baselines perform as well or better.
+
+This validation section defines empirical tests, not proof of general validity. A successful numerical study would support the chosen projections and calibration protocol, while a failed comparison against simpler baselines would limit the framework.
+
+

@@ -1,0 +1,95 @@
+﻿\section{Unified Constraint Representation}
+
+Figure~\ref{fig:fig01_motivation} summarizes the motivation for a common state representation, and Figure~\ref{fig:fig02_pcs_topology} summarizes the PCS topology. The figures emphasize that heterogeneous observations remain domain-specific while being organized into a shared macroscopic state representation.
+
+\begin{figure}[tb]
+\centering
+\includegraphics[width=\columnwidth]{figures/fig01_motivation.png}
+\caption{Motivation for a Unified Planetary Common State representation.}
+\label{fig:fig01_motivation}
+\end{figure}
+
+\subsection{3.1 Motivation}
+
+Large coupled systems are observed through many physical variables: temperature anomalies, energy imbalance, circulation indices, chemical concentrations, structural indicators, biodiversity measures, infrastructure data, and measures of adaptive capacity. These observables are meaningful, but they lack a common constraint representation.
+
+UCT addresses this by defining a shared effective object whose projections correspond to observable constraint components. The framework does not make heterogeneous observables identical; it places them in a common coordinate representation suitable for coupling analysis and empirical testing.
+
+\subsection{3.2 Unified Constraint Operator}
+
+Let \(\mathcal{S}\) denote the system state space and \(\mathcal{C}\) the effective constraint space. The following definition fixes the mathematical setting for the operator.
+
+Definition 1 (System state space and constraint space). The system state space \(\mathcal{S}\) is the set of macroscopic states resolved by the chosen application. The constraint space \(\mathcal{C}\) is the effective space of constraint states generated from those macroscopic states. Both spaces are model components: their resolution, admissible variables, and boundary conditions must be specified before empirical use.
+
+\[ \mathbb{L}:\mathcal{S}\rightarrow\mathcal{C}. \]
+
+Table~\ref{tab:master_notation} summarizes the notation used in the framework.
+\input{tables/tab01_master_notation.tex}
+
+
+Definition 2 (Unified Constraint Operator). The operator \(\mathbb{L}\) is the effective map from system states to constraint states. Its mathematical content is fixed only after \(\mathcal{S}\), \(\mathcal{C}\), the admissible projections, and the calibration procedure have been specified.
+
+\(\mathbb{L}\) is the central theoretical object of UCT. It is an effective operator representing coupled macroscopic constraints. It is not a second set of physical equations, not a new force, and not a replacement for the governing equations used within each domain.
+
+\subsection{3.3 Observable Constraint Projections}
+
+Observable constraint components are obtained by projection:
+
+\[ L_i=\pi_i(\mathbb{L}), \qquad i=1,\ldots,n. \]
+
+Definition 3 (Projection operator and admissible projection). A projection operator \(\pi_i\) is a map from the effective constraint space to an observable constraint component. An admissible projection is one whose observable basis, normalization, time scale, and uncertainty treatment are specified. The projection space is the set of all admissible projected components used in a given application.
+
+Remark 2. Projection operators are application dependent \cite{Kalman1960,Koopman1931,Jolliffe2002PCA}; changing them changes the empirical model even when the notation is unchanged.
+
+For the Earth-system application considered here, the projection vector is
+
+\[ \mathbf{L}=(L_T,L_F,L_C,L_S,L_I,L_E,L_G,L_V). \]
+
+\begin{figure}[tb]
+\centering
+\includegraphics[width=\columnwidth]{figures/fig02_pcs_topology.png}
+\caption{Topology of the Planetary Common State (PCS).}
+\label{fig:fig02_pcs_topology}
+\end{figure}
+
+Definition 4 (Constraint coordinates). The entries of \(\mathbf{L}\) are constraint coordinates. They are dimensionless projected components used to locate the system in the effective projection space. Their ordering is conventional, but once chosen it must remain fixed throughout calibration and validation.
+
+\(L_T\): thermal constraint projection.
+
+\(L_F\): flow constraint projection.
+
+\(L_C\): chemical constraint projection.
+
+\(L_S\): structural constraint projection.
+
+\(L_I\): informational constraint projection.
+
+\(L_E\): energetic constraint projection.
+
+\(L_G\): gravitational or geophysical constraint projection.
+
+\(L_V\): viability constraint projection.
+
+The viability projection is intended to represent macroscopic persistence and adaptive capacity, not a philosophical premise about civilization. Its empirical definition must be specified for each application.
+
+Proposition 1 (Projection consistency). A set of projected components is consistent when all \(L_i\) are evaluated from the same underlying system state, time window, and normalization convention. Under this condition, \(\mathbf{L}\) is a coordinate representation of one macroscopic constraint state rather than a collection of unrelated indicators.
+
+\subsection{3.4 Optional Scalar Constraint Index}
+
+A scalar aggregate may be useful for visualization, monitoring, or comparison, but it is not the fundamental object of the theory. If used, it is defined as a calibrated summary derived from the projection vector:
+
+\[ L=F(\mathbf{L}), \qquad F:[0,1]^n\rightarrow[0,1]. \]
+
+The scalar \(L\) should be interpreted as an optional data-calibrated index. Its construction is application dependent and must be validated against independent observations or predictive tasks.
+
+In the linear baseline regime one may write
+
+\[ L\approx\sum_i w_i L_i, \qquad \sum_i w_i=1. \]
+
+Corollary 1 (Linear scalar approximation). If \(F\) is calibrated near a reference state and higher-order interactions are negligible at the selected resolution, the weighted linear form provides a baseline scalar index. Deviations from this baseline are empirical claims and must be justified by validation performance.
+
+Nonlinear forms of \(F\) may be considered only when supported by data and when they improve predictive performance relative to simpler baselines.
+
+This section fixes notation and admissibility conditions. It does not assert that one projection set is unique; it states what must be specified for a projection set to be testable.
+
+

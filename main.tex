@@ -1,0 +1,752 @@
+\documentclass[aps,pre,reprint,superscriptaddress,nofootinbib]{revtex4-2}
+\usepackage{amsmath,amssymb}
+\usepackage{array}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\begin{document}
+
+\title{Unified Constraint Theory: An Effective Macroscopic Framework for Coupled Complex Systems}
+\author{Author}
+\affiliation{Affiliation to be supplied}
+\date{\today}
+\maketitle
+
+Submission-preparation note. This Version 4.0 draft preserves the Version 3.0 theory, notation, equations, definitions, propositions, corollaries, remarks, chapter numbering, and appendices. Verified citations have been inserted as BibTeX citation commands for APS/REVTeX conversion; remaining metadata issues are documented in the accompanying missing-reference report.
+
+\section{Chapter 1: Introduction}
+
+Chapter question. What representational problem motivates UCT, and what scope limits prevent overinterpretation$\checkmark$
+
+\subsection{1.1 Background}
+
+The long-term stability of complex systems is a central problem in nonequilibrium physics \cite{NicolisPrigogine1977,Haken1977Synergetics}, Earth-system science \cite{Rockstrom2009,Steffen2015,Richardson2023}, ecology, engineering, and network theory \cite{Mitchell2009,Barabasi2016}. These fields study different mechanisms, but they share a common concern: how large-scale coupled systems maintain macroscopic organization under persistent perturbations, finite resources, and irreversible dissipation.
+
+Established theories provide detailed descriptions of individual processes \cite{NicolisPrigogine1977,Jaynes1957I,Wilson1983RG,Goldenfeld1992}. Thermodynamics characterizes energy exchange and entropy production \cite{NicolisPrigogine1977,Jaynes1957I}. Fluid mechanics describes momentum transport. Statistical mechanics connects microscopic dynamics to collective behavior \cite{Jaynes1957I}. General relativity describes spacetime gravitation. Information theory quantifies uncertainty and communication. None of these theories is replaced or modified in the present work.
+
+The difficulty addressed here is representational. In many large-scale systems, observable degradation or loss of viability is not confined to one domain. It emerges from interactions among thermal, dynamical, chemical, structural, informational, energetic, geophysical, and viability-related constraints. A common effective representation is therefore useful when no single observable is sufficient.
+
+\subsection{1.2 Motivation}
+
+The absence of a unified representation is not caused by a lack of measurements. Radiative imbalance, circulation indices, chemical concentrations, biodiversity indicators, infrastructure metrics, and measures of adaptive capacity are all meaningful observables. However, they were developed for different scientific purposes and are often analyzed using domain-specific conventions.
+
+This fragmentation becomes especially important near possible regime transitions. Perturbations in one domain may change the sensitivity of another, and the relevant slow variables may be distributed across several observational channels. The present manuscript proposes a common macroscopic language for such coupled constraints without introducing new microscopic laws.
+
+\subsection{1.3 Scope of This Work}
+
+The objective of Unified Constraint Theory (UCT) is not to introduce a new physical force, a new fundamental law, or a replacement for thermodynamics, statistical mechanics, fluid mechanics, general relativity, quantum mechanics, information theory, or Earth-system science. UCT is proposed as an effective macroscopic framework \cite{Wilson1983RG,Goldenfeld1992} for representing coupled constraints in large-scale complex systems \cite{Mitchell2009,Barabasi2016}.
+
+The framework is intended for systems whose behavior cannot be adequately summarized by one physical observable. Examples include Earth-system applications, ecological networks, infrastructure systems, and other socio-technical or environmental systems. Its scientific value depends on empirical calibration, falsifiable prediction, and comparison with simpler baselines.
+
+\subsection{1.4 Central Hypothesis}
+
+The central hypothesis is that heterogeneous observables can be interpreted as projections of a common effective constraint representation. The central object is the Unified Constraint Operator, denoted \(\mathbb{L}\). It represents coupled macroscopic constraints, not a directly measured physical field.
+
+\[ \mathbb{L} \]
+
+This display identifies the central operator only; its measurable content is introduced through projections. Observable quantities are projections of this operator. A thermal observable, a flow observable, or a viability indicator is not identified with \(\mathbb{L}\) itself; rather, each is interpreted as one component extracted from the effective operator through a projection map \cite{Kalman1960,Koopman1931,Schmid2010DMD,Berkooz1993POD}.
+
+\subsection{1.5 Main Contributions}
+
+A conservative effective-theory formulation \cite{Wilson1983RG,Goldenfeld1992} of UCT centered on the Unified Constraint Operator \(\mathbb{L}\).
+
+A projection framework in which observable constraint components are written as \(L_i=\pi_i(\mathbb{L})\).
+
+A constraint-coordinate geometry that represents cross-domain coupling without interpreting it as spacetime geometry.
+
+A data-calibrated implementation pathway using observation spaces, projection operators, assimilation, coupling estimation, hindcasting, and baseline comparison.
+
+A clear statement of limitations and falsifiability conditions.
+
+\subsection{1.6 Organization of the Paper}
+
+Chapter 2 states the physical foundations and foundational principles. Chapter 3 defines the Unified Constraint Representation. Chapter 4 develops constraint geometry. Chapters 5-7 discuss effective dynamics, coupling, viability, and critical transitions. Chapters 8-10 describe implementation, assimilation, validation, and falsifiability. Chapter 11 states limitations and relations to established theories. Chapter 12 concludes. Appendices A-C collect the main formulas, normalization conventions, and representative data sources.
+
+Reviewer-facing clarification. The introduction motivates the representational problem and does not claim that existing physical theories are incomplete within their own domains. Citation placeholders identify where the literature background must be supplied.
+
+Figure Suggestion: Motivation and scope map. Purpose: show the gap between domain-specific observables and a common constraint representation. Key mathematical objects: \(\mathbb{L}\), \(L_i\), \(\mathbf{L}\). Suggested visualization: multiple observable domains converging into one effective representation.
+
+Table Suggestion: Citation Audit Map. List each background area requiring references, including effective theory, complex systems, nonequilibrium thermodynamics, statistical mechanics, Earth-system science, network theory, projection methods, and macroscopic state variables.
+
+\section{Chapter 2: Physical Foundations and Foundational Principles of the Unified Constraint Theory}
+
+Chapter question. Which modeling principles are needed before the Unified Constraint Operator can be used without implying new fundamental physics$\checkmark$
+
+\subsection{2.1 Why Existing Physics Is Not Sufficient for This Representation}
+
+Existing physical theories are successful within their domains. The present claim is narrower: they do not by themselves provide a single effective coordinate system for comparing how heterogeneous constraints jointly affect macroscopic viability. This is a modeling gap, not a failure of established physics.
+
+UCT therefore asks a representational question: how can one describe the coupled constraint state of a large complex system using observables drawn from different physical and informational domains$\checkmark$
+
+\subsection{2.2 Principle I - Universality of Constraints}
+
+We propose that realistic macroscopic systems evolve under constraints arising from finite resources, dissipation, boundary conditions, structural limits, and interactions among subsystems. In this effective sense, the unconstrained idealization is not expected to describe Earth-scale or similarly complex systems.
+
+\[ \mathbb{L} \neq 0 \quad \text{for realistic macroscopic systems.} \]
+
+This statement is a modeling principle: constraints are treated as universal features of macroscopic evolution, not as new fundamental interactions.
+
+\subsection{2.3 Principle II - Constraints Are Not Physical Quantities}
+
+The operator \(\mathbb{L}\) does not represent energy, entropy, mass, momentum, information, curvature of spacetime, or any conventional microscopic state variable. It is an effective mathematical object used to organize how these quantities constrain macroscopic evolution when they are coupled.
+
+Consequently, \(\mathbb{L}\) is not directly measured. Only its observable projections are estimated from data.
+
+\subsection{2.4 Principle III - Observable Variables Are Projections}
+
+We define observable constraint components as projections of the Unified Constraint Operator:
+
+\[ L_i = \pi_i(\mathbb{L}), \qquad i=1,\ldots,n. \]
+
+The projection operator \(\pi_i\) selects or constructs the component relevant to one observational domain. This interpretation allows conventional data products to remain conventional while also serving as components of a broader effective representation.
+
+\subsection{2.5 Principle IV - Coupling Generates Constraint Geometry}
+
+If projected components were statistically and dynamically independent, a Euclidean coordinate description would often be adequate. In coupled systems, however, perturbations in one projection can change the response of another. The geometry of the constraint-coordinate space is introduced to represent this coupling structure.
+
+\[ ds_{\mathbb{L}}^2 = g_{ij}(\mathbf{L})\,dL_i\,dL_j. \]
+
+Here \(g_{ij}\) is an effective constraint metric. It is inferred or modeled from cross-domain sensitivities; it is not a spacetime metric.
+
+\subsection{2.6 Principle V - Geometry Governs Macroscopic Evolution}
+
+We interpret macroscopic evolution as a trajectory in constraint-coordinate space. The trajectory is governed not only by changes in the projected components but also by the coupling structure represented by \(g_{ij}\).
+
+\[ \mathbf{L}(t) \in \mathcal{M}_{\mathbb{L}}. \]
+
+Transitions are therefore studied as changes in the estimated constraint state and its coupling geometry, rather than as evidence for a new physical law.
+
+\subsection{2.7 Scientific Position of the Theory}
+
+UCT is an effective, macroscopic, data-calibrated framework. It complements established physical theories by providing a common representation for heterogeneous constraints. Its validity depends on whether its projections, coupling estimates, and derived indices improve explanation or prediction relative to simpler alternatives.
+
+Reviewer-facing clarification. The foundational principles are modeling commitments for an effective representation. They are not axioms of fundamental physics and should be evaluated by consistency, calibration, and predictive utility.
+
+Figure Suggestion: Five foundational principles. Purpose: show the logical progression from constraints to projections, coupling geometry, and macroscopic evolution. Key mathematical objects: \(\mathbb{L}\), \(L_i\), \(g_{ij}\), \(\mathcal{M}_{\mathbb{L}}\). Suggested visualization: layered diagram linking the five principles.
+
+Table Suggestion: Principle-to-Equation Map. Pair each principle with the equation or definition it motivates and the reviewer concern it addresses.
+
+\section{Chapter 3: Unified Constraint Representation}
+
+Chapter question. How are heterogeneous observables represented as admissible projections of \(\mathbb{L}\)$\checkmark$
+
+\subsection{3.1 Motivation}
+
+Large coupled systems are observed through many physical variables: temperature anomalies, energy imbalance, circulation indices, chemical concentrations, structural indicators, biodiversity measures, infrastructure data, and measures of adaptive capacity. These observables are meaningful, but they lack a common constraint representation.
+
+UCT addresses this by defining a shared effective object whose projections correspond to observable constraint components. The framework does not make heterogeneous observables identical; it places them in a common coordinate representation suitable for coupling analysis and empirical testing.
+
+\subsection{3.2 Unified Constraint Operator}
+
+Let \(\mathcal{S}\) denote the system state space and \(\mathcal{C}\) the effective constraint space. The following definition fixes the mathematical setting for the operator.
+
+Definition 1 (System state space and constraint space). The system state space \(\mathcal{S}\) is the set of macroscopic states resolved by the chosen application. The constraint space \(\mathcal{C}\) is the effective space of constraint states generated from those macroscopic states. Both spaces are model components: their resolution, admissible variables, and boundary conditions must be specified before empirical use.
+
+\[ \mathbb{L}:\mathcal{S}\rightarrow\mathcal{C}. \]
+
+Definition 2 (Unified Constraint Operator). The operator \(\mathbb{L}\) is the effective map from system states to constraint states. Its mathematical content is fixed only after \(\mathcal{S}\), \(\mathcal{C}\), the admissible projections, and the calibration procedure have been specified.
+
+\(\mathbb{L}\) is the central theoretical object of UCT. It is an effective operator representing coupled macroscopic constraints. It is not a second set of physical equations, not a new force, and not a replacement for the governing equations used within each domain.
+
+\subsection{3.3 Observable Constraint Projections}
+
+Observable constraint components are obtained by projection:
+
+\[ L_i=\pi_i(\mathbb{L}), \qquad i=1,\ldots,n. \]
+
+Definition 3 (Projection operator and admissible projection). A projection operator \(\pi_i\) is a map from the effective constraint space to an observable constraint component. An admissible projection is one whose observable basis, normalization, time scale, and uncertainty treatment are specified. The projection space is the set of all admissible projected components used in a given application.
+
+Remark 2. Projection operators are application dependent \cite{Kalman1960,Koopman1931,Jolliffe2002PCA}; changing them changes the empirical model even when the notation is unchanged.
+
+For the Earth-system application considered here, the projection vector is
+
+\[ \mathbf{L}=(L_T,L_F,L_C,L_S,L_I,L_E,L_G,L_V). \]
+
+Definition 4 (Constraint coordinates). The entries of \(\mathbf{L}\) are constraint coordinates. They are dimensionless projected components used to locate the system in the effective projection space. Their ordering is conventional, but once chosen it must remain fixed throughout calibration and validation.
+
+\(L_T\): thermal constraint projection.
+
+\(L_F\): flow constraint projection.
+
+\(L_C\): chemical constraint projection.
+
+\(L_S\): structural constraint projection.
+
+\(L_I\): informational constraint projection.
+
+\(L_E\): energetic constraint projection.
+
+\(L_G\): gravitational or geophysical constraint projection.
+
+\(L_V\): viability constraint projection.
+
+The viability projection is intended to represent macroscopic persistence and adaptive capacity, not a philosophical premise about civilization. Its empirical definition must be specified for each application.
+
+Proposition 1 (Projection consistency). A set of projected components is consistent when all \(L_i\) are evaluated from the same underlying system state, time window, and normalization convention. Under this condition, \(\mathbf{L}\) is a coordinate representation of one macroscopic constraint state rather than a collection of unrelated indicators.
+
+\subsection{3.4 Optional Scalar Constraint Index}
+
+A scalar aggregate may be useful for visualization, monitoring, or comparison, but it is not the fundamental object of the theory. If used, it is defined as a calibrated summary derived from the projection vector:
+
+\[ L=F(\mathbf{L}), \qquad F:[0,1]^n\rightarrow[0,1]. \]
+
+The scalar \(L\) should be interpreted as an optional data-calibrated index. Its construction is application dependent and must be validated against independent observations or predictive tasks.
+
+In the linear baseline regime one may write
+
+\[ L\approx\sum_i w_i L_i, \qquad \sum_i w_i=1. \]
+
+Corollary 1 (Linear scalar approximation). If \(F\) is calibrated near a reference state and higher-order interactions are negligible at the selected resolution, the weighted linear form provides a baseline scalar index. Deviations from this baseline are empirical claims and must be justified by validation performance.
+
+Nonlinear forms of \(F\) may be considered only when supported by data and when they improve predictive performance relative to simpler baselines.
+
+Reviewer-facing clarification. The representation chapter fixes notation and admissibility conditions. It does not assert that one projection set is unique; it states what must be specified for a projection set to be testable.
+
+Figure Suggestion: Projection vector construction. Purpose: show how \(\mathbb{L}\) is represented by \(\mathbf{L}\) and optionally summarized by \(L\). Key mathematical objects: \(\mathbb{L}\), \(\pi_i\), \(L_i\), \(\mathbf{L}\), \(F\), \(w_i\). Suggested visualization: operator-to-vector mapping followed by optional scalar aggregation.
+
+Table Suggestion: Symbols and Domains. Summarize \(\mathcal{S}\), \(\mathcal{C}\), projection space, admissible projections, \(\mathbf{L}\), and scalar index \(L\).
+
+\section{Chapter 4: Constraint Geometry of Coupled Systems}
+
+Chapter question. How can projection coordinates be compared locally without identifying the geometry with spacetime$\checkmark$
+
+\subsection{4.1 Constraint Manifold}
+
+The projection vector \(\mathbf{L}\) may be treated as a coordinate representation of a constraint manifold, denoted \(\mathcal{M}_{\mathbb{L}}\). Each point on this manifold corresponds to an effective macroscopic constraint state, not a spatial location.
+
+\[ \mathbf{L}=(L_1,L_2,\ldots,L_n)\in\mathcal{M}_{\mathbb{L}}. \]
+
+Definition 5 (Constraint manifold and local chart). A constraint manifold is the set of admissible projection vectors together with the coordinate neighborhoods in which those vectors can be compared. A constraint neighborhood is a local set of nearby projection vectors around a reference state, and a local coordinate chart is the identification of such a neighborhood with coordinates \((L_1,\ldots,L_n)\).
+
+The manifold language is used to organize coupled coordinates and their sensitivities. It does not imply that UCT changes spacetime geometry.
+
+\subsection{4.2 Constraint Metric}
+
+A constraint metric may be introduced to quantify distances in constraint-coordinate space:
+
+\[ ds_{\mathbb{L}}^2=g_{ij}(\mathbf{L})\,dL_i\,dL_j. \]
+
+The metric \(g_{ij}\) represents the local weighting and coupling of projection changes. It must be estimated, modeled, or otherwise justified from empirical data. It is not a gravitational metric.
+
+Definition 6 (Constraint metric). A constraint metric is a positive semidefinite or positive-definite tensor field, as appropriate to the application, on local constraint coordinates. It determines how infinitesimal changes in projected components are compared within the effective constraint representation.
+
+In this sense, the metric encodes local distinguishability among nearby constraint states. Two perturbations that have the same Euclidean magnitude in projection coordinates may be more or less distinguishable after weighting by \(g_{ij}\), depending on the local coupling and uncertainty structure. This interpretation is compatible with the language of information geometry \cite{AmariNagaoka2000,Rao1945} and differential geometry \cite{Lee2012Smooth,Lee1997Riemannian}, but no equivalence to either framework is assumed.
+
+Remark 1. The constraint metric is not spacetime geometry. It is a metric on the effective constraint-coordinate representation.
+
+\subsection{4.3 Constraint Distance and Constraint Velocity}
+
+A small constraint distance indicates two nearby macroscopic constraint states. A large constraint distance indicates substantial reorganization in the projected state space. The associated constraint velocity may be written
+
+\[ V_{\mathbb{L}}^2=g_{ij}(\mathbf{L})\frac{dL_i}{dt}\frac{dL_j}{dt}. \]
+
+This quantity measures the rate of motion through constraint-coordinate space. It is an effective diagnostic for comparing gradual evolution, rapid transition, or recovery.
+
+\subsection{4.4 Constraint Curvature}
+
+If the constraint manifold is treated as differentiable, one may define curvature quantities associated with \(g_{ij}\). These quantities summarize cross-domain coupling structure in constraint-coordinate space.
+
+Such curvature is not gravitational curvature. It does not modify Einstein's equation and should not be interpreted as a physical curvature of spacetime. Its use is justified only insofar as it improves the analysis of empirical coupling and macroscopic transition structure.
+
+\subsection{4.5 Constraint Potential}
+
+For some applications it may be useful to define an effective constraint potential \(U(\mathbf{L})\) or \(U(\mathbb{L})\). This potential is a modeling device for summarizing stability landscapes.
+
+\[ \nabla U(\mathbf{L}_*)=0, \qquad \nabla^2 U(\mathbf{L}_*)>0 \]
+
+indicates a locally stable state in the chosen coordinate representation. The potential is not a microscopic energy function unless a separate derivation establishes such a relation.
+
+Reviewer-facing clarification. The geometric language is used to organize distinguishability and coupling in projection coordinates. It should not be read as a claim about spacetime geometry or gravitational dynamics.
+
+Figure Suggestion: Constraint manifold and metric. Purpose: illustrate local neighborhoods, coordinate charts, and metric-weighted distinguishability. Key mathematical objects: \(\mathcal{M}_{\mathbb{L}}\), \(\mathbf{L}\), \(g_{ij}\), \(ds_{\mathbb{L}}^2\). Suggested visualization: two-dimensional manifold sketch with local chart, nearby states, and metric-weighted displacement.
+
+Table Suggestion: Geometry Terms. Summarize constraint manifold, local chart, constraint neighborhood, constraint metric, curvature, and potential.
+
+\section{Chapter 5: Constraint Dynamics}
+
+Chapter question. How is the time evolution of the effective constraint state represented at macroscopic scales$\checkmark$
+
+\subsection{5.1 Evolution of the Constraint Operator}
+
+The Unified Constraint Operator represents an instantaneous effective constraint state. Its macroscopic evolution may be written as
+
+\[ \frac{D\mathbb{L}}{Dt}=\mathcal{F}(\mathbb{L},\Psi,t). \]
+
+Here \(\Psi\) denotes the collection of relevant physical state variables and boundary conditions, and \(\mathcal{F}\) is an effective evolution operator to be inferred from data or constrained by domain models. It is not a microscopic law.
+
+Remark 3 (Effective evolution). The variables collected in \(\Psi\) specify the resolved physical state, external conditions, and model inputs used for a particular application. The operator \(\mathcal{F}\) is therefore part of the macroscopic closure, and its domain and regularity assumptions must be stated whenever quantitative predictions are made.
+
+\subsection{5.2 Constraint Sources}
+
+The effective operator \(\mathcal{F}\) may receive contributions from thermal forcing, circulation, hydrology, chemistry, ecosystems, infrastructure, information flows, energy systems, and external boundary conditions. A schematic decomposition is
+
+\[ \mathcal{F}=\sum_k \mathcal{F}_k. \]
+
+This decomposition is an accounting convention. The terms \(\mathcal{F}_k\) must be defined through observables, models, or calibrated response functions.
+
+\subsection{5.3 Stable Evolution}
+
+Stable macroscopic evolution corresponds to slow change in the effective constraint state:
+
+\[ \left\|\frac{D\mathbb{L}}{Dt}\right\|\ll 1 \]
+
+after specifying the norm and time scale. Rapid growth of this norm is a diagnostic candidate for instability, not by itself proof of an imminent transition.
+
+\subsection{5.4 Dynamic Equilibrium}
+
+An approximately stationary constraint state satisfies
+
+\[ \frac{D\mathbb{L}}{Dt}\approx 0. \]
+
+This does not imply that physical processes cease. It indicates that the net projected constraint state is approximately stationary at the selected resolution.
+
+Reviewer-facing clarification. The dynamics chapter introduces a macroscopic closure, not a microscopic equation of motion. Quantitative applications must define the norm, time scale, and data source used to estimate \(\mathcal{F}\).
+
+Figure Suggestion: Effective dynamics schematic. Purpose: show how \(\mathbb{L}\) evolves under resolved physical state variables and boundary conditions. Key mathematical objects: \(D\mathbb{L}/Dt\), \(\mathcal{F}\), \(\Psi\), \(\mathcal{F}_k\). Suggested visualization: operator-state diagram with multiple forcing contributions feeding the effective evolution operator.
+
+Table Suggestion: Dynamical Assumptions. Summarize norm choice, time scale, source terms, stationarity condition, and calibration requirements.
+
+\section{Chapter 6: Constraint Coupling Theory}
+
+Chapter question. How should cross-domain sensitivities be represented and empirically estimated$\checkmark$
+
+\subsection{6.1 Coupling Matrix}
+
+The projected components are generally coupled. When differentiability is justified, the effective coupling matrix may be written
+
+\[ C_{ij}=\frac{\partial \pi_i(\mathbb{L})}{\partial \pi_j(\mathbb{L})}. \]
+
+Equivalently, in projection coordinates, this can be represented locally as \(C_{ij}=\partial L_i/\partial L_j\). When differentiability is not justified, \(C_{ij}\) should be interpreted as an empirically estimated effective coupling coefficient.
+
+Depending on the application, \(C_{ij}\) may be interpreted as an effective sensitivity, an effective response coefficient, or an empirical coupling estimate. The derivative notation is local and should not be read as an assumption of global differentiability. When the data support only finite perturbations or statistical dependence, the same symbol denotes the calibrated response measure used in that analysis.
+
+\subsection{6.2 Empirical Estimation}
+
+\(C_{ij}(t)\) may be estimated from lagged correlations \cite{Saltelli2008GSA}, response functions \cite{Saltelli2008GSA}, perturbation experiments, causal discovery methods, or data-assimilation sensitivity analysis \cite{Kalnay2003Assimilation}. The estimation method should be reported together with uncertainty, lag structure, and robustness checks.
+
+\subsection{6.3 Physical Meaning}
+
+Examples include thermal-flow coupling, flow-structural coupling, structural-informational coupling, and energy-viability coupling. These coefficients quantify effective cross-domain interaction. They do not introduce a new interaction beyond the mechanisms already represented in the underlying domain models.
+
+Proposition 2 (Constraint coupling consistency). A coupling coefficient \(C_{ij}\) is interpretable only relative to a specified projection pair, normalization convention, time scale, and lag convention. Under these conditions, off-diagonal coefficients provide an effective representation of cross-domain sensitivity; without these conditions, comparisons among coefficients are not well-defined.
+
+\subsection{6.4 Symmetric and Asymmetric Coupling}
+
+In general, coupling need not be symmetric:
+
+\[ C_{ij}\neq C_{ji}. \]
+
+For example, a thermal anomaly may strongly affect ecological or hydrological projections, while the reverse influence may occur only indirectly or at longer time scales.
+
+\subsection{6.5 Global Coupling Strength}
+
+A simple aggregate measure of off-diagonal coupling is
+
+\[ \Gamma=\sum_{i\neq j}|C_{ij}|. \]
+
+The restriction \(i\neq j\) avoids including diagonal self-coupling unless explicitly stated. Large \(\Gamma\) indicates strong cross-domain coupling and may be associated with cascade risk, but the threshold for such risk must be empirically estimated.
+
+Reviewer-facing clarification. Coupling coefficients are effective quantities whose interpretation depends on normalization, lag convention, and estimation method. They should not be treated as universal constants.
+
+Figure Suggestion: Coupling matrix heat map. Purpose: show cross-domain sensitivities and asymmetries. Key mathematical objects: \(C_{ij}\), \(C_{ji}\), \(\Gamma\). Suggested visualization: labeled heat map with diagonal entries visually separated from off-diagonal coupling.
+
+Table Suggestion: Coupling Interpretation. Summarize sensitivity, response-function, perturbation, and data-assimilation interpretations of \(C_{ij}\).
+
+\section{Chapter 7: Stability and Critical Transitions}
+
+Chapter question. How can viability and transition diagnostics be expressed without assuming universal thresholds$\checkmark$
+
+\subsection{7.1 Viability Functional}
+
+Rather than defining stability solely as \(1-L\), UCT introduces a viability functional
+
+\[ \mathcal{V}=\Phi(\mathbb{L}) \quad \text{or} \quad \mathcal{V}=\Phi(\mathbf{L}). \]
+
+\(\mathcal{V}\) summarizes macroscopic persistence, adaptive capacity, or long-term stability as defined for the system under study. In the simplest linear approximation,
+
+\[ \mathcal{V}\approx 1-L. \]
+
+This approximation is useful only after \(L\) and its calibration have been specified.
+
+Definition 7 (Viability functional). The map \(\Phi\) is an application-dependent functional from the operator or projection vector to a scalar measure of system viability. No universal form of \(\Phi\) is assumed. The approximation \(\mathcal{V}\approx 1-L\) is one possible low-dimensional closure, not a defining identity.
+
+\subsection{7.2 Critical Threshold}
+
+A scalar threshold \(L_c\), if used, is empirical and system-dependent. It should be estimated from historical transitions, controlled simulations, or independent validation datasets.
+
+\[ L<L_c \quad \text{stable regime}, \qquad L\approx L_c \quad \text{transition region}, \qquad L>L_c \quad \text{post-threshold regime}. \]
+
+These labels are diagnostic categories, not universal laws.
+
+\subsection{7.3 Constraint Potential and Critical Surfaces}
+
+In a multi-dimensional representation, critical behavior is more naturally associated with a surface or region in \(\mathbf{L}\)-space than with one scalar number. A potential landscape, if used, should be calibrated to the data and tested against alternatives.
+
+\[ \mathcal{C}_{\mathrm{crit}}=\{\mathbf{L}: \Phi(\mathbf{L})=\Phi_c\}. \]
+
+This expression defines an estimated critical surface in projection space; it does not imply a universal critical value.
+
+\subsection{7.4 Early Warning Signals}
+
+If UCT captures relevant slow modes near a transition, recovery time should increase as the system approaches the estimated critical surface \cite{Scheffer2009EarlyWarning,Dakos2008Slowing}. Other empirical signals may include increasing variance, rising autocorrelation, changing cross-domain coupling, and reduced adaptive capacity.
+
+These are testable diagnostics. Their presence should be evaluated against null models and baseline indicators.
+
+\subsection{7.5 Cascading Transitions}
+
+A cascading transition occurs when perturbations propagate across projection domains through the coupling matrix. In this setting, a transition may be associated with increasing off-diagonal coupling,
+
+\[ \Gamma\rightarrow\Gamma_c, \]
+
+where \(\Gamma_c\) is an empirically estimated critical coupling level. No universal fixed value is implied.
+
+Reviewer-facing clarification. The stability chapter identifies empirical diagnostics rather than universal thresholds. Critical surfaces, recovery times, and coupling thresholds must be estimated and compared with null models.
+
+Figure Suggestion: Critical surface in projection space. Purpose: illustrate threshold behavior without implying a universal value of \(L_c\). Key mathematical objects: \(\mathbf{L}\), \(L\), \(L_c\), \(\mathcal{C}_{\mathrm{crit}}\), \(\Gamma_c\). Suggested visualization: low-dimensional projection plot with an estimated critical region and trajectories approaching it.
+
+Table Suggestion: Early-Warning Diagnostics. Summarize recovery time, variance, autocorrelation, coupling changes, and adaptive-capacity measures.
+
+\section{Chapter 8: Earth-System Implementation}
+
+Chapter question. How are heterogeneous observations mapped into projected constraint components$\checkmark$
+
+\subsection{8.1 Observation Space}
+
+The Unified Constraint Operator cannot be measured directly. Its projections are estimated from heterogeneous observation spaces:
+
+\[ \Omega=\{\Omega_T,\Omega_F,\Omega_C,\Omega_S,\Omega_I,\Omega_E,\Omega_G,\Omega_V\}. \]
+
+Each \(\Omega_i\) denotes the observation space associated with one projection. Examples include satellite records \cite{LoebCERES,JusticeMODIS,Tapley2004GRACE}, reanalysis products \cite{Hersbach2020ERA5}, in situ measurements, ecological inventories \cite{Folke2004Resilience}, and socioeconomic datasets.
+
+\subsection{8.2 Projection Operators}
+
+Implementation requires empirical projection operators
+
+\[ L_i=\mathcal{P}_i(\Omega_i). \]
+
+The operators \(\mathcal{P}_i\) map observational data into dimensionless constraint projections. They may involve normalization, filtering, spatial aggregation, uncertainty propagation, or model-based feature extraction.
+
+\(L_T=\mathcal{P}_T(Q_{\mathrm{CERES}},T_{\mathrm{anom}})\) for thermal constraints.
+
+\(L_F=\mathcal{P}_F(U_{\mathrm{ERA5}},\omega,\mathrm{AMOC})\) for flow constraints.
+
+\(L_C=\mathcal{P}_C(\mathrm{CO}_2,\mathrm{CH}_4,\mathrm{pH})\) for chemical constraints.
+
+\(L_S=\mathcal{P}_S(\mathrm{land},\mathrm{ice},\mathrm{infrastructure})\) for structural constraints.
+
+\(L_I=\mathcal{P}_I(\mathrm{biodiversity},\mathrm{complexity})\) for informational constraints.
+
+\(L_V=\mathcal{P}_V(\mathrm{population},\mathrm{adaptive\ capacity})\) for viability constraints.
+
+\subsection{8.3 Unified State Estimation}
+
+The estimated operator is obtained through an assimilation operator:
+
+\[ \hat{\mathbb{L}}=\mathcal{H}(\Omega). \]
+
+\(\mathcal{H}\) combines projected observations, uncertainty estimates, and coupling constraints to produce an empirical estimate of the macroscopic constraint state.
+
+Reviewer-facing clarification. The implementation chapter does not prescribe one data product or one projection algorithm. It specifies the observation-to-projection interface that must be documented before calibration.
+
+Figure Suggestion: Observation-to-projection mapping. Purpose: show how data streams become projected constraint components. Key mathematical objects: \(\Omega_i\), \(\mathcal{P}_i\), \(L_i\), \(\hat{\mathbb{L}}\). Suggested visualization: grouped input streams feeding projection operators and then the estimated operator.
+
+Table Suggestion: Projection Definitions. Summarize each projection, observable basis, normalization convention, uncertainty source, and example datasets.
+
+\section{Chapter 9: Data Assimilation Framework}
+
+Chapter question. How can projected observations, uncertainty, and coupling consistency be assimilated into \(\hat{\mathbb{L}}\)$\checkmark$
+
+\subsection{9.1 Multi-Source Assimilation}
+
+Observations differ in spatial resolution, temporal sampling, measurement uncertainty, and domain interpretation. A generalized assimilation formulation may therefore estimate \(\hat{\mathbb{L}}\) by minimizing an objective function:
+
+\[ \hat{\mathbb{L}}=\arg\min_{\mathbb{L}} J(\mathbb{L}). \]
+
+\subsection{9.2 Cost Function}
+
+A typical cost function may include a background term, an observation term, and a coupling-consistency term:
+
+\[ J=J_b+J_o+J_c. \]
+
+\[ J_c=\|C_{\mathrm{obs}}-C_{\mathrm{model}}\|^2. \]
+
+This term should be used only when the observed and modeled coupling matrices are defined consistently.
+
+\subsection{9.3 Uncertainty}
+
+Uncertainty in the estimated operator may be summarized by
+
+\[ \Sigma_{\mathbb{L}}=\mathrm{Cov}(\hat{\mathbb{L}}). \]
+
+Uncertainty should be propagated through projections, scalar indices, coupling estimates, and hindcasting diagnostics.
+
+\subsection{9.4 Real-Time Updating}
+
+As new observations become available, the estimate may be updated by
+
+\[ \hat{\mathbb{L}}_{k+1}=\mathcal{U}(\hat{\mathbb{L}}_k,\Omega_{k+1}). \]
+
+\(\mathcal{U}\) may be implemented using ensemble filters \cite{Kalnay2003Assimilation}, variational assimilation \cite{Kalnay2003Assimilation}, Bayesian updating \cite{Jaynes1957I}, or other data-assimilation methods \cite{Kalnay2003Assimilation}.
+
+Reviewer-facing clarification. The assimilation equations specify an estimation strategy, not a unique algorithm. The choice of objective function, uncertainty model, and update operator must be justified for each dataset and application.
+
+Figure Suggestion: Assimilation architecture. Purpose: clarify how observations enter \(\hat{\mathbb{L}}\). Key mathematical objects: \(\Omega\), \(J\), \(J_b\), \(J_o\), \(J_c\), \(\Sigma_{\mathbb{L}}\), \(\mathcal{U}\). Suggested visualization: data-assimilation block diagram with uncertainty propagation.
+
+Table Suggestion: Assimilation Symbols. Summarize observation, background, coupling-consistency, covariance, and update notation.
+
+\section{Chapter 10: Numerical Framework and Validation}
+
+Chapter question. What empirical workflow would make UCT testable against simpler baselines$\checkmark$
+
+\subsection{10.1 Numerical Workflow}
+
+Define observation spaces \(\Omega_i\).
+
+Specify projection operators \(\mathcal{P}_i\).
+
+Estimate projected components \(L_i\) and the operator \(\hat{\mathbb{L}}\).
+
+Estimate the coupling matrix \(C_{ij}(t)\).
+
+Construct or calibrate the constraint metric \(g_{ij}(\mathbf{L})\).
+
+Evaluate prediction or diagnostic tasks.
+
+Validate against hindcasts and baseline models.
+
+\subsection{10.2 Calibration}
+
+Projection operators, normalization functions, scalar aggregation, coupling coefficients, and metric components require empirical calibration. Calibration should be performed on training periods or training systems, with independent validation where possible.
+
+\subsection{10.3 Validation Metrics}
+
+Predictive performance may be evaluated using root-mean-square error, correlation, likelihood, Brier score, receiver-operating-characteristic measures, calibration curves, and temporal prediction skill. For continuous targets, a common metric is
+
+\[ \mathrm{RMSE}=\sqrt{\frac{1}{N}\sum_{k=1}^N (y_k-\hat{y}_k)^2}. \]
+
+Here \(y_k\) denotes the validation target and \(\hat{y}_k\) the corresponding prediction or diagnostic estimate.
+
+\subsection{10.4 Hindcasting}
+
+Hindcasting evaluates whether estimated constraint states and coupling measures recover known historical changes or regime shifts. A successful hindcast is not sufficient for validation, but failure to hindcast relevant events would challenge the usefulness of the framework.
+
+\subsection{10.5 Baseline Comparisons}
+
+UCT must be compared with simpler and established baselines. Relevant baselines include:
+
+global mean surface temperature \cite{IPCCAR6WG1};
+
+top-of-atmosphere energy imbalance \cite{LoebCERES};
+
+AMOC indices \cite{IPCCAR6WG1,RoemmichArgo};
+
+planetary-boundary indicators \cite{Rockstrom2009,Steffen2015,Richardson2023};
+
+PCA/EOF composite indices \cite{Jolliffe2002PCA,Preisendorfer1988EOF}.
+
+The framework is justified only if it offers interpretable or predictive advantages relative to such baselines.
+
+\subsection{10.6 Falsifiability}
+
+UCT is empirically testable. The framework would be challenged if no statistically significant mapping \(\Omega\rightarrow\hat{\mathbb{L}}\) can be established, if coupling estimates do not improve prediction or interpretation, if independent datasets yield inconsistent projections, or if simpler baselines perform as well or better.
+
+Reviewer-facing clarification. The validation chapter defines empirical tests, not proof of general validity. A successful numerical study would support the chosen projections and calibration protocol, while a failed comparison against simpler baselines would limit the framework.
+
+Figure Suggestion: Validation pipeline. Purpose: show the sequence from observation spaces to projection estimation, coupling estimation, metric calibration, prediction, hindcasting, and baseline comparison. Key mathematical objects: \(\Omega_i\), \(\mathcal{P}_i\), \(\hat{\mathbb{L}}\), \(C_{ij}(t)\), \(g_{ij}\). Suggested visualization: flowchart with validation feedback loop.
+
+Table Suggestion: Validation Metrics. Summarize RMSE, correlation, likelihood, Brier score, ROC measures, calibration curves, temporal prediction skill, and baseline comparisons.
+
+\section{Chapter 11: Discussion and Limitations}
+
+Chapter question. What claims are supported by the framework, and what remains application-dependent or unvalidated$\checkmark$
+
+\subsection{11.1 Scientific Position}
+
+UCT should be interpreted as an effective macroscopic representation. It complements existing theories by organizing heterogeneous constraints within a common projection space. It does not compete with microscopic physical laws or modify the equations used within established disciplines.
+
+The distinction is important for interpretation. UCT is strongest when used to formalize relationships among observables that are already physically meaningful, and weakest when its projections are chosen without independent domain justification. Its theoretical status therefore depends on both mathematical consistency and empirical discipline.
+
+\subsection{11.2 Relation to Existing Theories}
+
+Thermodynamics describes dissipation and energy exchange; statistical mechanics describes collective behavior arising from microscopic dynamics; fluid mechanics describes transport; general relativity describes gravitational spacetime; information theory describes uncertainty and communication; complex-systems theory studies feedbacks, networks, and transitions. UCT draws on this landscape but does not replace it.
+
+A practical comparison with these methods should ask whether UCT provides additional cross-domain information after accounting for standard multivariate approaches such as PCA/EOF analysis, state-space models \cite{Kalman1960}, network measures \cite{Barabasi2016,Boccaletti2014Multilayer,Kivela2014Multilayer}, and data-assimilation diagnostics \cite{Kalnay2003Assimilation}. Without such comparisons, the framework remains an organized representation rather than an independently validated model.
+
+\subsection{11.3 Interpretation of the Constraint Operator}
+
+The Unified Constraint Operator \(\mathbb{L}\) is not a physical field, conserved quantity, or fundamental interaction. It is an effective object whose observable projections are constructed from measurable variables. Its usefulness depends on whether this construction supports empirically testable analysis.
+
+This interpretation also fixes the level of explanation. Statements about \(\mathbb{L}\) should be read as statements about an effective representation constructed from projections, not as claims about unobserved microscopic entities. The operator is meaningful only together with its projection definitions, calibration data, and validation task. Definitions 1-7, Proposition 1, Proposition 2, Corollary 1, and Remarks 1-3 are used to fix this interpretation across the manuscript rather than to introduce separate theory objects.
+
+\subsection{11.4 Scope of Applicability}
+
+The framework is most appropriate for macroscopic systems with heterogeneous interacting domains and sufficient observational coverage. It is less appropriate when a single well-established physical variable already provides a complete and predictive description.
+
+The appropriate scope is therefore set by the existence of interacting projected constraints and by the availability of data sufficient to estimate them. Where these conditions are absent, UCT should remain a descriptive organizing language rather than a predictive model.
+
+\subsection{11.5 Limitations}
+
+UCT is presently a framework, not a validated predictive model.
+
+The choice of projections is not unique.
+
+The scalar index \(L\) may be calibration-dependent.
+
+The constraint metric \(g_{ij}\) requires empirical estimation.
+
+Coupling estimates may depend on time scale, lag structure, and data quality.
+
+The framework must outperform simpler baselines to justify its use.
+
+These limitations are not secondary qualifications; they define the conditions under which the framework can become a theory in the empirical sense. In particular, projection design, metric estimation, and coupling inference must be reported with enough detail that independent groups can reproduce or challenge the resulting constraint representation.
+
+\subsection{11.6 Future Work}
+
+Future work should focus on domain-specific projection definitions, uncertainty-aware data assimilation, hindcasting on independent historical periods, comparison with established indicators, and transparent release of calibration choices. The framework should be revised or rejected where empirical tests do not support it.
+
+A useful next step is a benchmark protocol in which projection choices, normalization rules, coupling estimators, and validation windows are fixed before testing. Such a protocol would clarify which parts of UCT add information beyond established indicators and which parts are application-specific modeling choices.
+
+Reviewer-facing clarification. The discussion identifies where UCT must be compared with existing methods and where empirical work is still required. This section should prevent the framework from being read as complete validation.
+
+Figure Suggestion: Scope and limitation map. Purpose: separate established components, calibrated components, and open validation tasks. Key mathematical objects: projections, metric, coupling matrix, scalar index, viability functional. Suggested visualization: three-column map labeled specified, estimated, and to be validated.
+
+Table Suggestion: Comparison with Existing Frameworks. Compare UCT with state-space models, PCA/EOF composites, network indicators, data assimilation, and planetary-boundary summaries.
+
+\section{Chapter 12: Conclusions}
+
+Chapter question. What has been prepared for submission, and what remains to be completed before empirical validation$\checkmark$
+
+This manuscript has reformulated Unified Constraint Theory as a conservative effective framework for representing coupled constraints in macroscopic complex systems. The central object is the Unified Constraint Operator \(\mathbb{L}\), whose observable quantities are projections \(L_i=\pi_i(\mathbb{L})\).
+
+The contribution is a unified effective representation, not a new fundamental law. UCT does not modify thermodynamics, statistical mechanics, fluid mechanics, general relativity, quantum mechanics, or information theory. Instead, it provides a data-calibrated language for organizing heterogeneous observables, estimating coupling, and testing whether a multi-domain representation improves understanding or prediction.
+
+The framework remains scientific only if its components are empirically specified and falsifiable. Its future value depends on transparent calibration, uncertainty quantification, hindcasting, and demonstrated performance relative to simpler baselines.
+
+Reviewer-facing clarification. The conclusion should be read as a summary of a submission-ready representational framework, not as a claim that the framework has already been empirically validated. Final validation requires application-specific calibration, baselines, and independent data.
+
+Figure Suggestion: Submission-level theory overview. Purpose: summarize the complete flow from operator to projections, geometry, dynamics, assimilation, validation, and limitations. Key mathematical objects: \(\mathbb{L}\), \(\mathbf{L}\), \(g_{ij}\), \(C_{ij}\), \(\mathcal{V}\), \(\hat{\mathbb{L}}\). Suggested visualization: horizontal workflow diagram ending in validation and falsifiability checks.
+
+Table Suggestion: Submission Readiness Summary. List notation consistency, equation checks, citation placeholders, assumptions, limitations, and TODO items.
+
+\appendix
+
+\section{Appendix A}
+
+Mathematical Foundations
+
+Appendix A is a formula index for the main text. It repeats notation already defined in the chapters and introduces no additional operators.
+
+A.1 Unified Constraint Operator
+
+\[ \mathbb{L}:\mathcal{S}\rightarrow\mathcal{C}. \]
+
+A.2 Observable Projection
+
+\[ L_i=\pi_i(\mathbb{L}), \qquad i=1,\ldots,n. \]
+
+A.3 Projection Vector
+
+\[ \mathbf{L}=(L_T,L_F,L_C,L_S,L_I,L_E,L_G,L_V). \]
+
+A.4 Optional Scalar Index
+
+\[ L=F(\mathbf{L}), \qquad F:[0,1]^n\rightarrow[0,1]. \]
+
+\[ L\approx\sum_i w_i L_i, \qquad \sum_i w_i=1. \]
+
+A.5 Constraint Metric
+
+\[ ds_{\mathbb{L}}^2=g_{ij}(\mathbf{L})\,dL_i\,dL_j. \]
+
+A.6 Constraint Dynamics
+
+\[ \frac{D\mathbb{L}}{Dt}=\mathcal{F}(\mathbb{L},\Psi,t). \]
+
+A.7 Coupling Matrix
+
+\[ C_{ij}=\frac{\partial \pi_i(\mathbb{L})}{\partial \pi_j(\mathbb{L})}. \]
+
+A.8 Global Coupling
+
+\[ \Gamma=\sum_{i\neq j}|C_{ij}|. \]
+
+A.9 Viability Functional
+
+\[ \mathcal{V}=\Phi(\mathbb{L}) \quad \text{or} \quad \mathcal{V}=\Phi(\mathbf{L}). \]
+
+\section{Appendix B}
+
+Dimensionless Normalization
+
+Different observables possess different physical units and uncertainty structures. UCT therefore uses dimensionless projected components, typically scaled to \([0,1]\), while recognizing that normalization is domain-specific.
+
+\[ L_i=\frac{x_i-x_i^{\mathrm{ref}}}{x_i^{\mathrm{crit}}-x_i^{\mathrm{ref}}}. \]
+
+When a bounded index is required, clipping may be applied:
+
+\[ L_i\leftarrow \min(1,\max(0,L_i)). \]
+
+Alternatively, a monotonic transform may be used:
+
+\[ L_i=\sigma_i(x_i). \]
+
+The reference value \(x_i^{\mathrm{ref}}\), critical value \(x_i^{\mathrm{crit}}\), and transform \(\sigma_i\) must be chosen and reported for each projection domain. Spatial scaling, temporal scaling, energy scaling, and information scaling can all be incorporated through projection operators.
+
+\section{Appendix C}
+
+Representative Observational Data Sources
+
+These examples are illustrative. A validated application must specify data provenance, preprocessing, uncertainty treatment, and the projection operator used for each domain.
+
+Submission Audit Checklist
+
+✓ notation consistent: \(\mathbb{L}\), \(L_i\), \(\mathbf{L}\), \(L\), \(g_{ij}\), \(C_{ij}\), \(\Gamma\), and \(\mathcal{V}\) are used consistently.
+
+✓ symbols defined: principal symbols are defined in the main text and summarized in Appendix A.
+
+✓ equations referenced: displayed equations are accompanied by explanatory text or by a nearby definition, interpretation, or application statement.
+
+✓ figure locations marked: figure suggestions are inserted after each chapter.
+
+✓ table locations marked: table suggestions are inserted where summary material would improve reviewability.
+
+✓ citation commands inserted: verified placement-map citations have replaced the manuscript placeholders.
+
+✓ assumptions stated: application dependence, calibration dependence, differentiability limits, and empirical estimation requirements are stated.
+
+✓ limitations included: Chapter 11 identifies projection nonuniqueness, scalar-index calibration, metric estimation, coupling uncertainty, and baseline-performance requirements.
+
+✓ falsifiability stated: Chapter 10 states conditions under which the framework would be challenged.
+
+✓ baseline comparison discussed: Chapter 10 includes comparison with temperature, TOA imbalance, AMOC, planetary-boundary, and PCA/EOF baselines.
+
+✓ data requirements described: Chapters 8-10 and Appendix C identify observation spaces, projection operators, assimilation, datasets, and validation requirements.
+
+TODO complete unresolved bibliographic metadata flagged in the missing-reference report before journal submission.
+
+TODO perform journal-format reference styling after bibliography selection.
+
+TODO complete rendered PDF page inspection after final bibliography, figures, and tables are inserted.
+
+\begin{table}
+\centering
+\caption{Data Sources}
+\label{tab:data_sources}
+\begin{tabular}{p{0.20\textwidth}p{0.32\textwidth}p{0.40\textwidth}}
+\hline
+Projection & Observable & Example datasets \\
+\hline
+Thermal & TOA imbalance, temperature anomaly & CERES, ERA5, NOAA \\
+Flow & wind, vorticity, AMOC proxies & ERA5, ECMWF, Argo, RAPID \\
+Chemical & CO2, CH4, ocean pH & NOAA, Mauna Loa, SOCAT \\
+Structural & land cover, ice mass, infrastructure & MODIS, Landsat, Sentinel, GRACE, ICESat \\
+Informational & biodiversity, ecosystem complexity & GBIF, IUCN, Living Planet Database \\
+Energetic & energy availability, energy efficiency & IEA, national energy statistics \\
+Geophysical & geophysical boundary conditions & GRACE, geodesy, lithosphere datasets \\
+Viability & population, infrastructure, adaptive capacity & UN, World Bank, national statistics \\
+\hline
+\end{tabular}
+\end{table}
+
+\bibliographystyle{apsrev4-2}
+\bibliography{outputs/UCT}
+\end{document}

@@ -1,0 +1,8 @@
+Existing Framework	Primary Purpose	Relation to UCT
+Effective Theory	Scale-dependent physical description	UCT adopts this philosophy at the macroscopic level.
+Statistical Mechanics	Macroscopic inference from microscopic constraints	UCT uses macroscopic state representations but does not derive microscopic laws.
+Information Geometry	Geometry of probability distributions	UCT applies geometric ideas to constraint-coordinate representations without claiming equivalence.
+Kalman State-space	State estimation	UCT can provide an effective state representation that may be estimated using state-space methods.
+PCA / EOF	Dimensionality reduction	UCT uses physically defined projections rather than purely statistical components.
+Network Science	Interaction topology	UCT represents effective couplings among constraint projections.
+Planetary Boundaries	Threshold-based Earth-system assessment	UCT proposes a continuous state representation that can be compared against boundary-based indicators.

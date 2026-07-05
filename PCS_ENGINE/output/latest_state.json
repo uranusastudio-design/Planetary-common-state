@@ -1,0 +1,17 @@
+{
+  "metadata": {
+    "generated_at_utc": "2026-07-05T10:04:47.804256+00:00",
+    "no_prediction": true,
+    "no_interpolation": true,
+    "no_fabricated_data": true
+  },
+  "latest_year": 2024,
+  "projections": {
+    "L_T": 0.8533333333333334,
+    "L_C": 0.8105506640799881,
+    "L_S": null,
+    "L_I": null
+  },
+  "S_demo": 0.8319419987066607,
+  "coverage_count": 2
+}

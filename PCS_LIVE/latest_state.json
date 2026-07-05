@@ -1,0 +1,48 @@
+{
+  "metadata": {
+    "generated_at_local_date": "2026-07-05",
+    "prototype": "PCS_LIVE v1.0",
+    "no_prediction": true,
+    "no_interpolation": true,
+    "no_fabricated_data": true,
+    "generation_note": "Local direct download was unavailable in the execution sandbox; values were read from official public source snapshots accessed on 2026-07-05."
+  },
+  "sources": {
+    "NASA_GISTEMP": {
+      "url": "https://data.giss.nasa.gov/gistemp/tabledata_v4/GLB.Ts+dSST.txt",
+      "status": "official source snapshot available; local Invoke-WebRequest failed at connection receive stage",
+      "latest_complete_annual_year": 2025
+    },
+    "NOAA_CO2": {
+      "url": "https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_annmean_mlo.txt",
+      "status": "official source snapshot available; local Invoke-WebRequest failed at connection receive stage",
+      "latest_complete_annual_year": 2025
+    }
+  },
+  "observations": {
+    "Temperature": {
+      "year": 2025,
+      "value": 1.19,
+      "unit": "deg C anomaly relative to 1951-1980",
+      "dataset": "NASA GISTEMP v4 global annual land-ocean temperature index"
+    },
+    "CO2": {
+      "year": 2025,
+      "value": 427.35,
+      "unit": "ppm",
+      "dataset": "NOAA GML Mauna Loa annual mean CO2"
+    }
+  },
+  "normalization": {
+    "L_T": "(Temperature - 0.0) / (1.5 - 0.0), clipped to [0,1]",
+    "L_C": "(CO2 - 315.98) / (450.0 - 315.98), clipped to [0,1]"
+  },
+  "projections": {
+    "L_T": 0.7933333333,
+    "L_C": 0.8309953738
+  },
+  "S_demo": 0.8121643536,
+  "coverage_count": 2,
+  "missing": []
+}
+

@@ -1,0 +1,59 @@
+﻿\section{Earth-System Implementation}
+
+Figure~\ref{fig:fig03_observation_mapping} summarizes the observation-to-state mapping used in the PCS implementation. Heterogeneous observations are first organized into observation spaces and then mapped into standardized projected constraint variables.
+
+\begin{figure}[tb]
+\centering
+\includegraphics[width=\columnwidth]{figures/fig03_observation_mapping.png}
+\caption{Observation-to-state mapping in the Planetary Common State (PCS).}
+\label{fig:fig03_observation_mapping}
+\end{figure}
+
+
+\subsection{8.1 Observation Space}
+
+The Unified Constraint Operator cannot be measured directly. Its projections are estimated from heterogeneous observation spaces:
+
+\[ \Omega=\{\Omega_T,\Omega_F,\Omega_C,\Omega_S,\Omega_I,\Omega_E,\Omega_G,\Omega_V\}. \]
+
+Each \(\Omega_i\) denotes the observation space associated with one projection. Examples include satellite records \cite{LoebCERES,JusticeMODIS,Tapley2004GRACE}, reanalysis products \cite{Hersbach2020ERA5}, in situ measurements, ecological inventories \cite{Folke2004Resilience}, and socioeconomic datasets.
+
+Table~\ref{tab:observable_fields} summarizes representative observable fields.
+\input{tables/tab02_observable_fields.tex}
+
+
+\subsection{8.2 Projection Operators}
+
+Implementation requires empirical projection operators
+
+\[ L_i=\mathcal{P}_i(\Omega_i). \]
+
+The operators \(\mathcal{P}_i\) map observational data into dimensionless constraint projections. They may involve normalization, filtering, spatial aggregation, uncertainty propagation, or model-based feature extraction.
+
+\(L_T=\mathcal{P}_T(Q_{\mathrm{CERES}},T_{\mathrm{anom}})\) for thermal constraints.
+
+\(L_F=\mathcal{P}_F(U_{\mathrm{ERA5}},\omega,\mathrm{AMOC})\) for flow constraints.
+
+\(L_C=\mathcal{P}_C(\mathrm{CO}_2,\mathrm{CH}_4,\mathrm{pH})\) for chemical constraints.
+
+\(L_S=\mathcal{P}_S(\mathrm{land},\mathrm{ice},\mathrm{infrastructure})\) for structural constraints.
+
+\(L_I=\mathcal{P}_I(\mathrm{biodiversity},\mathrm{complexity})\) for informational constraints.
+
+\(L_V=\mathcal{P}_V(\mathrm{population},\mathrm{adaptive\ capacity})\) for viability constraints.
+
+Table~\ref{tab:projection_operators} summarizes the projection operators used here.
+\input{tables/tab03_projection_operators.tex}
+
+
+\subsection{8.3 Unified State Estimation}
+
+The estimated operator is obtained through an assimilation operator:
+
+\[ \hat{\mathbb{L}}=\mathcal{H}(\Omega). \]
+
+\(\mathcal{H}\) combines projected observations, uncertainty estimates, and coupling constraints to produce an empirical estimate of the macroscopic constraint state.
+
+This implementation section does not prescribe one data product or one projection algorithm. It specifies the observation-to-projection interface that must be documented before calibration.
+
+

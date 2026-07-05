@@ -1,0 +1,151 @@
+我認為現在不要再寫正文，也不要再讓 Codex 排版。
+現在有一件事比那些更重要，而且會決定這篇論文最後的品質。
+下一步（Priority 1）
+建立
+Master Reference Database v2.0
+但不是增加文獻數量。
+而是開始真正查證每一篇文獻。
+目前 MRD 約有 50 篇核心文獻。
+接下來要逐篇完成：
+Reference ID
+Citation Key
+APA
+APS
+BibTeX
+DOI
+ISBN
+Journal
+Volume
+Issue
+Pages
+Year
+Publisher
+Official URL
+Abstract
+Keywords
+Scientific Role
+Citation Purpose
+Related Chapters
+Related Formula
+Must Cite
+Reviewer Notes
+這才是真正可以交給 Codex 的資料。
+Priority 2
+建立
+BibTeX Library
+例如
+Wilson1983
+Jaynes1957
+Kalman1960
+Koopman1931
+Lenton2008
+Scheffer2009
+...
+全部整理好。
+最後
+UCT.bib
+就可以一路使用。
+Priority 3
+建立
+Figure Master List
+例如
+Figure 1
+UCT Architecture
+Purpose
+Overview
+Related Chapters
+1~12
+Reference
+None
+Original Figure
+YES
+一直做到
+Figure 15
+Priority 4
+建立
+Equation Master List
+例如
+Eq.1
+Unified Constraint Operator
+Original
+YES
+Referenced
+Chapter 3
+Variables
+𝓛
+做到
+所有公式
+Priority 5
+建立
+Symbol Dictionary
+例如
+𝓛
+Unified Constraint Operator
+Dimension
+Constraint Space
+Chapter 3
+First Appears
+3.2
+Original
+YES
+做到
+所有符號
+Priority 6
+建立
+Reviewer Defense Database
+例如
+Question
+Why manifold?
+Answer
+Lee
+Amari
+Wilson
+-------------
+Question
+Why metric?
+Answer
+Information Geometry
+-------------
+Question
+Why Effective Theory?
+Answer
+Wilson
+Goldenfeld
+Jaynes
+-------------
+Question
+Why not PDE?
+Answer
+Reviewer Remark 5.1
+最後至少
+100 個 Reviewer Questions。
+Priority 7
+建立
+APS Submission Package
+最後資料夾會長這樣：
+UCT/
+Main.tex
+APS.bst
+UCT.bib
+Figures/
+Fig1.pdf
+Fig2.pdf
+...
+Tables/
+Reviewer_Response/
+Master Reference Database.xlsx
+Equation Dictionary.xlsx
+Symbol Dictionary.xlsx
+Reviewer Defense.pdf
+Supplementary.pdf
+README.md
+我認為現在最重要的是
+不要急著投稿。
+你的論文架構（12 Chapters）、VRL（Verified Reference List）和 MRD（Master Reference Database）已經建立起來了。
+真正會決定論文是否成熟的，是文獻查證：
+每篇文獻的 DOI 是否正確。
+是否引用了最具代表性的版本（例如 Planetary Boundaries 2009、2015、2023 各自的角色）。
+是否有更新的綜述值得取代較舊的支撐文獻。
+BibTeX 是否完整且一致。
+我建議下一個正式工作階段，就是逐篇完成 MRD 的文獻核查（Reference Verification）。
+這一步完成後，你的整個引用系統就會足夠穩固，再交給 Codex 做 BibTeX、APS 格式與排版，效率最高，也最不容易出錯。

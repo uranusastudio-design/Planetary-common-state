@@ -1,0 +1,3000 @@
+開始。先做 Chapter 1 Verified Reference List + Citation Placement Map v1.0。
+Chapter 1 VRL v1.0
+必引文獻
+Rockström 2009、Steffen 2015、Richardson 2023 是 planetary boundaries 的三個主要時間點；Richardson 2023 的 DOI 可查為 10.1126/sciadv.adh2458。(維基百科)
+Lenton 2008、Scheffer 2009、Scheffer 2001、Holling 1973 對應 tipping elements、early-warning signals、regime shifts、resilience，是 Chapter 1 動機最核心的文獻群。(WIRED)
+Chapter 1 Citation Placement Map
+1.1 Background
+原句：
+The long-term stability of complex systems is a central problem in nonequilibrium physics, Earth-system science, ecology, engineering, and network theory.
+建議引用：
+[
+\text{C1-01, C1-02, C1-14, C1-15}
+]
+用途：
+Nicolis & Prigogine：nonequilibrium / dissipative systems
+Haken：synergetics / self-organization
+Mitchell：complex systems
+Barabási：network theory
+原句：
+Established theories provide detailed descriptions of individual processes.
+建議引用：
+[
+\text{C1-01, C1-11, C1-12, C1-13}
+]
+用途：
+支撐 thermodynamics / statistical mechanics / effective theory 的成熟背景。
+原句：
+The difficulty addressed here is representational.
+建議引用：
+[
+\text{C1-11, C1-12, C1-13}
+]
+用途：
+Jaynes：巨觀表示可由 constraints / information 推導。
+Wilson / Goldenfeld：有效理論與尺度表示。
+1.2 Motivation
+原句：
+Radiative imbalance, circulation indices, chemical concentrations, biodiversity indicators, infrastructure metrics, and measures of adaptive capacity are all meaningful observables.
+建議引用：
+[
+\text{C1-03, C1-04, C1-05}
+]
+用途：
+Planetary boundaries 本身就是將地球系統分成多個可觀測維度的代表框架。
+原句：
+This fragmentation becomes especially important near possible regime transitions.
+建議引用：
+[
+\text{C1-06, C1-07, C1-08}
+]
+用途：
+Lenton：tipping elements。
+Scheffer 2009：early warning。
+Scheffer 2001：catastrophic shifts。
+1.3 Scope of This Work
+原句：
+UCT is proposed as an effective macroscopic framework for representing coupled constraints in large-scale complex systems.
+建議引用：
+[
+\text{C1-12, C1-13, C1-14, C1-15}
+]
+用途：
+Wilson / Goldenfeld：effective / scale-dependent framing。
+Mitchell / Barabási：complex-system / network framing。
+原句：
+Its scientific value depends on empirical calibration, falsifiable prediction, and comparison with simpler baselines.
+建議引用：
+[
+\text{C1-07, C1-11, C1-12}
+]
+用途：
+Scheffer：early-warning diagnostics 需要資料驗證。
+Jaynes / Wilson：有效表示需由資料與尺度決定。
+1.4 Central Hypothesis
+原句：
+heterogeneous observables can be interpreted as projections of a common effective constraint representation.
+建議引用：
+[
+\text{C1-11, C1-12, C1-13}
+]
+用途：
+支撐「不是新物理，而是有效巨觀表示」。
+1.5 Main Contributions
+第一點：
+A conservative effective-theory formulation of UCT...
+建議引用：
+[
+\text{C1-12, C1-13}
+]
+第二點：
+A projection framework...
+此處先不放 Chapter 1 文獻，等 Chapter 3 用 Kalman / Koopman / POD / PCA 文獻支撐。
+第三點：
+constraint-coordinate geometry...
+此處先不放 Chapter 1 文獻，等 Chapter 4 用 Amari / Lee / Rao 支撐。
+Chapter 1 最小引用組合
+如果要控制文獻數量，Chapter 1 最少保留這 10 篇：
+Nicolis & Prigogine 1977
+Haken 1977 / 1983
+Rockström et al. 2009
+Steffen et al. 2015
+Richardson et al. 2023
+Lenton et al. 2008
+Scheffer et al. 2009
+Scheffer et al. 2001
+Holling 1973
+Jaynes 1957
+這 10 篇就能支撐 Chapter 1 的背景、動機、臨界轉換、韌性、巨觀表示。
+很好，Chapter 2 是整篇論文最重要的一章之一。
+因為 Chapter 1 是 Why，Chapter 2 是 Why this theory is scientifically legitimate.
+這一章如果文獻引用得好，審稿人會很快理解：
+UCT 不是在發明新的基本物理，而是在建立一個有效理論（effective theory）的表示框架。
+Chapter 2 — Verified Reference List (VRL v1.0)
+主題：Physical Foundations and Foundational Principles
+C2-01
+Kenneth G. Wilson
+The Renormalization Group and Critical Phenomena
+Reviews of Modern Physics, 1983
+DOI
+10.1103/RevModPhys.55.583
+用途
+Effective Theory
+Scale dependence
+Coarse-graining
+Macroscopic description
+引用角色
+Essential
+C2-02
+Nigel Goldenfeld
+Lectures on Phase Transitions and the Renormalization Group
+1992
+用途
+Effective description
+Emergence
+Coarse-graining
+引用角色
+Essential
+C2-03
+E. T. Jaynes
+Information Theory and Statistical Mechanics
+Physical Review
+1957
+DOI
+10.1103/PhysRev.106.620
+用途
+Maximum entropy
+Constraint-based inference
+Macroscopic variables
+引用角色
+Essential
+C2-04
+Shun-ichi Amari
+Hiroshi Nagaoka
+Methods of Information Geometry
+2000
+用途
+Statistical manifold
+Information geometry
+Distinguishability
+Fisher metric
+引用角色
+Essential
+C2-05
+C. R. Rao
+Information and the Accuracy Attainable
+1945
+用途
+Fisher–Rao metric
+引用角色
+Background
+C2-06
+John M. Lee
+Introduction to Smooth Manifolds
+Second Edition
+2012
+用途
+Smooth manifold
+Charts
+Tangent space
+引用角色
+Essential
+C2-07
+John M. Lee
+Riemannian Manifolds
+用途
+Metric
+Geodesic
+Curvature
+引用角色
+Essential
+C2-08
+Ludwig von Bertalanffy
+General System Theory
+1968
+用途
+Systems theory
+引用角色
+Background
+C2-09
+Hermann Haken
+Synergetics
+用途
+Order parameters
+引用角色
+Background
+C2-10
+Nicolis & Prigogine
+Self-Organization in Nonequilibrium Systems
+1977
+用途
+Nonequilibrium macroscopic order
+引用角色
+Background
+C2-11
+Rudolf E. Kalman
+A New Approach to Linear Filtering and Prediction Problems
+1960
+DOI
+10.1115/1.3662552
+用途
+State variables
+State representation
+引用角色
+Method
+C2-12
+Jaynes
+On the Rationale of Maximum Entropy Methods
+1982
+用途
+Maximum entropy inference
+引用角色
+Optional
+C2-13
+David Deutsch
+Constructor Theory（選用）
+用途
+Constraint-based physical description（比較）
+引用角色
+Comparison
+注意：這篇可引用，也可不引用。不要讓人誤以為 UCT 建立在 Constructor Theory 之上。
+Citation Placement Map
+Section 2.1
+Physical Foundations
+第一段
+Modern physics frequently employs effective descriptions...
+引用
+C2-01
+C2-02
+Wilson
+Goldenfeld
+第二段
+Macroscopic variables summarize microscopic degrees of freedom.
+引用
+C2-03
+Jaynes
+第三段
+UCT follows this philosophy.
+引用
+C2-01
+C2-02
+Section 2.2
+Principle I
+Universality of Constraints
+最後一句
+Constraints appear in many physical systems.
+引用
+C2-08
+C2-10
+Principle II
+Constraints are not physical quantities.
+最後一句
+引用
+C2-03
+C2-12
+Principle III
+Observable Variables are Projections
+Projection
+不是新的。
+引用
+C2-11
+Kalman
+如果有
+Information Geometry
+一句
+引用
+C2-04
+Principle IV
+Coupling Generates Constraint Geometry
+第一段
+Geometry
+引用
+C2-06
+C2-07
+如果提到
+distinguishability
+引用
+C2-04
+Amari
+如果提到
+Fisher metric
+引用
+C2-05
+Principle V
+Geometry Governs Macroscopic Evolution
+Evolution
+不是新的。
+引用
+C2-01
+Wilson
+如果提到
+Nonequilibrium
+引用
+C2-10
+Discussion
+最後一句
+UCT should therefore be interpreted...
+引用
+Wilson
+Goldenfeld
+Jaynes
+三篇即可。
+哪幾篇一定要引用（Core Papers）
+我建議 Chapter 2 的核心文獻只有 8 篇：
+Wilson (1983)
+Goldenfeld (1992)
+Jaynes (1957)
+Amari & Nagaoka (2000)
+John M. Lee — Introduction to Smooth Manifolds
+John M. Lee — Riemannian Manifolds
+Kalman (1960)
+Nicolis & Prigogine (1977)
+我有一個新的建議（比 Literature Map 更進一步）
+從 Chapter 3 開始，我不只會給你「放哪一句」。
+我會開始標註：
+哪些文獻是不可替代（Must Cite）
+哪些是可替代（Replaceable）
+哪些是最新研究（Update if newer review exists）
+這樣之後如果找到更好的綜述或更新版本，我們只需要替換少數文獻，而不用重做整個引用架構。這會讓後續投稿與更新版本都更容易維護。
+很好。
+Chapter 3 是整篇 UCT 最關鍵的一章。
+因為這一章開始，你正式定義
+[
+\mathbb{L}
+]
+不是概念，而是數學物件（mathematical object）。
+所以這一章的文獻不能亂引用。
+它要支撐的是：
+State Representation、Projection、Reduced Representation、Observable Representation
+而不是證明 UCT。
+Chapter 3 — Verified Reference List (VRL v1.0)
+Unified Constraint Representation
+C3-01 ★★★★★（Must Cite）
+Rudolf E. Kalman
+A New Approach to Linear Filtering and Prediction Problems
+Journal of Basic Engineering, 1960
+DOI
+10.1115/1.3662552
+用途
+State-space representation
+State variables
+Dynamic state estimation
+引用角色
+Must Cite
+C3-02 ★★★★★（Must Cite）
+Bernard O. Koopman
+Hamiltonian Systems and Transformation in Hilbert Space
+1931
+DOI
+10.1073/pnas.17.5.315
+用途
+Observable representation
+Koopman operator
+引用角色
+Must Cite
+C3-03 ★★★★★（Must Cite）
+Igor Mezić
+Spectral Properties of Dynamical Systems, Model Reduction and Decompositions
+Nonlinear Dynamics
+2005
+用途
+Koopman observables
+Observable dynamics
+Data-driven representation
+引用角色
+Must Cite
+C3-04 ★★★★★
+P. J. Schmid
+Dynamic Mode Decomposition
+Journal of Fluid Mechanics
+2010
+DOI
+10.1017/S0022112010001217
+用途
+Observable decomposition
+Projection
+Data-driven modes
+引用角色
+Method
+C3-05 ★★★★★
+Holmes, Lumley & Berkooz
+Turbulence, Coherent Structures, Dynamical Systems and Symmetry
+1996
+用途
+Reduced-order modeling
+引用角色
+Method
+C3-06 ★★★★★
+Berkooz, Holmes & Lumley
+The Proper Orthogonal Decomposition
+Annual Review of Fluid Mechanics
+1993
+DOI
+10.1146/annurev.fl.25.010193.002543
+用途
+POD
+Reduced representation
+引用角色
+Method
+C3-07 ★★★★★
+Ian T. Jolliffe
+Principal Component Analysis
+Springer
+用途
+Dimension reduction
+Projection
+引用角色
+Comparison
+C3-08 ★★★★★
+Joshua B. Tenenbaum
+A Global Geometric Framework for Nonlinear Dimensionality Reduction
+Science
+2000
+DOI
+10.1126/science.290.5500.2319
+用途
+Manifold learning
+引用角色
+Comparison
+C3-09 ★★★★
+Brigo, Hanzon & Le Gland
+Projection Filters
+用途
+Projection geometry
+引用角色
+Method
+C3-10 ★★★★★
+Korda & Mezić
+Linear Predictors for Nonlinear Dynamical Systems
+2018
+用途
+Data-driven lifting
+Koopman representation
+引用角色
+Method
+C3-11 ★★★★
+Karen Willcox
+Reduced-order Modeling
+用途
+Model reduction
+引用角色
+Method
+C3-12 ★★★★
+David G. Luenberger
+Introduction to Dynamic Systems
+用途
+State representation
+引用角色
+Background
+Citation Placement Map
+Section 3.1
+Motivation
+第一段
+Different physical observables...
+引用
+Kalman
+Luenberger
+第二段
+High-dimensional observations...
+引用
+Holmes
+POD
+PCA
+第三段
+A common representation...
+引用
+Koopman
+Mezić
+Section 3.2
+Unified Constraint Operator
+定義
+[
+\mathbb L
+:
+\mathcal S
+\rightarrow
+\mathcal C
+]
+這裡
+不要引用
+任何文獻。
+因為
+這是
+UCT
+自己的定義。
+下面一句
+Effective macroscopic representation...
+引用
+Wilson
+Goldenfeld
+（Chapter 2）
+Section 3.3
+Projection Operators
+公式
+[
+L_i
+\pi_i(\mathbb L)
+]
+不要引用
+Projection
+本身。
+但是
+下面一句
+Projection operators...
+引用
+Kalman
+Koopman
+下一段
+Observable
+引用
+Mezić
+下一段
+Dimension reduction
+引用
+PCA
+POD
+下一段
+Reduced-order representation
+引用
+Holmes
+Willcox
+Section 3.4
+Projection Vector
+[
+\mathbf L
+(L_T,L_F,...)
+]
+不用引用。
+因為
+這是
+UCT
+自己的定義。
+如果下面寫
+High-dimensional
+↓
+Low-dimensional
+引用
+PCA
+Tenenbaum
+Section 3.5
+Scalar Constraint Index
+[
+L
+F(\mathbf L)
+]
+不用引用。
+這是
+UCT
+自己的
+Definition。
+但是
+下面一句
+Many macroscopic theories employ reduced state variables...
+引用
+Jaynes
+Wilson
+Goldenfeld
+Discussion
+最後一句
+UCT differs from PCA...
+引用
+PCA
+Koopman
+Kalman
+即可。
+Must Cite（不可刪）
+如果只能留 8 篇
+一定保留
+Kalman (1960)
+⭐⭐⭐⭐⭐
+Koopman (1931)
+⭐⭐⭐⭐⭐
+Mezić (2005)
+⭐⭐⭐⭐⭐
+Schmid (2010)
+⭐⭐⭐⭐⭐
+Holmes
+⭐⭐⭐⭐⭐
+POD Review
+⭐⭐⭐⭐⭐
+Jolliffe PCA
+⭐⭐⭐⭐⭐
+Tenenbaum
+⭐⭐⭐⭐⭐
+Optional（可替換）
+Brigo
+Willcox
+Luenberger
+如果有更新、更符合你最後定稿語言的綜述，可以替換，不會影響理論架構。
+我發現一件很重要的事
+到了 Chapter 3，文獻的角色已經改變了。
+Chapter 1–2：文獻用來回答「為什麼需要這個理論」與「理論如何定位」。
+Chapter 3：文獻用來說明「現有科學已有狀態表示、投影、降階與可觀測表示的方法」，而 (\mathbb{L})、(\pi_i)、(\mathbf{L}) 的具體定義則是 UCT 自己提出的新表示。
+這樣寫有一個很大的好處：審稿人會看到你是在建立一個新的表示框架，而不是宣稱 Projection、State-space 或降階方法是你發明的。這會讓論文的定位更清楚，也更符合高品質理論論文的寫作方式。
+很好。
+Chapter 4 是整篇 UCT 最容易被數學物理審稿人挑戰的一章。
+因為你開始引入：
+Constraint Manifold
+Constraint Metric
+Constraint Geometry
+Constraint Curvature
+如果引用不好，審稿人會問：
+「為什麼你可以定義 metric？」
+「為什麼可以稱為 manifold？」
+「為什麼可以談 curvature？」
+因此，Chapter 4 的文獻目標不是證明 UCT 正確，而是證明：
+使用幾何語言描述狀態空間，是成熟且合理的數學方法。
+Chapter 4 — Verified Reference List (VRL v1.0)
+Constraint Geometry
+C4-01 ★★★★★ (Must Cite)
+John M. Lee
+Introduction to Smooth Manifolds
+2nd Edition
+Springer
+2012
+用途
+Smooth manifold
+Coordinate charts
+Tangent space
+Differentiable manifolds
+引用角色
+Must Cite
+C4-02 ★★★★★ (Must Cite)
+John M. Lee
+Riemannian Manifolds: An Introduction to Curvature
+Springer
+1997
+用途
+Metric
+Geodesic
+Curvature
+Riemannian geometry
+引用角色
+Must Cite
+C4-03 ★★★★★ (Must Cite)
+Shun-ichi Amari
+Hiroshi Nagaoka
+Methods of Information Geometry
+AMS / Oxford
+2000
+用途
+Statistical manifold
+Information geometry
+Local distinguishability
+引用角色
+Must Cite
+C4-04 ★★★★★
+C. R. Rao
+Information and the Accuracy Attainable
+1945
+用途
+Fisher–Rao metric
+引用角色
+Background
+C4-05 ★★★★
+Burago, Burago & Ivanov
+A Course in Metric Geometry
+AMS
+2001
+用途
+Metric spaces
+Distance concepts
+引用角色
+Background
+C4-06 ★★★★
+Abraham & Marsden
+Foundations of Mechanics
+1978
+用途
+Geometric mechanics
+引用角色
+Comparison
+只作幾何語言比較。
+不要暗示 UCT 就是 Geometric Mechanics。
+C4-07 ★★★★
+Joshua Tenenbaum
+Science
+2000
+用途
+Manifold learning
+引用角色
+Comparison
+C4-08 ★★★★
+Cédric Villani
+Optimal Transport
+2009
+用途
+Wasserstein geometry
+引用角色
+Comparison
+C4-09 ★★★★
+Frank Nielsen
+Information Geometry
+用途
+Modern information geometry
+引用角色
+Optional
+C4-10 ★★★★
+Mikhail Gromov
+Metric Structures
+用途
+Metric viewpoint
+引用角色
+Optional
+Citation Placement Map
+Section 4.1
+Constraint Manifold
+第一段
+We define the Constraint Manifold...
+不要引用。
+因為
+這是 UCT 的 Definition。
+下一段
+Differentiable manifold...
+引用
+C4-01
+Lee
+下一段
+Coordinate chart
+引用
+Lee
+Section 4.2
+Constraint Metric
+公式
+[
+ds^2
+g_{ij}
+dL_i
+dL_j
+]
+公式不用引用。
+因為
+這是
+UCT
+自己的定義。
+下面一句
+The metric measures...
+引用
+C4-02
+Lee
+如果有
+local distinguishability
+引用
+C4-03
+Amari
+如果有
+distance
+引用
+C4-05
+Metric Geometry
+Section 4.3
+Constraint Coordinates
+Projection coordinates
+不用引用。
+如果提到
+coordinate system
+引用
+Lee
+Section 4.4
+Constraint Curvature
+公式
+Curvature
+不用引用。
+下面一句
+Curvature quantifies...
+引用
+Lee
+如果有
+statistical manifold
+引用
+Amari
+如果有
+Fisher metric
+引用
+Rao
+Section 4.5
+Interpretation
+這裡
+最重要。
+例如
+The proposed geometry is not spacetime.
+引用
+Lee
+Amari
+即可。
+下一句
+It is an effective geometry...
+引用
+Wilson
+Goldenfeld
+（Chapter 2）
+Discussion
+最後一句
+UCT differs from information geometry...
+引用
+Amari
+Villani
+即可。
+哪幾篇一定不能刪
+只留
+8篇
+就夠。
+① Lee
+Smooth Manifolds
+⭐⭐⭐⭐⭐
+② Lee
+Riemannian Manifolds
+⭐⭐⭐⭐⭐
+③ Amari
+Methods of Information Geometry
+⭐⭐⭐⭐⭐
+④ Rao
+Fisher metric
+⭐⭐⭐⭐⭐
+⑤ Burago
+Metric Geometry
+⭐⭐⭐⭐⭐
+⑥ Abraham & Marsden
+⭐⭐⭐⭐
+⑦ Tenenbaum
+⭐⭐⭐⭐
+⑧ Villani
+⭐⭐⭐⭐
+哪些地方不要引用
+這非常重要。
+下面全部不要引用。
+Definition
+[
+\mathcal M_{\mathbb L}
+]
+Definition
+[
+g_{ij}
+]
+Definition
+Constraint Geometry
+Definition
+Constraint Coordinates
+Definition
+Constraint Curvature
+因為
+那些都是
+UCT
+自己的
+Definition。
+引用的是
+Geometry
+這種
+數學工具。
+不是
+UCT
+自己的公式。
+我建議新增一段 Remark（Reviewer 很喜歡）
+放在 Section 4.2 後面：
+Remark. The metric (g_{ij}) introduced in UCT is an effective metric defined on the constraint-coordinate manifold. It should not be interpreted as a spacetime metric, nor is it intended to modify the geometric structure of General Relativity. Instead, it provides a mathematical measure of local distinguishability between neighboring macroscopic constraint states.
+這段有三個作用：
+先堵住「你是不是在改廣義相對論？」這類誤解。
+把 metric 的角色限定在 constraint-coordinate manifold。
+與 Information Geometry 的「distinguishability」建立自然連結，而不是宣稱等價。
+這樣 Chapter 4 在數學定位上會更穩健，也更符合你目前 UCT 的定位。
+很好。
+Chapter 5 是整篇 UCT 真正開始進入 Physics 的地方。
+前四章是在建立：
+Operator
+Projection
+Geometry
+而 Chapter 5 開始回答：
+Constraint 如何隨時間演化？
+因此，這一章不能引用任何會讓審稿人誤以為你在提出新的運動方程。
+你的定位應該是：
+Effective Evolution Equation
+而不是
+Fundamental Equation of Nature
+這點非常重要。
+Chapter 5 — Verified Reference List (VRL v1.0)
+Constraint Dynamics
+C5-01 ★★★★★ (Must Cite)
+Ilya Prigogine
+From Being to Becoming
+1980
+用途
+Nonequilibrium evolution
+Irreversible processes
+Time evolution
+引用角色
+Must Cite
+C5-02 ★★★★★ (Must Cite)
+Nicolis & Prigogine
+Self-Organization in Nonequilibrium Systems
+1977
+用途
+Dissipative structures
+Open systems
+Macroscopic evolution
+引用角色
+Must Cite
+C5-03 ★★★★★ (Must Cite)
+Steven H. Strogatz
+Nonlinear Dynamics and Chaos
+1994 / 2015
+用途
+Dynamical systems
+Stability
+Phase space
+Attractors
+引用角色
+Must Cite
+C5-04 ★★★★★
+Hirsch, Smale & Devaney
+Differential Equations, Dynamical Systems, and an Introduction to Chaos
+用途
+Dynamical systems theory
+引用角色
+Method
+C5-05 ★★★★★
+Neil Fenichel
+Persistence and Smoothness of Invariant Manifolds
+1971
+用途
+Slow-fast dynamics
+Invariant manifolds
+引用角色
+Method
+C5-06 ★★★★★
+Aleksandr Lyapunov
+General Problem of Stability of Motion
+1892
+用途
+Stability theory
+引用角色
+Background
+C5-07 ★★★★
+Lawrence C. Evans
+Partial Differential Equations
+用途
+Evolution equations
+PDE framework
+引用角色
+Comparison
+只作數學背景。
+不要讓人誤會 UCT 是 PDE。
+C5-08 ★★★★
+Katok & Hasselblatt
+Introduction to the Modern Theory of Dynamical Systems
+1995
+用途
+Modern dynamical systems
+引用角色
+Comparison
+C5-09 ★★★★★
+Nigel Goldenfeld
+Phase Transitions
+用途
+Effective dynamics
+引用角色
+Theory Positioning
+C5-10 ★★★★★
+Timothy M. Lenton
+Earth System Dynamics
+用途
+Earth-system evolution
+引用角色
+Validation
+C5-11 ★★★★
+IPCC AR6 WG1
+用途
+Earth-system evolution observations
+引用角色
+Validation
+C5-12 ★★★★
+Lorenz
+Available Potential Energy
+1955
+用途
+Macroscopic evolution
+引用角色
+Validation
+如果 Chapter 5 已開始連結 Lorenz APE，這篇應列為 Must Cite；若 APE 放在後面章節，也可移至 Chapter 8。
+Citation Placement Map
+Section 5.1
+Constraint Dynamics
+第一段
+Macroscopic systems evolve continuously...
+引用
+C5-01
+C5-02
+第二段
+Nonequilibrium systems...
+引用
+Prigogine
+第三段
+Effective evolution...
+引用
+Goldenfeld
+Section 5.2
+Evolution Equation
+公式
+[
+\frac{D\mathbb L}{Dt}
+\mathcal F(\mathbb L,\Psi,t)
+]
+公式不要引用。
+這是
+UCT
+自己的
+Definition。
+下面一句
+Effective evolution operator...
+引用
+Goldenfeld
+Wilson
+如果提到
+dynamical systems
+引用
+Strogatz
+Section 5.3
+Time Evolution
+Time evolution
+引用
+Prigogine
+Slow evolution
+引用
+Fenichel
+Invariant structures
+引用
+Fenichel
+Section 5.4
+Stability
+如果提到
+stable trajectories
+引用
+Lyapunov
+如果提到
+phase space
+引用
+Strogatz
+如果提到
+attractors
+引用
+Strogatz
+Section 5.5
+Earth-System Dynamics
+如果提到
+Earth evolution
+引用
+Lenton
+IPCC
+如果提到
+APE
+引用
+Lorenz
+1955
+Discussion
+最後一句
+UCT should be interpreted...
+引用
+Goldenfeld
+Prigogine
+即可。
+哪些一定不能刪（Core References）
+如果只能保留 8 篇：
+Prigogine — From Being to Becoming
+Nicolis & Prigogine — Self-Organization in Nonequilibrium Systems
+Strogatz — Nonlinear Dynamics and Chaos
+Hirsch, Smale & Devaney
+Fenichel (1971)
+Lyapunov
+Goldenfeld
+Lenton
+哪些地方不要引用
+不要引用：
+[
+\frac{D\mathbb L}{Dt}
+\mathcal F(\mathbb L,\Psi,t)
+]
+因為
+那是
+UCT
+自己的
+Evolution Equation。
+不要引用：
+Constraint Velocity
+不要引用：
+Constraint Flow
+不要引用：
+Effective Evolution Operator
+因為
+都是
+UCT
+自己的
+Definition。
+我建議新增一個 Reviewer Remark（非常重要）
+放在 Evolution Equation 後：
+Remark. The evolution equation introduced here is not intended to represent a microscopic law of motion. Instead, it should be interpreted as an effective macroscopic evolution equation whose functional form is to be inferred and calibrated from observational data. Different applications may adopt different realizations of (\mathcal{F}) while preserving the same theoretical framework.
+這段我認為一定要加。
+原因有三：
+避免審稿人誤解你在提出一條新的自然基本方程。
+清楚界定 (\mathcal{F}) 是資料驅動、可校準的，而不是固定形式。
+和前面 Chapter 2「Effective Theory」的定位保持一致。
+這會讓 Chapter 5 的物理定位更穩健，也更符合你整篇 UCT 的核心精神。
+很好，我重新整理成可以直接放進論文工作文件的版本，格式會與前面 Chapter 1–4 完全一致。
+Chapter 5 — Verified Reference List + Citation Placement Map v1.0
+Chapter Theme
+Constraint Dynamics
+Scientific Question
+How does the Unified Constraint Operator evolve over time?
+This chapter introduces the effective macroscopic dynamics of the Unified Constraint Operator
+[
+\mathbb{L},
+]
+emphasizing that the proposed evolution equation is an effective representation rather than a new microscopic law of nature.
+A. Verified Reference List
+C5-01 (Essential)
+Ilya Prigogine
+From Being to Becoming: Time and Complexity in the Physical Sciences
+1980
+Scientific Role
+Nonequilibrium evolution
+Irreversible processes
+Arrow of time
+Open systems
+Citation Role
+Background
+Priority
+★★★★★
+C5-02 (Essential)
+Nicolis & Prigogine
+Self-Organization in Nonequilibrium Systems
+1977
+Scientific Role
+Dissipative structures
+Macroscopic organization
+Self-organization
+Citation Role
+Background
+Priority
+★★★★★
+C5-03 (Essential)
+Steven H. Strogatz
+Nonlinear Dynamics and Chaos
+1994 / 2015
+Scientific Role
+Dynamical systems
+Stability
+Phase-space evolution
+Attractors
+Citation Role
+Method
+Priority
+★★★★★
+C5-04
+Hirsch, Smale & Devaney
+Differential Equations, Dynamical Systems, and an Introduction to Chaos
+Scientific Role
+Nonlinear dynamics
+Mathematical dynamical systems
+Citation Role
+Method
+Priority
+★★★★★
+C5-05
+Neil Fenichel
+Persistence and Smoothness of Invariant Manifolds
+1971
+Scientific Role
+Slow-fast dynamics
+Invariant manifolds
+Citation Role
+Method
+Priority
+★★★★★
+C5-06
+A. M. Lyapunov
+The General Problem of the Stability of Motion
+1892
+Scientific Role
+Stability theory
+Lyapunov stability
+Citation Role
+Background
+Priority
+★★★★★
+C5-07
+Lawrence C. Evans
+Partial Differential Equations
+Scientific Role
+Evolution equations
+PDE framework
+Citation Role
+Comparison
+Priority
+★★★★☆
+Remark
+Only cited as mathematical background.
+UCT does not claim to be a PDE theory.
+C5-08
+Katok & Hasselblatt
+Introduction to the Modern Theory of Dynamical Systems
+1995
+Scientific Role
+Modern dynamical systems
+Citation Role
+Comparison
+Priority
+★★★★☆
+C5-09 (Essential)
+Nigel Goldenfeld
+Lectures on Phase Transitions and the Renormalization Group
+1992
+Scientific Role
+Effective dynamics
+Scale dependence
+Effective theory
+Citation Role
+Theory Positioning
+Priority
+★★★★★
+C5-10
+Timothy M. Lenton
+Earth-system dynamics and tipping-element literature
+Scientific Role
+Earth-system evolution
+Macroscopic dynamics
+Citation Role
+Validation
+Priority
+★★★★★
+C5-11
+IPCC AR6 Working Group I
+Scientific Role
+Earth-system observations
+Climate evolution
+Citation Role
+Validation
+Priority
+★★★★☆
+C5-12
+Edward N. Lorenz
+Available Potential Energy and the Maintenance of the General Circulation
+1955
+Scientific Role
+Available Potential Energy
+Macroscopic energetic evolution
+Citation Role
+Validation
+Priority
+★★★★★
+Remark
+If Lorenz APE becomes one of the quantitative realizations of
+[
+L_T
+]
+this paper becomes Must Cite.
+B. Citation Placement Map
+Section 5.1
+Constraint Dynamics
+Paragraph 1
+Macroscopic systems evolve continuously under multiple coupled constraints.
+References
+C5-01
+C5-02
+Purpose
+Support nonequilibrium evolution.
+Paragraph 2
+Open systems continuously exchange energy and matter.
+References
+C5-01
+C5-02
+Purpose
+Support dissipative systems.
+Paragraph 3
+UCT introduces an effective macroscopic evolution operator.
+References
+C5-09
+Purpose
+Support effective-theory interpretation.
+Section 5.2
+Effective Evolution Equation
+Equation
+[
+\boxed{
+\frac{D\mathbb L}{Dt}
+\mathcal F(\mathbb L,\Psi,t)
+}
+]
+No citation
+Reason
+This is the original UCT definition.
+Paragraph below equation
+References
+C5-09
+C2-01 (Wilson)
+Purpose
+Support effective evolution.
+Paragraph
+The functional form of
+[
+\mathcal F
+]
+is inferred from observations.
+References
+C5-10
+C5-11
+Purpose
+Support empirical calibration.
+Section 5.3
+Dynamical Interpretation
+If discussing
+Phase space
+↓
+Reference
+C5-03
+If discussing
+Invariant manifolds
+↓
+Reference
+C5-05
+If discussing
+Slow-fast dynamics
+↓
+Reference
+C5-05
+Section 5.4
+Stability
+If discussing
+Lyapunov stability
+↓
+Reference
+C5-06
+If discussing
+Attractors
+↓
+Reference
+C5-03
+If discussing
+Nonlinear evolution
+↓
+Reference
+C5-04
+Section 5.5
+Earth-System Dynamics
+Earth-system evolution
+↓
+References
+C5-10
+C5-11
+Lorenz Available Potential Energy
+↓
+Reference
+C5-12
+Discussion
+Paragraph
+UCT should be interpreted as an effective macroscopic dynamics.
+References
+C5-09
+C5-01
+C. Must Cite Papers
+These papers should not be removed.
+D. Reviewer Protection Remark (Recommended)
+Insert immediately after the evolution equation.
+Remark 5.1. The evolution equation introduced above is not proposed as a new microscopic law of motion. Rather, it is an effective macroscopic evolution equation describing the temporal evolution of the Unified Constraint Operator. The functional form of (\mathcal{F}) is intentionally left application-dependent and should be calibrated using observational or numerical data. Consequently, different realizations of (\mathcal{F}) may coexist while remaining consistent with the Unified Constraint Theory framework.
+我再補充一個建議
+從 Chapter 5 開始，我們已經進入真正的理論核心。因此，之後 Chapter 6–10 我會把每一個引用再分成三個等級：
+Foundation：不可替代的經典文獻（一定要引用）。
+Support：支持方法或概念的代表性文獻。
+Update：近五到十年的綜述或最新研究，用來展現與當前研究前沿的連結。
+這樣整篇 UCT 的引用架構會更有層次，也更符合高品質理論論文的寫作方式。
+很好。
+Chapter 6 是 UCT 最具有辨識度的一章。
+如果 Chapter 3 定義了 Operator，
+Chapter 4 建立了 Geometry，
+Chapter 5 建立了 Dynamics，
+那 Chapter 6 就回答：
+為什麼不同的 Constraint 可以互相影響？
+注意，這一章不要讓審稿人以為你在發明「耦合」這個概念。
+真正的新意是：
+把跨領域耦合（cross-domain coupling）統一表示在同一個 Constraint Operator 的投影空間中。
+Chapter 6 — Verified Reference List + Citation Placement Map v1.0
+Chapter Theme
+Constraint Coupling Theory
+Scientific Question
+How do different constraint projections interact within a unified macroscopic representation?
+A. Verified Reference List
+C6-01 (Essential)
+Albert-László Barabási
+Network Science
+Cambridge University Press
+2016
+Scientific Role
+Complex networks
+Connectivity
+System interactions
+Citation Role
+Foundation
+Priority
+★★★★★
+C6-02 (Essential)
+Stefano Boccaletti et al.
+The Structure and Dynamics of Multilayer Networks
+Physics Reports
+2014
+Scientific Role
+Multilayer coupling
+Cross-network interactions
+Citation Role
+Foundation
+Priority
+★★★★★
+C6-03 (Essential)
+Mikko Kivelä et al.
+Multilayer Networks
+Journal of Complex Networks
+2014
+Scientific Role
+Multilayer systems
+Interacting network layers
+Citation Role
+Foundation
+Priority
+★★★★★
+C6-04
+Motter & Lai
+Cascade-based attacks on complex networks
+Physical Review E
+2002
+Scientific Role
+Cascading failures
+Failure propagation
+Citation Role
+Validation
+Priority
+★★★★★
+C6-05
+Dirk Helbing
+Globally Networked Risks and How to Respond
+Nature
+2013
+Scientific Role
+Systemic risks
+Cascading interactions
+Citation Role
+Validation
+Priority
+★★★★★
+C6-06
+Timothy M. Lenton et al.
+Tipping Elements in the Earth's Climate System
+PNAS
+2008
+Scientific Role
+Coupled Earth-system interactions
+Feedback mechanisms
+Citation Role
+Validation
+Priority
+★★★★★
+C6-07
+IPCC AR6 Working Group I
+Scientific Role
+Earth-system feedbacks
+Climate coupling
+Citation Role
+Validation
+Priority
+★★★★☆
+C6-08
+Andrea Saltelli et al.
+Global Sensitivity Analysis
+2008
+Scientific Role
+Sensitivity analysis
+Parameter interaction
+Citation Role
+Method
+Priority
+★★★★★
+C6-09
+Ludwig von Bertalanffy
+General System Theory
+1968
+Scientific Role
+System interaction
+Coupled systems
+Citation Role
+Background
+Priority
+★★★★☆
+C6-10
+Louis Pecora & Thomas Carroll
+Synchronization in Chaotic Systems
+Physical Review Letters
+1990
+Scientific Role
+Coupled dynamical systems
+Synchronization
+Citation Role
+Comparison
+Priority
+★★★★☆
+C6-11
+Newman
+Networks
+Scientific Role
+Network measures
+Connectivity
+Citation Role
+Comparison
+Priority
+★★★★☆
+C6-12
+Holland
+Complex Adaptive Systems
+Scientific Role
+Adaptive interactions
+Citation Role
+Comparison
+Priority
+★★★★☆
+B. Citation Placement Map
+Section 6.1
+Coupling Motivation
+Paragraph
+Macroscopic systems are composed of interacting subsystems.
+References
+C6-09
+C6-01
+Purpose
+General systems
+Complex networks
+Paragraph
+Interactions propagate across multiple domains.
+References
+C6-02
+C6-03
+Purpose
+Multilayer coupling
+Section 6.2
+Coupling Matrix
+Equation
+[
+\boxed{
+C_{ij}
+\frac{\partial \pi_i(\mathbb L)}
+{\partial \pi_j(\mathbb L)}
+}
+]
+No citation
+Reason
+This is a UCT definition.
+Paragraph below
+The coupling matrix measures effective sensitivity...
+References
+C6-08
+Purpose
+Sensitivity interpretation.
+Paragraph
+When differentiability is not appropriate...
+References
+C6-08
+C6-11
+Purpose
+Effective coupling interpretation.
+Section 6.3
+Cross-Domain Coupling
+Paragraph
+Constraint projections interact across physical domains.
+References
+C6-06
+C6-07
+Purpose
+Earth-system coupling.
+Paragraph
+Cascading interactions...
+References
+C6-04
+C6-05
+Purpose
+Failure propagation.
+Section 6.4
+Global Coupling Strength
+Equation
+[
+\Gamma
+\sum_{i\neq j}
+|C_{ij}|
+]
+No citation
+Reason
+UCT definition.
+Paragraph
+Large coupling strength may facilitate cascading transitions.
+References
+C6-04
+C6-05
+Section 6.5
+Interpretation
+Paragraph
+UCT does not assume universal coupling coefficients.
+References
+C6-08
+Purpose
+Application-dependent calibration.
+Paragraph
+Coupling depends on observational estimation.
+References
+C6-07
+Purpose
+Empirical estimation.
+Discussion
+Paragraph
+UCT differs from conventional network theory...
+References
+C6-01
+C6-02
+C6-03
+Purpose
+Positioning.
+C. Must Cite Papers
+These references should remain in all future versions.
+D. Reviewer Protection Remark (Recommended)
+Insert immediately after the definition of the coupling matrix.
+Remark 6.1. The coupling matrix (C_{ij}) introduced in UCT should not be interpreted as a universal physical interaction tensor. Instead, it represents an effective macroscopic sensitivity between observable constraint projections. Depending on the application, (C_{ij}) may be estimated through differential analysis, statistical inference, response functions, data assimilation, or other empirical techniques. The mathematical form adopted here provides a convenient representation rather than prescribing a unique estimation procedure.
+E. Foundation / Support / Update Classification
+Foundation（不可替代）
+Barabási — Network Science
+Boccaletti et al. (2014)
+Kivelä et al. (2014)
+Saltelli et al. (2008)
+Support（主要支撐）
+Motter & Lai (2002)
+Helbing (2013)
+Lenton et al. (2008)
+IPCC AR6
+Update（可用更新綜述替換）
+Newman（Networks）
+Holland（Complex Adaptive Systems）
+最新 Earth-system coupling 綜述（若投稿時已有更新版本，可優先採用）
+我對 Chapter 6 的建議
+這一章最容易被誤解的地方，是有人可能會認為 (C_{ij}) 是新的物理耦合常數。
+因此，全文應反覆強調：
+(C_{ij}) 不是自然常數。
+它是有效耦合（effective coupling）或有效敏感度（effective sensitivity）。
+它依賴於觀測資料、模型選擇與應用情境，是可估計、可校準、可更新的量。
+這樣 Chapter 6 的定位就會與整個 UCT 的 Effective Theory 精神保持一致，也更容易被理論物理與 Earth System Science 的審稿人接受。
+很好。
+Chapter 7 是整篇 UCT 的「可證偽（Falsifiability）」核心。
+從審稿人的角度，前面 Chapter 1–6 都是在建立框架；Chapter 7 開始必須回答：
+這個框架如何判斷系統接近臨界狀態？又如何證明它比現有方法更有價值？
+因此，這一章的文獻不是為了支持「UCT 正確」，而是支持：
+臨界轉換（Critical Transitions）
+臨界慢化（Critical Slowing Down）
+韌性（Resilience）
+提前預警（Early Warning Signals）
+穩定性分析（Stability Theory）
+而 Critical Surface、Viability Functional、Constraint Geometry 則是 UCT 自己提出的表示。
+Chapter 7 — Verified Reference List + Citation Placement Map v1.0
+Chapter Theme
+Stability and Critical Transitions
+Scientific Question
+How can macroscopic stability and critical transitions be represented within the Unified Constraint Theory?
+A. Verified Reference List
+C7-01 (Essential)
+Marten Scheffer et al.
+Early-warning signals for critical transitions
+Nature
+2009
+DOI
+10.1038/nature08227
+Scientific Role
+Early-warning signals
+Critical transitions
+Generic indicators
+Citation Role
+Foundation
+Priority
+★★★★★
+C7-02 (Essential)
+Marten Scheffer et al.
+Catastrophic shifts in ecosystems
+Nature
+2001
+DOI
+10.1038/35098000
+Scientific Role
+Regime shifts
+Alternative stable states
+Citation Role
+Foundation
+Priority
+★★★★★
+C7-03 (Essential)
+Timothy M. Lenton et al.
+Tipping elements in the Earth's climate system
+PNAS
+2008
+DOI
+10.1073/pnas.0705414105
+Scientific Role
+Earth-system tipping elements
+Coupled feedbacks
+Citation Role
+Foundation
+Priority
+★★★★★
+C7-04 (Essential)
+Armstrong McKay et al.
+Exceeding 1.5°C global warming could trigger multiple climate tipping points
+Science
+2022
+Scientific Role
+Updated climate tipping-point assessment
+Citation Role
+Update
+Priority
+★★★★★
+C7-05
+Dakos et al.
+Slowing Down as an Early Warning Signal
+PNAS
+2008
+Scientific Role
+Critical slowing down
+Statistical indicators
+Citation Role
+Validation
+Priority
+★★★★★
+C7-06
+C. S. Holling
+Resilience and Stability of Ecological Systems
+1973
+DOI
+10.1146/annurev.es.04.110173.000245
+Scientific Role
+Ecological resilience
+Stability concepts
+Citation Role
+Foundation
+Priority
+★★★★★
+C7-07
+Steven H. Strogatz
+Nonlinear Dynamics and Chaos
+Scientific Role
+Basins of attraction
+Stability
+Bifurcation
+Citation Role
+Method
+Priority
+★★★★★
+C7-08
+Aleksandr Lyapunov
+General Problem of the Stability of Motion
+Scientific Role
+Stability theory
+Citation Role
+Method
+Priority
+★★★★★
+C7-09
+René Thom
+Structural Stability and Morphogenesis
+Scientific Role
+Catastrophe theory
+Citation Role
+Comparison
+Priority
+★★★★☆
+Remark
+Only used for conceptual comparison.
+Do not imply that UCT is catastrophe theory.
+C7-10
+Nigel Goldenfeld
+Phase Transitions and the Renormalization Group
+Scientific Role
+Phase transitions
+Critical phenomena
+Citation Role
+Comparison
+Priority
+★★★★☆
+C7-11
+IPCC AR6 WG1
+Scientific Role
+Climate-system stability
+Risk assessment
+Citation Role
+Validation
+Priority
+★★★★☆
+C7-12
+Rockström / Steffen / Richardson
+Planetary Boundaries
+2009–2023
+Scientific Role
+Planetary-scale stability indicators
+Citation Role
+Comparison
+Priority
+★★★★★
+B. Citation Placement Map
+Section 7.1
+Stability Functional
+Equation
+[
+\mathcal V
+\Phi(\mathbf L)
+]
+No citation
+Reason
+This is a UCT definition.
+Paragraph
+Macroscopic stability has been studied in many disciplines.
+References
+C7-06
+C7-07
+C7-08
+Purpose
+General stability background.
+Section 7.2
+Critical Surface
+Definition
+Critical Surface
+No citation
+Reason
+Original UCT concept.
+Paragraph
+Critical transitions have been widely observed...
+References
+C7-01
+C7-02
+C7-03
+Purpose
+Support existence of critical transitions.
+Section 7.3
+Critical Slowing Down
+Paragraph
+Recovery time increases near transition.
+References
+C7-01
+C7-05
+Purpose
+Support slowing-down indicators.
+Paragraph
+Increased variance and autocorrelation...
+References
+C7-01
+C7-05
+Section 7.4
+Earth-System Interpretation
+Paragraph
+Multiple Earth-system processes may approach instability simultaneously.
+References
+C7-03
+C7-04
+C7-11
+Purpose
+Earth-system tipping.
+Paragraph
+Planetary-scale indicators...
+References
+C7-12
+Purpose
+Comparison with planetary boundaries.
+Section 7.5
+Constraint-Geometry Interpretation
+Paragraph
+UCT interprets critical transitions geometrically.
+No citation
+Reason
+This is the novel contribution of UCT.
+Paragraph
+Unlike existing indicator-based approaches...
+References
+C7-01
+C7-12
+Purpose
+Comparison.
+Discussion
+Paragraph
+UCT does not replace existing early-warning indicators.
+References
+C7-01
+C7-03
+C7-12
+Purpose
+Scientific positioning.
+C. Must Cite Papers
+These references should remain in every version.
+D. Reviewer Protection Remark (Recommended)
+Insert after the definition of the Critical Surface.
+Remark 7.1. The Critical Surface introduced in UCT should not be interpreted as a universal physical boundary. Rather, it is an application-dependent geometric construct defined within the constraint-coordinate manifold. Its location is expected to depend on the observational domain, the projection operators, and the calibration procedure. Consequently, different systems may possess different critical surfaces while remaining consistent with the Unified Constraint Theory framework.
+E. Foundation / Support / Update Classification
+Foundation（不可替代）
+Scheffer et al. (2009)
+Scheffer et al. (2001)
+Lenton et al. (2008)
+Holling (1973)
+Strogatz
+Support（主要支撐）
+Dakos et al. (2008)
+Lyapunov
+IPCC AR6
+Update（建議保持最新）
+Armstrong McKay et al. (2022)
+Richardson et al. (2023)
+最新 Planetary Boundaries 與 tipping-point 綜述
+我對 Chapter 7 的建議
+這一章有一個容易被審稿人挑戰的地方：
+不要讓人以為 UCT 發明了「臨界轉換」或「Early Warning」。
+論文應該清楚表達：
+Scheffer、Dakos、Lenton 等工作已建立了臨界轉換與早期預警的理論與觀測基礎。
+UCT 的貢獻是在此基礎上提出一個統一的 Constraint Geometry 表示，將不同領域的指標投影到共同的幾何框架中，並透過 Viability Functional、Critical Surface 與 Coupling Geometry 提供一致的表示與驗證路徑。
+這樣 Chapter 7 的定位會非常清楚：不是重新發明臨界轉換理論，而是提供一個新的統一表示框架。
+很好。
+Chapter 8 是整篇 UCT 從理論走向實作（Implementation）的關鍵章節。
+前面 Chapter 1–7 已經建立：
+Theory
+Operator
+Projection
+Geometry
+Dynamics
+Coupling
+Stability
+Chapter 8 開始回答：
+How can the Unified Constraint Operator be estimated from real observations?
+這一章不是介紹資料集，而是建立：
+Observation → Projection → Constraint Space → UCT
+所以文獻主要來自：
+NASA
+NOAA
+ECMWF
+ESA
+Copernicus
+Earth Observation
+Chapter 8 — Verified Reference List + Citation Placement Map v1.0
+Chapter Theme
+Earth-System Implementation
+Scientific Question
+How can heterogeneous Earth observations be transformed into the Unified Constraint Operator?
+A. Verified Reference List
+C8-01 (Essential)
+Loeb et al.
+Clouds and the Earth's Radiant Energy System (CERES): Energy Balanced and Filled (EBAF) Top-of-Atmosphere Data Product
+Journal of Climate
+Scientific Role
+TOA radiative imbalance
+Global energy budget
+Thermal constraint
+Citation Role
+Foundation
+Priority
+★★★★★
+C8-02 (Essential)
+Hersbach et al.
+The ERA5 Global Reanalysis
+Quarterly Journal of the Royal Meteorological Society
+2020
+DOI
+10.1002/qj.3803
+Scientific Role
+Atmospheric reanalysis
+Wind
+Pressure
+Circulation
+Citation Role
+Foundation
+Priority
+★★★★★
+C8-03 (Essential)
+Justice et al.
+MODIS Land Products Overview
+Scientific Role
+Vegetation
+NDVI
+Land cover
+Citation Role
+Foundation
+Priority
+★★★★★
+C8-04 (Essential)
+Tapley et al.
+GRACE Measurements of Mass Variability
+Science
+2004
+Scientific Role
+Ice mass
+Water storage
+Gravity field
+Citation Role
+Foundation
+Priority
+★★★★★
+C8-05
+Roemmich et al.
+The Argo Program
+Scientific Role
+Ocean heat content
+Ocean circulation
+Citation Role
+Foundation
+Priority
+★★★★★
+C8-06
+NOAA Global Monitoring Laboratory
+Scientific Role
+Atmospheric CO₂
+CH₄
+Greenhouse gases
+Citation Role
+Validation
+Priority
+★★★★★
+C8-07
+Copernicus Climate Change Service
+Scientific Role
+Climate observations
+Climate indicators
+Citation Role
+Validation
+Priority
+★★★★★
+C8-08
+ICESat / ICESat-2 Mission Papers
+Scientific Role
+Ice-sheet elevation
+Cryosphere
+Citation Role
+Validation
+Priority
+★★★★☆
+C8-09
+CryoSat Mission
+Scientific Role
+Polar ice
+Ice thickness
+Citation Role
+Validation
+Priority
+★★★★☆
+C8-10
+ESA Climate Change Initiative
+Scientific Role
+Multi-sensor climate records
+Citation Role
+Validation
+Priority
+★★★★☆
+C8-11
+NASA Earth Observatory
+Scientific Role
+Earth observation
+Citation Role
+Background
+Priority
+★★★★☆
+C8-12
+IPCC AR6 WG1
+Scientific Role
+Climate observations
+Observation uncertainty
+Citation Role
+Validation
+Priority
+★★★★★
+B. Citation Placement Map
+Section 8.1
+Observation Layer
+Paragraph
+Earth observations originate from multiple heterogeneous observing systems.
+References
+C8-01
+C8-02
+C8-07
+Purpose
+Observation framework.
+Paragraph
+Satellite observations...
+References
+C8-03
+C8-04
+C8-08
+Purpose
+Remote sensing.
+Section 8.2
+Constraint Projection
+Equation
+[
+L_i
+\pi_i(\Omega)
+]
+No citation
+Reason
+UCT definition.
+Paragraph
+Projection operators map observations...
+References
+Chapter 3
+Kalman
+Koopman
+Paragraph
+Thermal projections...
+References
+C8-01
+Flow projections
+References
+C8-02
+Chemical projections
+References
+C8-06
+Structural projections
+References
+C8-03
+C8-04
+Cryosphere
+References
+C8-08
+C8-09
+Section 8.3
+Multi-source Integration
+Paragraph
+Different observations are combined...
+References
+C8-07
+C8-10
+Purpose
+Multi-source datasets.
+Section 8.4
+Earth-System Representation
+Equation
+[
+\mathbf L
+(L_T,L_F,L_C,L_S,\ldots)
+]
+No citation.
+Reason
+UCT definition.
+Paragraph
+Constraint components correspond...
+References
+C8-01
+C8-02
+C8-03
+C8-04
+C8-06
+Purpose
+Representative datasets.
+Section 8.5
+Practical Implementation
+Paragraph
+The framework is data-driven.
+References
+C8-07
+C8-12
+Purpose
+Operational implementation.
+Discussion
+Paragraph
+UCT is independent of any specific observing system.
+References
+C8-07
+C8-11
+Purpose
+Theory positioning.
+C. Dataset Mapping Table
+D. Must Cite Papers
+These references should always remain.
+E. Reviewer Protection Remark (Recommended)
+Insert after the definition of the projection equation.
+Remark 8.1. The observational datasets presented in this chapter are representative examples rather than mandatory inputs. The Unified Constraint Theory does not depend on any specific satellite mission, reanalysis product, or observational platform. Alternative datasets with comparable physical meaning may be substituted without altering the theoretical framework, provided that the corresponding projection operators remain consistently defined.
+F. Foundation / Support / Update Classification
+Foundation（不可替代）
+Loeb et al. (CERES)
+Hersbach et al. (ERA5)
+Tapley et al. (GRACE)
+Justice et al. (MODIS)
+NOAA GML
+Copernicus C3S
+Support（主要支撐）
+Argo Program
+ICESat-2
+CryoSat
+ESA Climate Change Initiative
+Update（保持最新）
+IPCC AR6
+新版 CERES EBAF
+新版 ERA5 或 ERA6（未來）
+Copernicus 最新資料產品
+我對 Chapter 8 的一個重要建議
+建議把所有資料集整理成一張Observation-to-Constraint Mapping圖，而不是只列資料來源。例如：
+CERES ───────► LT
+ERA5 ────────► LF
+NOAA GML ────► LC
+MODIS ───────► LS
+GRACE ───────► LM
+Argo ────────► LO
+▼
+Projection Operators (πi)
+▼
+Unified Constraint Vector
+▼
+𝓛
+這張圖能直接回答審稿人最關心的問題：「你的理論如何與真實觀測資料連結？」也能自然銜接下一章 Data Assimilation。
+很好。
+Chapter 10 是 APS/PRE 審稿最重視的一章之一。
+前面 Chapter 1–9 建立的是理論與方法，Chapter 10 必須回答：
+How can the Unified Constraint Theory be quantitatively tested, falsified, and compared against existing approaches?
+這一章的目標不是證明 UCT 正確，而是提出可重複、可反駁、可比較的驗證流程。
+Chapter 10 — Verified Reference List + Citation Placement Map v1.0
+Chapter Theme
+Validation and Performance Assessment
+Scientific Question
+How should the Unified Constraint Theory be quantitatively evaluated using observations and baseline models?
+A. Verified Reference List
+C10-01 (Essential)
+Ian T. Jolliffe & David B. Stephenson
+Forecast Verification: A Practitioner's Guide in Atmospheric Science
+2nd Edition
+2012
+Scientific Role
+Forecast verification
+Verification methodology
+Skill assessment
+Citation Role
+Foundation
+Priority
+★★★★★
+C10-02 (Essential)
+Glenn W. Brier
+Verification of Forecasts Expressed in Terms of Probability
+Monthly Weather Review
+1950
+DOI
+10.1175/1520-0493(1950)078<0001:VOFEIT>2.0.CO;2
+Scientific Role
+Brier Score
+Probabilistic verification
+Citation Role
+Method
+Priority
+★★★★★
+C10-03 (Essential)
+Tom Fawcett
+An Introduction to ROC Analysis
+Pattern Recognition Letters
+2006
+DOI
+10.1016/j.patrec.2005.10.010
+Scientific Role
+ROC curve
+AUC
+Binary-event prediction
+Citation Role
+Method
+Priority
+★★★★★
+C10-04
+Murphy & Winkler
+A General Framework for Forecast Verification
+Monthly Weather Review
+1987
+Scientific Role
+Forecast verification theory
+Citation Role
+Foundation
+Priority
+★★★★★
+C10-05
+Wilks
+Statistical Methods in the Atmospheric Sciences
+Scientific Role
+RMSE
+Correlation
+Skill scores
+Citation Role
+Method
+Priority
+★★★★★
+C10-06
+Kalnay
+Atmospheric Modeling, Data Assimilation and Predictability
+2003
+Scientific Role
+Hindcasting
+Prediction
+Data assimilation evaluation
+Citation Role
+Method
+Priority
+★★★★★
+C10-07
+IPCC AR6 Working Group I
+Scientific Role
+Climate prediction
+Model evaluation
+Observation uncertainty
+Citation Role
+Validation
+Priority
+★★★★★
+C10-08
+Rockström / Steffen / Richardson
+Planetary Boundaries
+Scientific Role
+Baseline comparison
+Citation Role
+Comparison
+Priority
+★★★★★
+C10-09
+Lenton et al.
+Tipping Elements
+Scientific Role
+Early-warning benchmarks
+Citation Role
+Comparison
+Priority
+★★★★★
+C10-10
+Scheffer et al.
+Early-warning Signals
+Scientific Role
+Critical-transition benchmark
+Citation Role
+Comparison
+Priority
+★★★★★
+C10-11
+PCA / EOF Literature
+Jolliffe
+Preisendorfer
+Scientific Role
+Baseline dimensional reduction
+Citation Role
+Comparison
+Priority
+★★★★☆
+C10-12
+Kalman
+State-space models
+Scientific Role
+State-estimation baseline
+Citation Role
+Comparison
+Priority
+★★★★☆
+B. Citation Placement Map
+Section 10.1
+Validation Philosophy
+Paragraph
+Scientific theories should be evaluated through falsifiable predictions.
+References
+C10-01
+C10-04
+Purpose
+Forecast verification philosophy.
+Paragraph
+UCT is evaluated through predictive performance.
+References
+C10-06
+Purpose
+Prediction framework.
+Section 10.2
+Hindcasting
+Paragraph
+Historical observations...
+References
+C10-06
+C10-07
+Purpose
+Hindcast methodology.
+Equation
+Hindcast workflow
+No citation.
+Reason
+UCT workflow.
+Section 10.3
+Performance Metrics
+RMSE
+↓
+Reference
+C10-05
+Correlation
+↓
+Reference
+C10-05
+Brier Score
+↓
+Reference
+C10-02
+ROC
+↓
+Reference
+C10-03
+Calibration
+↓
+Reference
+C10-04
+Section 10.4
+Baseline Comparison
+Paragraph
+UCT should be compared with existing representations.
+References
+C10-11
+C10-12
+Purpose
+Baseline models.
+Paragraph
+Earth-system indicators...
+References
+C10-08
+C10-09
+C10-10
+Purpose
+Scientific benchmark.
+Section 10.5
+Falsifiability
+Definition
+UCT fails if...
+No citation.
+Reason
+Original UCT criterion.
+Paragraph
+Predictive skill...
+References
+C10-01
+C10-04
+Purpose
+Scientific validation.
+Discussion
+Paragraph
+Validation is independent of any specific implementation.
+References
+C10-06
+C10-07
+Purpose
+General applicability.
+C. Validation Workflow
+Observations
+↓
+Projection Operators
+↓
+Constraint Vector
+↓
+Unified Constraint Operator
+↓
+Prediction
+↓
+Historical Hindcast
+↓
+RMSE
+Brier
+ROC
+Correlation
+Calibration
+↓
+Baseline Comparison
+↓
+Scientific Evaluation
+D. Must Cite Papers
+These references should remain in all versions.
+E. Reviewer Protection Remark (Recommended)
+Insert after the validation workflow.
+Remark 10.1. The validation framework proposed here evaluates the predictive usefulness of the Unified Constraint Theory rather than asserting its universal correctness. Model performance should always be assessed relative to established baseline methods, including dimensionality-reduction techniques, state-space models, and existing Earth-system indicators. Consequently, the scientific value of UCT depends on demonstrable improvements in predictive skill under transparent and reproducible evaluation protocols.
+F. Foundation / Support / Update Classification
+Foundation（不可替代）
+Jolliffe & Stephenson
+Brier (1950)
+Murphy & Winkler
+Wilks
+Kalnay
+Support（主要支撐）
+IPCC AR6
+Lenton et al.
+Scheffer et al.
+Rockström / Steffen / Richardson
+Update（保持最新）
+最新 Forecast Verification 綜述
+最新 Hindcasting 方法
+最新 Earth-system prediction 評估
+最新 AI-assisted climate forecasting 文獻（若投稿時與 UCT 的驗證方法有直接關聯）
+我對 Chapter 10 的一個重要建議
+這一章應該加入一個Reviewer Acceptance Checklist（可放在 Appendix 或 Supplement）：
+這張表不是理論的一部分，但對審稿人非常有幫助，因為它直接回答了投稿時最常見的四個問題：可證偽、可重現、可比較、可擴充。這會讓 Chapter 10 不只是驗證章節，而是整篇論文最有說服力的部分之一。
+很好。
+Chapter 11 是整篇 UCT 最重要的「定位（Positioning）」章節。
+如果 Chapter 10 是：
+Can UCT be validated?
+那麼 Chapter 11 就是：
+Where does UCT belong in modern science?
+很多理論論文就是倒在這一章。
+因為作者開始說
+我比 XX 好
+我取代 XX
+我解決 XX
+APS、PRE 的審稿人最討厭這種寫法。
+Chapter 11 應該只有一個目標：
+Explain where UCT complements existing frameworks.
+而不是
+Replace them.
+Chapter 11 — Verified Reference List + Citation Placement Map v1.0
+Chapter Theme
+Discussion and Scientific Positioning
+Scientific Question
+How should the Unified Constraint Theory be positioned relative to existing theoretical frameworks?
+A. Verified Reference List
+C11-01 (Essential)
+Kenneth G. Wilson
+The Renormalization Group and Critical Phenomena
+Reviews of Modern Physics
+1983
+DOI
+10.1103/RevModPhys.55.583
+Scientific Role
+Effective theories
+Scale dependence
+Citation Role
+Foundation
+Priority
+★★★★★
+C11-02 (Essential)
+Nigel Goldenfeld
+Lectures on Phase Transitions and the Renormalization Group
+1992
+Scientific Role
+Effective descriptions
+Emergence
+Citation Role
+Foundation
+Priority
+★★★★★
+C11-03 (Essential)
+E. T. Jaynes
+Information Theory and Statistical Mechanics
+Physical Review
+1957
+DOI
+10.1103/PhysRev.106.620
+Scientific Role
+Macroscopic state variables
+Maximum entropy
+Citation Role
+Foundation
+Priority
+★★★★★
+C11-04 (Essential)
+Shun-ichi Amari
+Methods of Information Geometry
+2000
+Scientific Role
+Information geometry
+Statistical manifolds
+Citation Role
+Comparison
+Priority
+★★★★★
+C11-05
+Kalman
+State-space representation
+Scientific Role
+State estimation
+Citation Role
+Comparison
+Priority
+★★★★★
+C11-06
+Jolliffe
+Principal Component Analysis
+Scientific Role
+PCA
+Citation Role
+Comparison
+Priority
+★★★★★
+C11-07
+Preisendorfer
+Principal Component Analysis in Meteorology and Oceanography
+Scientific Role
+EOF
+Citation Role
+Comparison
+Priority
+★★★★★
+C11-08
+Albert-László Barabási
+Network Science
+Scientific Role
+Network indicators
+Citation Role
+Comparison
+Priority
+★★★★★
+C11-09
+Rockström / Steffen / Richardson
+Planetary Boundaries
+Scientific Role
+Earth-system indicators
+Citation Role
+Comparison
+Priority
+★★★★★
+C11-10
+Timothy M. Lenton
+Earth-system tipping elements
+Scientific Role
+Earth-system dynamics
+Citation Role
+Comparison
+Priority
+★★★★★
+C11-11
+IPCC AR6
+Scientific Role
+Climate assessment
+Citation Role
+Comparison
+Priority
+★★★★☆
+C11-12
+Kalnay
+Atmospheric Modeling, Data Assimilation and Predictability
+Scientific Role
+Data assimilation
+Citation Role
+Comparison
+Priority
+★★★★☆
+B. Citation Placement Map
+Section 11.1
+Relationship to Effective Theory
+Paragraph
+UCT should be interpreted as an effective macroscopic theory.
+References
+C11-01
+C11-02
+Purpose
+Scientific positioning.
+Paragraph
+It does not replace microscopic physics.
+References
+C11-01
+Purpose
+Clarify scope.
+Section 11.2
+Relationship to Statistical Physics
+Paragraph
+Macroscopic state variables...
+References
+C11-03
+Purpose
+Jaynes.
+Paragraph
+Constraint representation...
+References
+C11-03
+Purpose
+Maximum entropy background.
+Section 11.3
+Relationship to Information Geometry
+Paragraph
+Information geometry...
+References
+C11-04
+Purpose
+Geometry comparison.
+Paragraph
+UCT introduces an effective constraint geometry.
+No citation
+Reason
+Original UCT contribution.
+Section 11.4
+Relationship to State-space Models
+Paragraph
+State estimation...
+References
+C11-05
+Purpose
+Kalman.
+Paragraph
+UCT differs because...
+No citation
+Reason
+Original positioning.
+Section 11.5
+Relationship to PCA / EOF
+Paragraph
+PCA...
+References
+C11-06
+C11-07
+Purpose
+Baseline comparison.
+Paragraph
+UCT preserves physical interpretation...
+No citation
+Reason
+Original contribution.
+Section 11.6
+Relationship to Network Science
+Paragraph
+Networks...
+References
+C11-08
+Purpose
+Complex networks.
+Paragraph
+UCT coupling...
+No citation
+Reason
+Original contribution.
+Section 11.7
+Relationship to Planetary Boundaries
+Paragraph
+Planetary Boundaries...
+References
+C11-09
+Purpose
+Earth-system comparison.
+Paragraph
+UCT estimates a continuous macroscopic state...
+No citation
+Reason
+Original contribution.
+Section 11.8
+Limitations
+Paragraph
+Calibration is required.
+References
+C11-12
+Purpose
+Assimilation.
+Paragraph
+Earth observations...
+References
+C11-11
+Purpose
+Observation uncertainty.
+Discussion
+Final paragraph
+UCT complements rather than replaces existing approaches.
+References
+C11-01
+C11-02
+C11-03
+Purpose
+Overall positioning.
+C. Comparison Table (Recommended)
+D. Must Cite Papers
+E. Reviewer Protection Remark (Recommended)
+Insert near the beginning of the Discussion.
+Remark 11.1. Unified Constraint Theory is proposed as an effective macroscopic representation rather than as a replacement for existing physical theories, statistical methods, or Earth-system frameworks. Throughout this work, established approaches such as state-space models, information geometry, network science, and planetary-boundary assessments are regarded as complementary methodologies. The scientific contribution of UCT lies in providing a unified representation that may integrate information across these domains while remaining empirically testable.
+F. Foundation / Support / Update Classification
+Foundation（不可替代）
+Wilson
+Goldenfeld
+Jaynes
+Amari
+Support（主要支撐）
+Kalman
+Jolliffe
+Preisendorfer
+Barabási
+Rockström / Steffen / Richardson
+Lenton
+Update（保持最新）
+IPCC AR6
+最新 Planetary Boundaries 更新
+最新 Earth-system resilience 綜述
+最新 Information Geometry 綜述（若有新版）
+我最後給 Chapter 11 一個建議
+這一章不要寫「UCT 優於某方法」。
+建議採用四種固定句型：
+"UCT is complementary to..."
+"UCT may be viewed as..."
+"UCT can be integrated with..."
+"UCT is intended to provide..."
+避免使用：
+"replaces"
+"supersedes"
+"solves"
+"outperforms"（除非 Chapter 10 已有嚴格實證比較）
+這樣的語氣更符合 Physical Review E 等理論期刊的寫作風格，也能讓審稿人把焦點放在你的理論是否一致、是否可驗證，而不是被過度宣稱的新穎性分散注意力。
+很好，Chapter 12 是最後一章，也是整篇論文的收束。
+和前面不同的是：
+Chapter 12 幾乎不應該引入新的核心文獻。
+APS/PRE 的 Conclusion 通常是：
+回顧本文
+強調貢獻
+說明限制
+提出未來工作
+而不是再開始文獻回顧。
+所以這一章大部分引用都應該是回扣前面已引用的經典文獻。
+Chapter 12 — Verified Reference List + Citation Placement Map v1.0
+Chapter Theme
+Conclusion and Future Directions
+Scientific Question
+What has Unified Constraint Theory established, and what remains to be tested?
+A. Verified Reference List
+C12-01 (Essential)
+Kenneth G. Wilson
+The Renormalization Group and Critical Phenomena
+Rev. Mod. Phys.
+1983
+Scientific Role
+Effective Theory
+Citation Role
+Foundation
+Priority
+★★★★★
+C12-02 (Essential)
+Nigel Goldenfeld
+Lectures on Phase Transitions and the Renormalization Group
+1992
+Scientific Role
+Effective macroscopic description
+Citation Role
+Foundation
+Priority
+★★★★★
+C12-03 (Essential)
+E. T. Jaynes
+Information Theory and Statistical Mechanics
+Physical Review
+1957
+Scientific Role
+Macroscopic state variables
+Citation Role
+Foundation
+Priority
+★★★★★
+C12-04
+Timothy M. Lenton
+Tipping Elements in the Earth's Climate System
+PNAS
+2008
+Scientific Role
+Earth-system applications
+Citation Role
+Application
+Priority
+★★★★★
+C12-05
+Scheffer et al.
+Early-warning Signals for Critical Transitions
+Nature
+2009
+Scientific Role
+Future validation
+Citation Role
+Validation
+Priority
+★★★★★
+C12-06
+Rockström / Steffen / Richardson
+Planetary Boundaries
+Scientific Role
+Earth-system assessment
+Citation Role
+Comparison
+Priority
+★★★★★
+C12-07
+IPCC AR6
+Scientific Role
+Earth-system observations
+Citation Role
+Application
+Priority
+★★★★☆
+C12-08
+Kalnay
+Atmospheric Modeling, Data Assimilation and Predictability
+Scientific Role
+Future data assimilation
+Citation Role
+Future Work
+Priority
+★★★★☆
+B. Citation Placement Map
+Section 12.1
+Summary of the Theory
+Paragraph
+This work introduced the Unified Constraint Theory...
+References
+C12-01
+C12-02
+Purpose
+Effective-theory positioning.
+Paragraph
+UCT defines...
+No citation.
+Reason
+Summary of original UCT contributions.
+Section 12.2
+Scientific Contributions
+Paragraph
+The main contribution...
+No citation.
+Reason
+Original contribution.
+Paragraph
+The framework is intended...
+References
+C12-03
+Purpose
+Macroscopic representation.
+Section 12.3
+Limitations
+Paragraph
+Projection operators remain application dependent.
+No citation.
+Reason
+Original limitation.
+Paragraph
+Calibration requires observational datasets.
+References
+C12-07
+C12-08
+Purpose
+Data requirements.
+Section 12.4
+Future Directions
+Paragraph
+Future work should investigate...
+References
+C12-04
+C12-05
+C12-06
+Purpose
+Earth-system implementation.
+Paragraph
+Additional observational domains...
+References
+C12-07
+Purpose
+Future datasets.
+Final Paragraph
+Paragraph
+Unified Constraint Theory provides...
+References
+C12-01
+C12-02
+C12-03
+Purpose
+Final scientific positioning.
+C. Must Cite Papers
+Only these are necessary.
+D. Reviewer Protection Remark (Recommended)
+Insert before the final paragraph.
+Remark 12.1. The Unified Constraint Theory should be regarded as an effective macroscopic representation whose scientific usefulness depends on empirical calibration, transparent validation, and comparison with established baseline approaches. The framework is intentionally formulated to remain compatible with future observational datasets, improved projection operators, and advances in Earth-system modeling without requiring modification of its underlying conceptual structure.
+E. Foundation / Support /Update Classification
+Foundation（不可替代）
+Wilson
+Goldenfeld
+Jaynes
+Support（主要支撐）
+Lenton
+Scheffer
+Rockström / Steffen / Richardson
+Update（保持最新）
+IPCC AR6
+最新 Earth-system observations
+最新 Planetary Boundaries 更新
+最新 Earth-system resilience 綜述
+全書文獻架構總結（Chapter 1–12）
+到目前為止，我們已經建立了完整的 Verified Reference List + Citation Placement Map：
+我建議的下一步（這是整個投稿流程最關鍵的一步）
+現在不要急著把引用塞進論文。
+先建立一份：
+Master Reference Database v1.0
+內容包含每一篇文獻的：
+完整 APA / APS / BibTeX 資訊
+DOI
+年份
+類型（Classic / Review / Recent）
+對應章節
+對應公式
+對應段落
+引用角色（Foundation / Support / Comparison / Validation）
+完成這份資料庫後，再交給 Codex 自動生成 BibTeX、插入引用與 APS 格式，會比邊寫邊補引用更穩定，也能大幅降低引用錯誤與重複的風險。這也是我建議作為下一個正式工作階段的內容。

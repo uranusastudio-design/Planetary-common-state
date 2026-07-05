@@ -1,0 +1,89 @@
+﻿\appendix
+
+\section{Appendix A}
+
+Mathematical Foundations
+
+Appendix A is a formula index for the main text. It repeats notation already defined in the chapters and introduces no additional operators.
+
+A.1 Unified Constraint Operator
+
+\[ \mathbb{L}:\mathcal{S}\rightarrow\mathcal{C}. \]
+
+A.2 Observable Projection
+
+\[ L_i=\pi_i(\mathbb{L}), \qquad i=1,\ldots,n. \]
+
+A.3 Projection Vector
+
+\[ \mathbf{L}=(L_T,L_F,L_C,L_S,L_I,L_E,L_G,L_V). \]
+
+A.4 Optional Scalar Index
+
+\[ L=F(\mathbf{L}), \qquad F:[0,1]^n\rightarrow[0,1]. \]
+
+\[ L\approx\sum_i w_i L_i, \qquad \sum_i w_i=1. \]
+
+A.5 Constraint Metric
+
+\[ ds_{\mathbb{L}}^2=g_{ij}(\mathbf{L})\,dL_i\,dL_j. \]
+
+A.6 Constraint Dynamics
+
+\[ \frac{D\mathbb{L}}{Dt}=\mathcal{F}(\mathbb{L},\Psi,t). \]
+
+A.7 Coupling Matrix
+
+\[ C_{ij}=\frac{\partial \pi_i(\mathbb{L})}{\partial \pi_j(\mathbb{L})}. \]
+
+A.8 Global Coupling
+
+\[ \Gamma=\sum_{i\neq j}|C_{ij}|. \]
+
+A.9 Viability Functional
+
+\[ \mathcal{V}=\Phi(\mathbb{L}) \quad \text{or} \quad \mathcal{V}=\Phi(\mathbf{L}). \]
+
+\section{Appendix B}
+
+Dimensionless Normalization
+
+Different observables possess different physical units and uncertainty structures. UCT therefore uses dimensionless projected components, typically scaled to \([0,1]\), while recognizing that normalization is domain-specific.
+
+\[ L_i=\frac{x_i-x_i^{\mathrm{ref}}}{x_i^{\mathrm{crit}}-x_i^{\mathrm{ref}}}. \]
+
+When a bounded index is required, clipping may be applied:
+
+\[ L_i\leftarrow \min(1,\max(0,L_i)). \]
+
+Alternatively, a monotonic transform may be used:
+
+\[ L_i=\sigma_i(x_i). \]
+
+The reference value \(x_i^{\mathrm{ref}}\), critical value \(x_i^{\mathrm{crit}}\), and transform \(\sigma_i\) must be chosen and reported for each projection domain. Spatial scaling, temporal scaling, energy scaling, and information scaling can all be incorporated through projection operators.
+
+\section{Appendix C}
+
+Representative Observational Data Sources
+
+These examples are illustrative. A validated application must specify data provenance, preprocessing, uncertainty treatment, and the projection operator used for each domain.
+
+Table~\ref{tab:data_sources} summarizes representative data sources for each projection.
+
+\begin{table}[tb]
+\caption{\label{tab:data_sources}Representative observational data sources.}
+\footnotesize
+\begin{ruledtabular}
+\begin{tabular}{lll}
+Projection & Observable & Example datasets \\
+Thermal & TOA imbalance; temperature anomaly & CERES; ERA5; NOAA \\
+Flow & Wind; vorticity; AMOC proxies & ERA5; ECMWF; Argo; RAPID \\
+Chemical & CO$_2$; CH$_4$; ocean pH & NOAA; Mauna Loa; SOCAT \\
+Structural & Land; ice; infrastructure & MODIS; Landsat; Sentinel; GRACE \\
+Informational & Biodiversity; complexity & GBIF; IUCN; LPD \\
+Energetic & Availability; efficiency & IEA; Energy statistics \\
+Geophysical & Boundary conditions & GRACE; Geodesy \\
+Viability & Population; infrastructure; capacity & UN; World Bank; Statistics \\
+\end{tabular}
+\end{ruledtabular}
+\end{table}

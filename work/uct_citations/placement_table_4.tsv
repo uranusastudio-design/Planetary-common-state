@@ -1,0 +1,8 @@
+Constraint	Representative Dataset
+(L_T)	CERES
+(L_F)	ERA5
+(L_C)	NOAA GML
+(L_S)	MODIS
+Cryosphere	GRACE, ICESat-2, CryoSat
+Ocean	Argo
+Climate products	Copernicus C3S

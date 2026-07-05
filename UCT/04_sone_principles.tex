@@ -1,0 +1,52 @@
+﻿\section{Constraint Geometry of Coupled Systems}
+
+
+\subsection{4.1 Constraint Manifold}
+
+The projection vector \(\mathbf{L}\) may be treated as a coordinate representation of a constraint manifold, denoted \(\mathcal{M}_{\mathbb{L}}\). Each point on this manifold corresponds to an effective macroscopic constraint state, not a spatial location.
+
+\[ \mathbf{L}=(L_1,L_2,\ldots,L_n)\in\mathcal{M}_{\mathbb{L}}. \]
+
+Definition 5 (Constraint manifold and local chart). A constraint manifold is the set of admissible projection vectors together with the coordinate neighborhoods in which those vectors can be compared. A constraint neighborhood is a local set of nearby projection vectors around a reference state, and a local coordinate chart is the identification of such a neighborhood with coordinates \((L_1,\ldots,L_n)\).
+
+The manifold language is used to organize coupled coordinates and their sensitivities. It does not imply that UCT changes spacetime geometry.
+
+\subsection{4.2 Constraint Metric}
+
+A constraint metric may be introduced to quantify distances in constraint-coordinate space:
+
+\[ ds_{\mathbb{L}}^2=g_{ij}(\mathbf{L})\,dL_i\,dL_j. \]
+
+The metric \(g_{ij}\) represents the local weighting and coupling of projection changes. It must be estimated, modeled, or otherwise justified from empirical data. It is not a gravitational metric.
+
+Definition 6 (Constraint metric). A constraint metric is a positive semidefinite or positive-definite tensor field, as appropriate to the application, on local constraint coordinates. It determines how infinitesimal changes in projected components are compared within the effective constraint representation.
+
+In this sense, the metric encodes local distinguishability among nearby constraint states. Two perturbations that have the same Euclidean magnitude in projection coordinates may be more or less distinguishable after weighting by \(g_{ij}\), depending on the local coupling and uncertainty structure. This interpretation is compatible with the language of information geometry \cite{AmariNagaoka2000,Rao1945} and differential geometry \cite{Lee2012Smooth,Lee1997Riemannian}, but no equivalence to either framework is assumed.
+
+Remark 1. The constraint metric is not spacetime geometry. It is a metric on the effective constraint-coordinate representation.
+
+\subsection{4.3 Constraint Distance and Constraint Velocity}
+
+A small constraint distance indicates two nearby macroscopic constraint states. A large constraint distance indicates substantial reorganization in the projected state space. The associated constraint velocity may be written
+
+\[ V_{\mathbb{L}}^2=g_{ij}(\mathbf{L})\frac{dL_i}{dt}\frac{dL_j}{dt}. \]
+
+This quantity measures the rate of motion through constraint-coordinate space. It is an effective diagnostic for comparing gradual evolution, rapid transition, or recovery.
+
+\subsection{4.4 Constraint Curvature}
+
+If the constraint manifold is treated as differentiable, one may define curvature quantities associated with \(g_{ij}\). These quantities summarize cross-domain coupling structure in constraint-coordinate space.
+
+Such curvature is not gravitational curvature. It does not modify Einstein's equation and should not be interpreted as a physical curvature of spacetime. Its use is justified only insofar as it improves the analysis of empirical coupling and macroscopic transition structure.
+
+\subsection{4.5 Constraint Potential}
+
+For some applications it may be useful to define an effective constraint potential \(U(\mathbf{L})\) or \(U(\mathbb{L})\). This potential is a modeling device for summarizing stability landscapes.
+
+\[ \nabla U(\mathbf{L}_*)=0, \qquad \nabla^2 U(\mathbf{L}_*)>0 \]
+
+indicates a locally stable state in the chosen coordinate representation. The potential is not a microscopic energy function unless a separate derivation establishes such a relation.
+
+The geometric language is used to organize distinguishability and coupling in projection coordinates. It should not be read as a claim about spacetime geometry or gravitational dynamics.
+
+

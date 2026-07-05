@@ -1,0 +1,56 @@
+﻿\section{Discussion and Limitations}
+
+
+\subsection{11.1 Scientific Position}
+
+UCT should be interpreted as an effective macroscopic representation. It complements existing theories by organizing heterogeneous constraints within a common projection space. It does not compete with microscopic physical laws or modify the equations used within established disciplines.
+
+The distinction is important for interpretation. UCT is strongest when used to formalize relationships among observables that are already physically meaningful, and weakest when its projections are chosen without independent domain justification. Its theoretical status therefore depends on both mathematical consistency and empirical discipline.
+
+\subsection{11.2 Relation to Existing Theories}
+
+Thermodynamics describes dissipation and energy exchange; statistical mechanics describes collective behavior arising from microscopic dynamics; fluid mechanics describes transport; general relativity describes gravitational spacetime; information theory describes uncertainty and communication; complex-systems theory studies feedbacks, networks, and transitions. UCT draws on this landscape but does not replace it.
+
+A practical comparison with these methods should ask whether UCT provides additional cross-domain information after accounting for standard multivariate approaches such as PCA/EOF analysis, state-space models \cite{Kalman1960}, network measures \cite{Barabasi2016,Boccaletti2014Multilayer,Kivela2014Multilayer}, and data-assimilation diagnostics \cite{Kalnay2003Assimilation}. Without such comparisons, the framework remains an organized representation rather than an independently validated model.
+
+Table~\ref{tab:framework_comparison} summarizes the framework comparison.
+\input{tables/tab05_framework_comparison.tex}
+
+
+\subsection{11.3 Interpretation of the Constraint Operator}
+
+The Unified Constraint Operator \(\mathbb{L}\) is not a physical field, conserved quantity, or fundamental interaction. It is an effective object whose observable projections are constructed from measurable variables. Its usefulness depends on whether this construction supports empirically testable analysis.
+
+This interpretation also fixes the level of explanation. Statements about \(\mathbb{L}\) should be read as statements about an effective representation constructed from projections, not as claims about unobserved microscopic entities. The operator is meaningful only together with its projection definitions, calibration data, and validation task. Definitions 1-7, Proposition 1, Proposition 2, Corollary 1, and Remarks 1-3 are used to fix this interpretation across the manuscript rather than to introduce separate theory objects.
+
+\subsection{11.4 Scope of Applicability}
+
+The framework is most appropriate for macroscopic systems with heterogeneous interacting domains and sufficient observational coverage. It is less appropriate when a single well-established physical variable already provides a complete and predictive description.
+
+The appropriate scope is therefore set by the existence of interacting projected constraints and by the availability of data sufficient to estimate them. Where these conditions are absent, UCT should remain a descriptive organizing language rather than a predictive model.
+
+\subsection{11.5 Limitations}
+
+UCT is presently a framework, not a validated predictive model.
+
+The choice of projections is not unique.
+
+The scalar index \(L\) may be calibration-dependent.
+
+The constraint metric \(g_{ij}\) requires empirical estimation.
+
+Coupling estimates may depend on time scale, lag structure, and data quality.
+
+The framework must outperform simpler baselines to justify its use.
+
+These limitations are not secondary qualifications; they define the conditions under which the framework can become a theory in the empirical sense. In particular, projection design, metric estimation, and coupling inference must be reported with enough detail that independent groups can reproduce or challenge the resulting constraint representation.
+
+\subsection{11.6 Future Work}
+
+Future work should focus on domain-specific projection definitions, uncertainty-aware data assimilation, hindcasting on independent historical periods, comparison with established indicators, and transparent release of calibration choices. The framework should be revised or rejected where empirical tests do not support it.
+
+A useful next step is a benchmark protocol in which projection choices, normalization rules, coupling estimators, and validation windows are fixed before testing. Such a protocol would clarify which parts of UCT add information beyond established indicators and which parts are application-specific modeling choices.
+
+The discussion identifies where UCT must be compared with existing methods and where empirical work is still required. This section prevents the framework from being read as complete validation.
+
+

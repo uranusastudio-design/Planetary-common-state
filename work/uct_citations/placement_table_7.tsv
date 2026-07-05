@@ -1,0 +1,6 @@
+Reviewer Question	UCT Response
+是否可證偽？	提供明確失敗條件與基準比較。
+是否可重現？	使用公開資料（CERES、ERA5、MODIS、GRACE、NOAA 等）與公開驗證流程。
+是否優於既有方法？	與 PCA、EOF、State-space、Planetary Boundaries 等比較。
+是否依賴特定資料集？	否，只需物理意義一致的觀測即可。
+是否可更新？	可以，Projection Operators 與資料來源可隨新觀測校準。

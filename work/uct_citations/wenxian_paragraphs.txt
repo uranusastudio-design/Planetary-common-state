@@ -1,0 +1,88 @@
+Chapter 1 Literature Map v1.0
+這章的文獻功能是建立背景：非平衡、地球系統、臨界轉換、韌性、巨觀表示。Rockström 的 planetary boundaries 框架本身就是用少數關鍵變數描述地球系統安全範圍；Lenton 與 Scheffer 系列支撐 tipping / early-warning 的必要性；Prigogine 與 Haken 支撐開放耗散系統與自組織背景。(維基百科)
+Chapter 2 Literature Map v1.0
+這章的文獻功能是幫 UCT 定位：它不是基本物理，而是有效巨觀表示。Wilson / Goldenfeld 支撐 scale、coarse-graining、effective description；Jaynes 支撐「由 constraints 建構巨觀描述」；Amari & Nagaoka 支撐 distinguishability / metric 的數學語言。(維基百科)
+Chapter 3 Literature Map v1.0
+這章主要支撐 (L_i=\pi_i(\mathbb L)) 的合理性：Kalman 支撐 state-space；Koopman 支撐「用 observables 表示 dynamics」；POD / PCA / model reduction 支撐高維系統可以被投影到可分析的低維表示。(維基百科)
+很好，我們就按照這個節奏，不急著塞文獻，而是建立完整的學術證據鏈（Evidence Chain）。
+我會維持一個原則：
+每一篇文獻都必須回答一個問題。
+不是因為它有名就引用。
+Chapter 4 Literature Map v1.0
+Constraint Geometry
+本章回答：
+為什麼 Constraint 可以形成一個 Geometry？
+引用目的
+不是證明你的 Geometry。
+而是證明：
+Geometry 作為「狀態空間表示」本身已有成熟數學基礎。
+UCT 的新意在於：
+Geometry 的座標不是空間，而是 Constraint Projections。
+Chapter 5 Literature Map v1.0
+Constraint Dynamics
+本章回答：
+Constraint 如何演化？
+引用目的
+支撐：
+[
+\frac{D\mathbb L}{Dt}
+\mathcal F(\mathbb L,\Psi,t)
+]
+是有效動力學（effective dynamics），不是新的基本運動方程。
+Chapter 6 Literature Map v1.0
+Constraint Coupling Theory
+本章回答：
+為什麼不同 Constraint 可以耦合？
+引用目的
+不是證明
+[
+C_{ij}
+]
+而是證明：
+跨領域耦合（cross-domain coupling）是成熟研究方向。
+UCT 的新意在於：
+將耦合放到同一個 Constraint Operator 的投影框架中。
+Chapter 7 Literature Map v1.0
+Stability and Critical Transitions
+本章回答：
+為什麼要定義 Critical Surface？
+引用目的
+這一章主要是：
+支撐
+Early Warning
+Critical Slowing Down
+Tipping Point
+都不是 UCT 發明。
+UCT 提供的是：
+用 Constraint Geometry 統一描述這些現象。
+可以，先給你 Chapter 8–12 Literature Map v1.0。
+這一批偏「資料、方法、驗證、比較」，不是理論本體。
+Chapter 8 — Earth-System Implementation
+本章回答：觀測資料如何進入 UCT？
+CERES 用於大氣層頂輻射通量與能量收支，GRACE/GRACE-FO 用於重力場與質量變化觀測，MODIS 提供高頻率全球陸地與植被觀測，ERA5 則是再分析資料，可支撐流場與氣候狀態估計。(維基百科)
+Chapter 9 — Data Assimilation Framework
+本章回答：如何把多源資料同化成 (\hat{\mathbb L})？
+Data assimilation 的核心是用觀測更新動態模型狀態；EnKF 特別適合高維地球物理模型，因為它用 ensemble 表示不確定性。(維基百科)
+Chapter 10 — Numerical Framework and Validation
+本章回答：UCT 如何被驗證與反駁？
+這章重點不是證明 UCT 一定有效，而是設計可失敗的測試：如果 (\hat{\mathbb L})、(C_{ij})、(g_{ij}) 不能勝過簡單 baseline，理論就必須修正。
+Chapter 11 — Discussion
+本章回答：UCT 與既有方法有何不同？
+這章最重要的語氣是：UCT 不是取代 PCA、EOF、network science、planetary boundaries，而是提出一個可比較、可校準的跨域表示框架。
+Chapter 12 — Conclusion
+本章通常不新增大量文獻。
+最多只需要回扣：
+Chapter 12 不要塞新文獻。它應該保持乾淨，重申：
+[
+\mathbb L
+\rightarrow
+L_i
+\rightarrow
+\mathbf L
+\rightarrow
+g_{ij}, C_{ij}
+\rightarrow
+\hat{\mathbb L}
+\rightarrow
+\text{validation}
+]
