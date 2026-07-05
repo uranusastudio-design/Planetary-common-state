@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PCS Observatory v1.0</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <main class="observatory-shell">
+      <header class="site-header" aria-labelledby="page-title">
+        <p class="eyebrow">PCS Observatory v1.0</p>
+        <h1 id="page-title">Planetary Common State Observatory</h1>
+      </header>
+
+      <section class="dashboard-grid" aria-label="Current PCS observatory dashboard">
+        <article class="card state-card">
+          <span class="card-label">Planetary Common State</span>
+          <strong id="current-state" class="state-value">Loading</strong>
+          <span class="card-note">Current State</span>
+        </article>
+
+        <article class="card status-card">
+          <span class="card-label">Status</span>
+          <strong>Operational Prototype</strong>
+        </article>
+
+        <article class="card metric-card">
+          <span class="card-label">Coverage</span>
+          <strong id="coverage" class="metric-value">Loading</strong>
+        </article>
+
+        <article class="card metric-card">
+          <span class="card-label">Latest Update</span>
+          <strong id="latest-update" class="metric-value metric-date">Loading</strong>
+        </article>
+      </section>
+
+      <section class="projection-section" aria-labelledby="projection-title">
+        <div class="section-heading">
+          <p class="eyebrow">Projection Cards</p>
+          <h2 id="projection-title">Current observed dimensions</h2>
+        </div>
+
+        <div class="projection-grid">
+          <article class="card projection-card">
+            <span class="projection-name">Thermal L_T</span>
+            <strong id="projection-thermal" class="projection-value">Loading</strong>
+            <div class="progress-track" aria-hidden="true">
+              <span id="progress-thermal" class="progress-fill"></span>
+            </div>
+          </article>
+          <article class="card projection-card">
+            <span class="projection-name">Chemical L_C</span>
+            <strong id="projection-chemical" class="projection-value">Loading</strong>
+            <div class="progress-track" aria-hidden="true">
+              <span id="progress-chemical" class="progress-fill"></span>
+            </div>
+          </article>
+          <article class="card projection-card">
+            <span class="projection-name">Structural L_S</span>
+            <strong id="projection-structural" class="projection-value">Loading</strong>
+            <div class="progress-track" aria-hidden="true">
+              <span id="progress-structural" class="progress-fill"></span>
+            </div>
+          </article>
+          <article class="card projection-card">
+            <span class="projection-name">Informational L_I</span>
+            <strong id="projection-informational" class="projection-value">Loading</strong>
+            <div class="progress-track" aria-hidden="true">
+              <span id="progress-informational" class="progress-fill"></span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <p id="data-message" class="data-message" role="status" aria-live="polite"></p>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
