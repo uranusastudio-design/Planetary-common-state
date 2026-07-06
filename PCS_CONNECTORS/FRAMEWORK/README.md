@@ -1,30 +1,28 @@
 # PCS Connector Framework v1.0
 
-The PCS Connector Framework defines the common documentation architecture for all future connectors used by the Planetary Common State platform.
+The PCS Connector Framework defines the official standard for every future Earth-system data connector used by the Planetary Common State platform.
 
-This framework is documentation only. It does not implement APIs, download data, create cache files, perform validation runs, or compute PCS state values.
-
-## Framework Components
-
-1. Connector Registry
-2. Connector Interface
-3. Connector Status
-4. Connector Scheduler
-5. Connector Cache
-6. Connector Metadata
-7. Connector Validation
-8. Connector Logging
-9. Connector Health
-10. Connector Configuration
+Every future connector must follow this framework regardless of provider, agency, data format, update frequency, or scientific domain.
 
 ## Purpose
 
-Future PCS connectors should provide a consistent bridge between authoritative scientific datasets and the PCS platform. The framework defines how connectors should be described before implementation so that provider records, access requirements, quality controls, and operational assumptions remain transparent.
+PCS connectors provide the controlled bridge between authoritative scientific datasets and PCS-ready observation records. The framework standardizes connector structure, lifecycle, requirements, metadata, output format, error handling, versioning, and agency mapping before new APIs are implemented.
+
+## Framework Documents
+
+- `CONNECTOR_SPECIFICATION.md`
+- `CONNECTOR_LIFECYCLE.md`
+- `CONNECTOR_REQUIREMENTS.md`
+- `CONNECTOR_METADATA.md`
+- `CONNECTOR_OUTPUT_STANDARD.md`
+- `CONNECTOR_ERROR_POLICY.md`
+- `CONNECTOR_VERSIONING.md`
+- `AGENCY_MAPPING.md`
+
+## Common Connector Rule
+
+All connectors must preserve source provenance, timestamps, units, quality metadata, confidence, license information, and version information.
 
 ## Non-Implementation Rule
 
-No connector in this framework performs network access, authentication, file download, transformation, normalization, prediction, or PCS Engine calculation. Implementation is reserved for a later engineering milestone.
-
-## Preparation Scope
-
-The framework prepares PCS for the first ten real scientific dataset connectors by defining a shared structure for metadata, status, scheduling, validation, logging, health monitoring, and configuration.
+This framework is documentation only. It does not implement APIs, download data, authenticate with providers, generate fake data, run validation, normalize observations, or compute PCS Engine values.
