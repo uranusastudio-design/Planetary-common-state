@@ -46,3 +46,10 @@ The intended lifecycle is:
 6. Implementation considered in a later engineering milestone.
 7. Validation and provenance recorded.
 
+## Connector Framework v1.0
+
+The Connector Framework v1.0 defines the documentation architecture for future PCS connectors. It separates connector registry records, connector interface expectations, status states, scheduling rules, cache policy, metadata, validation, logging, health checks, and configuration.
+
+The framework is documentation only. It does not implement APIs, execute downloads, compute PCS values, or create data products.
+
+Framework documents are located in `FRAMEWORK/`.
