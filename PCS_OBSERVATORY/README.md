@@ -1,66 +1,106 @@
-# PCS Observatory v1.1
+# PCS Observatory Prototype v1.0
 
-PCS Observatory v1.1 is a static, read-only observatory page for the Planetary Common State platform.
+PCS Observatory Prototype v1.0 is the Milestone 1 user-interface prototype for the Planetary Common State platform.
 
-## Scope
+This milestone finalizes the initial read-only observatory interface before real scientific connector implementation begins.
 
-- Reads `../PCS_ENGINE/output/latest_state.json`.
-- Displays a scientific observatory dashboard with a prototype PCS estimate, status, coverage, latest update, and projection cards for Thermal Residual, Chemical Residual, Structural `L_S`, and Informational `L_I`.
-- Labels the PCS value as a prototype estimate from partial observations rather than a complete planetary assessment.
-- Displays status as `Operational Prototype`.
-- Displays coverage as an observed-dimension count out of four projection dimensions.
-- Displays `Waiting for data` when source JSON values are null or unavailable.
-- Shows horizontal progress bars for numeric projection values.
-- Reloads `../PCS_ENGINE/output/latest_state.json` every 10 seconds without refreshing the page.
-- Includes a static SVG Earth illustration.
-- Includes a read-only data source panel and footer.
-- Does not compute values.
-- Does not interpolate missing values.
-- Does not make prediction claims.
-- Does not render charts or Earth animation.
-- Includes an experimental CesiumJS 3D Earth view for visualization only.
+## Purpose
 
-## Files
+The purpose of the prototype is to show how PCS estimates, domain values, data coverage, future layer controls, and a 3D Earth viewport can be organized in a single scientific interface.
 
-- `index.html` contains the static page structure.
-- `style.css` contains the responsive scientific visual style.
-- `app.js` loads and displays the latest PCS state JSON.
-- `assets/` is reserved for future static Observatory assets.
+The prototype is intentionally conservative. It does not claim a complete planetary assessment, does not infer missing observations, and does not render real geospatial overlays.
 
-## Running Locally
+## Current Architecture
 
-Because the page reads a JSON file from the repository, serve the repository root with a local static file server and open:
+The Observatory is a static frontend made from:
+
+- `index.html` for page structure.
+- `style.css` for the full-width responsive layout.
+- `app.js` for read-only JSON loading, display formatting, CesiumJS initialization, local time, and UI-only layer-control messages.
+- CesiumJS for the experimental 3D Earth visualization layer.
+
+The page reads:
 
 ```text
-PCS_OBSERVATORY/index.html
+../PCS_ENGINE/output/latest_state.json
 ```
 
-The Observatory is intentionally framework-free: pure HTML, CSS, and JavaScript.
+The page refreshes that JSON every 10 seconds without reloading the full browser page.
 
-## CesiumJS 3D Earth Prototype
+## Current Connected Datasets
 
-CesiumJS is used only as the 3D Earth visualization engine in this prototype.
+The current prototype displays two confirmed data sources:
 
-PCS data and state estimates continue to come from `PCS_ENGINE/output/latest_state.json`. The Observatory does not compute PCS values, infer missing values, or introduce prediction.
+- NASA GISTEMP: Global Temperature
+- NOAA Mauna Loa CO2: Atmospheric CO2
 
-Future versions may add NASA, NOAA, Copernicus, ESA, JAXA, and WMO layers after connector, provenance, and validation rules are defined.
+These sources support the current Prototype PCS Estimate and the connected Thermal Residual and Chemical Residual displays.
 
-The current CesiumJS integration is visualization only. If CesiumJS or WebGL is unavailable, the page displays a fallback message while the PCS data display remains operational.
+## Current UI Components
 
-## Wide Responsive Layout
+- Prototype PCS Estimate
+- Prototype Data Coverage
+- Prototype Domain Values
+- Confirmed Data Sources
+- Waiting for Data
+- CesiumJS 3D Earth viewport
+- Earth System Layer Control
+- Scientific Domain Panels
+- Milestone footer
 
-The Observatory now uses a wide responsive layout for desktop viewing. The left panel contains PCS state, time, refresh, and confirmed data status. The center panel contains the CesiumJS Earth visualization. The right panel contains observed dimensions and waiting-data status.
+## Current Limitations
 
-On smaller screens, the layout stacks vertically. CesiumJS remains a visualization layer only, and PCS scientific values still come from PCS_ENGINE output.
+- This is a prototype estimate from partial observations, not a complete planetary assessment.
+- Only two data sources are currently connected.
+- Sea level and NDVI remain waiting for future connector implementation.
+- Future layers are visible in the UI but do not draw overlays on the globe.
+- No prediction is implemented.
+- No scientific calculation is performed in the Observatory.
+- No fake data are added.
 
-## Scientific Domain Panels
+## CesiumJS Viewport
 
-The Observatory includes Scientific Domain Panels to prepare the interface for future 100+ Earth-system variables. The panels organize domains by active, waiting, and planned status without claiming that all variables are currently connected.
+CesiumJS is used only as a visualization engine. PCS values continue to come from `PCS_ENGINE/output/latest_state.json`.
 
-Current active data are limited to the Atmosphere domain through NASA GISTEMP and NOAA Mauna Loa CO2. Ocean and Biosphere remain waiting for sea-level, ocean, and NDVI connections. Planned domains are placeholders for future validated data integration.
+The initial camera is centered near longitude 120 degrees and latitude 20 degrees, with the full Earth visible at a stable altitude. User rotation and zoom remain enabled.
 
 ## Earth System Layer Control
 
-The Earth System Layer Control is the UI registry for future Cesium overlays. It lists planned map layers and their current connection status without rendering geospatial overlays.
+The Earth System Layer Control is the UI registry for future Cesium overlays.
 
-Only NASA GISTEMP and NOAA Mauna Loa CO2 are currently connected as data sources. No geospatial overlay rendering is implemented yet, and selecting a layer only displays its connection status.
+Connected layers:
+
+- Global Temperature
+- CO2
+
+Waiting layers:
+
+- Sea Level
+- NDVI
+
+Planned layers:
+
+- Precipitation
+- Tropical Cyclones
+- Wildfire
+- Sea Ice
+- Shipping
+- Aviation
+- Satellite Observations
+
+Selecting a layer only displays its status. No geospatial overlay rendering is implemented yet.
+
+## Next Milestone
+
+Milestone 2 should begin real scientific connector preparation and implementation planning. Priority should remain:
+
+1. Connector metadata finalization.
+2. First real dataset connector implementation.
+3. Provenance and validation checks.
+4. Observatory display updates only after validated connector output exists.
+
+## Milestone Status
+
+Current milestone: Milestone 1 Complete
+
+Ready for Milestone 2 after review.

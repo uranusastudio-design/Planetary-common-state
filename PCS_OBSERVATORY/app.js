@@ -30,6 +30,7 @@ const selectors = {
   cesiumFallback: document.querySelector("#cesium-fallback"),
   layerControlMessage: document.querySelector("#layer-control-message"),
   layerControls: document.querySelectorAll("[data-layer-status]"),
+  buildTimestamp: document.querySelector("#build-timestamp"),
 };
 
 function formatDisplayValue(value, digits = 3) {
@@ -76,7 +77,13 @@ function displayValue(element, value, digits = 3) {
 
 function displayCoverage(element, value) {
   const isMissing = value === null || typeof value === "undefined" || Number.isNaN(value);
-  updateText(element, isMissing ? "Waiting for data" : `${value} / 4`);
+  if (isMissing) {
+    updateText(element, "Waiting for data");
+  } else {
+    const connected = Number(value);
+    const waiting = Math.max(0, 4 - connected);
+    updateText(element, `Connected: ${connected} / 4\nWaiting: ${waiting} / 4\nPlanned: future layers`);
+  }
   element?.classList.toggle("is-missing", isMissing);
 }
 
@@ -238,10 +245,15 @@ function initializeLayerControls() {
   });
 }
 
+function renderBuildTimestamp() {
+  updateText(selectors.buildTimestamp, document.lastModified || "Static prototype");
+}
+
 loadLatestState();
 renderClock();
 initializeCesiumGlobe();
 initializeLayerControls();
+renderBuildTimestamp();
 window.addEventListener("resize", () => {
   if (cesiumViewer) {
     cesiumViewer.resize();

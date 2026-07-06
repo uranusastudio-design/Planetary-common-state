@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>PCS Observatory v1.2</title>
+    <title>PCS Observatory Prototype v1.0</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cesium@1.120.0/Build/Cesium/Widgets/widgets.css">
     <link rel="stylesheet" href="style.css">
     <script>
@@ -14,15 +14,15 @@
     <main class="observatory-shell">
       <header class="site-header" aria-labelledby="page-title">
         <div class="header-copy">
-          <p class="eyebrow">PCS Observatory v1.2</p>
-          <h1 id="page-title">Planetary Common State Observatory</h1>
-          <p class="subtitle">Read-only prototype for unified Earth-system state monitoring.</p>
+          <p class="eyebrow">PCS Observatory Prototype v1.0</p>
+          <h1 id="page-title">Prototype Observatory</h1>
+          <p class="subtitle">Read-only prototype for partial Planetary Common State monitoring before real connector implementation.</p>
         </div>
       </header>
 
-      <section class="observatory-layout" aria-label="PCS Observatory wide dashboard">
+      <section class="observatory-layout" aria-label="PCS Observatory Prototype dashboard">
         <aside class="layout-panel left-panel" aria-label="PCS state and source status">
-          <section class="dashboard-grid" aria-label="Current PCS observatory dashboard">
+          <section class="dashboard-grid" aria-label="Prototype Observatory dashboard">
             <article class="card state-card">
               <span class="card-label">Prototype PCS Estimate</span>
               <strong id="current-state" class="state-value">Loading</strong>
@@ -32,12 +32,12 @@
 
             <article class="card status-card">
               <span class="card-label">Status</span>
-              <strong><span class="status-dot" aria-hidden="true">&#128994;</span> Operational Prototype v0.1</strong>
+              <strong><span class="status-dot" aria-hidden="true">&#128994;</span> Prototype Observatory v1.0</strong>
             </article>
 
             <article class="card metric-card">
-              <span class="card-label">Observation Coverage</span>
-              <strong id="coverage" class="metric-value">Loading</strong>
+              <span class="card-label">Prototype Data Coverage</span>
+              <strong id="coverage" class="metric-value coverage-value">Loading</strong>
             </article>
 
             <article class="card metric-card">
@@ -200,8 +200,8 @@
         <aside class="layout-panel right-panel" aria-label="Observed dimensions and missing data">
           <section class="projection-section" aria-labelledby="projection-title">
             <div class="section-heading">
-              <p class="eyebrow">Projection Cards</p>
-              <h2 id="projection-title">Current observed dimensions</h2>
+              <p class="eyebrow">Prototype Domain Values</p>
+              <h2 id="projection-title">Prototype Domain Values</h2>
             </div>
 
             <div class="projection-grid">
@@ -222,15 +222,17 @@
                 </div>
               </article>
               <article class="card projection-card">
-                <span class="projection-name">Structural L_S</span>
+                <span class="projection-name">Structural Residual</span>
                 <strong id="projection-structural" class="projection-value">Loading</strong>
+                <span class="projection-source">Waiting for data</span>
                 <div class="progress-track" aria-hidden="true">
                   <span id="progress-structural" class="progress-fill"></span>
                 </div>
               </article>
               <article class="card projection-card">
-                <span class="projection-name">Informational L_I</span>
+                <span class="projection-name">Informational Residual</span>
                 <strong id="projection-informational" class="projection-value">Loading</strong>
+                <span class="projection-source">Waiting for data</span>
                 <div class="progress-track" aria-hidden="true">
                   <span id="progress-informational" class="progress-fill"></span>
                 </div>
@@ -259,7 +261,7 @@
           <article class="card domain-card domain-active">
             <div class="domain-card-header">
               <h3>Atmosphere</h3>
-              <span class="domain-status">Active</span>
+              <span class="domain-status">Connected</span>
             </div>
             <dl class="domain-meta">
               <div><dt>Confirmed data count</dt><dd>2</dd></div>
@@ -409,10 +411,11 @@
       </section>
 
       <footer class="observatory-footer">
-        <strong>Planetary Common State Observatory</strong>
-        <span>Read-only mode</span>
-        <span>Data source: PCS_ENGINE/output/latest_state.json</span>
-        <span>Auto Refresh: 10 seconds</span>
+        <strong>PCS Observatory Prototype v1.0</strong>
+        <span>Current milestone: Milestone 1 Complete</span>
+        <span>Repository: https://github.com/uranusastudio-design/Planetary-common-state</span>
+        <span>GitHub Pages URL: https://uranusastudio-design.github.io/Planetary-common-state/</span>
+        <span>Build timestamp: <span id="build-timestamp">Loading</span></span>
       </footer>
     </main>
 
