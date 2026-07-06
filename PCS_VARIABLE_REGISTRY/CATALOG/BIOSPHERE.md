@@ -19,6 +19,8 @@ The Biosphere catalog covers future variable groups describing living systems, e
 
 NDVI is planned as the first Biosphere connector. This note defines a future connector category only and does not add actual variable entries.
 
+NASA FIRMS becomes the primary Biosphere wildfire and active fire connector for future PCS disturbance observations, including Active Fire Detection, Fire Radiative Power, Burned Area Candidate, and Thermal Anomaly. No actual variable entries are implemented in this catalog yet.
+
 ## Possible Observation Sources
 
 - NASA

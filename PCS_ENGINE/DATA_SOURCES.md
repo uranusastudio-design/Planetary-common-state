@@ -23,6 +23,7 @@ Current confirmed source count: 2
 | NDVI | Connector structure implemented v0.1; data access pending unless real source was successfully loaded | NASA MODIS, NASA VIIRS, ESA / Copernicus vegetation products | Biosphere |
 | NSIDC Sea Ice | Connector implemented v1.0; data access pending unless real source was successfully loaded | NSIDC | Cryosphere |
 | NASA GPM IMERG | Connector implemented v1.0; data access pending unless real source was successfully loaded | NASA GPM / GES DISC | Hydrology |
+| NASA FIRMS Wildfire | Connector implemented v1.0; data access pending unless real source was successfully loaded | NASA FIRMS | Biosphere |
 | ERA5 | Planned | Copernicus Climate Change Service (C3S) | Atmosphere, Hydrology, Energy |
 
 Global Mean Sea Level is planned as the next Ocean data source category. The connector structure is implemented, but data access remains pending unless a real sea-level source is successfully parsed. No sea level values are inferred or added.
@@ -35,9 +36,11 @@ NSIDC Sea Ice is the primary Cryosphere connector. The connector is implemented 
 
 NASA GPM IMERG is the primary Hydrology precipitation connector. The connector is implemented v1.0 for precipitation rate, accumulated precipitation, and rainfall intensity records, but data access remains pending unless official NASA IMERG source records are successfully parsed and validated. No precipitation values are inferred or added.
 
+NASA FIRMS Wildfire is the primary Biosphere wildfire and active fire connector. The connector is implemented v1.0 for active fire detection, fire radiative power, burned area candidate, and thermal anomaly records, but data access remains pending unless official NASA FIRMS source records are successfully parsed and validated. No wildfire values are inferred or added.
+
 ## Missing Sources
 
-Sea Level, NDVI, NSIDC Sea Ice, and NASA GPM IMERG are not connected to current PCS calculations. Missing sources remain unavailable and are not fabricated.
+Sea Level, NDVI, NSIDC Sea Ice, NASA GPM IMERG, and NASA FIRMS Wildfire are not connected to current PCS calculations. Missing sources remain unavailable and are not fabricated.
 
 ## Fallback Policy
 
