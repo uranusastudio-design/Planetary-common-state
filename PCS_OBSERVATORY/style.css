@@ -25,34 +25,19 @@ body {
 }
 
 .observatory-shell {
-  width: min(1080px, calc(100% - 36px));
+  width: 100%;
+  max-width: none;
   margin: 0 auto;
-  padding: 52px 0 64px;
+  padding: 24px clamp(16px, 2vw, 34px) 40px;
 }
 
 .site-header {
-  display: grid;
-  grid-template-columns: minmax(300px, 0.9fr) minmax(0, 1.25fr);
-  align-items: center;
-  gap: 44px;
-  padding: 18px 0 46px;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 12px 0 24px;
   border-bottom: 1px solid var(--border);
-}
-
-.earth-panel {
-  display: grid;
-  place-items: center;
-  min-height: 320px;
-  border: 1px solid var(--border);
-  border-radius: 30px;
-  background: radial-gradient(circle at 50% 42%, #ffffff 0%, #f2fbff 52%, #e4f6ff 100%);
-  box-shadow: var(--shadow);
-}
-
-.earth-illustration {
-  width: min(270px, 84%);
-  height: auto;
-  display: block;
 }
 
 .header-copy {
@@ -64,7 +49,7 @@ body {
 .projection-name {
   margin: 0;
   color: var(--accent-strong);
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -77,130 +62,107 @@ h2 {
 }
 
 h1 {
-  margin-top: 10px;
+  margin-top: 8px;
   color: var(--accent-strong);
-  font-size: clamp(3rem, 7vw, 5.6rem);
+  font-size: clamp(2.4rem, 4vw, 4.8rem);
   line-height: 0.98;
-  max-width: 760px;
 }
 
 .subtitle {
-  max-width: 640px;
-  margin: 20px 0 0;
+  max-width: 760px;
+  margin: 14px 0 0;
   color: var(--muted);
-  font-size: clamp(1.08rem, 2vw, 1.35rem);
+  font-size: clamp(1rem, 1.4vw, 1.22rem);
   line-height: 1.5;
 }
 
 h2 {
   margin-top: 8px;
   color: var(--accent-strong);
-  font-size: clamp(1.8rem, 4vw, 3.2rem);
+  font-size: clamp(1.55rem, 2.4vw, 2.65rem);
   line-height: 1.05;
+}
+
+.observatory-layout {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.82fr) minmax(520px, 1.45fr) minmax(300px, 0.82fr);
+  gap: clamp(16px, 1.6vw, 26px);
+  align-items: start;
+  margin-top: 24px;
+}
+
+.layout-panel {
+  min-width: 0;
+}
+
+.card {
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: var(--shadow);
 }
 
 .dashboard-grid,
 .projection-grid {
   display: grid;
-  gap: 18px;
+  gap: 14px;
 }
 
 .dashboard-grid {
-  grid-template-columns: minmax(0, 1.65fr) minmax(250px, 0.9fr);
-  margin-top: 40px;
-  align-items: stretch;
-  grid-template-areas:
-    "state status"
-    "state coverage"
-    "state year"
-    "json local"
-    "refresh refresh";
-}
-
-.card {
-  border: 1px solid var(--border);
-  border-radius: 22px;
-  background: #ffffff;
-  box-shadow: var(--shadow);
+  grid-template-columns: 1fr;
 }
 
 .state-card {
-  grid-area: state;
-  min-height: 430px;
-  padding: 40px;
+  min-height: 248px;
+  padding: 28px;
   background: linear-gradient(180deg, #ffffff 0%, var(--surface-strong) 100%);
 }
 
-.status-card {
-  grid-area: status;
-}
-
-.metric-card {
-  min-height: 132px;
-}
-
-.metric-card:nth-of-type(3) {
-  grid-area: coverage;
-}
-
-.metric-card:nth-of-type(4) {
-  grid-area: year;
-}
-
-.metric-card:nth-of-type(5) {
-  grid-area: json;
-}
-
-.metric-card:nth-of-type(6) {
-  grid-area: local;
-}
-
-.metric-card:nth-of-type(7) {
-  grid-area: refresh;
+.status-card,
+.metric-card,
+.projection-card,
+.data-source-panel {
+  padding: 20px;
 }
 
 .status-card,
 .metric-card {
-  padding: 24px;
-}
-
-.status-card {
-  min-height: 132px;
+  min-height: 112px;
   background: var(--surface);
 }
 
 .card-note {
   display: block;
-  margin-top: 18px;
+  margin-top: 14px;
   color: var(--muted);
-  font-size: 1rem;
+  font-size: 0.98rem;
   font-weight: 700;
 }
 
 .metric-value,
 .projection-value {
   display: block;
-  margin-top: 18px;
+  margin-top: 14px;
   color: var(--text);
-  font-size: clamp(1.9rem, 4vw, 3.25rem);
+  font-size: clamp(1.55rem, 2.2vw, 2.6rem);
   line-height: 1;
   overflow-wrap: anywhere;
 }
 
 .state-value {
   display: block;
-  margin-top: 42px;
+  margin-top: 34px;
   color: var(--accent-blue);
-  font-size: clamp(4.6rem, 10vw, 8.5rem);
+  font-size: clamp(4rem, 5.8vw, 6.8rem);
   line-height: 0.9;
   overflow-wrap: anywhere;
 }
 
 .status-card strong {
   display: block;
-  margin-top: 16px;
+  margin-top: 14px;
   color: var(--accent-strong);
-  font-size: clamp(1.28rem, 2vw, 1.72rem);
+  font-size: clamp(1.15rem, 1.55vw, 1.55rem);
   line-height: 1.15;
 }
 
@@ -211,26 +173,24 @@ h2 {
 
 .metric-date {
   white-space: pre-line;
-  font-size: clamp(1.25rem, 2.4vw, 1.9rem);
-  line-height: 1.22;
-}
-
-.projection-section {
-  margin-top: 78px;
+  font-size: clamp(1.05rem, 1.45vw, 1.55rem);
+  line-height: 1.24;
 }
 
 .section-heading {
-  margin-bottom: 28px;
+  margin-bottom: 18px;
+}
+
+.projection-section {
+  margin: 0;
 }
 
 .projection-grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 22px;
+  grid-template-columns: 1fr;
 }
 
 .projection-card {
-  min-height: 220px;
-  padding: 30px;
+  min-height: 154px;
   background: linear-gradient(180deg, #ffffff 0%, var(--surface) 100%);
 }
 
@@ -240,14 +200,14 @@ h2 {
 
 .projection-value.is-missing {
   color: var(--muted);
-  font-size: clamp(1.35rem, 2.5vw, 1.9rem);
+  font-size: clamp(1.2rem, 1.7vw, 1.55rem);
   line-height: 1.12;
 }
 
 .progress-track {
   position: relative;
-  height: 11px;
-  margin-top: 32px;
+  height: 10px;
+  margin-top: 26px;
   overflow: hidden;
   border-radius: 999px;
   background: var(--track);
@@ -270,48 +230,36 @@ h2 {
 
 .data-message {
   min-height: 24px;
-  margin: 24px 0 0;
+  margin: 14px 0 0;
   color: var(--muted);
   font-size: 0.95rem;
-}
-
-.data-status-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
-  margin-top: 18px;
 }
 
 .data-source-panel {
   display: grid;
   gap: 10px;
-  margin-top: 18px;
-  padding: 24px 26px;
+  margin-top: 14px;
   background: linear-gradient(180deg, #ffffff 0%, var(--surface) 100%);
 }
 
 .data-source-panel strong {
   color: var(--accent-strong);
-  font-size: clamp(1.2rem, 2.2vw, 1.8rem);
+  font-size: clamp(1.08rem, 1.45vw, 1.45rem);
   line-height: 1.2;
   overflow-wrap: anywhere;
 }
 
 .data-source-panel span:not(.card-label) {
   color: var(--muted);
-  font-size: 1rem;
+  font-size: 0.96rem;
   font-weight: 700;
-}
-
-.data-status-grid .data-source-panel {
-  margin-top: 0;
 }
 
 .status-list {
   margin: 4px 0 0;
   padding-left: 1.2rem;
   color: var(--text);
-  font-size: 1rem;
+  font-size: 0.98rem;
   line-height: 1.55;
 }
 
@@ -320,13 +268,13 @@ h2 {
 }
 
 .globe-section {
-  margin-top: 78px;
+  margin: 0;
 }
 
 .globe-card {
   display: grid;
   gap: 18px;
-  padding: 26px;
+  padding: 22px;
   background: linear-gradient(180deg, #ffffff 0%, var(--surface) 100%);
 }
 
@@ -340,7 +288,8 @@ h2 {
 .cesium-globe {
   position: relative;
   width: 100%;
-  min-height: 360px;
+  min-height: 520px;
+  height: min(62vh, 680px);
   overflow: hidden;
   border: 1px solid var(--border);
   border-radius: 18px;
@@ -370,8 +319,8 @@ h2 {
   flex-wrap: wrap;
   gap: 10px 18px;
   align-items: center;
-  margin-top: 36px;
-  padding-top: 22px;
+  margin-top: 30px;
+  padding-top: 20px;
   border-top: 1px solid var(--border);
   color: var(--muted);
   font-size: 0.96rem;
@@ -381,57 +330,55 @@ h2 {
   color: var(--accent-strong);
 }
 
-@media (max-width: 880px) {
-  .observatory-shell {
-    width: min(100% - 24px, 720px);
-    padding: 28px 0 42px;
+@media (max-width: 1180px) {
+  .observatory-layout {
+    grid-template-columns: 1fr;
   }
 
-  .site-header,
+  .dashboard-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .state-card {
+    grid-column: span 2;
+  }
+
+  .projection-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .observatory-shell {
+    padding: 18px 12px 34px;
+  }
+
+  .site-header {
+    align-items: start;
+  }
+
   .dashboard-grid,
   .projection-grid {
     grid-template-columns: 1fr;
   }
 
-  .dashboard-grid {
-    grid-template-areas:
-      "state"
-      "status"
-      "coverage"
-      "year"
-      "json"
-      "local"
-      "refresh";
-  }
-
-  .data-status-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .earth-panel {
-    min-height: 250px;
+  .state-card {
+    grid-column: auto;
   }
 
   .state-card,
   .status-card,
   .metric-card,
   .projection-card {
-    min-height: 156px;
+    min-height: 140px;
   }
 
   .state-card {
-    padding: 30px;
-  }
-
-  .projection-section {
-    margin-top: 52px;
-  }
-
-  .globe-section {
-    margin-top: 52px;
+    padding: 24px;
   }
 
   .cesium-globe {
-    min-height: 280px;
+    min-height: 360px;
+    height: 54vh;
   }
 }

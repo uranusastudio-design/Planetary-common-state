@@ -4,6 +4,7 @@ const REFRESH_INTERVAL_MS = 10000;
 let latestStateSignature = "";
 let lastJsonUpdateValue = null;
 let nextRefreshAt = Date.now() + REFRESH_INTERVAL_MS;
+let cesiumViewer = null;
 
 const selectors = {
   currentState: document.querySelector("#current-state"),
@@ -162,7 +163,7 @@ function initializeCesiumGlobe() {
   }
 
   try {
-    const viewer = new Cesium.Viewer(selectors.cesiumGlobe, {
+    cesiumViewer = new Cesium.Viewer(selectors.cesiumGlobe, {
       animation: false,
       baseLayer: false,
       baseLayerPicker: false,
@@ -178,11 +179,19 @@ function initializeCesiumGlobe() {
       vrButton: false,
     });
 
-    viewer.scene.globe.baseColor = Cesium.Color.fromCssColorString("#1565c0");
-    viewer.scene.skyAtmosphere.show = true;
-    viewer.scene.globe.enableLighting = true;
-    viewer.scene.camera.setView({
-      destination: Cesium.Cartesian3.fromDegrees(15, 12, 18000000),
+    cesiumViewer.scene.globe.baseColor = Cesium.Color.fromCssColorString("#1565c0");
+    cesiumViewer.scene.skyAtmosphere.show = true;
+    cesiumViewer.scene.globe.enableLighting = true;
+    cesiumViewer.scene.screenSpaceCameraController.minimumZoomDistance = 12000000;
+    cesiumViewer.scene.screenSpaceCameraController.maximumZoomDistance = 50000000;
+    cesiumViewer.scene.screenSpaceCameraController.inertiaZoom = 0;
+    cesiumViewer.scene.camera.setView({
+      destination: Cesium.Cartesian3.fromDegrees(0, 15, 30000000),
+      orientation: {
+        heading: 0,
+        pitch: -Cesium.Math.PI_OVER_TWO,
+        roll: 0,
+      },
     });
 
     updateText(selectors.cesiumFallback, "CesiumJS globe initialized. Visualization only.");
@@ -195,5 +204,10 @@ function initializeCesiumGlobe() {
 loadLatestState();
 renderClock();
 initializeCesiumGlobe();
+window.addEventListener("resize", () => {
+  if (cesiumViewer) {
+    cesiumViewer.resize();
+  }
+});
 setInterval(renderClock, 1000);
 setInterval(loadLatestState, REFRESH_INTERVAL_MS);

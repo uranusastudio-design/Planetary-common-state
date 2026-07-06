@@ -13,28 +13,6 @@
   <body>
     <main class="observatory-shell">
       <header class="site-header" aria-labelledby="page-title">
-        <div class="earth-panel" aria-hidden="true">
-          <svg class="earth-illustration" viewBox="0 0 320 320" role="img">
-            <defs>
-              <linearGradient id="earth-ocean" x1="80" y1="50" x2="240" y2="280" gradientUnits="userSpaceOnUse">
-                <stop offset="0" stop-color="#dff8ff"></stop>
-                <stop offset="0.55" stop-color="#86dcff"></stop>
-                <stop offset="1" stop-color="#1b76d3"></stop>
-              </linearGradient>
-              <linearGradient id="earth-land" x1="92" y1="92" x2="230" y2="250" gradientUnits="userSpaceOnUse">
-                <stop offset="0" stop-color="#f7fdff"></stop>
-                <stop offset="1" stop-color="#bdefff"></stop>
-              </linearGradient>
-            </defs>
-            <circle cx="160" cy="160" r="126" fill="url(#earth-ocean)"></circle>
-            <path d="M86 132c22-36 58-59 96-58 23 1 43 8 61 20-24 2-40 11-48 27-9 17-4 33 13 48 12 11 17 25 14 42-7 39-43 62-79 51-19-6-28-20-27-43 2-25-7-42-27-51-15-7-16-19-3-36Z" fill="url(#earth-land)" opacity="0.88"></path>
-            <path d="M203 96c29 9 52 29 66 56-17-5-33-4-47 3-17 9-35 4-45-12-7-13-3-27 11-38 4-3 9-6 15-9Z" fill="#f7fdff" opacity="0.72"></path>
-            <path d="M76 198c21 4 38 15 50 34 8 13 21 21 40 23-35 12-75 2-101-26-11-12-19-25-24-41 10 5 22 8 35 10Z" fill="#f7fdff" opacity="0.6"></path>
-            <circle cx="160" cy="160" r="126" fill="none" stroke="#ffffff" stroke-width="10" opacity="0.78"></circle>
-            <circle cx="160" cy="160" r="142" fill="none" stroke="#d7f3ff" stroke-width="2"></circle>
-            <path d="M34 160h252M160 34c-38 35-57 77-57 126s19 91 57 126M160 34c38 35 57 77 57 126s-19 91-57 126" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.45"></path>
-          </svg>
-        </div>
         <div class="header-copy">
           <p class="eyebrow">PCS Observatory v1.2</p>
           <h1 id="page-title">Planetary Common State Observatory</h1>
@@ -42,126 +20,130 @@
         </div>
       </header>
 
-      <section class="dashboard-grid" aria-label="Current PCS observatory dashboard">
-        <article class="card state-card">
-          <span class="card-label">Current PCS State</span>
-          <strong id="current-state" class="state-value">Loading</strong>
-          <span class="card-note">Planetary Common State</span>
-        </article>
+      <section class="observatory-layout" aria-label="PCS Observatory wide dashboard">
+        <aside class="layout-panel left-panel" aria-label="PCS state and source status">
+          <section class="dashboard-grid" aria-label="Current PCS observatory dashboard">
+            <article class="card state-card">
+              <span class="card-label">Current PCS State</span>
+              <strong id="current-state" class="state-value">Loading</strong>
+              <span class="card-note">Planetary Common State</span>
+            </article>
 
-        <article class="card status-card">
-          <span class="card-label">Status</span>
-          <strong><span class="status-dot" aria-hidden="true">&#128994;</span> Operational Prototype v0.1</strong>
-        </article>
+            <article class="card status-card">
+              <span class="card-label">Status</span>
+              <strong><span class="status-dot" aria-hidden="true">&#128994;</span> Operational Prototype v0.1</strong>
+            </article>
 
-        <article class="card metric-card">
-          <span class="card-label">Observation Coverage</span>
-          <strong id="coverage" class="metric-value">Loading</strong>
-        </article>
+            <article class="card metric-card">
+              <span class="card-label">Observation Coverage</span>
+              <strong id="coverage" class="metric-value">Loading</strong>
+            </article>
 
-        <article class="card metric-card">
-          <span class="card-label">Latest Update Year</span>
-          <strong id="latest-year" class="metric-value">Loading</strong>
-        </article>
+            <article class="card metric-card">
+              <span class="card-label">Latest Update Year</span>
+              <strong id="latest-year" class="metric-value">Loading</strong>
+            </article>
 
-        <article class="card metric-card">
-          <span class="card-label">Last JSON Update</span>
-          <strong id="last-json-update" class="metric-value metric-date">Loading</strong>
-        </article>
+            <article class="card metric-card">
+              <span class="card-label">Last JSON Update</span>
+              <strong id="last-json-update" class="metric-value metric-date">Loading</strong>
+            </article>
 
-        <article class="card metric-card">
-          <span class="card-label">Local Browser Time</span>
-          <strong id="local-browser-time" class="metric-value metric-date">Loading</strong>
-        </article>
+            <article class="card metric-card">
+              <span class="card-label">Local Browser Time</span>
+              <strong id="local-browser-time" class="metric-value metric-date">Loading</strong>
+            </article>
 
-        <article class="card metric-card">
-          <span class="card-label">Auto Refresh: 10 seconds</span>
-          <strong id="auto-refresh-countdown" class="metric-value">Loading</strong>
-        </article>
-      </section>
+            <article class="card metric-card">
+              <span class="card-label">Auto Refresh: 10 seconds</span>
+              <strong id="auto-refresh-countdown" class="metric-value">Loading</strong>
+            </article>
+          </section>
 
-      <section class="projection-section" aria-labelledby="projection-title">
-        <div class="section-heading">
-          <p class="eyebrow">Projection Cards</p>
-          <h2 id="projection-title">Current observed dimensions</h2>
-        </div>
+          <p id="data-message" class="data-message" role="status" aria-live="polite"></p>
 
-        <div class="projection-grid">
-          <article class="card projection-card">
-            <span class="projection-name">Thermal L_T</span>
-            <strong id="projection-thermal" class="projection-value">Loading</strong>
-            <div class="progress-track" aria-hidden="true">
-              <span id="progress-thermal" class="progress-fill"></span>
-            </div>
+          <article class="card data-source-panel">
+            <span class="card-label">Confirmed Data Sources</span>
+            <strong>Confirmed data sources: <span id="confirmed-source-count">2</span></strong>
+            <ul class="status-list">
+              <li>NASA GISTEMP: Global Temperature</li>
+              <li>NOAA Mauna Loa CO2: Atmospheric CO2</li>
+            </ul>
           </article>
-          <article class="card projection-card">
-            <span class="projection-name">Chemical L_C</span>
-            <strong id="projection-chemical" class="projection-value">Loading</strong>
-            <div class="progress-track" aria-hidden="true">
-              <span id="progress-chemical" class="progress-fill"></span>
-            </div>
+
+          <article class="card data-source-panel" aria-label="Observatory data source">
+            <span class="card-label">Data Source</span>
+            <strong>PCS_ENGINE/output/latest_state.json</strong>
+            <span>Read-only mode</span>
+            <span>Auto Refresh: 10 seconds</span>
           </article>
-          <article class="card projection-card">
-            <span class="projection-name">Structural L_S</span>
-            <strong id="projection-structural" class="projection-value">Loading</strong>
-            <div class="progress-track" aria-hidden="true">
-              <span id="progress-structural" class="progress-fill"></span>
-            </div>
-          </article>
-          <article class="card projection-card">
-            <span class="projection-name">Informational L_I</span>
-            <strong id="projection-informational" class="projection-value">Loading</strong>
-            <div class="progress-track" aria-hidden="true">
-              <span id="progress-informational" class="progress-fill"></span>
-            </div>
-          </article>
-        </div>
-      </section>
+        </aside>
 
-      <p id="data-message" class="data-message" role="status" aria-live="polite"></p>
-
-      <section class="data-status-grid" aria-label="PCS data status">
-        <article class="card data-source-panel">
-          <span class="card-label">Confirmed Data Sources</span>
-          <strong>Confirmed data sources: <span id="confirmed-source-count">2</span></strong>
-          <ul class="status-list">
-            <li>NASA GISTEMP: Global Temperature</li>
-            <li>NOAA Mauna Loa CO2: Atmospheric CO2</li>
-          </ul>
-        </article>
-
-        <article class="card data-source-panel">
-          <span class="card-label">Waiting for Data</span>
-          <strong>Waiting for data:</strong>
-          <ul class="status-list status-list-muted">
-            <li>Sea Level</li>
-            <li>NDVI</li>
-          </ul>
-        </article>
-      </section>
-
-      <section class="card data-source-panel" aria-label="Observatory data source">
-        <span class="card-label">Data Source</span>
-        <strong>PCS_ENGINE/output/latest_state.json</strong>
-        <span>Read-only mode</span>
-        <span>Auto Refresh: 10 seconds</span>
-      </section>
-
-      <section class="globe-section" aria-labelledby="globe-title">
-        <div class="section-heading">
-          <p class="eyebrow">3D Earth Observatory</p>
-          <h2 id="globe-title">3D Earth Observatory</h2>
-        </div>
-        <article class="card globe-card">
-          <div class="globe-copy">
-            <span class="card-label">Experimental 3D Earth view</span>
-            <p>Visualization only. PCS values continue to come from PCS_ENGINE output.</p>
+        <section class="layout-panel center-panel globe-section" aria-labelledby="globe-title">
+          <div class="section-heading">
+            <p class="eyebrow">3D Earth Observatory</p>
+            <h2 id="globe-title">3D Earth Observatory</h2>
           </div>
-          <div id="cesium-globe" class="cesium-globe" aria-label="Experimental CesiumJS 3D Earth view"></div>
-          <p id="cesium-fallback" class="cesium-fallback" role="status" aria-live="polite">
-            Loading 3D Earth view.
-          </p>
-        </article>
+          <article class="card globe-card">
+            <div class="globe-copy">
+              <span class="card-label">Experimental 3D Earth view</span>
+              <p>Visualization only. PCS values continue to come from PCS_ENGINE output.</p>
+            </div>
+            <div id="cesium-globe" class="cesium-globe" aria-label="Experimental CesiumJS 3D Earth view"></div>
+            <p id="cesium-fallback" class="cesium-fallback" role="status" aria-live="polite">
+              Loading 3D Earth view.
+            </p>
+          </article>
+        </section>
+
+        <aside class="layout-panel right-panel" aria-label="Observed dimensions and missing data">
+          <section class="projection-section" aria-labelledby="projection-title">
+            <div class="section-heading">
+              <p class="eyebrow">Projection Cards</p>
+              <h2 id="projection-title">Current observed dimensions</h2>
+            </div>
+
+            <div class="projection-grid">
+              <article class="card projection-card">
+                <span class="projection-name">Thermal L_T</span>
+                <strong id="projection-thermal" class="projection-value">Loading</strong>
+                <div class="progress-track" aria-hidden="true">
+                  <span id="progress-thermal" class="progress-fill"></span>
+                </div>
+              </article>
+              <article class="card projection-card">
+                <span class="projection-name">Chemical L_C</span>
+                <strong id="projection-chemical" class="projection-value">Loading</strong>
+                <div class="progress-track" aria-hidden="true">
+                  <span id="progress-chemical" class="progress-fill"></span>
+                </div>
+              </article>
+              <article class="card projection-card">
+                <span class="projection-name">Structural L_S</span>
+                <strong id="projection-structural" class="projection-value">Loading</strong>
+                <div class="progress-track" aria-hidden="true">
+                  <span id="progress-structural" class="progress-fill"></span>
+                </div>
+              </article>
+              <article class="card projection-card">
+                <span class="projection-name">Informational L_I</span>
+                <strong id="projection-informational" class="projection-value">Loading</strong>
+                <div class="progress-track" aria-hidden="true">
+                  <span id="progress-informational" class="progress-fill"></span>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <article class="card data-source-panel">
+            <span class="card-label">Waiting for Data</span>
+            <strong>Waiting for data:</strong>
+            <ul class="status-list status-list-muted">
+              <li>Sea Level</li>
+              <li>NDVI</li>
+            </ul>
+          </article>
+        </aside>
       </section>
 
       <footer class="observatory-footer">

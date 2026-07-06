@@ -45,3 +45,9 @@ PCS data and state estimates continue to come from `PCS_ENGINE/output/latest_sta
 Future versions may add NASA, NOAA, Copernicus, ESA, JAXA, and WMO layers after connector, provenance, and validation rules are defined.
 
 The current CesiumJS integration is visualization only. If CesiumJS or WebGL is unavailable, the page displays a fallback message while the PCS data display remains operational.
+
+## Wide Responsive Layout
+
+The Observatory now uses a wide responsive layout for desktop viewing. The left panel contains PCS state, time, refresh, and confirmed data status. The center panel contains the CesiumJS Earth visualization. The right panel contains observed dimensions and waiting-data status.
+
+On smaller screens, the layout stacks vertically. CesiumJS remains a visualization layer only, and PCS scientific values still come from PCS_ENGINE output.
