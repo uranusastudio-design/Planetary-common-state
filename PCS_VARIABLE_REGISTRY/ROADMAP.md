@@ -2,21 +2,33 @@
 
 ## Phase 1: Registry Framework
 
-Establish the registry structure, domain taxonomy, required metadata schema, and documentation rules. This phase defines how variables are described before any large variable list is added.
+Establish the registry structure, domain taxonomy, metadata schema, documentation rules, and versioning conventions.
 
-## Phase 2: 100+ Core Scientific Variables
+## Phase 2: Domain Registry
 
-Add the first core set of PCS variables across the major scientific domains. Each variable should include a unique identifier, scientific definition, unit, source, update frequency, spatial scale, temporal scale, quality flag, confidence level, and references.
+Create domain-level documentation for the initial scientific domains. Each domain should define scope, major subdomains, relevant scientific agencies, and its role inside PCS.
 
-## Phase 3: 250+ Extended Variables
+## Phase 3: 100+ Scientific Variables
 
-Expand the registry to include additional domain-specific variables, secondary indicators, validation variables, and candidate variables for future PCS projections. Entries should remain compatible with the original schema.
+Add the first core set of more than one hundred scientific variables across the registry domains. Each entry should follow `VARIABLE_SCHEMA.md`.
 
-## Phase 4: Automatic Connector Registry
+## Phase 4: 250+ Scientific Variables
 
-Map documented variables to data adapters, APIs, file formats, update schedules, and quality-control workflows. This phase should support automated ingestion without changing the scientific registry structure.
+Expand the registry to more than two hundred fifty variables, including extended scientific indicators, validation variables, and candidate variables for future PCS projections.
 
-## Phase 5: Planetary Common State Integration
+## Phase 5: Automatic Connector Registry
 
-Integrate approved registry variables into PCS projection definitions, validation workflows, benchmark comparisons, dashboards, and future operational PCS state products.
+Map approved variables to data connectors, access methods, update schedules, file formats, quality-control checks, and provenance records.
+
+## Phase 6: PCS Engine Integration
+
+Integrate approved registry variables into PCS_ENGINE data adapters, projection definitions, state construction workflows, and output metadata.
+
+## Phase 7: Real-time Observatory
+
+Expose selected registry variables through PCS_OBSERVATORY dashboards, live status displays, data quality views, and reproducibility metadata.
+
+## Phase 8: Global AI-assisted Planetary Monitoring
+
+Support future AI-assisted analysis modules that use registry definitions, provenance, uncertainty, and validation status as controlled scientific context.
 
