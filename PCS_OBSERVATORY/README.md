@@ -51,3 +51,9 @@ The current CesiumJS integration is visualization only. If CesiumJS or WebGL is 
 The Observatory now uses a wide responsive layout for desktop viewing. The left panel contains PCS state, time, refresh, and confirmed data status. The center panel contains the CesiumJS Earth visualization. The right panel contains observed dimensions and waiting-data status.
 
 On smaller screens, the layout stacks vertically. CesiumJS remains a visualization layer only, and PCS scientific values still come from PCS_ENGINE output.
+
+## Scientific Domain Panels
+
+The Observatory includes Scientific Domain Panels to prepare the interface for future 100+ Earth-system variables. The panels organize domains by active, waiting, and planned status without claiming that all variables are currently connected.
+
+Current active data are limited to the Atmosphere domain through NASA GISTEMP and NOAA Mauna Loa CO2. Ocean and Biosphere remain waiting for sea-level, ocean, and NDVI connections. Planned domains are placeholders for future validated data integration.

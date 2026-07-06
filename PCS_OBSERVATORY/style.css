@@ -314,6 +314,108 @@ h2 {
   font-size: 0.7rem;
 }
 
+.domain-section {
+  margin-top: 34px;
+}
+
+.domain-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.domain-card {
+  display: grid;
+  gap: 14px;
+  min-height: 250px;
+  padding: 20px;
+  background: linear-gradient(180deg, #ffffff 0%, var(--surface) 100%);
+}
+
+.domain-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.domain-card h3 {
+  margin: 0;
+  color: var(--accent-strong);
+  font-size: 1.2rem;
+  line-height: 1.15;
+}
+
+.domain-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.domain-status {
+  flex: 0 0 auto;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 5px 10px;
+  color: var(--accent-strong);
+  background: #ffffff;
+  font-size: 0.78rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.domain-active .domain-status {
+  border-color: #9dd5b2;
+  color: #146c2e;
+  background: #f1fff5;
+}
+
+.domain-waiting .domain-status {
+  border-color: #ffe0a3;
+  color: #8a5a00;
+  background: #fff8e8;
+}
+
+.domain-planned .domain-status {
+  color: var(--muted);
+  background: var(--surface);
+}
+
+.domain-meta {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+}
+
+.domain-meta div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: baseline;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.domain-meta dt {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.domain-meta dd {
+  margin: 0;
+  color: var(--text);
+  font-size: 0.95rem;
+  font-weight: 800;
+  text-align: right;
+}
+
+.domain-reason {
+  color: var(--accent-strong);
+  font-weight: 700;
+}
+
 .observatory-footer {
   display: flex;
   flex-wrap: wrap;
@@ -344,6 +446,10 @@ h2 {
   }
 
   .projection-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .domain-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -380,5 +486,13 @@ h2 {
   .cesium-globe {
     min-height: 360px;
     height: 54vh;
+  }
+
+  .domain-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .domain-card {
+    min-height: auto;
   }
 }
