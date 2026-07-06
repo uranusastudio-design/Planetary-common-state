@@ -21,3 +21,9 @@ Connector status describes operational and lifecycle state.
 - `Connected` requires future implementation and successful access testing.
 - `Error` must preserve failure information without fabricating data.
 - Deprecated connectors should retain historical notes for reproducibility.
+
+## Planned Datasets
+
+| Dataset | Status | Note |
+|---|---|---|
+| ERA5 | Planned | Connector not implemented. |

@@ -17,6 +17,10 @@ The Atmosphere catalog covers future variable groups describing the physical, ch
 - Aerosols
 - Extreme Weather
 
+## Planned Connector Note
+
+ERA5 will become the primary atmospheric observation dataset for future PCS connector planning. This note defines a future dataset role only and does not add actual variable entries.
+
 ## Possible Observation Sources
 
 - NASA
@@ -29,4 +33,3 @@ The Atmosphere catalog covers future variable groups describing the physical, ch
 ## Future Status
 
 Reserved for PCS Variable Registry v2.0.
-
