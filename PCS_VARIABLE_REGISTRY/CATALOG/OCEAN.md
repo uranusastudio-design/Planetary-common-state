@@ -16,6 +16,10 @@ The Ocean catalog covers future variable groups describing the physical, chemica
 - Waves
 - Marine Ecosystems
 
+## Planned Connector Note
+
+Global Mean Sea Level is planned as the next Ocean connector. This note defines a future category only and does not add actual variable entries.
+
 ## Possible Observation Sources
 
 - NASA
@@ -28,4 +32,3 @@ The Ocean catalog covers future variable groups describing the physical, chemica
 ## Future Status
 
 Reserved for PCS Variable Registry v2.0.
-

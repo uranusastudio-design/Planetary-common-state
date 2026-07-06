@@ -17,6 +17,7 @@ Connector status describes operational and lifecycle state.
 ## Status Rules
 
 - Documentation alone is not `Connected`.
+- `Waiting` means the dataset has been identified but no connector has been implemented.
 - `Connected` requires future implementation and successful access testing.
 - `Error` must preserve failure information without fabricating data.
 - Deprecated connectors should retain historical notes for reproducibility.
