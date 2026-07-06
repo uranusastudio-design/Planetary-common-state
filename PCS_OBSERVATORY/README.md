@@ -5,7 +5,8 @@ PCS Observatory v1.1 is a static, read-only observatory page for the Planetary C
 ## Scope
 
 - Reads `../PCS_ENGINE/output/latest_state.json`.
-- Displays a scientific observatory dashboard with current state, status, coverage, latest update, and projection cards for Thermal `L_T`, Chemical `L_C`, Structural `L_S`, and Informational `L_I`.
+- Displays a scientific observatory dashboard with a prototype PCS estimate, status, coverage, latest update, and projection cards for Thermal Residual, Chemical Residual, Structural `L_S`, and Informational `L_I`.
+- Labels the PCS value as a prototype estimate from partial observations rather than a complete planetary assessment.
 - Displays status as `Operational Prototype`.
 - Displays coverage as an observed-dimension count out of four projection dimensions.
 - Displays `Waiting for data` when source JSON values are null or unavailable.

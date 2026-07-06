@@ -139,6 +139,14 @@ h2 {
   font-weight: 700;
 }
 
+.prototype-note {
+  margin: 18px 0 0;
+  color: var(--accent-strong);
+  font-size: 0.98rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
 .metric-value,
 .projection-value {
   display: block;
@@ -196,6 +204,15 @@ h2 {
 
 .projection-value {
   color: var(--accent);
+}
+
+.projection-source {
+  display: block;
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.35;
 }
 
 .projection-value.is-missing {

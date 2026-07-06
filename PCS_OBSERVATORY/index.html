@@ -24,9 +24,10 @@
         <aside class="layout-panel left-panel" aria-label="PCS state and source status">
           <section class="dashboard-grid" aria-label="Current PCS observatory dashboard">
             <article class="card state-card">
-              <span class="card-label">Current PCS State</span>
+              <span class="card-label">Prototype PCS Estimate</span>
               <strong id="current-state" class="state-value">Loading</strong>
-              <span class="card-note">Planetary Common State</span>
+              <span class="card-note">Based on 2 confirmed data sources</span>
+              <p class="prototype-note">This is a prototype estimate from partial observations, not a complete planetary assessment.</p>
             </article>
 
             <article class="card status-card">
@@ -205,15 +206,17 @@
 
             <div class="projection-grid">
               <article class="card projection-card">
-                <span class="projection-name">Thermal L_T</span>
+                <span class="projection-name">Thermal Residual</span>
                 <strong id="projection-thermal" class="projection-value">Loading</strong>
+                <span class="projection-source">NASA GISTEMP connected</span>
                 <div class="progress-track" aria-hidden="true">
                   <span id="progress-thermal" class="progress-fill"></span>
                 </div>
               </article>
               <article class="card projection-card">
-                <span class="projection-name">Chemical L_C</span>
+                <span class="projection-name">Chemical Residual</span>
                 <strong id="projection-chemical" class="projection-value">Loading</strong>
+                <span class="projection-source">NOAA Mauna Loa CO2 connected</span>
                 <div class="progress-track" aria-hidden="true">
                   <span id="progress-chemical" class="progress-fill"></span>
                 </div>
