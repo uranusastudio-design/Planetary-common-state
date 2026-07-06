@@ -21,6 +21,7 @@ Current confirmed source count: 2
 |---|---|---|---|
 | Global Mean Sea Level | Connector structure implemented v0.1; data access pending unless real source was successfully loaded | NASA/JPL, AVISO/CNES, Copernicus Marine Service | Ocean |
 | NDVI | Connector structure implemented v0.1; data access pending unless real source was successfully loaded | NASA MODIS, NASA VIIRS, ESA / Copernicus vegetation products | Biosphere |
+| NSIDC Sea Ice | Connector implemented v1.0; data access pending unless real source was successfully loaded | NSIDC | Cryosphere |
 | ERA5 | Planned | Copernicus Climate Change Service (C3S) | Atmosphere, Hydrology, Energy |
 
 Global Mean Sea Level is planned as the next Ocean data source category. The connector structure is implemented, but data access remains pending unless a real sea-level source is successfully parsed. No sea level values are inferred or added.
@@ -28,6 +29,8 @@ Global Mean Sea Level is planned as the next Ocean data source category. The con
 ERA5 is planned as a future atmospheric reanalysis connector. It is not connected to `PCS_ENGINE`, and no ERA5 values are inferred or added.
 
 NDVI is planned as the first Biosphere connector. The connector structure is implemented, but data access remains pending unless a real NDVI source is successfully parsed. No NDVI values are inferred or added.
+
+NSIDC Sea Ice is the primary Cryosphere connector. The connector is implemented v1.0 for Arctic and Antarctic sea-ice extent records, but data access remains pending unless official NSIDC source records are successfully parsed and validated. No sea-ice values are inferred or added.
 
 ## Missing Sources
 
