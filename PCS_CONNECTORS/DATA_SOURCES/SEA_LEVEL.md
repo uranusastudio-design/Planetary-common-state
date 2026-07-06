@@ -36,7 +36,9 @@ Provider-dependent.
 
 ## Current PCS Status
 
-Waiting for connector implementation.
+Connector structure implemented v0.1.
+
+Confirmed data only if real source was successfully parsed.
 
 ## Future PCS Role
 
@@ -44,6 +46,6 @@ Ocean residual / structural-flow boundary indicator.
 
 ## Notes
 
-This source is not yet connected to `PCS_ENGINE`.
+This source is not yet connected to PCS state calculation.
 
-No API call, data download, calculation change, or placeholder value is implemented in this milestone.
+NASA Sea Level Change identifies a PO.DAAC data file for the global mean sea-level indicator, but the endpoint requires Earthdata authentication in this environment. No sea-level values are fabricated.
