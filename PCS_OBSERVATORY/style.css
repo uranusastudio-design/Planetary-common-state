@@ -112,7 +112,9 @@ h2 {
   grid-template-areas:
     "state status"
     "state coverage"
-    "state update";
+    "state year"
+    "json local"
+    "refresh refresh";
 }
 
 .card {
@@ -142,7 +144,19 @@ h2 {
 }
 
 .metric-card:nth-of-type(4) {
-  grid-area: update;
+  grid-area: year;
+}
+
+.metric-card:nth-of-type(5) {
+  grid-area: json;
+}
+
+.metric-card:nth-of-type(6) {
+  grid-area: local;
+}
+
+.metric-card:nth-of-type(7) {
+  grid-area: refresh;
 }
 
 .status-card,
@@ -261,6 +275,13 @@ h2 {
   font-size: 0.95rem;
 }
 
+.data-status-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 18px;
+}
+
 .data-source-panel {
   display: grid;
   gap: 10px;
@@ -280,6 +301,22 @@ h2 {
   color: var(--muted);
   font-size: 1rem;
   font-weight: 700;
+}
+
+.data-status-grid .data-source-panel {
+  margin-top: 0;
+}
+
+.status-list {
+  margin: 4px 0 0;
+  padding-left: 1.2rem;
+  color: var(--text);
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+.status-list-muted {
+  color: var(--muted);
 }
 
 .observatory-footer {
@@ -315,7 +352,14 @@ h2 {
       "state"
       "status"
       "coverage"
-      "update";
+      "year"
+      "json"
+      "local"
+      "refresh";
+  }
+
+  .data-status-grid {
+    grid-template-columns: 1fr;
   }
 
   .earth-panel {

@@ -40,9 +40,9 @@
 
       <section class="dashboard-grid" aria-label="Current PCS observatory dashboard">
         <article class="card state-card">
-          <span class="card-label">Planetary Common State</span>
+          <span class="card-label">Current PCS State</span>
           <strong id="current-state" class="state-value">Loading</strong>
-          <span class="card-note">Current State</span>
+          <span class="card-note">Planetary Common State</span>
         </article>
 
         <article class="card status-card">
@@ -51,13 +51,28 @@
         </article>
 
         <article class="card metric-card">
-          <span class="card-label">Coverage</span>
+          <span class="card-label">Observation Coverage</span>
           <strong id="coverage" class="metric-value">Loading</strong>
         </article>
 
         <article class="card metric-card">
-          <span class="card-label">Latest Update</span>
-          <strong id="latest-update" class="metric-value metric-date">Loading</strong>
+          <span class="card-label">Latest Update Year</span>
+          <strong id="latest-year" class="metric-value">Loading</strong>
+        </article>
+
+        <article class="card metric-card">
+          <span class="card-label">Last JSON Update</span>
+          <strong id="last-json-update" class="metric-value metric-date">Loading</strong>
+        </article>
+
+        <article class="card metric-card">
+          <span class="card-label">Local Browser Time</span>
+          <strong id="local-browser-time" class="metric-value metric-date">Loading</strong>
+        </article>
+
+        <article class="card metric-card">
+          <span class="card-label">Auto Refresh: 10 seconds</span>
+          <strong id="auto-refresh-countdown" class="metric-value">Loading</strong>
         </article>
       </section>
 
@@ -101,18 +116,38 @@
 
       <p id="data-message" class="data-message" role="status" aria-live="polite"></p>
 
+      <section class="data-status-grid" aria-label="PCS data status">
+        <article class="card data-source-panel">
+          <span class="card-label">Confirmed Data Sources</span>
+          <strong>Confirmed data sources: <span id="confirmed-source-count">2</span></strong>
+          <ul class="status-list">
+            <li>NASA GISTEMP: Global Temperature</li>
+            <li>NOAA Mauna Loa CO2: Atmospheric CO2</li>
+          </ul>
+        </article>
+
+        <article class="card data-source-panel">
+          <span class="card-label">Waiting for Data</span>
+          <strong>Waiting for data:</strong>
+          <ul class="status-list status-list-muted">
+            <li>Sea Level</li>
+            <li>NDVI</li>
+          </ul>
+        </article>
+      </section>
+
       <section class="card data-source-panel" aria-label="Observatory data source">
         <span class="card-label">Data Source</span>
         <strong>PCS_ENGINE/output/latest_state.json</strong>
         <span>Read-only mode</span>
-        <span>Auto refresh: 10 seconds</span>
+        <span>Auto Refresh: 10 seconds</span>
       </section>
 
       <footer class="observatory-footer">
         <strong>Planetary Common State Observatory</strong>
         <span>Read-only mode</span>
         <span>Data source: PCS_ENGINE/output/latest_state.json</span>
-        <span>Auto refresh: 10 seconds</span>
+        <span>Auto Refresh: 10 seconds</span>
       </footer>
     </main>
 
