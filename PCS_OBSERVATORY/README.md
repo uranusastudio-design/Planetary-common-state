@@ -57,3 +57,9 @@ On smaller screens, the layout stacks vertically. CesiumJS remains a visualizati
 The Observatory includes Scientific Domain Panels to prepare the interface for future 100+ Earth-system variables. The panels organize domains by active, waiting, and planned status without claiming that all variables are currently connected.
 
 Current active data are limited to the Atmosphere domain through NASA GISTEMP and NOAA Mauna Loa CO2. Ocean and Biosphere remain waiting for sea-level, ocean, and NDVI connections. Planned domains are placeholders for future validated data integration.
+
+## Earth System Layer Control
+
+The Earth System Layer Control is the UI registry for future Cesium overlays. It lists planned map layers and their current connection status without rendering geospatial overlays.
+
+Only NASA GISTEMP and NOAA Mauna Loa CO2 are currently connected as data sources. No geospatial overlay rendering is implemented yet, and selecting a layer only displays its connection status.

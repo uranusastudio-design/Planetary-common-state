@@ -28,6 +28,8 @@ const selectors = {
   dataMessage: document.querySelector("#data-message"),
   cesiumGlobe: document.querySelector("#cesium-globe"),
   cesiumFallback: document.querySelector("#cesium-fallback"),
+  layerControlMessage: document.querySelector("#layer-control-message"),
+  layerControls: document.querySelectorAll("[data-layer-status]"),
 };
 
 function formatDisplayValue(value, digits = 3) {
@@ -207,9 +209,39 @@ function initializeCesiumGlobe() {
   }
 }
 
+function initializeLayerControls() {
+  if (!selectors.layerControls.length) {
+    return;
+  }
+
+  selectors.layerControls.forEach((control) => {
+    control.addEventListener("change", () => {
+      if (!control.checked) {
+        updateText(selectors.layerControlMessage, "Select a layer to view connection status.");
+        return;
+      }
+
+      const status = control.dataset.layerStatus;
+
+      if (status === "connected") {
+        updateText(selectors.layerControlMessage, "Layer selected. Map overlay not implemented yet.");
+        return;
+      }
+
+      if (status === "waiting") {
+        updateText(selectors.layerControlMessage, "Dataset not connected yet.");
+        return;
+      }
+
+      updateText(selectors.layerControlMessage, "Planned layer. No data connected.");
+    });
+  });
+}
+
 loadLatestState();
 renderClock();
 initializeCesiumGlobe();
+initializeLayerControls();
 window.addEventListener("resize", () => {
   if (cesiumViewer) {
     cesiumViewer.resize();

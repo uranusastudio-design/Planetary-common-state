@@ -314,6 +314,74 @@ h2 {
   font-size: 0.7rem;
 }
 
+.layer-control-panel {
+  display: grid;
+  gap: 16px;
+  margin-top: 14px;
+  padding: 20px;
+  background: linear-gradient(180deg, #ffffff 0%, var(--surface) 100%);
+}
+
+.layer-control-heading h3 {
+  margin: 8px 0 0;
+  color: var(--accent-strong);
+  font-size: 1.35rem;
+  line-height: 1.1;
+}
+
+.layer-control-message {
+  min-height: 22px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.layer-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.layer-entry {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px;
+  align-items: flex-start;
+  min-height: 96px;
+  padding: 13px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+.layer-entry input {
+  width: 18px;
+  height: 18px;
+  margin: 2px 0 0;
+  accent-color: var(--accent-blue);
+}
+
+.layer-copy {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.layer-copy strong {
+  color: var(--accent-strong);
+  font-size: 0.98rem;
+  line-height: 1.2;
+}
+
+.layer-copy span {
+  color: var(--muted);
+  font-size: 0.86rem;
+  line-height: 1.25;
+}
+
 .domain-section {
   margin-top: 34px;
 }
@@ -449,6 +517,10 @@ h2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .layer-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .domain-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -486,6 +558,14 @@ h2 {
   .cesium-globe {
     min-height: 360px;
     height: 54vh;
+  }
+
+  .layer-list {
+    grid-template-columns: 1fr;
+  }
+
+  .layer-entry {
+    min-height: auto;
   }
 
   .domain-grid {
