@@ -12,7 +12,7 @@ Current confirmed source count: 2
 
 | Source | Observable | Current PCS role |
 |---|---|---|
-| NASA GISTEMP | Global Temperature | Supports the Thermal Residual and Prototype PCS Estimate. |
+| NASA GISTEMP | Global Temperature | Connected connector implemented; supports the Thermal Residual and Prototype PCS Estimate. |
 | NOAA Mauna Loa CO2 | Atmospheric CO2 | Supports the Chemical Residual and Prototype PCS Estimate. |
 
 ## Planned Data Sources
@@ -32,4 +32,4 @@ Sea Level and NDVI are not connected in the current prototype. Missing sources r
 
 ## Current Boundary
 
-The PCS Engine currently uses the existing benchmark/prototype data products already present in the repository. This document does not implement connector downloads, normalization changes, prediction, or new data assimilation.
+The PCS Engine currently uses the existing benchmark/prototype data products already present in the repository. The NASA GISTEMP connector now writes standardized connector JSON to `PCS_ENGINE/input/`, but no normalization changes, PCS state calculation, prediction, new data assimilation, or `latest_state.json` update is performed in this milestone.

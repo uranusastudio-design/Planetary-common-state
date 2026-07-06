@@ -26,17 +26,17 @@ Monthly, with annual summaries derived from monthly records.
 
 ## Current PCS Status
 
-Connected as a confirmed scientific data source in the current PCS prototype.
+Connector implemented v0.1.
 
 ## Current Role in PCS
 
 NASA GISTEMP supports the thermal component displayed as the Thermal Residual and contributes to the current Prototype PCS Estimate.
 
-## Future Connector Plan
+## Connector Plan
 
-Future work should formalize a NASA GISTEMP connector that records source URL, retrieval timestamp, dataset version, license terms, quality notes, and standardized PCS connector output records.
+The v0.1 connector reads the NASA GISTEMP annual global table or a local official-source excerpt, parses annual temperature anomaly values, preserves missing values as `null`, and writes standardized PCS connector JSON.
 
-No live API call is implemented in this milestone.
+The connector output path is `PCS_ENGINE/input/nasa_gistemp_pcs.json`. It does not update `PCS_ENGINE/output/latest_state.json` and does not compute PCS state.
 
 ## Citation Placeholder
 

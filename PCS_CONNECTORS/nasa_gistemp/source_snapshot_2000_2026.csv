@@ -1,0 +1,31 @@
+NASA GISTEMP official annual J-D excerpt, 2000-2026
+Source: https://data.giss.nasa.gov/gistemp/tabledata_v4/GLB.Ts+dSST.txt
+Units in source table: hundredths of degrees C relative to 1951-1980 baseline
+Year,J-D
+2000,39
+2001,53
+2002,63
+2003,62
+2004,53
+2005,68
+2006,64
+2007,67
+2008,54
+2009,66
+2010,73
+2011,61
+2012,65
+2013,68
+2014,75
+2015,90
+2016,101
+2017,92
+2018,85
+2019,98
+2020,101
+2021,85
+2022,89
+2023,117
+2024,128
+2025,119
+2026,****
