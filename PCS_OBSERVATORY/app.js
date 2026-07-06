@@ -182,15 +182,21 @@ function initializeCesiumGlobe() {
     cesiumViewer.scene.globe.baseColor = Cesium.Color.fromCssColorString("#1565c0");
     cesiumViewer.scene.skyAtmosphere.show = true;
     cesiumViewer.scene.globe.enableLighting = true;
-    cesiumViewer.scene.screenSpaceCameraController.minimumZoomDistance = 12000000;
-    cesiumViewer.scene.screenSpaceCameraController.maximumZoomDistance = 50000000;
-    cesiumViewer.scene.screenSpaceCameraController.inertiaZoom = 0;
-    cesiumViewer.scene.camera.setView({
-      destination: Cesium.Cartesian3.fromDegrees(0, 15, 30000000),
+    const cameraController = cesiumViewer.scene.screenSpaceCameraController;
+    cameraController.minimumZoomDistance = 12000000;
+    cameraController.maximumZoomDistance = 50000000;
+    cameraController.enableRotate = true;
+    cameraController.enableTranslate = true;
+    cameraController.enableZoom = true;
+    cameraController.inertiaZoom = 0;
+    cesiumViewer.camera.cancelFlight();
+    cesiumViewer.scene.tweens.removeAll();
+    cesiumViewer.camera.setView({
+      destination: Cesium.Cartesian3.fromDegrees(120, 20, 30000000),
       orientation: {
-        heading: 0,
-        pitch: -Cesium.Math.PI_OVER_TWO,
-        roll: 0,
+        heading: Cesium.Math.toRadians(0),
+        pitch: Cesium.Math.toRadians(-90),
+        roll: Cesium.Math.toRadians(0),
       },
     });
 
