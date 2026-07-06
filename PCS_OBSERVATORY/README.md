@@ -17,6 +17,7 @@ PCS Observatory v1.1 is a static, read-only observatory page for the Planetary C
 - Does not interpolate missing values.
 - Does not make prediction claims.
 - Does not render charts or Earth animation.
+- Includes an experimental CesiumJS 3D Earth view for visualization only.
 
 ## Files
 
@@ -34,3 +35,13 @@ PCS_OBSERVATORY/index.html
 ```
 
 The Observatory is intentionally framework-free: pure HTML, CSS, and JavaScript.
+
+## CesiumJS 3D Earth Prototype
+
+CesiumJS is used only as the 3D Earth visualization engine in this prototype.
+
+PCS data and state estimates continue to come from `PCS_ENGINE/output/latest_state.json`. The Observatory does not compute PCS values, infer missing values, or introduce prediction.
+
+Future versions may add NASA, NOAA, Copernicus, ESA, JAXA, and WMO layers after connector, provenance, and validation rules are defined.
+
+The current CesiumJS integration is visualization only. If CesiumJS or WebGL is unavailable, the page displays a fallback message while the PCS data display remains operational.

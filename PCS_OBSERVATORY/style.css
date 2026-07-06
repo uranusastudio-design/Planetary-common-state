@@ -319,6 +319,52 @@ h2 {
   color: var(--muted);
 }
 
+.globe-section {
+  margin-top: 78px;
+}
+
+.globe-card {
+  display: grid;
+  gap: 18px;
+  padding: 26px;
+  background: linear-gradient(180deg, #ffffff 0%, var(--surface) 100%);
+}
+
+.globe-copy p {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.cesium-globe {
+  position: relative;
+  width: 100%;
+  min-height: 360px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: #081d3d;
+}
+
+.cesium-fallback {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.98rem;
+  line-height: 1.45;
+}
+
+.cesium-fallback.is-error {
+  color: var(--accent-strong);
+  font-weight: 700;
+}
+
+.cesium-credit-textContainer,
+.cesium-credit-logoContainer,
+.cesium-credit-expand-link {
+  font-size: 0.7rem;
+}
+
 .observatory-footer {
   display: flex;
   flex-wrap: wrap;
@@ -379,5 +425,13 @@ h2 {
 
   .projection-section {
     margin-top: 52px;
+  }
+
+  .globe-section {
+    margin-top: 52px;
+  }
+
+  .cesium-globe {
+    min-height: 280px;
   }
 }

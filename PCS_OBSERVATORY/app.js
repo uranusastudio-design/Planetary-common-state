@@ -25,6 +25,8 @@ const selectors = {
     L_I: document.querySelector("#progress-informational"),
   },
   dataMessage: document.querySelector("#data-message"),
+  cesiumGlobe: document.querySelector("#cesium-globe"),
+  cesiumFallback: document.querySelector("#cesium-fallback"),
 };
 
 function formatDisplayValue(value, digits = 3) {
@@ -144,7 +146,54 @@ async function loadLatestState() {
   }
 }
 
+function showCesiumFallback(message) {
+  updateText(selectors.cesiumFallback, message);
+  selectors.cesiumFallback?.classList.add("is-error");
+}
+
+function initializeCesiumGlobe() {
+  if (!selectors.cesiumGlobe) {
+    return;
+  }
+
+  if (!window.Cesium) {
+    showCesiumFallback("3D Earth unavailable. PCS data display remains operational.");
+    return;
+  }
+
+  try {
+    const viewer = new Cesium.Viewer(selectors.cesiumGlobe, {
+      animation: false,
+      baseLayer: false,
+      baseLayerPicker: false,
+      fullscreenButton: false,
+      geocoder: false,
+      homeButton: false,
+      infoBox: false,
+      navigationHelpButton: false,
+      sceneModePicker: false,
+      selectionIndicator: false,
+      shouldAnimate: false,
+      timeline: false,
+      vrButton: false,
+    });
+
+    viewer.scene.globe.baseColor = Cesium.Color.fromCssColorString("#1565c0");
+    viewer.scene.skyAtmosphere.show = true;
+    viewer.scene.globe.enableLighting = true;
+    viewer.scene.camera.setView({
+      destination: Cesium.Cartesian3.fromDegrees(15, 12, 18000000),
+    });
+
+    updateText(selectors.cesiumFallback, "CesiumJS globe initialized. Visualization only.");
+    selectors.cesiumFallback?.classList.remove("is-error");
+  } catch (error) {
+    showCesiumFallback("3D Earth unavailable. PCS data display remains operational.");
+  }
+}
+
 loadLatestState();
 renderClock();
+initializeCesiumGlobe();
 setInterval(renderClock, 1000);
 setInterval(loadLatestState, REFRESH_INTERVAL_MS);

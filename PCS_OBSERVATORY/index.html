@@ -4,7 +4,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>PCS Observatory v1.2</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cesium@1.120.0/Build/Cesium/Widgets/widgets.css">
     <link rel="stylesheet" href="style.css">
+    <script>
+      window.CESIUM_BASE_URL = "https://cdn.jsdelivr.net/npm/cesium@1.120.0/Build/Cesium/";
+    </script>
   </head>
   <body>
     <main class="observatory-shell">
@@ -143,6 +147,23 @@
         <span>Auto Refresh: 10 seconds</span>
       </section>
 
+      <section class="globe-section" aria-labelledby="globe-title">
+        <div class="section-heading">
+          <p class="eyebrow">3D Earth Observatory</p>
+          <h2 id="globe-title">3D Earth Observatory</h2>
+        </div>
+        <article class="card globe-card">
+          <div class="globe-copy">
+            <span class="card-label">Experimental 3D Earth view</span>
+            <p>Visualization only. PCS values continue to come from PCS_ENGINE output.</p>
+          </div>
+          <div id="cesium-globe" class="cesium-globe" aria-label="Experimental CesiumJS 3D Earth view"></div>
+          <p id="cesium-fallback" class="cesium-fallback" role="status" aria-live="polite">
+            Loading 3D Earth view.
+          </p>
+        </article>
+      </section>
+
       <footer class="observatory-footer">
         <strong>Planetary Common State Observatory</strong>
         <span>Read-only mode</span>
@@ -151,6 +172,7 @@
       </footer>
     </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/cesium@1.120.0/Build/Cesium/Cesium.js"></script>
     <script src="app.js"></script>
   </body>
 </html>
