@@ -1,55 +1,40 @@
-# PCS Connector Registry
+# PCS Connector Framework v1.0
 
-The PCS Connector Registry documents external scientific data providers that may support the Planetary Common State platform.
+The PCS Connector Framework defines how external scientific data sources will connect to the Planetary Common State platform.
 
-This registry is documentation only. It does not implement APIs, write connector code, define variables, or modify the PCS Engine or dashboard.
+This milestone is documentation and framework only. It does not implement live API calls, perform downloads, calculate PCS values, modify the PCS Engine, or update the Observatory UI.
 
 ## Purpose
 
-The purpose of the connector registry is to record which scientific providers may supply observations for PCS variables, validation workflows, benchmark datasets, and future observatory products.
+PCS connectors provide the future access layer between authoritative scientific datasets and PCS-ready observation records. The framework defines shared rules before implementation so that every connector has consistent metadata, status, validation, scheduling, health, logging, cache, security, and configuration behavior.
 
-Each provider entry describes scientific role, available observation categories, update frequency, and future PCS integration potential.
+## Connector Philosophy
 
-## Connector Architecture
+- One connector represents one scientific provider or documented dataset family.
+- Each connector must preserve provenance, units, timestamps, license information, and quality status.
+- Each connector must distinguish raw observation access from PCS normalization and state estimation.
+- Missing data must remain missing.
+- No connector may fabricate observations, infer unavailable values, or claim validation before testing.
 
-PCS connectors should eventually form a provider-independent access layer between external scientific data systems and the PCS platform.
+## Universal Output Rule
 
-The intended architecture is:
+All future connectors must output identical PCS JSON records using the universal fields defined in `DATA_STANDARD.md`.
 
-```text
-Scientific Provider
-  -> Connector Metadata
-    -> Observation Access
-      -> PCS Variable Registry
-        -> PCS Engine
-```
+Connector implementation is reserved for later milestones. The current framework defines the architecture only.
 
-This v1.0 registry defines metadata only. Connector implementations are reserved for later milestones.
+## Framework Files
 
-## Data Independence
+- `CONNECTOR_SPECIFICATION.md`
+- `DATA_STANDARD.md`
+- `CONNECTOR_STATUS.md`
+- `CONNECTOR_SCHEDULER.md`
+- `CONNECTOR_HEALTH.md`
+- `CONNECTOR_LOGGING.md`
+- `CONNECTOR_CACHE.md`
+- `CONNECTOR_SECURITY.md`
+- `CONNECTOR_CONFIGURATION.md`
+- `DATA_SOURCES/`
 
-PCS should not depend on a single provider for a scientific concept when multiple credible sources exist. Connector documentation should separate the scientific variable from the dataset, platform, or access method used to observe it.
+## Current Status
 
-## Open Science
-
-The registry prioritizes open scientific data, transparent citations, documented licenses, reproducible access methods, and explicit data-quality caveats.
-
-## Connector Lifecycle
-
-The intended lifecycle is:
-
-1. Provider documented.
-2. Observation categories reviewed.
-3. Candidate variables mapped.
-4. Access method assessed.
-5. Connector metadata standardized.
-6. Implementation considered in a later engineering milestone.
-7. Validation and provenance recorded.
-
-## Connector Framework v1.0
-
-The Connector Framework v1.0 defines the documentation architecture for future PCS connectors. It separates connector registry records, connector interface expectations, status states, scheduling rules, cache policy, metadata, validation, logging, health checks, and configuration.
-
-The framework is documentation only. It does not implement APIs, execute downloads, compute PCS values, or create data products.
-
-Framework documents are located in `FRAMEWORK/`.
+PCS Connector Framework v1.0 is ready for Milestone 3 planning. No connector is live unless a future implementation file explicitly states otherwise.
