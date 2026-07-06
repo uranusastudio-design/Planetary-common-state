@@ -1,80 +1,49 @@
-# PCS Engine Core Architecture v1.0
+# PCS Engine Core v1.0
 
-This package contains the first modular PCS Engine core. It does not include a dashboard and does not modify the manuscript.
+PCS Engine Core v1.0 defines the first operational architecture for transforming validated connector outputs into a unified Planetary Common State estimate.
 
-## Layers
+This milestone is architecture only. It does not implement new scientific equations, estimate missing variables, fabricate data, add API calls, or modify the Observatory.
 
-### `data_adapters/`
+## Purpose
 
-Loads public annual observations and returns a standardized dataframe:
+The PCS Engine provides the internal processing layer between scientific connectors and downstream PCS outputs. It receives connector-standard records, checks validation status, organizes domain-level availability, and prepares structured state outputs for future use.
 
-```text
-Year, Temperature, CO2, SeaLevel, NDVI
-```
+## Engine Philosophy
 
-The current adapters support NASA GISTEMP and NOAA GML Mauna Loa CO2. Missing projections remain unavailable rather than inferred.
+- Validated data first.
+- Missing data remain missing.
+- No silent repair.
+- No fabricated values.
+- No prediction before validation.
+- Engine outputs must preserve provenance and quality status.
 
-### `projection_engine/`
+## Relationship With Connectors
 
-Converts raw annual observables into:
+Connectors acquire or prepare provider-specific scientific observations and write standardized connector JSON into `PCS_ENGINE/input/`.
 
-```text
-L_T, L_C, L_S, L_I
-```
+The Engine must treat connector outputs as inputs only after validation.
 
-The normalization constants follow `demo/pcs_projection_standard_v1.md`:
+## Relationship With Registry
 
-```text
-L_T = (Temperature - 0.0) / (1.5 - 0.0)
-L_C = (CO2 - 315.98) / (450.0 - 315.98)
-```
+The PCS Variable Registry defines domains, subdomains, variable meaning, units, source priorities, and fallback rules. The Engine should use registry definitions to organize future variables without hard-coding scientific taxonomy into processing logic.
 
-Both projections are clipped to `[0, 1]`. `L_S` and `L_I` remain `NaN` until data adapters are added.
+## Relationship With Observatory
 
-### `state_engine/`
+The PCS Observatory reads Engine outputs. The Observatory should not compute PCS values or repair missing data in the user interface.
 
-Computes:
+## Relationship With AI
 
-```text
-S_demo(t)
-coverage_count
-latest available state
-```
+Future AI modules may assist with monitoring, summarization, anomaly triage, or workflow support only after validated Engine outputs exist. AI modules must not fabricate missing observations or replace scientific validation.
 
-`S_demo(t)` is the mean of available projections for the operational engine state. No missing projection is fabricated.
+## Current Folder Roles
 
-### `output_layer/`
+- `input/`: connector outputs and validation reports.
+- `validated/`: future validated connector records.
+- `state/`: future internal state assembly artifacts.
+- `output/`: Engine outputs intended for dashboards or downstream tools.
+- `logs/`: future Engine logs.
+- `config/`: future Engine configuration files.
 
-Writes dashboard-ready files:
+## Current Boundary
 
-```text
-latest_state.json
-latest_state.csv
-full_state_history.csv
-```
-
-By default, `run_engine.py` writes these files under `PCS_ENGINE/output/`.
-
-## Run
-
-From the workspace root:
-
-```powershell
-& "C:\Users\luus\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe" PCS_ENGINE\run_engine.py
-```
-
-## Tests
-
-```powershell
-& "C:\Users\luus\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe" -m unittest discover PCS_ENGINE\tests
-```
-
-## Rules
-
-- No dashboard yet.
-- No prediction.
-- No interpolation.
-- No fabricated data.
-- No manuscript edits.
-- `latest_state.json` is the intended dashboard handoff file.
-
+Milestone 4 defines architecture only. Existing prototype scripts remain in place, but this milestone does not change scientific calculations or state-generation behavior.
