@@ -57,3 +57,16 @@ Registry entries should be tracked through explicit versions so that scientific 
 
 The registry begins with top-level domains and metadata standards. It will then expand into a curated set of 100+ core scientific variables, followed by several hundred extended variables. The PCS architecture should remain stable as this expansion occurs.
 
+## Registry Hierarchy
+
+The PCS Variable Registry follows a hierarchical scientific structure:
+
+```text
+Domain
+  -> Subdomain
+    -> Variable
+      -> Observation
+        -> PCS
+```
+
+A domain defines the broad scientific area. A subdomain defines a more specific category within that area. A variable defines the measurable scientific quantity. An observation identifies the data source or measurement product used to estimate that variable. PCS integration maps the registered variable into the broader Planetary Common State representation.
