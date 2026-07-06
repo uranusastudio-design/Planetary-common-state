@@ -15,6 +15,8 @@ Every PCS variable should follow the standard schema below.
 | Physical Unit | Native physical unit before normalization or projection. |
 | Normalization | Description of any projection or normalization rule. |
 | Observation Source | Dataset, instrument, model product, or data stream. |
+| Fallback Sources | Approved secondary or tertiary sources if the primary observation source is unavailable. |
+| Source Priority | Ordered source chain defining primary and approved fallback sources. |
 | Provider | Organization responsible for the observation source. |
 | Spatial Resolution | Native or effective spatial resolution. |
 | Temporal Resolution | Native or effective temporal resolution. |
@@ -27,4 +29,3 @@ Every PCS variable should follow the standard schema below.
 | Notes | Additional constraints, caveats, or implementation notes. |
 
 No example variables are included in this schema document.
-

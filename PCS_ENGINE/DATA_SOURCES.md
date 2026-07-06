@@ -33,6 +33,16 @@ NDVI is planned as the first Biosphere connector. The connector structure is imp
 
 Sea Level and NDVI are not connected in the current prototype. Missing sources remain unavailable and are not fabricated.
 
+## Fallback Policy
+
+PCS must never fabricate missing scientific data.
+
+If a primary source is unavailable, the connector may use an approved fallback source listed in `PCS_CONNECTORS/DATA_SOURCE_PRIORITY.md`.
+
+If no approved fallback source is available, accessible, parsed, and validated, the variable remains `Waiting`, `Data Access Pending`, or `Disabled`.
+
+Fallback use must preserve source provenance, quality flags, provider identity, dataset identity, license or access terms, and connector notes.
+
 ## Current Boundary
 
 The PCS Engine currently uses the existing benchmark/prototype data products already present in the repository. The NASA GISTEMP and NOAA Mauna Loa CO2 connectors now write standardized connector JSON to `PCS_ENGINE/input/`. The Sea Level and NDVI connectors write pending connector outputs when authenticated or preprocessed source data are unavailable. No normalization changes, PCS state calculation, prediction, new data assimilation, or `latest_state.json` update is performed in this milestone.
