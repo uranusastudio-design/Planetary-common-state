@@ -15,6 +15,10 @@ The Biosphere catalog covers future variable groups describing living systems, e
 - Wildfire
 - Carbon Cycle
 
+## Planned Connector Note
+
+NDVI is planned as the first Biosphere connector. This note defines a future connector category only and does not add actual variable entries.
+
 ## Possible Observation Sources
 
 - NASA
@@ -27,4 +31,3 @@ The Biosphere catalog covers future variable groups describing living systems, e
 ## Future Status
 
 Reserved for PCS Variable Registry v2.0.
-
