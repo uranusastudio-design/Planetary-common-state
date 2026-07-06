@@ -43,6 +43,14 @@ If no approved fallback source is available, accessible, parsed, and validated, 
 
 Fallback use must preserve source provenance, quality flags, provider identity, dataset identity, license or access terms, and connector notes.
 
+## Connector Validation
+
+Connector outputs must pass validation before they are used by `PCS_ENGINE`.
+
+The validation layer checks required fields, timestamp presence, provider identity, dataset identity, variable identity, value/quality consistency, and source provenance. Invalid data must not enter PCS Engine calculations. Missing connector files are reported as missing, and pending connector outputs remain pending rather than being repaired or filled.
+
+Validation reports are written to `PCS_ENGINE/input/connector_validation_report.json`.
+
 ## Current Boundary
 
 The PCS Engine currently uses the existing benchmark/prototype data products already present in the repository. The NASA GISTEMP and NOAA Mauna Loa CO2 connectors now write standardized connector JSON to `PCS_ENGINE/input/`. The Sea Level and NDVI connectors write pending connector outputs when authenticated or preprocessed source data are unavailable. No normalization changes, PCS state calculation, prediction, new data assimilation, or `latest_state.json` update is performed in this milestone.

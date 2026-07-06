@@ -1,0 +1,38 @@
+[
+  {
+    "file": "nasa_gistemp_pcs.json",
+    "status": "valid",
+    "missing_fields": [],
+    "warnings": [],
+    "latest_timestamp": "2025",
+    "notes": "Connector output passed validation."
+  },
+  {
+    "file": "noaa_mauna_loa_co2_pcs.json",
+    "status": "valid",
+    "missing_fields": [],
+    "warnings": [],
+    "latest_timestamp": "2025",
+    "notes": "Connector output passed validation."
+  },
+  {
+    "file": "sea_level_pcs.json",
+    "status": "pending",
+    "missing_fields": [],
+    "warnings": [
+      "No records present; data access may be pending."
+    ],
+    "latest_timestamp": null,
+    "notes": "Empty connector output is allowed only as an explicit pending state."
+  },
+  {
+    "file": "ndvi_pcs.json",
+    "status": "pending",
+    "missing_fields": [],
+    "warnings": [
+      "No records present; data access may be pending."
+    ],
+    "latest_timestamp": null,
+    "notes": "Empty connector output is allowed only as an explicit pending state."
+  }
+]
