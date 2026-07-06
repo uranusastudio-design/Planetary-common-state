@@ -8,6 +8,12 @@ Establish the registry structure, domain taxonomy, metadata schema, documentatio
 
 Create domain-level documentation for the initial scientific domains. Each domain should define scope, major subdomains, relevant scientific agencies, and its role inside PCS.
 
+## Phase 2 Global Data Integration
+
+Define the first validated Earth-system data integration queue before expanding the variable registry toward production scale.
+
+The first target is 10 validated datasets connected through PCS connectors and accepted by PCS Engine validation. This phase keeps the registry aligned with real data availability before expansion toward more than one hundred variables.
+
 ## Phase 3: Scientific Taxonomy
 
 Define the hierarchical scientific classification used by the registry:

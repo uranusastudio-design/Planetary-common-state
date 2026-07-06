@@ -35,6 +35,12 @@ Connector implementation is reserved for later milestones. The current framework
 - `CONNECTOR_CONFIGURATION.md`
 - `DATA_SOURCES/`
 
+## Phase 2 Integration Queue
+
+Phase 2 introduces the official connector integration queue for the first ten Earth-system datasets. The queue is defined in `INTEGRATION_QUEUE.md`.
+
+Connectors will be implemented in priority order where access, licensing, and validation allow. A dataset remains waiting or planned until real source data are parsed, validated, and written to the PCS connector output standard.
+
 ## Current Status
 
 PCS Connector Framework v1.0 is ready for Milestone 3 planning. No connector is live unless a future implementation file explicitly states otherwise.
