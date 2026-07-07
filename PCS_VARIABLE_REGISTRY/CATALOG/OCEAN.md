@@ -20,10 +20,13 @@ The Ocean catalog covers future variable groups describing the physical, chemica
 
 Global Mean Sea Level is planned as the next Ocean connector. This note defines a future category only and does not add actual variable entries.
 
+Argo becomes the primary Ocean profile connector for future PCS ocean interior observations, including Ocean Temperature Profile, Ocean Salinity Profile, Pressure, and Depth. No actual variable entries are implemented in this catalog yet.
+
 ## Possible Observation Sources
 
 - NASA
 - NOAA
+- Argo
 - Copernicus
 - ESA
 - JAXA
