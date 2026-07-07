@@ -30,6 +30,8 @@ In this v0.1 aggregation layer:
 - empty connector JSON arrays are summarized as `Waiting`;
 - missing expected connector files are summarized as `Planned` or `Missing`.
 
+The temporary CWA Weather connector is included for live pipeline validation and is classified by the same rules as all other connector outputs.
+
 ## Observatory Preparation
 
 The aggregation output preserves existing Observatory-compatible fields such as `metadata`, `latest_year`, `projections`, `S_demo`, and `coverage_count` when they already exist.

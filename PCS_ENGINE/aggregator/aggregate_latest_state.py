@@ -49,6 +49,12 @@ EXPECTED_CONNECTORS = [
         "notes": "Atmospheric CO2 connector output.",
     },
     {
+        "name": "CWA Weather",
+        "domain": "Atmosphere",
+        "file": "cwa_weather_pcs.json",
+        "notes": "Temporary live weather connector output for pipeline validation.",
+    },
+    {
         "name": "NSIDC Sea Ice",
         "domain": "Cryosphere",
         "file": "nsidc_sea_ice_pcs.json",
@@ -112,6 +118,13 @@ def load_existing_state() -> dict[str, Any]:
         return {}
     payload = load_json(LATEST_STATE_PATH)
     return payload if isinstance(payload, dict) else {}
+
+
+def write_json_atomic(path: Path, payload: Any) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temp_path = path.with_name(f".{path.name}.tmp")
+    temp_path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+    temp_path.replace(path)
 
 
 def record_count(payload: Any) -> int:
@@ -306,9 +319,8 @@ def aggregate() -> dict[str, Any]:
         "No missing values are estimated or fabricated.",
     ]
 
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     LOG_DIR.mkdir(parents=True, exist_ok=True)
-    LATEST_STATE_PATH.write_text(json.dumps(output, indent=2) + "\n", encoding="utf-8")
+    write_json_atomic(LATEST_STATE_PATH, output)
 
     log = {
         "timestamp": now.isoformat(),
@@ -318,7 +330,7 @@ def aggregate() -> dict[str, Any]:
         "planned_count": len(planned_sources),
         "warnings": warnings,
     }
-    AGGREGATION_LOG_PATH.write_text(json.dumps(log, indent=2) + "\n", encoding="utf-8")
+    write_json_atomic(AGGREGATION_LOG_PATH, log)
 
     return output
 

@@ -29,6 +29,8 @@ The aggregator preserves existing fields when present:
 
 List of sources whose connector output exists and contains non-empty connector records.
 
+Temporary live-test connectors, such as CWA Weather, are included only when their output contains real non-empty records.
+
 ## waiting_sources
 
 List of sources whose connector output exists but is empty or pending data access.
