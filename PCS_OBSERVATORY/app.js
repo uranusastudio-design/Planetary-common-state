@@ -1,17 +1,102 @@
 const GLOBAL_STATE_SOURCE = "../PCS_ENGINE/output/latest_state.json";
 const REFRESH_INTERVAL_MS = 10000;
+const LANGUAGE_STORAGE_KEY = "pcs_observatory_language";
+const REGION_STORAGE_KEY = "pcs_observatory_region";
 
-const REGION_CONFIG = {
-  global: { id: "global", name: "Global", lat: 20, lon: 120, altitude: 30000000 },
-  japan: { id: "japan", name: "Japan", lat: 36.2, lon: 138.2, altitude: 7000000 },
-  taiwan: { id: "taiwan", name: "Taiwan", lat: 23.7, lon: 121.0, altitude: 2200000 },
-  korea: { id: "korea", name: "Korea", lat: 37.6, lon: 127.8, altitude: 3500000 },
-  canada: { id: "canada", name: "Canada", lat: 56.1, lon: -106.3, altitude: 12000000 },
-  uk: { id: "uk", name: "United Kingdom", lat: 54.5, lon: -2.5, altitude: 3200000 },
-  usa: { id: "usa", name: "United States", lat: 39.8, lon: -98.6, altitude: 8500000 },
-  china: { id: "china", name: "China", lat: 35.9, lon: 104.2, altitude: 8500000 },
-  singapore: { id: "singapore", name: "Singapore", lat: 1.35, lon: 103.82, altitude: 900000 },
-  dubai: { id: "dubai", name: "Dubai", lat: 25.2, lon: 55.27, altitude: 1200000 },
+const regionConfig = {
+  global: {
+    id: "global",
+    displayName: "Global",
+    lat: 20,
+    lon: 120,
+    altitude: 30000000,
+    stateFile: "../PCS_ENGINE/output/latest_state.json",
+  },
+  japan: {
+    id: "japan",
+    displayName: "Japan",
+    lat: 36.2048,
+    lon: 138.2529,
+    altitude: 6000000,
+    stateFile: "../PCS_ENGINE/output/regions/japan_state.json",
+  },
+  taiwan: {
+    id: "taiwan",
+    displayName: "Taiwan",
+    lat: 23.6978,
+    lon: 120.9605,
+    altitude: 2500000,
+    stateFile: "../PCS_ENGINE/output/regions/taiwan_state.json",
+  },
+  korea: {
+    id: "korea",
+    displayName: "Korea",
+    lat: 36.5,
+    lon: 127.8,
+    altitude: 3500000,
+    stateFile: "../PCS_ENGINE/output/regions/korea_state.json",
+  },
+  canada: {
+    id: "canada",
+    displayName: "Canada",
+    lat: 56.1304,
+    lon: -106.3468,
+    altitude: 9000000,
+    stateFile: "../PCS_ENGINE/output/regions/canada_state.json",
+  },
+  uk: {
+    id: "uk",
+    displayName: "United Kingdom",
+    lat: 55.3781,
+    lon: -3.436,
+    altitude: 3500000,
+    stateFile: "../PCS_ENGINE/output/regions/uk_state.json",
+  },
+  usa: {
+    id: "usa",
+    displayName: "United States",
+    lat: 37.0902,
+    lon: -95.7129,
+    altitude: 8000000,
+    stateFile: "../PCS_ENGINE/output/regions/usa_state.json",
+  },
+  china: {
+    id: "china",
+    displayName: "China",
+    lat: 35.8617,
+    lon: 104.1954,
+    altitude: 8000000,
+    stateFile: "../PCS_ENGINE/output/regions/china_state.json",
+  },
+  singapore: {
+    id: "singapore",
+    displayName: "Singapore",
+    lat: 1.3521,
+    lon: 103.8198,
+    altitude: 1500000,
+    stateFile: "../PCS_ENGINE/output/regions/singapore_state.json",
+  },
+  dubai: {
+    id: "dubai",
+    displayName: "Dubai",
+    lat: 25.2048,
+    lon: 55.2708,
+    altitude: 1800000,
+    stateFile: "../PCS_ENGINE/output/regions/dubai_state.json",
+  },
+};
+
+const REGION_TRANSLATION_KEYS = {
+  global: "global",
+  japan: "japan",
+  taiwan: "taiwan",
+  korea: "korea",
+  canada: "canada",
+  uk: "united_kingdom",
+  usa: "united_states",
+  china: "china",
+  singapore: "singapore",
+  dubai: "dubai",
 };
 
 let latestStateSignature = "";
@@ -19,6 +104,7 @@ let lastJsonUpdateValue = null;
 let nextRefreshAt = Date.now() + REFRESH_INTERVAL_MS;
 let cesiumViewer = null;
 let activeRegionId = "global";
+let translations = {};
 
 const selectors = {
   currentState: document.querySelector("#current-state"),
@@ -45,17 +131,70 @@ const selectors = {
   layerControlMessage: document.querySelector("#layer-control-message"),
   layerControls: document.querySelectorAll("[data-layer-status]"),
   buildTimestamp: document.querySelector("#build-timestamp"),
+  languageSelector: document.querySelector("#language-selector"),
   regionSelector: document.querySelector("#region-selector"),
+  dataSourceSelector: document.querySelector("#data-source-selector"),
+  aiModeSelector: document.querySelector("#ai-mode-selector"),
   activeRegionName: document.querySelector("#active-region-name"),
+  navCurrentRegion: document.querySelector("#nav-current-region"),
   regionalModeStatus: document.querySelector("#regional-mode-status"),
+  navLocalTime: document.querySelector("#nav-local-time"),
+  navUtcTime: document.querySelector("#nav-utc-time"),
+  aiCopilotMessage: document.querySelector("#ai-copilot-message"),
 };
 
-function stateSourceForRegion(regionId) {
-  if (regionId === "global") {
-    return GLOBAL_STATE_SOURCE;
-  }
+function t(key) {
+  return translations[key] ?? key;
+}
 
-  return `../PCS_ENGINE/output/regions/${regionId}_state.json`;
+function getCurrentLanguage() {
+  return localStorage.getItem(LANGUAGE_STORAGE_KEY) || "en";
+}
+
+async function loadLanguage(lang) {
+  try {
+    const response = await fetch(`i18n/${lang}.json`, { cache: "no-store" });
+    if (!response.ok) {
+      throw new Error(`Language file unavailable: ${lang}`);
+    }
+    return await response.json();
+  } catch (error) {
+    if (lang !== "en") {
+      return loadLanguage("en");
+    }
+    return {};
+  }
+}
+
+async function setLanguage(lang) {
+  const selectedLanguage = lang || "en";
+  localStorage.setItem(LANGUAGE_STORAGE_KEY, selectedLanguage);
+  translations = await loadLanguage(selectedLanguage);
+  if (selectors.languageSelector) {
+    selectors.languageSelector.value = selectedLanguage;
+  }
+  document.documentElement.lang = selectedLanguage;
+  translateUI();
+}
+
+function translateUI() {
+  document.querySelectorAll("[data-i18n]").forEach((element) => {
+    const key = element.dataset.i18n;
+    if (key && translations[key]) {
+      element.textContent = translations[key];
+    }
+  });
+  updateRegionContext(activeRegionId);
+  updateText(selectors.aiCopilotMessage, t("ai_copilot_inactive"));
+}
+
+function regionLabel(regionId) {
+  const key = REGION_TRANSLATION_KEYS[regionId];
+  return key ? t(key) : regionConfig[regionId]?.displayName ?? regionConfig.global.displayName;
+}
+
+function stateSourceForRegion(regionId) {
+  return regionConfig[regionId]?.stateFile ?? GLOBAL_STATE_SOURCE;
 }
 
 function formatDisplayValue(value, digits = 3) {
@@ -148,7 +287,7 @@ function renderState(state, source, fallbackToGlobal = false) {
 
   updateText(selectors.lastJsonUpdate, formatTimestamp(lastJsonUpdateValue));
   if (fallbackToGlobal) {
-    updateText(selectors.dataMessage, `Regional data pending. Using global fallback from ${GLOBAL_STATE_SOURCE}`);
+    updateText(selectors.dataMessage, `${t("regional_data_pending")}. Using global fallback from ${GLOBAL_STATE_SOURCE}`);
   } else {
     updateText(selectors.dataMessage, `JSON load status: loaded from ${source}`);
   }
@@ -156,9 +295,12 @@ function renderState(state, source, fallbackToGlobal = false) {
 
 function renderClock() {
   const now = Date.now();
+  const nowDate = new Date(now);
   const secondsRemaining = Math.max(0, Math.ceil((nextRefreshAt - now) / 1000));
 
-  updateText(selectors.localBrowserTime, new Date(now).toLocaleString());
+  updateText(selectors.localBrowserTime, nowDate.toLocaleString());
+  updateText(selectors.navLocalTime, nowDate.toLocaleString());
+  updateText(selectors.navUtcTime, nowDate.toISOString().replace("T", " ").replace(/\.\d{3}Z$/, " UTC"));
   updateText(selectors.lastJsonUpdate, formatTimestamp(lastJsonUpdateValue));
   updateText(selectors.autoRefreshCountdown, `Next refresh in ${secondsRemaining}s`);
 }
@@ -173,7 +315,7 @@ async function loadLatestState() {
     if (!response.ok && activeRegionId !== "global") {
       response = await fetch(GLOBAL_STATE_SOURCE, { cache: "no-store" });
       fallbackToGlobal = true;
-      updateText(selectors.regionalModeStatus, "Regional data pending. Using global latest_state.json.");
+      updateText(selectors.regionalModeStatus, `${t("regional_data_pending")}. Using global latest_state.json.`);
     }
 
     if (!response.ok) {
@@ -185,7 +327,7 @@ async function loadLatestState() {
 
     if (JSON.stringify(state) === latestStateSignature) {
       if (fallbackToGlobal) {
-        updateText(selectors.dataMessage, `Regional data pending. Using global fallback from ${GLOBAL_STATE_SOURCE}`);
+        updateText(selectors.dataMessage, `${t("regional_data_pending")}. Using global fallback from ${GLOBAL_STATE_SOURCE}`);
       } else {
         updateText(selectors.dataMessage, `JSON load status: loaded from ${requestedSource}`);
       }
@@ -199,9 +341,11 @@ async function loadLatestState() {
 }
 
 function updateRegionContext(regionId) {
-  const region = REGION_CONFIG[regionId] ?? REGION_CONFIG.global;
+  const region = regionConfig[regionId] ?? regionConfig.global;
   activeRegionId = region.id;
-  updateText(selectors.activeRegionName, region.name);
+  const label = regionLabel(region.id);
+  updateText(selectors.activeRegionName, label);
+  updateText(selectors.navCurrentRegion, label);
 
   if (region.id === "global") {
     updateText(selectors.regionalModeStatus, "Global mode selected.");
@@ -211,7 +355,7 @@ function updateRegionContext(regionId) {
 }
 
 function setCesiumCameraForRegion(regionId) {
-  const region = REGION_CONFIG[regionId] ?? REGION_CONFIG.global;
+  const region = regionConfig[regionId] ?? regionConfig.global;
   if (!cesiumViewer || !window.Cesium) {
     return;
   }
@@ -270,20 +414,7 @@ function initializeCesiumGlobe() {
     cameraController.enableTranslate = true;
     cameraController.enableZoom = true;
     cameraController.inertiaZoom = 0;
-    cesiumViewer.camera.cancelFlight();
-    cesiumViewer.scene.tweens.removeAll();
-    cesiumViewer.camera.setView({
-      destination: Cesium.Cartesian3.fromDegrees(
-        REGION_CONFIG.global.lon,
-        REGION_CONFIG.global.lat,
-        REGION_CONFIG.global.altitude
-      ),
-      orientation: {
-        heading: Cesium.Math.toRadians(0),
-        pitch: Cesium.Math.toRadians(-90),
-        roll: Cesium.Math.toRadians(0),
-      },
-    });
+    setCesiumCameraForRegion(activeRegionId);
 
     updateText(selectors.cesiumFallback, "CesiumJS globe initialized. Visualization only.");
     selectors.cesiumFallback?.classList.remove("is-error");
@@ -293,16 +424,41 @@ function initializeCesiumGlobe() {
 }
 
 function initializeRegionalMode() {
-  if (!selectors.regionSelector) {
+  const storedRegion = localStorage.getItem(REGION_STORAGE_KEY) || "global";
+  activeRegionId = regionConfig[storedRegion] ? storedRegion : "global";
+
+  if (selectors.regionSelector) {
+    selectors.regionSelector.value = activeRegionId;
+    selectors.regionSelector.addEventListener("change", () => {
+      const selectedRegion = selectors.regionSelector.value;
+      localStorage.setItem(REGION_STORAGE_KEY, selectedRegion);
+      updateRegionContext(selectedRegion);
+      setCesiumCameraForRegion(activeRegionId);
+      loadLatestState();
+    });
+  }
+
+  updateRegionContext(activeRegionId);
+}
+
+function initializeLanguageSelector() {
+  if (!selectors.languageSelector) {
     return;
   }
 
-  updateRegionContext(selectors.regionSelector.value || "global");
+  selectors.languageSelector.value = getCurrentLanguage();
+  selectors.languageSelector.addEventListener("change", () => {
+    setLanguage(selectors.languageSelector.value);
+  });
+}
 
-  selectors.regionSelector.addEventListener("change", () => {
-    updateRegionContext(selectors.regionSelector.value);
-    setCesiumCameraForRegion(activeRegionId);
-    loadLatestState();
+function initializePlaceholderSelectors() {
+  selectors.dataSourceSelector?.addEventListener("change", () => {
+    updateText(selectors.dataMessage, "Data-source filtering is planned.");
+  });
+
+  selectors.aiModeSelector?.addEventListener("change", () => {
+    updateText(selectors.aiCopilotMessage, "AI mode selected. AI Copilot is not active yet.");
   });
 }
 
@@ -339,12 +495,19 @@ function renderBuildTimestamp() {
   updateText(selectors.buildTimestamp, document.lastModified || "Static prototype");
 }
 
-loadLatestState();
-renderClock();
-initializeCesiumGlobe();
-initializeRegionalMode();
-initializeLayerControls();
-renderBuildTimestamp();
+async function initializeApp() {
+  initializeRegionalMode();
+  initializeLanguageSelector();
+  await setLanguage(getCurrentLanguage());
+  await loadLatestState();
+  renderClock();
+  initializeCesiumGlobe();
+  initializePlaceholderSelectors();
+  initializeLayerControls();
+  renderBuildTimestamp();
+}
+
+initializeApp();
 window.addEventListener("resize", () => {
   if (cesiumViewer) {
     cesiumViewer.resize();

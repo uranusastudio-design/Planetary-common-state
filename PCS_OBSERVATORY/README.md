@@ -65,6 +65,33 @@ Regional data pending
 
 Global data remains the fallback until validated regional outputs exist. No regional values are fabricated, inferred, or computed in the UI.
 
+## Global Navigation, Language, and Regional Mode
+
+The Observatory includes a sticky global navigation bar for operating context and future control surfaces.
+
+Current navigation controls:
+
+- Language selector
+- Region selector
+- Current region display
+- Local browser time
+- UTC time
+- Future data-source selector
+- Future AI mode selector
+
+PCS Observatory supports multilingual UI labels for:
+
+- English
+- Traditional Chinese
+- Japanese
+- Korean
+
+The selected language is stored in browser `localStorage`. If a translation file cannot be loaded, the UI falls back to English without changing scientific data.
+
+Regional mode changes the UI context and Cesium camera position. Regional data files are future outputs from `PCS_ENGINE`. Until validated regional datasets are available, the Observatory falls back to global `latest_state.json` and displays a regional-data-pending status.
+
+The Data Source and AI Mode selectors are placeholders for future work. Data-source selection does not filter data yet, and AI Mode selection does not call any AI API.
+
 ## Structural Placeholders
 
 The following panels are structural placeholders:

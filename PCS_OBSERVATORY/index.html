@@ -11,31 +11,89 @@
     </script>
   </head>
   <body>
+    <nav class="global-nav" aria-label="PCS Observatory global navigation">
+      <div class="nav-brand">
+        <strong data-i18n="pcs_observatory">PCS Observatory</strong>
+        <span data-i18n="app_title">Planetary Common State</span>
+      </div>
+      <div class="nav-status" aria-label="Current region and time">
+        <div>
+          <span data-i18n="region">Region</span>
+          <strong id="nav-current-region">Global</strong>
+        </div>
+        <div>
+          <span data-i18n="local_time">Local Browser Time</span>
+          <strong id="nav-local-time">Loading</strong>
+        </div>
+        <div>
+          <span data-i18n="utc_time">UTC Time</span>
+          <strong id="nav-utc-time">Loading</strong>
+        </div>
+      </div>
+      <div class="nav-controls" aria-label="Global controls">
+        <label>
+          <span data-i18n="language">Language</span>
+          <select id="language-selector">
+            <option value="en">English</option>
+            <option value="zh-TW">繁體中文</option>
+            <option value="ja">日本語</option>
+            <option value="ko">한국어</option>
+          </select>
+        </label>
+        <label>
+          <span data-i18n="region">Region</span>
+          <select id="region-selector">
+            <option value="global" data-i18n="global">Global</option>
+            <option value="japan" data-i18n="japan">Japan</option>
+            <option value="taiwan" data-i18n="taiwan">Taiwan</option>
+            <option value="korea" data-i18n="korea">Korea</option>
+            <option value="canada" data-i18n="canada">Canada</option>
+            <option value="uk" data-i18n="united_kingdom">United Kingdom</option>
+            <option value="usa" data-i18n="united_states">United States</option>
+            <option value="china" data-i18n="china">China</option>
+            <option value="singapore" data-i18n="singapore">Singapore</option>
+            <option value="dubai" data-i18n="dubai">Dubai</option>
+          </select>
+        </label>
+        <label>
+          <span data-i18n="data_source">Data Source</span>
+          <select id="data-source-selector">
+            <option value="all" data-i18n="all_sources">All Sources</option>
+            <option value="nasa">NASA</option>
+            <option value="noaa">NOAA</option>
+            <option value="esa">ESA</option>
+            <option value="copernicus">Copernicus</option>
+            <option value="jaxa">JAXA</option>
+            <option value="nsidc">NSIDC</option>
+            <option value="ecmwf">ECMWF</option>
+            <option value="wmo">WMO</option>
+          </select>
+        </label>
+        <label>
+          <span data-i18n="ai_mode">AI Mode</span>
+          <select id="ai-mode-selector">
+            <option value="summary" data-i18n="summary">Summary</option>
+            <option value="scientific_analysis" data-i18n="scientific_analysis">Scientific Analysis</option>
+            <option value="trend_analysis" data-i18n="trend_analysis">Trend Analysis</option>
+            <option value="connector_health" data-i18n="connector_health">Connector Health</option>
+            <option value="paper_mode" data-i18n="paper_mode">Paper Mode</option>
+          </select>
+        </label>
+      </div>
+    </nav>
     <main class="observatory-shell">
       <header class="top-bar" aria-labelledby="page-title">
         <div>
           <p class="eyebrow">PCS Observatory v2.0 Shell</p>
-          <h1 id="page-title">Planetary Common State</h1>
+          <h1 id="page-title" data-i18n="app_title">Planetary Common State</h1>
         </div>
         <div class="system-strip" aria-label="Prototype operating state">
           <span class="status-pill status-normal">Prototype Shell</span>
           <span>Read-only Engine output</span>
           <span>No prediction</span>
         </div>
-        <div class="region-control" aria-label="Regional Mode">
-          <label for="region-selector" class="panel-label">Regional Mode</label>
-          <select id="region-selector" class="region-selector">
-            <option value="global">Global</option>
-            <option value="japan">Japan</option>
-            <option value="taiwan">Taiwan</option>
-            <option value="korea">Korea</option>
-            <option value="canada">Canada</option>
-            <option value="uk">United Kingdom</option>
-            <option value="usa">United States</option>
-            <option value="china">China</option>
-            <option value="singapore">Singapore</option>
-            <option value="dubai">Dubai</option>
-          </select>
+        <div class="region-control" aria-label="Regional Mode status">
+          <span class="panel-label" data-i18n="regional_mode">Regional Mode</span>
           <strong id="active-region-name">Global</strong>
           <span id="regional-mode-status">Global mode selected.</span>
         </div>
@@ -44,37 +102,37 @@
       <section class="dashboard-layout" aria-label="PCS planetary monitoring dashboard">
         <aside class="column left-column" aria-label="PCS estimate and source status">
           <article class="panel hero-panel">
-            <span class="panel-label">Prototype PCS Estimate</span>
+            <span class="panel-label" data-i18n="prototype_pcs_estimate">Prototype PCS Estimate</span>
             <strong id="current-state" class="state-value">Loading</strong>
             <p class="panel-note">This is a prototype estimate from partial observations, not a complete planetary assessment.</p>
           </article>
 
           <article class="panel compact-panel">
-            <span class="panel-label">Observation Coverage</span>
+            <span class="panel-label" data-i18n="observation_coverage">Observation Coverage</span>
             <strong id="coverage" class="metric-value">Loading</strong>
           </article>
 
           <article class="panel compact-panel">
             <span class="panel-label">Status</span>
-            <strong class="status-text">Normal</strong>
+            <strong class="status-text" data-i18n="normal">Normal</strong>
             <span class="microcopy">Prototype Observatory v2.0 Shell</span>
           </article>
 
           <article class="panel telemetry-panel">
             <span class="panel-label">Latest Update Year</span>
             <strong id="latest-year" class="metric-value">Loading</strong>
-            <span class="panel-label">Last JSON Update</span>
+            <span class="panel-label" data-i18n="latest_update">Last JSON Update</span>
             <strong id="last-json-update" class="metric-value metric-date">Loading</strong>
-            <span class="panel-label">Local Browser Time</span>
+            <span class="panel-label" data-i18n="local_time">Local Browser Time</span>
             <strong id="local-browser-time" class="metric-value metric-date">Loading</strong>
-            <span class="panel-label">Auto Refresh: 10 seconds</span>
+            <span class="panel-label" data-i18n="auto_refresh">Auto Refresh: 10 seconds</span>
             <strong id="auto-refresh-countdown" class="metric-value">Loading</strong>
           </article>
 
           <p id="data-message" class="data-message" role="status" aria-live="polite"></p>
 
           <article class="panel source-panel">
-            <span class="panel-label">Confirmed Data Sources</span>
+            <span class="panel-label" data-i18n="confirmed_sources">Confirmed Data Sources</span>
             <strong>Confirmed data sources: <span id="confirmed-source-count">2</span></strong>
             <ul class="status-list">
               <li><span class="dot connected"></span>NASA GISTEMP: Global Temperature</li>
@@ -101,7 +159,7 @@
           <article class="panel layer-control-panel" aria-labelledby="layer-control-title">
             <div class="panel-heading">
               <div>
-                <span class="panel-label">Earth System Layer Control</span>
+                <span class="panel-label" data-i18n="earth_system_layers">Earth System Layer Control</span>
                 <h2 id="layer-control-title">Layers</h2>
               </div>
               <p id="layer-control-message" class="layer-control-message" role="status" aria-live="polite">
@@ -198,20 +256,20 @@
           </article>
 
           <article class="panel alert-panel">
-            <span class="panel-label">Alert Status</span>
-            <strong class="status-text">Current state: Normal</strong>
+            <span class="panel-label" data-i18n="alert_status">Alert Status</span>
+            <strong class="status-text">Current state: <span data-i18n="normal">Normal</span></strong>
             <p>No validated alert model implemented yet.</p>
             <div class="alert-levels" aria-label="Alert levels">
-              <span class="status-pill status-normal">Normal</span>
-              <span class="status-pill status-notice">Notice</span>
-              <span class="status-pill status-attention">Attention</span>
-              <span class="status-pill status-warning">Warning</span>
-              <span class="status-pill status-critical">Critical</span>
+              <span class="status-pill status-normal" data-i18n="normal">Normal</span>
+              <span class="status-pill status-notice" data-i18n="notice">Notice</span>
+              <span class="status-pill status-attention" data-i18n="attention">Attention</span>
+              <span class="status-pill status-warning" data-i18n="warning">Warning</span>
+              <span class="status-pill status-critical" data-i18n="critical">Critical</span>
             </div>
           </article>
 
           <article class="panel health-panel">
-            <span class="panel-label">Connector Health</span>
+            <span class="panel-label" data-i18n="connector_health">Connector Health</span>
             <ul class="health-list">
               <li><strong>NASA GISTEMP</strong><span class="status-pill status-normal">Connected</span></li>
               <li><strong>NOAA Mauna Loa CO2</strong><span class="status-pill status-normal">Connected</span></li>
@@ -224,8 +282,8 @@
           </article>
 
           <article class="panel ai-panel">
-            <span class="panel-label">AI Copilot Summary</span>
-            <p>AI Copilot not active. Future summaries will interpret validated PCS outputs without modifying data or calculations.</p>
+            <span class="panel-label" data-i18n="ai_copilot">AI Copilot Summary</span>
+            <p id="ai-copilot-message" data-i18n="ai_copilot_inactive">AI Copilot not active. Future summaries will interpret validated PCS outputs without modifying data or calculations.</p>
           </article>
         </aside>
       </section>
@@ -234,7 +292,7 @@
         <article class="panel domains-panel">
           <div class="panel-heading">
             <div>
-              <span class="panel-label">Scientific Domain Panels</span>
+              <span class="panel-label" data-i18n="scientific_domain_panels">Scientific Domain Panels</span>
               <h2>Domain Readiness</h2>
             </div>
           </div>
@@ -255,15 +313,15 @@
         </article>
 
         <article class="panel pipeline-panel">
-          <span class="panel-label">PCS Data-to-State Pipeline</span>
+          <span class="panel-label" data-i18n="data_to_state_pipeline">PCS Data-to-State Pipeline</span>
           <div class="pipeline-flow" aria-label="PCS Data-to-State Pipeline">
-            <span>Observation</span>
-            <span>Connector</span>
-            <span>Validation</span>
-            <span>Engine</span>
-            <span>PCS State</span>
-            <span>Observatory</span>
-            <span>Human + AI Review</span>
+            <span data-i18n="observation">Observation</span>
+            <span data-i18n="connector">Connector</span>
+            <span data-i18n="validation">Validation</span>
+            <span data-i18n="engine">Engine</span>
+            <span data-i18n="pcs_state">PCS State</span>
+            <span data-i18n="observatory">Observatory</span>
+            <span data-i18n="human_ai_review">Human + AI Review</span>
           </div>
         </article>
       </section>
