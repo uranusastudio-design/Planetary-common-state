@@ -132,6 +132,16 @@ Planned interface layers:
 - Aviation
 - Satellite Observations
 
+## PCS Value Interpretation
+
+The displayed PCS estimate is not a percentage. It is not a final Earth health score, a ranking, or an absolute truth claim.
+
+The value is a normalized prototype state estimate in the range `0.00000` to `1.00000`. `0.00000` represents the reference low-residual state for the active normalization rule, and `1.00000` represents the normalization upper bound. `1.00000` does not mean apocalypse, final collapse, or complete planetary failure.
+
+Prototype display may use 3 decimals, for example `0.832`. Scientific mode should prefer 5 decimals, for example `0.83214`.
+
+Interpretation bands such as Reference / Low Residual, Stable, Notice, Attention, Warning, and Near Critical are provisional until empirically calibrated. They should be treated as display guidance only, not validated alert thresholds.
+
 ## Current Limitations
 
 - This is a prototype estimate from partial observations.

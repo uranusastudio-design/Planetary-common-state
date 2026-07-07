@@ -14,6 +14,10 @@ Every PCS variable should follow the standard schema below.
 | Description | Concise scientific definition and intended PCS use. |
 | Physical Unit | Native physical unit before normalization or projection. |
 | Normalization | Description of any projection or normalization rule. |
+| Display Precision | Recommended display precision for the variable or projection, such as 3 decimals for prototype views and 5 decimals for scientific mode. |
+| Normalization Range | Numeric range used after normalization, typically `0.00000` to `1.00000`, with reference and upper-bound meanings documented. |
+| Interpretation Band | Provisional display band applied to the normalized value, if applicable. Bands remain provisional until empirically calibrated. |
+| Calibration Status | Calibration lifecycle state for interpretation bands or thresholds, such as provisional, under validation, calibrated, or retired. |
 | Observation Source | Dataset, instrument, model product, or data stream. |
 | Fallback Sources | Approved secondary or tertiary sources if the primary observation source is unavailable. |
 | Source Priority | Ordered source chain defining primary and approved fallback sources. |
