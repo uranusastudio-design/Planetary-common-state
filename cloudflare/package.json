@@ -1,0 +1,15 @@
+{
+  "name": "pcs-cloudflare-backend-prototype",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Planetary Common State Cloudflare Worker backend prototype.",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^3.114.0"
+  }
+}
+
