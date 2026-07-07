@@ -1,4 +1,4 @@
-const GLOBAL_STATE_SOURCE = "../PCS_ENGINE/output/latest_state.json";
+const GLOBAL_STATE_SOURCE = "https://pcs-backend.uranusastudio.workers.dev/latest";
 const REFRESH_INTERVAL_MS = 10000;
 const LANGUAGE_STORAGE_KEY = "pcs_observatory_language";
 const REGION_STORAGE_KEY = "pcs_observatory_region";
@@ -10,7 +10,7 @@ const regionConfig = {
     lat: 20,
     lon: 120,
     altitude: 30000000,
-    stateFile: "../PCS_ENGINE/output/latest_state.json",
+    stateFile: "https://pcs-backend.uranusastudio.workers.dev/latest",
   },
   japan: {
     id: "japan",
