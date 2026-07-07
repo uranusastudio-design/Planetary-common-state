@@ -41,6 +41,30 @@ CesiumJS remains the visualization layer only.
 
 The globe is initialized with a stable full-Earth camera view. No fake overlays, satellite layers, or computed geospatial products are rendered in this milestone.
 
+## Regional Mode
+
+Regional mode supports future localized PCS monitoring for Global, Japan, Taiwan, Korea, Canada, United Kingdom, United States, China, Singapore, and Dubai.
+
+The current version switches the Observatory camera and UI context only. When a region is selected, the page attempts to read:
+
+```text
+../PCS_ENGINE/output/regions/{region_id}_state.json
+```
+
+Regional datasets are pending connector implementation. If a regional state file is not available, the Observatory keeps using:
+
+```text
+../PCS_ENGINE/output/latest_state.json
+```
+
+and displays:
+
+```text
+Regional data pending
+```
+
+Global data remains the fallback until validated regional outputs exist. No regional values are fabricated, inferred, or computed in the UI.
+
 ## Structural Placeholders
 
 The following panels are structural placeholders:

@@ -22,6 +22,23 @@
           <span>Read-only Engine output</span>
           <span>No prediction</span>
         </div>
+        <div class="region-control" aria-label="Regional Mode">
+          <label for="region-selector" class="panel-label">Regional Mode</label>
+          <select id="region-selector" class="region-selector">
+            <option value="global">Global</option>
+            <option value="japan">Japan</option>
+            <option value="taiwan">Taiwan</option>
+            <option value="korea">Korea</option>
+            <option value="canada">Canada</option>
+            <option value="uk">United Kingdom</option>
+            <option value="usa">United States</option>
+            <option value="china">China</option>
+            <option value="singapore">Singapore</option>
+            <option value="dubai">Dubai</option>
+          </select>
+          <strong id="active-region-name">Global</strong>
+          <span id="regional-mode-status">Global mode selected.</span>
+        </div>
       </header>
 
       <section class="dashboard-layout" aria-label="PCS planetary monitoring dashboard">
