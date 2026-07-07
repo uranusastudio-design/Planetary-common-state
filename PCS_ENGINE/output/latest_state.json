@@ -1,9 +1,10 @@
 {
   "metadata": {
-    "generated_at_utc": "2026-07-05T10:04:47.804256+00:00",
+    "generated_at_utc": "2026-07-07T02:57:29.436283+00:00",
     "no_prediction": true,
     "no_interpolation": true,
-    "no_fabricated_data": true
+    "no_fabricated_data": true,
+    "aggregation_engine": "PCS Aggregation Engine v0.1"
   },
   "latest_year": 2024,
   "projections": {
@@ -13,5 +14,223 @@
     "L_I": null
   },
   "S_demo": 0.8319419987066607,
-  "coverage_count": 2
+  "coverage_count": 2,
+  "timestamp": "2026-07-07T02:57:29.436283+00:00",
+  "local_generated_time": "2026-07-07T10:57:29.436283+08:00",
+  "confirmed_sources": [
+    "NASA GISTEMP",
+    "NOAA Mauna Loa CO2"
+  ],
+  "waiting_sources": [
+    "NSIDC Sea Ice",
+    "NASA GPM IMERG",
+    "NASA FIRMS Wildfire",
+    "Argo Ocean",
+    "Global Mean Sea Level",
+    "NDVI"
+  ],
+  "planned_sources": [
+    "ERA5",
+    "GRACE Terrestrial Water Storage"
+  ],
+  "connector_health": [
+    {
+      "name": "NASA GISTEMP",
+      "domain": "Atmosphere",
+      "status": "Connected",
+      "file": "nasa_gistemp_pcs.json",
+      "records": 27,
+      "latest_timestamp": "2026",
+      "quality": "non_empty_connector_output",
+      "notes": "Global temperature connector output."
+    },
+    {
+      "name": "NOAA Mauna Loa CO2",
+      "domain": "Atmosphere",
+      "status": "Connected",
+      "file": "noaa_mauna_loa_co2_pcs.json",
+      "records": 67,
+      "latest_timestamp": "2025",
+      "quality": "non_empty_connector_output",
+      "notes": "Atmospheric CO2 connector output."
+    },
+    {
+      "name": "NSIDC Sea Ice",
+      "domain": "Cryosphere",
+      "status": "Waiting",
+      "file": "nsidc_sea_ice_pcs.json",
+      "records": 0,
+      "latest_timestamp": null,
+      "quality": "empty_connector_output",
+      "notes": "Connector output exists but contains no records. Data remain waiting."
+    },
+    {
+      "name": "NASA GPM IMERG",
+      "domain": "Hydrology",
+      "status": "Waiting",
+      "file": "nasa_gpm_imerg_pcs.json",
+      "records": 0,
+      "latest_timestamp": null,
+      "quality": "empty_connector_output",
+      "notes": "Connector output exists but contains no records. Data remain waiting."
+    },
+    {
+      "name": "NASA FIRMS Wildfire",
+      "domain": "Biosphere",
+      "status": "Waiting",
+      "file": "nasa_firms_wildfire_pcs.json",
+      "records": 0,
+      "latest_timestamp": null,
+      "quality": "empty_connector_output",
+      "notes": "Connector output exists but contains no records. Data remain waiting."
+    },
+    {
+      "name": "Argo Ocean",
+      "domain": "Ocean",
+      "status": "Waiting",
+      "file": "argo_ocean_pcs.json",
+      "records": 0,
+      "latest_timestamp": null,
+      "quality": "empty_connector_output",
+      "notes": "Connector output exists but contains no records. Data remain waiting."
+    },
+    {
+      "name": "Global Mean Sea Level",
+      "domain": "Ocean",
+      "status": "Waiting",
+      "file": "sea_level_pcs.json",
+      "records": 0,
+      "latest_timestamp": null,
+      "quality": "empty_connector_output",
+      "notes": "Connector output exists but contains no records. Data remain waiting."
+    },
+    {
+      "name": "NDVI",
+      "domain": "Biosphere",
+      "status": "Waiting",
+      "file": "ndvi_pcs.json",
+      "records": 0,
+      "latest_timestamp": null,
+      "quality": "empty_connector_output",
+      "notes": "Connector output exists but contains no records. Data remain waiting."
+    },
+    {
+      "name": "ERA5",
+      "domain": "Atmosphere",
+      "status": "Planned",
+      "file": "era5_pcs.json",
+      "records": 0,
+      "latest_timestamp": null,
+      "quality": "missing_file",
+      "notes": "Expected connector output file is not present."
+    },
+    {
+      "name": "GRACE Terrestrial Water Storage",
+      "domain": "Hydrology",
+      "status": "Planned",
+      "file": "grace_water_storage_pcs.json",
+      "records": 0,
+      "latest_timestamp": null,
+      "quality": "missing_file",
+      "notes": "Expected connector output file is not present."
+    }
+  ],
+  "domain_status": {
+    "Atmosphere": {
+      "status": "Connected",
+      "connected_sources": [
+        "NASA GISTEMP",
+        "NOAA Mauna Loa CO2"
+      ],
+      "waiting_sources": [],
+      "notes": "At least one connector output contains non-empty records."
+    },
+    "Ocean": {
+      "status": "Waiting",
+      "connected_sources": [],
+      "waiting_sources": [
+        "Argo Ocean",
+        "Global Mean Sea Level"
+      ],
+      "notes": "Connector output exists but data are empty or pending."
+    },
+    "Cryosphere": {
+      "status": "Waiting",
+      "connected_sources": [],
+      "waiting_sources": [
+        "NSIDC Sea Ice"
+      ],
+      "notes": "Connector output exists but data are empty or pending."
+    },
+    "Biosphere": {
+      "status": "Waiting",
+      "connected_sources": [],
+      "waiting_sources": [
+        "NASA FIRMS Wildfire",
+        "NDVI"
+      ],
+      "notes": "Connector output exists but data are empty or pending."
+    },
+    "Hydrology": {
+      "status": "Waiting",
+      "connected_sources": [],
+      "waiting_sources": [
+        "NASA GPM IMERG"
+      ],
+      "notes": "Connector output exists but data are empty or pending."
+    },
+    "Geosphere": {
+      "status": "Planned",
+      "connected_sources": [],
+      "waiting_sources": [],
+      "notes": "No connector assigned in this aggregation version."
+    },
+    "Human System": {
+      "status": "Planned",
+      "connected_sources": [],
+      "waiting_sources": [],
+      "notes": "No connector assigned in this aggregation version."
+    },
+    "Energy": {
+      "status": "Planned",
+      "connected_sources": [],
+      "waiting_sources": [],
+      "notes": "No connector assigned in this aggregation version."
+    },
+    "Food System": {
+      "status": "Planned",
+      "connected_sources": [],
+      "waiting_sources": [],
+      "notes": "No connector assigned in this aggregation version."
+    },
+    "Infrastructure": {
+      "status": "Planned",
+      "connected_sources": [],
+      "waiting_sources": [],
+      "notes": "No connector assigned in this aggregation version."
+    },
+    "Space Environment": {
+      "status": "Planned",
+      "connected_sources": [],
+      "waiting_sources": [],
+      "notes": "No connector assigned in this aggregation version."
+    },
+    "Planetary Common State": {
+      "status": "Planned",
+      "connected_sources": [],
+      "waiting_sources": [],
+      "notes": "No connector assigned in this aggregation version."
+    }
+  },
+  "pcs_state": {
+    "status": "prototype",
+    "value": 0.8319419987066607,
+    "source": "Preserved existing prototype state; aggregation engine does not compute PCS state."
+  },
+  "prototype_notice": "PCS state remains prototype. Aggregation summarizes connector availability and does not compute a new scientific PCS value.",
+  "notes": [
+    "Aggregation reads connector output availability only.",
+    "Empty connector outputs are Waiting, not Connected.",
+    "No missing values are estimated or fabricated."
+  ]
 }

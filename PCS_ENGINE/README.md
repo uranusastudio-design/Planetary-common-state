@@ -43,6 +43,15 @@ Future AI modules may assist with monitoring, summarization, anomaly triage, or 
 - `output/`: Engine outputs intended for dashboards or downstream tools.
 - `logs/`: future Engine logs.
 - `config/`: future Engine configuration files.
+- `aggregator/`: connector availability aggregation for Observatory-facing `latest_state.json`.
+
+## Aggregation Engine
+
+The Aggregation Engine reads connector JSON outputs from `PCS_ENGINE/input/` and writes a refreshed `PCS_ENGINE/output/latest_state.json` for the Observatory.
+
+The aggregation step summarizes source availability only. It does not compute a new scientific PCS value, estimate missing data, fabricate observations, call APIs, or modify connector outputs.
+
+Empty connector output arrays are treated as `Waiting`, not `Connected`. A connector is marked `Connected` only when its JSON output exists and contains non-empty records.
 
 ## Current Boundary
 

@@ -63,6 +63,16 @@ The validation layer checks required fields, timestamp presence, provider identi
 
 Validation reports are written to `PCS_ENGINE/input/connector_validation_report.json`.
 
+## Aggregation Status
+
+The PCS Observatory reads `PCS_ENGINE/output/latest_state.json`.
+
+The aggregation step in `PCS_ENGINE/aggregator/` refreshes this file by summarizing connector output availability from `PCS_ENGINE/input/`.
+
+Aggregation does not compute a new scientific PCS value. It preserves the existing prototype state fields for Observatory compatibility and adds connector-health, source-status, and domain-status summaries.
+
+Empty connector output arrays are classified as `Waiting`. Only non-empty connector outputs are classified as `Connected`.
+
 ## Current Boundary
 
 The PCS Engine currently uses the existing benchmark/prototype data products already present in the repository. The NASA GISTEMP and NOAA Mauna Loa CO2 connectors now write standardized connector JSON to `PCS_ENGINE/input/`. The Sea Level and NDVI connectors write pending connector outputs when authenticated or preprocessed source data are unavailable. No normalization changes, PCS state calculation, prediction, new data assimilation, or `latest_state.json` update is performed in this milestone.

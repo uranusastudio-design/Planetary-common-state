@@ -1,0 +1,22 @@
+{
+  "timestamp": "2026-07-07T02:57:29.436283+00:00",
+  "files_checked": [
+    "nasa_gistemp_pcs.json",
+    "noaa_mauna_loa_co2_pcs.json",
+    "nsidc_sea_ice_pcs.json",
+    "nasa_gpm_imerg_pcs.json",
+    "nasa_firms_wildfire_pcs.json",
+    "argo_ocean_pcs.json",
+    "sea_level_pcs.json",
+    "ndvi_pcs.json",
+    "era5_pcs.json",
+    "grace_water_storage_pcs.json"
+  ],
+  "connected_count": 2,
+  "waiting_count": 6,
+  "planned_count": 2,
+  "warnings": [
+    "Missing expected connector output: era5_pcs.json",
+    "Missing expected connector output: grace_water_storage_pcs.json"
+  ]
+}
