@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import LayerSelector from './LayerSelector';
 import { SUBSYSTEMS } from '../config/subsystems';
-import type { WeatherLayerId } from '../types/weather';
+import type { WeatherDebugInfo, WeatherLayerId } from '../types/weather';
 
 interface ControlPanelProps {
   activeLayerId: WeatherLayerId | null;
   onSelectLayer: (id: WeatherLayerId | null) => void;
   hasApiKey: boolean;
+  debugInfo: WeatherDebugInfo;
 }
 
 /**
@@ -14,7 +15,7 @@ interface ControlPanelProps {
  * module; the subsystem list below is rendered as disabled placeholders so
  * future modules (ocean, cryosphere, etc.) have an obvious slot to plug into.
  */
-export default function ControlPanel({ activeLayerId, onSelectLayer, hasApiKey }: ControlPanelProps) {
+export default function ControlPanel({ activeLayerId, onSelectLayer, hasApiKey, debugInfo }: ControlPanelProps) {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
@@ -58,6 +59,32 @@ export default function ControlPanel({ activeLayerId, onSelectLayer, hasApiKey }
         <section className="mb-8">
           <h2 className="mb-3 font-mono text-xs uppercase tracking-widest text-slate-400">Weather Layers</h2>
           <LayerSelector activeLayerId={activeLayerId} onSelect={onSelectLayer} />
+        </section>
+
+        <section className="mb-8 rounded-md border border-panel-border/70 bg-panel-light/40 px-3 py-3">
+          <h2 className="mb-2 font-mono text-xs uppercase tracking-widest text-slate-400">Weather Debug</h2>
+          <dl className="space-y-1.5 font-mono text-[11px] text-slate-300">
+            <div className="flex justify-between gap-3">
+              <dt className="text-slate-500">API key loaded</dt>
+              <dd>{debugInfo.hasApiKey ? 'yes' : 'no'}</dd>
+            </div>
+            <div className="flex justify-between gap-3">
+              <dt className="text-slate-500">Active layer</dt>
+              <dd>{debugInfo.activeLayerId ?? 'none'}</dd>
+            </div>
+            <div>
+              <dt className="mb-0.5 text-slate-500">Tile URL</dt>
+              <dd className="break-all text-slate-300">{debugInfo.tileUrl || 'none'}</dd>
+            </div>
+            <div className="flex justify-between gap-3">
+              <dt className="text-slate-500">Imagery layers</dt>
+              <dd>{debugInfo.imageryLayerCount}</dd>
+            </div>
+            <div>
+              <dt className="mb-0.5 text-slate-500">Latest tile error</dt>
+              <dd className="break-words text-slate-300">{debugInfo.latestTileError ?? 'none'}</dd>
+            </div>
+          </dl>
         </section>
 
         <section>

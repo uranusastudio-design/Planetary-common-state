@@ -53,5 +53,9 @@ export function isOpenWeatherApiKeyConfigured(apiKey: string | undefined | null)
  * The API key is read from the environment at call time, never hardcoded.
  */
 export function buildOpenWeatherTileUrl(owmLayer: string, apiKey: string): string {
-  return `https://tile.openweathermap.org/map/${owmLayer}/{z}/{x}/{y}.png?appid=${apiKey}`;
+  return `https://tile.openweathermap.org/map/${owmLayer}/{z}/{x}/{y}.png?appid=${encodeURIComponent(apiKey)}`;
+}
+
+export function maskOpenWeatherTileUrl(url: string): string {
+  return url.replace(/([?&]appid=)[^&]*/i, '$1***');
 }

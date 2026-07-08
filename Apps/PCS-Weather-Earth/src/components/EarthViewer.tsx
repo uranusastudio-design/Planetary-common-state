@@ -1,15 +1,17 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import * as Cesium from 'cesium';
-import type { WeatherLayerId } from '../types/weather';
+import type { WeatherDebugInfo, WeatherLayerId } from '../types/weather';
 import {
   buildOpenWeatherTileUrl,
   getWeatherLayerConfig,
   isOpenWeatherApiKeyConfigured,
+  maskOpenWeatherTileUrl,
 } from '../config/weatherLayers';
 
 interface EarthViewerProps {
   activeLayerId: WeatherLayerId | null;
   apiKey: string;
+  onDebugInfoChange: (debugInfo: WeatherDebugInfo) => void;
 }
 
 /**
@@ -17,11 +19,24 @@ interface EarthViewerProps {
  * OpenWeather tile layer on top of it. Switching `activeLayerId` removes
  * the previous weather imagery layer before adding the new one.
  */
-export default function EarthViewer({ activeLayerId, apiKey }: EarthViewerProps) {
+export default function EarthViewer({ activeLayerId, apiKey, onDebugInfoChange }: EarthViewerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const viewerRef = useRef<Cesium.Viewer | null>(null);
   const weatherLayerRef = useRef<Cesium.ImageryLayer | null>(null);
   const [weatherError, setWeatherError] = useState<string | null>(null);
+
+  const updateDebugInfo = useCallback(
+    (latestTileError: string | null, tileUrl = '') => {
+      onDebugInfoChange({
+        hasApiKey: isOpenWeatherApiKeyConfigured(apiKey),
+        activeLayerId,
+        tileUrl: tileUrl ? maskOpenWeatherTileUrl(tileUrl) : '',
+        imageryLayerCount: viewerRef.current?.imageryLayers.length ?? 0,
+        latestTileError,
+      });
+    },
+    [activeLayerId, apiKey, onDebugInfoChange]
+  );
 
   // Initialize the Cesium viewer once on mount.
   useEffect(() => {
@@ -53,6 +68,7 @@ export default function EarthViewer({ activeLayerId, apiKey }: EarthViewerProps)
     viewer.camera.flyHome(0);
 
     viewerRef.current = viewer;
+    updateDebugInfo(null);
 
     return () => {
       viewer.destroy();
@@ -73,6 +89,7 @@ export default function EarthViewer({ activeLayerId, apiKey }: EarthViewerProps)
     }
 
     setWeatherError(null);
+    updateDebugInfo(null);
 
     if (!activeLayerId) return;
 
@@ -82,36 +99,47 @@ export default function EarthViewer({ activeLayerId, apiKey }: EarthViewerProps)
         'OpenWeather API key missing. Set VITE_OPENWEATHER_API_KEY in a local .env file (see .env.example), then restart the dev server.';
       console.error(message);
       setWeatherError(message);
+      updateDebugInfo(message);
       return;
     }
 
     const layerConfig = getWeatherLayerConfig(activeLayerId);
     if (!layerConfig) return;
+    const tileUrl = buildOpenWeatherTileUrl(layerConfig.owmLayer, apiKey);
 
     const provider = new Cesium.UrlTemplateImageryProvider({
-      url: buildOpenWeatherTileUrl(layerConfig.owmLayer, apiKey),
+      url: tileUrl,
+      tilingScheme: new Cesium.WebMercatorTilingScheme(),
       credit: 'Weather data © OpenWeather',
       minimumLevel: 0,
       maximumLevel: 8,
+      tileWidth: 256,
+      tileHeight: 256,
+      enablePickFeatures: false,
     });
 
     // Surface tile-load failures (e.g. an invalid/unauthorized key) clearly
     // instead of failing silently with a blank overlay.
     const removeErrorListener = provider.errorEvent.addEventListener((error) => {
       console.error(`Failed to load "${layerConfig.label}" weather tiles:`, error);
-      setWeatherError(
-        `Failed to load "${layerConfig.label}" weather tiles. Check that VITE_OPENWEATHER_API_KEY is a valid, active OpenWeather API key.`
-      );
+      const statusCode =
+        error.error && typeof error.error === 'object' && 'statusCode' in error.error
+          ? ` (${error.error.statusCode})`
+          : '';
+      const message = `Failed to load "${layerConfig.label}" weather tiles${statusCode}. Check that VITE_OPENWEATHER_API_KEY is a valid, active OpenWeather API key.`;
+      setWeatherError(message);
+      updateDebugInfo(message, tileUrl);
     });
 
     const layer = viewer.imageryLayers.addImageryProvider(provider);
     layer.alpha = layerConfig.opacity;
     weatherLayerRef.current = layer;
+    updateDebugInfo(null, tileUrl);
 
     return () => {
       removeErrorListener();
     };
-  }, [activeLayerId, apiKey]);
+  }, [activeLayerId, apiKey, updateDebugInfo]);
 
   return (
     <div className="relative h-full w-full">

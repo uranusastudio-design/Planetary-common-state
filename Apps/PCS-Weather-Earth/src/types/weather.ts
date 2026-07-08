@@ -24,3 +24,12 @@ export interface WeatherLayerConfig {
 export interface WeatherLayerState {
   activeLayerId: WeatherLayerId | null;
 }
+
+/** Temporary diagnostics for the OpenWeather imagery layer. */
+export interface WeatherDebugInfo {
+  hasApiKey: boolean;
+  activeLayerId: WeatherLayerId | null;
+  tileUrl: string;
+  imageryLayerCount: number;
+  latestTileError: string | null;
+}
