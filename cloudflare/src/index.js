@@ -20,6 +20,7 @@ function notFound() {
 
 export default {
   async fetch(request) {
+    return new Response("PCS Worker OK");
     const url = new URL(request.url);
     const timestamp = new Date().toISOString();
 
