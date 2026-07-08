@@ -85,7 +85,7 @@ const EXTRA_STATIC_OBSERVATIONS = [
     timestamp: new Date().toISOString(),
     source: "Energy Institute",
     note: "registered_pending_connector"
-  }
+  },
   {
     symbol: "NDVI",
     value: null,
