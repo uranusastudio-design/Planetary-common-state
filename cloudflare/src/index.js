@@ -115,7 +115,6 @@ const EXTRA_STATIC_OBSERVATIONS = [
     note: "registered_pending_connector"
   }
 ];
-];
   ["PRECIP", "PRECTOTCORR", "mm/day"],
   ["CLOUD", "CLOUD_AMT", "%"],
   ["UV", "ALLSKY_SFC_UV_INDEX", "index"],
