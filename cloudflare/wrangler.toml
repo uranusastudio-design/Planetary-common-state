@@ -5,3 +5,11 @@ compatibility_date = "2026-07-07"
 [observability]
 enabled = true
 
+[[d1_databases]]
+binding = "PCS_DB"
+database_name = "pcsbackend"
+database_id = "5ae94dc5-7949-4c1a-b77c-ac75b1e5deec"
+
+[[kv_namespaces]]
+binding = "PCS_CACHE"
+id = "52579ebbb9a94248b7d821fa35fb2759"
