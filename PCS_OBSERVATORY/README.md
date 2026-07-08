@@ -110,6 +110,33 @@ Trend placeholder — awaiting validated time series.
 
 They do not display real data series.
 
+## Phase 2 Final UI Framework
+
+The Phase 2 final UI framework adds the remaining Observatory interface structure before Phase 3 data integration.
+
+Included framework panels:
+
+- Solar System Observatory
+- Multi-scale Observatory modes
+- Timeline framework
+- Animation framework
+- Audio and voice alert framework
+- Evidence Explorer
+
+Solar System Observatory keeps Earth as the only active body. Moon, Mars, Venus, Jupiter, Saturn, Solar Activity, and Deep Space are interface placeholders only.
+
+Observatory modes keep Planet as the active scale. Continent, Country, City, and Satellite View remain placeholders until regional and local data integration is available.
+
+The Timeline Framework exposes Play, Pause, Step Back, Step Forward, Speed, and Current Time Window controls. These controls do not play back data yet.
+
+The Animation Framework records future animation categories such as Earth rotation, layer activation, alert pulse, data update, timeline playback, and camera transition. No animation assets are loaded.
+
+The Audio Framework records future alert and AI voice categories. Sound and Voice controls are placeholders only and do not play audio.
+
+The Evidence Explorer is reserved for comparing global, regional, national, and local observations. It shows observable relationships only and does not claim causality without validated analysis.
+
+The root `assets/` directory reserves future audio, animation, imagery, and model folders. Large future assets should be stored in Cloudflare R2 or another object-storage service, not GitHub.
+
 ## Current Connected Data
 
 Connected:

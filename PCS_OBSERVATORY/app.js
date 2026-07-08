@@ -141,6 +141,16 @@ const selectors = {
   navLocalTime: document.querySelector("#nav-local-time"),
   navUtcTime: document.querySelector("#nav-utc-time"),
   aiCopilotMessage: document.querySelector("#ai-copilot-message"),
+  solarSystemControls: document.querySelectorAll("[data-solar-target]"),
+  solarSystemStatus: document.querySelector("#solar-system-status"),
+  observatoryModeControls: document.querySelectorAll("[data-observatory-mode]"),
+  observatoryModeStatus: document.querySelector("#observatory-mode-status"),
+  timelineControls: document.querySelectorAll("[data-timeline-action]"),
+  timelineStatus: document.querySelector("#timeline-status"),
+  timelineSpeed: document.querySelector("#timeline-speed"),
+  soundToggle: document.querySelector("#sound-toggle"),
+  voiceToggle: document.querySelector("#voice-toggle"),
+  audioStatus: document.querySelector("#audio-status"),
 };
 
 function t(key) {
@@ -490,6 +500,54 @@ function initializePlaceholderSelectors() {
   });
 }
 
+function initializeFrameworkControls() {
+  selectors.solarSystemControls.forEach((control) => {
+    control.addEventListener("click", () => {
+      const target = control.dataset.solarTarget;
+      if (target === "earth") {
+        updateText(selectors.solarSystemStatus, "Earth Observatory active. No planetary data or models are loaded.");
+        return;
+      }
+
+      updateText(selectors.solarSystemStatus, "Coming soon. Earth Observatory remains active.");
+    });
+  });
+
+  selectors.observatoryModeControls.forEach((control) => {
+    control.addEventListener("click", () => {
+      const mode = control.dataset.observatoryMode;
+      if (mode === "planet") {
+        updateText(selectors.observatoryModeStatus, "Planet mode active. Regional data integration pending.");
+        return;
+      }
+
+      updateText(selectors.observatoryModeStatus, "Mode placeholder. Regional data integration pending.");
+    });
+  });
+
+  selectors.timelineControls.forEach((control) => {
+    control.addEventListener("click", () => {
+      const action = control.dataset.timelineAction || "timeline";
+      const label = action.replace("-", " ");
+      updateText(selectors.timelineStatus, `Timeline ${label} placeholder. Timeline playback will activate after validated time-series data is available.`);
+    });
+  });
+
+  selectors.timelineSpeed?.addEventListener("change", () => {
+    updateText(selectors.timelineStatus, "Timeline speed placeholder. Timeline playback will activate after validated time-series data is available.");
+  });
+
+  selectors.soundToggle?.addEventListener("change", () => {
+    selectors.soundToggle.checked = false;
+    updateText(selectors.audioStatus, "Sound placeholder only. No audio assets loaded.");
+  });
+
+  selectors.voiceToggle?.addEventListener("change", () => {
+    selectors.voiceToggle.checked = false;
+    updateText(selectors.audioStatus, "Voice placeholder only. No audio assets loaded.");
+  });
+}
+
 function initializeLayerControls() {
   if (!selectors.layerControls.length) {
     return;
@@ -531,6 +589,7 @@ async function initializeApp() {
   renderClock();
   initializeCesiumGlobe();
   initializePlaceholderSelectors();
+  initializeFrameworkControls();
   initializeLayerControls();
   renderBuildTimestamp();
 }
