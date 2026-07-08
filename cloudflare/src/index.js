@@ -1,11 +1,8 @@
 export default {
-export default {
   async fetch(request, env) {
-
     const url = new URL(request.url);
 
-    if (url.pathname === "/latest") {
-
+    if (url.pathname === "/latest" || url.pathname === "/variables") {
       const { results } = await env.PCS_DB
         .prepare(`
           SELECT *
@@ -14,9 +11,21 @@ export default {
         `)
         .all();
 
-      return Response.json(results);
+      return Response.json(results, {
+        headers: {
+          "access-control-allow-origin": "*"
+        }
+      });
     }
 
-    return new Response("PCS Backend OK");
+    return Response.json({
+      status: "ok",
+      d1: !!env.PCS_DB,
+      kv: !!env.PCS_CACHE
+    }, {
+      headers: {
+        "access-control-allow-origin": "*"
+      }
+    });
   }
 }
