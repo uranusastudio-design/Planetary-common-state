@@ -266,7 +266,31 @@ function displayProgressBar(element, value) {
   element.style.transform = `scaleX(${clampedValue})`;
   element.classList.remove("is-missing");
 }
+function normalizeVariablesToState(variables) {
+  const groups = {
+    Thermal: variables.filter((v) => v.residual_group === "Thermal").length,
+    Chemical: variables.filter((v) => v.residual_group === "Chemical").length,
+    Flow: variables.filter((v) => v.residual_group === "Flow").length,
+    Informational: variables.filter((v) => v.residual_group === "Informational").length,
+    Structural: variables.filter((v) => v.residual_group === "Structural").length,
+  };
 
+  return {
+    timestamp: new Date().toISOString(),
+    metadata: {
+      generated_at_utc: new Date().toISOString(),
+    },
+    S_demo: variables.length,
+    coverage_count: variables.length,
+    latest_year: new Date().getFullYear(),
+    projections: {
+      L_T: groups.Thermal > 0 ? 0.25 : null,
+      L_C: groups.Chemical > 0 ? 0.25 : null,
+      L_S: groups.Structural > 0 ? 0.25 : null,
+      L_I: groups.Informational > 0 ? 0.25 : null,
+    },
+  };
+}
 function renderState(state, source, fallbackToGlobal = false) {
   const stateSignature = JSON.stringify(state);
   latestStateSignature = stateSignature;
@@ -322,9 +346,13 @@ async function loadLatestState() {
       throw new Error(`JSON load status: failed (${response.status})`);
     }
 
-    const state = await response.json();
-    renderState(state, fallbackToGlobal ? GLOBAL_STATE_SOURCE : requestedSource, fallbackToGlobal);
+    const rawState = await response.json();
 
+const state = Array.isArray(rawState)
+  ? normalizeVariablesToState(rawState)
+  : rawState;
+
+renderState(state, fallbackToGlobal ? GLOBAL_STATE_SOURCE : requestedSource, fallbackToGlobal);
     if (JSON.stringify(state) === latestStateSignature) {
       if (fallbackToGlobal) {
         updateText(selectors.dataMessage, `${t("regional_data_pending")}. Using global fallback from ${GLOBAL_STATE_SOURCE}`);
