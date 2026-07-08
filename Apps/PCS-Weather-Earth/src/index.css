@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  background-color: #020617;
+}
+
+body {
+  @apply font-sans text-slate-200 antialiased;
+}
+
+/* Thin, dark scrollbars for the control panel */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #1e293b;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: #334155;
+}
+
+/* Hide Cesium's default credit/logo container to keep the UI minimal */
+.cesium-viewer-bottom {
+  display: none !important;
+}
