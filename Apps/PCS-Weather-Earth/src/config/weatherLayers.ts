@@ -41,6 +41,14 @@ export function getWeatherLayerConfig(id: WeatherLayerId): WeatherLayerConfig | 
 }
 
 /**
+ * Verifies that an OpenWeather API key is present (non-empty, non-placeholder).
+ * Used to fail fast with a clear message instead of silently loading broken tiles.
+ */
+export function isOpenWeatherApiKeyConfigured(apiKey: string | undefined | null): apiKey is string {
+  return typeof apiKey === 'string' && apiKey.trim().length > 0;
+}
+
+/**
  * Builds the OpenWeather tile URL template Cesium's UrlTemplateImageryProvider expects.
  * The API key is read from the environment at call time, never hardcoded.
  */

@@ -1,7 +1,11 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import * as Cesium from 'cesium';
 import type { WeatherLayerId } from '../types/weather';
-import { buildOpenWeatherTileUrl, getWeatherLayerConfig } from '../config/weatherLayers';
+import {
+  buildOpenWeatherTileUrl,
+  getWeatherLayerConfig,
+  isOpenWeatherApiKeyConfigured,
+} from '../config/weatherLayers';
 
 interface EarthViewerProps {
   activeLayerId: WeatherLayerId | null;
@@ -17,6 +21,7 @@ export default function EarthViewer({ activeLayerId, apiKey }: EarthViewerProps)
   const containerRef = useRef<HTMLDivElement>(null);
   const viewerRef = useRef<Cesium.Viewer | null>(null);
   const weatherLayerRef = useRef<Cesium.ImageryLayer | null>(null);
+  const [weatherError, setWeatherError] = useState<string | null>(null);
 
   // Initialize the Cesium viewer once on mount.
   useEffect(() => {
@@ -67,12 +72,16 @@ export default function EarthViewer({ activeLayerId, apiKey }: EarthViewerProps)
       weatherLayerRef.current = null;
     }
 
+    setWeatherError(null);
+
     if (!activeLayerId) return;
 
-    if (!apiKey) {
-      console.warn(
-        'VITE_OPENWEATHER_API_KEY is not set. Add it to a local .env file (see .env.example).'
-      );
+    // Verify the API key exists before attempting to load any tiles.
+    if (!isOpenWeatherApiKeyConfigured(apiKey)) {
+      const message =
+        'OpenWeather API key missing. Set VITE_OPENWEATHER_API_KEY in a local .env file (see .env.example), then restart the dev server.';
+      console.error(message);
+      setWeatherError(message);
       return;
     }
 
@@ -86,10 +95,32 @@ export default function EarthViewer({ activeLayerId, apiKey }: EarthViewerProps)
       maximumLevel: 8,
     });
 
+    // Surface tile-load failures (e.g. an invalid/unauthorized key) clearly
+    // instead of failing silently with a blank overlay.
+    const removeErrorListener = provider.errorEvent.addEventListener((error) => {
+      console.error(`Failed to load "${layerConfig.label}" weather tiles:`, error);
+      setWeatherError(
+        `Failed to load "${layerConfig.label}" weather tiles. Check that VITE_OPENWEATHER_API_KEY is a valid, active OpenWeather API key.`
+      );
+    });
+
     const layer = viewer.imageryLayers.addImageryProvider(provider);
     layer.alpha = layerConfig.opacity;
     weatherLayerRef.current = layer;
+
+    return () => {
+      removeErrorListener();
+    };
   }, [activeLayerId, apiKey]);
 
-  return <div ref={containerRef} className="h-full w-full" />;
+  return (
+    <div className="relative h-full w-full">
+      <div ref={containerRef} className="h-full w-full" />
+      {weatherError && (
+        <div className="pointer-events-none absolute left-1/2 top-4 z-10 w-[min(90%,32rem)] -translate-x-1/2 rounded-lg border border-red-500/40 bg-red-950/90 px-4 py-3 text-center font-mono text-xs text-red-200 shadow-panel backdrop-blur transition-opacity duration-300">
+          {weatherError}
+        </div>
+      )}
+    </div>
+  );
 }

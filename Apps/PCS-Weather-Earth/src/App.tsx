@@ -2,11 +2,12 @@ import { useState } from 'react';
 import EarthViewer from './components/EarthViewer';
 import ControlPanel from './components/ControlPanel';
 import type { WeatherLayerId } from './types/weather';
+import { isOpenWeatherApiKeyConfigured } from './config/weatherLayers';
 
 const OPENWEATHER_API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY ?? '';
 
 export default function App() {
-  const [activeLayerId, setActiveLayerId] = useState<WeatherLayerId | null>('temperature');
+  const [activeLayerId, setActiveLayerId] = useState<WeatherLayerId | null>('clouds');
 
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-slate-950">
@@ -16,7 +17,7 @@ export default function App() {
       <ControlPanel
         activeLayerId={activeLayerId}
         onSelectLayer={setActiveLayerId}
-        hasApiKey={Boolean(OPENWEATHER_API_KEY)}
+        hasApiKey={isOpenWeatherApiKeyConfigured(OPENWEATHER_API_KEY)}
       />
     </div>
   );
