@@ -22,26 +22,21 @@ export default {
           o.uncertainty,
           s.name AS source_name
         FROM pcs_variables v
-        LEFT JOIN pcs_observations o
-          ON o.variable_id = v.id
-        LEFT JOIN pcs_sources s
-          ON s.id = o.source_id
+        LEFT JOIN pcs_observations o ON o.variable_id = v.id
+        LEFT JOIN pcs_sources s ON s.id = o.source_id
         ORDER BY v.id, o.timestamp DESC
       `).all();
 
       const latestBySymbol = {};
       for (const row of results) {
-        if (!latestBySymbol[row.symbol]) {
-          latestBySymbol[row.symbol] = row;
-        }
+        if (!latestBySymbol[row.symbol]) latestBySymbol[row.symbol] = row;
       }
 
-      const variables = Object.values(latestBySymbol);
-      const connected = variables.filter((v) => v.value !== null && v.value !== undefined);
+      const observations = Object.values(latestBySymbol);
+      const connected = observations.filter((v) => v.value !== null && v.value !== undefined);
 
       const gmst = latestBySymbol.GMST;
       const co2 = latestBySymbol.CO2;
-
       const now = new Date().toISOString();
 
       return new Response(JSON.stringify({
@@ -50,16 +45,19 @@ export default {
           generated_at_utc: now,
           source: "Cloudflare D1 pcs_observations"
         },
-        S_demo: null,
+        pcs_state: {
+          value: null,
+          status: "awaiting_calculation"
+        },
         coverage_count: connected.length,
         latest_year: new Date().getFullYear(),
         projections: {
-          L_T: gmst?.value !== null && gmst?.value !== undefined ? 0.25 : null,
-          L_C: co2?.value !== null && co2?.value !== undefined ? 0.25 : null,
+          L_T: gmst?.value ?? null,
+          L_C: co2?.value ?? null,
           L_S: null,
           L_I: null
         },
-        observations: variables
+        observations
       }), { headers });
     }
 
