@@ -85,40 +85,7 @@ const EXTRA_STATIC_OBSERVATIONS = [
     timestamp: new Date().toISOString(),
     source: "Energy Institute",
     note: "registered_pending_connector"
-  },
-  {
-    symbol: "NDVI",
-    value: null,
-    timestamp: new Date().toISOString(),
-    source: "NASA MODIS NDVI",
-    note: "registered_pending_connector"
-  },
-  {
-    symbol: "FIRE",
-    value: null,
-    timestamp: new Date().toISOString(),
-    source: "NASA FIRMS",
-    note: "registered_pending_connector"
-  },
-  {
-    symbol: "POP",
-    value: null,
-    timestamp: new Date().toISOString(),
-    source: "World Bank Population",
-    note: "registered_pending_connector"
-  },
-  {
-    symbol: "ENERGY",
-    value: null,
-    timestamp: new Date().toISOString(),
-    source: "Energy Institute",
-    note: "registered_pending_connector"
   }
-];
-  ["PRECIP", "PRECTOTCORR", "mm/day"],
-  ["CLOUD", "CLOUD_AMT", "%"],
-  ["UV", "ALLSKY_SFC_UV_INDEX", "index"],
-  ["RAD", "ALLSKY_SFC_SW_DWN", "kWh/m2/day"]
 ];
 
 function json(data, status = 200) {
@@ -321,24 +288,24 @@ export default {
 
     if (url.pathname === "/ingest/v1") {
       const imported = await ingestCore(env);
-       for (const item of EXTRA_STATIC_OBSERVATIONS) {
-    try {
-      imported.push({
-        symbol: item.symbol,
-        imported: false,
-        value: item.value,
-        timestamp: item.timestamp,
-        source: item.source,
-        status: item.note
-      });
-    } catch (error) {
-      imported.push({
-        symbol: item.symbol,
-        imported: false,
-        reason: error.message
-      });
-    }
-  }
+      for (const item of EXTRA_STATIC_OBSERVATIONS) {
+        try {
+          imported.push({
+            symbol: item.symbol,
+            imported: false,
+            value: item.value,
+            timestamp: item.timestamp,
+            source: item.source,
+            status: item.note
+          });
+        } catch (error) {
+          imported.push({
+            symbol: item.symbol,
+            imported: false,
+            reason: error.message
+          });
+        }
+      }
       return json({
         status: "ok",
         imported_count: imported.filter((x) => x.imported).length,
