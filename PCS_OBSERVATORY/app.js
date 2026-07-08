@@ -1,4 +1,6 @@
-const GLOBAL_STATE_SOURCE = "https://pcs-backend.uranusastudio.workers.dev/latest";
+const PCS_API_URL = "https://pcs-backend.uranusastudio.workers.dev";
+const PCS_DATA_ENDPOINT = `${PCS_API_URL}/latest`;
+const GLOBAL_STATE_SOURCE = PCS_DATA_ENDPOINT;
 const REFRESH_INTERVAL_MS = 10000;
 const LANGUAGE_STORAGE_KEY = "pcs_observatory_language";
 const REGION_STORAGE_KEY = "pcs_observatory_region";
@@ -10,7 +12,7 @@ const regionConfig = {
     lat: 20,
     lon: 120,
     altitude: 30000000,
-    stateFile: "https://pcs-backend.uranusastudio.workers.dev/latest",
+    stateFile: PCS_DATA_ENDPOINT,
   },
   japan: {
     id: "japan",
@@ -18,7 +20,7 @@ const regionConfig = {
     lat: 36.2048,
     lon: 138.2529,
     altitude: 6000000,
-    stateFile: "../PCS_ENGINE/output/regions/japan_state.json",
+    stateFile: PCS_DATA_ENDPOINT,
   },
   taiwan: {
     id: "taiwan",
@@ -26,7 +28,7 @@ const regionConfig = {
     lat: 23.6978,
     lon: 120.9605,
     altitude: 2500000,
-    stateFile: "../PCS_ENGINE/output/regions/taiwan_state.json",
+    stateFile: PCS_DATA_ENDPOINT,
   },
   korea: {
     id: "korea",
@@ -34,7 +36,7 @@ const regionConfig = {
     lat: 36.5,
     lon: 127.8,
     altitude: 3500000,
-    stateFile: "../PCS_ENGINE/output/regions/korea_state.json",
+    stateFile: PCS_DATA_ENDPOINT,
   },
   canada: {
     id: "canada",
@@ -42,7 +44,7 @@ const regionConfig = {
     lat: 56.1304,
     lon: -106.3468,
     altitude: 9000000,
-    stateFile: "../PCS_ENGINE/output/regions/canada_state.json",
+    stateFile: PCS_DATA_ENDPOINT,
   },
   uk: {
     id: "uk",
@@ -50,7 +52,7 @@ const regionConfig = {
     lat: 55.3781,
     lon: -3.436,
     altitude: 3500000,
-    stateFile: "../PCS_ENGINE/output/regions/uk_state.json",
+    stateFile: PCS_DATA_ENDPOINT,
   },
   usa: {
     id: "usa",
@@ -58,7 +60,7 @@ const regionConfig = {
     lat: 37.0902,
     lon: -95.7129,
     altitude: 8000000,
-    stateFile: "../PCS_ENGINE/output/regions/usa_state.json",
+    stateFile: PCS_DATA_ENDPOINT,
   },
   china: {
     id: "china",
@@ -66,7 +68,7 @@ const regionConfig = {
     lat: 35.8617,
     lon: 104.1954,
     altitude: 8000000,
-    stateFile: "../PCS_ENGINE/output/regions/china_state.json",
+    stateFile: PCS_DATA_ENDPOINT,
   },
   singapore: {
     id: "singapore",
@@ -74,7 +76,7 @@ const regionConfig = {
     lat: 1.3521,
     lon: 103.8198,
     altitude: 1500000,
-    stateFile: "../PCS_ENGINE/output/regions/singapore_state.json",
+    stateFile: PCS_DATA_ENDPOINT,
   },
   dubai: {
     id: "dubai",
@@ -82,7 +84,7 @@ const regionConfig = {
     lat: 25.2048,
     lon: 55.2708,
     altitude: 1800000,
-    stateFile: "../PCS_ENGINE/output/regions/dubai_state.json",
+    stateFile: PCS_DATA_ENDPOINT,
   },
 };
 
@@ -306,7 +308,7 @@ function renderState(state, source, fallbackToGlobal = false) {
   latestStateSignature = stateSignature;
   lastJsonUpdateValue = state.metadata?.generated_at_utc ?? state.timestamp ?? null;
 
-  displayValue(selectors.currentState, state.S_demo ?? state.pcs_state?.value);
+  displayValue(selectors.currentState, state.S_demo ?? state.pcs_state?.value ?? state.pcs_state?.status);
   displayCoverage(selectors.coverage, state.coverage_count);
   displayValue(selectors.latestYear, state.latest_year, 0);
   displayValue(selectors.projections.L_T, state.projections?.L_T);
@@ -327,6 +329,40 @@ function renderState(state, source, fallbackToGlobal = false) {
   }
 }
 
+function normalizeDashboardData(rawData) {
+  if (Array.isArray(rawData)) {
+    return normalizeVariablesToState(rawData);
+  }
+
+  return rawData?.data ?? rawData?.latest_state ?? rawData?.state ?? rawData;
+}
+
+function renderConnectionFailure(error, source) {
+  console.error("Failed to load PCS data:", error);
+  latestStateSignature = "";
+  lastJsonUpdateValue = "DATA CONNECTION FAILED";
+
+  [
+    selectors.currentState,
+    selectors.coverage,
+    selectors.latestYear,
+    selectors.lastJsonUpdate,
+    selectors.projections.L_T,
+    selectors.projections.L_C,
+    selectors.projections.L_S,
+    selectors.projections.L_I,
+  ].forEach((element) => {
+    updateText(element, "DATA CONNECTION FAILED");
+    element?.classList.add("is-missing");
+  });
+
+  Object.values(selectors.progress).forEach((element) => {
+    displayProgressBar(element, null);
+  });
+
+  updateText(selectors.dataMessage, `DATA CONNECTION FAILED: ${source}`);
+}
+
 function renderClock() {
   const now = Date.now();
   const nowDate = new Date(now);
@@ -339,44 +375,35 @@ function renderClock() {
   updateText(selectors.autoRefreshCountdown, `Next refresh in ${secondsRemaining}s`);
 }
 
-async function loadLatestState() {
+async function updateDashboardData() {
   const requestedSource = stateSourceForRegion(activeRegionId);
 
   try {
-    let response = await fetch(requestedSource, { cache: "no-store" });
-    let fallbackToGlobal = false;
-
-    if (!response.ok && activeRegionId !== "global") {
-      response = await fetch(GLOBAL_STATE_SOURCE, { cache: "no-store" });
-      fallbackToGlobal = true;
-      updateText(selectors.regionalModeStatus, `${t("regional_data_pending")}. Using global latest_state.json.`);
-    }
+    const response = await fetch(requestedSource, { cache: "no-store" });
 
     if (!response.ok) {
-      throw new Error(`JSON load status: failed (${response.status})`);
+      const errorText = await response.text();
+      throw new Error(`PCS API failed: ${response.status} ${errorText}`);
     }
 
-    const rawState = await response.json();
+    const rawData = await response.json();
+    console.log("PCS data loaded:", rawData);
 
-const state = Array.isArray(rawState)
-  ? normalizeVariablesToState(rawState)
-  : rawState;
+    const state = normalizeDashboardData(rawData);
 
-renderState(state, fallbackToGlobal ? GLOBAL_STATE_SOURCE : requestedSource, fallbackToGlobal);
+    renderState(state, requestedSource);
     if (JSON.stringify(state) === latestStateSignature) {
-      if (fallbackToGlobal) {
-        updateText(selectors.dataMessage, `${t("regional_data_pending")}. Using global fallback from ${GLOBAL_STATE_SOURCE}`);
-      } else {
-        updateText(selectors.dataMessage, `JSON load status: loaded from ${requestedSource}`);
-      }
+      updateText(selectors.dataMessage, `JSON load status: loaded from ${requestedSource}`);
     }
   } catch (error) {
-    updateText(selectors.dataMessage, error.message);
+    renderConnectionFailure(error, requestedSource);
   } finally {
     nextRefreshAt = Date.now() + REFRESH_INTERVAL_MS;
     renderClock();
   }
 }
+
+const loadLatestState = updateDashboardData;
 
 function updateRegionContext(regionId) {
   const region = regionConfig[regionId] ?? regionConfig.global;
