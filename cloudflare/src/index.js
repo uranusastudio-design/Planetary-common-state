@@ -29,6 +29,99 @@ const POWER_PARAMS = [
   ["RAD", "ALLSKY_SFC_SW_DWN", "kWh/m2/day"]
 ];
 
+const EXTRA_STATIC_OBSERVATIONS = [
+  {
+    symbol: "SST",
+    value: null,
+    timestamp: new Date().toISOString(),
+    source: "NOAA OISST",
+    note: "registered_pending_connector"
+  },
+  {
+    symbol: "GMSL",
+    value: null,
+    timestamp: new Date().toISOString(),
+    source: "NASA Sea Level",
+    note: "registered_pending_connector"
+  },
+  {
+    symbol: "OHC",
+    value: null,
+    timestamp: new Date().toISOString(),
+    source: "NOAA Ocean Heat Content",
+    note: "registered_pending_connector"
+  },
+  {
+    symbol: "ARCTIC_ICE",
+    value: null,
+    timestamp: new Date().toISOString(),
+    source: "NSIDC Sea Ice",
+    note: "registered_pending_connector"
+  },
+  {
+    symbol: "NDVI",
+    value: null,
+    timestamp: new Date().toISOString(),
+    source: "NASA MODIS NDVI",
+    note: "registered_pending_connector"
+  },
+  {
+    symbol: "FIRE",
+    value: null,
+    timestamp: new Date().toISOString(),
+    source: "NASA FIRMS",
+    note: "registered_pending_connector"
+  },
+  {
+    symbol: "POP",
+    value: null,
+    timestamp: new Date().toISOString(),
+    source: "World Bank Population",
+    note: "registered_pending_connector"
+  },
+  {
+    symbol: "ENERGY",
+    value: null,
+    timestamp: new Date().toISOString(),
+    source: "Energy Institute",
+    note: "registered_pending_connector"
+  }
+  {
+    symbol: "NDVI",
+    value: null,
+    timestamp: new Date().toISOString(),
+    source: "NASA MODIS NDVI",
+    note: "registered_pending_connector"
+  },
+  {
+    symbol: "FIRE",
+    value: null,
+    timestamp: new Date().toISOString(),
+    source: "NASA FIRMS",
+    note: "registered_pending_connector"
+  },
+  {
+    symbol: "POP",
+    value: null,
+    timestamp: new Date().toISOString(),
+    source: "World Bank Population",
+    note: "registered_pending_connector"
+  },
+  {
+    symbol: "ENERGY",
+    value: null,
+    timestamp: new Date().toISOString(),
+    source: "Energy Institute",
+    note: "registered_pending_connector"
+  }
+];
+];
+  ["PRECIP", "PRECTOTCORR", "mm/day"],
+  ["CLOUD", "CLOUD_AMT", "%"],
+  ["UV", "ALLSKY_SFC_UV_INDEX", "index"],
+  ["RAD", "ALLSKY_SFC_SW_DWN", "kWh/m2/day"]
+];
+
 function json(data, status = 200) {
   return new Response(JSON.stringify(data, null, 2), {
     status,
@@ -229,6 +322,24 @@ export default {
 
     if (url.pathname === "/ingest/v1") {
       const imported = await ingestCore(env);
+       for (const item of EXTRA_STATIC_OBSERVATIONS) {
+    try {
+      imported.push({
+        symbol: item.symbol,
+        imported: false,
+        value: item.value,
+        timestamp: item.timestamp,
+        source: item.source,
+        status: item.note
+      });
+    } catch (error) {
+      imported.push({
+        symbol: item.symbol,
+        imported: false,
+        reason: error.message
+      });
+    }
+  }
       return json({
         status: "ok",
         imported_count: imported.filter((x) => x.imported).length,
