@@ -115,7 +115,7 @@ let activeRegionId = "global";
 let translations = {};
 let activeWeatherLayers = {};
 let weatherProxyConnected = false;
-let weatherTileError = null;
+let weatherTileErrors = {};
 
 const selectors = {
   currentState: document.querySelector("#current-state"),
@@ -527,12 +527,12 @@ function updateWeatherStatus() {
     activeNames.length ? `Active layers: ${activeNames.join(", ")}` : "Active layers: none",
   );
 
-  updateText(
-    selectors.weatherTileError,
-    weatherTileError ? `Tile error: ${weatherTileError}` : "",
-  );
+  const errorMessages = Object.entries(weatherTileErrors)
+    .map(([k, msg]) => `${WEATHER_LAYER_NAMES[k] ?? k}: ${msg}`)
+    .join("; ");
+  updateText(selectors.weatherTileError, errorMessages ? `Tile error: ${errorMessages}` : "");
   if (selectors.weatherTileError) {
-    selectors.weatherTileError.className = weatherTileError ? "weather-status-error" : "";
+    selectors.weatherTileError.className = errorMessages ? "weather-status-error" : "";
   }
 }
 
@@ -561,17 +561,16 @@ function addWeatherLayer(layerId) {
     });
 
     provider.errorEvent.addEventListener((tileProviderError) => {
-      weatherTileError = `${WEATHER_LAYER_NAMES[layerId] ?? layerId}: ${tileProviderError.message ?? "tile error"}`;
+      weatherTileErrors[layerId] = tileProviderError.message ?? "tile error";
       updateWeatherStatus();
     });
 
     const layer = cesiumViewer.imageryLayers.addImageryProvider(provider);
     layer.alpha = 0.65;
     activeWeatherLayers[layerId] = layer;
-    weatherProxyConnected = true;
     updateWeatherStatus();
   } catch (error) {
-    weatherTileError = String(error.message ?? error);
+    weatherTileErrors[layerId] = String(error.message ?? error);
     updateWeatherStatus();
   }
 }
@@ -583,9 +582,7 @@ function removeWeatherLayer(layerId) {
   }
   cesiumViewer.imageryLayers.remove(layer);
   delete activeWeatherLayers[layerId];
-  if (weatherTileError && weatherTileError.startsWith(WEATHER_LAYER_NAMES[layerId] ?? layerId)) {
-    weatherTileError = null;
-  }
+  delete weatherTileErrors[layerId];
   updateWeatherStatus();
 }
 
