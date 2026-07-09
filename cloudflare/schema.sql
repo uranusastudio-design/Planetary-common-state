@@ -56,7 +56,7 @@ INSERT OR IGNORE INTO pcs_variables (symbol, name, category, residual_group, uni
   ('SST',        'Sea Surface Temperature',           'thermal',    'L_T', '°C'),
   ('CO2',        'Atmospheric CO₂',                  'carbon',     'L_C', 'ppm'),
   ('CH4',        'Atmospheric CH₄',                  'carbon',     'L_C', 'ppb'),
-  ('ARCTIC_ICE', 'Arctic Sea Ice Extent',             'cryosphere', 'L_S', 'million km²'),
+  ('ARCTIC_ICE', 'Arctic Sea Ice Extent',             'cryosphere', 'L_S', 'million km²'), -- symbol kept short to match ingest code
   ('GMSL',       'Global Mean Sea Level',             'cryosphere', 'L_S', 'mm'),
   ('NDVI',       'Normalized Difference Vegetation',  'biosphere',  'L_I', 'index'),
   ('FIRE',       'Active Fire Detections',            'biosphere',  'L_I', 'count'),

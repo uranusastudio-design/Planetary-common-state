@@ -392,7 +392,16 @@ export default {
       }
       const authHeader = request.headers.get("Authorization") ?? "";
       const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : "";
-      if (token !== secret) {
+
+      // Use constant-time comparison to prevent timing-based secret enumeration.
+      const encoder = new TextEncoder();
+      const tokenBytes = encoder.encode(token);
+      const secretBytes = encoder.encode(secret);
+      const tokensMatch =
+        tokenBytes.byteLength === secretBytes.byteLength &&
+        crypto.subtle.timingSafeEqual(tokenBytes, secretBytes);
+
+      if (!tokensMatch) {
         return json({ error: "Unauthorized" }, 401);
       }
       const imported = await ingestCore(env);
