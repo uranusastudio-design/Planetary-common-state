@@ -98,7 +98,100 @@ function json(data, status = 200) {
     }
   });
 }
+const OPENWEATHER_LAYERS = {
+  clouds: "clouds_new",
+  rain: "precipitation_new",
+  temperature: "temp_new",
+  wind: "wind_new"
+};
 
+function tileResponse(body, status = 200, contentType = "image/png") {
+  return new Response(body, {
+    status,
+    headers: {
+      "content-type": contentType,
+      "access-control-allow-origin": "*",
+      "cache-control": "public, max-age=600"
+    }
+  });
+}
+
+async function openWeatherHealth(env) {
+  const apiKey = env.OPENWEATHER_API_KEY;
+
+  if (!apiKey) {
+    return {
+      key_configured: false,
+      upstream_status: null,
+      upstream_ok: false,
+      error_message: "OPENWEATHER_API_KEY is not configured"
+    };
+  }
+
+  const testUrl =
+    `https://tile.openweathermap.org/map/clouds_new/1/1/1.png?appid=${apiKey}`;
+
+  try {
+    const response = await fetch(testUrl);
+
+    return {
+      key_configured: true,
+      upstream_status: response.status,
+      upstream_ok: response.ok,
+      error_message: response.ok ? null : await response.text()
+    };
+  } catch (error) {
+    return {
+      key_configured: true,
+      upstream_status: null,
+      upstream_ok: false,
+      error_message: error.message
+    };
+  }
+}
+
+async function openWeatherTile(request, env) {
+  const apiKey = env.OPENWEATHER_API_KEY;
+
+  if (!apiKey) {
+    return json({ error: "OPENWEATHER_API_KEY is not configured" }, 500);
+  }
+
+  const url = new URL(request.url);
+  const parts = url.pathname.split("/").filter(Boolean);
+
+  // /tiles/openweather/:layer/:z/:x/:y
+  const layerKey = parts[2];
+  const z = parts[3];
+  const x = parts[4];
+  const y = parts[5];
+
+  const openWeatherLayer = OPENWEATHER_LAYERS[layerKey];
+
+  if (!openWeatherLayer || !z || !x || !y) {
+    return json({
+      error: "Invalid OpenWeather tile path",
+      expected: "/tiles/openweather/:layer/:z/:x/:y",
+      layers: Object.keys(OPENWEATHER_LAYERS)
+    }, 400);
+  }
+
+  const tileUrl =
+    `https://tile.openweathermap.org/map/${openWeatherLayer}/${z}/${x}/${y}.png?appid=${apiKey}`;
+
+  const response = await fetch(tileUrl);
+
+  if (!response.ok) {
+    return json({
+      error: "OpenWeather tile request failed",
+      layer: layerKey,
+      upstream_status: response.status,
+      upstream_text: await response.text()
+    }, response.status);
+  }
+
+  return tileResponse(await response.arrayBuffer(), 200, response.headers.get("content-type") || "image/png");
+}
 function latestNumericFromCsv(text) {
   const lines = text.split("\n")
     .map((line) => line.trim())
@@ -285,7 +378,13 @@ async function latestState(env) {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    if (url.pathname === "/health/openweather") {
+      return json(await openWeatherHealth(env));
+    }
 
+    if (url.pathname.startsWith("/tiles/openweather/")) {
+      return openWeatherTile(request, env);
+    }
     if (url.pathname === "/ingest/v1") {
       const imported = await ingestCore(env);
       for (const item of EXTRA_STATIC_OBSERVATIONS) {
