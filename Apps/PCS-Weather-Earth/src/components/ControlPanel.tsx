@@ -4,9 +4,8 @@ import { SUBSYSTEMS } from '../config/subsystems';
 import type { WeatherDebugInfo, WeatherLayerId } from '../types/weather';
 
 interface ControlPanelProps {
-  activeLayerId: WeatherLayerId | null;
-  onSelectLayer: (id: WeatherLayerId | null) => void;
-  hasBackend: boolean;
+  activeLayerIds: WeatherLayerId[];
+  onToggleLayer: (id: WeatherLayerId) => void;
   debugInfo: WeatherDebugInfo;
 }
 
@@ -15,7 +14,7 @@ interface ControlPanelProps {
  * module; the subsystem list below is rendered as disabled placeholders so
  * future modules (ocean, cryosphere, etc.) have an obvious slot to plug into.
  */
-export default function ControlPanel({ activeLayerId, onSelectLayer, hasBackend, debugInfo }: ControlPanelProps) {
+export default function ControlPanel({ activeLayerIds, onToggleLayer, debugInfo }: ControlPanelProps) {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
@@ -48,17 +47,9 @@ export default function ControlPanel({ activeLayerId, onSelectLayer, hasBackend,
           <p className="mt-1 text-xs text-slate-500">v0.1 — scientific 3D Earth dashboard</p>
         </header>
 
-        {!hasBackend && (
-          <div className="mb-5 rounded-md border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-xs text-amber-300">
-            Backend URL not configured. Set{' '}
-            <code className="font-mono text-amber-200">VITE_PCS_BACKEND_URL</code> in a local{' '}
-            <code className="font-mono text-amber-200">.env</code> file.
-          </div>
-        )}
-
         <section className="mb-8">
           <h2 className="mb-3 font-mono text-xs uppercase tracking-widest text-slate-400">Weather Layers</h2>
-          <LayerSelector activeLayerId={activeLayerId} onSelect={onSelectLayer} />
+          <LayerSelector activeLayerIds={activeLayerIds} onToggle={onToggleLayer} />
         </section>
 
         <section className="mb-8 rounded-md border border-panel-border/70 bg-panel-light/40 px-3 py-3">
@@ -70,11 +61,13 @@ export default function ControlPanel({ activeLayerId, onSelectLayer, hasBackend,
             </div>
             <div className="flex justify-between gap-3">
               <dt className="text-slate-500">Active layer</dt>
-              <dd>{debugInfo.activeLayerId ?? 'none'}</dd>
+              <dd>{debugInfo.activeLayerIds.length > 0 ? debugInfo.activeLayerIds.join(', ') : 'none'}</dd>
             </div>
             <div>
-              <dt className="mb-0.5 text-slate-500">Tile URL</dt>
-              <dd className="break-all text-slate-300">{debugInfo.tileUrl || 'none'}</dd>
+              <dt className="mb-0.5 text-slate-500">Tile URLs</dt>
+              <dd className="break-all text-slate-300">
+                {debugInfo.tileUrls.length > 0 ? debugInfo.tileUrls.join('\n') : 'none'}
+              </dd>
             </div>
             <div className="flex justify-between gap-3">
               <dt className="text-slate-500">Imagery layers</dt>

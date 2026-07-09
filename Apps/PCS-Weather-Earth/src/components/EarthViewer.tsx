@@ -5,40 +5,49 @@ import {
   buildOpenWeatherTileUrl,
   getWeatherLayerConfig,
   isPcsBackendConfigured,
-  maskOpenWeatherTileUrl,
 } from '../config/weatherLayers';
 
 interface EarthViewerProps {
-  activeLayerId: WeatherLayerId | null;
+  activeLayerIds: WeatherLayerId[];
   backendUrl: string;
   onDebugInfoChange: (debugInfo: WeatherDebugInfo) => void;
 }
 
 /**
- * Renders a full-screen interactive Cesium 3D globe and layers a single
- * OpenWeather tile layer on top of it. Tile requests are routed through the
- * Cloudflare worker proxy so the API key is never exposed in browser URLs.
- * Switching `activeLayerId` removes the previous weather imagery layer before
- * adding the new one.
+ * Renders a full-screen interactive Cesium 3D globe and layers selected
+ * weather tile overlays on top of it. Tile requests are routed through the
+ * Cloudflare worker proxy so browser traffic stays on the PCS backend host.
  */
-export default function EarthViewer({ activeLayerId, backendUrl, onDebugInfoChange }: EarthViewerProps) {
+export default function EarthViewer({ activeLayerIds, backendUrl, onDebugInfoChange }: EarthViewerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const viewerRef = useRef<Cesium.Viewer | null>(null);
-  const weatherLayerRef = useRef<Cesium.ImageryLayer | null>(null);
+  const weatherLayersRef = useRef<Array<{ layer: Cesium.ImageryLayer; removeErrorListener: () => void }>>([]);
   const [weatherError, setWeatherError] = useState<string | null>(null);
 
   const updateDebugInfo = useCallback(
-    (latestTileError: string | null, tileUrl = '') => {
+    (latestTileError: string | null, tileUrls: string[] = []) => {
       onDebugInfoChange({
         hasBackend: isPcsBackendConfigured(backendUrl),
-        activeLayerId,
-        tileUrl: tileUrl ? maskOpenWeatherTileUrl(tileUrl) : '',
+        activeLayerIds,
+        tileUrls,
         imageryLayerCount: viewerRef.current?.imageryLayers.length ?? 0,
         latestTileError,
       });
     },
-    [activeLayerId, backendUrl, onDebugInfoChange]
+    [activeLayerIds, backendUrl, onDebugInfoChange]
   );
+
+  const clearWeatherLayers = useCallback(() => {
+    const viewer = viewerRef.current;
+    if (!viewer) return;
+
+    for (const { layer, removeErrorListener } of weatherLayersRef.current) {
+      removeErrorListener();
+      viewer.imageryLayers.remove(layer, true);
+    }
+
+    weatherLayersRef.current = [];
+  }, []);
 
   // Initialize the Cesium viewer once on mount.
   useEffect(() => {
@@ -73,75 +82,75 @@ export default function EarthViewer({ activeLayerId, backendUrl, onDebugInfoChan
     updateDebugInfo(null);
 
     return () => {
+      clearWeatherLayers();
       viewer.destroy();
       viewerRef.current = null;
-      weatherLayerRef.current = null;
+      weatherLayersRef.current = [];
     };
-  }, []);
+  }, [clearWeatherLayers, updateDebugInfo]);
 
-  // Swap the active weather imagery layer whenever selection or key changes.
+  // Rebuild the selected weather imagery layers whenever the toggle state changes.
   useEffect(() => {
     const viewer = viewerRef.current;
     if (!viewer) return;
 
-    // Always remove the previous weather layer first.
-    if (weatherLayerRef.current) {
-      viewer.imageryLayers.remove(weatherLayerRef.current, true);
-      weatherLayerRef.current = null;
-    }
+    clearWeatherLayers();
 
     setWeatherError(null);
-    updateDebugInfo(null);
+    updateDebugInfo(null, []);
 
-    if (!activeLayerId) return;
+    if (activeLayerIds.length === 0) return;
 
-    // Verify the backend URL exists before attempting to load any tiles.
     if (!isPcsBackendConfigured(backendUrl)) {
-      const message =
-        'PCS backend URL not configured. Set VITE_PCS_BACKEND_URL in a local .env file (see .env.example), then restart the dev server.';
+      const message = 'PCS backend URL is not configured.';
       console.error(message);
       setWeatherError(message);
-      updateDebugInfo(message);
+      updateDebugInfo(message, []);
       return;
     }
 
-    const layerConfig = getWeatherLayerConfig(activeLayerId);
-    if (!layerConfig) return;
-    const tileUrl = buildOpenWeatherTileUrl(layerConfig.id, backendUrl);
+    const tileUrls: string[] = [];
 
-    const provider = new Cesium.UrlTemplateImageryProvider({
-      url: tileUrl,
-      tilingScheme: new Cesium.WebMercatorTilingScheme(),
-      credit: 'Weather data © OpenWeather',
-      minimumLevel: 0,
-      maximumLevel: 8,
-      tileWidth: 256,
-      tileHeight: 256,
-      enablePickFeatures: false,
-    });
+    for (const activeLayerId of activeLayerIds) {
+      const layerConfig = getWeatherLayerConfig(activeLayerId);
+      if (!layerConfig) continue;
 
-    // Surface tile-load failures (e.g. an invalid/unauthorized key) clearly
-    // instead of failing silently with a blank overlay.
-    const removeErrorListener = provider.errorEvent.addEventListener((error) => {
-      console.error(`Failed to load "${layerConfig.label}" weather tiles:`, error);
-      const statusCode =
-        error.error && typeof error.error === 'object' && 'statusCode' in error.error
-          ? ` (${error.error.statusCode})`
-          : '';
-      const message = `Failed to load "${layerConfig.label}" weather tiles${statusCode}. Check that VITE_PCS_BACKEND_URL points to the deployed pcs-backend worker and the worker's OPENWEATHER_API_KEY secret is set.`;
-      setWeatherError(message);
-      updateDebugInfo(message, tileUrl);
-    });
+      const tileUrl = buildOpenWeatherTileUrl(layerConfig.proxyPath, backendUrl);
+      tileUrls.push(tileUrl);
 
-    const layer = viewer.imageryLayers.addImageryProvider(provider);
-    layer.alpha = layerConfig.opacity;
-    weatherLayerRef.current = layer;
-    updateDebugInfo(null, tileUrl);
+      const provider = new Cesium.UrlTemplateImageryProvider({
+        url: tileUrl,
+        tilingScheme: new Cesium.WebMercatorTilingScheme(),
+        credit: 'Weather data © OpenWeather',
+        minimumLevel: 0,
+        maximumLevel: 8,
+        tileWidth: 256,
+        tileHeight: 256,
+        enablePickFeatures: false,
+      });
+
+      const removeErrorListener = provider.errorEvent.addEventListener((error) => {
+        console.error(`Failed to load "${layerConfig.label}" weather tiles:`, error);
+        const statusCode =
+          error.error && typeof error.error === 'object' && 'statusCode' in error.error
+            ? ` (${error.error.statusCode})`
+            : '';
+        const message = `Failed to load "${layerConfig.label}" weather tiles${statusCode}. Check that the deployed pcs-backend worker is reachable and its OPENWEATHER_API_KEY secret is set.`;
+        setWeatherError(message);
+        updateDebugInfo(message, tileUrls);
+      });
+
+      const layer = viewer.imageryLayers.addImageryProvider(provider);
+      layer.alpha = layerConfig.opacity;
+      weatherLayersRef.current.push({ layer, removeErrorListener });
+    }
+
+    updateDebugInfo(null, tileUrls);
 
     return () => {
-      removeErrorListener();
+      clearWeatherLayers();
     };
-  }, [activeLayerId, backendUrl, updateDebugInfo]);
+  }, [activeLayerIds, backendUrl, clearWeatherLayers, updateDebugInfo]);
 
   return (
     <div className="relative h-full w-full">
