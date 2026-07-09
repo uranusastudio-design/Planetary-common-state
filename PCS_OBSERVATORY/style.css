@@ -791,6 +791,7 @@ h3 {
 }
 
 .weather-layer-list {
+  display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 

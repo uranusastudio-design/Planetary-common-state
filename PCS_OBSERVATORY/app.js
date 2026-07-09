@@ -565,11 +565,12 @@ function addWeatherLayer(layerId) {
       credit: "OpenWeather",
     });
 
-    const removeListener = provider.errorEvent.addEventListener((tileProviderError) => {
+    const errorHandler = (tileProviderError) => {
       weatherTileErrors[layerId] = tileProviderError.message ?? "Failed to load tile";
       updateWeatherStatus();
-    });
-    weatherTileErrorListeners[layerId] = removeListener;
+    };
+    provider.errorEvent.addEventListener(errorHandler);
+    weatherTileErrorListeners[layerId] = { provider, errorHandler };
 
     const layer = cesiumViewer.imageryLayers.addImageryProvider(provider);
     layer.alpha = 0.65;
@@ -587,9 +588,9 @@ function removeWeatherLayer(layerId) {
     return;
   }
 
-  const removeListener = weatherTileErrorListeners[layerId];
-  if (typeof removeListener === "function") {
-    removeListener();
+  const listenerInfo = weatherTileErrorListeners[layerId];
+  if (listenerInfo) {
+    listenerInfo.provider.errorEvent.removeEventListener(listenerInfo.errorHandler);
   }
   delete weatherTileErrorListeners[layerId];
 
