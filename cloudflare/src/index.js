@@ -394,12 +394,14 @@ export default {
       const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : "";
 
       // Use constant-time comparison to prevent timing-based secret enumeration.
+      // crypto.subtle.timingSafeEqual throws if byte lengths differ, so check first.
       const encoder = new TextEncoder();
       const tokenBytes = encoder.encode(token);
       const secretBytes = encoder.encode(secret);
-      const tokensMatch =
-        tokenBytes.byteLength === secretBytes.byteLength &&
-        crypto.subtle.timingSafeEqual(tokenBytes, secretBytes);
+      let tokensMatch = false;
+      if (tokenBytes.byteLength === secretBytes.byteLength) {
+        tokensMatch = crypto.subtle.timingSafeEqual(tokenBytes, secretBytes);
+      }
 
       if (!tokensMatch) {
         return json({ error: "Unauthorized" }, 401);
