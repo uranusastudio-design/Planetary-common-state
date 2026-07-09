@@ -160,18 +160,19 @@ async function openWeatherTile(request, env) {
   const url = new URL(request.url);
   const parts = url.pathname.split("/").filter(Boolean);
 
-  // /tiles/openweather/:layer/:z/:x/:y
+  // /tiles/openweather/:layer/:z/:x/:y(.png)
   const layerKey = parts[2];
   const z = parts[3];
   const x = parts[4];
-  const y = parts[5];
+  const rawY = parts[5];
+  const y = rawY ? rawY.replace(/\.png$/i, "") : rawY;
 
   const openWeatherLayer = OPENWEATHER_LAYERS[layerKey];
 
   if (!openWeatherLayer || !z || !x || !y) {
     return json({
       error: "Invalid OpenWeather tile path",
-      expected: "/tiles/openweather/:layer/:z/:x/:y",
+      expected: "/tiles/openweather/:layer/:z/:x/:y.png",
       layers: Object.keys(OPENWEATHER_LAYERS)
     }, 400);
   }
@@ -451,7 +452,7 @@ export default {
     "/variables",
     "/ingest/v1",
     "/health/openweather",
-    "/tiles/openweather/clouds/1/1/1"
+    "/tiles/openweather/clouds/1/1/1.png"
   ],
   d1: !!env.PCS_DB,
   kv: !!env.PCS_CACHE

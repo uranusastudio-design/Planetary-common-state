@@ -55,11 +55,11 @@ git gc --prune=now --aggressive
 ### Step 3 — Verify the purge
 
 ```bash
-# Should return no output (no commits containing the secret string)
-git log -S "335d8561ecab40833cfd24d241ff80ce" --all
+# Should return no output (no commits containing the leaked secret string)
+git log -S "YOUR_LEAKED_KEY_HERE" --all
 
 # Should return no output (file no longer in any commit)
-git log --all -- Apps/PCS-Weather-Earth/.env
+git log --all -- .env
 ```
 
 ---

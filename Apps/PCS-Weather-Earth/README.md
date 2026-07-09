@@ -114,7 +114,7 @@ layers (`temp_new`, `clouds_new`, `precipitation_new`, `wind_new`) and builds
 tile URLs that route through the `pcs-backend` Cloudflare Worker proxy:
 
 ```
-/tiles/openweather/{layer}/{z}/{x}/{y}
+/tiles/openweather/{layer}/{z}/{x}/{y}.png
 ```
 
 The Worker internally fetches:
