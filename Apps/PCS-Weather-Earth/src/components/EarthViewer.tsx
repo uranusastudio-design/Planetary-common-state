@@ -103,7 +103,7 @@ export default function EarthViewer({ activeLayerIds, backendUrl, onDebugInfoCha
     if (activeLayerIds.length === 0) return;
 
     if (!isPcsBackendConfigured(backendUrl)) {
-      const message = 'PCS backend URL is not configured.';
+      const message = 'PCS backend URL is invalid. Update PCS_BACKEND_URL in src/config/weatherLayers.ts.';
       console.error(message);
       setWeatherError(message);
       updateDebugInfo(message, []);

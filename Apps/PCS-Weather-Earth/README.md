@@ -104,6 +104,11 @@ the Worker secret. `EarthViewer.tsx` rebuilds the selected Cesium
 `ImageryLayer`s whenever the toggle state changes, and `LayerSelector.tsx`
 renders independent checkbox controls for Clouds, Rain, Temperature, and Wind.
 
+The backend host is intentionally pinned in `src/config/weatherLayers.ts` to
+the deployed worker required for this app:
+`https://pcs-backend.uranusastudio.workers.dev`. If you need to point the
+frontend at a different PCS backend instance, change `PCS_BACKEND_URL` there.
+
 ## Extending the dashboard
 
 `src/config/subsystems.ts` documents the intended slots for future modules
