@@ -11,6 +11,10 @@ const WEATHER_LAYER_NAMES = {
   wind_new: "Wind",
 };
 
+const WEATHER_PROXY_TEST_ZOOM = 2;
+const WEATHER_PROXY_TEST_X = 2;
+const WEATHER_PROXY_TEST_Y = 1;
+
 const regionConfig = {
   global: {
     id: "global",
@@ -116,6 +120,7 @@ let translations = {};
 let activeWeatherLayers = {};
 let weatherProxyConnected = false;
 let weatherTileErrors = {};
+let weatherTileErrorListeners = {};
 
 const selectors = {
   currentState: document.querySelector("#current-state"),
@@ -538,7 +543,7 @@ function updateWeatherStatus() {
 
 async function checkWeatherProxy() {
   try {
-    const testUrl = `${WEATHER_PROXY_BASE}/clouds_new/2/2/1.png`;
+    const testUrl = `${WEATHER_PROXY_BASE}/clouds_new/${WEATHER_PROXY_TEST_ZOOM}/${WEATHER_PROXY_TEST_X}/${WEATHER_PROXY_TEST_Y}.png`;
     const response = await fetch(testUrl, { method: "HEAD", cache: "no-store" });
     weatherProxyConnected = response.ok;
   } catch {
@@ -560,10 +565,11 @@ function addWeatherLayer(layerId) {
       credit: "OpenWeather",
     });
 
-    provider.errorEvent.addEventListener((tileProviderError) => {
-      weatherTileErrors[layerId] = tileProviderError.message ?? "tile error";
+    const removeListener = provider.errorEvent.addEventListener((tileProviderError) => {
+      weatherTileErrors[layerId] = tileProviderError.message ?? "Failed to load tile";
       updateWeatherStatus();
     });
+    weatherTileErrorListeners[layerId] = removeListener;
 
     const layer = cesiumViewer.imageryLayers.addImageryProvider(provider);
     layer.alpha = 0.65;
@@ -580,6 +586,13 @@ function removeWeatherLayer(layerId) {
   if (!layer || !cesiumViewer) {
     return;
   }
+
+  const removeListener = weatherTileErrorListeners[layerId];
+  if (typeof removeListener === "function") {
+    removeListener();
+  }
+  delete weatherTileErrorListeners[layerId];
+
   cesiumViewer.imageryLayers.remove(layer);
   delete activeWeatherLayers[layerId];
   delete weatherTileErrors[layerId];
