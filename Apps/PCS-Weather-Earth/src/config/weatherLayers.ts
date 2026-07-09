@@ -53,11 +53,11 @@ export function isPcsBackendConfigured(backendUrl: string | undefined | null): b
  * Requests are routed through the Cloudflare worker tile proxy so the
  * OpenWeather API key is never embedded in browser network traffic.
  *
- * Proxy endpoint: {backendUrl}/tiles/openweather/{layerId}/{z}/{x}/{y}
+ * Proxy endpoint: {backendUrl}/tiles/openweather/{layerId}/{z}/{x}/{y}.png
  */
 export function buildOpenWeatherTileUrl(layerId: string, backendUrl: string): string {
   const base = backendUrl.replace(/\/$/, '');
-  return `${base}/tiles/openweather/${layerId}/{z}/{x}/{y}`;
+  return `${base}/tiles/openweather/${layerId}/{z}/{x}/{y}.png`;
 }
 
 export function maskOpenWeatherTileUrl(url: string): string {
