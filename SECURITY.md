@@ -56,7 +56,7 @@ git gc --prune=now --aggressive
 
 ```bash
 # Should return no output (no commits containing the leaked secret string)
-git log -S "<LEAKED_OPENWEATHER_API_KEY>" --all
+git log -S "YOUR_LEAKED_KEY_HERE" --all
 
 # Should return no output (file no longer in any commit)
 git log --all -- .env

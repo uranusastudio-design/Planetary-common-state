@@ -165,7 +165,7 @@ async function openWeatherTile(request, env) {
   const z = parts[3];
   const x = parts[4];
   const rawY = parts[5];
-  const y = rawY?.endsWith(".png") ? rawY.replace(/\.png$/i, "") : rawY;
+  const y = rawY?.toLowerCase().endsWith(".png") ? rawY.replace(/\.png$/i, "") : rawY;
 
   const openWeatherLayer = OPENWEATHER_LAYERS[layerKey];
 
