@@ -27,7 +27,8 @@ export interface WeatherLayerState {
 
 /** Temporary diagnostics for the OpenWeather imagery layer. */
 export interface WeatherDebugInfo {
-  hasApiKey: boolean;
+  /** True when a PCS backend URL is configured so tile proxy requests can succeed. */
+  hasBackend: boolean;
   activeLayerId: WeatherLayerId | null;
   tileUrl: string;
   imageryLayerCount: number;

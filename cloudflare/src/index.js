@@ -386,6 +386,15 @@ export default {
       return openWeatherTile(request, env);
     }
     if (url.pathname === "/ingest/v1") {
+      const secret = env.INGEST_SECRET;
+      if (!secret) {
+        return json({ error: "INGEST_SECRET is not configured on the worker" }, 500);
+      }
+      const authHeader = request.headers.get("Authorization") ?? "";
+      const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : "";
+      if (token !== secret) {
+        return json({ error: "Unauthorized" }, 401);
+      }
       const imported = await ingestCore(env);
       for (const item of EXTRA_STATIC_OBSERVATIONS) {
         try {

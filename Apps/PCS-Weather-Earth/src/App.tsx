@@ -2,15 +2,15 @@ import { useState } from 'react';
 import EarthViewer from './components/EarthViewer';
 import ControlPanel from './components/ControlPanel';
 import type { WeatherDebugInfo, WeatherLayerId } from './types/weather';
-import { isOpenWeatherApiKeyConfigured } from './config/weatherLayers';
+import { isPcsBackendConfigured } from './config/weatherLayers';
 
-const OPENWEATHER_API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY ?? '';
-const HAS_OPENWEATHER_API_KEY = isOpenWeatherApiKeyConfigured(OPENWEATHER_API_KEY);
+const PCS_BACKEND_URL = import.meta.env.VITE_PCS_BACKEND_URL ?? '';
+const HAS_BACKEND = isPcsBackendConfigured(PCS_BACKEND_URL);
 
 export default function App() {
   const [activeLayerId, setActiveLayerId] = useState<WeatherLayerId | null>('clouds');
   const [debugInfo, setDebugInfo] = useState<WeatherDebugInfo>({
-    hasApiKey: HAS_OPENWEATHER_API_KEY,
+    hasBackend: HAS_BACKEND,
     activeLayerId: 'clouds',
     tileUrl: '',
     imageryLayerCount: 0,
@@ -22,14 +22,14 @@ export default function App() {
       <main className="relative h-full min-w-0 flex-1">
         <EarthViewer
           activeLayerId={activeLayerId}
-          apiKey={OPENWEATHER_API_KEY}
+          backendUrl={PCS_BACKEND_URL}
           onDebugInfoChange={setDebugInfo}
         />
       </main>
       <ControlPanel
         activeLayerId={activeLayerId}
         onSelectLayer={setActiveLayerId}
-        hasApiKey={HAS_OPENWEATHER_API_KEY}
+        hasBackend={HAS_BACKEND}
         debugInfo={debugInfo}
       />
     </div>

@@ -4,22 +4,24 @@ import type { WeatherDebugInfo, WeatherLayerId } from '../types/weather';
 import {
   buildOpenWeatherTileUrl,
   getWeatherLayerConfig,
-  isOpenWeatherApiKeyConfigured,
+  isPcsBackendConfigured,
   maskOpenWeatherTileUrl,
 } from '../config/weatherLayers';
 
 interface EarthViewerProps {
   activeLayerId: WeatherLayerId | null;
-  apiKey: string;
+  backendUrl: string;
   onDebugInfoChange: (debugInfo: WeatherDebugInfo) => void;
 }
 
 /**
  * Renders a full-screen interactive Cesium 3D globe and layers a single
- * OpenWeather tile layer on top of it. Switching `activeLayerId` removes
- * the previous weather imagery layer before adding the new one.
+ * OpenWeather tile layer on top of it. Tile requests are routed through the
+ * Cloudflare worker proxy so the API key is never exposed in browser URLs.
+ * Switching `activeLayerId` removes the previous weather imagery layer before
+ * adding the new one.
  */
-export default function EarthViewer({ activeLayerId, apiKey, onDebugInfoChange }: EarthViewerProps) {
+export default function EarthViewer({ activeLayerId, backendUrl, onDebugInfoChange }: EarthViewerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const viewerRef = useRef<Cesium.Viewer | null>(null);
   const weatherLayerRef = useRef<Cesium.ImageryLayer | null>(null);
@@ -28,14 +30,14 @@ export default function EarthViewer({ activeLayerId, apiKey, onDebugInfoChange }
   const updateDebugInfo = useCallback(
     (latestTileError: string | null, tileUrl = '') => {
       onDebugInfoChange({
-        hasApiKey: isOpenWeatherApiKeyConfigured(apiKey),
+        hasBackend: isPcsBackendConfigured(backendUrl),
         activeLayerId,
         tileUrl: tileUrl ? maskOpenWeatherTileUrl(tileUrl) : '',
         imageryLayerCount: viewerRef.current?.imageryLayers.length ?? 0,
         latestTileError,
       });
     },
-    [activeLayerId, apiKey, onDebugInfoChange]
+    [activeLayerId, backendUrl, onDebugInfoChange]
   );
 
   // Initialize the Cesium viewer once on mount.
@@ -93,10 +95,10 @@ export default function EarthViewer({ activeLayerId, apiKey, onDebugInfoChange }
 
     if (!activeLayerId) return;
 
-    // Verify the API key exists before attempting to load any tiles.
-    if (!isOpenWeatherApiKeyConfigured(apiKey)) {
+    // Verify the backend URL exists before attempting to load any tiles.
+    if (!isPcsBackendConfigured(backendUrl)) {
       const message =
-        'OpenWeather API key missing. Set VITE_OPENWEATHER_API_KEY in a local .env file (see .env.example), then restart the dev server.';
+        'PCS backend URL not configured. Set VITE_PCS_BACKEND_URL in a local .env file (see .env.example), then restart the dev server.';
       console.error(message);
       setWeatherError(message);
       updateDebugInfo(message);
@@ -105,7 +107,7 @@ export default function EarthViewer({ activeLayerId, apiKey, onDebugInfoChange }
 
     const layerConfig = getWeatherLayerConfig(activeLayerId);
     if (!layerConfig) return;
-    const tileUrl = buildOpenWeatherTileUrl(layerConfig.owmLayer, apiKey);
+    const tileUrl = buildOpenWeatherTileUrl(layerConfig.id, backendUrl);
 
     const provider = new Cesium.UrlTemplateImageryProvider({
       url: tileUrl,
@@ -126,7 +128,7 @@ export default function EarthViewer({ activeLayerId, apiKey, onDebugInfoChange }
         error.error && typeof error.error === 'object' && 'statusCode' in error.error
           ? ` (${error.error.statusCode})`
           : '';
-      const message = `Failed to load "${layerConfig.label}" weather tiles${statusCode}. Check that VITE_OPENWEATHER_API_KEY is a valid, active OpenWeather API key.`;
+      const message = `Failed to load "${layerConfig.label}" weather tiles${statusCode}. Check that VITE_PCS_BACKEND_URL points to the deployed pcs-backend worker and the worker's OPENWEATHER_API_KEY secret is set.`;
       setWeatherError(message);
       updateDebugInfo(message, tileUrl);
     });
@@ -139,7 +141,7 @@ export default function EarthViewer({ activeLayerId, apiKey, onDebugInfoChange }
     return () => {
       removeErrorListener();
     };
-  }, [activeLayerId, apiKey, updateDebugInfo]);
+  }, [activeLayerId, backendUrl, updateDebugInfo]);
 
   return (
     <div className="relative h-full w-full">
