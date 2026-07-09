@@ -131,10 +131,14 @@ export default function EarthViewer({ activeLayerIds, backendUrl, onDebugInfoCha
 
       const removeErrorListener = provider.errorEvent.addEventListener((error) => {
         console.error(`Failed to load "${layerConfig.label}" weather tiles:`, error);
-        const statusCode =
-          error.error && typeof error.error === 'object' && 'statusCode' in error.error
-            ? ` (${error.error.statusCode})`
-            : '';
+        const upstreamStatus =
+          error.error &&
+          typeof error.error === 'object' &&
+          'statusCode' in error.error &&
+          (typeof error.error.statusCode === 'number' || typeof error.error.statusCode === 'string')
+            ? error.error.statusCode
+            : null;
+        const statusCode = upstreamStatus ? ` (${upstreamStatus})` : '';
         const message = `Failed to load "${layerConfig.label}" weather tiles${statusCode}. Check that the deployed pcs-backend worker is reachable and its OPENWEATHER_API_KEY secret is set.`;
         setWeatherError(message);
         updateDebugInfo(message, tileUrls);
