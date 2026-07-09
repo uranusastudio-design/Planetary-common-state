@@ -49,5 +49,6 @@
   "engine": "엔진",
   "pcs_state": "PCS 상태",
   "observatory": "관측소",
-  "human_ai_review": "인간 + AI 검토"
+  "human_ai_review": "인간 + AI 검토",
+  "live_weather_layers": "실시간 기상 레이어"
 }
