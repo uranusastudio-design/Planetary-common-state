@@ -386,6 +386,26 @@ export default {
       return openWeatherTile(request, env);
     }
     if (url.pathname === "/ingest/v1") {
+      const secret = env.INGEST_SECRET;
+      if (!secret) {
+        return json({ error: "INGEST_SECRET is not configured on the worker" }, 500);
+      }
+      const authHeader = request.headers.get("Authorization") ?? "";
+      const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : "";
+
+      // Use constant-time comparison to prevent timing-based secret enumeration.
+      // crypto.subtle.timingSafeEqual throws if byte lengths differ, so check first.
+      const encoder = new TextEncoder();
+      const tokenBytes = encoder.encode(token);
+      const secretBytes = encoder.encode(secret);
+      let tokensMatch = false;
+      if (tokenBytes.byteLength === secretBytes.byteLength) {
+        tokensMatch = crypto.subtle.timingSafeEqual(tokenBytes, secretBytes);
+      }
+
+      if (!tokensMatch) {
+        return json({ error: "Unauthorized" }, 401);
+      }
       const imported = await ingestCore(env);
       for (const item of EXTRA_STATIC_OBSERVATIONS) {
         try {

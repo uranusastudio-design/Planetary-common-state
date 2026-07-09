@@ -6,7 +6,7 @@ import type { WeatherDebugInfo, WeatherLayerId } from '../types/weather';
 interface ControlPanelProps {
   activeLayerId: WeatherLayerId | null;
   onSelectLayer: (id: WeatherLayerId | null) => void;
-  hasApiKey: boolean;
+  hasBackend: boolean;
   debugInfo: WeatherDebugInfo;
 }
 
@@ -15,7 +15,7 @@ interface ControlPanelProps {
  * module; the subsystem list below is rendered as disabled placeholders so
  * future modules (ocean, cryosphere, etc.) have an obvious slot to plug into.
  */
-export default function ControlPanel({ activeLayerId, onSelectLayer, hasApiKey, debugInfo }: ControlPanelProps) {
+export default function ControlPanel({ activeLayerId, onSelectLayer, hasBackend, debugInfo }: ControlPanelProps) {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
@@ -48,10 +48,10 @@ export default function ControlPanel({ activeLayerId, onSelectLayer, hasApiKey, 
           <p className="mt-1 text-xs text-slate-500">v0.1 — scientific 3D Earth dashboard</p>
         </header>
 
-        {!hasApiKey && (
+        {!hasBackend && (
           <div className="mb-5 rounded-md border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-xs text-amber-300">
-            No OpenWeather API key detected. Set{' '}
-            <code className="font-mono text-amber-200">VITE_OPENWEATHER_API_KEY</code> in a local{' '}
+            Backend URL not configured. Set{' '}
+            <code className="font-mono text-amber-200">VITE_PCS_BACKEND_URL</code> in a local{' '}
             <code className="font-mono text-amber-200">.env</code> file.
           </div>
         )}
@@ -65,8 +65,8 @@ export default function ControlPanel({ activeLayerId, onSelectLayer, hasApiKey, 
           <h2 className="mb-2 font-mono text-xs uppercase tracking-widest text-slate-400">Weather Debug</h2>
           <dl className="space-y-1.5 font-mono text-[11px] text-slate-300">
             <div className="flex justify-between gap-3">
-              <dt className="text-slate-500">API key loaded</dt>
-              <dd>{debugInfo.hasApiKey ? 'yes' : 'no'}</dd>
+              <dt className="text-slate-500">Backend configured</dt>
+              <dd>{debugInfo.hasBackend ? 'yes' : 'no'}</dd>
             </div>
             <div className="flex justify-between gap-3">
               <dt className="text-slate-500">Active layer</dt>

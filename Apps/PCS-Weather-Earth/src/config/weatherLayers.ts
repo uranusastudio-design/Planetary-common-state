@@ -41,19 +41,23 @@ export function getWeatherLayerConfig(id: WeatherLayerId): WeatherLayerConfig | 
 }
 
 /**
- * Verifies that an OpenWeather API key is present (non-empty, non-placeholder).
+ * Verifies that a PCS backend URL is present (non-empty string).
  * Used to fail fast with a clear message instead of silently loading broken tiles.
  */
-export function isOpenWeatherApiKeyConfigured(apiKey: string | undefined | null): apiKey is string {
-  return typeof apiKey === 'string' && apiKey.trim().length > 0;
+export function isPcsBackendConfigured(backendUrl: string | undefined | null): backendUrl is string {
+  return typeof backendUrl === 'string' && backendUrl.trim().length > 0;
 }
 
 /**
- * Builds the OpenWeather tile URL template Cesium's UrlTemplateImageryProvider expects.
- * The API key is read from the environment at call time, never hardcoded.
+ * Builds the tile URL template Cesium's UrlTemplateImageryProvider expects.
+ * Requests are routed through the Cloudflare worker tile proxy so the
+ * OpenWeather API key is never embedded in browser network traffic.
+ *
+ * Proxy endpoint: {backendUrl}/tiles/openweather/{layerId}/{z}/{x}/{y}
  */
-export function buildOpenWeatherTileUrl(owmLayer: string, apiKey: string): string {
-  return `https://tile.openweathermap.org/map/${owmLayer}/{z}/{x}/{y}.png?appid=${encodeURIComponent(apiKey)}`;
+export function buildOpenWeatherTileUrl(layerId: string, backendUrl: string): string {
+  const base = backendUrl.replace(/\/$/, '');
+  return `${base}/tiles/openweather/${layerId}/{z}/{x}/{y}`;
 }
 
 export function maskOpenWeatherTileUrl(url: string): string {
