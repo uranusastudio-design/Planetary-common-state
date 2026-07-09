@@ -6,6 +6,7 @@ const LANGUAGE_STORAGE_KEY = "pcs_observatory_language";
 const REGION_STORAGE_KEY = "pcs_observatory_region";
 
 const WEATHER_PROXY_BASE = PCS_API_URL;
+const WEATHER_TILE_MAX_ZOOM = 8;
 const WEATHER_LAYER_CONFIG = {
   clouds: { label: "Clouds",      path: "clouds", opacity: 0.5 },
   rain:   { label: "Rain",        path: "rain",   opacity: 0.6 },
@@ -651,7 +652,7 @@ function addWeatherLayer(layerId) {
       tilingScheme: new Cesium.WebMercatorTilingScheme(),
       credit: "Weather data \u00a9 OpenWeather",
       minimumLevel: 0,
-      maximumLevel: 8,
+      maximumLevel: WEATHER_TILE_MAX_ZOOM,
       tileWidth: 256,
       tileHeight: 256,
       enablePickFeatures: false,
