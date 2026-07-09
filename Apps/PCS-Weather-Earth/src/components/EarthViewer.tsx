@@ -25,11 +25,12 @@ export default function EarthViewer({ activeLayerIds, backendUrl, onDebugInfoCha
   const [weatherError, setWeatherError] = useState<string | null>(null);
 
   const updateDebugInfo = useCallback(
-    (latestTileError: string | null, tileUrls: string[] = []) => {
+    (latestTileError: string | null, tileUrls: string[] = [], latestFailedTileUrl: string | null = null) => {
       onDebugInfoChange({
         hasBackend: isPcsBackendConfigured(backendUrl),
         activeLayerIds,
         tileUrls,
+        latestFailedTileUrl,
         imageryLayerCount: viewerRef.current?.imageryLayers.length ?? 0,
         latestTileError,
       });
@@ -141,7 +142,7 @@ export default function EarthViewer({ activeLayerIds, backendUrl, onDebugInfoCha
         const statusCode = upstreamStatus ? ` (${upstreamStatus})` : '';
         const message = `Failed to load "${layerConfig.label}" weather tiles${statusCode}. Check that the deployed pcs-backend worker is reachable and its OPENWEATHER_API_KEY secret is set.`;
         setWeatherError(message);
-        updateDebugInfo(message, tileUrls);
+        updateDebugInfo(message, tileUrls, tileUrl);
       });
 
       const layer = viewer.imageryLayers.addImageryProvider(provider);

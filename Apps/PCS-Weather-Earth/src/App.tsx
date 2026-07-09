@@ -12,6 +12,7 @@ export default function App() {
     hasBackend: HAS_BACKEND,
     activeLayerIds: ['clouds'],
     tileUrls: [],
+    latestFailedTileUrl: null,
     imageryLayerCount: 0,
     latestTileError: null,
   });

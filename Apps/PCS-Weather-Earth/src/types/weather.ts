@@ -31,6 +31,7 @@ export interface WeatherDebugInfo {
   hasBackend: boolean;
   activeLayerIds: WeatherLayerId[];
   tileUrls: string[];
+  latestFailedTileUrl: string | null;
   imageryLayerCount: number;
   latestTileError: string | null;
 }

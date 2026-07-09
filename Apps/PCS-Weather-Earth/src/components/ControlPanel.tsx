@@ -66,8 +66,20 @@ export default function ControlPanel({ activeLayerIds, onToggleLayer, debugInfo 
             <div>
               <dt className="mb-0.5 text-slate-500">Tile URLs</dt>
               <dd className="break-all text-slate-300">
-                {debugInfo.tileUrls.length > 0 ? debugInfo.tileUrls.join('\n') : 'none'}
+                {debugInfo.tileUrls.length > 0 ? (
+                  <span className="flex flex-col gap-1">
+                    {debugInfo.tileUrls.map((tileUrl) => (
+                      <span key={tileUrl}>{tileUrl}</span>
+                    ))}
+                  </span>
+                ) : (
+                  'none'
+                )}
               </dd>
+            </div>
+            <div>
+              <dt className="mb-0.5 text-slate-500">Latest failed tile URL</dt>
+              <dd className="break-all text-slate-300">{debugInfo.latestFailedTileUrl ?? 'none'}</dd>
             </div>
             <div className="flex justify-between gap-3">
               <dt className="text-slate-500">Imagery layers</dt>
