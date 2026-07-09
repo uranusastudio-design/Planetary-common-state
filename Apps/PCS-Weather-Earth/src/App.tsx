@@ -2,14 +2,12 @@ import { useCallback, useState } from 'react';
 import EarthViewer from './components/EarthViewer';
 import ControlPanel from './components/ControlPanel';
 import type { WeatherDebugInfo, WeatherLayerId } from './types/weather';
-import { PCS_BACKEND_URL, isPcsBackendConfigured } from './config/weatherLayers';
-
-const HAS_BACKEND = isPcsBackendConfigured(PCS_BACKEND_URL);
+import { PCS_BACKEND_URL } from './config/weatherLayers';
 
 export default function App() {
   const [activeLayerIds, setActiveLayerIds] = useState<WeatherLayerId[]>(['clouds']);
   const [debugInfo, setDebugInfo] = useState<WeatherDebugInfo>({
-    hasBackend: HAS_BACKEND,
+    hasBackend: true,
     activeLayerIds: ['clouds'],
     tileUrls: [],
     latestFailedTileUrl: null,

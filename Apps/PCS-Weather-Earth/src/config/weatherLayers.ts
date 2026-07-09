@@ -38,10 +38,6 @@ export function getWeatherLayerConfig(id: WeatherLayerId): WeatherLayerConfig | 
   return WEATHER_LAYERS.find((layer) => layer.id === id);
 }
 
-export function isPcsBackendConfigured(backendUrl: string | undefined | null): backendUrl is string {
-  return typeof backendUrl === 'string' && backendUrl.trim().length > 0;
-}
-
 /**
  * Builds the tile URL template Cesium's UrlTemplateImageryProvider expects.
  * Requests are routed through the Cloudflare worker tile proxy so browser

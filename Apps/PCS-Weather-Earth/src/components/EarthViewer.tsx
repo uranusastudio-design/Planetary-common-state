@@ -1,11 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import * as Cesium from 'cesium';
 import type { WeatherDebugInfo, WeatherLayerId } from '../types/weather';
-import {
-  buildOpenWeatherTileUrl,
-  getWeatherLayerConfig,
-  isPcsBackendConfigured,
-} from '../config/weatherLayers';
+import { buildOpenWeatherTileUrl, getWeatherLayerConfig } from '../config/weatherLayers';
 
 interface EarthViewerProps {
   activeLayerIds: WeatherLayerId[];
@@ -27,7 +23,7 @@ export default function EarthViewer({ activeLayerIds, backendUrl, onDebugInfoCha
   const updateDebugInfo = useCallback(
     (latestTileError: string | null, tileUrls: string[] = [], latestFailedTileUrl: string | null = null) => {
       onDebugInfoChange({
-        hasBackend: isPcsBackendConfigured(backendUrl),
+        hasBackend: true,
         activeLayerIds,
         tileUrls,
         latestFailedTileUrl,
@@ -78,9 +74,8 @@ export default function EarthViewer({ activeLayerIds, backendUrl, onDebugInfoCha
     (viewer.bottomContainer as HTMLElement).style.display = 'none';
 
     viewer.camera.flyHome(0);
-
     viewerRef.current = viewer;
-    updateDebugInfo(null);
+    viewerRef.current = viewer;
 
     return () => {
       clearWeatherLayers();
@@ -88,7 +83,7 @@ export default function EarthViewer({ activeLayerIds, backendUrl, onDebugInfoCha
       viewerRef.current = null;
       weatherLayersRef.current = [];
     };
-  }, [clearWeatherLayers, updateDebugInfo]);
+  }, []);
 
   // Rebuild the selected weather imagery layers whenever the toggle state changes.
   useEffect(() => {
@@ -101,14 +96,6 @@ export default function EarthViewer({ activeLayerIds, backendUrl, onDebugInfoCha
     updateDebugInfo(null, []);
 
     if (activeLayerIds.length === 0) return;
-
-    if (!isPcsBackendConfigured(backendUrl)) {
-      const message = 'PCS backend URL is invalid. Update PCS_BACKEND_URL in src/config/weatherLayers.ts.';
-      console.error(message);
-      setWeatherError(message);
-      updateDebugInfo(message, []);
-      return;
-    }
 
     const tileUrls: string[] = [];
 
