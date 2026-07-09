@@ -525,7 +525,7 @@ function updateWeatherStatus() {
   }
 
   const activeNames = Object.keys(activeWeatherLayers)
-    .map((k) => WEATHER_LAYER_NAMES[k])
+    .map((layerId) => WEATHER_LAYER_NAMES[layerId])
     .filter(Boolean);
   updateText(
     selectors.weatherActiveLayers,
@@ -533,7 +533,7 @@ function updateWeatherStatus() {
   );
 
   const errorMessages = Object.entries(weatherTileErrors)
-    .map(([k, msg]) => `${WEATHER_LAYER_NAMES[k] ?? k}: ${msg}`)
+    .map(([layerId, msg]) => `${WEATHER_LAYER_NAMES[layerId] ?? layerId}: ${msg}`)
     .join("; ");
   updateText(selectors.weatherTileError, errorMessages ? `Tile error: ${errorMessages}` : "");
   if (selectors.weatherTileError) {
