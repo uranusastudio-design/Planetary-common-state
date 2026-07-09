@@ -424,13 +424,17 @@ export default {
     }
 
     return json({
-      status: "ok",
-      service: "pcs-backend",
+  status: "ok",
+  service: "pcs-backend",
   endpoints: [
-  "/latest",
-  "/variables",
-  "/ingest/v1",
-  "/health/openweather",
-  "/tiles/openweather/clouds/1/1/1"
-],
+    "/latest",
+    "/variables",
+    "/ingest/v1",
+    "/health/openweather",
+    "/tiles/openweather/clouds/1/1/1"
+  ],
+  d1: !!env.PCS_DB,
+  kv: !!env.PCS_CACHE
+});
 }
+};    
