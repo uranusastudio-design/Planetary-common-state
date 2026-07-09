@@ -2,24 +2,19 @@ import { WEATHER_LAYERS } from '../config/weatherLayers';
 import type { WeatherLayerId } from '../types/weather';
 
 interface LayerSelectorProps {
-  activeLayerId: WeatherLayerId | null;
-  onSelect: (id: WeatherLayerId | null) => void;
+  activeLayerIds: WeatherLayerId[];
+  onToggle: (id: WeatherLayerId) => void;
 }
 
-/**
- * Lets the user pick exactly one weather layer (or none). Selecting the
- * already-active layer toggles it off.
- */
-export default function LayerSelector({ activeLayerId, onSelect }: LayerSelectorProps) {
+/** Lets the user toggle each weather layer independently. */
+export default function LayerSelector({ activeLayerIds, onToggle }: LayerSelectorProps) {
   return (
     <div className="flex flex-col gap-2">
       {WEATHER_LAYERS.map((layer) => {
-        const isActive = layer.id === activeLayerId;
+        const isActive = activeLayerIds.includes(layer.id);
         return (
-          <button
+          <label
             key={layer.id}
-            type="button"
-            onClick={() => onSelect(isActive ? null : layer.id)}
             className={`group relative flex flex-col items-start rounded-lg border px-3 py-2.5 text-left transition-all duration-200 ease-out
               ${
                 isActive
@@ -28,12 +23,20 @@ export default function LayerSelector({ activeLayerId, onSelect }: LayerSelector
               }`}
           >
             <span className="flex w-full items-center justify-between">
-              <span
-                className={`font-mono text-sm tracking-wide transition-colors duration-200 ${
-                  isActive ? 'text-accent' : 'text-slate-200'
-                }`}
-              >
-                {layer.label}
+              <span className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={isActive}
+                  onChange={() => onToggle(layer.id)}
+                  className="h-4 w-4 rounded border-panel-border bg-slate-900 text-accent focus:ring-accent"
+                />
+                <span
+                  className={`font-mono text-sm tracking-wide transition-colors duration-200 ${
+                    isActive ? 'text-accent' : 'text-slate-200'
+                  }`}
+                >
+                  {layer.label}
+                </span>
               </span>
               <span
                 className={`h-2 w-2 rounded-full transition-all duration-200 ${
@@ -42,7 +45,7 @@ export default function LayerSelector({ activeLayerId, onSelect }: LayerSelector
               />
             </span>
             <span className="mt-0.5 text-xs text-slate-400">{layer.description}</span>
-          </button>
+          </label>
         );
       })}
     </div>

@@ -58,10 +58,12 @@ PCS-Weather-Earth/
 ## Prerequisites
 
 - Node.js 18+ and npm
-- A deployed `pcs-backend` Cloudflare Worker with `OPENWEATHER_API_KEY` set as
-  a Worker secret (see the [cloudflare/](../../cloudflare/) directory).  
-  The frontend **never** handles or stores the OpenWeather API key — all tile
-  requests are proxied through the Worker.
+- The deployed `pcs-backend` Cloudflare Worker at
+  `https://pcs-backend.uranusastudio.workers.dev` with
+  `OPENWEATHER_API_KEY` set as a Worker secret (see the
+  [cloudflare/](../../cloudflare/) directory). The frontend **never** handles
+  or stores the OpenWeather API key — all tile requests are proxied through the
+  Worker.
 
 ## Setup
 
@@ -71,26 +73,7 @@ PCS-Weather-Earth/
    npm install
    ```
 
-2. **Configure the backend URL**
-
-   Copy the example env file and fill in your worker URL:
-
-   ```bash
-   cp .env.example .env
-   ```
-
-   Edit `.env`:
-
-   ```
-   VITE_PCS_BACKEND_URL=https://pcs-backend.YOUR_ACCOUNT.workers.dev
-   ```
-
-   > `.env` is already listed in `.gitignore` — it will never be committed.
-   > **Never** add `VITE_OPENWEATHER_API_KEY` to `.env`; the API key lives
-   > exclusively in the Cloudflare Worker secret and must not appear in browser
-   > code or environment files.
-
-3. **Run the dev server**
+2. **Run the dev server**
 
    ```bash
    npm run dev
@@ -109,29 +92,22 @@ PCS-Weather-Earth/
 
 ## How the weather layers work
 
-`src/config/weatherLayers.ts` defines the four supported OpenWeather tile
-layers (`temp_new`, `clouds_new`, `precipitation_new`, `wind_new`) and builds
-tile URLs that route through the `pcs-backend` Cloudflare Worker proxy:
+`src/config/weatherLayers.ts` defines the four supported weather proxy paths
+and builds tile URLs that route through the `pcs-backend` Cloudflare Worker:
 
 ```
-/tiles/openweather/{layer}/{z}/{x}/{y}.png
+https://pcs-backend.uranusastudio.workers.dev/tiles/openweather/{layer}/{z}/{x}/{y}.png
 ```
 
-The Worker internally fetches:
+The browser never sees an OpenWeather API key — credentials stay server-side in
+the Worker secret. `EarthViewer.tsx` rebuilds the selected Cesium
+`ImageryLayer`s whenever the toggle state changes, and `LayerSelector.tsx`
+renders independent checkbox controls for Clouds, Rain, Temperature, and Wind.
 
-```
-https://tile.openweathermap.org/map/{layer}/{z}/{x}/{y}.png?appid=<secret>
-```
-
-The browser never sees the `appid` query parameter — it is attached server-side
-by the Worker using `env.OPENWEATHER_API_KEY`.
-
-`EarthViewer.tsx` keeps a reference to the single active Cesium
-`ImageryLayer`. Whenever the selected layer changes, it removes the previous
-imagery layer (if any) and adds the new one via
-`Cesium.UrlTemplateImageryProvider`, so only one weather layer is ever shown
-at a time. `LayerSelector.tsx` highlights whichever layer is currently active
-and animates the transition.
+The backend host is intentionally pinned in `src/config/weatherLayers.ts` to
+the deployed worker required for this app:
+`https://pcs-backend.uranusastudio.workers.dev`. If you need to point the
+frontend at a different PCS backend instance, change `PCS_BACKEND_URL` there.
 
 ## Extending the dashboard
 
@@ -146,10 +122,8 @@ and a component that plugs into `ControlPanel.tsx`.
 - **Globe doesn't load / blank screen** — check the browser console; this
   usually means `vite-plugin-cesium` isn't copying Cesium's static assets.
   Confirm `vite.config.ts` includes the `cesium()` plugin and restart `npm run dev`.
-- **Weather tiles don't appear** — verify `.env` exists (not just `.env.example`)
-  and `VITE_PCS_BACKEND_URL` points to the deployed `pcs-backend` worker. Also
-  confirm the worker has `OPENWEATHER_API_KEY` set as a secret
+- **Weather tiles don't appear** — confirm the deployed `pcs-backend` worker at
+  `https://pcs-backend.uranusastudio.workers.dev` is reachable and has
+  `OPENWEATHER_API_KEY` set as a secret
   (`wrangler secret put OPENWEATHER_API_KEY`). New OpenWeather keys can take up
   to a couple of hours to activate.
-- **Yellow warning banner in the control panel** — means `VITE_PCS_BACKEND_URL`
-  is empty or missing at build time.

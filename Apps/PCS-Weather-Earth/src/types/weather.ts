@@ -14,23 +14,24 @@ export interface WeatherLayerConfig {
   id: WeatherLayerId;
   label: string;
   description: string;
-  /** OpenWeather tile layer path segment, e.g. "temp_new". */
-  owmLayer: string;
+  /** Worker proxy tile path segment, e.g. "temp". */
+  proxyPath: string;
   /** Tile opacity applied on top of the Cesium base imagery. */
   opacity: number;
 }
 
 /** Runtime state describing which layer is currently active. */
 export interface WeatherLayerState {
-  activeLayerId: WeatherLayerId | null;
+  activeLayerIds: WeatherLayerId[];
 }
 
 /** Temporary diagnostics for the OpenWeather imagery layer. */
 export interface WeatherDebugInfo {
   /** True when a PCS backend URL is configured so tile proxy requests can succeed. */
   hasBackend: boolean;
-  activeLayerId: WeatherLayerId | null;
-  tileUrl: string;
+  activeLayerIds: WeatherLayerId[];
+  tileUrls: string[];
+  latestFailedTileUrl: string | null;
   imageryLayerCount: number;
   latestTileError: string | null;
 }
