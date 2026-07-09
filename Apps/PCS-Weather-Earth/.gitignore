@@ -8,6 +8,7 @@ dist-ssr/
 # Environment variables (never commit secrets)
 .env
 .env.local
+.env.production
 .env.*.local
 
 # Editor / OS

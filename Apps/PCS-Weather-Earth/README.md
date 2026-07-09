@@ -11,9 +11,9 @@ first module of the broader **PCS (Planetary-Critical-Systems)** dashboard.
 - Dark, scientific UI theme (TailwindCSS)
 - Collapsible right-side control panel
 - Weather layer selector — Temperature, Clouds, Rain, Wind
-- Layers sourced from the OpenWeather Weather Maps tile API
+- Layers sourced from the OpenWeather Weather Maps tile API via a server-side proxy
+- OpenWeather API key lives exclusively in the Cloudflare Worker secret — never in browser code
 - Only one weather layer active at a time, with smooth switch transitions
-- API key read from environment variables only — never hardcoded
 - Architecture pre-wired for future modules: Ocean, Cryosphere, Biosphere,
   Energy, Human, PCS state estimation
 
@@ -58,8 +58,10 @@ PCS-Weather-Earth/
 ## Prerequisites
 
 - Node.js 18+ and npm
-- A free [OpenWeather](https://openweathermap.org/api) account and API key
-  (the **Weather Maps 1.0** tile layers used here are available on the free tier)
+- A deployed `pcs-backend` Cloudflare Worker with `OPENWEATHER_API_KEY` set as
+  a Worker secret (see the [cloudflare/](../../cloudflare/) directory).  
+  The frontend **never** handles or stores the OpenWeather API key — all tile
+  requests are proxied through the Worker.
 
 ## Setup
 
@@ -69,9 +71,9 @@ PCS-Weather-Earth/
    npm install
    ```
 
-2. **Configure your API key**
+2. **Configure the backend URL**
 
-   Copy the example env file and fill in your real key:
+   Copy the example env file and fill in your worker URL:
 
    ```bash
    cp .env.example .env
@@ -80,12 +82,13 @@ PCS-Weather-Earth/
    Edit `.env`:
 
    ```
-   VITE_OPENWEATHER_API_KEY=your_openweather_api_key_here
+   VITE_PCS_BACKEND_URL=https://pcs-backend.YOUR_ACCOUNT.workers.dev
    ```
 
    > `.env` is already listed in `.gitignore` — it will never be committed.
-   > The key is only ever read via `import.meta.env.VITE_OPENWEATHER_API_KEY`,
-   > it is not hardcoded anywhere in the source.
+   > **Never** add `VITE_OPENWEATHER_API_KEY` to `.env`; the API key lives
+   > exclusively in the Cloudflare Worker secret and must not appear in browser
+   > code or environment files.
 
 3. **Run the dev server**
 
@@ -108,11 +111,20 @@ PCS-Weather-Earth/
 
 `src/config/weatherLayers.ts` defines the four supported OpenWeather tile
 layers (`temp_new`, `clouds_new`, `precipitation_new`, `wind_new`) and builds
-tile URLs of the form:
+tile URLs that route through the `pcs-backend` Cloudflare Worker proxy:
 
 ```
-https://tile.openweathermap.org/map/{layer}/{z}/{x}/{y}.png?appid={API key}
+/tiles/openweather/{layer}/{z}/{x}/{y}
 ```
+
+The Worker internally fetches:
+
+```
+https://tile.openweathermap.org/map/{layer}/{z}/{x}/{y}.png?appid=<secret>
+```
+
+The browser never sees the `appid` query parameter — it is attached server-side
+by the Worker using `env.OPENWEATHER_API_KEY`.
 
 `EarthViewer.tsx` keeps a reference to the single active Cesium
 `ImageryLayer`. Whenever the selected layer changes, it removes the previous
@@ -134,8 +146,10 @@ and a component that plugs into `ControlPanel.tsx`.
 - **Globe doesn't load / blank screen** — check the browser console; this
   usually means `vite-plugin-cesium` isn't copying Cesium's static assets.
   Confirm `vite.config.ts` includes the `cesium()` plugin and restart `npm run dev`.
-- **Weather tiles don't appear** — verify `.env` exists (not just
-  `.env.example`) and contains a valid, activated OpenWeather API key. New
-  OpenWeather keys can take up to a couple of hours to activate.
-- **Yellow warning banner in the control panel** — means
-  `VITE_OPENWEATHER_API_KEY` is empty or missing at build time.
+- **Weather tiles don't appear** — verify `.env` exists (not just `.env.example`)
+  and `VITE_PCS_BACKEND_URL` points to the deployed `pcs-backend` worker. Also
+  confirm the worker has `OPENWEATHER_API_KEY` set as a secret
+  (`wrangler secret put OPENWEATHER_API_KEY`). New OpenWeather keys can take up
+  to a couple of hours to activate.
+- **Yellow warning banner in the control panel** — means `VITE_PCS_BACKEND_URL`
+  is empty or missing at build time.
