@@ -92,6 +92,11 @@ Deploy when ready:
 npx wrangler deploy --keep-vars
 ```
 
+For repository-controlled production deploys, use
+`.github/workflows/deploy-cloudflare-worker.yml`
+to ensure deployment runs from this directory and preserves dashboard runtime
+secrets with `--keep-vars`.
+
 ## Verification
 
 Expected checks:
