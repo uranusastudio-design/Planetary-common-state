@@ -8,7 +8,7 @@ export const WEATHER_LAYERS: WeatherLayerConfig[] = [
     id: 'temperature',
     label: 'Temperature',
     description: 'Global surface air temperature',
-    proxyPath: 'temp',
+    proxyPath: 'temperature',
     opacity: 0.6,
   },
   {

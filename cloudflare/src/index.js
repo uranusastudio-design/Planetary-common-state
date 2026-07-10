@@ -101,6 +101,7 @@ function json(data, status = 200) {
 const OPENWEATHER_LAYERS = {
   clouds: "clouds_new",
   rain: "precipitation_new",
+  temp: "temp_new",
   temperature: "temp_new",
   wind: "wind_new"
 };
