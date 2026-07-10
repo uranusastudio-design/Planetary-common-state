@@ -62,6 +62,11 @@ npm install          # or: pnpm install
 wrangler deploy --keep-vars
 ```
 
+GitHub Actions production deploys should use
+`/home/runner/work/Planetary-common-state/Planetary-common-state/.github/workflows/deploy-cloudflare-worker.yml`,
+which deploys from `cloudflare/` with `--keep-vars` so dashboard runtime
+secrets remain bound.
+
 ### Local development
 
 ```bash
