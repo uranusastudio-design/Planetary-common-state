@@ -679,7 +679,7 @@ function addWeatherLayer(layerId) {
       tileHeight: 256,
       enablePickFeatures: false,
     });
-    const removeErrorListener = provider.errorEvent.addEventListener((error) => {
+    const unsubscribeErrorListener = provider.errorEvent.addEventListener((error) => {
       const statusCode =
         error.error && typeof error.error === "object" && "statusCode" in error.error
           ? ` (${error.error.statusCode})`
@@ -688,7 +688,7 @@ function addWeatherLayer(layerId) {
     });
     const layer = cesiumViewer.imageryLayers.addImageryProvider(provider);
     layer.alpha = config.opacity;
-    activeWeatherLayers.set(layerId, { layer, removeErrorListener });
+    activeWeatherLayers.set(layerId, { layer, unsubscribeErrorListener });
     setWeatherProxyStatus("Weather proxy: connected");
     setWeatherTileError("");
   } catch (error) {
@@ -701,8 +701,8 @@ function removeWeatherLayer(layerId) {
   if (!cesiumViewer || !activeWeatherLayers.has(layerId)) {
     return;
   }
-  const { layer, removeErrorListener } = activeWeatherLayers.get(layerId);
-  removeErrorListener?.();
+  const { layer, unsubscribeErrorListener } = activeWeatherLayers.get(layerId);
+  unsubscribeErrorListener?.();
   cesiumViewer.imageryLayers.remove(layer, true);
   activeWeatherLayers.delete(layerId);
   if (activeWeatherLayers.size === 0) {
@@ -739,7 +739,7 @@ function initializeWeatherLayers() {
     return;
   }
 
-  setWeatherActiveLayersAndErrors();
+  resetWeatherStatusDisplay();
   selectors.weatherLayerControls.forEach((control) => {
     control.addEventListener("change", () => {
       const layerId = control.dataset.weatherLayer;
@@ -750,10 +750,12 @@ function initializeWeatherLayers() {
       }
     });
   });
-  void checkWeatherProxyHealth();
+  checkWeatherProxyHealth().catch(() => {
+    setWeatherProxyStatus("Weather proxy: unavailable");
+  });
 }
 
-function setWeatherActiveLayersAndErrors() {
+function resetWeatherStatusDisplay() {
   updateWeatherActiveLayersStatus();
   setWeatherTileError("");
 }
@@ -770,7 +772,6 @@ async function initializeApp() {
   runSafe("build timestamp rendering", renderBuildTimestamp);
   await runSafeAsync("language loading", () => setLanguage(getCurrentLanguage()));
   await runSafeAsync("dashboard data loading", () => loadLatestState());
-  renderClock();
 }
 
 window.addEventListener("error", (event) => {
