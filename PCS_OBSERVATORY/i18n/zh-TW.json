@@ -49,6 +49,7 @@
   "engine": "引擎",
   "pcs_state": "PCS 狀態",
   "observatory": "觀測站",
-  "human_ai_review": "人類與 AI 審查"
+  "human_ai_review": "人類與 AI 審查",
+  "live_weather_layers": "即時天氣圖層"
 }
 

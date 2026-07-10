@@ -49,5 +49,6 @@
   "engine": "エンジン",
   "pcs_state": "PCS 状態",
   "observatory": "観測所",
-  "human_ai_review": "人間と AI のレビュー"
+  "human_ai_review": "人間と AI のレビュー",
+  "live_weather_layers": "リアルタイム気象レイヤー"
 }

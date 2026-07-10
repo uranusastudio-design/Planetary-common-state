@@ -1,7 +1,19 @@
 const GLOBAL_STATE_SOURCE = "https://pcs-backend.uranusastudio.workers.dev/latest";
+const WEATHER_PROXY_BASE = "https://pcs-backend.uranusastudio.workers.dev/tiles/openweather";
 const REFRESH_INTERVAL_MS = 10000;
 const LANGUAGE_STORAGE_KEY = "pcs_observatory_language";
 const REGION_STORAGE_KEY = "pcs_observatory_region";
+
+const WEATHER_LAYER_NAMES = {
+  clouds_new: "Clouds",
+  precipitation_new: "Rain",
+  temp_new: "Temperature",
+  wind_new: "Wind",
+};
+
+const WEATHER_PROXY_TEST_ZOOM = 2;
+const WEATHER_PROXY_TEST_X = 2;
+const WEATHER_PROXY_TEST_Y = 1;
 
 const regionConfig = {
   global: {
@@ -105,6 +117,10 @@ let nextRefreshAt = Date.now() + REFRESH_INTERVAL_MS;
 let cesiumViewer = null;
 let activeRegionId = "global";
 let translations = {};
+let activeWeatherLayers = {};
+let weatherProxyConnected = false;
+let weatherTileErrors = {};
+let weatherTileErrorListeners = {};
 
 const selectors = {
   currentState: document.querySelector("#current-state"),
@@ -141,6 +157,9 @@ const selectors = {
   navLocalTime: document.querySelector("#nav-local-time"),
   navUtcTime: document.querySelector("#nav-utc-time"),
   aiCopilotMessage: document.querySelector("#ai-copilot-message"),
+  weatherProxyStatus: document.querySelector("#weather-proxy-status"),
+  weatherActiveLayers: document.querySelector("#weather-active-layers"),
+  weatherTileError: document.querySelector("#weather-tile-error"),
 };
 
 function t(key) {
@@ -495,6 +514,114 @@ function renderBuildTimestamp() {
   updateText(selectors.buildTimestamp, document.lastModified || "Static prototype");
 }
 
+function updateWeatherStatus() {
+  if (selectors.weatherProxyStatus) {
+    selectors.weatherProxyStatus.textContent = weatherProxyConnected
+      ? "Weather proxy: Connected"
+      : "Weather proxy: Unavailable";
+    selectors.weatherProxyStatus.className = weatherProxyConnected
+      ? "weather-status-connected"
+      : "weather-status-error";
+  }
+
+  const activeNames = Object.keys(activeWeatherLayers)
+    .map((layerId) => WEATHER_LAYER_NAMES[layerId])
+    .filter(Boolean);
+  updateText(
+    selectors.weatherActiveLayers,
+    activeNames.length ? `Active layers: ${activeNames.join(", ")}` : "Active layers: none",
+  );
+
+  const errorMessages = Object.entries(weatherTileErrors)
+    .map(([layerId, msg]) => `${WEATHER_LAYER_NAMES[layerId] ?? layerId}: ${msg}`)
+    .join("; ");
+  updateText(selectors.weatherTileError, errorMessages ? `Tile error: ${errorMessages}` : "");
+  if (selectors.weatherTileError) {
+    selectors.weatherTileError.className = errorMessages ? "weather-status-error" : "";
+  }
+}
+
+async function checkWeatherProxy() {
+  try {
+    const testUrl = `${WEATHER_PROXY_BASE}/clouds_new/${WEATHER_PROXY_TEST_ZOOM}/${WEATHER_PROXY_TEST_X}/${WEATHER_PROXY_TEST_Y}.png`;
+    const response = await fetch(testUrl, { method: "HEAD", cache: "no-store" });
+    weatherProxyConnected = response.ok;
+  } catch {
+    weatherProxyConnected = false;
+  }
+  updateWeatherStatus();
+}
+
+function addWeatherLayer(layerId) {
+  if (!cesiumViewer || !window.Cesium || activeWeatherLayers[layerId]) {
+    return;
+  }
+
+  try {
+    const provider = new Cesium.UrlTemplateImageryProvider({
+      url: `${WEATHER_PROXY_BASE}/${layerId}/{z}/{x}/{y}.png`,
+      minimumLevel: 0,
+      maximumLevel: 12,
+      credit: "OpenWeather",
+    });
+
+    const errorHandler = (tileProviderError) => {
+      weatherTileErrors[layerId] = tileProviderError.message ?? "Failed to load tile";
+      updateWeatherStatus();
+    };
+    provider.errorEvent.addEventListener(errorHandler);
+    weatherTileErrorListeners[layerId] = { provider, errorHandler };
+
+    const layer = cesiumViewer.imageryLayers.addImageryProvider(provider);
+    layer.alpha = 0.65;
+    activeWeatherLayers[layerId] = layer;
+    updateWeatherStatus();
+  } catch (error) {
+    weatherTileErrors[layerId] = String(error.message ?? error);
+    updateWeatherStatus();
+  }
+}
+
+function removeWeatherLayer(layerId) {
+  const layer = activeWeatherLayers[layerId];
+  if (!layer || !cesiumViewer) {
+    return;
+  }
+
+  const listenerInfo = weatherTileErrorListeners[layerId];
+  if (listenerInfo) {
+    listenerInfo.provider.errorEvent.removeEventListener(listenerInfo.errorHandler);
+  }
+  delete weatherTileErrorListeners[layerId];
+
+  cesiumViewer.imageryLayers.remove(layer);
+  delete activeWeatherLayers[layerId];
+  delete weatherTileErrors[layerId];
+  updateWeatherStatus();
+}
+
+function initializeWeatherLayerControls() {
+  const entries = document.querySelectorAll(".weather-layer-entry");
+  entries.forEach((entry) => {
+    const layerId = entry.dataset.weatherLayer;
+    const checkbox = entry.querySelector("input[type=checkbox]");
+    if (!checkbox || !layerId) {
+      return;
+    }
+
+    checkbox.addEventListener("change", () => {
+      if (checkbox.checked) {
+        addWeatherLayer(layerId);
+      } else {
+        removeWeatherLayer(layerId);
+      }
+    });
+  });
+
+  updateWeatherStatus();
+  checkWeatherProxy();
+}
+
 async function initializeApp() {
   initializeRegionalMode();
   initializeLanguageSelector();
@@ -504,6 +631,7 @@ async function initializeApp() {
   initializeCesiumGlobe();
   initializePlaceholderSelectors();
   initializeLayerControls();
+  initializeWeatherLayerControls();
   renderBuildTimestamp();
 }
 

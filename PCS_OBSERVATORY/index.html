@@ -212,6 +212,33 @@
                 <span><strong>Satellite Observations</strong><small>Planned</small></span>
               </label>
             </div>
+
+            <div class="weather-layers-section" aria-label="Live weather layer controls">
+              <span class="panel-label" data-i18n="live_weather_layers">Live Weather Layers</span>
+              <div class="weather-status-bar" id="weather-status-bar" role="status" aria-live="polite">
+                <span id="weather-proxy-status">Weather proxy: Checking…</span>
+                <span id="weather-active-layers">Active layers: none</span>
+                <span id="weather-tile-error"></span>
+              </div>
+              <div class="layer-list weather-layer-list">
+                <label class="layer-entry weather-layer-entry" data-weather-layer="clouds_new">
+                  <input type="checkbox" id="weather-layer-clouds" aria-label="Toggle clouds layer">
+                  <span><strong>Clouds</strong><small>Live · OpenWeather proxy</small></span>
+                </label>
+                <label class="layer-entry weather-layer-entry" data-weather-layer="precipitation_new">
+                  <input type="checkbox" id="weather-layer-rain" aria-label="Toggle rain layer">
+                  <span><strong>Rain</strong><small>Live · OpenWeather proxy</small></span>
+                </label>
+                <label class="layer-entry weather-layer-entry" data-weather-layer="temp_new">
+                  <input type="checkbox" id="weather-layer-temp" aria-label="Toggle temperature layer">
+                  <span><strong>Temperature</strong><small>Live · OpenWeather proxy</small></span>
+                </label>
+                <label class="layer-entry weather-layer-entry" data-weather-layer="wind_new">
+                  <input type="checkbox" id="weather-layer-wind" aria-label="Toggle wind layer">
+                  <span><strong>Wind</strong><small>Live · OpenWeather proxy</small></span>
+                </label>
+              </div>
+            </div>
           </article>
 
           <article class="panel timeline-panel">

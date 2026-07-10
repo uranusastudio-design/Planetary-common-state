@@ -49,6 +49,7 @@
   "engine": "Engine",
   "pcs_state": "PCS State",
   "observatory": "Observatory",
-  "human_ai_review": "Human + AI Review"
+  "human_ai_review": "Human + AI Review",
+  "live_weather_layers": "Live Weather Layers"
 }
 
