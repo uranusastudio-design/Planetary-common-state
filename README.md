@@ -59,7 +59,7 @@ required for a clean deployment.
 ```bash
 cd cloudflare
 npm install          # or: pnpm install
-wrangler deploy
+wrangler deploy --keep-vars
 ```
 
 ### Local development
@@ -104,4 +104,3 @@ See [SECURITY.md](SECURITY.md) for:
 - Leaked-secret remediation and git history purge commands
 - Worker secret setup
 - Environment file rules
-
