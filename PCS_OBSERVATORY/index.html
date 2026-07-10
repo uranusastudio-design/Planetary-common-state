@@ -256,6 +256,33 @@
               </label>
             </div>
 
+            <div class="weather-layers-section" aria-label="Live weather layer controls">
+              <span class="panel-label weather-layers-label">Live Weather Layers</span>
+              <div class="layer-list">
+                <label class="layer-entry weather-layer">
+                  <input type="checkbox" id="weather-layer-clouds" data-weather-layer="clouds">
+                  <span><strong>Clouds</strong><small>OpenWeather · Live via proxy</small></span>
+                </label>
+                <label class="layer-entry weather-layer">
+                  <input type="checkbox" id="weather-layer-rain" data-weather-layer="rain">
+                  <span><strong>Rain</strong><small>OpenWeather · Live via proxy</small></span>
+                </label>
+                <label class="layer-entry weather-layer">
+                  <input type="checkbox" id="weather-layer-temp" data-weather-layer="temp">
+                  <span><strong>Temperature</strong><small>OpenWeather · Live via proxy</small></span>
+                </label>
+                <label class="layer-entry weather-layer">
+                  <input type="checkbox" id="weather-layer-wind" data-weather-layer="wind">
+                  <span><strong>Wind</strong><small>OpenWeather · Live via proxy</small></span>
+                </label>
+              </div>
+              <div class="weather-status-block">
+                <p id="weather-proxy-status" class="framework-status" role="status" aria-live="polite">Weather proxy: checking...</p>
+                <p id="weather-active-layers" class="framework-status" role="status" aria-live="polite">Active layers: none</p>
+                <p id="weather-tile-error" class="framework-status weather-tile-error" role="alert" aria-live="assertive"></p>
+              </div>
+            </div>
+
           </article>
 
           <article class="panel timeline-panel" aria-labelledby="timeline-title">

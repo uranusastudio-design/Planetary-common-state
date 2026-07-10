@@ -3,6 +3,14 @@ const REGIONAL_STATE_SOURCE_PREFIX = "../PCS_ENGINE/output/regions";
 const REFRESH_INTERVAL_MS = 10000;
 const LANGUAGE_STORAGE_KEY = "pcs_observatory_language";
 const REGION_STORAGE_KEY = "pcs_observatory_region";
+const WEATHER_PROXY_BASE = "https://pcs-backend.uranusastudio.workers.dev";
+const WEATHER_TILE_MAX_ZOOM = 8;
+const WEATHER_LAYER_CONFIG = {
+  clouds: { label: "Clouds", path: "clouds", opacity: 0.5 },
+  rain: { label: "Rain", path: "rain", opacity: 0.6 },
+  temp: { label: "Temperature", path: "temp", opacity: 0.6 },
+  wind: { label: "Wind", path: "wind", opacity: 0.6 },
+};
 
 const regionConfig = {
   global: {
@@ -96,6 +104,7 @@ let nextRefreshAt = Date.now() + REFRESH_INTERVAL_MS;
 let cesiumViewer = null;
 let activeRegionId = "global";
 let translations = {};
+const activeWeatherLayers = new Map();
 
 const selectors = {
   currentState: document.querySelector("#current-state"),
@@ -142,14 +151,35 @@ const selectors = {
   soundToggle: document.querySelector("#sound-toggle"),
   voiceToggle: document.querySelector("#voice-toggle"),
   audioStatus: document.querySelector("#audio-status"),
+  weatherLayerControls: document.querySelectorAll("[data-weather-layer]"),
+  weatherProxyStatus: document.querySelector("#weather-proxy-status"),
+  weatherActiveLayers: document.querySelector("#weather-active-layers"),
+  weatherTileError: document.querySelector("#weather-tile-error"),
 };
 
 function t(key) {
   return translations[key] ?? key;
 }
 
+function readStorageValue(key, fallbackValue) {
+  try {
+    const storedValue = localStorage.getItem(key);
+    return storedValue ?? fallbackValue;
+  } catch (error) {
+    return fallbackValue;
+  }
+}
+
+function writeStorageValue(key, value) {
+  try {
+    localStorage.setItem(key, value);
+  } catch (error) {
+    // Ignore storage write failures; UI should stay functional.
+  }
+}
+
 function getCurrentLanguage() {
-  return localStorage.getItem(LANGUAGE_STORAGE_KEY) || "en";
+  return readStorageValue(LANGUAGE_STORAGE_KEY, "en");
 }
 
 async function loadLanguage(lang) {
@@ -169,7 +199,7 @@ async function loadLanguage(lang) {
 
 async function setLanguage(lang) {
   const selectedLanguage = lang || "en";
-  localStorage.setItem(LANGUAGE_STORAGE_KEY, selectedLanguage);
+  writeStorageValue(LANGUAGE_STORAGE_KEY, selectedLanguage);
   translations = await loadLanguage(selectedLanguage);
   if (selectors.languageSelector) {
     selectors.languageSelector.value = selectedLanguage;
@@ -463,14 +493,14 @@ function initializeCesiumGlobe() {
 }
 
 function initializeRegionalMode() {
-  const storedRegion = localStorage.getItem(REGION_STORAGE_KEY) || "global";
+  const storedRegion = readStorageValue(REGION_STORAGE_KEY, "global");
   activeRegionId = regionConfig[storedRegion] ? storedRegion : "global";
 
   if (selectors.regionSelector) {
     selectors.regionSelector.value = activeRegionId;
     selectors.regionSelector.addEventListener("change", () => {
       const selectedRegion = selectors.regionSelector.value;
-      localStorage.setItem(REGION_STORAGE_KEY, selectedRegion);
+      writeStorageValue(REGION_STORAGE_KEY, selectedRegion);
       updateRegionContext(selectedRegion);
       setCesiumCameraForRegion(activeRegionId);
       loadLatestState();
@@ -582,24 +612,184 @@ function renderBuildTimestamp() {
   updateText(selectors.buildTimestamp, document.lastModified || "Static prototype");
 }
 
-async function initializeApp() {
-  initializeRegionalMode();
-  initializeLanguageSelector();
-  await setLanguage(getCurrentLanguage());
-  await loadLatestState();
-  renderClock();
-  initializeCesiumGlobe();
-  initializePlaceholderSelectors();
-  initializeFrameworkControls();
-  initializeLayerControls();
-  renderBuildTimestamp();
+function reportStartupError(label, error) {
+  console.error(`[PCS_OBSERVATORY] ${label} failed:`, error);
+  const currentMessage = selectors.dataMessage?.textContent || "";
+  if (!currentMessage.includes("Initialization warning")) {
+    updateText(selectors.dataMessage, `Initialization warning: ${label}. Core UI remains available.`);
+  }
 }
 
-initializeApp();
+function runSafe(label, operation) {
+  try {
+    operation();
+  } catch (error) {
+    reportStartupError(label, error);
+  }
+}
+
+async function runSafeAsync(label, operation) {
+  try {
+    await operation();
+  } catch (error) {
+    reportStartupError(label, error);
+  }
+}
+
+function buildWeatherTileUrl(layerPath) {
+  return `${WEATHER_PROXY_BASE}/tiles/openweather/${layerPath}/{z}/{x}/{y}.png`;
+}
+
+function updateWeatherActiveLayersStatus() {
+  const labels = [...activeWeatherLayers.keys()]
+    .map((id) => WEATHER_LAYER_CONFIG[id]?.label ?? id)
+    .join(", ");
+  updateText(selectors.weatherActiveLayers, labels ? `Active layers: ${labels}` : "Active layers: none");
+}
+
+function setWeatherProxyStatus(message) {
+  updateText(selectors.weatherProxyStatus, message);
+}
+
+function setWeatherTileError(message) {
+  updateText(selectors.weatherTileError, message);
+}
+
+function addWeatherLayer(layerId) {
+  if (!cesiumViewer || !window.Cesium) {
+    setWeatherProxyStatus("Weather proxy: globe not available.");
+    return;
+  }
+  if (activeWeatherLayers.has(layerId)) {
+    return;
+  }
+  const config = WEATHER_LAYER_CONFIG[layerId];
+  if (!config) {
+    return;
+  }
+  const tileUrl = buildWeatherTileUrl(config.path);
+  try {
+    const provider = new Cesium.UrlTemplateImageryProvider({
+      url: tileUrl,
+      tilingScheme: new Cesium.WebMercatorTilingScheme(),
+      credit: "Weather data © OpenWeather",
+      minimumLevel: 0,
+      maximumLevel: WEATHER_TILE_MAX_ZOOM,
+      tileWidth: 256,
+      tileHeight: 256,
+      enablePickFeatures: false,
+    });
+    const unsubscribeErrorListener = provider.errorEvent.addEventListener((error) => {
+      const statusCode = error.error?.statusCode ? ` (${error.error.statusCode})` : "";
+      setWeatherTileError(`Tile error: "${config.label}"${statusCode}. Weather layer remains optional.`);
+    });
+    const layer = cesiumViewer.imageryLayers.addImageryProvider(provider);
+    layer.alpha = config.opacity;
+    activeWeatherLayers.set(layerId, { layer, unsubscribeErrorListener });
+    setWeatherProxyStatus("Weather proxy: connected");
+    setWeatherTileError("");
+  } catch (error) {
+    setWeatherProxyStatus("Weather proxy: unavailable");
+  }
+  updateWeatherActiveLayersStatus();
+}
+
+function removeWeatherLayer(layerId) {
+  if (!cesiumViewer || !activeWeatherLayers.has(layerId)) {
+    return;
+  }
+  const { layer, unsubscribeErrorListener } = activeWeatherLayers.get(layerId);
+  unsubscribeErrorListener?.();
+  cesiumViewer.imageryLayers.remove(layer, true);
+  activeWeatherLayers.delete(layerId);
+  if (activeWeatherLayers.size === 0) {
+    setWeatherTileError("");
+  }
+  updateWeatherActiveLayersStatus();
+}
+
+async function checkWeatherProxyHealth() {
+  if (!selectors.weatherProxyStatus) {
+    return;
+  }
+
+  setWeatherProxyStatus("Weather proxy: checking...");
+  try {
+    const response = await fetch(`${WEATHER_PROXY_BASE}/health/openweather`, { cache: "no-store" });
+    if (!response.ok) {
+      setWeatherProxyStatus("Weather proxy: unavailable");
+      return;
+    }
+    const payload = await response.json().catch((error) => {
+      console.warn("[PCS_OBSERVATORY] Weather health response JSON parse failed:", error);
+      return {};
+    });
+    if (payload && payload.key_configured === false) {
+      setWeatherProxyStatus("Weather proxy: unavailable (OPENWEATHER_API_KEY missing)");
+      return;
+    }
+    setWeatherProxyStatus("Weather proxy: connected");
+  } catch (error) {
+    setWeatherProxyStatus("Weather proxy: unavailable");
+  }
+}
+
+function initializeWeatherLayers() {
+  if (!selectors.weatherLayerControls.length) {
+    return;
+  }
+
+  resetWeatherStatusDisplay();
+  selectors.weatherLayerControls.forEach((control) => {
+    control.addEventListener("change", () => {
+      const layerId = control.dataset.weatherLayer;
+      if (control.checked) {
+        addWeatherLayer(layerId);
+      } else {
+        removeWeatherLayer(layerId);
+      }
+    });
+  });
+  checkWeatherProxyHealth().catch(() => {
+    setWeatherProxyStatus("Weather proxy: unavailable");
+  });
+}
+
+function resetWeatherStatusDisplay() {
+  updateWeatherActiveLayersStatus();
+  setWeatherTileError("");
+}
+
+async function initializeApp() {
+  runSafe("regional mode initialization", initializeRegionalMode);
+  runSafe("language selector initialization", initializeLanguageSelector);
+  renderClock();
+  runSafe("Cesium globe initialization", initializeCesiumGlobe);
+  runSafe("placeholder selector initialization", initializePlaceholderSelectors);
+  runSafe("framework controls initialization", initializeFrameworkControls);
+  runSafe("layer controls initialization", initializeLayerControls);
+  runSafe("weather layer initialization", initializeWeatherLayers);
+  runSafe("build timestamp rendering", renderBuildTimestamp);
+  await runSafeAsync("language loading", () => setLanguage(getCurrentLanguage()));
+  await runSafeAsync("dashboard data loading", () => loadLatestState());
+}
+
+window.addEventListener("error", (event) => {
+  reportStartupError("runtime error", event.error ?? new Error(String(event.message)));
+});
+window.addEventListener("unhandledrejection", (event) => {
+  reportStartupError("unhandled promise rejection", event.reason ?? new Error("Unknown rejection"));
+});
+
+initializeApp().catch((error) => {
+  reportStartupError("app initialization", error);
+});
 window.addEventListener("resize", () => {
   if (cesiumViewer) {
-    cesiumViewer.resize();
+    runSafe("Cesium resize", () => cesiumViewer.resize());
   }
 });
-setInterval(renderClock, 1000);
-setInterval(loadLatestState, REFRESH_INTERVAL_MS);
+setInterval(() => runSafe("clock rendering", renderClock), 1000);
+setInterval(() => {
+  void runSafeAsync("auto dashboard refresh", () => loadLatestState());
+}, REFRESH_INTERVAL_MS);
