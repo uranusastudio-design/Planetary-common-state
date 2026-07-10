@@ -578,6 +578,29 @@ h3 {
   line-height: 1.42;
 }
 
+.weather-layers-section {
+  margin-top: 16px;
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+
+.weather-layers-label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.weather-status-block {
+  margin-top: 8px;
+}
+
+.weather-layer {
+  border-left: 2px solid var(--cyan);
+}
+
+.weather-tile-error:not(:empty) {
+  color: var(--amber);
+}
+
 .timeline-panel,
 .solar-system-panel,
 .observatory-mode-panel,
