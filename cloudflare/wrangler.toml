@@ -1,6 +1,7 @@
 name = "pcs-backend"
 main = "src/index.js"
 compatibility_date = "2026-07-07"
+keep_vars = true
 
 [observability]
 enabled = true

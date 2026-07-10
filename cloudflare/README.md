@@ -89,7 +89,7 @@ npx wrangler dev
 Deploy when ready:
 
 ```bash
-npx wrangler deploy
+npx wrangler deploy --keep-vars
 ```
 
 ## Verification
@@ -99,4 +99,3 @@ Expected checks:
 - `/` returns online PCS backend JSON.
 - `/health` returns healthy status JSON.
 - `/latest` returns prototype latest-state-compatible JSON.
-
