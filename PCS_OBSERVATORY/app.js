@@ -680,10 +680,7 @@ function addWeatherLayer(layerId) {
       enablePickFeatures: false,
     });
     const unsubscribeErrorListener = provider.errorEvent.addEventListener((error) => {
-      const statusCode =
-        error.error && typeof error.error === "object" && "statusCode" in error.error
-          ? ` (${error.error.statusCode})`
-          : "";
+      const statusCode = error.error?.statusCode ? ` (${error.error.statusCode})` : "";
       setWeatherTileError(`Tile error: "${config.label}"${statusCode}. Weather layer remains optional.`);
     });
     const layer = cesiumViewer.imageryLayers.addImageryProvider(provider);
@@ -723,7 +720,10 @@ async function checkWeatherProxyHealth() {
       setWeatherProxyStatus("Weather proxy: unavailable");
       return;
     }
-    const payload = await response.json().catch(() => ({}));
+    const payload = await response.json().catch((error) => {
+      console.warn("[PCS_OBSERVATORY] Weather health response JSON parse failed:", error);
+      return {};
+    });
     if (payload && payload.key_configured === false) {
       setWeatherProxyStatus("Weather proxy: unavailable (OPENWEATHER_API_KEY missing)");
       return;
@@ -781,7 +781,9 @@ window.addEventListener("unhandledrejection", (event) => {
   reportStartupError("unhandled promise rejection", event.reason ?? new Error("Unknown rejection"));
 });
 
-void initializeApp();
+initializeApp().catch((error) => {
+  reportStartupError("app initialization", error);
+});
 window.addEventListener("resize", () => {
   if (cesiumViewer) {
     runSafe("Cesium resize", () => cesiumViewer.resize());
