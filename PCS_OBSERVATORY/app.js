@@ -1,19 +1,8 @@
-const PCS_API_URL = "https://pcs-backend.uranusastudio.workers.dev";
-const PCS_DATA_ENDPOINT = `${PCS_API_URL}/latest`;
-const GLOBAL_STATE_SOURCE = PCS_DATA_ENDPOINT;
+const GLOBAL_STATE_SOURCE = "../PCS_ENGINE/output/latest_state.json";
+const REGIONAL_STATE_SOURCE_PREFIX = "../PCS_ENGINE/output/regions";
 const REFRESH_INTERVAL_MS = 10000;
 const LANGUAGE_STORAGE_KEY = "pcs_observatory_language";
 const REGION_STORAGE_KEY = "pcs_observatory_region";
-
-const WEATHER_PROXY_BASE = PCS_API_URL;
-const WEATHER_TILE_MAX_ZOOM = 8;
-const WEATHER_LAYER_CONFIG = {
-  clouds: { label: "Clouds",      path: "clouds", opacity: 0.5 },
-  rain:   { label: "Rain",        path: "rain",   opacity: 0.6 },
-  temp:   { label: "Temperature", path: "temp",   opacity: 0.6 },
-  wind:   { label: "Wind",        path: "wind",   opacity: 0.6 },
-};
-const activeWeatherLayers = new Map();
 
 const regionConfig = {
   global: {
@@ -22,7 +11,6 @@ const regionConfig = {
     lat: 20,
     lon: 120,
     altitude: 30000000,
-    stateFile: PCS_DATA_ENDPOINT,
   },
   japan: {
     id: "japan",
@@ -30,7 +18,6 @@ const regionConfig = {
     lat: 36.2048,
     lon: 138.2529,
     altitude: 6000000,
-    stateFile: PCS_DATA_ENDPOINT,
   },
   taiwan: {
     id: "taiwan",
@@ -38,7 +25,6 @@ const regionConfig = {
     lat: 23.6978,
     lon: 120.9605,
     altitude: 2500000,
-    stateFile: PCS_DATA_ENDPOINT,
   },
   korea: {
     id: "korea",
@@ -46,7 +32,6 @@ const regionConfig = {
     lat: 36.5,
     lon: 127.8,
     altitude: 3500000,
-    stateFile: PCS_DATA_ENDPOINT,
   },
   canada: {
     id: "canada",
@@ -54,7 +39,6 @@ const regionConfig = {
     lat: 56.1304,
     lon: -106.3468,
     altitude: 9000000,
-    stateFile: PCS_DATA_ENDPOINT,
   },
   uk: {
     id: "uk",
@@ -62,7 +46,6 @@ const regionConfig = {
     lat: 55.3781,
     lon: -3.436,
     altitude: 3500000,
-    stateFile: PCS_DATA_ENDPOINT,
   },
   usa: {
     id: "usa",
@@ -70,7 +53,6 @@ const regionConfig = {
     lat: 37.0902,
     lon: -95.7129,
     altitude: 8000000,
-    stateFile: PCS_DATA_ENDPOINT,
   },
   china: {
     id: "china",
@@ -78,7 +60,6 @@ const regionConfig = {
     lat: 35.8617,
     lon: 104.1954,
     altitude: 8000000,
-    stateFile: PCS_DATA_ENDPOINT,
   },
   singapore: {
     id: "singapore",
@@ -86,7 +67,6 @@ const regionConfig = {
     lat: 1.3521,
     lon: 103.8198,
     altitude: 1500000,
-    stateFile: PCS_DATA_ENDPOINT,
   },
   dubai: {
     id: "dubai",
@@ -94,7 +74,6 @@ const regionConfig = {
     lat: 25.2048,
     lon: 55.2708,
     altitude: 1800000,
-    stateFile: PCS_DATA_ENDPOINT,
   },
 };
 
@@ -163,10 +142,6 @@ const selectors = {
   soundToggle: document.querySelector("#sound-toggle"),
   voiceToggle: document.querySelector("#voice-toggle"),
   audioStatus: document.querySelector("#audio-status"),
-  weatherLayerControls: document.querySelectorAll("[data-weather-layer]"),
-  weatherProxyStatus: document.querySelector("#weather-proxy-status"),
-  weatherActiveLayers: document.querySelector("#weather-active-layers"),
-  weatherTileError: document.querySelector("#weather-tile-error"),
 };
 
 function t(key) {
@@ -220,7 +195,10 @@ function regionLabel(regionId) {
 }
 
 function stateSourceForRegion(regionId) {
-  return regionConfig[regionId]?.stateFile ?? GLOBAL_STATE_SOURCE;
+  if (regionId === "global") {
+    return GLOBAL_STATE_SOURCE;
+  }
+  return `${REGIONAL_STATE_SOURCE_PREFIX}/${regionId}_state.json`;
 }
 
 function formatDisplayValue(value, digits = 3) {
@@ -292,31 +270,6 @@ function displayProgressBar(element, value) {
   element.style.transform = `scaleX(${clampedValue})`;
   element.classList.remove("is-missing");
 }
-function normalizeVariablesToState(variables) {
-  const groups = {
-    Thermal: variables.filter((v) => v.residual_group === "Thermal").length,
-    Chemical: variables.filter((v) => v.residual_group === "Chemical").length,
-    Flow: variables.filter((v) => v.residual_group === "Flow").length,
-    Informational: variables.filter((v) => v.residual_group === "Informational").length,
-    Structural: variables.filter((v) => v.residual_group === "Structural").length,
-  };
-
-  return {
-    timestamp: new Date().toISOString(),
-    metadata: {
-      generated_at_utc: new Date().toISOString(),
-    },
-    S_demo: variables.length,
-    coverage_count: variables.length,
-    latest_year: new Date().getFullYear(),
-    projections: {
-      L_T: groups.Thermal > 0 ? 0.25 : null,
-      L_C: groups.Chemical > 0 ? 0.25 : null,
-      L_S: groups.Structural > 0 ? 0.25 : null,
-      L_I: groups.Informational > 0 ? 0.25 : null,
-    },
-  };
-}
 function renderState(state, source, fallbackToGlobal = false) {
   const stateSignature = JSON.stringify(state);
   latestStateSignature = stateSignature;
@@ -344,11 +297,9 @@ function renderState(state, source, fallbackToGlobal = false) {
 }
 
 function normalizeDashboardData(rawData) {
-  if (Array.isArray(rawData)) {
-    return normalizeVariablesToState(rawData);
-  }
-
-  return rawData?.data ?? rawData?.latest_state ?? rawData?.state ?? rawData;
+  // latest_state is the canonical PCS_ENGINE envelope.
+  // state/data support backward-compatible wrappers used by earlier pipeline outputs.
+  return rawData?.latest_state ?? rawData?.state ?? rawData?.data ?? rawData;
 }
 
 function renderConnectionFailure(error, source) {
@@ -396,21 +347,30 @@ async function updateDashboardData() {
     const response = await fetch(requestedSource, { cache: "no-store" });
 
     if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`PCS API failed: ${response.status} ${errorText}`);
+      throw new Error(`State file unavailable: ${response.status}`);
     }
 
     const rawData = await response.json();
-    console.log("PCS data loaded:", rawData);
-
     const state = normalizeDashboardData(rawData);
-
     renderState(state, requestedSource);
-    if (JSON.stringify(state) === latestStateSignature) {
-      updateText(selectors.dataMessage, `JSON load status: loaded from ${requestedSource}`);
-    }
   } catch (error) {
-    renderConnectionFailure(error, requestedSource);
+    if (activeRegionId !== "global") {
+      // Regional mode falls back to global latest_state when regional output is unavailable.
+      console.warn("Regional state load failed, using global fallback:", requestedSource, error);
+      try {
+        const fallbackResponse = await fetch(GLOBAL_STATE_SOURCE, { cache: "no-store" });
+        if (!fallbackResponse.ok) {
+          throw new Error(`Failed to load regional and global state data (${requestedSource}).`);
+        }
+        const fallbackRaw = await fallbackResponse.json();
+        const fallbackState = normalizeDashboardData(fallbackRaw);
+        renderState(fallbackState, GLOBAL_STATE_SOURCE, true);
+      } catch (fallbackError) {
+        renderConnectionFailure(fallbackError, GLOBAL_STATE_SOURCE);
+      }
+    } else {
+      renderConnectionFailure(error, requestedSource);
+    }
   } finally {
     nextRefreshAt = Date.now() + REFRESH_INTERVAL_MS;
     renderClock();
@@ -429,7 +389,7 @@ function updateRegionContext(regionId) {
   if (region.id === "global") {
     updateText(selectors.regionalModeStatus, "Global mode selected.");
   } else {
-    updateText(selectors.regionalModeStatus, "Regional mode selected. Regional datasets are not connected yet.");
+    updateText(selectors.regionalModeStatus, "Regional mode selected. Regional data pending.");
   }
 }
 
@@ -604,7 +564,7 @@ function initializeLayerControls() {
       const status = control.dataset.layerStatus;
 
       if (status === "connected") {
-        updateText(selectors.layerControlMessage, "Layer selected. Map overlay not implemented yet.");
+        updateText(selectors.layerControlMessage, "Layer selected. Visualization overlay is not implemented in this milestone.");
         return;
       }
 
@@ -622,90 +582,6 @@ function renderBuildTimestamp() {
   updateText(selectors.buildTimestamp, document.lastModified || "Static prototype");
 }
 
-function buildWeatherTileUrl(layerPath) {
-  return `${WEATHER_PROXY_BASE}/tiles/openweather/${layerPath}/{z}/{x}/{y}.png`;
-}
-
-function updateWeatherActiveLayersStatus() {
-  const labels = [...activeWeatherLayers.keys()]
-    .map((id) => WEATHER_LAYER_CONFIG[id]?.label ?? id)
-    .join(", ");
-  updateText(selectors.weatherActiveLayers, labels ? `Active layers: ${labels}` : "Active layers: none");
-}
-
-function addWeatherLayer(layerId) {
-  if (!cesiumViewer || !window.Cesium) {
-    updateText(selectors.weatherProxyStatus, "Weather proxy: globe not available.");
-    return;
-  }
-  if (activeWeatherLayers.has(layerId)) {
-    return;
-  }
-  const config = WEATHER_LAYER_CONFIG[layerId];
-  if (!config) {
-    return;
-  }
-  const tileUrl = buildWeatherTileUrl(config.path);
-  try {
-    const provider = new Cesium.UrlTemplateImageryProvider({
-      url: tileUrl,
-      tilingScheme: new Cesium.WebMercatorTilingScheme(),
-      credit: "Weather data \u00a9 OpenWeather",
-      minimumLevel: 0,
-      maximumLevel: WEATHER_TILE_MAX_ZOOM,
-      tileWidth: 256,
-      tileHeight: 256,
-      enablePickFeatures: false,
-    });
-    const removeErrorListener = provider.errorEvent.addEventListener((error) => {
-      const statusCode =
-        error.error && typeof error.error === "object" && "statusCode" in error.error
-          ? ` (${error.error.statusCode})`
-          : "";
-      const message = `Tile error: "${config.label}"${statusCode}. Check proxy reachability.`;
-      updateText(selectors.weatherTileError, message);
-    });
-    const layer = cesiumViewer.imageryLayers.addImageryProvider(provider);
-    layer.alpha = config.opacity;
-    activeWeatherLayers.set(layerId, { layer, removeErrorListener });
-    updateText(selectors.weatherProxyStatus, "Weather proxy: connected");
-    updateText(selectors.weatherTileError, "");
-  } catch (error) {
-    updateText(selectors.weatherProxyStatus, `Weather proxy: error \u2014 ${error.message}`);
-  }
-  updateWeatherActiveLayersStatus();
-}
-
-function removeWeatherLayer(layerId) {
-  if (!cesiumViewer || !activeWeatherLayers.has(layerId)) {
-    return;
-  }
-  const { layer, removeErrorListener } = activeWeatherLayers.get(layerId);
-  removeErrorListener();
-  cesiumViewer.imageryLayers.remove(layer, true);
-  activeWeatherLayers.delete(layerId);
-  if (activeWeatherLayers.size === 0) {
-    updateText(selectors.weatherTileError, "");
-  }
-  updateWeatherActiveLayersStatus();
-}
-
-function initializeWeatherLayers() {
-  updateText(selectors.weatherProxyStatus, "Weather proxy: connected");
-  updateText(selectors.weatherActiveLayers, "Active layers: none");
-  updateText(selectors.weatherTileError, "");
-  selectors.weatherLayerControls.forEach((control) => {
-    control.addEventListener("change", () => {
-      const layerId = control.dataset.weatherLayer;
-      if (control.checked) {
-        addWeatherLayer(layerId);
-      } else {
-        removeWeatherLayer(layerId);
-      }
-    });
-  });
-}
-
 async function initializeApp() {
   initializeRegionalMode();
   initializeLanguageSelector();
@@ -716,7 +592,6 @@ async function initializeApp() {
   initializePlaceholderSelectors();
   initializeFrameworkControls();
   initializeLayerControls();
-  initializeWeatherLayers();
   renderBuildTimestamp();
 }
 
