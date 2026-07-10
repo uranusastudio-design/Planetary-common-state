@@ -93,7 +93,7 @@ npx wrangler deploy --keep-vars
 ```
 
 For repository-controlled production deploys, use
-`/home/runner/work/Planetary-common-state/Planetary-common-state/.github/workflows/deploy-cloudflare-worker.yml`
+`.github/workflows/deploy-cloudflare-worker.yml`
 to ensure deployment runs from this directory and preserves dashboard runtime
 secrets with `--keep-vars`.
 
