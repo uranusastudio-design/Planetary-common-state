@@ -1,4 +1,4 @@
-import type { EarthdataClientRequest, EarthdataSuccessResponse } from "./types";
+import type { EarthdataClientRequest, EarthdataSuccessResponse } from "./types.ts";
 
 const DEFAULT_TIMEOUT_MS = 20_000;
 const TRANSIENT_STATUSES = new Set([408, 429, 500, 502, 503, 504]);

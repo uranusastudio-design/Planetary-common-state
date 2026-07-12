@@ -58,7 +58,7 @@ Supported datasets:
 | `/api/nasa/modis` | MODIS   | 6 hours    |
 | `/api/nasa/viirs` | VIIRS   | 6 hours    |
 | `/api/nasa/firms` | FIRMS   | 30 minutes |
-| `/api/nasa/smap`  | SMAP    | 12 hours   |
+| `/api/nasa/smap`  | SMAP collection discovery | 12 hours   |
 
 Status:
 
@@ -70,6 +70,20 @@ Example dataset request:
 
 ```bash
 curl "https://<pcs-backend>/api/nasa/modis?page_size=5&keyword=NDVI"
+```
+
+SMAP granule metadata discovery:
+
+```bash
+curl "https://<pcs-backend>/api/nasa/smap/granules?collection_concept_id=<collection-id>&start=2024-01-01T00:00:00Z&end=2024-01-02T00:00:00Z"
+```
+
+Latest PCS SMAP granule metadata defaults to `SPL4SMGP` version `008`
+(`C3480440870-NSIDC_CPRD`) and checks 48 hours, 7 days, 30 days, then latest
+available granules:
+
+```bash
+curl "https://<pcs-backend>/api/nasa/smap/latest"
 ```
 
 All dataset routes return a normalized envelope:

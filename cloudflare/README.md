@@ -50,8 +50,51 @@ Returns normalized NASA Earthdata JSON for FIRMS discovery results. Cached for
 
 ### `GET /api/nasa/smap`
 
-Returns normalized NASA Earthdata JSON for SMAP discovery results. Cached for
-12 hours.
+Returns normalized NASA Earthdata JSON for SMAP collection discovery results.
+This endpoint discovers SMAP collections; it does not return soil-moisture
+measurements. Cached for 12 hours.
+
+PCS prefers the following SMAP collection for granule discovery:
+
+- `short_name`: `SPL4SMGP`
+- `version_id`: `008`
+- `concept_id`: `C3480440870-NSIDC_CPRD`
+- `title`: `SMAP L4 Global 3-hourly 9 km EASE-Grid Surface and Root Zone Soil Moisture Geophysical Data V008`
+
+### `GET /api/nasa/smap/granules`
+
+Returns normalized SMAP granule metadata and download links for a specific CMR
+collection and time range.
+
+Required query parameters:
+
+- `collection_concept_id`
+- `start`
+- `end`
+
+Optional query parameter:
+
+- `bounding_box`
+
+Example:
+
+```bash
+curl "https://<pcs-backend>/api/nasa/smap/granules?collection_concept_id=<collection-id>&start=2024-01-01T00:00:00Z&end=2024-01-02T00:00:00Z"
+```
+
+### `GET /api/nasa/smap/latest`
+
+Uses the preferred `SPL4SMGP` version `008` collection concept ID and returns
+the latest available granule metadata. The route tries 48 hours, 7 days, 30
+days, then latest available without a temporal filter. If a `bounding_box`
+returns no granules, it retries globally and marks `spatial_filter_relaxed`.
+Optional query parameters are `bounding_box`, `end`, and `page_size`.
+
+Example:
+
+```bash
+curl "https://<pcs-backend>/api/nasa/smap/latest?bounding_box=-125,24,-66,50"
+```
 
 All NASA dataset endpoints use the Cloudflare secret `EARTHDATA_TOKEN` as a
 server-side bearer token. The token is attached only by the Worker and is never
