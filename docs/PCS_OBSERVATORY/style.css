@@ -589,6 +589,44 @@ h3 {
   margin-bottom: 8px;
 }
 
+.weather-source-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 0.8fr);
+  gap: 10px;
+  align-items: end;
+  margin-bottom: 10px;
+}
+
+.weather-source-control {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.weather-source-control span {
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.weather-source-control select {
+  width: 100%;
+  min-height: 36px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 7px 9px;
+  color: var(--text);
+  background: #07111f;
+  outline: none;
+}
+
+.weather-source-control select:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.16);
+}
+
 .weather-status-block {
   margin-top: 8px;
 }
@@ -1058,6 +1096,10 @@ h3 {
   }
 
   .layer-list {
+    grid-template-columns: 1fr;
+  }
+
+  .weather-source-header {
     grid-template-columns: 1fr;
   }
 

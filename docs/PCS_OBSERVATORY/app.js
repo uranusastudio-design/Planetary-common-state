@@ -4,76 +4,132 @@ const REFRESH_INTERVAL_MS = 10000;
 const LANGUAGE_STORAGE_KEY = "pcs_observatory_language";
 const REGION_STORAGE_KEY = "pcs_observatory_region";
 const NASA_GIBS_WMS_ENDPOINT = "https://gibs.earthdata.nasa.gov/wms/epsg3857/best/wms.cgi";
+const WEATHER_PROXY_BASE = "https://pcs-backend.uranusastudio.workers.dev";
+const WEATHER_SOURCE_STORAGE_KEY = "pcs_observatory_weather_source";
 const WEATHER_LAYER_ORDER = ["clouds", "rain", "temp", "wind"];
 const WEATHER_LAYER_TEST_NOTICE = "NASA GIBS test layer - not real-time weather.";
-const WEATHER_LAYER_CONFIG = {
-  clouds: {
-    label: "Clouds",
-    provider: "NASA GIBS",
-    service: "wms",
-    endpoint: NASA_GIBS_WMS_ENDPOINT,
-    layers: "MODIS_Terra_Cloud_Fraction_Day",
-    observationDate: "2026-07-12",
-    dataset: "MODIS Terra Cloud Fraction Day",
-    scientificRole: "Cloud fraction observation test layer",
-    parameters: {
-      format: "image/png",
-      transparent: true,
-      time: "2026-07-12",
+const WEATHER_SOURCE_MODES = {
+  nasa: {
+    label: "NASA GIBS Test / Observation",
+    readyMessage: `NASA GIBS Test / Observation layers ready. ${WEATHER_LAYER_TEST_NOTICE}`,
+    connectedMessage: "NASA GIBS Test / Observation layers connected. Base globe remains independent.",
+    configs: {
+      clouds: {
+        label: "Clouds",
+        provider: "NASA GIBS Test / Observation",
+        service: "wms",
+        endpoint: NASA_GIBS_WMS_ENDPOINT,
+        layers: "MODIS_Terra_Cloud_Fraction_Day",
+        observationDate: "2026-07-12",
+        dataset: "MODIS Terra Cloud Fraction Day",
+        detail: "NASA GIBS test layer - MODIS_Terra_Cloud_Fraction_Day - 2026-07-12",
+        parameters: {
+          format: "image/png",
+          transparent: true,
+          time: "2026-07-12",
+        },
+        opacity: 0.5,
+        credit: "NASA GIBS / MODIS Terra Cloud Fraction Day",
+      },
+      rain: {
+        label: "Precipitation",
+        provider: "NASA GIBS Test / Observation",
+        service: "wms",
+        endpoint: NASA_GIBS_WMS_ENDPOINT,
+        layers: "IMERG_Precipitation_Rate",
+        observationDate: "2026-07-09",
+        dataset: "IMERG Precipitation Rate",
+        detail: "NASA GIBS test layer - IMERG_Precipitation_Rate - 2026-07-09",
+        parameters: {
+          format: "image/png",
+          transparent: true,
+          time: "2026-07-09",
+        },
+        opacity: 0.45,
+        credit: "NASA GIBS / IMERG Precipitation Rate",
+      },
+      temp: {
+        label: "Temperature",
+        provider: "NASA GIBS Test / Observation",
+        service: "wms",
+        endpoint: NASA_GIBS_WMS_ENDPOINT,
+        layers: "AIRS_L3_Surface_Air_Temperature_Daily_Day",
+        observationDate: "2026-07-07",
+        dataset: "AIRS L3 Surface Air Temperature Daily Day",
+        detail: "NASA GIBS test layer - AIRS_L3_Surface_Air_Temperature_Daily_Day - 2026-07-07",
+        parameters: {
+          format: "image/png",
+          transparent: true,
+          time: "2026-07-07",
+        },
+        opacity: 0.42,
+        credit: "NASA GIBS / AIRS L3 Surface Air Temperature Daily Day",
+      },
+      wind: {
+        label: "Wind speed",
+        provider: "NASA GIBS Test / Observation",
+        service: "wms",
+        endpoint: NASA_GIBS_WMS_ENDPOINT,
+        layers: "CYGNSS_L3_Wind_Speed_Daily",
+        observationDate: "2021-02-28",
+        dataset: "CYGNSS L3 Wind Speed Daily",
+        detail: "NASA GIBS test layer - CYGNSS_L3_Wind_Speed_Daily - 2021-02-28",
+        parameters: {
+          format: "image/png",
+          transparent: true,
+          time: "2021-02-28",
+        },
+        opacity: 0.42,
+        credit: "NASA GIBS / CYGNSS L3 Wind Speed Daily",
+      },
     },
-    opacity: 0.5,
-    credit: "NASA GIBS / MODIS Terra Cloud Fraction Day",
   },
-  rain: {
-    label: "Precipitation",
-    provider: "NASA GIBS",
-    service: "wms",
-    endpoint: NASA_GIBS_WMS_ENDPOINT,
-    layers: "IMERG_Precipitation_Rate",
-    observationDate: "2026-07-09",
-    dataset: "IMERG Precipitation Rate",
-    scientificRole: "Precipitation rate observation test layer",
-    parameters: {
-      format: "image/png",
-      transparent: true,
-      time: "2026-07-09",
+  openweather: {
+    label: "OpenWeather Live",
+    readyMessage: "OpenWeather Live layers ready. Tiles are proxied through pcs-backend.",
+    connectedMessage: "OpenWeather Live layers connected. Base globe remains independent.",
+    configs: {
+      clouds: {
+        label: "Clouds",
+        provider: "OpenWeather Live",
+        service: "url-template",
+        path: "clouds",
+        dataset: "OpenWeather clouds_new",
+        detail: "OpenWeather Live - clouds - proxied via pcs-backend",
+        opacity: 0.5,
+        credit: "Weather data OpenWeather",
+      },
+      rain: {
+        label: "Rain",
+        provider: "OpenWeather Live",
+        service: "url-template",
+        path: "rain",
+        dataset: "OpenWeather precipitation_new",
+        detail: "OpenWeather Live - rain - proxied via pcs-backend",
+        opacity: 0.6,
+        credit: "Weather data OpenWeather",
+      },
+      temp: {
+        label: "Temperature",
+        provider: "OpenWeather Live",
+        service: "url-template",
+        path: "temperature",
+        dataset: "OpenWeather temp_new",
+        detail: "OpenWeather Live - temperature - proxied via pcs-backend",
+        opacity: 0.6,
+        credit: "Weather data OpenWeather",
+      },
+      wind: {
+        label: "Wind",
+        provider: "OpenWeather Live",
+        service: "url-template",
+        path: "wind",
+        dataset: "OpenWeather wind_new",
+        detail: "OpenWeather Live - wind - proxied via pcs-backend",
+        opacity: 0.6,
+        credit: "Weather data OpenWeather",
+      },
     },
-    opacity: 0.45,
-    credit: "NASA GIBS / IMERG Precipitation Rate",
-  },
-  temp: {
-    label: "Temperature",
-    provider: "NASA GIBS",
-    service: "wms",
-    endpoint: NASA_GIBS_WMS_ENDPOINT,
-    layers: "AIRS_L3_Surface_Air_Temperature_Daily_Day",
-    observationDate: "2026-07-07",
-    dataset: "AIRS L3 Surface Air Temperature Daily Day",
-    scientificRole: "Surface air temperature observation test layer",
-    parameters: {
-      format: "image/png",
-      transparent: true,
-      time: "2026-07-07",
-    },
-    opacity: 0.42,
-    credit: "NASA GIBS / AIRS L3 Surface Air Temperature Daily Day",
-  },
-  wind: {
-    label: "Wind speed",
-    provider: "NASA GIBS",
-    service: "wms",
-    endpoint: NASA_GIBS_WMS_ENDPOINT,
-    layers: "CYGNSS_L3_Wind_Speed_Daily",
-    observationDate: "2021-02-28",
-    dataset: "CYGNSS L3 Wind Speed Daily",
-    scientificRole: "Ocean/tropical cyclone wind speed observation test layer",
-    parameters: {
-      format: "image/png",
-      transparent: true,
-      time: "2021-02-28",
-    },
-    opacity: 0.42,
-    credit: "NASA GIBS / CYGNSS L3 Wind Speed Daily",
   },
 };
 
@@ -168,6 +224,7 @@ let lastJsonUpdateValue = null;
 let nextRefreshAt = Date.now() + REFRESH_INTERVAL_MS;
 let cesiumViewer = null;
 let activeRegionId = "global";
+let activeWeatherSourceId = "nasa";
 let translations = {};
 const activeWeatherLayers = new Map();
 
@@ -218,6 +275,8 @@ const selectors = {
   audioStatus: document.querySelector("#audio-status"),
   weatherLayerControls: document.querySelectorAll("[data-weather-layer]"),
   weatherOpacityControls: document.querySelectorAll("[data-weather-opacity]"),
+  weatherLayerDetails: document.querySelectorAll("[data-weather-layer-detail]"),
+  weatherSourceSelector: document.querySelector("#weather-source-selector"),
   weatherProxyStatus: document.querySelector("#weather-proxy-status"),
   weatherActiveLayers: document.querySelector("#weather-active-layers"),
   weatherTileError: document.querySelector("#weather-tile-error"),
@@ -722,7 +781,33 @@ async function runSafeAsync(label, operation) {
   }
 }
 
+function currentWeatherSource() {
+  return WEATHER_SOURCE_MODES[activeWeatherSourceId] ?? WEATHER_SOURCE_MODES.nasa;
+}
+
+function currentWeatherConfig(layerId) {
+  return currentWeatherSource().configs[layerId] ?? null;
+}
+
+function buildOpenWeatherTileUrl(layerPath) {
+  const base = WEATHER_PROXY_BASE.replace(/\/$/, "");
+  return `${base}/tiles/openweather/${layerPath}/{z}/{x}/{y}.png`;
+}
+
 function createWeatherImageryProvider(config) {
+  if (config.service === "url-template") {
+    return new Cesium.UrlTemplateImageryProvider({
+      url: buildOpenWeatherTileUrl(config.path),
+      tilingScheme: new Cesium.WebMercatorTilingScheme(),
+      credit: config.credit,
+      minimumLevel: 0,
+      maximumLevel: 8,
+      tileWidth: 256,
+      tileHeight: 256,
+      enablePickFeatures: false,
+    });
+  }
+
   return new Cesium.WebMapServiceImageryProvider({
     url: config.endpoint,
     layers: config.layers,
@@ -733,11 +818,12 @@ function createWeatherImageryProvider(config) {
 }
 
 function updateWeatherActiveLayersStatus() {
+  const source = currentWeatherSource();
   const labels = WEATHER_LAYER_ORDER
     .filter((id) => activeWeatherLayers.has(id))
-    .map((id) => WEATHER_LAYER_CONFIG[id]?.label ?? id)
+    .map((id) => source.configs[id]?.label ?? id)
     .join(", ");
-  updateText(selectors.weatherActiveLayers, labels ? `Active layers: ${labels}` : "Active layers: none");
+  updateText(selectors.weatherActiveLayers, labels ? `Active layers (${source.label}): ${labels}` : "Active layers: none");
 }
 
 function setWeatherConnectionStatus(message) {
@@ -748,9 +834,53 @@ function setWeatherTileError(message) {
   updateText(selectors.weatherTileError, message);
 }
 
+async function checkOpenWeatherHealth() {
+  if (activeWeatherSourceId !== "openweather") {
+    return;
+  }
+
+  setWeatherConnectionStatus("OpenWeather Live: checking pcs-backend...");
+  try {
+    const response = await fetch(`${WEATHER_PROXY_BASE}/health/openweather`, { cache: "no-store" });
+    if (!response.ok) {
+      setWeatherConnectionStatus(`OpenWeather Live: pcs-backend health unavailable (${response.status})`);
+      return;
+    }
+    const health = await response.json();
+    if (!health.key_configured || !health.upstream_ok) {
+      setWeatherConnectionStatus("OpenWeather Live: pcs-backend is reachable, live weather upstream is not ready.");
+      return;
+    }
+    setWeatherConnectionStatus("OpenWeather Live: pcs-backend connected. Live weather tiles ready.");
+  } catch (error) {
+    setWeatherConnectionStatus("OpenWeather Live: pcs-backend unavailable.");
+  }
+}
+
 function syncWeatherLayerControls() {
   selectors.weatherLayerControls.forEach((control) => {
     control.checked = activeWeatherLayers.has(control.dataset.weatherLayer);
+  });
+}
+
+function syncWeatherSourceControls() {
+  const source = currentWeatherSource();
+  if (selectors.weatherSourceSelector) {
+    selectors.weatherSourceSelector.value = activeWeatherSourceId;
+  }
+  selectors.weatherLayerDetails.forEach((detail) => {
+    const layerId = detail.dataset.weatherLayerDetail;
+    const config = source.configs[layerId];
+    if (config?.detail) {
+      detail.textContent = config.detail;
+    }
+  });
+  selectors.weatherOpacityControls.forEach((control) => {
+    const layerId = control.dataset.weatherOpacity;
+    const config = source.configs[layerId];
+    if (config) {
+      control.value = String(Math.round(config.opacity * 100));
+    }
   });
 }
 
@@ -783,12 +913,15 @@ function enforceWeatherLayerOrder() {
 }
 
 function weatherLayerStatusText(layerId, config) {
-  return `${config.provider}: ${config.dataset} connected. Observation date: ${config.observationDate}. ${WEATHER_LAYER_TEST_NOTICE}`;
+  if (activeWeatherSourceId === "nasa") {
+    return `${config.provider}: ${config.dataset} connected. Observation date: ${config.observationDate}. ${WEATHER_LAYER_TEST_NOTICE}`;
+  }
+  return `${config.provider}: ${config.dataset} connected through pcs-backend.`;
 }
 
 function updateWeatherOpacity(layerId, value) {
   const opacity = clampNumber(value, 0, 1);
-  const config = WEATHER_LAYER_CONFIG[layerId];
+  const config = currentWeatherConfig(layerId);
   if (config) {
     config.opacity = opacity;
   }
@@ -808,7 +941,7 @@ async function addWeatherLayer(layerId) {
     syncWeatherLayerControls();
     return;
   }
-  const config = WEATHER_LAYER_CONFIG[layerId];
+  const config = currentWeatherConfig(layerId);
   if (!config) {
     syncWeatherLayerControls();
     return;
@@ -818,7 +951,7 @@ async function addWeatherLayer(layerId) {
     const provider = createWeatherImageryProvider(config);
     const unsubscribeErrorListener = provider.errorEvent.addEventListener((error) => {
       const statusCode = error.error?.statusCode ? ` (${error.error.statusCode})` : "";
-      setWeatherTileError(`${config.label} test layer tile unavailable${statusCode}`);
+      setWeatherTileError(`${config.label} ${currentWeatherSource().label} tile unavailable${statusCode}`);
     });
     const layer = cesiumViewer.imageryLayers.addImageryProvider(provider);
     layer.alpha = config.opacity;
@@ -828,7 +961,7 @@ async function addWeatherLayer(layerId) {
     setWeatherTileError("");
   } catch (error) {
     console.error("[PCS_OBSERVATORY] Weather layer load failed:", error);
-    const unavailableMessage = `${config.label} NASA GIBS test layer unavailable. Base globe remains visible.`;
+    const unavailableMessage = `${config.label} ${currentWeatherSource().label} layer unavailable. Base globe remains visible.`;
     setWeatherConnectionStatus(unavailableMessage);
     setWeatherTileError(unavailableMessage);
   }
@@ -841,10 +974,13 @@ function initializeWeatherLayers() {
     return;
   }
 
+  const storedSource = readStorageValue(WEATHER_SOURCE_STORAGE_KEY, "nasa");
+  activeWeatherSourceId = WEATHER_SOURCE_MODES[storedSource] ? storedSource : "nasa";
+  syncWeatherSourceControls();
   resetWeatherStatusDisplay();
   selectors.weatherOpacityControls.forEach((control) => {
     const layerId = control.dataset.weatherOpacity;
-    const config = WEATHER_LAYER_CONFIG[layerId];
+    const config = currentWeatherConfig(layerId);
     if (config) {
       control.value = String(Math.round(config.opacity * 100));
     }
@@ -861,18 +997,48 @@ function initializeWeatherLayers() {
         removeWeatherLayer(layerId);
         setWeatherConnectionStatus(
           activeWeatherLayers.size
-            ? "NASA GIBS test layers: connected. Base globe remains independent."
-            : `NASA GIBS test layers ready. ${WEATHER_LAYER_TEST_NOTICE}`
+            ? currentWeatherSource().connectedMessage
+            : currentWeatherSource().readyMessage
         );
       }
     });
   });
+  selectors.weatherSourceSelector?.addEventListener("change", async () => {
+    const nextSource = selectors.weatherSourceSelector.value;
+    if (!WEATHER_SOURCE_MODES[nextSource] || nextSource === activeWeatherSourceId) {
+      return;
+    }
+
+    const checkedLayerIds = [...selectors.weatherLayerControls]
+      .filter((control) => control.checked)
+      .map((control) => control.dataset.weatherLayer)
+      .filter(Boolean);
+
+    [...activeWeatherLayers.keys()].forEach((layerId) => {
+      removeWeatherLayer(layerId, { keepMessage: true });
+    });
+
+    activeWeatherSourceId = nextSource;
+    writeStorageValue(WEATHER_SOURCE_STORAGE_KEY, activeWeatherSourceId);
+    syncWeatherSourceControls();
+    setWeatherTileError("");
+    setWeatherConnectionStatus(currentWeatherSource().readyMessage);
+    await checkOpenWeatherHealth();
+
+    for (const layerId of checkedLayerIds) {
+      await addWeatherLayer(layerId);
+    }
+    syncWeatherLayerControls();
+    updateWeatherActiveLayersStatus();
+  });
 }
 
 function resetWeatherStatusDisplay() {
+  syncWeatherSourceControls();
   updateWeatherActiveLayersStatus();
-  setWeatherConnectionStatus(`NASA GIBS test layers ready. ${WEATHER_LAYER_TEST_NOTICE}`);
+  setWeatherConnectionStatus(currentWeatherSource().readyMessage);
   setWeatherTileError("");
+  void checkOpenWeatherHealth();
 }
 
 async function initializeApp() {
