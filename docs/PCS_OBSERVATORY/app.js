@@ -6,7 +6,20 @@ const REGION_STORAGE_KEY = "pcs_observatory_region";
 const WEATHER_PROXY_BASE = "https://pcs-backend.uranusastudio.workers.dev";
 const WEATHER_TILE_MAX_ZOOM = 8;
 const WEATHER_LAYER_CONFIG = {
-  clouds: { label: "Clouds", path: "clouds", opacity: 0.5 },
+  clouds: {
+    label: "Clouds",
+    provider: "NASA GIBS",
+    service: "wms",
+    url: "https://gibs.earthdata.nasa.gov/wms/epsg3857/best/wms.cgi",
+    layers: "MODIS_Terra_Cloud_Fraction_Day",
+    parameters: {
+      format: "image/png",
+      transparent: true,
+      time: "default",
+    },
+    opacity: 0.55,
+    credit: "Cloud data: NASA GIBS / MODIS Terra Cloud Fraction Day",
+  },
   rain: { label: "Rain", path: "rain", opacity: 0.6 },
   temp: { label: "Temperature", path: "temp", opacity: 0.6 },
   wind: { label: "Wind", path: "wind", opacity: 0.6 },
@@ -640,6 +653,34 @@ function buildWeatherTileUrl(layerPath) {
   return `${WEATHER_PROXY_BASE}/tiles/openweather/${layerPath}/{z}/{x}/{y}.png`;
 }
 
+function tileUrlForWeatherLayer(config) {
+  return config.url ?? buildWeatherTileUrl(config.path);
+}
+
+function createWeatherImageryProvider(config) {
+  if (config.service === "wms") {
+    return new Cesium.WebMapServiceImageryProvider({
+      url: config.url,
+      layers: config.layers,
+      parameters: config.parameters,
+      credit: config.credit,
+      enablePickFeatures: false,
+    });
+  }
+
+  const tileUrl = tileUrlForWeatherLayer(config);
+  return new Cesium.UrlTemplateImageryProvider({
+    url: tileUrl,
+    tilingScheme: new Cesium.WebMercatorTilingScheme(),
+    credit: config.credit ?? "Weather data: OpenWeather",
+    minimumLevel: 0,
+    maximumLevel: config.maximumLevel ?? WEATHER_TILE_MAX_ZOOM,
+    tileWidth: 256,
+    tileHeight: 256,
+    enablePickFeatures: false,
+  });
+}
+
 function updateWeatherActiveLayersStatus() {
   const labels = [...activeWeatherLayers.keys()]
     .map((id) => WEATHER_LAYER_CONFIG[id]?.label ?? id)
@@ -667,18 +708,8 @@ function addWeatherLayer(layerId) {
   if (!config) {
     return;
   }
-  const tileUrl = buildWeatherTileUrl(config.path);
   try {
-    const provider = new Cesium.UrlTemplateImageryProvider({
-      url: tileUrl,
-      tilingScheme: new Cesium.WebMercatorTilingScheme(),
-      credit: "Weather data © OpenWeather",
-      minimumLevel: 0,
-      maximumLevel: WEATHER_TILE_MAX_ZOOM,
-      tileWidth: 256,
-      tileHeight: 256,
-      enablePickFeatures: false,
-    });
+    const provider = createWeatherImageryProvider(config);
     const unsubscribeErrorListener = provider.errorEvent.addEventListener((error) => {
       const statusCode = error.error?.statusCode ? ` (${error.error.statusCode})` : "";
       setWeatherTileError(`Tile error: "${config.label}"${statusCode}. Weather layer remains optional.`);
@@ -686,7 +717,8 @@ function addWeatherLayer(layerId) {
     const layer = cesiumViewer.imageryLayers.addImageryProvider(provider);
     layer.alpha = config.opacity;
     activeWeatherLayers.set(layerId, { layer, unsubscribeErrorListener });
-    setWeatherProxyStatus("Weather proxy: connected");
+    const statusProvider = config.provider ?? "Weather proxy";
+    setWeatherProxyStatus(`${statusProvider}: connected`);
     setWeatherTileError("");
   } catch (error) {
     setWeatherProxyStatus("Weather proxy: unavailable");
