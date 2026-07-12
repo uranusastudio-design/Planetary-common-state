@@ -683,6 +683,34 @@ function createWeatherImageryProvider(config) {
   });
 }
 
+function tileUrlForWeatherLayer(config) {
+  return config.url ?? buildWeatherTileUrl(config.path);
+}
+
+function createWeatherImageryProvider(config) {
+  if (config.service === "wms") {
+    return new Cesium.WebMapServiceImageryProvider({
+      url: config.url,
+      layers: config.layers,
+      parameters: config.parameters,
+      credit: config.credit,
+      enablePickFeatures: false,
+    });
+  }
+
+  const tileUrl = tileUrlForWeatherLayer(config);
+  return new Cesium.UrlTemplateImageryProvider({
+    url: tileUrl,
+    tilingScheme: new Cesium.WebMercatorTilingScheme(),
+    credit: config.credit ?? "Weather data: OpenWeather",
+    minimumLevel: 0,
+    maximumLevel: config.maximumLevel ?? WEATHER_TILE_MAX_ZOOM,
+    tileWidth: 256,
+    tileHeight: 256,
+    enablePickFeatures: false,
+  });
+}
+
 function updateWeatherActiveLayersStatus() {
   const labels = [...activeWeatherLayers.keys()]
     .map((id) => WEATHER_LAYER_CONFIG[id]?.label ?? id)
@@ -698,10 +726,41 @@ function setWeatherTileError(message) {
   updateText(selectors.weatherTileError, message);
 }
 
+<<<<<<< Updated upstream
 function syncWeatherLayerControls() {
   selectors.weatherLayerControls.forEach((control) => {
     control.checked = activeWeatherLayers.has(control.dataset.weatherLayer);
   });
+=======
+function addWeatherLayer(layerId) {
+  if (!cesiumViewer || !window.Cesium) {
+    setWeatherProxyStatus("Weather proxy: globe not available.");
+    return;
+  }
+  if (activeWeatherLayers.has(layerId)) {
+    return;
+  }
+  const config = WEATHER_LAYER_CONFIG[layerId];
+  if (!config) {
+    return;
+  }
+  try {
+    const provider = createWeatherImageryProvider(config);
+    const unsubscribeErrorListener = provider.errorEvent.addEventListener((error) => {
+      const statusCode = error.error?.statusCode ? ` (${error.error.statusCode})` : "";
+      setWeatherTileError(`Tile error: "${config.label}"${statusCode}. Weather layer remains optional.`);
+    });
+    const layer = cesiumViewer.imageryLayers.addImageryProvider(provider);
+    layer.alpha = config.opacity;
+    activeWeatherLayers.set(layerId, { layer, unsubscribeErrorListener });
+    const statusProvider = config.provider ?? "Weather proxy";
+    setWeatherProxyStatus(`${statusProvider}: connected`);
+    setWeatherTileError("");
+  } catch (error) {
+    setWeatherProxyStatus("Weather proxy: unavailable");
+  }
+  updateWeatherActiveLayersStatus();
+>>>>>>> Stashed changes
 }
 
 function isOpenWeatherLayer(config) {
