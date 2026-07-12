@@ -129,7 +129,7 @@ async function openWeatherHealth(env) {
   }
 
   const testUrl =
-    `https://tile.openweathermap.org/map/clouds_new/1/1/1.png?appid=${apiKey}`;
+    `https://tile.openweathermap.org/map/${OPENWEATHER_LAYERS.clouds}/1/1/1.png?appid=${apiKey}`;
 
   try {
     const response = await fetch(testUrl);
@@ -138,14 +138,14 @@ async function openWeatherHealth(env) {
       key_configured: true,
       upstream_status: response.status,
       upstream_ok: response.ok,
-      error_message: response.ok ? null : await response.text()
+      error_message: response.ok ? null : "OpenWeather health tile request failed"
     };
   } catch (error) {
     return {
       key_configured: true,
       upstream_status: null,
       upstream_ok: false,
-      error_message: error.message
+      error_message: "OpenWeather health tile request failed"
     };
   }
 }
@@ -186,8 +186,8 @@ async function openWeatherTile(request, env) {
     return json({
       error: "OpenWeather tile request failed",
       layer: layerKey,
-      upstream_status: response.status,
-      upstream_text: await response.text()
+      upstream_layer: openWeatherLayer,
+      upstream_status: response.status
     }, response.status);
   }
 
@@ -377,7 +377,7 @@ async function latestState(env) {
 }
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
     if (url.pathname === "/health/openweather") {
       return json(await openWeatherHealth(env));

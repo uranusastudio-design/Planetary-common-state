@@ -3,6 +3,9 @@ main = "src/index.js"
 compatibility_date = "2026-07-07"
 keep_vars = true
 
+[secrets]
+required = [ "OPENWEATHER_API_KEY" ]
+
 [observability]
 enabled = true
 
