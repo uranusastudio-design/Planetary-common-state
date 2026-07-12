@@ -14,15 +14,66 @@ In the target architecture, Cloudflare Workers will provide a lightweight REST A
 
 Returns service metadata for the PCS backend prototype.
 
-### `GET /health`
+### `GET /health/openweather`
 
-Returns a simple health response.
+Returns OpenWeather backend configuration and upstream tile health.
 
 ### `GET /latest`
 
 Returns prototype JSON shaped for future compatibility with `latest_state.json`.
 
 No scientific values are included in this prototype endpoint.
+
+### `GET /api/nasa/status`
+
+Returns NASA Earthdata gateway configuration status without exposing secrets.
+
+### `GET /api/nasa/gibs`
+
+Returns normalized NASA Earthdata JSON for GIBS discovery results. Cached for
+1 hour.
+
+### `GET /api/nasa/modis`
+
+Returns normalized NASA Earthdata JSON for MODIS discovery results. Cached for
+6 hours.
+
+### `GET /api/nasa/viirs`
+
+Returns normalized NASA Earthdata JSON for VIIRS discovery results. Cached for
+6 hours.
+
+### `GET /api/nasa/firms`
+
+Returns normalized NASA Earthdata JSON for FIRMS discovery results. Cached for
+30 minutes.
+
+### `GET /api/nasa/smap`
+
+Returns normalized NASA Earthdata JSON for SMAP discovery results. Cached for
+12 hours.
+
+All NASA dataset endpoints use the Cloudflare secret `EARTHDATA_TOKEN` as a
+server-side bearer token. The token is attached only by the Worker and is never
+sent to the frontend, returned in JSON, or written to logs.
+
+Example:
+
+```bash
+curl "https://<pcs-backend>/api/nasa/modis?page_size=5&keyword=NDVI"
+```
+
+Error responses are sanitized:
+
+```json
+{
+  "success": false,
+  "source": "NASA Earthdata",
+  "dataset": "MODIS",
+  "error": "NASA Earthdata request failed",
+  "timestamp": "2026-07-12T00:00:00.000Z"
+}
+```
 
 ## Future Architecture
 
@@ -34,6 +85,7 @@ NOAA
 ESA
 Copernicus
 CWA
+USGS
 
 PCS Connectors
 
@@ -80,6 +132,14 @@ Install dependencies:
 npm install
 ```
 
+Configure runtime secrets:
+
+```bash
+wrangler secret put OPENWEATHER_API_KEY
+wrangler secret put EARTHDATA_TOKEN
+wrangler secret put INGEST_SECRET
+```
+
 Start local development server:
 
 ```bash
@@ -102,5 +162,8 @@ secrets with `--keep-vars`.
 Expected checks:
 
 - `/` returns online PCS backend JSON.
-- `/health` returns healthy status JSON.
+- `/health/openweather` returns OpenWeather health JSON.
 - `/latest` returns prototype latest-state-compatible JSON.
+- `/api/nasa/status` reports NASA Earthdata configuration status.
+- `/api/nasa/modis?page_size=1` returns normalized NASA Earthdata JSON when
+  `EARTHDATA_TOKEN` is configured.

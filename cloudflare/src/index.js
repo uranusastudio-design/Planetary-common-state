@@ -1,3 +1,5 @@
+import { handleNasaRequest, NASA_DATASET_ROUTES } from "./nasa/routes.ts";
+
 const DATASETS = [
   {
     symbol: "GMST",
@@ -379,6 +381,10 @@ async function latestState(env) {
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
+    if (url.pathname === "/api/nasa/status" || url.pathname.startsWith("/api/nasa/")) {
+      return handleNasaRequest(request, env, ctx);
+    }
+
     if (url.pathname === "/health/openweather") {
       return json(await openWeatherHealth(env));
     }
@@ -452,7 +458,9 @@ export default {
     "/variables",
     "/ingest/v1",
     "/health/openweather",
-    "/tiles/openweather/clouds/1/1/1.png"
+    "/tiles/openweather/clouds/1/1/1.png",
+    "/api/nasa/status",
+    ...NASA_DATASET_ROUTES
   ],
   d1: !!env.PCS_DB,
   kv: !!env.PCS_CACHE

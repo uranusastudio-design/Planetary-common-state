@@ -29,15 +29,73 @@ Set these in Cloudflare via `wrangler secret put` before deploying:
 | Secret                | Description                                              |
 |-----------------------|----------------------------------------------------------|
 | `OPENWEATHER_API_KEY` | OpenWeather API key for server-side tile proxying        |
+| `EARTHDATA_TOKEN`     | NASA Earthdata bearer token for server-side NASA access  |
 | `INGEST_SECRET`       | ****** required to call `POST /ingest/v1`          |
 
 ```bash
 cd cloudflare
 wrangler secret put OPENWEATHER_API_KEY   # paste key when prompted
+wrangler secret put EARTHDATA_TOKEN        # paste NASA Earthdata bearer token
 wrangler secret put INGEST_SECRET         # paste a strong random token
 ```
 
 > **Never** hard-code these values in source files or commit them to git.
+> The frontend does not receive NASA Earthdata credentials; all NASA requests
+> are proxied through the Worker.
+
+### NASA Earth Observation API
+
+The Worker provides a server-side NASA Earthdata gateway under `/api/nasa/*`.
+It authenticates to NASA with the `EARTHDATA_TOKEN` Cloudflare secret, returns
+normalized JSON, applies Cloudflare Cache API TTLs per dataset, and never logs
+or returns the bearer token.
+
+Supported datasets:
+
+| Route             | Dataset | Cache TTL  |
+|-------------------|---------|------------|
+| `/api/nasa/gibs`  | GIBS    | 1 hour     |
+| `/api/nasa/modis` | MODIS   | 6 hours    |
+| `/api/nasa/viirs` | VIIRS   | 6 hours    |
+| `/api/nasa/firms` | FIRMS   | 30 minutes |
+| `/api/nasa/smap`  | SMAP    | 12 hours   |
+
+Status:
+
+```bash
+curl https://<pcs-backend>/api/nasa/status
+```
+
+Example dataset request:
+
+```bash
+curl "https://<pcs-backend>/api/nasa/modis?page_size=5&keyword=NDVI"
+```
+
+All dataset routes return a normalized envelope:
+
+```json
+{
+  "success": true,
+  "source": "NASA Earthdata",
+  "dataset": "MODIS",
+  "status": 200,
+  "timestamp": "2026-07-12T00:00:00.000Z",
+  "data": {}
+}
+```
+
+Errors are sanitized:
+
+```json
+{
+  "success": false,
+  "source": "NASA Earthdata",
+  "dataset": "MODIS",
+  "error": "NASA Earthdata request failed",
+  "timestamp": "2026-07-12T00:00:00.000Z"
+}
+```
 
 ### D1 database initialisation
 

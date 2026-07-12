@@ -4,7 +4,7 @@ compatibility_date = "2026-07-07"
 keep_vars = true
 
 [secrets]
-required = [ "OPENWEATHER_API_KEY" ]
+required = [ "OPENWEATHER_API_KEY", "EARTHDATA_TOKEN" ]
 
 [observability]
 enabled = true
