@@ -5,6 +5,7 @@ const LANGUAGE_STORAGE_KEY = "pcs_observatory_language";
 const REGION_STORAGE_KEY = "pcs_observatory_region";
 const WEATHER_PROXY_BASE = "https://pcs-backend.uranusastudio.workers.dev";
 const WEATHER_TILE_MAX_ZOOM = 8;
+const WEATHER_PREFLIGHT_TILE = { z: 1, x: 1, y: 1 };
 const WEATHER_LAYER_CONFIG = {
   clouds: {
     label: "Clouds",
@@ -21,7 +22,7 @@ const WEATHER_LAYER_CONFIG = {
     credit: "Cloud data: NASA GIBS / MODIS Terra Cloud Fraction Day",
   },
   rain: { label: "Rain", path: "rain", opacity: 0.6 },
-  temp: { label: "Temperature", path: "temp", opacity: 0.6 },
+  temp: { label: "Temperature", path: "temperature", opacity: 0.6 },
   wind: { label: "Wind", path: "wind", opacity: 0.6 },
 };
 
@@ -118,6 +119,7 @@ let cesiumViewer = null;
 let activeRegionId = "global";
 let translations = {};
 const activeWeatherLayers = new Map();
+let weatherLayerRequestToken = 0;
 
 const selectors = {
   currentState: document.querySelector("#current-state"),
@@ -649,8 +651,8 @@ async function runSafeAsync(label, operation) {
   }
 }
 
-function buildWeatherTileUrl(layerPath) {
-  return `${WEATHER_PROXY_BASE}/tiles/openweather/${layerPath}/{z}/{x}/{y}.png`;
+function buildWeatherTileUrl(layerPath, z = "{z}", x = "{x}", y = "{y}") {
+  return `${WEATHER_PROXY_BASE}/tiles/openweather/${layerPath}/${z}/${x}/${y}.png`;
 }
 
 function tileUrlForWeatherLayer(config) {
@@ -696,23 +698,173 @@ function setWeatherTileError(message) {
   updateText(selectors.weatherTileError, message);
 }
 
-function addWeatherLayer(layerId) {
+function syncWeatherLayerControls() {
+  selectors.weatherLayerControls.forEach((control) => {
+    control.checked = activeWeatherLayers.has(control.dataset.weatherLayer);
+  });
+}
+
+function isOpenWeatherLayer(config) {
+  return Boolean(config?.path) && config.service !== "wms";
+}
+
+function getOpenWeatherLayerUnavailableMessage(layerId, reason) {
+  if (reason === "missing-key") {
+    return "OpenWeather API key missing";
+  }
+
+  return `${WEATHER_LAYER_CONFIG[layerId]?.label ?? "Weather"} layer unavailable`;
+}
+
+async function readJsonSafely(response) {
+  return response.json().catch((error) => {
+    console.warn("[PCS_OBSERVATORY] Weather response JSON parse failed:", error);
+    return {};
+  });
+}
+
+function classifyWeatherFetchFailure(error) {
+  if (error instanceof TypeError) {
+    return "cors";
+  }
+
+  return "network";
+}
+
+async function verifyOpenWeatherProxyHealth() {
+  let response;
+  try {
+    response = await fetch(`${WEATHER_PROXY_BASE}/health/openweather`, { cache: "no-store" });
+  } catch (error) {
+    return { ok: false, reason: classifyWeatherFetchFailure(error), status: null };
+  }
+
+  const payload = await readJsonSafely(response);
+  if (payload?.key_configured === false || String(payload?.error_message ?? "").includes("OPENWEATHER_API_KEY")) {
+    return { ok: false, reason: "missing-key", status: response.status };
+  }
+
+  const upstreamStatus = Number(payload?.upstream_status);
+  if ([401, 403, 404].includes(response.status)) {
+    return { ok: false, reason: String(response.status), status: response.status };
+  }
+  if ([401, 403, 404].includes(upstreamStatus)) {
+    return { ok: false, reason: String(upstreamStatus), status: upstreamStatus };
+  }
+  if (!response.ok || payload?.upstream_ok === false) {
+    return { ok: false, reason: "unavailable", status: upstreamStatus || response.status };
+  }
+
+  return { ok: true, status: upstreamStatus || response.status };
+}
+
+async function verifyOpenWeatherTile(layerId, config) {
+  const tileUrl = buildWeatherTileUrl(
+    config.path,
+    WEATHER_PREFLIGHT_TILE.z,
+    WEATHER_PREFLIGHT_TILE.x,
+    WEATHER_PREFLIGHT_TILE.y
+  );
+  let response;
+  try {
+    response = await fetch(tileUrl, { cache: "no-store" });
+  } catch (error) {
+    return { ok: false, reason: classifyWeatherFetchFailure(error), status: null, tileUrl };
+  }
+
+  if (response.status === 500) {
+    const payload = await readJsonSafely(response);
+    if (String(payload?.error ?? payload?.error_message ?? "").includes("OPENWEATHER_API_KEY")) {
+      return { ok: false, reason: "missing-key", status: response.status, tileUrl };
+    }
+  }
+
+  if ([401, 403, 404].includes(response.status)) {
+    return { ok: false, reason: String(response.status), status: response.status, tileUrl };
+  }
+  if (!response.ok) {
+    return { ok: false, reason: "unavailable", status: response.status, tileUrl };
+  }
+
+  return { ok: true, status: response.status, tileUrl };
+}
+
+async function verifyWeatherLayerCanLoad(layerId, config) {
+  if (!isOpenWeatherLayer(config)) {
+    return { ok: true, status: null, tileUrl: tileUrlForWeatherLayer(config) };
+  }
+
+  setWeatherProxyStatus("Weather proxy: checking...");
+  const health = await verifyOpenWeatherProxyHealth();
+  if (!health.ok) {
+    return health;
+  }
+
+  const tile = await verifyOpenWeatherTile(layerId, config);
+  if (!tile.ok) {
+    return tile;
+  }
+
+  return tile;
+}
+
+function removeWeatherLayer(layerId, options = {}) {
+  if (!cesiumViewer || !activeWeatherLayers.has(layerId)) {
+    return;
+  }
+  const { layer, unsubscribeErrorListener } = activeWeatherLayers.get(layerId);
+  unsubscribeErrorListener?.();
+  cesiumViewer.imageryLayers.remove(layer, true);
+  activeWeatherLayers.delete(layerId);
+  if (activeWeatherLayers.size === 0 && !options.keepMessage) {
+    setWeatherTileError("");
+  }
+  updateWeatherActiveLayersStatus();
+  syncWeatherLayerControls();
+}
+
+function removeAllWeatherLayers(exceptLayerId = null, options = {}) {
+  [...activeWeatherLayers.keys()].forEach((activeLayerId) => {
+    if (activeLayerId !== exceptLayerId) {
+      removeWeatherLayer(activeLayerId, options);
+    }
+  });
+}
+
+async function addWeatherLayer(layerId) {
   if (!cesiumViewer || !window.Cesium) {
     setWeatherProxyStatus("Weather proxy: globe not available.");
+    syncWeatherLayerControls();
     return;
   }
   if (activeWeatherLayers.has(layerId)) {
+    syncWeatherLayerControls();
     return;
   }
   const config = WEATHER_LAYER_CONFIG[layerId];
   if (!config) {
+    syncWeatherLayerControls();
     return;
   }
+  const requestToken = ++weatherLayerRequestToken;
+  removeAllWeatherLayers(layerId, { keepMessage: true });
   try {
+    const verification = await verifyWeatherLayerCanLoad(layerId, config);
+    if (requestToken !== weatherLayerRequestToken) {
+      return;
+    }
+    if (!verification.ok) {
+      const unavailableMessage = getOpenWeatherLayerUnavailableMessage(layerId, verification.reason);
+      setWeatherProxyStatus(unavailableMessage);
+      setWeatherTileError(unavailableMessage);
+      updateWeatherActiveLayersStatus();
+      syncWeatherLayerControls();
+      return;
+    }
     const provider = createWeatherImageryProvider(config);
     const unsubscribeErrorListener = provider.errorEvent.addEventListener((error) => {
       const statusCode = error.error?.statusCode ? ` (${error.error.statusCode})` : "";
-      setWeatherTileError(`Tile error: "${config.label}"${statusCode}. Weather layer remains optional.`);
+      setWeatherTileError(`${config.label} layer unavailable${statusCode}`);
     });
     const layer = cesiumViewer.imageryLayers.addImageryProvider(provider);
     layer.alpha = config.opacity;
@@ -721,23 +873,13 @@ function addWeatherLayer(layerId) {
     setWeatherProxyStatus(`${statusProvider}: connected`);
     setWeatherTileError("");
   } catch (error) {
-    setWeatherProxyStatus("Weather proxy: unavailable");
+    console.error("[PCS_OBSERVATORY] Weather layer load failed:", error);
+    const unavailableMessage = getOpenWeatherLayerUnavailableMessage(layerId, "unavailable");
+    setWeatherProxyStatus(unavailableMessage);
+    setWeatherTileError(unavailableMessage);
   }
   updateWeatherActiveLayersStatus();
-}
-
-function removeWeatherLayer(layerId) {
-  if (!cesiumViewer || !activeWeatherLayers.has(layerId)) {
-    return;
-  }
-  const { layer, unsubscribeErrorListener } = activeWeatherLayers.get(layerId);
-  unsubscribeErrorListener?.();
-  cesiumViewer.imageryLayers.remove(layer, true);
-  activeWeatherLayers.delete(layerId);
-  if (activeWeatherLayers.size === 0) {
-    setWeatherTileError("");
-  }
-  updateWeatherActiveLayersStatus();
+  syncWeatherLayerControls();
 }
 
 async function checkWeatherProxyHealth() {
@@ -773,12 +915,18 @@ function initializeWeatherLayers() {
 
   resetWeatherStatusDisplay();
   selectors.weatherLayerControls.forEach((control) => {
-    control.addEventListener("change", () => {
+    control.addEventListener("change", async () => {
       const layerId = control.dataset.weatherLayer;
       if (control.checked) {
-        addWeatherLayer(layerId);
+        await addWeatherLayer(layerId);
       } else {
+        weatherLayerRequestToken += 1;
         removeWeatherLayer(layerId);
+        if (activeWeatherLayers.size === 0) {
+          await checkWeatherProxyHealth().catch(() => {
+            setWeatherProxyStatus("Weather proxy: unavailable");
+          });
+        }
       }
     });
   });
