@@ -257,28 +257,44 @@
               </label>
             </div>
 
-            <div class="weather-layers-section" aria-label="Live weather layer controls">
-              <span class="panel-label weather-layers-label">Live Weather Layers</span>
+            <div class="weather-layers-section" aria-label="NASA GIBS weather observation test layer controls">
+              <span class="panel-label weather-layers-label">NASA GIBS Observation Test Layers</span>
               <div class="layer-list">
                 <label class="layer-entry weather-layer">
                   <input type="checkbox" id="weather-layer-clouds" data-weather-layer="clouds">
-                  <span><strong>Clouds</strong><small>NASA GIBS - MODIS Terra Cloud Fraction</small></span>
+                  <span><strong>Clouds</strong><small>NASA GIBS test layer - MODIS_Terra_Cloud_Fraction_Day - 2026-07-12</small></span>
+                </label>
+                <label class="weather-opacity-control" for="weather-opacity-clouds">
+                  <span>Cloud opacity</span>
+                  <input type="range" id="weather-opacity-clouds" data-weather-opacity="clouds" min="0" max="100" value="50">
                 </label>
                 <label class="layer-entry weather-layer">
                   <input type="checkbox" id="weather-layer-rain" data-weather-layer="rain">
-                  <span><strong>Rain</strong><small>OpenWeather · Live via proxy</small></span>
+                  <span><strong>Precipitation</strong><small>NASA GIBS test layer - IMERG_Precipitation_Rate - 2026-07-09</small></span>
+                </label>
+                <label class="weather-opacity-control" for="weather-opacity-rain">
+                  <span>Precipitation opacity</span>
+                  <input type="range" id="weather-opacity-rain" data-weather-opacity="rain" min="0" max="100" value="45">
                 </label>
                 <label class="layer-entry weather-layer">
                   <input type="checkbox" id="weather-layer-temp" data-weather-layer="temp">
-                  <span><strong>Temperature</strong><small>OpenWeather · Live via proxy</small></span>
+                  <span><strong>Temperature</strong><small>NASA GIBS test layer - AIRS_L3_Surface_Air_Temperature_Daily_Day - 2026-07-07</small></span>
+                </label>
+                <label class="weather-opacity-control" for="weather-opacity-temp">
+                  <span>Temperature opacity</span>
+                  <input type="range" id="weather-opacity-temp" data-weather-opacity="temp" min="0" max="100" value="42">
                 </label>
                 <label class="layer-entry weather-layer">
                   <input type="checkbox" id="weather-layer-wind" data-weather-layer="wind">
-                  <span><strong>Wind</strong><small>OpenWeather · Live via proxy</small></span>
+                  <span><strong>Wind speed</strong><small>NASA GIBS test layer - CYGNSS_L3_Wind_Speed_Daily - 2021-02-28</small></span>
+                </label>
+                <label class="weather-opacity-control" for="weather-opacity-wind">
+                  <span>Wind opacity</span>
+                  <input type="range" id="weather-opacity-wind" data-weather-opacity="wind" min="0" max="100" value="42">
                 </label>
               </div>
               <div class="weather-status-block">
-                <p id="weather-proxy-status" class="framework-status" role="status" aria-live="polite">Weather proxy: checking...</p>
+                <p id="weather-proxy-status" class="framework-status" role="status" aria-live="polite">NASA GIBS test layers ready. NASA GIBS test layer - not real-time weather.</p>
                 <p id="weather-active-layers" class="framework-status" role="status" aria-live="polite">Active layers: none</p>
                 <p id="weather-tile-error" class="framework-status weather-tile-error" role="alert" aria-live="assertive"></p>
               </div>

@@ -597,6 +597,24 @@ h3 {
   border-left: 2px solid var(--cyan);
 }
 
+.weather-opacity-control {
+  display: grid;
+  grid-template-columns: minmax(86px, 0.8fr) minmax(120px, 1.2fr);
+  gap: 8px;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 10px 8px 34px;
+  color: var(--muted);
+  font-size: 0.74rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.weather-opacity-control input[type="range"] {
+  width: 100%;
+  accent-color: var(--cyan);
+}
+
 .weather-tile-error:not(:empty) {
   color: var(--amber);
 }
