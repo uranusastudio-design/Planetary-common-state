@@ -8,6 +8,8 @@ const WEATHER_PROXY_BASE = "https://pcs-backend.uranusastudio.workers.dev";
 const WEATHER_SOURCE_STORAGE_KEY = "pcs_observatory_weather_source";
 const WEATHER_LAYER_ORDER = ["clouds", "rain", "temp", "wind"];
 const WEATHER_LAYER_TEST_NOTICE = "NASA GIBS test layer - not real-time weather.";
+const AUTO_ROTATE_RESUME_DELAY_MS = 5000;
+const AUTO_ROTATE_RADIANS_PER_SECOND = 0.00018;
 const WEATHER_SOURCE_MODES = {
   nasa: {
     label: "NASA GIBS Test / Observation",
@@ -227,6 +229,14 @@ let activeRegionId = "global";
 let activeWeatherSourceId = "nasa";
 let translations = {};
 const activeWeatherLayers = new Map();
+const autoRotateState = {
+  enabled: false,
+  initialized: false,
+  interactingUntil: 0,
+  lastFrameTime: 0,
+  mediaQuery: null,
+  rotatedFrames: 0,
+};
 
 const selectors = {
   currentState: document.querySelector("#current-state"),
@@ -257,6 +267,8 @@ const selectors = {
   regionSelector: document.querySelector("#region-selector"),
   dataSourceSelector: document.querySelector("#data-source-selector"),
   aiModeSelector: document.querySelector("#ai-mode-selector"),
+  autoRotateToggle: document.querySelector("#auto-rotate-toggle"),
+  autoRotateStatus: document.querySelector("#auto-rotate-status"),
   activeRegionName: document.querySelector("#active-region-name"),
   navCurrentRegion: document.querySelector("#nav-current-region"),
   regionalModeStatus: document.querySelector("#regional-mode-status"),
@@ -579,6 +591,98 @@ function showCesiumFallback(message) {
   selectors.cesiumFallback?.classList.add("is-error");
 }
 
+function prefersReducedMotion() {
+  if (typeof window.matchMedia !== "function") {
+    return false;
+  }
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+function updateAutoRotateStatus(message) {
+  updateText(selectors.autoRotateStatus, message);
+}
+
+function markGlobeInteraction() {
+  autoRotateState.interactingUntil = Date.now() + AUTO_ROTATE_RESUME_DELAY_MS;
+  if (autoRotateState.enabled) {
+    updateAutoRotateStatus("Auto Rotate: paused during interaction");
+  }
+}
+
+function markGlobeDragInteraction(event) {
+  if (event?.buttons || event?.touches?.length) {
+    markGlobeInteraction();
+  }
+}
+
+function shouldAutoRotate(now) {
+  return Boolean(
+    cesiumViewer &&
+    !cesiumViewer.isDestroyed() &&
+    autoRotateState.enabled &&
+    !document.hidden &&
+    now >= autoRotateState.interactingUntil
+  );
+}
+
+function autoRotateFrame() {
+  const now = Date.now();
+  const elapsedSeconds = autoRotateState.lastFrameTime
+    ? Math.min((now - autoRotateState.lastFrameTime) / 1000, 0.1)
+    : 0;
+  autoRotateState.lastFrameTime = now;
+
+  if (shouldAutoRotate(now) && elapsedSeconds > 0) {
+    cesiumViewer.camera.rotate(Cesium.Cartesian3.UNIT_Z, -AUTO_ROTATE_RADIANS_PER_SECOND * elapsedSeconds);
+    autoRotateState.rotatedFrames += 1;
+    selectors.cesiumGlobe.dataset.autoRotateFrames = String(autoRotateState.rotatedFrames);
+    updateAutoRotateStatus("Auto Rotate: on");
+  } else if (!autoRotateState.enabled) {
+    updateAutoRotateStatus("Auto Rotate: off");
+  } else if (document.hidden) {
+    updateAutoRotateStatus("Auto Rotate: paused while tab is hidden");
+  } else if (now < autoRotateState.interactingUntil) {
+    updateAutoRotateStatus("Auto Rotate: paused during interaction");
+  }
+
+  window.requestAnimationFrame(autoRotateFrame);
+}
+
+function initializeAutoRotate() {
+  if (autoRotateState.initialized || !selectors.cesiumGlobe || !selectors.autoRotateToggle) {
+    return;
+  }
+
+  autoRotateState.initialized = true;
+  autoRotateState.mediaQuery = typeof window.matchMedia === "function"
+    ? window.matchMedia("(prefers-reduced-motion: reduce)")
+    : null;
+  autoRotateState.enabled = !prefersReducedMotion();
+  selectors.autoRotateToggle.checked = autoRotateState.enabled;
+
+  selectors.autoRotateToggle.addEventListener("change", () => {
+    autoRotateState.enabled = selectors.autoRotateToggle.checked;
+    autoRotateState.interactingUntil = 0;
+    updateAutoRotateStatus(autoRotateState.enabled ? "Auto Rotate: on" : "Auto Rotate: off");
+  });
+
+  ["pointerdown", "wheel", "touchstart"].forEach((eventName) => {
+    selectors.cesiumGlobe.addEventListener(eventName, markGlobeInteraction, { passive: true, capture: true });
+  });
+  selectors.cesiumGlobe.addEventListener("pointermove", markGlobeDragInteraction, { passive: true, capture: true });
+  selectors.cesiumGlobe.addEventListener("touchmove", markGlobeDragInteraction, { passive: true, capture: true });
+
+  document.addEventListener("visibilitychange", () => {
+    autoRotateState.lastFrameTime = Date.now();
+    if (!document.hidden && autoRotateState.enabled) {
+      updateAutoRotateStatus("Auto Rotate: on");
+    }
+  });
+
+  updateAutoRotateStatus(autoRotateState.enabled ? "Auto Rotate: on" : "Auto Rotate: off");
+  window.requestAnimationFrame(autoRotateFrame);
+}
+
 function initializeCesiumGlobe() {
   if (!selectors.cesiumGlobe) {
     return;
@@ -629,6 +733,7 @@ function initializeCesiumGlobe() {
     cameraController.enableLook = true;
     cameraController.inertiaZoom = 0;
     setCesiumCameraForRegion(activeRegionId);
+    initializeAutoRotate();
 
     updateText(selectors.cesiumFallback, "CesiumJS globe initialized. Visualization only.");
     selectors.cesiumFallback?.classList.remove("is-error");

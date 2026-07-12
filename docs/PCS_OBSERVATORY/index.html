@@ -151,6 +151,13 @@
               </div>
               <span class="status-pill status-cyan">Visualization only</span>
             </div>
+            <div class="globe-control-row" aria-label="Globe motion controls">
+              <label class="globe-toggle-control" for="auto-rotate-toggle">
+                <input type="checkbox" id="auto-rotate-toggle">
+                <span>Auto Rotate</span>
+              </label>
+              <p id="auto-rotate-status" class="framework-status" role="status" aria-live="polite">Auto Rotate: loading</p>
+            </div>
             <div id="cesium-globe" class="cesium-globe" aria-label="CesiumJS 3D Earth view"></div>
             <p id="cesium-fallback" class="cesium-fallback" role="status" aria-live="polite">
               Loading 3D Earth view.
