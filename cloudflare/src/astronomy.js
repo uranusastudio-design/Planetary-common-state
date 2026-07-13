@@ -70,13 +70,13 @@ export const PLANET_IMAGE_PRODUCTS = Object.freeze({
   },
   venus: {
     source: "NASA / USGS Astrogeology", mission: "Magellan", instrument: "SAR",
-    product: "Venus Magellan Global C3-MIDR Mosaic 2025m",
+    product: "Venus Magellan Global C3-MDIR Synthetic Color Mosaic 4641m",
     productType: "radar_map", projection: "equirectangular",
-    observedAt: null, productDate: "2022-09-01",
-    sourceUrl: "https://astrogeology.usgs.gov/ckan/dataset/bf10c4f9-7587-4357-b0d9-81d5b6e6637c/resource/12345d86-e2a3-45eb-af88-c1e8bf3ac358/download/full.jpg",
-    catalogUrl: "https://astrogeology.usgs.gov/search/map/venus_magellan_global_c3_mdir_mosaic_2025m",
+    observedAt: null, productDate: null,
+    sourceUrl: "https://astrogeology.usgs.gov/ckan/dataset/128fc727-4864-4086-bf74-651d6108ce02/resource/b52a1a8f-59c2-41e8-b49f-68e963aa5231/download/venus_magellan_c3-mdir_colorized_global_mosaic_1024.jpg",
+    catalogUrl: "https://astrogeology.usgs.gov/search/map/venus_magellan_global_c3_mdir_synthetic_color_mosaic_4641m",
     attribution: "NASA Magellan / PDS Geosciences Node / USGS Astrogeology",
-    notes: "Radar-derived surface mosaic; grayscale radar brightness is not natural visible-light color.", cacheSeconds: 604800,
+    notes: "Global equirectangular radar mosaic with simulated surface color; not natural visible-light color.", cacheSeconds: 604800,
   },
   mars: {
     source: "NASA / USGS Astrogeology", mission: "Viking Orbiter", instrument: "VIS",
@@ -827,6 +827,7 @@ function assertAllowedPlanetSource(sourceUrl) {
 
 function planetImageCacheKey(request, body, stale = false) {
   const url = new URL(planetPublicImageUrl(request, body));
+  url.searchParams.set("source", PLANET_IMAGE_PRODUCTS[body]?.sourceUrl || "unknown");
   if (stale) url.searchParams.set("cache", "last-valid");
   return new Request(url);
 }

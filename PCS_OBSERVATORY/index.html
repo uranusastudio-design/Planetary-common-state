@@ -102,9 +102,9 @@
       <section class="dashboard-layout" aria-label="PCS planetary monitoring dashboard">
         <aside class="column left-column" aria-label="PCS estimate and source status">
           <article class="panel hero-panel">
-            <span class="panel-label" data-i18n="prototype_pcs_estimate">Prototype PCS Estimate</span>
+            <span id="pcs-state-label" class="panel-label" data-i18n="prototype_pcs_estimate">Prototype PCS Estimate</span>
             <strong id="current-state" class="state-value">Loading</strong>
-            <p class="panel-note">This is a prototype estimate from partial observations, not a complete planetary assessment.</p>
+            <p id="pcs-state-note" class="panel-note">This is a prototype estimate from partial Earth observations, not a complete planetary assessment.</p>
           </article>
 
           <article class="panel compact-panel">
@@ -212,7 +212,14 @@
                 <div><dt>Data status</dt><dd data-planet-meta="status">—</dd></div>
               </dl>
               <h4 class="observation-subheading">Scientific planetary imagery</h4>
-              <p class="panel-note">Display scale is normalized for observation.</p>
+              <p id="planet-imagery-status" class="panel-note" role="status" aria-live="polite">Display scale is normalized for observation.</p>
+              <figure id="planet-scientific-preview" class="planet-scientific-preview" hidden>
+                <img id="planet-scientific-image" alt="">
+                <figcaption>
+                  <strong>Scientific Observation Preview</strong>
+                  <span id="planet-scientific-preview-note">Non-global observation imagery — not used as a globe texture.</span>
+                </figcaption>
+              </figure>
               <dl class="observation-grid imagery-metadata-grid">
                 <div><dt>Imagery Source</dt><dd data-planet-imagery-value="source">—</dd></div>
                 <div><dt>Mission</dt><dd data-planet-imagery-value="mission">—</dd></div>

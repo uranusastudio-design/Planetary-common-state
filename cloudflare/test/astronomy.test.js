@@ -177,6 +177,14 @@ test("Planet image route validates every fixed official product and normalizes m
   }
 });
 
+test("Venus uses the globe-safe USGS global equirectangular browse mosaic", () => {
+  const venus = PLANET_IMAGE_PRODUCTS.venus;
+  assert.equal(venus.projection, "equirectangular");
+  assert.match(venus.product, /Global C3-MDIR Synthetic Color Mosaic 4641m/);
+  assert.match(venus.sourceUrl, /venus_magellan_c3-mdir_colorized_global_mosaic_1024\.jpg$/);
+  assert.doesNotMatch(venus.sourceUrl, /\/full\.jpg$/);
+});
+
 test("Planet binary proxy serves validated bytes and rejects HTML error pages", async (t) => {
   const originalFetch = globalThis.fetch;
   t.after(() => { globalThis.fetch = originalFetch; });
