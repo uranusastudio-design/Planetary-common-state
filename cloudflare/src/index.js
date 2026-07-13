@@ -1,4 +1,5 @@
 import { handleNasaRequest, NASA_DATASET_ROUTES } from "./nasa/routes.ts";
+import { handleAstronomyRequest, ASTRONOMY_ROUTES } from "./astronomy.js";
 
 const DATASETS = [
   {
@@ -381,6 +382,9 @@ async function latestState(env) {
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
+    if (ASTRONOMY_ROUTES.includes(url.pathname)) {
+      return handleAstronomyRequest(request, env, ctx);
+    }
     if (url.pathname === "/api/nasa/status" || url.pathname.startsWith("/api/nasa/")) {
       return handleNasaRequest(request, env, ctx);
     }
@@ -461,6 +465,7 @@ export default {
     "/tiles/openweather/clouds/1/1/1.png",
     "/api/nasa/status",
     ...NASA_DATASET_ROUTES
+    ,...ASTRONOMY_ROUTES
   ],
   d1: !!env.PCS_DB,
   kv: !!env.PCS_CACHE

@@ -28,6 +28,27 @@ No scientific values are included in this prototype endpoint.
 
 Returns NASA Earthdata gateway configuration status without exposing secrets.
 
+### Phase 1 astronomy routes
+
+- `GET /api/astronomy/moon` — NASA/JPL Horizons source-computed lunar illumination, distance, and apparent diameter, plus clearly labeled local UTC phase/age approximations. Cached 60 minutes.
+- `GET /api/space-weather/summary` — normalized NOAA SWPC observed-data summary. Cached 3 minutes.
+- `GET /api/space-weather/kp` — NOAA planetary K index (observed or estimated, never a forecast). Cached 10 minutes.
+- `GET /api/space-weather/solar-wind` — NOAA real-time plasma and magnetic-field observations. Cached 3 minutes.
+- `GET /api/space-weather/xray` — NOAA GOES X-ray observations with a locally derived flare class. Cached 3 minutes.
+- `GET /api/space-weather/alerts` — current NOAA SWPC issued products. Cached 5 minutes.
+
+Every route uses the PCS Observatory response envelope and reports source,
+dataset time, retrieval time, cache state, stale state, upstream response time,
+and live/delayed/unavailable status. The last valid response is retained in
+`PCS_CACHE` for a bounded stale fallback. Missing upstream values remain
+`null`; failures never produce zero-valued observations.
+
+Moon phase fraction and age use UTC elapsed days modulo the mean synodic month
+(29.530588853 days), anchored at the 2000-01-06 18:14 UTC new moon. This is an
+interface approximation, not a direct observation or a claim of research-grade
+precision. Next-new/full-moon fields remain `null` until an official reliable
+event source is integrated.
+
 ### `GET /api/nasa/gibs`
 
 Returns normalized NASA Earthdata JSON for GIBS discovery results. Cached for

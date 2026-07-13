@@ -5,6 +5,12 @@ const LANGUAGE_STORAGE_KEY = "pcs_observatory_language";
 const REGION_STORAGE_KEY = "pcs_observatory_region";
 const NASA_GIBS_WMS_ENDPOINT = "https://gibs.earthdata.nasa.gov/wms/epsg3857/best/wms.cgi";
 const WEATHER_PROXY_BASE = "https://pcs-backend.uranusastudio.workers.dev";
+const ASTRONOMY_PROXY_BASE = WEATHER_PROXY_BASE;
+const SPACE_WEATHER_UI_THRESHOLDS = {
+  kp: { medium: 4, high: 5 },
+  solarWindSpeed: { medium: 500, high: 700 },
+  xrayFlux: { medium: 1e-6, high: 1e-5 },
+};
 const WEATHER_SOURCE_STORAGE_KEY = "pcs_observatory_weather_source";
 const WEATHER_LAYER_ORDER = ["clouds", "rain", "temp", "wind"];
 const WEATHER_LAYER_TEST_NOTICE = "NASA GIBS test layer - not real-time weather.";
@@ -292,6 +298,19 @@ const selectors = {
   weatherProxyStatus: document.querySelector("#weather-proxy-status"),
   weatherActiveLayers: document.querySelector("#weather-active-layers"),
   weatherTileError: document.querySelector("#weather-tile-error"),
+  earthOnlyPanels: document.querySelectorAll(".earth-only-panel"),
+  observatorySourceBadge: document.querySelector("#observatory-source-badge"),
+  moonPanel: document.querySelector("#moon-observation-panel"),
+  moonError: document.querySelector("#moon-error"),
+  moonPhaseGraphic: document.querySelector("#moon-phase-graphic"),
+  moonValues: document.querySelectorAll("[data-moon-value]"),
+  moonProvenance: document.querySelector("#moon-provenance"),
+  solarPanel: document.querySelector("#solar-observation-panel"),
+  solarError: document.querySelector("#solar-error"),
+  solarValues: document.querySelectorAll("[data-solar-value]"),
+  solarAlertCount: document.querySelector("#solar-alert-count"),
+  solarAlertList: document.querySelector("#solar-alert-list"),
+  solarProvenance: document.querySelector("#solar-provenance"),
 };
 
 function t(key) {
@@ -781,16 +800,154 @@ function initializePlaceholderSelectors() {
   });
 }
 
+function formatAstronomyValue(value, unit, digits = 1) {
+  if (value === null || value === undefined || value === "") return "Unavailable";
+  if (typeof value === "number") return `${value.toLocaleString(undefined, { maximumFractionDigits: digits })}${unit ? ` ${unit}` : ""}`;
+  if (/^\d{4}-\d\d-\d\dT/.test(String(value))) return new Date(value).toLocaleString();
+  return String(value);
+}
+
+function setObservationBadge(status, stale = false) {
+  if (!selectors.observatorySourceBadge) return;
+  const label = stale ? "Delayed · stale" : status === "live" ? "Live" : status === "delayed" ? "Delayed" : "Unavailable";
+  selectors.observatorySourceBadge.textContent = label;
+  selectors.observatorySourceBadge.className = `status-pill ${status === "live" && !stale ? "status-normal" : status === "delayed" || stale ? "status-muted" : "status-alert"}`;
+}
+
+function renderProvenance(container, provenance, response) {
+  if (!container) return;
+  container.replaceChildren();
+  Object.entries(provenance || {}).forEach(([field, item]) => {
+    const entry = document.createElement("div");
+    entry.className = "provenance-entry";
+    entry.textContent = `${field}: ${item.source || "Unavailable"} · ${item.type || "unknown"} · ${item.unit || "unit unavailable"} · observation/calculation: ${formatAstronomyValue(item.time)} · retrieved: ${formatAstronomyValue(response.retrieved_at)} · status: ${response.stale ? "stale" : response.status}`;
+    container.append(entry);
+  });
+}
+
+function drawMoonPhase(fraction) {
+  const canvas = selectors.moonPhaseGraphic;
+  if (!canvas) return;
+  const context = canvas.getContext("2d");
+  const size = canvas.width;
+  const radius = size * 0.42;
+  context.clearRect(0, 0, size, size);
+  context.save();
+  context.beginPath();
+  context.arc(size / 2, size / 2, radius, 0, Math.PI * 2);
+  context.clip();
+  context.fillStyle = "#101722";
+  context.fillRect(0, 0, size, size);
+  if (Number.isFinite(fraction)) {
+    const illumination = (1 - Math.cos(Math.PI * 2 * fraction)) / 2;
+    const waxing = fraction < 0.5;
+    context.fillStyle = "#f2f0d8";
+    context.beginPath();
+    context.arc(size / 2, size / 2, radius, -Math.PI / 2, Math.PI / 2, waxing);
+    context.ellipse(size / 2, size / 2, Math.abs(1 - 2 * illumination) * radius, radius, 0, Math.PI / 2, Math.PI * 1.5, illumination > 0.5 ? !waxing : waxing);
+    context.fill();
+  }
+  context.restore();
+  context.strokeStyle = "rgba(210,225,239,.5)";
+  context.lineWidth = 2;
+  context.beginPath(); context.arc(size / 2, size / 2, radius, 0, Math.PI * 2); context.stroke();
+}
+
+async function fetchAstronomy(path) {
+  const response = await fetch(`${ASTRONOMY_PROXY_BASE}${path}`, { cache: "no-store" });
+  const payload = await response.json();
+  if (!response.ok || !payload.success) throw Object.assign(new Error(payload.error || "data unavailable"), { payload });
+  return payload;
+}
+
+async function loadMoonObservation() {
+  updateText(selectors.moonError, "");
+  try {
+    const payload = await fetchAstronomy("/api/astronomy/moon");
+    const data = payload.data || {};
+    const units = { moon_age_days: "days", illumination_percent: "%", earth_distance_km: "km" };
+    selectors.moonValues.forEach((element) => {
+      const field = element.dataset.moonValue;
+      element.textContent = formatAstronomyValue(data[field], units[field], field === "earth_distance_km" ? 0 : 2);
+    });
+    drawMoonPhase(data.phase_fraction);
+    renderProvenance(selectors.moonProvenance, data.provenance, payload);
+    setObservationBadge(payload.status, payload.stale);
+    updateText(selectors.solarSystemStatus, payload.stale ? `Moon ephemeris delayed. Stale values from ${formatAstronomyValue(payload.timestamp)}.` : "Moon observation active. Phase and age are calculated approximations; distance and illumination are JPL ephemeris values.");
+  } catch (error) {
+    updateText(selectors.moonError, "Moon ephemeris temporarily unavailable");
+    updateText(selectors.solarSystemStatus, "Moon preview remains available; live values could not be retrieved.");
+    setObservationBadge("unavailable");
+    drawMoonPhase(null);
+  }
+}
+
+function statusCategory(value, thresholds) {
+  if (!Number.isFinite(value)) return "";
+  return value >= thresholds.high ? "status-category-high" : value >= thresholds.medium ? "status-category-medium" : "status-category-low";
+}
+
+function renderAlerts(payload) {
+  const alerts = Array.isArray(payload?.data) ? payload.data : [];
+  updateText(selectors.solarAlertCount, String(alerts.length));
+  selectors.solarAlertList?.replaceChildren();
+  alerts.forEach((alert) => {
+    const entry = document.createElement("article");
+    entry.className = "alert-entry";
+    entry.textContent = `${alert.title || "NOAA alert"}\n${alert.severity || "information"} · ${formatAstronomyValue(alert.issued_at)}\n${alert.summary || "No summary supplied."}`;
+    selectors.solarAlertList?.append(entry);
+  });
+}
+
+async function loadSolarObservation() {
+  updateText(selectors.solarError, "");
+  const [summaryResult, alertsResult] = await Promise.allSettled([
+    fetchAstronomy("/api/space-weather/summary"), fetchAstronomy("/api/space-weather/alerts"),
+  ]);
+  if (summaryResult.status === "rejected") {
+    updateText(selectors.solarError, "NOAA space-weather data temporarily unavailable");
+    updateText(selectors.solarSystemStatus, "Solar Activity preview remains available; live NOAA summary could not be retrieved.");
+    setObservationBadge("unavailable");
+    if (alertsResult.status === "fulfilled") renderAlerts(alertsResult.value);
+    return;
+  }
+  const payload = summaryResult.value;
+  const data = payload.data || {};
+  const units = { solar_wind_speed_km_s: "km/s", solar_wind_density_p_cm3: "p/cm³", imf_bz_nt: "nT", xray_flux_w_m2: "W/m²" };
+  selectors.solarValues.forEach((element) => {
+    const field = element.dataset.solarValue;
+    const value = field === "source_status" ? `${payload.status}${payload.partial ? " · partial" : ""}${payload.stale ? " · stale" : ""}` : data[field];
+    element.textContent = formatAstronomyValue(value, units[field], field === "xray_flux_w_m2" ? 8 : 2);
+    element.classList.remove("status-category-low", "status-category-medium", "status-category-high");
+    if (field === "kp_index") element.classList.add(statusCategory(data[field], SPACE_WEATHER_UI_THRESHOLDS.kp));
+    if (field === "solar_wind_speed_km_s") element.classList.add(statusCategory(data[field], SPACE_WEATHER_UI_THRESHOLDS.solarWindSpeed));
+    if (field === "xray_flux_w_m2") element.classList.add(statusCategory(data[field], SPACE_WEATHER_UI_THRESHOLDS.xrayFlux));
+  });
+  renderProvenance(selectors.solarProvenance, data.provenance, payload);
+  setObservationBadge(payload.status, payload.stale);
+  updateText(selectors.solarSystemStatus, payload.stale ? `NOAA data delayed. Stale values from ${formatAstronomyValue(payload.timestamp)}.` : payload.partial ? "Solar Activity active. NOAA summary is partially available; missing fields remain unavailable." : "Solar Activity active with NOAA SWPC data.");
+  if (alertsResult.status === "fulfilled") renderAlerts(alertsResult.value);
+}
+
+function selectObservatoryTarget(target) {
+  selectors.solarSystemControls.forEach((control) => control.classList.toggle("is-active", control.dataset.solarTarget === target));
+  const isEarth = target === "earth";
+  selectors.earthOnlyPanels.forEach((panel) => { panel.hidden = !isEarth; });
+  if (selectors.moonPanel) selectors.moonPanel.hidden = target !== "moon";
+  if (selectors.solarPanel) selectors.solarPanel.hidden = target !== "solar-activity";
+  if (isEarth) {
+    updateText(selectors.solarSystemStatus, "Earth Observatory active. No planetary data or models are loaded.");
+    if (selectors.observatorySourceBadge) { selectors.observatorySourceBadge.textContent = "Earth active"; selectors.observatorySourceBadge.className = "status-pill status-normal"; }
+  } else if (target === "moon") void runSafeAsync("Moon data loading", loadMoonObservation);
+  else if (target === "solar-activity") void runSafeAsync("solar data loading", loadSolarObservation);
+  else updateText(selectors.solarSystemStatus, "Coming soon. Select Earth, Moon, or Solar Activity for an active view.");
+}
+
 function initializeFrameworkControls() {
   selectors.solarSystemControls.forEach((control) => {
     control.addEventListener("click", () => {
       const target = control.dataset.solarTarget;
-      if (target === "earth") {
-        updateText(selectors.solarSystemStatus, "Earth Observatory active. No planetary data or models are loaded.");
-        return;
-      }
-
-      updateText(selectors.solarSystemStatus, "Coming soon. Earth Observatory remains active.");
+      selectObservatoryTarget(target);
     });
   });
 

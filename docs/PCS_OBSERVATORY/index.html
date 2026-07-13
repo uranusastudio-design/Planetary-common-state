@@ -170,21 +170,59 @@
                 <span class="panel-label">Solar System Observatory</span>
                 <h2 id="solar-system-title">Observation Body</h2>
               </div>
-              <span class="status-pill status-normal">Earth active</span>
+              <span id="observatory-source-badge" class="status-pill status-normal">Earth active</span>
             </div>
             <div class="framework-control-grid" role="group" aria-label="Solar System Observatory options">
               <button type="button" class="framework-button is-active" data-solar-target="earth">Earth <small>Active</small></button>
-              <button type="button" class="framework-button" data-solar-target="moon">Moon <small>Coming Soon</small></button>
+              <button type="button" class="framework-button" data-solar-target="moon">Moon <small>Live data</small></button>
               <button type="button" class="framework-button" data-solar-target="mars">Mars <small>Coming Soon</small></button>
               <button type="button" class="framework-button" data-solar-target="venus">Venus <small>Coming Soon</small></button>
               <button type="button" class="framework-button" data-solar-target="jupiter">Jupiter <small>Coming Soon</small></button>
               <button type="button" class="framework-button" data-solar-target="saturn">Saturn <small>Coming Soon</small></button>
-              <button type="button" class="framework-button" data-solar-target="solar-activity">Solar Activity <small>Coming Soon</small></button>
+              <button type="button" class="framework-button" data-solar-target="solar-activity">Solar Activity <small>Live data</small></button>
               <button type="button" class="framework-button" data-solar-target="deep-space">Deep Space <small>Future</small></button>
             </div>
             <p id="solar-system-status" class="framework-status" role="status" aria-live="polite">
               Earth Observatory active. No planetary data or models are loaded.
             </p>
+            <section id="moon-observation-panel" class="live-observation-panel" hidden aria-labelledby="moon-observation-title">
+              <div class="observation-heading">
+                <div><span class="panel-label">Live ephemeris</span><h3 id="moon-observation-title">Moon Observation</h3></div>
+                <canvas id="moon-phase-graphic" class="moon-phase-graphic" width="112" height="112" aria-label="Current lunar phase graphic"></canvas>
+              </div>
+              <p id="moon-error" class="data-unavailable" role="alert"></p>
+              <dl id="moon-values" class="observation-grid">
+                <div><dt>Current Phase</dt><dd data-moon-value="phase_name">—</dd></div>
+                <div><dt>Moon Age</dt><dd data-moon-value="moon_age_days">—</dd></div>
+                <div><dt>Illumination</dt><dd data-moon-value="illumination_percent">—</dd></div>
+                <div><dt>Earth Distance</dt><dd data-moon-value="earth_distance_km">—</dd></div>
+                <div><dt>Next New Moon</dt><dd data-moon-value="next_new_moon">—</dd></div>
+                <div><dt>Next Full Moon</dt><dd data-moon-value="next_full_moon">—</dd></div>
+                <div><dt>Last Updated</dt><dd data-moon-value="calculation_time">—</dd></div>
+                <div><dt>Data Source</dt><dd data-moon-value="source">—</dd></div>
+              </dl>
+              <details class="data-sources-disclosure"><summary>Data Sources &amp; provenance</summary><div id="moon-provenance"></div></details>
+            </section>
+            <section id="solar-observation-panel" class="live-observation-panel" hidden aria-labelledby="solar-observation-title">
+              <div class="observation-heading"><div><span class="panel-label">Live space weather</span><h3 id="solar-observation-title">Solar Activity</h3></div></div>
+              <p class="threshold-notice">Colors are interface status categories, not scientific conclusions.</p>
+              <p id="solar-error" class="data-unavailable" role="alert"></p>
+              <dl id="solar-values" class="observation-grid">
+                <div><dt>Kp Index</dt><dd data-solar-value="kp_index">—</dd></div>
+                <div><dt>Geomagnetic status</dt><dd data-solar-value="geomagnetic_status">—</dd></div>
+                <div><dt>Solar Wind Speed</dt><dd data-solar-value="solar_wind_speed_km_s">—</dd></div>
+                <div><dt>Solar Wind Density</dt><dd data-solar-value="solar_wind_density_p_cm3">—</dd></div>
+                <div><dt>IMF Bz</dt><dd data-solar-value="imf_bz_nt">—</dd></div>
+                <div><dt>GOES X-ray Flux</dt><dd data-solar-value="xray_flux_w_m2">—</dd></div>
+                <div><dt>X-ray flare class</dt><dd data-solar-value="xray_class">—</dd></div>
+                <div><dt>Sunspot Number</dt><dd data-solar-value="sunspot_number">—</dd></div>
+                <div><dt>Active Alerts</dt><dd data-solar-value="active_alert_count">—</dd></div>
+                <div><dt>Last Updated</dt><dd data-solar-value="observed_at">—</dd></div>
+                <div><dt>Source status</dt><dd data-solar-value="source_status">—</dd></div>
+              </dl>
+              <details class="alerts-disclosure"><summary>Current NOAA alerts (<span id="solar-alert-count">0</span>)</summary><div id="solar-alert-list"></div></details>
+              <details class="data-sources-disclosure"><summary>Data Sources &amp; provenance</summary><div id="solar-provenance"></div></details>
+            </section>
           </article>
 
           <article class="panel observatory-mode-panel" aria-labelledby="observatory-mode-title">
@@ -207,7 +245,7 @@
             </p>
           </article>
 
-          <article class="panel layer-control-panel" aria-labelledby="layer-control-title">
+          <article class="panel layer-control-panel earth-only-panel" aria-labelledby="layer-control-title">
             <div class="panel-heading">
               <div>
                 <span class="panel-label" data-i18n="earth_system_layers">Earth System Layer Control</span>
