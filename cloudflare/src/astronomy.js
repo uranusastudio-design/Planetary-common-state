@@ -69,14 +69,15 @@ export const PLANET_IMAGE_PRODUCTS = Object.freeze({
     notes: "Mission-derived global surface mosaic; not a live observation.", cacheSeconds: 604800,
   },
   venus: {
-    source: "NASA / USGS Astrogeology", mission: "Magellan", instrument: "SAR",
-    product: "Venus Magellan Global C3-MDIR Synthetic Color Mosaic 4641m",
-    productType: "radar_map", projection: "equirectangular",
+    source: "NASA / USGS Astrogeology", mission: "Magellan", instrument: "SAR / GEDR",
+    product: "Venus Magellan Global C3-MDIR Colorized Topographic Mosaic 6600m",
+    productType: "radar_topography_map", projection: "equirectangular",
     observedAt: null, productDate: null,
-    sourceUrl: "https://astrogeology.usgs.gov/ckan/dataset/128fc727-4864-4086-bf74-651d6108ce02/resource/b52a1a8f-59c2-41e8-b49f-68e963aa5231/download/venus_magellan_c3-mdir_colorized_global_mosaic_1024.jpg",
-    catalogUrl: "https://astrogeology.usgs.gov/search/map/venus_magellan_global_c3_mdir_synthetic_color_mosaic_4641m",
+    sourceUrl: "https://astrogeology.usgs.gov/ckan/dataset/f992cb3c-4f37-4e1a-a59d-4f29d8307d7d/resource/d97f7bf8-73da-46fe-9edb-95c9ad233b10/download/venus_magellan_c3-mdir_clrtopo_global_mosaic_1024.jpg",
+    catalogUrl: "https://astrogeology.usgs.gov/search/map/venus_magellan_global_c3_mdir_colorized_topographic_mosaic_6600m",
     attribution: "NASA Magellan / PDS Geosciences Node / USGS Astrogeology",
-    notes: "Global equirectangular radar mosaic with simulated surface color; not natural visible-light color.", cacheSeconds: 604800,
+    notes: "Global equirectangular Magellan radar mosaic with colorized GEDR topography; not natural visible-light color.",
+    version: "venus-mosaic-2", cacheSeconds: 604800,
   },
   mars: {
     source: "NASA / USGS Astrogeology", mission: "Viking Orbiter", instrument: "VIS",
@@ -815,6 +816,8 @@ async function lunarImage(request, ctx) {
 function planetPublicImageUrl(request, body) {
   const url = new URL(`/api/astronomy/planet-image/${body}`, new URL(request.url).origin);
   url.searchParams.set("format", "image");
+  const version = PLANET_IMAGE_PRODUCTS[body]?.version;
+  if (version) url.searchParams.set("v", version);
   return url.toString();
 }
 
@@ -887,6 +890,7 @@ function planetMetadataPayload(request, body, config, status = "archival") {
     notes: config.notes ?? null,
     source_image_url: config.sourceUrl,
     catalog_url: config.catalogUrl,
+    texture_version: config.version ?? null,
   };
 }
 

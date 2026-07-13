@@ -19,9 +19,9 @@ const LUNAR_IMAGERY_CONFIG = Object.freeze({
 });
 const PLANET_IMAGERY_CONFIG = Object.freeze({
   mercury: { id: "mercury", displayName: "Mercury", radius: 2439700, sourceAgency: "NASA / USGS Astrogeology", mission: "MESSENGER", instrument: "MDIS", productName: "Mercury MESSENGER MDIS Global Mosaic 250m", productType: "mission-derived global surface mosaic", textureType: "image/jpeg", projection: "equirectangular", renderMode: "globe-texture", attribution: "NASA MESSENGER / USGS Astrogeology Science Center", fallbackColor: "#8d8780", pcsAvailability: false, supportsRings: false, statusLabel: "Mission-derived global mosaic", fallbackMessage: "imagery unavailable — fallback preview active", minimumZoomDistance: 1200000, maximumZoomDistance: 50000000, lighting: false, atmosphereVisibility: false, axialOrientation: 0 },
-  venus: { id: "venus", displayName: "Venus", radius: 6051800, sourceAgency: "NASA / USGS Astrogeology", mission: "Magellan", instrument: "SAR", productName: "Venus Magellan Global C3-MDIR Synthetic Color Mosaic 4641m", productType: "radar-derived global surface mosaic", textureType: "image/jpeg", projection: "equirectangular", renderMode: "globe-texture", attribution: "NASA Magellan / PDS Geosciences Node / USGS Astrogeology", fallbackColor: "#c89345", pcsAvailability: false, supportsRings: false, statusLabel: "Radar-derived global mosaic", fallbackMessage: "imagery unavailable — fallback preview active", minimumZoomDistance: 1200000, maximumZoomDistance: 50000000, lighting: false, atmosphereVisibility: false, axialOrientation: 177.4 },
+  venus: { id: "venus", displayName: "Venus", radius: 6051800, sourceAgency: "NASA / USGS Astrogeology", mission: "Magellan", instrument: "SAR / GEDR", productName: "Venus Magellan Global C3-MDIR Colorized Topographic Mosaic 6600m", productType: "radar and topography-derived global mosaic", textureType: "image/jpeg", projection: "equirectangular", renderMode: "globe-texture", textureVersion: "venus-mosaic-2", seamBlendColumns: 2, attribution: "NASA Magellan / PDS Geosciences Node / USGS Astrogeology", fallbackColor: "#c89345", pcsAvailability: false, supportsRings: false, statusLabel: "Radar/topography-derived global mosaic", fallbackMessage: "imagery unavailable — fallback preview active", minimumZoomDistance: 1200000, maximumZoomDistance: 50000000, lighting: false, atmosphereVisibility: false, axialOrientation: 177.4 },
   mars: { id: "mars", displayName: "Mars", radius: 3389500, sourceAgency: "NASA / USGS Astrogeology", mission: "Viking Orbiter", instrument: "VIS", productName: "Mars Viking Global Color Mosaic 925m", productType: "mission-derived global surface mosaic", textureType: "image/jpeg", projection: "simple_cylindrical", renderMode: "globe-texture", attribution: "NASA Viking Orbiter / USGS Astrogeology Science Center", fallbackColor: "#a84f32", pcsAvailability: false, supportsRings: false, statusLabel: "Mission-derived global mosaic", fallbackMessage: "imagery unavailable — fallback preview active", minimumZoomDistance: 900000, maximumZoomDistance: 50000000, lighting: true, atmosphereVisibility: false, axialOrientation: 25.2 },
-  jupiter: { id: "jupiter", displayName: "Jupiter", radius: 69911000, sourceAgency: "NASA / JPL Photojournal", mission: "Cassini-Huygens", instrument: "Imaging Science Subsystem", productName: "PIA02873 High Resolution Globe of Jupiter", productType: "atmospheric observation", textureType: "image/jpeg", projection: "observation_disc", renderMode: "scientific-preview", attribution: "NASA/JPL/University of Arizona", fallbackColor: "#b58b67", pcsAvailability: false, supportsRings: false, statusLabel: "Scientific observation preview", fallbackMessage: "imagery unavailable — fallback preview active", minimumZoomDistance: 3000000, maximumZoomDistance: 50000000, lighting: true, atmosphereVisibility: false, axialOrientation: 3.1 },
+  jupiter: { id: "jupiter", displayName: "Jupiter", radius: 69911000, sourceAgency: "NASA / JPL Photojournal", mission: "Cassini-Huygens", instrument: "Imaging Science Subsystem", productName: "PIA02873 High Resolution Globe of Jupiter", productType: "atmospheric observation", textureType: "image/jpeg", projection: "observation_disc", renderMode: "observation-disc", attribution: "NASA/JPL/University of Arizona", fallbackColor: "#b58b67", pcsAvailability: false, supportsRings: false, statusLabel: "Observation disc", fallbackMessage: "imagery unavailable — fallback preview active", minimumZoomDistance: 3000000, maximumZoomDistance: 50000000, lighting: false, atmosphereVisibility: false, axialOrientation: 3.1, discRadiusRatio: 0.465 },
   saturn: { id: "saturn", displayName: "Saturn", radius: 58232000, sourceAgency: "NASA / JPL Photojournal", mission: "Cassini-Huygens", instrument: "ISS Narrow Angle Camera", productName: "PIA05389 Saturn and its Rings", productType: "atmospheric observation", textureType: "image/jpeg", projection: "observation_disc", renderMode: "scientific-preview", attribution: "NASA/JPL/Space Science Institute", fallbackColor: "#cbb77b", pcsAvailability: false, supportsRings: true, statusLabel: "Scientific observation preview", fallbackMessage: "imagery unavailable — fallback preview active", minimumZoomDistance: 3500000, maximumZoomDistance: 50000000, lighting: true, atmosphereVisibility: false, axialOrientation: 26.7, ringInnerRadius: 1.25, ringOuterRadius: 2.25, ringOpacity: 0.34 },
   uranus: { id: "uranus", displayName: "Uranus", radius: 25362000, sourceAgency: "NASA / JPL Photojournal", mission: "Voyager 2", instrument: "VG ISS Wide Angle Camera", productName: "PIA00143 Uranus - Final Image", productType: "archival atmospheric observation", textureType: "image/jpeg", projection: "observation_disc", renderMode: "scientific-preview", attribution: "NASA/JPL", fallbackColor: "#78b8c4", pcsAvailability: false, supportsRings: false, statusLabel: "Scientific observation preview", fallbackMessage: "imagery unavailable — fallback preview active", minimumZoomDistance: 3000000, maximumZoomDistance: 50000000, lighting: true, atmosphereVisibility: false, axialOrientation: 97.8 },
   neptune: { id: "neptune", displayName: "Neptune", radius: 24622000, sourceAgency: "NASA / JPL Photojournal", mission: "Voyager 2", instrument: "VG ISS Narrow Angle Camera", productName: "PIA00046 Neptune Full Disk", productType: "archival atmospheric observation", textureType: "image/jpeg", projection: "observation_disc", renderMode: "scientific-preview", attribution: "NASA/JPL", fallbackColor: "#4169b1", pcsAvailability: false, supportsRings: false, statusLabel: "Scientific observation preview", fallbackMessage: "imagery unavailable — fallback preview active", minimumZoomDistance: 3000000, maximumZoomDistance: 50000000, lighting: true, atmosphereVisibility: false, axialOrientation: 28.3 },
@@ -145,7 +145,7 @@ const celestialTargetConfig = {
 };
 
 Object.assign(celestialTargetConfig, {
-  sun: { id: "sun", displayName: "Sun", subtitle: "Heliophysics", status: "Visualization", bodyType: "star", renderMode: "procedural-emissive", texture: "Procedural solar visualization; observational imagery shown below", cameraDestination: [0, 0, 38000000], availableMonitoringScales: ["Photosphere", "Magnetogram", "AIA 171 Å", "AIA 193 Å", "AIA 304 Å", "Coronagraph"], enabledDataDomains: ["solar-imagery", "space-weather", "ephemeris"], color: "#f6a623" },
+  sun: { id: "sun", displayName: "Sun", subtitle: "Heliophysics", status: "Observation", bodyType: "star", renderMode: "observation-disc", texture: "Latest available NASA SDO full-disc observation; procedural-emissive is failure fallback only", cameraDestination: [0, 0, 38000000], availableMonitoringScales: ["Photosphere", "Magnetogram", "AIA 171 Å", "AIA 193 Å", "AIA 304 Å", "Coronagraph"], enabledDataDomains: ["solar-imagery", "space-weather", "ephemeris"], color: "#f6a623" },
   mercury: { id: "mercury", displayName: "Mercury", subtitle: "Inner Planet", status: "Scientific imagery", bodyType: "planet", texture: "MESSENGER mission-derived global mosaic; JPL ephemeris remains separate", cameraDestination: [0, 0, 23000000], availableMonitoringScales: ["Global", "Surface", "Caloris Basin", "Craters", "Magnetic Field", "Missions"], enabledDataDomains: ["imagery", "ephemeris"], color: "#8d8780" },
   venus: { id: "venus", displayName: "Venus", subtitle: "Radar World", status: "Scientific imagery", bodyType: "planet", texture: "Magellan radar-derived surface map; not natural visible-light color", cameraDestination: [0, 0, 26000000], availableMonitoringScales: ["Radar Surface", "Topography", "Atmosphere", "Global", "Missions"], enabledDataDomains: ["imagery", "ephemeris"], color: "#c89345" },
   mars: { id: "mars", displayName: "Mars", subtitle: "The Red Planet", status: "Scientific imagery", bodyType: "planet", texture: "Viking optical global color mosaic", cameraDestination: [0, 10, 26000000], availableMonitoringScales: ["Surface", "Topography", "Olympus Mons", "Valles Marineris", "Polar Regions", "Landing Sites", "Missions"], enabledDataDomains: ["imagery", "ephemeris"], color: "#a84f32" },
@@ -200,6 +200,7 @@ let moonNumericalActive = false;
 let solarImageryActive = false;
 let solarNumericalActive = false;
 let activeSolarImageMode = "hmi-continuum";
+let activeSolarObservationPayload = null;
 let userLocationEntity = null;
 let userAccuracyEntity = null;
 let lastUserPosition = null;
@@ -720,6 +721,7 @@ function planetProductTypeLabel(value) {
   return ({
     global_mosaic: "Global scientific mosaic",
     radar_map: "Radar-derived surface map",
+    radar_topography_map: "Radar/topography-derived surface map",
     atmosphere_map: "Reconstructed global atmosphere map",
     observation_disc: "Mission observation image",
     ring_texture: "Mission-derived ring texture",
@@ -766,6 +768,80 @@ function preloadPlanetImage(url) {
     image.onerror = () => reject(new Error("planet image failed to load"));
     image.src = url;
   });
+}
+
+function selectPrimaryObservationProduct(bodyId, preferredMode = null) {
+  if (bodyId === "sun") {
+    const fallbackOrder = ["hmi-continuum", "aia-193", "aia-171", "aia-304"];
+    return [...new Set([preferredMode, ...fallbackOrder].filter((mode) => SOLAR_IMAGE_MODE_LABELS[mode]))];
+  }
+  if (bodyId === "jupiter") return [PLANET_IMAGERY_CONFIG.jupiter.productName];
+  return [];
+}
+
+function createCircularAlphaTexture(image, radiusRatio = 0.465) {
+  const sourceWidth = image.naturalWidth || image.width;
+  const sourceHeight = image.naturalHeight || image.height;
+  const size = Math.min(sourceWidth, sourceHeight);
+  const sourceX = Math.round((sourceWidth - size) / 2);
+  const sourceY = Math.round((sourceHeight - size) / 2);
+  const canvas = document.createElement("canvas");
+  canvas.width = size;
+  canvas.height = size;
+  const context = canvas.getContext("2d", { willReadFrequently: true });
+  context.clearRect(0, 0, size, size);
+  context.drawImage(image, sourceX, sourceY, size, size, 0, 0, size, size);
+  const pixels = context.getImageData(0, 0, size, size);
+  const center = (size - 1) / 2;
+  const radius = size * radiusRatio;
+  const feather = Math.max(2, size * 0.004);
+  for (let y = 0; y < size; y += 1) {
+    for (let x = 0; x < size; x += 1) {
+      const distance = Math.hypot(x - center, y - center);
+      const alphaIndex = (y * size + x) * 4 + 3;
+      if (distance >= radius) pixels.data[alphaIndex] = 0;
+      else if (distance > radius - feather) {
+        pixels.data[alphaIndex] = Math.round(pixels.data[alphaIndex] * (radius - distance) / feather);
+      }
+    }
+  }
+  context.putImageData(pixels, 0, 0);
+  return canvas;
+}
+
+function renderObservationDisc(config, image, metadata) {
+  if (!cesiumViewer || cesiumViewer.isDestroyed()) return false;
+  clearCelestialScene();
+  cesiumViewer.scene.globe.show = false;
+  cesiumViewer.scene.globe.enableLighting = false;
+  cesiumViewer.scene.skyAtmosphere.show = false;
+  const radiusRatio = config.discRadiusRatio || 0.465;
+  const texture = createCircularAlphaTexture(image, radiusRatio);
+  const displaySize = window.matchMedia("(max-width: 820px)").matches ? 360 : 720;
+  celestialDiscEntity = cesiumViewer.entities.add({
+    name: `${config.displayName} observation disc`,
+    position: Cesium.Cartesian3.ZERO,
+    billboard: {
+      image: texture,
+      width: displaySize,
+      height: displaySize,
+      verticalOrigin: Cesium.VerticalOrigin.CENTER,
+      horizontalOrigin: Cesium.HorizontalOrigin.CENTER,
+      disableDepthTestDistance: Number.POSITIVE_INFINITY,
+      scaleByDistance: new Cesium.NearFarScalar(1000000, 1.08, 50000000, 0.82),
+    },
+  });
+  const observedAt = formatAstronomyValue(metadata.observed_at || metadata.product_date);
+  if (config.id === "sun") {
+    const message = `Live / latest available solar observation — ${metadata.instrument}, ${metadata.wavelength}. Observation time: ${observedAt}. Source: ${metadata.source}. Observation disc — not a complete 3D solar surface.`;
+    updateText(selectors.solarSystemStatus, message);
+    showObservatoryMessage(message, "info");
+  } else {
+    updateText(selectors.planetImageryStatus, "Observation disc — not used as a global texture.");
+    updateText(selectors.solarSystemStatus,
+      `${metadata.product}. Observation disc — not used as a global texture. ${metadata.attribution}`);
+  }
+  return true;
 }
 
 async function validateCelestialTexture(config, metadata) {
@@ -833,8 +909,56 @@ function renderPlanetaryRings(config) {
   });
 }
 
-async function renderTexturedBody(config, metadata, requestId) {
-  const provider = await Cesium.SingleTileImageryProvider.fromUrl(metadata.image_url, {
+function createSeamSafeGlobalTexture(image, blendColumns = 2) {
+  const width = image.naturalWidth || image.width;
+  const height = image.naturalHeight || image.height;
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const context = canvas.getContext("2d", { willReadFrequently: true });
+  context.drawImage(image, 0, 0, width, height);
+  const pixels = context.getImageData(0, 0, width, height);
+  const columns = Math.max(1, Math.min(blendColumns, Math.floor(width / 4)));
+  for (let y = 0; y < height; y += 1) {
+    for (let channel = 0; channel < 3; channel += 1) {
+      const leftInner = (y * width + columns) * 4 + channel;
+      const rightInner = (y * width + width - columns - 1) * 4 + channel;
+      const seamValue = Math.round((pixels.data[leftInner] + pixels.data[rightInner]) / 2);
+      for (let column = 0; column < columns; column += 1) {
+        const amount = columns === 1 ? 1 : 1 - column / columns;
+        const left = (y * width + column) * 4 + channel;
+        const right = (y * width + width - column - 1) * 4 + channel;
+        pixels.data[left] = Math.round(pixels.data[left] * (1 - amount) + seamValue * amount);
+        pixels.data[right] = Math.round(pixels.data[right] * (1 - amount) + seamValue * amount);
+      }
+    }
+  }
+  context.putImageData(pixels, 0, 0);
+  return canvas;
+}
+
+async function renderGlobalBodyTexture(config, metadata, image, requestId) {
+  if (config.seamBlendColumns) {
+    const textureCanvas = createSeamSafeGlobalTexture(image, config.seamBlendColumns);
+    if (requestId !== planetImageryRequestId || activeCelestialTargetId !== config.id) return false;
+    cesiumViewer.scene.globe.show = false;
+    celestialDiscEntity = cesiumViewer.entities.add({
+      name: `${config.displayName} validated global texture`,
+      position: Cesium.Cartesian3.ZERO,
+      ellipsoid: {
+        radii: Cesium.Ellipsoid.WGS84.radii,
+        material: new Cesium.ImageMaterialProperty({
+          image: textureCanvas,
+          transparent: false,
+        }),
+        outline: false,
+      },
+    });
+    updateText(selectors.planetImageryStatus, "Validated 2:1 global texture active on ellipsoid material.");
+    return true;
+  }
+  const textureSource = metadata.image_url;
+  const provider = await Cesium.SingleTileImageryProvider.fromUrl(textureSource, {
     rectangle: Cesium.Rectangle.fromDegrees(-180, -90, 180, 90),
     credit: `${metadata.attribution} — ${metadata.product}`,
   });
@@ -844,6 +968,8 @@ async function renderTexturedBody(config, metadata, requestId) {
     if (activeCelestialTargetId === config.id) showPlanetImageryFallback(config.id);
   });
   cesiumViewer.scene.globe.show = true;
+  celestialImageryLayer.minificationFilter = Cesium.TextureMinificationFilter.LINEAR;
+  celestialImageryLayer.magnificationFilter = Cesium.TextureMagnificationFilter.LINEAR;
   updateText(selectors.planetImageryStatus, "Validated 2:1 global texture active.");
   return true;
 }
@@ -872,7 +998,18 @@ async function applyPlanetTexture(config, metadata, requestId) {
     updateText(selectors.planetImageryStatus, validation.reason);
     return renderScientificPreview(config, metadata, validation.image);
   }
-  if (config.renderMode === "globe-texture") return renderTexturedBody(config, metadata, requestId);
+  if (config.renderMode === "globe-texture") return renderGlobalBodyTexture(config, metadata, validation.image, requestId);
+  if (config.renderMode === "observation-disc") {
+    const rendered = renderObservationDisc(config, validation.image, metadata);
+    if (selectors.planetScientificPreview && selectors.planetScientificImage) {
+      selectors.planetScientificImage.src = metadata.image_url;
+      selectors.planetScientificImage.alt = `${config.displayName} — ${metadata.product}`;
+      selectors.planetScientificPreview.hidden = false;
+      updateText(selectors.planetScientificPreviewNote,
+        `${metadata.projection}: Observation disc — not used as a global texture. ${metadata.attribution}`);
+    }
+    return rendered;
+  }
   if (config.renderMode === "scientific-preview") return renderScientificPreview(config, metadata, validation.image);
   showPlanetImageryFallback(config.id);
   return false;
@@ -889,9 +1026,11 @@ async function loadPlanetImagery(targetId) {
   try {
     let metadata = planetImageryCache.get(targetId);
     if (!metadata) {
-      const response = await fetch(`${ASTRONOMY_PROXY_BASE}/api/astronomy/planet-image/${targetId}`, {
+      const versionQuery = config.textureVersion ? `?v=${encodeURIComponent(config.textureVersion)}` : "";
+      const response = await fetch(`${ASTRONOMY_PROXY_BASE}/api/astronomy/planet-image/${targetId}${versionQuery}`, {
         signal: planetImageryRequestController.signal,
         headers: { accept: "application/json" },
+        cache: "no-store",
       });
       if (!response.ok) throw new Error("planet metadata unavailable");
       metadata = await response.json();
@@ -902,7 +1041,9 @@ async function loadPlanetImagery(targetId) {
     const applied = await applyPlanetTexture(config, metadata, requestId);
     if (!applied) return false;
     renderPlanetImageryMetadata(config, metadata);
-    updateText(selectors.solarSystemStatus, `${config.statusLabel} active. JPL numerical observations remain separate.`);
+    if (config.renderMode !== "observation-disc") {
+      updateText(selectors.solarSystemStatus, `${config.statusLabel} active. JPL numerical observations remain separate.`);
+    }
     showObservatoryMessage(`${config.displayName} ${config.statusLabel.toLowerCase()} active.`);
     return true;
   } catch (error) {
@@ -927,9 +1068,11 @@ function updateMoonStatusMessage() {
 
 function updateSunStatusMessage() {
   if (activeCelestialTargetId !== "sun") return;
-  const message = "Procedural solar visualization. Visualization only — observational imagery shown below.";
+  const message = solarImageryActive && activeSolarObservationPayload
+    ? `Live / latest available solar observation — ${activeSolarObservationPayload.instrument}, ${activeSolarObservationPayload.wavelength}. Observation time: ${formatAstronomyValue(activeSolarObservationPayload.observed_at)}. Source: ${activeSolarObservationPayload.source}. Observation disc — not a complete 3D solar surface.`
+    : "Solar observation imagery unavailable. Procedural-emissive fallback active — visualization only.";
   updateText(selectors.solarSystemStatus, message);
-  showObservatoryMessage(message, sunVisualizationActive ? "info" : "warning");
+  showObservatoryMessage(message, solarImageryActive || sunVisualizationActive ? "info" : "warning");
   if (!solarImageryActive && solarNumericalActive) {
     updateText(selectors.solarImageError, "Live numerical observations active; latest solar imagery unavailable.");
   }
@@ -1265,7 +1408,7 @@ async function setCelestialTarget(targetId) {
   } else if (targetId === "sun") {
     solarImageryActive = false;
     solarNumericalActive = false;
-    await loadSunVisualization();
+    activeSolarObservationPayload = null;
     await loadSunObservation();
     updateSunStatusMessage();
   } else if (PLANET_EPHEMERIS_TARGETS.has(targetId)) {
@@ -1460,43 +1603,55 @@ function renderSolarImageMetadata(payload) {
 function preloadScientificImage(url) {
   return new Promise((resolve, reject) => {
     const image = new Image();
-    image.onload = () => resolve(url);
+    image.decoding = "async";
+    image.crossOrigin = "anonymous";
+    image.onload = () => resolve(image);
     image.onerror = () => reject(new Error("image could not be decoded"));
     image.src = url;
   });
 }
 
 async function loadSolarImage(mode = activeSolarImageMode) {
-  activeSolarImageMode = SOLAR_IMAGE_MODE_LABELS[mode] ? mode : "hmi-continuum";
+  const preferredMode = SOLAR_IMAGE_MODE_LABELS[mode] ? mode : "hmi-continuum";
+  const candidates = selectPrimaryObservationProduct("sun", preferredMode);
   solarImageryActive = false;
-  updateText(selectors.solarImageError, `Loading ${SOLAR_IMAGE_MODE_LABELS[activeSolarImageMode]}…`);
+  activeSolarObservationPayload = null;
+  updateText(selectors.solarImageError, `Loading ${SOLAR_IMAGE_MODE_LABELS[preferredMode]}…`);
   if (selectors.solarImage) {
     selectors.solarImage.hidden = true;
     selectors.solarImage.removeAttribute("src");
   }
-  selectors.solarImageControls.forEach((control) => {
-    const active = control.dataset.solarImageMode === activeSolarImageMode;
-    control.classList.toggle("is-active", active);
-    control.setAttribute("aria-pressed", String(active));
-  });
-  try {
-    const payload = await fetchAstronomy(`/api/space-weather/solar-image?mode=${encodeURIComponent(activeSolarImageMode)}`);
-    await preloadScientificImage(payload.image_url);
-    if (activeCelestialTargetId !== "sun" || payload.mode !== activeSolarImageMode) return false;
-    selectors.solarImage.src = payload.image_url;
-    selectors.solarImage.alt = `${payload.instrument} ${payload.wavelength} solar observation from ${formatAstronomyValue(payload.observed_at)}`;
-    selectors.solarImage.hidden = false;
-    updateText(selectors.solarImageError, "");
-    renderSolarImageMetadata(payload);
-    solarImageryActive = true;
-    updateSunStatusMessage();
-    return true;
-  } catch {
-    updateText(selectors.solarImageError, `${SOLAR_IMAGE_MODE_LABELS[activeSolarImageMode]} scientific image unavailable.`);
-    renderSolarImageMetadata({ status: "unavailable" });
-    updateSunStatusMessage();
-    return false;
+  for (const candidate of candidates) {
+    activeSolarImageMode = candidate;
+    selectors.solarImageControls.forEach((control) => {
+      const active = control.dataset.solarImageMode === activeSolarImageMode;
+      control.classList.toggle("is-active", active);
+      control.setAttribute("aria-pressed", String(active));
+    });
+    try {
+      const payload = await fetchAstronomy(`/api/space-weather/solar-image?mode=${encodeURIComponent(candidate)}`);
+      const image = await preloadScientificImage(payload.image_url);
+      if (activeCelestialTargetId !== "sun" || payload.mode !== candidate) return false;
+      selectors.solarImage.src = payload.image_url;
+      selectors.solarImage.alt = `${payload.instrument} ${payload.wavelength} solar observation from ${formatAstronomyValue(payload.observed_at)}`;
+      selectors.solarImage.hidden = false;
+      updateText(selectors.solarImageError,
+        candidate === preferredMode ? "" : `${SOLAR_IMAGE_MODE_LABELS[preferredMode]} unavailable; ${SOLAR_IMAGE_MODE_LABELS[candidate]} fallback active.`);
+      renderSolarImageMetadata(payload);
+      renderObservationDisc(celestialTargetConfig.sun, image, payload);
+      activeSolarObservationPayload = payload;
+      solarImageryActive = true;
+      updateSunStatusMessage();
+      return true;
+    } catch {
+      // Try the next validated full-disc product before using the procedural fallback.
+    }
   }
+  updateText(selectors.solarImageError, "HMI and AIA full-disc observations unavailable; procedural fallback active.");
+  renderSolarImageMetadata({ status: "unavailable" });
+  await loadSunVisualization();
+  updateSunStatusMessage();
+  return false;
 }
 
 async function loadSolarObservation() {
@@ -1544,7 +1699,14 @@ async function loadPlanetObservation(body) {
       element.textContent = formatAstronomyValue(value);
     });
     setObservationBadge(payload.status, payload.stale || payload.status === "stale");
-    updateText(selectors.solarSystemStatus, `${celestialTargetConfig[body].displayName} ephemeris ${payload.status}. Observation time ${formatAstronomyValue(payload.observed_at)}.`);
+    const imageryConfig = PLANET_IMAGERY_CONFIG[body];
+    if (imageryConfig?.renderMode === "observation-disc") {
+      const imagery = planetImageryCache.get(body);
+      updateText(selectors.solarSystemStatus,
+        `${imagery?.product || imageryConfig.productName}. Observation disc — not used as a global texture. JPL ephemeris ${payload.status}; observation time ${formatAstronomyValue(payload.observed_at)}.`);
+    } else {
+      updateText(selectors.solarSystemStatus, `${celestialTargetConfig[body].displayName} ephemeris ${payload.status}. Observation time ${formatAstronomyValue(payload.observed_at)}.`);
+    }
   } catch {
     if (activeCelestialTargetId !== body) return;
     selectors.planetValues.forEach((element) => { element.textContent = "Unavailable"; });

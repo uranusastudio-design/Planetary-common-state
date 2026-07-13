@@ -170,18 +170,22 @@ test("Planet image route validates every fixed official product and normalizes m
     assert.equal(payload.observed_at, config.observedAt ?? null, body);
     assert.equal(payload.product_date, config.productDate ?? null, body);
     assert.equal(payload.status, "archival", body);
-    assert.equal(payload.image_url, `https://worker.test/api/astronomy/planet-image/${body}?format=image`, body);
+    const expectedImageUrl = new URL(`https://worker.test/api/astronomy/planet-image/${body}`);
+    expectedImageUrl.searchParams.set("format", "image");
+    if (config.version) expectedImageUrl.searchParams.set("v", config.version);
+    assert.equal(payload.image_url, expectedImageUrl.toString(), body);
     assert.equal(payload.thumbnail_url, null, body);
     assert.match(config.sourceUrl, /^https:\/\/(astrogeology\.usgs\.gov|planetarymaps\.usgs\.gov|photojournal\.jpl\.nasa\.gov|assets\.science\.nasa\.gov)\//, body);
     assert.equal(requested.at(-1), config.sourceUrl, body);
   }
 });
 
-test("Venus uses the globe-safe USGS global equirectangular browse mosaic", () => {
+test("Venus uses the versioned globe-safe USGS topographic browse mosaic", () => {
   const venus = PLANET_IMAGE_PRODUCTS.venus;
   assert.equal(venus.projection, "equirectangular");
-  assert.match(venus.product, /Global C3-MDIR Synthetic Color Mosaic 4641m/);
-  assert.match(venus.sourceUrl, /venus_magellan_c3-mdir_colorized_global_mosaic_1024\.jpg$/);
+  assert.equal(venus.version, "venus-mosaic-2");
+  assert.match(venus.product, /Global C3-MDIR Colorized Topographic Mosaic 6600m/);
+  assert.match(venus.sourceUrl, /venus_magellan_c3-mdir_clrtopo_global_mosaic_1024\.jpg$/);
   assert.doesNotMatch(venus.sourceUrl, /\/full\.jpg$/);
 });
 
