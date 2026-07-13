@@ -6,6 +6,15 @@ const REGION_STORAGE_KEY = "pcs_observatory_region";
 const WEATHER_PROXY_BASE = "https://pcs-backend.uranusastudio.workers.dev";
 const ASTRONOMY_PROXY_BASE = WEATHER_PROXY_BASE;
 const SPACE_WEATHER_UI_THRESHOLDS = { kp: { medium: 4, high: 5 }, solarWindSpeed: { medium: 500, high: 700 }, xrayFlux: { medium: 1e-6, high: 1e-5 } };
+const EARTH_SOURCE_REGISTRY = Object.freeze({
+  openweather: { name: "OpenWeather", modes: ["live", "key-required"] },
+  nasaGibs: { name: "NASA GIBS", modes: ["imagery", "archive"] },
+  usgs: { name: "USGS", modes: ["live", "event"] },
+  nasaFirms: { name: "NASA FIRMS", modes: ["event", "key-required"] },
+  era5: { name: "ERA5", modes: ["archive", "account-required"] },
+  copernicus: { name: "Copernicus", modes: ["imagery", "archive", "account-required"] },
+});
+const PLANET_EPHEMERIS_TARGETS = new Set(["mercury", "venus", "mars", "jupiter", "saturn", "uranus", "neptune"]);
 const WEATHER_TILE_MAX_ZOOM = 8;
 const EARTH_IMAGERY_CONFIG = {
   highResolution: {
@@ -106,6 +115,18 @@ const celestialTargetConfig = {
   "deep-space": { id: "deep-space", displayName: "Deep Space", subtitle: "Beyond the Solar System", status: "Preview", bodyType: "space", texture: "Cesium star field preview — not a scientific sky survey", cameraDestination: [0, 0, 50000000], availableMonitoringScales: ["Solar System", "Nearby Stars", "Galaxy", "Deep Field"], enabledDataDomains: [], color: "#020712" },
 };
 
+Object.assign(celestialTargetConfig, {
+  sun: { id: "sun", displayName: "Sun", subtitle: "Heliophysics", status: "Live", bodyType: "star", texture: "Preview only; NOAA and JPL data panels are live", cameraDestination: [0, 0, 38000000], availableMonitoringScales: ["Overview", "Photosphere", "Sunspots", "Corona", "Solar Wind"], enabledDataDomains: ["space-weather", "ephemeris"], color: "#f6a623" },
+  mercury: { id: "mercury", displayName: "Mercury", subtitle: "Inner Planet", status: "Live", bodyType: "planet", texture: "Preview color texture; JPL ephemeris is live", cameraDestination: [0, 0, 23000000], availableMonitoringScales: ["Global", "Surface", "Craters", "Ephemeris"], enabledDataDomains: ["ephemeris"], color: "#8d8780" },
+  venus: { id: "venus", displayName: "Venus", subtitle: "Radar World", status: "Live", bodyType: "planet", texture: "Preview color texture; JPL ephemeris is live", cameraDestination: [0, 0, 26000000], availableMonitoringScales: ["Global", "Atmosphere", "Radar Surface", "Ephemeris"], enabledDataDomains: ["ephemeris"], color: "#c89345" },
+  mars: { id: "mars", displayName: "Mars", subtitle: "The Red Planet", status: "Live", bodyType: "planet", texture: "Preview color texture; JPL ephemeris is live", cameraDestination: [0, 10, 26000000], availableMonitoringScales: ["Global", "Surface", "Atmosphere", "Landing Sites", "Ephemeris"], enabledDataDomains: ["ephemeris"], color: "#a84f32" },
+  jupiter: { id: "jupiter", displayName: "Jupiter", subtitle: "Gas Giant", status: "Live", bodyType: "gas-giant", texture: "Preview color texture; JPL ephemeris is live", cameraDestination: [0, 0, 34000000], availableMonitoringScales: ["Global", "Atmosphere", "Great Red Spot", "Ephemeris"], enabledDataDomains: ["ephemeris"], color: "#b58b67" },
+  saturn: { id: "saturn", displayName: "Saturn", subtitle: "Ringed Giant", status: "Live", bodyType: "gas-giant", texture: "Preview color texture; JPL ephemeris is live", cameraDestination: [0, 0, 34000000], availableMonitoringScales: ["Global", "Atmosphere", "Ring System", "Ephemeris"], enabledDataDomains: ["ephemeris"], color: "#cbb77b" },
+  uranus: { id: "uranus", displayName: "Uranus", subtitle: "Ice Giant", status: "Live", bodyType: "gas-giant", texture: "Preview color texture; JPL ephemeris is live", cameraDestination: [0, 0, 36000000], availableMonitoringScales: ["Global", "Atmosphere", "Ring System", "Ephemeris"], enabledDataDomains: ["ephemeris"], color: "#78b8c4" },
+  neptune: { id: "neptune", displayName: "Neptune", subtitle: "Ice Giant", status: "Live", bodyType: "gas-giant", texture: "Preview color texture; JPL ephemeris is live", cameraDestination: [0, 0, 36000000], availableMonitoringScales: ["Global", "Atmosphere", "Storm Systems", "Ephemeris"], enabledDataDomains: ["ephemeris"], color: "#4169b1" },
+});
+delete celestialTargetConfig["solar-activity"];
+
 const REGION_TRANSLATION_KEYS = {
   global: "global",
   japan: "japan",
@@ -205,6 +226,13 @@ const selectors = {
   solarAlertCount: document.querySelector("#solar-alert-count"),
   solarAlertList: document.querySelector("#solar-alert-list"),
   solarProvenance: document.querySelector("#solar-provenance"),
+  sunValues: document.querySelectorAll("[data-sun-value]"),
+  sunEphemerisTime: document.querySelector("#sun-ephemeris-time"),
+  planetPanel: document.querySelector("#planet-observation-panel"),
+  planetTitle: document.querySelector("#planet-observation-title"),
+  planetError: document.querySelector("#planet-error"),
+  planetValues: document.querySelectorAll("[data-planet-value]"),
+  planetMeta: document.querySelectorAll("[data-planet-meta]"),
 };
 
 function t(key) {
@@ -630,7 +658,8 @@ async function setCelestialTarget(targetId) {
   selectors.locationPanel?.toggleAttribute("hidden", targetId !== "earth");
   document.querySelectorAll(".layer-control-panel").forEach((panel) => panel.toggleAttribute("hidden", targetId !== "earth"));
   if (selectors.moonPanel) selectors.moonPanel.hidden = targetId !== "moon";
-  if (selectors.solarPanel) selectors.solarPanel.hidden = targetId !== "solar-activity";
+  if (selectors.solarPanel) selectors.solarPanel.hidden = targetId !== "sun";
+  if (selectors.planetPanel) selectors.planetPanel.hidden = !PLANET_EPHEMERIS_TARGETS.has(targetId);
   cesiumViewer.scene.globe.show = target.bodyType !== "space";
   cesiumViewer.scene.skyAtmosphere.show = targetId === "earth";
   cesiumViewer.scene.globe.enableLighting = targetId === "earth";
@@ -643,7 +672,8 @@ async function setCelestialTarget(targetId) {
   }
   else showObservatoryMessage(`${target.displayName} preview loaded. No live scientific planetary imagery is displayed.`);
   if (targetId === "moon") await loadMoonObservation();
-  if (targetId === "solar-activity") await loadSolarObservation();
+  if (targetId === "sun") await loadSunObservation();
+  if (PLANET_EPHEMERIS_TARGETS.has(targetId)) await loadPlanetObservation(targetId);
 }
 
 function clearUserLocation() {
@@ -814,6 +844,52 @@ async function loadSolarObservation() {
   renderProvenance(selectors.solarProvenance, data.provenance, payload); setObservationBadge(payload.status, payload.stale);
   updateText(selectors.solarSystemStatus, payload.stale ? `NOAA data delayed. Stale values from ${formatAstronomyValue(payload.timestamp)}.` : payload.partial ? "Solar Activity active. NOAA summary is partially available; missing fields remain unavailable." : "Solar Activity active with NOAA SWPC data.");
   if (alertsResult.status === "fulfilled") renderAlerts(alertsResult.value);
+}
+
+function renderBodyValues(elements, data) {
+  const units = {
+    earth_distance_km: "km", sun_distance_km: "km", light_time_minutes: "min",
+    apparent_magnitude: "mag", illumination_percent: "%", phase_angle_deg: "deg",
+  };
+  elements.forEach((element) => {
+    const field = element.dataset.planetValue || element.dataset.sunValue;
+    element.textContent = formatAstronomyValue(data?.[field], units[field], field?.endsWith("_km") ? 0 : 3);
+  });
+}
+
+async function loadPlanetObservation(body) {
+  updateText(selectors.planetError, "");
+  updateText(selectors.planetTitle, `${celestialTargetConfig[body].displayName} Observation`);
+  try {
+    const payload = await fetchAstronomy(`/api/astronomy/body/${body}`);
+    renderBodyValues(selectors.planetValues, payload.data || {});
+    selectors.planetMeta.forEach((element) => {
+      const field = element.dataset.planetMeta;
+      const value = field === "source" ? payload.source : payload[field];
+      element.textContent = formatAstronomyValue(value);
+    });
+    setObservationBadge(payload.status, payload.stale || payload.status === "stale");
+    updateText(selectors.solarSystemStatus, `${celestialTargetConfig[body].displayName} ephemeris ${payload.status}. Observation time ${formatAstronomyValue(payload.observed_at)}.`);
+  } catch {
+    selectors.planetValues.forEach((element) => { element.textContent = "Unavailable"; });
+    selectors.planetMeta.forEach((element) => { element.textContent = "Unavailable"; });
+    updateText(selectors.planetError, `${celestialTargetConfig[body].displayName} ephemeris temporarily unavailable`);
+    setObservationBadge("unavailable");
+  }
+}
+
+async function loadSunObservation() {
+  const [, ephemerisResult] = await Promise.allSettled([
+    loadSolarObservation(),
+    fetchAstronomy("/api/astronomy/body/sun"),
+  ]);
+  if (ephemerisResult.status === "fulfilled") {
+    renderBodyValues(selectors.sunValues, ephemerisResult.value.data || {});
+    updateText(selectors.sunEphemerisTime, formatAstronomyValue(ephemerisResult.value.observed_at));
+  } else {
+    selectors.sunValues.forEach((element) => { element.textContent = "Unavailable"; });
+    updateText(selectors.sunEphemerisTime, "Unavailable");
+  }
 }
 
 function initializeFrameworkControls() {

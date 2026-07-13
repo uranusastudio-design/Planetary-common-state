@@ -3,12 +3,26 @@ const JPL_HORIZONS = "https://ssd.jpl.nasa.gov/api/horizons.api";
 
 export const ASTRONOMY_ROUTES = [
   "/api/astronomy/moon",
+  "/api/astronomy/body/:body",
   "/api/space-weather/summary",
   "/api/space-weather/kp",
   "/api/space-weather/solar-wind",
   "/api/space-weather/xray",
   "/api/space-weather/alerts",
 ];
+
+export const JPL_BODY_CONFIG = {
+  sun: { id: "10", cacheSeconds: 1800, group: "sun" },
+  mercury: { id: "199", cacheSeconds: 7200, group: "inner" },
+  venus: { id: "299", cacheSeconds: 7200, group: "inner" },
+  earth: { id: "399", cacheSeconds: 7200, group: "inner", center: "500@10" },
+  moon: { id: "301", cacheSeconds: 3600, group: "moon" },
+  mars: { id: "499", cacheSeconds: 7200, group: "inner" },
+  jupiter: { id: "599", cacheSeconds: 21600, group: "outer" },
+  saturn: { id: "699", cacheSeconds: 21600, group: "outer" },
+  uranus: { id: "799", cacheSeconds: 21600, group: "outer" },
+  neptune: { id: "899", cacheSeconds: 21600, group: "outer" },
+};
 
 const CONFIG = {
   moon: { ttl: 3600, staleTtl: 86400, dataset: "JPL Horizons lunar ephemeris" },
@@ -26,7 +40,14 @@ const SOURCE = {
 
 function iso(value) {
   if (!value) return null;
-  const normalized = String(value).trim().replace(" ", "T").replace(/Z?$/, "Z");
+  const raw = String(value).trim();
+  const horizonsCalendar = raw.match(/^(\d{4})-([A-Za-z]{3})-(\d{1,2})\s+(\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?)/);
+  if (horizonsCalendar) {
+    const [, year, month, day, time] = horizonsCalendar;
+    const horizonsDate = new Date(`${month} ${day}, ${year} ${time} UTC`);
+    return Number.isNaN(horizonsDate.getTime()) ? null : horizonsDate.toISOString();
+  }
+  const normalized = raw.replace(" ", "T").replace(/Z?$/, "Z");
   const date = new Date(normalized);
   return Number.isNaN(date.getTime()) ? null : date.toISOString();
 }
@@ -129,7 +150,7 @@ async function cachedDataset(request, env, ctx, key, config, source, loader) {
     if (stale) {
       const payload = {
         ...stale,
-        status: "delayed",
+        status: key.startsWith("body:") ? "stale" : "delayed",
         cache_status: "stale",
         stale: true,
         retrieved_at: new Date().toISOString(),
@@ -140,6 +161,62 @@ async function cachedDataset(request, env, ctx, key, config, source, loader) {
     const message = error.name === "AbortError" ? "upstream timeout" : "upstream temporarily unavailable";
     return response(errorEnvelope(source, config.dataset, message), 503);
   }
+}
+
+function parseHorizonsBody(result, body, center) {
+  const block = result?.match(/\$\$SOE\s*([\s\S]*?)\s*\$\$EOE/)?.[1]?.trim();
+  if (!block) throw new Error("JPL Horizons body ephemeris was empty");
+  const values = block.split(/\r?\n/).find((line) => line.trim()).split(",").map((value) => value.trim());
+  const calculationTime = iso(values[0]);
+  // Fixed columns for QUANTITIES 1,9,10,19,20,21,24 prevent an unavailable
+  // value from shifting every later measurement into the wrong field.
+  const apparentMagnitude = finite(values[5]);
+  const illumination = finite(values[7]);
+  const heliocentricAu = finite(values[8]);
+  const observerAu = finite(values[10]);
+  const lightTime = finite(values[12]);
+  const phaseAngle = finite(values[13]);
+  const auKm = 149597870.7;
+  return {
+    observed_at: calculationTime,
+    data: {
+      earth_distance_km: center === "500@399" && observerAu !== null ? observerAu * auKm : null,
+      sun_distance_km: body === "sun" ? null : center === "500@10" && observerAu !== null ? observerAu * auKm : heliocentricAu !== null ? heliocentricAu * auKm : null,
+      light_time_minutes: lightTime,
+      apparent_magnitude: apparentMagnitude,
+      illumination_percent: illumination,
+      phase_angle_deg: phaseAngle,
+      right_ascension: values[3] || null,
+      declination: values[4] || null,
+    },
+  };
+}
+
+async function loadBodyEphemeris(body, bodyConfig) {
+  const now = new Date();
+  const stop = new Date(now.getTime() + 3600000);
+  const center = bodyConfig.center || "500@399";
+  const params = new URLSearchParams({
+    format: "json", COMMAND: `'${bodyConfig.id}'`, EPHEM_TYPE: "'OBSERVER'", CENTER: `'${center}'`,
+    START_TIME: `'${now.toISOString()}'`, STOP_TIME: `'${stop.toISOString()}'`, STEP_SIZE: "'1 h'",
+    QUANTITIES: "'1,9,10,19,20,21,24'", CSV_FORMAT: "'YES'", TIME_TYPE: "'UT'",
+  });
+  const { value, ms } = await timedJson(`${JPL_HORIZONS}?${params}`);
+  const parsed = parseHorizonsBody(value.result, body, center);
+  return {
+    success: true,
+    source: SOURCE.jpl.name,
+    source_url: SOURCE.jpl.url,
+    dataset: "body_ephemeris",
+    body,
+    observed_at: parsed.observed_at,
+    retrieved_at: new Date().toISOString(),
+    status: "live",
+    cache_status: "miss",
+    stale: false,
+    upstream_response_ms: ms,
+    data: parsed.data,
+  };
 }
 
 function latestRow(table) {
@@ -328,6 +405,13 @@ async function loadMoon() {
 export async function handleAstronomyRequest(request, env, ctx) {
   if (request.method !== "GET") return response(errorEnvelope(SOURCE.noaa, "PCS astronomy API", "method not allowed"), 405);
   const path = new URL(request.url).pathname;
+  if (path.startsWith("/api/astronomy/body/")) {
+    const body = decodeURIComponent(path.split("/").filter(Boolean).at(-1) || "").toLowerCase();
+    const bodyConfig = JPL_BODY_CONFIG[body];
+    if (!bodyConfig) return response(errorEnvelope(SOURCE.jpl, "body_ephemeris", "unsupported body", { body }), 404);
+    const config = { ttl: bodyConfig.cacheSeconds, staleTtl: Math.max(bodyConfig.cacheSeconds * 4, 86400), dataset: "body_ephemeris" };
+    return cachedDataset(request, env, ctx, `body:${body}`, config, SOURCE.jpl, () => loadBodyEphemeris(body, bodyConfig));
+  }
   if (path === "/api/astronomy/moon") return cachedDataset(request, env, ctx, "moon", CONFIG.moon, SOURCE.jpl, loadMoon);
   if (path === "/api/space-weather/kp") return cachedDataset(request, env, ctx, "kp", CONFIG.kp, SOURCE.noaa, loadKp);
   if (path === "/api/space-weather/solar-wind") return cachedDataset(request, env, ctx, "solar-wind", CONFIG.solarWind, SOURCE.noaa, loadSolarWind);

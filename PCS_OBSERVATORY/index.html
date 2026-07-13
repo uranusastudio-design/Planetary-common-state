@@ -165,13 +165,16 @@
               <span id="celestial-target-status" class="status-pill status-normal">Earth active</span>
             </div>
             <div class="framework-control-grid" role="group" aria-label="Solar System Observatory options">
+              <button type="button" class="framework-button" data-solar-target="sun">Sun <small>NOAA + JPL</small></button>
+              <button type="button" class="framework-button" data-solar-target="mercury">Mercury <small>JPL live</small></button>
+              <button type="button" class="framework-button" data-solar-target="venus">Venus <small>JPL live</small></button>
               <button type="button" class="framework-button is-active" data-solar-target="earth">Earth <small>Active</small></button>
               <button type="button" class="framework-button" data-solar-target="moon">Moon <small>Live data</small></button>
-              <button type="button" class="framework-button" data-solar-target="mars">Mars <small>Preview</small></button>
-              <button type="button" class="framework-button" data-solar-target="venus">Venus <small>Preview</small></button>
-              <button type="button" class="framework-button" data-solar-target="jupiter">Jupiter <small>Preview</small></button>
-              <button type="button" class="framework-button" data-solar-target="saturn">Saturn <small>Preview</small></button>
-              <button type="button" class="framework-button" data-solar-target="solar-activity">Solar Activity <small>Live data</small></button>
+              <button type="button" class="framework-button" data-solar-target="mars">Mars <small>JPL live</small></button>
+              <button type="button" class="framework-button" data-solar-target="jupiter">Jupiter <small>JPL live</small></button>
+              <button type="button" class="framework-button" data-solar-target="saturn">Saturn <small>JPL live</small></button>
+              <button type="button" class="framework-button" data-solar-target="uranus">Uranus <small>JPL live</small></button>
+              <button type="button" class="framework-button" data-solar-target="neptune">Neptune <small>JPL live</small></button>
               <button type="button" class="framework-button" data-solar-target="deep-space">Deep Space <small>Preview</small></button>
             </div>
             <p id="solar-system-status" class="framework-status" role="status" aria-live="polite">
@@ -191,8 +194,20 @@
               </dl>
               <details class="data-sources-disclosure"><summary>Data Sources &amp; provenance</summary><div id="moon-provenance"></div></details>
             </section>
+            <section id="planet-observation-panel" class="live-observation-panel" hidden aria-labelledby="planet-observation-title">
+              <div class="observation-heading"><div><span class="panel-label">NASA/JPL Horizons</span><h3 id="planet-observation-title">Planet Observation</h3></div></div>
+              <p id="planet-error" class="data-unavailable" role="alert"></p>
+              <dl class="observation-grid">
+                <div><dt>Earth Distance</dt><dd data-planet-value="earth_distance_km">—</dd></div><div><dt>Sun Distance</dt><dd data-planet-value="sun_distance_km">—</dd></div>
+                <div><dt>Light Time</dt><dd data-planet-value="light_time_minutes">—</dd></div><div><dt>Apparent Magnitude</dt><dd data-planet-value="apparent_magnitude">—</dd></div>
+                <div><dt>Illumination</dt><dd data-planet-value="illumination_percent">—</dd></div><div><dt>Phase Angle</dt><dd data-planet-value="phase_angle_deg">—</dd></div>
+                <div><dt>Right Ascension</dt><dd data-planet-value="right_ascension">—</dd></div><div><dt>Declination</dt><dd data-planet-value="declination">—</dd></div>
+                <div><dt>Last Updated</dt><dd data-planet-meta="observed_at">—</dd></div><div><dt>Source</dt><dd data-planet-meta="source">—</dd></div>
+                <div><dt>Data status</dt><dd data-planet-meta="status">—</dd></div>
+              </dl>
+            </section>
             <section id="solar-observation-panel" class="live-observation-panel" hidden aria-labelledby="solar-observation-title">
-              <div class="observation-heading"><div><span class="panel-label">Live space weather</span><h3 id="solar-observation-title">Solar Activity</h3></div></div>
+              <div class="observation-heading"><div><span class="panel-label">Live space weather</span><h3 id="solar-observation-title">Sun Activity</h3></div></div>
               <p class="threshold-notice">Colors are interface status categories, not scientific conclusions.</p>
               <p id="solar-error" class="data-unavailable" role="alert"></p>
               <dl class="observation-grid">
@@ -205,6 +220,7 @@
               </dl>
               <details class="alerts-disclosure"><summary>Current NOAA alerts (<span id="solar-alert-count">0</span>)</summary><div id="solar-alert-list"></div></details>
               <details class="data-sources-disclosure"><summary>Data Sources &amp; provenance</summary><div id="solar-provenance"></div></details>
+              <details class="data-sources-disclosure"><summary>JPL Sun ephemeris (separate timestamp)</summary><dl class="observation-grid compact-ephemeris"><div><dt>Earth Distance</dt><dd data-sun-value="earth_distance_km">—</dd></div><div><dt>Light Time</dt><dd data-sun-value="light_time_minutes">—</dd></div><div><dt>Right Ascension</dt><dd data-sun-value="right_ascension">—</dd></div><div><dt>Declination</dt><dd data-sun-value="declination">—</dd></div><div><dt>Ephemeris time</dt><dd id="sun-ephemeris-time">—</dd></div></dl></details>
             </section>
           </article>
 

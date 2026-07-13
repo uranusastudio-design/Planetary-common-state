@@ -49,6 +49,15 @@ interface approximation, not a direct observation or a claim of research-grade
 precision. Next-new/full-moon fields remain `null` until an official reliable
 event source is integrated.
 
+### Shared Solar System ephemeris route
+
+`GET /api/astronomy/body/:body` returns normalized NASA/JPL Horizons data for
+`sun`, `mercury`, `venus`, `earth`, `moon`, `mars`, `jupiter`, `saturn`,
+`uranus`, and `neptune`. Missing Horizons fields remain `null`. Cache policy is
+30 minutes for the Sun, 60 minutes for the Moon, 2 hours for inner planets and
+Mars, and 6 hours for outer planets. A bounded last-valid response is returned
+with `status: "stale"` during temporary Horizons failures.
+
 ### `GET /api/nasa/gibs`
 
 Returns normalized NASA Earthdata JSON for GIBS discovery results. Cached for
