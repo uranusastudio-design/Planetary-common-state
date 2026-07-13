@@ -1006,6 +1006,23 @@ h3 {
   color: var(--cyan);
 }
 
+.live-observation-panel { margin-top: 14px; padding: 14px; border: 1px solid rgba(85, 215, 255, 0.24); border-radius: 10px; background: rgba(3, 13, 26, 0.68); }
+.live-observation-panel[hidden] { display: none !important; }
+.observation-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.observation-heading h3 { margin: 3px 0 0; }
+.moon-phase-graphic { width: 88px; height: 88px; flex: 0 0 auto; }
+.observation-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 14px 0; }
+.observation-grid > div { padding: 9px; border: 1px solid rgba(142, 168, 189, 0.16); border-radius: 8px; background: rgba(255,255,255,.035); }
+.observation-grid dt { color: var(--muted); font-size: .72rem; font-weight: 800; text-transform: uppercase; }
+.observation-grid dd { margin: 4px 0 0; color: var(--text); overflow-wrap: anywhere; }
+.data-unavailable { color: #ffb4a8; font-weight: 700; }
+.data-unavailable:empty { display: none; }
+.threshold-notice { color: var(--muted); font-size: .78rem; }
+.status-category-low { color: #8fe3ff !important; }.status-category-medium { color: #ffd166 !important; }.status-category-high { color: #ff8d7d !important; }
+.alerts-disclosure, .data-sources-disclosure { margin-top: 10px; color: var(--muted); }
+.alerts-disclosure summary, .data-sources-disclosure summary { cursor: pointer; color: var(--cyan); font-weight: 800; }
+.alert-entry, .provenance-entry { margin-top: 8px; padding: 9px; border-left: 2px solid rgba(85,215,255,.45); background: rgba(255,255,255,.025); font-size: .8rem; white-space: pre-wrap; }
+
 @media (max-width: 1320px) {
   .global-nav {
     grid-template-columns: 1fr;
@@ -1114,6 +1131,7 @@ h3 {
   }
 
   .location-coordinates { grid-template-columns: 1fr; }
+  .observation-grid { grid-template-columns: 1fr; }
 
   .observatory-footer {
     align-items: flex-start;
