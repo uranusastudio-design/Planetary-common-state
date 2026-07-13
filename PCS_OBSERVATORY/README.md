@@ -2,7 +2,7 @@
 
 PCS Observatory v2.0 Shell is a dark, professional planetary monitoring dashboard for the Planetary Common State platform.
 
-This milestone redesigns the Observatory interface only. It does not add fake data, scientific calculations, unvalidated predictions, new API calls, or Engine modifications.
+This milestone redesigns the Observatory interface and adds the PCS Global Observatory Network visitor telemetry panel. It does not add fake data, scientific calculations, unvalidated predictions, or Engine modifications.
 
 ## Purpose
 
@@ -15,6 +15,7 @@ The current shell organizes:
 - Confirmed Data Sources
 - Prototype Domain Values
 - CesiumJS 3D Earth Observatory
+- PCS Global Observatory Network (anonymous visitor telemetry)
 - Earth System Layer Control
 - Observation Timeline placeholder
 - Alert Status placeholder
@@ -34,6 +35,8 @@ The page continues to read:
 The page refreshes this JSON every 10 seconds without reloading the full browser page.
 
 All displayed numeric PCS values come from this Engine output file only.
+Visitor network metrics are read from Cloudflare Worker visitor endpoints and are
+display-only telemetry, independent from PCS scientific calculations.
 
 ## CesiumJS Visualization
 

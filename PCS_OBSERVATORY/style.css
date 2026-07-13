@@ -275,6 +275,7 @@ h3 {
 .telemetry-panel,
 .source-panel,
 .domain-values-panel,
+.visitor-network-panel,
 .alert-panel,
 .health-panel,
 .ai-panel,
@@ -742,6 +743,40 @@ h3 {
   margin-top: 12px;
 }
 
+.visitor-network-panel {
+  border-color: rgba(34, 211, 238, 0.34);
+}
+
+.visitor-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.visitor-metric-grid div {
+  padding: 10px;
+  border: 1px solid rgba(142, 168, 189, 0.16);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.visitor-metric-grid dt {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.visitor-metric-grid dd {
+  margin: 6px 0 0;
+  color: var(--cyan);
+  font-size: 1.04rem;
+  font-weight: 800;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
 .value-card {
   min-height: 118px;
   padding: 12px;
@@ -1167,6 +1202,7 @@ h3 {
   .location-coordinates { grid-template-columns: 1fr; }
   .observation-grid { grid-template-columns: 1fr; }
   .solar-image-controls { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .visitor-metric-grid { grid-template-columns: 1fr; }
 
   .observatory-footer {
     align-items: flex-start;

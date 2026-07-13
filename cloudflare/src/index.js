@@ -90,13 +90,21 @@ const EXTRA_STATIC_OBSERVATIONS = [
     note: "registered_pending_connector"
   }
 ];
+const VISITOR_ONLINE_WINDOW_SECONDS = 120;
+const VISITOR_LOCATION_LIMIT = 100;
+
+const CORS_HEADERS = {
+  "access-control-allow-origin": "*",
+  "access-control-allow-methods": "GET,POST,OPTIONS",
+  "access-control-allow-headers": "content-type,authorization",
+};
 
 function json(data, status = 200) {
   return new Response(JSON.stringify(data, null, 2), {
     status,
     headers: {
       "content-type": "application/json",
-      "access-control-allow-origin": "*",
+      ...CORS_HEADERS,
       "cache-control": "no-store"
     }
   });
@@ -113,9 +121,282 @@ function tileResponse(body, status = 200, contentType = "image/png") {
     status,
     headers: {
       "content-type": contentType,
-      "access-control-allow-origin": "*",
+      ...CORS_HEADERS,
       "cache-control": "public, max-age=600"
     }
+  });
+}
+
+function optionsResponse() {
+  return new Response(null, {
+    status: 204,
+    headers: {
+      ...CORS_HEADERS,
+      "cache-control": "no-store",
+    },
+  });
+}
+
+function roundCoordinate(value) {
+  const number = Number(value);
+  return Number.isFinite(number) ? Number(number.toFixed(2)) : null;
+}
+
+function sanitizeText(value, maxLength = 80) {
+  if (typeof value !== "string") return null;
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+  return trimmed.slice(0, maxLength);
+}
+
+function sanitizeSessionId(value) {
+  if (typeof value !== "string") return null;
+  const trimmed = value.trim();
+  if (!/^[A-Za-z0-9_-]{16,128}$/.test(trimmed)) return null;
+  return trimmed;
+}
+
+function getApproximateVisitorLocation(request) {
+  const cf = request.cf || {};
+  return {
+    country: sanitizeText(cf.country, 3)?.toUpperCase() || null,
+    region: sanitizeText(cf.region, 80),
+    city: sanitizeText(cf.city, 80),
+    latitude: roundCoordinate(cf.latitude),
+    longitude: roundCoordinate(cf.longitude),
+    timezone: sanitizeText(cf.timezone, 64),
+    colo: sanitizeText(cf.colo, 16),
+  };
+}
+
+function getSessionPayload(body) {
+  return sanitizeSessionId(body?.session_id ?? body?.sessionId ?? body?.id);
+}
+
+async function registerVisitor(request, env) {
+  let body;
+  try {
+    body = await request.json();
+  } catch (error) {
+    return json({ error: "Invalid JSON body" }, 400);
+  }
+
+  const sessionId = getSessionPayload(body);
+  if (!sessionId) {
+    return json({ error: "session_id is required" }, 400);
+  }
+
+  const now = new Date().toISOString();
+  const location = getApproximateVisitorLocation(request);
+  const userAgent = sanitizeText(request.headers.get("user-agent"), 255);
+
+  await env.PCS_DB.prepare(`
+    INSERT INTO visitor_sessions
+      (session_id, country, region, city, latitude, longitude, timezone, colo, first_seen_at, last_seen_at, visit_count, last_user_agent)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?)
+    ON CONFLICT(session_id) DO UPDATE SET
+      country = excluded.country,
+      region = excluded.region,
+      city = excluded.city,
+      latitude = excluded.latitude,
+      longitude = excluded.longitude,
+      timezone = excluded.timezone,
+      colo = excluded.colo,
+      last_seen_at = excluded.last_seen_at,
+      visit_count = visitor_sessions.visit_count + 1,
+      last_user_agent = excluded.last_user_agent
+  `)
+    .bind(
+      sessionId,
+      location.country,
+      location.region,
+      location.city,
+      location.latitude,
+      location.longitude,
+      location.timezone,
+      location.colo,
+      now,
+      now,
+      userAgent
+    )
+    .run();
+
+  await env.PCS_DB.prepare(`
+    INSERT INTO visitor_events
+      (session_id, event_type, event_time, country, region, city, latitude, longitude, timezone, colo)
+    VALUES (?, 'register', ?, ?, ?, ?, ?, ?, ?, ?)
+  `)
+    .bind(
+      sessionId,
+      now,
+      location.country,
+      location.region,
+      location.city,
+      location.latitude,
+      location.longitude,
+      location.timezone,
+      location.colo
+    )
+    .run();
+
+  return json({
+    success: true,
+    session_id: sessionId,
+    registered_at: now,
+    location,
+  });
+}
+
+async function pingVisitor(request, env) {
+  let body;
+  try {
+    body = await request.json();
+  } catch (error) {
+    return json({ error: "Invalid JSON body" }, 400);
+  }
+
+  const sessionId = getSessionPayload(body);
+  if (!sessionId) {
+    return json({ error: "session_id is required" }, 400);
+  }
+
+  const now = new Date().toISOString();
+  const location = getApproximateVisitorLocation(request);
+  const userAgent = sanitizeText(request.headers.get("user-agent"), 255);
+
+  await env.PCS_DB.prepare(`
+    INSERT INTO visitor_sessions
+      (session_id, country, region, city, latitude, longitude, timezone, colo, first_seen_at, last_seen_at, visit_count, last_user_agent)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?)
+    ON CONFLICT(session_id) DO UPDATE SET
+      country = excluded.country,
+      region = excluded.region,
+      city = excluded.city,
+      latitude = excluded.latitude,
+      longitude = excluded.longitude,
+      timezone = excluded.timezone,
+      colo = excluded.colo,
+      last_seen_at = excluded.last_seen_at,
+      last_user_agent = excluded.last_user_agent
+  `)
+    .bind(
+      sessionId,
+      location.country,
+      location.region,
+      location.city,
+      location.latitude,
+      location.longitude,
+      location.timezone,
+      location.colo,
+      now,
+      now,
+      userAgent
+    )
+    .run();
+
+  await env.PCS_DB.prepare(`
+    INSERT INTO visitor_events
+      (session_id, event_type, event_time, country, region, city, latitude, longitude, timezone, colo)
+    VALUES (?, 'ping', ?, ?, ?, ?, ?, ?, ?, ?)
+  `)
+    .bind(
+      sessionId,
+      now,
+      location.country,
+      location.region,
+      location.city,
+      location.latitude,
+      location.longitude,
+      location.timezone,
+      location.colo
+    )
+    .run();
+
+  return json({
+    success: true,
+    session_id: sessionId,
+    ping_at: now,
+  });
+}
+
+async function visitorStats(env) {
+  const onlineResult = await env.PCS_DB.prepare(`
+    SELECT COUNT(*) AS value
+    FROM visitor_sessions
+    WHERE datetime(last_seen_at) >= datetime('now', ?)
+  `)
+    .bind(`-${VISITOR_ONLINE_WINDOW_SECONDS} seconds`)
+    .first();
+
+  const todayResult = await env.PCS_DB.prepare(`
+    SELECT COUNT(*) AS value
+    FROM visitor_sessions
+    WHERE date(first_seen_at) = date('now')
+  `).first();
+
+  const totalResult = await env.PCS_DB.prepare(`
+    SELECT COALESCE(SUM(visit_count), 0) AS value
+    FROM visitor_sessions
+  `).first();
+
+  const uniqueResult = await env.PCS_DB.prepare(`
+    SELECT COUNT(*) AS value
+    FROM visitor_sessions
+  `).first();
+
+  const countriesResult = await env.PCS_DB.prepare(`
+    SELECT COUNT(DISTINCT country) AS value
+    FROM visitor_sessions
+    WHERE country IS NOT NULL AND country != ''
+  `).first();
+
+  const latestVisitor = await env.PCS_DB.prepare(`
+    SELECT session_id, country, region, city, latitude, longitude, last_seen_at
+    FROM visitor_sessions
+    ORDER BY datetime(last_seen_at) DESC
+    LIMIT 1
+  `).first();
+
+  return json({
+    success: true,
+    timestamp: new Date().toISOString(),
+    stats: {
+      current_online: Number(onlineResult?.value || 0),
+      today_visits: Number(todayResult?.value || 0),
+      total_visits: Number(totalResult?.value || 0),
+      unique_sessions: Number(uniqueResult?.value || 0),
+      countries: Number(countriesResult?.value || 0),
+      latest_visitor: latestVisitor || null,
+    },
+    privacy_notice: "Approximate visitor locations are derived from Cloudflare network metadata.",
+  });
+}
+
+async function visitorLocations(env) {
+  const { results } = await env.PCS_DB.prepare(`
+    SELECT
+      country,
+      region,
+      city,
+      latitude,
+      longitude,
+      COUNT(*) AS event_count,
+      COUNT(DISTINCT session_id) AS session_count,
+      MAX(event_time) AS last_seen_at
+    FROM visitor_events
+    WHERE latitude IS NOT NULL AND longitude IS NOT NULL
+    GROUP BY country, region, city, latitude, longitude
+    ORDER BY datetime(last_seen_at) DESC
+    LIMIT ?
+  `)
+    .bind(VISITOR_LOCATION_LIMIT)
+    .all();
+
+  return json({
+    success: true,
+    timestamp: new Date().toISOString(),
+    locations: results || [],
+    privacy_notice: "Approximate visitor locations are derived from Cloudflare network metadata.",
   });
 }
 
@@ -382,6 +663,9 @@ async function latestState(env) {
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
+    if (request.method === "OPTIONS") {
+      return optionsResponse();
+    }
     if (ASTRONOMY_ROUTES.includes(url.pathname)
       || url.pathname.startsWith("/api/astronomy/body/")
       || url.pathname.startsWith("/api/astronomy/planet-image/")) {
@@ -397,6 +681,22 @@ export default {
 
     if (url.pathname.startsWith("/tiles/openweather/")) {
       return openWeatherTile(request, env);
+    }
+    if (url.pathname === "/api/visitors/register") {
+      if (request.method !== "POST") return json({ error: "Method not allowed" }, 405);
+      return registerVisitor(request, env);
+    }
+    if (url.pathname === "/api/visitors/ping") {
+      if (request.method !== "POST") return json({ error: "Method not allowed" }, 405);
+      return pingVisitor(request, env);
+    }
+    if (url.pathname === "/api/visitors/stats") {
+      if (request.method !== "GET") return json({ error: "Method not allowed" }, 405);
+      return visitorStats(env);
+    }
+    if (url.pathname === "/api/visitors/locations") {
+      if (request.method !== "GET") return json({ error: "Method not allowed" }, 405);
+      return visitorLocations(env);
     }
     if (url.pathname === "/ingest/v1") {
       const secret = env.INGEST_SECRET;
@@ -465,6 +765,10 @@ export default {
     "/ingest/v1",
     "/health/openweather",
     "/tiles/openweather/clouds/1/1/1.png",
+    "/api/visitors/register",
+    "/api/visitors/ping",
+    "/api/visitors/stats",
+    "/api/visitors/locations",
     "/api/nasa/status",
     ...NASA_DATASET_ROUTES
     ,...ASTRONOMY_ROUTES

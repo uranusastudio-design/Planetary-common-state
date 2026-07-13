@@ -2,13 +2,19 @@ const GLOBAL_STATE_SOURCE = "../PCS_ENGINE/output/latest_state.json";
 const REGIONAL_STATE_SOURCE_PREFIX = "../PCS_ENGINE/output/regions";
 const REFRESH_INTERVAL_MS = 10000;
 const MOON_LIGHTING_REFRESH_INTERVAL_MS = 20 * 60 * 1000;
+const VISITOR_PING_INTERVAL_MS = 30 * 1000;
+const VISITOR_STATS_REFRESH_INTERVAL_MS = 30 * 1000;
+const VISITOR_LOCATIONS_REFRESH_INTERVAL_MS = 60 * 1000;
 const LANGUAGE_STORAGE_KEY = "pcs_observatory_language";
 const REGION_STORAGE_KEY = "pcs_observatory_region";
+const VISITOR_SESSION_STORAGE_KEY = "pcs_observatory_visitor_session_id";
+const VISITOR_REGISTERED_STORAGE_KEY = "pcs_observatory_visitor_registered";
 const IS_LOCAL_DEVELOPMENT = ["localhost", "127.0.0.1"].includes(window.location.hostname);
 const WEATHER_PROXY_BASE = IS_LOCAL_DEVELOPMENT
   ? "http://127.0.0.1:8787"
   : "https://pcs-backend.uranusastudio.workers.dev";
 const ASTRONOMY_PROXY_BASE = WEATHER_PROXY_BASE;
+const VISITOR_API_BASE = WEATHER_PROXY_BASE;
 const LUNAR_IMAGERY_CONFIG = Object.freeze({
   url: `${ASTRONOMY_PROXY_BASE}/api/astronomy/lunar-image`,
   source: "NASA/ASU LROC via USGS Astrogeology",
@@ -201,6 +207,8 @@ let solarImageryActive = false;
 let solarNumericalActive = false;
 let activeSolarImageMode = "hmi-continuum";
 let activeSolarObservationPayload = null;
+let visitorDataSource = null;
+let visitorSessionId = null;
 let userLocationEntity = null;
 let userAccuracyEntity = null;
 let lastUserPosition = null;
@@ -271,6 +279,14 @@ const selectors = {
   weatherProxyStatus: document.querySelector("#weather-proxy-status"),
   weatherActiveLayers: document.querySelector("#weather-active-layers"),
   weatherTileError: document.querySelector("#weather-tile-error"),
+  visitorCurrentOnline: document.querySelector("#visitor-current-online"),
+  visitorTodayVisits: document.querySelector("#visitor-today-visits"),
+  visitorTotalVisits: document.querySelector("#visitor-total-visits"),
+  visitorUniqueSessions: document.querySelector("#visitor-unique-sessions"),
+  visitorCountries: document.querySelector("#visitor-countries"),
+  visitorLatest: document.querySelector("#visitor-latest"),
+  visitorNetworkStatus: document.querySelector("#visitor-network-status"),
+  visitorPrivacyNotice: document.querySelector("#visitor-privacy-notice"),
   moonPanel: document.querySelector("#moon-observation-panel"),
   moonError: document.querySelector("#moon-error"),
   moonPhaseGraphic: document.querySelector("#moon-phase-graphic"),
@@ -324,6 +340,157 @@ function writeStorageValue(key, value) {
 
 function getCurrentLanguage() {
   return readStorageValue(LANGUAGE_STORAGE_KEY, "en");
+}
+
+function setVisitorStatus(message) {
+  updateText(selectors.visitorNetworkStatus, message);
+}
+
+function getOrCreateVisitorSessionId() {
+  const stored = readStorageValue(VISITOR_SESSION_STORAGE_KEY, "");
+  if (stored && /^[A-Za-z0-9_-]{16,128}$/.test(stored)) {
+    return stored;
+  }
+  let generated = "";
+  if (window.crypto?.randomUUID) {
+    generated = window.crypto.randomUUID().replaceAll("-", "");
+  } else {
+    const randomPart = Math.random().toString(36).slice(2);
+    generated = `${Date.now().toString(36)}${randomPart}${randomPart}`.slice(0, 32);
+  }
+  writeStorageValue(VISITOR_SESSION_STORAGE_KEY, generated);
+  return generated;
+}
+
+async function postVisitorEvent(path) {
+  if (!visitorSessionId) return null;
+  const response = await fetch(`${VISITOR_API_BASE}${path}`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ session_id: visitorSessionId }),
+    cache: "no-store",
+  });
+  if (!response.ok) {
+    throw new Error(`Visitor API failed: ${path}`);
+  }
+  return response.json();
+}
+
+async function registerVisitorSession() {
+  if (!visitorSessionId) return;
+  const alreadyRegistered = readStorageValue(VISITOR_REGISTERED_STORAGE_KEY, "0") === "1";
+  if (alreadyRegistered) return;
+  try {
+    await postVisitorEvent("/api/visitors/register");
+    writeStorageValue(VISITOR_REGISTERED_STORAGE_KEY, "1");
+    setVisitorStatus("Visitor network connected.");
+  } catch (error) {
+    setVisitorStatus("Visitor network register failed.");
+  }
+}
+
+async function pingVisitorSession() {
+  if (!visitorSessionId) return;
+  try {
+    await postVisitorEvent("/api/visitors/ping");
+    setVisitorStatus("Visitor network active.");
+  } catch (error) {
+    setVisitorStatus("Visitor ping failed.");
+  }
+}
+
+function setVisitorMetric(element, value) {
+  if (!element) return;
+  updateText(element, value ?? "—");
+}
+
+function formatLatestVisitor(latestVisitor) {
+  if (!latestVisitor) return "—";
+  const parts = [latestVisitor.country, latestVisitor.region || latestVisitor.city].filter(Boolean);
+  if (!parts.length) {
+    return latestVisitor.last_seen_at ? `Updated ${formatTimestamp(latestVisitor.last_seen_at)}` : "Active";
+  }
+  const label = parts.join(" · ");
+  return latestVisitor.last_seen_at ? `${label} (${formatTimestamp(latestVisitor.last_seen_at)})` : label;
+}
+
+async function refreshVisitorStats() {
+  try {
+    const response = await fetch(`${VISITOR_API_BASE}/api/visitors/stats`, { cache: "no-store" });
+    if (!response.ok) throw new Error("stats_unavailable");
+    const payload = await response.json();
+    const stats = payload?.stats || {};
+    setVisitorMetric(selectors.visitorCurrentOnline, String(stats.current_online ?? 0));
+    setVisitorMetric(selectors.visitorTodayVisits, String(stats.today_visits ?? 0));
+    setVisitorMetric(selectors.visitorTotalVisits, String(stats.total_visits ?? 0));
+    setVisitorMetric(selectors.visitorUniqueSessions, String(stats.unique_sessions ?? 0));
+    setVisitorMetric(selectors.visitorCountries, String(stats.countries ?? 0));
+    setVisitorMetric(selectors.visitorLatest, formatLatestVisitor(stats.latest_visitor));
+    if (payload?.privacy_notice) updateText(selectors.visitorPrivacyNotice, payload.privacy_notice);
+  } catch (error) {
+    setVisitorStatus("Visitor stats unavailable.");
+  }
+}
+
+function renderVisitorMarkers(locations = []) {
+  if (!visitorDataSource || !window.Cesium) return;
+  visitorDataSource.entities.removeAll();
+  locations.forEach((location) => {
+    const latitude = Number(location.latitude);
+    const longitude = Number(location.longitude);
+    if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) return;
+    const sessionCount = Number(location.session_count || 0);
+    const labelText = `${location.country || "Unknown"} · ${sessionCount}`;
+    visitorDataSource.entities.add({
+      position: Cesium.Cartesian3.fromDegrees(longitude, latitude, 25000),
+      point: {
+        pixelSize: Math.max(6, Math.min(14, 5 + sessionCount)),
+        color: Cesium.Color.CYAN.withAlpha(0.8),
+        outlineColor: Cesium.Color.WHITE.withAlpha(0.95),
+        outlineWidth: 1,
+        disableDepthTestDistance: Number.POSITIVE_INFINITY,
+      },
+      label: {
+        text: labelText,
+        font: "11px sans-serif",
+        fillColor: Cesium.Color.WHITE,
+        showBackground: true,
+        backgroundColor: Cesium.Color.BLACK.withAlpha(0.55),
+        pixelOffset: new Cesium.Cartesian2(0, -16),
+        disableDepthTestDistance: Number.POSITIVE_INFINITY,
+      },
+      properties: {
+        country: location.country || null,
+        region: location.region || null,
+        city: location.city || null,
+        session_count: sessionCount,
+      },
+    });
+  });
+}
+
+function updateVisitorMarkerVisibility() {
+  if (!visitorDataSource) return;
+  visitorDataSource.show = activeCelestialTargetId === "earth";
+}
+
+async function refreshVisitorLocations() {
+  try {
+    const response = await fetch(`${VISITOR_API_BASE}/api/visitors/locations`, { cache: "no-store" });
+    if (!response.ok) throw new Error("locations_unavailable");
+    const payload = await response.json();
+    renderVisitorMarkers(Array.isArray(payload?.locations) ? payload.locations : []);
+  } catch (error) {
+    setVisitorStatus("Visitor locations unavailable.");
+  }
+}
+
+async function initializeVisitorNetwork() {
+  visitorSessionId = getOrCreateVisitorSessionId();
+  await registerVisitorSession();
+  await pingVisitorSession();
+  await refreshVisitorStats();
+  await refreshVisitorLocations();
 }
 
 async function loadLanguage(lang) {
@@ -1309,6 +1476,9 @@ async function initializeCesiumGlobe() {
     cameraController.enableZoom = true;
     cameraController.inertiaZoom = 0;
     setCesiumCameraForRegion(activeRegionId);
+    visitorDataSource = new Cesium.CustomDataSource("visitorDataSource");
+    cesiumViewer.dataSources.add(visitorDataSource);
+    updateVisitorMarkerVisibility();
 
     await setEarthImageryMode();
   } catch (error) {
@@ -1382,6 +1552,7 @@ async function setCelestialTarget(targetId) {
   if (selectors.moonPanel) selectors.moonPanel.hidden = targetId !== "moon";
   if (selectors.solarPanel) selectors.solarPanel.hidden = targetId !== "sun";
   if (selectors.planetPanel) selectors.planetPanel.hidden = !PLANET_EPHEMERIS_TARGETS.has(targetId);
+  updateVisitorMarkerVisibility();
   cesiumViewer.scene.globe.show = target.bodyType !== "space";
   cesiumViewer.scene.skyAtmosphere.show = targetId === "earth";
   cesiumViewer.scene.globe.enableLighting = targetId === "earth";
@@ -1989,6 +2160,7 @@ async function initializeApp() {
   runSafe("build timestamp rendering", renderBuildTimestamp);
   await runSafeAsync("language loading", () => setLanguage(getCurrentLanguage()));
   await runSafeAsync("dashboard data loading", () => loadLatestState());
+  await runSafeAsync("visitor network initialization", initializeVisitorNetwork);
 }
 
 window.addEventListener("error", (event) => {
@@ -2015,3 +2187,10 @@ setInterval(() => {
     void runSafeAsync("Moon ephemeris and lighting refresh", () => loadMoonObservation());
   }
 }, MOON_LIGHTING_REFRESH_INTERVAL_MS);
+setInterval(() => {
+  void runSafeAsync("visitor ping", pingVisitorSession);
+  void runSafeAsync("visitor stats refresh", refreshVisitorStats);
+}, VISITOR_PING_INTERVAL_MS);
+setInterval(() => {
+  void runSafeAsync("visitor locations refresh", refreshVisitorLocations);
+}, VISITOR_LOCATIONS_REFRESH_INTERVAL_MS);

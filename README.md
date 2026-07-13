@@ -111,6 +111,20 @@ Errors are sanitized:
 }
 ```
 
+### Visitor observatory network API
+
+The Worker also provides anonymous visitor telemetry endpoints for
+`PCS_OBSERVATORY`:
+
+- `POST /api/visitors/register`
+- `POST /api/visitors/ping`
+- `GET /api/visitors/stats`
+- `GET /api/visitors/locations`
+
+These routes use Cloudflare `request.cf` metadata, round coordinates to 2
+decimals, never store full IP addresses, and keep location responses grouped to
+at most 100 recent points.
+
 ### D1 database initialisation
 
 Run once against a fresh D1 database:

@@ -83,3 +83,47 @@ CREATE TABLE IF NOT EXISTS pcs_observations (
 
 CREATE INDEX IF NOT EXISTS idx_obs_variable_time
   ON pcs_observations (variable_id, timestamp DESC);
+
+-- ──────────────────────────────────────────────────────────────────────────────
+-- Visitor observatory network
+-- ──────────────────────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS visitor_sessions (
+  session_id      TEXT PRIMARY KEY,
+  country         TEXT,
+  region          TEXT,
+  city            TEXT,
+  latitude        REAL,
+  longitude       REAL,
+  timezone        TEXT,
+  colo            TEXT,
+  first_seen_at   TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now')),
+  last_seen_at    TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now')),
+  visit_count     INTEGER NOT NULL DEFAULT 1,
+  last_user_agent TEXT
+);
+
+CREATE INDEX IF NOT EXISTS idx_visitor_sessions_last_seen
+  ON visitor_sessions (last_seen_at DESC);
+
+CREATE INDEX IF NOT EXISTS idx_visitor_sessions_country
+  ON visitor_sessions (country);
+
+CREATE TABLE IF NOT EXISTS visitor_events (
+  id          INTEGER PRIMARY KEY AUTOINCREMENT,
+  session_id  TEXT NOT NULL REFERENCES visitor_sessions(session_id) ON DELETE CASCADE,
+  event_type  TEXT NOT NULL CHECK (event_type IN ('register', 'ping')),
+  event_time  TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now')),
+  country     TEXT,
+  region      TEXT,
+  city        TEXT,
+  latitude    REAL,
+  longitude   REAL,
+  timezone    TEXT,
+  colo        TEXT
+);
+
+CREATE INDEX IF NOT EXISTS idx_visitor_events_time
+  ON visitor_events (event_time DESC);
+
+CREATE INDEX IF NOT EXISTS idx_visitor_events_session_time
+  ON visitor_events (session_id, event_time DESC);

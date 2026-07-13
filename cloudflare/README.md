@@ -24,6 +24,19 @@ Returns prototype JSON shaped for future compatibility with `latest_state.json`.
 
 No scientific values are included in this prototype endpoint.
 
+### Visitor observatory network routes
+
+- `POST /api/visitors/register` — creates or updates an anonymous browser session using a client-provided `session_id` and Cloudflare `request.cf` metadata.
+- `POST /api/visitors/ping` — heartbeat endpoint for active sessions.
+- `GET /api/visitors/stats` — returns Current Online, Today's Visits, Total Visits, Unique Sessions, Countries, and Latest Visitor.
+- `GET /api/visitors/locations` — returns up to 100 recent grouped approximate locations for globe markers.
+
+Privacy boundary:
+
+- The Worker does not store full IP addresses.
+- Locations are derived from Cloudflare network metadata only.
+- Latitude/longitude values are rounded to 2 decimals.
+
 ### `GET /api/nasa/status`
 
 Returns NASA Earthdata gateway configuration status without exposing secrets.
