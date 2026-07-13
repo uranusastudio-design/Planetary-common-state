@@ -166,15 +166,15 @@
             </div>
             <div class="framework-control-grid" role="group" aria-label="Solar System Observatory options">
               <button type="button" class="framework-button" data-solar-target="sun">Sun <small>NOAA + JPL</small></button>
-              <button type="button" class="framework-button" data-solar-target="mercury">Mercury <small>JPL live</small></button>
-              <button type="button" class="framework-button" data-solar-target="venus">Venus <small>JPL live</small></button>
+              <button type="button" class="framework-button" data-solar-target="mercury">Mercury <small>JPL data + NASA/USGS imagery</small></button>
+              <button type="button" class="framework-button" data-solar-target="venus">Venus <small>JPL data + NASA/USGS imagery</small></button>
               <button type="button" class="framework-button is-active" data-solar-target="earth">Earth <small>Active</small></button>
               <button type="button" class="framework-button" data-solar-target="moon">Moon <small>Live data</small></button>
-              <button type="button" class="framework-button" data-solar-target="mars">Mars <small>JPL live</small></button>
-              <button type="button" class="framework-button" data-solar-target="jupiter">Jupiter <small>JPL live</small></button>
-              <button type="button" class="framework-button" data-solar-target="saturn">Saturn <small>JPL live</small></button>
-              <button type="button" class="framework-button" data-solar-target="uranus">Uranus <small>JPL live</small></button>
-              <button type="button" class="framework-button" data-solar-target="neptune">Neptune <small>JPL live</small></button>
+              <button type="button" class="framework-button" data-solar-target="mars">Mars <small>JPL data + NASA/USGS imagery</small></button>
+              <button type="button" class="framework-button" data-solar-target="jupiter">Jupiter <small>JPL data + NASA imagery</small></button>
+              <button type="button" class="framework-button" data-solar-target="saturn">Saturn <small>JPL data + NASA imagery</small></button>
+              <button type="button" class="framework-button" data-solar-target="uranus">Uranus <small>JPL data + NASA imagery</small></button>
+              <button type="button" class="framework-button" data-solar-target="neptune">Neptune <small>JPL data + NASA imagery</small></button>
               <button type="button" class="framework-button" data-solar-target="deep-space">Deep Space <small>Preview</small></button>
             </div>
             <p id="solar-system-status" class="framework-status" role="status" aria-live="polite">
@@ -210,6 +210,19 @@
                 <div><dt>Right Ascension</dt><dd data-planet-value="right_ascension">—</dd></div><div><dt>Declination</dt><dd data-planet-value="declination">—</dd></div>
                 <div><dt>Last Updated</dt><dd data-planet-meta="observed_at">—</dd></div><div><dt>Source</dt><dd data-planet-meta="source">—</dd></div>
                 <div><dt>Data status</dt><dd data-planet-meta="status">—</dd></div>
+              </dl>
+              <h4 class="observation-subheading">Scientific planetary imagery</h4>
+              <p class="panel-note">Display scale is normalized for observation.</p>
+              <dl class="observation-grid imagery-metadata-grid">
+                <div><dt>Imagery Source</dt><dd data-planet-imagery-value="source">—</dd></div>
+                <div><dt>Mission</dt><dd data-planet-imagery-value="mission">—</dd></div>
+                <div><dt>Instrument</dt><dd data-planet-imagery-value="instrument">—</dd></div>
+                <div><dt>Product Name</dt><dd data-planet-imagery-value="product">—</dd></div>
+                <div><dt>Product Type</dt><dd data-planet-imagery-value="product_type">—</dd></div>
+                <div><dt>Projection</dt><dd data-planet-imagery-value="projection">—</dd></div>
+                <div><dt>Observation / Product Date</dt><dd data-planet-imagery-value="date">—</dd></div>
+                <div><dt>Status</dt><dd data-planet-imagery-value="status">—</dd></div>
+                <div class="observation-grid-wide"><dt>Attribution</dt><dd data-planet-imagery-value="attribution">—</dd></div>
               </dl>
             </section>
             <section id="solar-observation-panel" class="live-observation-panel" hidden aria-labelledby="solar-observation-title">

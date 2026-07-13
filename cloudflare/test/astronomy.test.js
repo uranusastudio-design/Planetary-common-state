@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { handleAstronomyRequest, JPL_BODY_CONFIG, SOLAR_IMAGE_MODES } from "../src/astronomy.js";
+import { handleAstronomyRequest, JPL_BODY_CONFIG, PLANET_IMAGE_PRODUCTS, SOLAR_IMAGE_MODES } from "../src/astronomy.js";
 
 function memoryEnvironment(seed = {}) {
   const kv = new Map(Object.entries(seed));
@@ -127,6 +127,61 @@ test("Lunar image proxy validates PNG content and sets scientific attribution he
   assert.equal(response.status, 200);
   assert.equal(response.headers.get("content-type"), "image/png");
   assert.equal(response.headers.get("x-pcs-image-source"), "USGS-LROC-WAC");
+});
+
+test("Planet image route validates every fixed official product and normalizes metadata", async (t) => {
+  const originalFetch = globalThis.fetch;
+  t.after(() => { globalThis.fetch = originalFetch; });
+  const requested = [];
+  globalThis.fetch = async (url) => { requested.push(String(url)); return jpegResponse(); };
+  for (const [body, config] of Object.entries(PLANET_IMAGE_PRODUCTS)) {
+    const { env, ctx } = memoryEnvironment();
+    const response = await handleAstronomyRequest(new Request(`https://worker.test/api/astronomy/planet-image/${body}`), env, ctx);
+    const payload = await response.json();
+    assert.equal(response.status, 200, body);
+    assert.equal(payload.success, true, body);
+    assert.equal(payload.body, body, body);
+    assert.equal(payload.source, config.source, body);
+    assert.equal(payload.instrument, config.instrument ?? null, body);
+    assert.equal(payload.observed_at, config.observedAt ?? null, body);
+    assert.equal(payload.product_date, config.productDate ?? null, body);
+    assert.equal(payload.status, "archival", body);
+    assert.equal(payload.image_url, `https://worker.test/api/astronomy/planet-image/${body}?format=image`, body);
+    assert.equal(payload.thumbnail_url, null, body);
+    assert.match(config.sourceUrl, /^https:\/\/(astrogeology\.usgs\.gov|planetarymaps\.usgs\.gov|photojournal\.jpl\.nasa\.gov|assets\.science\.nasa\.gov)\//, body);
+    assert.equal(requested.at(-1), config.sourceUrl, body);
+  }
+});
+
+test("Planet binary proxy serves validated bytes and rejects HTML error pages", async (t) => {
+  const originalFetch = globalThis.fetch;
+  t.after(() => { globalThis.fetch = originalFetch; });
+  globalThis.fetch = async () => jpegResponse();
+  const valid = memoryEnvironment();
+  const image = await handleAstronomyRequest(new Request("https://worker.test/api/astronomy/planet-image/mars?format=image"), valid.env, valid.ctx);
+  assert.equal(image.status, 200);
+  assert.equal(image.headers.get("content-type"), "image/jpeg");
+  assert.equal(image.headers.get("x-pcs-image-status"), "validated");
+  assert.equal(image.headers.get("access-control-allow-origin"), "*");
+
+  globalThis.fetch = async () => new Response("<html>not an image</html>", { status: 200, headers: { "content-type": "text/html" } });
+  const invalid = memoryEnvironment();
+  const rejected = await handleAstronomyRequest(new Request("https://worker.test/api/astronomy/planet-image/venus?format=image"), invalid.env, invalid.ctx);
+  assert.equal(rejected.status, 503);
+  assert.equal((await rejected.json()).status, "unavailable");
+});
+
+test("Unsupported planet imagery returns the complete null-safe unavailable schema", async () => {
+  const { env, ctx } = memoryEnvironment();
+  const response = await handleAstronomyRequest(new Request("https://worker.test/api/astronomy/planet-image/pluto"), env, ctx);
+  const payload = await response.json();
+  assert.equal(response.status, 404);
+  assert.equal(payload.success, false);
+  assert.equal(payload.source, null);
+  assert.equal(payload.instrument, null);
+  assert.equal(payload.image_url, null);
+  assert.equal(payload.product_date, null);
+  assert.equal(payload.status, "unavailable");
 });
 
 test("NOAA timeout is normalized as unavailable", async (t) => {

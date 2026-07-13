@@ -3,6 +3,13 @@ const JPL_HORIZONS = "https://ssd.jpl.nasa.gov/api/horizons.api";
 const SOLAR_IMAGE_CACHE_SECONDS = 600;
 const SOLAR_IMAGE_STALE_SECONDS = 86400;
 const MAX_OFFICIAL_IMAGE_BYTES = 12 * 1024 * 1024;
+const PLANET_IMAGE_STALE_SECONDS = 30 * 24 * 60 * 60;
+const OFFICIAL_IMAGE_HOSTS = new Set([
+  "astrogeology.usgs.gov",
+  "planetarymaps.usgs.gov",
+  "photojournal.jpl.nasa.gov",
+  "assets.science.nasa.gov",
+]);
 const LUNAR_IMAGE_URL = "https://planetarymaps.usgs.gov/cgi-bin/mapserv?map=/maps/earth/moon_simp_cyl.map&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&LAYERS=LROC_WAC&STYLES=&SRS=EPSG:4326&BBOX=0,-90,360,90&WIDTH=2048&HEIGHT=1024&FORMAT=image/png";
 
 export const SOLAR_IMAGE_MODES = Object.freeze({
@@ -50,6 +57,79 @@ export const SOLAR_IMAGE_MODES = Object.freeze({
   },
 });
 
+export const PLANET_IMAGE_PRODUCTS = Object.freeze({
+  mercury: {
+    source: "NASA / USGS Astrogeology", mission: "MESSENGER", instrument: "MDIS",
+    product: "Mercury MESSENGER MDIS Global Mosaic 250m",
+    productType: "global_mosaic", projection: "equirectangular",
+    observedAt: null, productDate: "2013-05-01",
+    sourceUrl: "https://astrogeology.usgs.gov/ckan/dataset/279e5d50-ff2f-4250-bde3-bb510096079e/resource/2b5865c2-bd0d-4962-bdb0-c12f0502def1/download/mercury_messenger_mosaic_global_1024.jpg",
+    catalogUrl: "https://astrogeology.usgs.gov/search/map/mercury_messenger_mdis_global_mosaic_250m",
+    attribution: "NASA MESSENGER / USGS Astrogeology Science Center",
+    notes: "Mission-derived global surface mosaic; not a live observation.", cacheSeconds: 604800,
+  },
+  venus: {
+    source: "NASA / USGS Astrogeology", mission: "Magellan", instrument: "SAR",
+    product: "Venus Magellan Global C3-MIDR Mosaic 2025m",
+    productType: "radar_map", projection: "equirectangular",
+    observedAt: null, productDate: "2022-09-01",
+    sourceUrl: "https://astrogeology.usgs.gov/ckan/dataset/bf10c4f9-7587-4357-b0d9-81d5b6e6637c/resource/12345d86-e2a3-45eb-af88-c1e8bf3ac358/download/full.jpg",
+    catalogUrl: "https://astrogeology.usgs.gov/search/map/venus_magellan_global_c3_mdir_mosaic_2025m",
+    attribution: "NASA Magellan / PDS Geosciences Node / USGS Astrogeology",
+    notes: "Radar-derived surface mosaic; grayscale radar brightness is not natural visible-light color.", cacheSeconds: 604800,
+  },
+  mars: {
+    source: "NASA / USGS Astrogeology", mission: "Viking Orbiter", instrument: "VIS",
+    product: "Mars Viking Global Color Mosaic 925m",
+    productType: "global_mosaic", projection: "simple_cylindrical",
+    observedAt: null, productDate: null,
+    sourceUrl: "https://astrogeology.usgs.gov/ckan/dataset/dfdc2242-52dc-4126-bc89-03af8253ae79/resource/0d7b31dc-0b2e-4ca6-89dc-e3c1404c0232/download/mars_viking_clrmosaic_global_1024.jpg",
+    catalogUrl: "https://astrogeology.usgs.gov/search/map/mars_viking_global_color_mosaic_925m",
+    attribution: "NASA Viking Orbiter / USGS Astrogeology Science Center",
+    notes: "Mission-derived global optical color mosaic; archival, not live.", cacheSeconds: 604800,
+  },
+  jupiter: {
+    source: "NASA / JPL Photojournal", mission: "Cassini-Huygens", instrument: "Imaging Science Subsystem",
+    product: "PIA02873 High Resolution Globe of Jupiter",
+    productType: "observation_disc", projection: "observation_disc",
+    observedAt: "2000-12-07T00:00:00.000Z", productDate: "2001-01-30",
+    sourceUrl: "https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/pia02/pia02873/PIA02873.jpg",
+    catalogUrl: "https://photojournal.jpl.nasa.gov/catalog/PIA02873",
+    attribution: "NASA/JPL/University of Arizona",
+    notes: "True-color simulated globe made from four Cassini observations; rendered as an archival atmosphere observation disc.", cacheSeconds: 86400,
+  },
+  saturn: {
+    source: "NASA / JPL Photojournal", mission: "Cassini-Huygens", instrument: "ISS Narrow Angle Camera",
+    product: "PIA05389 Saturn and its Rings",
+    productType: "observation_disc", projection: "observation_disc",
+    observedAt: "2004-03-27T00:00:00.000Z", productDate: null,
+    sourceUrl: "https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/pia05/pia05389/PIA05389.jpg",
+    catalogUrl: "https://photojournal.jpl.nasa.gov/catalog/PIA05389",
+    attribution: "NASA/JPL/Space Science Institute",
+    notes: "Natural-color Cassini archival observation. Interface rings are also represented by a separate ring primitive.", cacheSeconds: 604800,
+  },
+  uranus: {
+    source: "NASA / JPL Photojournal", mission: "Voyager 2", instrument: "VG ISS Wide Angle Camera",
+    product: "PIA00143 Uranus - Final Image",
+    productType: "observation_disc", projection: "observation_disc",
+    observedAt: "1986-01-25T00:00:00.000Z", productDate: "1996-01-29",
+    sourceUrl: "https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/pia00/pia00143/PIA00143.jpg",
+    catalogUrl: "https://photojournal.jpl.nasa.gov/catalog/PIA00143",
+    attribution: "NASA/JPL",
+    notes: "Voyager 2 archival atmospheric color composite; not a global surface map.", cacheSeconds: 604800,
+  },
+  neptune: {
+    source: "NASA / JPL Photojournal", mission: "Voyager 2", instrument: "VG ISS Narrow Angle Camera",
+    product: "PIA00046 Neptune Full Disk",
+    productType: "observation_disc", projection: "observation_disc",
+    observedAt: null, productDate: "1996-01-29",
+    sourceUrl: "https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/pia00/pia00046/PIA00046.jpg",
+    catalogUrl: "https://photojournal.jpl.nasa.gov/catalog/PIA00046",
+    attribution: "NASA/JPL",
+    notes: "Processed Voyager 2 archival atmospheric observation; not a solid surface or global map.", cacheSeconds: 604800,
+  },
+});
+
 export const ASTRONOMY_ROUTES = [
   "/api/astronomy/moon",
   "/api/astronomy/body/:body",
@@ -60,6 +140,7 @@ export const ASTRONOMY_ROUTES = [
   "/api/space-weather/alerts",
   "/api/space-weather/solar-image",
   "/api/astronomy/lunar-image",
+  "/api/astronomy/planet-image/:body",
 ];
 
 export const JPL_BODY_CONFIG = {
@@ -492,9 +573,24 @@ async function fetchOfficialImage(url, timeoutMs = 10000) {
     if (contentType !== "image/jpeg" && contentType !== "image/png") throw new Error("upstream did not return an image");
     const declaredLength = Number(upstream.headers.get("content-length"));
     if (Number.isFinite(declaredLength) && declaredLength > MAX_OFFICIAL_IMAGE_BYTES) throw new Error("upstream image is too large");
-    const buffer = await upstream.arrayBuffer();
-    if (!buffer.byteLength || buffer.byteLength > MAX_OFFICIAL_IMAGE_BYTES) throw new Error("upstream image has an invalid size");
-    const bytes = new Uint8Array(buffer);
+    if (!upstream.body) throw new Error("upstream image body is empty");
+    const reader = upstream.body.getReader();
+    const chunks = [];
+    let received = 0;
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      received += value.byteLength;
+      if (received > MAX_OFFICIAL_IMAGE_BYTES) {
+        await reader.cancel("upstream image is too large");
+        throw new Error("upstream image is too large");
+      }
+      chunks.push(value);
+    }
+    if (!received) throw new Error("upstream image has an invalid size");
+    const bytes = new Uint8Array(received);
+    let offset = 0;
+    chunks.forEach((chunk) => { bytes.set(chunk, offset); offset += chunk.byteLength; });
     if (!hasImageSignature(bytes, contentType)) throw new Error("upstream image signature is invalid");
     return {
       bytes,
@@ -676,6 +772,121 @@ async function lunarImage(request, ctx) {
   }
 }
 
+function planetPublicImageUrl(request, body) {
+  const url = new URL(`/api/astronomy/planet-image/${body}`, new URL(request.url).origin);
+  url.searchParams.set("format", "image");
+  return url.toString();
+}
+
+function assertAllowedPlanetSource(sourceUrl) {
+  const url = new URL(sourceUrl);
+  if (url.protocol !== "https:" || !OFFICIAL_IMAGE_HOSTS.has(url.hostname)) {
+    throw new Error("planet image source is not on the official-domain allowlist");
+  }
+}
+
+function planetImageCacheKey(request, body, stale = false) {
+  const url = new URL(planetPublicImageUrl(request, body));
+  if (stale) url.searchParams.set("cache", "last-valid");
+  return new Request(url);
+}
+
+async function cachePlanetImage(request, ctx, body, config, image) {
+  const headers = { "x-pcs-image-status": "validated", "x-pcs-image-source": body };
+  const fresh = officialImageResponse(image, config.cacheSeconds, headers);
+  const stale = officialImageResponse(image, PLANET_IMAGE_STALE_SECONDS, { ...headers, "x-pcs-image-status": "last-valid" });
+  ctx.waitUntil(Promise.all([
+    caches.default.put(planetImageCacheKey(request, body), fresh),
+    caches.default.put(planetImageCacheKey(request, body, true), stale),
+  ]));
+}
+
+async function validatedPlanetImage(request, ctx, body, config) {
+  const fresh = await caches.default.match(planetImageCacheKey(request, body));
+  if (fresh) return { response: fresh, status: "archival" };
+  assertAllowedPlanetSource(config.sourceUrl);
+  try {
+    const image = await fetchOfficialImage(config.sourceUrl, 15000);
+    await cachePlanetImage(request, ctx, body, config, image);
+    return {
+      response: officialImageResponse(image, config.cacheSeconds, {
+        "x-pcs-image-status": "validated", "x-pcs-image-source": body,
+      }),
+      status: "archival",
+    };
+  } catch (error) {
+    const stale = await caches.default.match(planetImageCacheKey(request, body, true));
+    if (stale) {
+      const headers = new Headers(stale.headers);
+      headers.set("x-pcs-image-status", "stale");
+      headers.set("warning", '110 - "stale archival planet image"');
+      return { response: new Response(stale.body, { status: 200, headers }), status: "stale" };
+    }
+    throw error;
+  }
+}
+
+function planetMetadataPayload(request, body, config, status = "archival") {
+  return {
+    success: true,
+    body,
+    source: config.source,
+    mission: config.mission,
+    instrument: config.instrument ?? null,
+    product: config.product,
+    product_type: config.productType,
+    projection: config.projection,
+    observed_at: config.observedAt ?? null,
+    product_date: config.productDate ?? null,
+    retrieved_at: new Date().toISOString(),
+    status,
+    image_url: planetPublicImageUrl(request, body),
+    thumbnail_url: null,
+    attribution: config.attribution,
+    notes: config.notes ?? null,
+    source_image_url: config.sourceUrl,
+    catalog_url: config.catalogUrl,
+  };
+}
+
+async function planetImage(request, env, ctx, body) {
+  const config = PLANET_IMAGE_PRODUCTS[body];
+  if (!config) {
+    return response({
+      success: false, body, source: null, mission: null, instrument: null, product: null,
+      product_type: null, projection: null, observed_at: null, product_date: null,
+      retrieved_at: new Date().toISOString(), status: "unavailable", image_url: null,
+      thumbnail_url: null, attribution: null, notes: null, error: "unsupported body",
+    }, 404);
+  }
+  const format = new URL(request.url).searchParams.get("format");
+  try {
+    const validated = await validatedPlanetImage(request, ctx, body, config);
+    if (format === "image") return validated.response;
+    const payload = planetMetadataPayload(request, body, config, validated.status);
+    ctx.waitUntil(writeStored(env, `astronomy:last:planet-image:${body}`, payload, PLANET_IMAGE_STALE_SECONDS));
+    return response(payload, 200, config.cacheSeconds);
+  } catch (error) {
+    if (format !== "image") {
+      const stale = await readStored(env, `astronomy:last:planet-image:${body}`);
+      if (stale) return response({
+        ...stale, retrieved_at: new Date().toISOString(), status: "stale",
+        image_url: planetPublicImageUrl(request, body),
+      });
+    }
+    const message = error.name === "AbortError" ? "upstream timeout" : "scientific planetary imagery unavailable";
+    return response({
+      success: false, body, source: config.source, mission: config.mission,
+      instrument: config.instrument ?? null, product: config.product,
+      product_type: config.productType, projection: config.projection,
+      observed_at: config.observedAt ?? null, product_date: config.productDate ?? null,
+      retrieved_at: new Date().toISOString(), status: "unavailable", image_url: null,
+      thumbnail_url: null, attribution: config.attribution, notes: config.notes ?? null,
+      error: message,
+    }, 503);
+  }
+}
+
 export async function handleAstronomyRequest(request, env, ctx) {
   if (request.method !== "GET") return response(errorEnvelope(SOURCE.noaa, "PCS astronomy API", "method not allowed"), 405);
   const path = new URL(request.url).pathname;
@@ -689,6 +900,10 @@ export async function handleAstronomyRequest(request, env, ctx) {
     return solarImageMetadata(request, env, ctx, mode);
   }
   if (path === "/api/astronomy/lunar-image") return lunarImage(request, ctx);
+  if (path.startsWith("/api/astronomy/planet-image/")) {
+    const body = decodeURIComponent(path.split("/").filter(Boolean).at(-1) || "").toLowerCase();
+    return planetImage(request, env, ctx, body);
+  }
   if (path.startsWith("/api/astronomy/body/")) {
     const body = decodeURIComponent(path.split("/").filter(Boolean).at(-1) || "").toLowerCase();
     const bodyConfig = JPL_BODY_CONFIG[body];

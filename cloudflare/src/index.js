@@ -382,7 +382,9 @@ async function latestState(env) {
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
-    if (ASTRONOMY_ROUTES.includes(url.pathname) || url.pathname.startsWith("/api/astronomy/body/")) {
+    if (ASTRONOMY_ROUTES.includes(url.pathname)
+      || url.pathname.startsWith("/api/astronomy/body/")
+      || url.pathname.startsWith("/api/astronomy/planet-image/")) {
       return handleAstronomyRequest(request, env, ctx);
     }
     if (url.pathname === "/api/nasa/status" || url.pathname.startsWith("/api/nasa/")) {
