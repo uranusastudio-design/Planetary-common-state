@@ -265,7 +265,10 @@ async function writeStored(env, key, payload, staleTtl) {
 
 async function cachedDataset(request, env, ctx, key, config, source, loader) {
   const cache = caches.default;
-  const cacheKey = new Request(new URL(request.url).origin + new URL(request.url).pathname);
+  const requestUrl = new URL(request.url);
+  const cacheUrl = new URL(requestUrl.pathname, requestUrl.origin);
+  cacheUrl.searchParams.set("__pcs_dataset", key);
+  const cacheKey = new Request(cacheUrl);
   const hit = await cache.match(cacheKey);
   if (hit) {
     const payload = await hit.json();
@@ -507,6 +510,26 @@ function parseHorizons(result) {
   };
 }
 
+function parseHorizonsVector(result) {
+  const block = result?.match(/\$\$SOE\s*([\s\S]*?)\s*\$\$EOE/)?.[1]?.trim();
+  if (!block) throw new Error("JPL Horizons vector ephemeris was empty");
+  const values = block.split(/\r?\n/).find((item) => item.trim()).split(",").map((item) => item.trim());
+  const vector = values.slice(2, 5).map(finite);
+  if (vector.length !== 3 || vector.some((value) => value === null)) throw new Error("JPL Horizons vector was invalid");
+  return vector;
+}
+
+async function loadMoonVector(command, center, start, stop) {
+  const params = new URLSearchParams({
+    format: "json", COMMAND: `'${command}'`, EPHEM_TYPE: "'VECTORS'", CENTER: `'${center}'`,
+    START_TIME: `'${start.toISOString()}'`, STOP_TIME: `'${stop.toISOString()}'`, STEP_SIZE: "'1 h'",
+    VEC_TABLE: "'2'", OUT_UNITS: "'KM-S'", REF_PLANE: "'FRAME'", REF_SYSTEM: "'ICRF'",
+    CSV_FORMAT: "'YES'", TIME_TYPE: "'UT'",
+  });
+  const result = await timedJson(`${JPL_HORIZONS}?${params}`);
+  return { vector: parseHorizonsVector(result.value.result), ms: result.ms };
+}
+
 async function loadMoon() {
   const now = new Date();
   const stop = new Date(now.getTime() + 3600000);
@@ -515,15 +538,26 @@ async function loadMoon() {
     START_TIME: `'${now.toISOString()}'`, STOP_TIME: `'${stop.toISOString()}'`, STEP_SIZE: "'1 h'",
     QUANTITIES: "'10,13,20'", CSV_FORMAT: "'YES'", TIME_TYPE: "'UT'",
   });
+  // Horizons may throttle simultaneous requests from the same Worker isolate.
+  // Keep these three small UTC queries sequential so optional vector geometry
+  // does not compete with the primary illumination request.
   const { value, ms } = await timedJson(`${JPL_HORIZONS}?${params}`);
+  const sunVectorResult = await loadMoonVector("10", "500@301", now, stop).catch(() => null);
+  const earthVectorResult = await loadMoonVector("399", "500@301", now, stop).catch(() => null);
   const eph = parseHorizons(value.result);
   const local = lunarApproximation(now);
+  const vectorGeometryAvailable = Boolean(sunVectorResult?.vector && earthVectorResult?.vector);
   const data = {
     phase_name: local.phase_name, phase_fraction: local.phase_fraction,
     illumination_percent: eph.illumination, moon_age_days: local.moon_age_days,
     earth_distance_km: eph.distanceAu === null ? null : eph.distanceAu * 149597870.7,
     apparent_diameter_arcsec: eph.diameter, next_new_moon: null, next_full_moon: null,
-    calculation_time: now.toISOString(), source: SOURCE.jpl.name, data_status: "live",
+    calculation_time: eph.calculationTime || now.toISOString(), source: SOURCE.jpl.name, data_status: "live",
+    moon_to_sun_vector_km: sunVectorResult?.vector ?? null,
+    moon_to_earth_vector_km: earthVectorResult?.vector ?? null,
+    phase_geometry_source: vectorGeometryAvailable ? "NASA/JPL Horizons ICRF vectors" : "PCS UTC synodic approximation",
+    phase_geometry_status: vectorGeometryAvailable ? "source-computed_ephemeris" : "approximation",
+    orientation_accuracy: "simplified near-side orientation; research-grade physical libration is not implemented",
     provenance: {
       phase_name: { source: "PCS synodic approximation", time: now.toISOString(), unit: "category", type: "calculated" },
       phase_fraction: { source: "PCS synodic approximation", time: now.toISOString(), unit: "cycle fraction", type: "calculated" },
@@ -531,11 +565,17 @@ async function loadMoon() {
       moon_age_days: { source: "PCS synodic approximation", time: now.toISOString(), unit: "days", type: "calculated" },
       earth_distance_km: { source: SOURCE.jpl.name, time: eph.calculationTime, unit: "km", type: "source-computed_ephemeris" },
       apparent_diameter_arcsec: { source: SOURCE.jpl.name, time: eph.calculationTime, unit: "arcsec", type: "source-computed_ephemeris" },
+      moon_to_sun_vector_km: { source: vectorGeometryAvailable ? SOURCE.jpl.name : null, time: vectorGeometryAvailable ? eph.calculationTime : now.toISOString(), unit: "ICRF km", type: vectorGeometryAvailable ? "source-computed_ephemeris" : "unavailable" },
+      moon_to_earth_vector_km: { source: vectorGeometryAvailable ? SOURCE.jpl.name : null, time: vectorGeometryAvailable ? eph.calculationTime : now.toISOString(), unit: "ICRF km", type: vectorGeometryAvailable ? "source-computed_ephemeris" : "unavailable" },
+      phase_geometry_source: { source: vectorGeometryAvailable ? SOURCE.jpl.name : "PCS UTC synodic approximation", time: vectorGeometryAvailable ? eph.calculationTime : now.toISOString(), unit: "direction", type: vectorGeometryAvailable ? "source-computed_ephemeris" : "approximation" },
       next_new_moon: { source: null, time: null, unit: "UTC", type: "unavailable" },
       next_full_moon: { source: null, time: null, unit: "UTC", type: "unavailable" },
     },
   };
-  return envelope(SOURCE.jpl, CONFIG.moon.dataset, eph.calculationTime, data, { upstream_response_ms: ms });
+  return envelope(SOURCE.jpl, CONFIG.moon.dataset, eph.calculationTime, data, {
+    upstream_response_ms: Math.max(ms, sunVectorResult?.ms || 0, earthVectorResult?.ms || 0),
+    partial: !vectorGeometryAvailable,
+  });
 }
 
 function officialImageResponse(image, cacheSeconds, extras = {}) {
@@ -911,7 +951,7 @@ export async function handleAstronomyRequest(request, env, ctx) {
     const config = { ttl: bodyConfig.cacheSeconds, staleTtl: Math.max(bodyConfig.cacheSeconds * 4, 86400), dataset: "body_ephemeris" };
     return cachedDataset(request, env, ctx, `body:${body}`, config, SOURCE.jpl, () => loadBodyEphemeris(body, bodyConfig));
   }
-  if (path === "/api/astronomy/moon") return cachedDataset(request, env, ctx, "moon", CONFIG.moon, SOURCE.jpl, loadMoon);
+  if (path === "/api/astronomy/moon") return cachedDataset(request, env, ctx, "moon-phase3a", CONFIG.moon, SOURCE.jpl, loadMoon);
   if (path === "/api/space-weather/kp") return cachedDataset(request, env, ctx, "kp", CONFIG.kp, SOURCE.noaa, loadKp);
   if (path === "/api/space-weather/solar-wind") return cachedDataset(request, env, ctx, "solar-wind", CONFIG.solarWind, SOURCE.noaa, loadSolarWind);
   if (path === "/api/space-weather/xray") return cachedDataset(request, env, ctx, "xray", CONFIG.xray, SOURCE.noaa, loadXray);

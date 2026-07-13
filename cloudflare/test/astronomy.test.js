@@ -50,6 +50,30 @@ test("Moon route normalizes JPL ephemeris and labels local calculations", async 
   assert.equal(payload.data.provenance.phase_fraction.type, "calculated");
   assert.equal(payload.data.provenance.earth_distance_km.type, "source-computed_ephemeris");
   assert.equal(payload.data.next_new_moon, null);
+  assert.equal(payload.data.phase_geometry_status, "approximation");
+  assert.equal(payload.partial, true);
+});
+
+test("Moon route prefers JPL ICRF vectors for phase geometry", async (t) => {
+  const originalFetch = globalThis.fetch;
+  t.after(() => { globalThis.fetch = originalFetch; });
+  globalThis.fetch = async (url) => {
+    const requestUrl = new URL(String(url));
+    if (requestUrl.searchParams.get("EPHEM_TYPE") === "'VECTORS'") {
+      const command = requestUrl.searchParams.get("COMMAND");
+      const vector = command === "'10'" ? "149000000, 1200000, 800000" : "-380000, 12000, 4000";
+      return jsonResponse({ result: `$$SOE\n2461234.5, A.D. 2026-Jul-13 00:00:00.0000, ${vector}, 0, 0, 0\n$$EOE` });
+    }
+    return jsonResponse({ result: "$$SOE\n2026-07-13T00:00:00, 42.5, 1850.2, 0.00257\n$$EOE" });
+  };
+  const { env, ctx } = memoryEnvironment();
+  const response = await handleAstronomyRequest(new Request("https://worker.test/api/astronomy/moon"), env, ctx);
+  const payload = await response.json();
+  assert.equal(response.status, 200);
+  assert.deepEqual(payload.data.moon_to_sun_vector_km, [149000000, 1200000, 800000]);
+  assert.deepEqual(payload.data.moon_to_earth_vector_km, [-380000, 12000, 4000]);
+  assert.equal(payload.data.phase_geometry_status, "source-computed_ephemeris");
+  assert.equal(payload.partial, false);
 });
 
 test("Moon failure returns unavailable without fabricated values", async (t) => {
