@@ -192,6 +192,12 @@
                 <div><dt>Next New Moon</dt><dd data-moon-value="next_new_moon">—</dd></div><div><dt>Next Full Moon</dt><dd data-moon-value="next_full_moon">—</dd></div>
                 <div><dt>Last Updated</dt><dd data-moon-value="calculation_time">—</dd></div><div><dt>Data Source</dt><dd data-moon-value="source">—</dd></div>
               </dl>
+              <h4 class="observation-subheading">Scientific lunar imagery</h4>
+              <dl class="observation-grid imagery-metadata-grid">
+                <div><dt>Imagery Source</dt><dd data-moon-imagery-value="source">—</dd></div><div><dt>Product</dt><dd data-moon-imagery-value="product">—</dd></div>
+                <div><dt>Image / Mosaic Date</dt><dd data-moon-imagery-value="mosaic_date">—</dd></div><div><dt>Imagery Status</dt><dd data-moon-imagery-value="status">—</dd></div>
+                <div><dt>Attribution</dt><dd data-moon-imagery-value="attribution">—</dd></div>
+              </dl>
               <details class="data-sources-disclosure"><summary>Data Sources &amp; provenance</summary><div id="moon-provenance"></div></details>
             </section>
             <section id="planet-observation-panel" class="live-observation-panel" hidden aria-labelledby="planet-observation-title">
@@ -208,6 +214,25 @@
             </section>
             <section id="solar-observation-panel" class="live-observation-panel" hidden aria-labelledby="solar-observation-title">
               <div class="observation-heading"><div><span class="panel-label">Live space weather</span><h3 id="solar-observation-title">Sun Activity</h3></div></div>
+              <section class="solar-image-observation" aria-labelledby="solar-image-title">
+                <h4 id="solar-image-title" class="observation-subheading">Scientific solar observation imagery</h4>
+                <div class="solar-image-controls" role="group" aria-label="Solar image product">
+                  <button type="button" class="framework-button is-active" data-solar-image-mode="hmi-continuum">Photosphere</button>
+                  <button type="button" class="framework-button" data-solar-image-mode="hmi-magnetogram">Magnetogram</button>
+                  <button type="button" class="framework-button" data-solar-image-mode="aia-171">AIA 171 Å</button>
+                  <button type="button" class="framework-button" data-solar-image-mode="aia-193">AIA 193 Å</button>
+                  <button type="button" class="framework-button" data-solar-image-mode="aia-304">AIA 304 Å</button>
+                  <button type="button" class="framework-button" data-solar-image-mode="coronagraph">Coronagraph</button>
+                </div>
+                <p id="solar-image-error" class="data-unavailable" role="status" aria-live="polite"></p>
+                <img id="solar-scientific-image" class="solar-scientific-image" hidden alt="Latest scientific solar observation">
+                <dl class="observation-grid imagery-metadata-grid">
+                  <div><dt>Instrument</dt><dd data-solar-image-value="instrument">—</dd></div><div><dt>Wavelength</dt><dd data-solar-image-value="wavelength">—</dd></div>
+                  <div><dt>Observation Time</dt><dd data-solar-image-value="observed_at">—</dd></div><div><dt>Source</dt><dd data-solar-image-value="source">—</dd></div>
+                  <div><dt>Image Status</dt><dd data-solar-image-value="status">—</dd></div>
+                </dl>
+              </section>
+              <h4 class="observation-subheading">NOAA numerical observations</h4>
               <p class="threshold-notice">Colors are interface status categories, not scientific conclusions.</p>
               <p id="solar-error" class="data-unavailable" role="alert"></p>
               <dl class="observation-grid">

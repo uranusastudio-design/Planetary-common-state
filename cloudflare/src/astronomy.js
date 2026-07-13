@@ -1,5 +1,54 @@
 const NOAA = "https://services.swpc.noaa.gov";
 const JPL_HORIZONS = "https://ssd.jpl.nasa.gov/api/horizons.api";
+const SOLAR_IMAGE_CACHE_SECONDS = 600;
+const SOLAR_IMAGE_STALE_SECONDS = 86400;
+const MAX_OFFICIAL_IMAGE_BYTES = 12 * 1024 * 1024;
+const LUNAR_IMAGE_URL = "https://planetarymaps.usgs.gov/cgi-bin/mapserv?map=/maps/earth/moon_simp_cyl.map&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&LAYERS=LROC_WAC&STYLES=&SRS=EPSG:4326&BBOX=0,-90,360,90&WIDTH=2048&HEIGHT=1024&FORMAT=image/png";
+
+export const SOLAR_IMAGE_MODES = Object.freeze({
+  "hmi-continuum": {
+    source: "NASA Solar Dynamics Observatory",
+    instrument: "SDO/HMI",
+    wavelength: "6173 Å continuum",
+    full: "https://sdo.gsfc.nasa.gov/assets/img/latest/latest_1024_HMIIC.jpg",
+    thumbnail: "https://sdo.gsfc.nasa.gov/assets/img/latest/latest_512_HMIIC.jpg",
+  },
+  "hmi-magnetogram": {
+    source: "NASA Solar Dynamics Observatory",
+    instrument: "SDO/HMI",
+    wavelength: "6173 Å line-of-sight magnetic field",
+    full: "https://sdo.gsfc.nasa.gov/assets/img/latest/latest_1024_HMIB.jpg",
+    thumbnail: "https://sdo.gsfc.nasa.gov/assets/img/latest/latest_512_HMIB.jpg",
+  },
+  "aia-171": {
+    source: "NASA Solar Dynamics Observatory",
+    instrument: "SDO/AIA",
+    wavelength: "171 Å",
+    full: "https://sdo.gsfc.nasa.gov/assets/img/latest/latest_1024_0171.jpg",
+    thumbnail: "https://sdo.gsfc.nasa.gov/assets/img/latest/latest_512_0171.jpg",
+  },
+  "aia-193": {
+    source: "NASA Solar Dynamics Observatory",
+    instrument: "SDO/AIA",
+    wavelength: "193 Å",
+    full: "https://sdo.gsfc.nasa.gov/assets/img/latest/latest_1024_0193.jpg",
+    thumbnail: "https://sdo.gsfc.nasa.gov/assets/img/latest/latest_512_0193.jpg",
+  },
+  "aia-304": {
+    source: "NASA Solar Dynamics Observatory",
+    instrument: "SDO/AIA",
+    wavelength: "304 Å",
+    full: "https://sdo.gsfc.nasa.gov/assets/img/latest/latest_1024_0304.jpg",
+    thumbnail: "https://sdo.gsfc.nasa.gov/assets/img/latest/latest_512_0304.jpg",
+  },
+  coronagraph: {
+    source: "NASA/ESA SOHO",
+    instrument: "SOHO/LASCO C2",
+    wavelength: "white light",
+    full: "https://soho.nascom.nasa.gov/data/realtime/c2/1024/latest.jpg",
+    thumbnail: "https://soho.nascom.nasa.gov/data/realtime/c2/512/latest.jpg",
+  },
+});
 
 export const ASTRONOMY_ROUTES = [
   "/api/astronomy/moon",
@@ -9,6 +58,8 @@ export const ASTRONOMY_ROUTES = [
   "/api/space-weather/solar-wind",
   "/api/space-weather/xray",
   "/api/space-weather/alerts",
+  "/api/space-weather/solar-image",
+  "/api/astronomy/lunar-image",
 ];
 
 export const JPL_BODY_CONFIG = {
@@ -41,6 +92,10 @@ const SOURCE = {
 function iso(value) {
   if (!value) return null;
   const raw = String(value).trim();
+  if (/^[A-Za-z]{3},\s/.test(raw)) {
+    const httpDate = new Date(raw);
+    return Number.isNaN(httpDate.getTime()) ? null : httpDate.toISOString();
+  }
   const horizonsCalendar = raw.match(/^(\d{4})-([A-Za-z]{3})-(\d{1,2})\s+(\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?)/);
   if (horizonsCalendar) {
     const [, year, month, day, time] = horizonsCalendar;
@@ -402,9 +457,238 @@ async function loadMoon() {
   return envelope(SOURCE.jpl, CONFIG.moon.dataset, eph.calculationTime, data, { upstream_response_ms: ms });
 }
 
+function officialImageResponse(image, cacheSeconds, extras = {}) {
+  return new Response(image.bytes, {
+    status: 200,
+    headers: {
+      "content-type": image.contentType,
+      "content-length": String(image.bytes.byteLength),
+      "access-control-allow-origin": "*",
+      "cache-control": `public, max-age=${cacheSeconds}`,
+      "x-content-type-options": "nosniff",
+      "content-security-policy": "default-src 'none'; sandbox",
+      ...extras,
+    },
+  });
+}
+
+function hasImageSignature(bytes, contentType) {
+  const jpeg = bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff;
+  const png = bytes[0] === 0x89 && bytes[1] === 0x50 && bytes[2] === 0x4e && bytes[3] === 0x47
+    && bytes[4] === 0x0d && bytes[5] === 0x0a && bytes[6] === 0x1a && bytes[7] === 0x0a;
+  return (contentType === "image/jpeg" && jpeg) || (contentType === "image/png" && png);
+}
+
+async function fetchOfficialImage(url, timeoutMs = 10000) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort("upstream timeout"), timeoutMs);
+  try {
+    const upstream = await fetch(url, {
+      signal: controller.signal,
+      headers: { accept: "image/jpeg,image/png" },
+    });
+    if (!upstream.ok) throw new Error(`upstream HTTP ${upstream.status}`);
+    const contentType = (upstream.headers.get("content-type") || "").split(";", 1)[0].trim().toLowerCase();
+    if (contentType !== "image/jpeg" && contentType !== "image/png") throw new Error("upstream did not return an image");
+    const declaredLength = Number(upstream.headers.get("content-length"));
+    if (Number.isFinite(declaredLength) && declaredLength > MAX_OFFICIAL_IMAGE_BYTES) throw new Error("upstream image is too large");
+    const buffer = await upstream.arrayBuffer();
+    if (!buffer.byteLength || buffer.byteLength > MAX_OFFICIAL_IMAGE_BYTES) throw new Error("upstream image has an invalid size");
+    const bytes = new Uint8Array(buffer);
+    if (!hasImageSignature(bytes, contentType)) throw new Error("upstream image signature is invalid");
+    return {
+      bytes,
+      contentType,
+      lastModified: iso(upstream.headers.get("last-modified")),
+    };
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+function solarObservationStatus(observedAt) {
+  if (!observedAt) return "delayed";
+  const ageMs = Date.now() - Date.parse(observedAt);
+  if (!Number.isFinite(ageMs) || ageMs < 0) return "delayed";
+  if (ageMs <= 30 * 60 * 1000) return "live";
+  if (ageMs <= 6 * 60 * 60 * 1000) return "delayed";
+  return "stale";
+}
+
+function solarPublicImageUrl(request, mode, size = "full") {
+  const url = new URL("/api/space-weather/solar-image", new URL(request.url).origin);
+  url.searchParams.set("mode", mode);
+  url.searchParams.set("format", "image");
+  if (size === "thumbnail") url.searchParams.set("size", "thumbnail");
+  return url.toString();
+}
+
+function solarImageCacheKey(request, mode, size, stale = false) {
+  const url = new URL(solarPublicImageUrl(request, mode, size));
+  if (stale) url.searchParams.set("cache", "last-valid");
+  return new Request(url);
+}
+
+async function cacheSolarImage(request, ctx, mode, size, image) {
+  const fresh = officialImageResponse(image, SOLAR_IMAGE_CACHE_SECONDS, { "x-pcs-image-status": "validated" });
+  const stale = officialImageResponse(image, SOLAR_IMAGE_STALE_SECONDS, { "x-pcs-image-status": "last-valid" });
+  ctx.waitUntil(Promise.all([
+    caches.default.put(solarImageCacheKey(request, mode, size), fresh),
+    caches.default.put(solarImageCacheKey(request, mode, size, true), stale),
+  ]));
+}
+
+async function solarImageBinary(request, ctx, mode, size) {
+  const config = SOLAR_IMAGE_MODES[mode];
+  if (!config) return response(errorEnvelope(SOURCE.noaa, "solar_image", "unsupported image mode"), 400);
+  const freshKey = solarImageCacheKey(request, mode, size);
+  const fresh = await caches.default.match(freshKey);
+  if (fresh) return fresh;
+  try {
+    const image = await fetchOfficialImage(config[size]);
+    await cacheSolarImage(request, ctx, mode, size, image);
+    return officialImageResponse(image, SOLAR_IMAGE_CACHE_SECONDS, { "x-pcs-image-status": "validated" });
+  } catch (error) {
+    const stale = await caches.default.match(solarImageCacheKey(request, mode, size, true));
+    if (stale) {
+      const headers = new Headers(stale.headers);
+      headers.set("x-pcs-image-status", "stale");
+      headers.set("warning", '110 - "stale solar image"');
+      return new Response(stale.body, { status: 200, headers });
+    }
+    const message = error.name === "AbortError" ? "upstream timeout" : "scientific solar image unavailable";
+    return response(errorEnvelope({ name: config.source, url: config.full }, "solar_image", message), 503);
+  }
+}
+
+function solarMetadataCacheKey(request, mode) {
+  const url = new URL("/api/space-weather/solar-image", new URL(request.url).origin);
+  url.searchParams.set("mode", mode);
+  return new Request(url);
+}
+
+function solarMetadataPayload(request, mode, config, observedAt, status = solarObservationStatus(observedAt)) {
+  return {
+    success: true,
+    source: config.source,
+    instrument: config.instrument,
+    wavelength: config.wavelength,
+    observed_at: observedAt,
+    retrieved_at: new Date().toISOString(),
+    status,
+    image_url: solarPublicImageUrl(request, mode),
+    thumbnail_url: solarPublicImageUrl(request, mode, "thumbnail"),
+    product_type: "observed_image",
+    mode,
+    source_image_url: config.full,
+    observation_time_basis: "Official upstream Last-Modified header",
+  };
+}
+
+async function solarImageMetadata(request, env, ctx, mode) {
+  const config = SOLAR_IMAGE_MODES[mode];
+  if (!config) {
+    return response({
+      success: false,
+      source: null,
+      instrument: null,
+      wavelength: null,
+      observed_at: null,
+      retrieved_at: new Date().toISOString(),
+      status: "unavailable",
+      image_url: null,
+      thumbnail_url: null,
+      product_type: "observed_image",
+      error: "unsupported image mode",
+      supported_modes: Object.keys(SOLAR_IMAGE_MODES),
+    }, 400);
+  }
+  const key = solarMetadataCacheKey(request, mode);
+  const hit = await caches.default.match(key);
+  if (hit) return hit;
+  try {
+    const image = await fetchOfficialImage(config.full);
+    await cacheSolarImage(request, ctx, mode, "full", image);
+    const payload = solarMetadataPayload(request, mode, config, image.lastModified);
+    const result = response(payload, 200, SOLAR_IMAGE_CACHE_SECONDS);
+    ctx.waitUntil(Promise.all([
+      caches.default.put(key, result.clone()),
+      writeStored(env, `astronomy:last:solar-image:${mode}`, payload, SOLAR_IMAGE_STALE_SECONDS),
+    ]));
+    return result;
+  } catch (error) {
+    const stale = await readStored(env, `astronomy:last:solar-image:${mode}`);
+    if (stale) {
+      return response({
+        ...stale,
+        retrieved_at: new Date().toISOString(),
+        status: "stale",
+        image_url: solarPublicImageUrl(request, mode),
+        thumbnail_url: solarPublicImageUrl(request, mode, "thumbnail"),
+      });
+    }
+    const message = error.name === "AbortError" ? "upstream timeout" : "scientific solar image unavailable";
+    return response({
+      success: false,
+      source: config.source,
+      instrument: config.instrument,
+      wavelength: config.wavelength,
+      observed_at: null,
+      retrieved_at: new Date().toISOString(),
+      status: "unavailable",
+      image_url: null,
+      thumbnail_url: null,
+      product_type: "observed_image",
+      error: message,
+    }, 503);
+  }
+}
+
+async function lunarImage(request, ctx) {
+  const cacheKey = new Request(new URL("/api/astronomy/lunar-image", new URL(request.url).origin));
+  const staleKey = new Request(`${cacheKey.url}?cache=last-valid`);
+  const hit = await caches.default.match(cacheKey);
+  if (hit) return hit;
+  try {
+    const image = await fetchOfficialImage(LUNAR_IMAGE_URL, 15000);
+    const fresh = officialImageResponse(image, 86400, {
+      "x-pcs-image-status": "validated",
+      "x-pcs-image-source": "USGS-LROC-WAC",
+    });
+    const stale = officialImageResponse(image, 604800, {
+      "x-pcs-image-status": "last-valid",
+      "x-pcs-image-source": "USGS-LROC-WAC",
+    });
+    ctx.waitUntil(Promise.all([caches.default.put(cacheKey, fresh), caches.default.put(staleKey, stale)]));
+    return officialImageResponse(image, 86400, {
+      "x-pcs-image-status": "validated",
+      "x-pcs-image-source": "USGS-LROC-WAC",
+    });
+  } catch (error) {
+    const stale = await caches.default.match(staleKey);
+    if (stale) {
+      const headers = new Headers(stale.headers);
+      headers.set("x-pcs-image-status", "stale");
+      return new Response(stale.body, { status: 200, headers });
+    }
+    const message = error.name === "AbortError" ? "upstream timeout" : "scientific lunar image unavailable";
+    return response(errorEnvelope({ name: "USGS Astrogeology / NASA LROC", url: LUNAR_IMAGE_URL }, "LROC WAC global mosaic", message), 503);
+  }
+}
+
 export async function handleAstronomyRequest(request, env, ctx) {
   if (request.method !== "GET") return response(errorEnvelope(SOURCE.noaa, "PCS astronomy API", "method not allowed"), 405);
   const path = new URL(request.url).pathname;
+  if (path === "/api/space-weather/solar-image") {
+    const url = new URL(request.url);
+    const mode = (url.searchParams.get("mode") || "hmi-continuum").toLowerCase();
+    if (url.searchParams.get("format") === "image") {
+      const size = url.searchParams.get("size") === "thumbnail" ? "thumbnail" : "full";
+      return solarImageBinary(request, ctx, mode, size);
+    }
+    return solarImageMetadata(request, env, ctx, mode);
+  }
+  if (path === "/api/astronomy/lunar-image") return lunarImage(request, ctx);
   if (path.startsWith("/api/astronomy/body/")) {
     const body = decodeURIComponent(path.split("/").filter(Boolean).at(-1) || "").toLowerCase();
     const bodyConfig = JPL_BODY_CONFIG[body];

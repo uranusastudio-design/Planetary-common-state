@@ -3,8 +3,27 @@ const REGIONAL_STATE_SOURCE_PREFIX = "../PCS_ENGINE/output/regions";
 const REFRESH_INTERVAL_MS = 10000;
 const LANGUAGE_STORAGE_KEY = "pcs_observatory_language";
 const REGION_STORAGE_KEY = "pcs_observatory_region";
-const WEATHER_PROXY_BASE = "https://pcs-backend.uranusastudio.workers.dev";
+const IS_LOCAL_DEVELOPMENT = ["localhost", "127.0.0.1"].includes(window.location.hostname);
+const WEATHER_PROXY_BASE = IS_LOCAL_DEVELOPMENT
+  ? "http://127.0.0.1:8787"
+  : "https://pcs-backend.uranusastudio.workers.dev";
 const ASTRONOMY_PROXY_BASE = WEATHER_PROXY_BASE;
+const LUNAR_IMAGERY_CONFIG = Object.freeze({
+  url: `${ASTRONOMY_PROXY_BASE}/api/astronomy/lunar-image`,
+  source: "NASA/ASU LROC via USGS Astrogeology",
+  product: "LROC WAC Global Mosaic (LOLA-controlled), WMS layer LROC_WAC",
+  mosaicDate: "Not published by the WMS service",
+  attribution: "ASU/NASA via USGS Astrogeology",
+  serviceUrl: "https://planetarymaps.usgs.gov/cgi-bin/mapserv?map=/maps/earth/moon_simp_cyl.map",
+});
+const SOLAR_IMAGE_MODE_LABELS = Object.freeze({
+  "hmi-continuum": "Photosphere",
+  "hmi-magnetogram": "Magnetogram",
+  "aia-171": "AIA 171 Å",
+  "aia-193": "AIA 193 Å",
+  "aia-304": "AIA 304 Å",
+  coronagraph: "Coronagraph",
+});
 const SPACE_WEATHER_UI_THRESHOLDS = { kp: { medium: 4, high: 5 }, solarWindSpeed: { medium: 500, high: 700 }, xrayFlux: { medium: 1e-6, high: 1e-5 } };
 const EARTH_SOURCE_REGISTRY = Object.freeze({
   openweather: { name: "OpenWeather", modes: ["live", "key-required"] },
@@ -106,7 +125,7 @@ const regionConfig = {
 
 const celestialTargetConfig = {
   earth: { id: "earth", displayName: "Earth", subtitle: "Living Planet", status: "Active", bodyType: "planet", texture: "ArcGIS World Imagery tiled layer", cameraDestination: [120, 20, 30000000], availableMonitoringScales: ["Planet", "Continent", "Country", "City", "Satellite View"], enabledDataDomains: ["earth-system", "weather", "location"], color: "#1565c0" },
-  moon: { id: "moon", displayName: "Moon", subtitle: "Lunar Surface", status: "Preview", bodyType: "moon", texture: "Preview color texture — not live scientific imagery", cameraDestination: [0, 0, 22000000], availableMonitoringScales: ["Global", "Near Side", "Far Side", "Landing Sites", "Satellite View"], enabledDataDomains: [], color: "#9aa3ad" },
+  moon: { id: "moon", displayName: "Moon", subtitle: "Lunar Surface", status: "Scientific imagery", bodyType: "moon", texture: "NASA/USGS LROC WAC global mosaic", cameraDestination: [180, 0, 22000000], availableMonitoringScales: ["Global", "Near Side", "Far Side", "Landing Sites", "Satellite View"], enabledDataDomains: ["imagery", "ephemeris"], color: "#9aa3ad" },
   mars: { id: "mars", displayName: "Mars", subtitle: "The Red Planet", status: "Preview", bodyType: "planet", texture: "Preview color texture — not live scientific imagery", cameraDestination: [0, 10, 26000000], availableMonitoringScales: ["Global", "Region", "Crater", "Landing Sites", "Satellite View"], enabledDataDomains: [], color: "#a84f32" },
   venus: { id: "venus", displayName: "Venus", subtitle: "Radar World", status: "Preview", bodyType: "planet", texture: "Preview color texture — not live scientific imagery", cameraDestination: [0, 0, 26000000], availableMonitoringScales: ["Global", "Region", "Radar Surface"], enabledDataDomains: [], color: "#c89345" },
   jupiter: { id: "jupiter", displayName: "Jupiter", subtitle: "Gas Giant", status: "Preview", bodyType: "gas-giant", texture: "Preview color texture — not live scientific imagery", cameraDestination: [0, 0, 34000000], availableMonitoringScales: ["Global", "Atmosphere", "Great Red Spot"], enabledDataDomains: [], color: "#b58b67" },
@@ -116,7 +135,7 @@ const celestialTargetConfig = {
 };
 
 Object.assign(celestialTargetConfig, {
-  sun: { id: "sun", displayName: "Sun", subtitle: "Heliophysics", status: "Live", bodyType: "star", texture: "Preview only; NOAA and JPL data panels are live", cameraDestination: [0, 0, 38000000], availableMonitoringScales: ["Overview", "Photosphere", "Sunspots", "Corona", "Solar Wind"], enabledDataDomains: ["space-weather", "ephemeris"], color: "#f6a623" },
+  sun: { id: "sun", displayName: "Sun", subtitle: "Heliophysics", status: "Live", bodyType: "star", texture: "NASA SDO and SOHO observation imagery", cameraDestination: [0, 0, 38000000], availableMonitoringScales: ["Photosphere", "Magnetogram", "AIA 171 Å", "AIA 193 Å", "AIA 304 Å", "Coronagraph"], enabledDataDomains: ["solar-imagery", "space-weather", "ephemeris"], color: "#f6a623" },
   mercury: { id: "mercury", displayName: "Mercury", subtitle: "Inner Planet", status: "Live", bodyType: "planet", texture: "Preview color texture; JPL ephemeris is live", cameraDestination: [0, 0, 23000000], availableMonitoringScales: ["Global", "Surface", "Craters", "Ephemeris"], enabledDataDomains: ["ephemeris"], color: "#8d8780" },
   venus: { id: "venus", displayName: "Venus", subtitle: "Radar World", status: "Live", bodyType: "planet", texture: "Preview color texture; JPL ephemeris is live", cameraDestination: [0, 0, 26000000], availableMonitoringScales: ["Global", "Atmosphere", "Radar Surface", "Ephemeris"], enabledDataDomains: ["ephemeris"], color: "#c89345" },
   mars: { id: "mars", displayName: "Mars", subtitle: "The Red Planet", status: "Live", bodyType: "planet", texture: "Preview color texture; JPL ephemeris is live", cameraDestination: [0, 10, 26000000], availableMonitoringScales: ["Global", "Surface", "Atmosphere", "Landing Sites", "Ephemeris"], enabledDataDomains: ["ephemeris"], color: "#a84f32" },
@@ -147,6 +166,12 @@ let cesiumViewer = null;
 let activeCelestialTargetId = "earth";
 let earthBaseLayer = null;
 let earthImageryErrorUnsubscribe = null;
+let celestialImageryLayer = null;
+let moonImageryActive = false;
+let moonNumericalActive = false;
+let solarImageryActive = false;
+let solarNumericalActive = false;
+let activeSolarImageMode = "hmi-continuum";
 let userLocationEntity = null;
 let userAccuracyEntity = null;
 let lastUserPosition = null;
@@ -219,9 +244,14 @@ const selectors = {
   moonError: document.querySelector("#moon-error"),
   moonPhaseGraphic: document.querySelector("#moon-phase-graphic"),
   moonValues: document.querySelectorAll("[data-moon-value]"),
+  moonImageryValues: document.querySelectorAll("[data-moon-imagery-value]"),
   moonProvenance: document.querySelector("#moon-provenance"),
   solarPanel: document.querySelector("#solar-observation-panel"),
   solarError: document.querySelector("#solar-error"),
+  solarImage: document.querySelector("#solar-scientific-image"),
+  solarImageError: document.querySelector("#solar-image-error"),
+  solarImageControls: document.querySelectorAll("[data-solar-image-mode]"),
+  solarImageValues: document.querySelectorAll("[data-solar-image-value]"),
   solarValues: document.querySelectorAll("[data-solar-value]"),
   solarAlertCount: document.querySelector("#solar-alert-count"),
   solarAlertList: document.querySelector("#solar-alert-list"),
@@ -538,6 +568,81 @@ function clearEarthImagery() {
   earthBaseLayer = null;
 }
 
+function clearCelestialImagery() {
+  if (celestialImageryLayer && cesiumViewer && !cesiumViewer.isDestroyed()) {
+    cesiumViewer.imageryLayers.remove(celestialImageryLayer, true);
+  }
+  celestialImageryLayer = null;
+}
+
+function updateMoonStatusMessage() {
+  if (moonImageryActive) {
+    updateText(selectors.solarSystemStatus, "NASA/USGS lunar imagery active.");
+    showObservatoryMessage("NASA/USGS lunar imagery active.");
+  } else if (moonNumericalActive) {
+    updateText(selectors.solarSystemStatus, "Live numerical observations active; scientific imagery unavailable.");
+    showObservatoryMessage("Scientific lunar imagery unavailable — preview sphere active.", "warning");
+  } else {
+    updateText(selectors.solarSystemStatus, "Scientific lunar imagery unavailable — preview sphere active.");
+    showObservatoryMessage("Scientific lunar imagery unavailable — preview sphere active.", "warning");
+  }
+}
+
+function updateSunStatusMessage() {
+  if (solarImageryActive) {
+    updateText(selectors.solarSystemStatus, "NASA/NOAA solar observation imagery active.");
+    showObservatoryMessage("NASA/NOAA solar observation imagery active.");
+  } else if (solarNumericalActive) {
+    updateText(selectors.solarSystemStatus, "Live numerical observations active; scientific imagery unavailable.");
+    showObservatoryMessage("Live numerical observations active; scientific imagery unavailable.", "warning");
+  } else {
+    updateText(selectors.solarSystemStatus, "Scientific solar imagery unavailable — preview sphere active.");
+    showObservatoryMessage("Scientific solar imagery unavailable — preview sphere active.", "warning");
+  }
+}
+
+function renderMoonImageryMetadata(status) {
+  const values = {
+    source: LUNAR_IMAGERY_CONFIG.source,
+    product: LUNAR_IMAGERY_CONFIG.product,
+    mosaic_date: LUNAR_IMAGERY_CONFIG.mosaicDate,
+    status,
+    attribution: LUNAR_IMAGERY_CONFIG.attribution,
+  };
+  selectors.moonImageryValues.forEach((element) => {
+    element.textContent = values[element.dataset.moonImageryValue] || "Unavailable";
+  });
+}
+
+async function loadMoonImagery() {
+  moonImageryActive = false;
+  clearCelestialImagery();
+  renderMoonImageryMetadata("Loading");
+  try {
+    const provider = await Cesium.SingleTileImageryProvider.fromUrl(LUNAR_IMAGERY_CONFIG.url, {
+      rectangle: Cesium.Rectangle.fromDegrees(-180, -90, 180, 90),
+      credit: `${LUNAR_IMAGERY_CONFIG.attribution} · ${LUNAR_IMAGERY_CONFIG.product}`,
+    });
+    if (activeCelestialTargetId !== "moon") return false;
+    celestialImageryLayer = cesiumViewer.imageryLayers.addImageryProvider(provider, 0);
+    provider.errorEvent.addEventListener(() => {
+      if (activeCelestialTargetId !== "moon") return;
+      moonImageryActive = false;
+      clearCelestialImagery();
+      renderMoonImageryMetadata("Unavailable — preview sphere active");
+      updateMoonStatusMessage();
+    });
+    moonImageryActive = true;
+    renderMoonImageryMetadata("Validated scientific imagery active");
+    updateMoonStatusMessage();
+    return true;
+  } catch {
+    renderMoonImageryMetadata("Unavailable — preview sphere active");
+    updateMoonStatusMessage();
+    return false;
+  }
+}
+
 async function setEarthImageryMode(mode = "highResolution") {
   if (!cesiumViewer || !window.Cesium) return;
   clearEarthImagery();
@@ -643,6 +748,7 @@ async function setCelestialTarget(targetId) {
   if (!target || !cesiumViewer || !window.Cesium || targetId === activeCelestialTargetId) return;
   showObservatoryMessage(`Loading ${target.displayName}…`);
   if (activeCelestialTargetId === "earth") clearEarthLayers();
+  else clearCelestialImagery();
   activeCelestialTargetId = targetId;
   selectors.solarSystemControls.forEach((button) => {
     const active = button.dataset.solarTarget === targetId;
@@ -669,10 +775,19 @@ async function setCelestialTarget(targetId) {
   if (targetId === "earth") {
     await setEarthImageryMode();
     if (lastUserPosition) showUserLocation(lastUserPosition);
+  } else if (targetId === "moon") {
+    moonImageryActive = false;
+    moonNumericalActive = false;
+    await Promise.allSettled([loadMoonImagery(), loadMoonObservation()]);
+    updateMoonStatusMessage();
+  } else if (targetId === "sun") {
+    solarImageryActive = false;
+    solarNumericalActive = false;
+    await loadSunObservation();
+    updateSunStatusMessage();
+  } else {
+    showObservatoryMessage(`${target.displayName} preview loaded. Live JPL numerical observations remain separate.`);
   }
-  else showObservatoryMessage(`${target.displayName} preview loaded. No live scientific planetary imagery is displayed.`);
-  if (targetId === "moon") await loadMoonObservation();
-  if (targetId === "sun") await loadSunObservation();
   if (PLANET_EPHEMERIS_TARGETS.has(targetId)) await loadPlanetObservation(targetId);
 }
 
@@ -811,8 +926,9 @@ async function loadMoonObservation() {
     const units = { moon_age_days: "days", illumination_percent: "%", earth_distance_km: "km" };
     selectors.moonValues.forEach((element) => { const field = element.dataset.moonValue; element.textContent = formatAstronomyValue(data[field], units[field], field === "earth_distance_km" ? 0 : 2); });
     drawMoonPhase(data.phase_fraction); renderProvenance(selectors.moonProvenance, data.provenance, payload); setObservationBadge(payload.status, payload.stale);
-    updateText(selectors.solarSystemStatus, payload.stale ? `Moon ephemeris delayed. Stale values from ${formatAstronomyValue(payload.timestamp)}.` : "Moon observation active. Phase and age are calculated approximations; distance and illumination are JPL ephemeris values.");
-  } catch { updateText(selectors.moonError, "Moon ephemeris temporarily unavailable"); updateText(selectors.solarSystemStatus, "Moon preview remains available; live values could not be retrieved."); setObservationBadge("unavailable"); drawMoonPhase(null); }
+    moonNumericalActive = true;
+  } catch { updateText(selectors.moonError, "Moon ephemeris temporarily unavailable"); moonNumericalActive = false; setObservationBadge("unavailable"); drawMoonPhase(null); }
+  updateMoonStatusMessage();
 }
 
 function statusCategory(value, thresholds) {
@@ -826,10 +942,65 @@ function renderAlerts(payload) {
   alerts.forEach((alert) => { const entry = document.createElement("article"); entry.className = "alert-entry"; entry.textContent = `${alert.title || "NOAA alert"}\n${alert.severity || "information"} · ${formatAstronomyValue(alert.issued_at)}\n${alert.summary || "No summary supplied."}`; selectors.solarAlertList?.append(entry); });
 }
 
+function renderSolarImageMetadata(payload) {
+  const values = {
+    instrument: payload.instrument,
+    wavelength: payload.wavelength,
+    observed_at: formatAstronomyValue(payload.observed_at),
+    source: payload.source,
+    status: payload.status,
+  };
+  selectors.solarImageValues.forEach((element) => {
+    element.textContent = values[element.dataset.solarImageValue] || "Unavailable";
+  });
+}
+
+function preloadScientificImage(url) {
+  return new Promise((resolve, reject) => {
+    const image = new Image();
+    image.onload = () => resolve(url);
+    image.onerror = () => reject(new Error("image could not be decoded"));
+    image.src = url;
+  });
+}
+
+async function loadSolarImage(mode = activeSolarImageMode) {
+  activeSolarImageMode = SOLAR_IMAGE_MODE_LABELS[mode] ? mode : "hmi-continuum";
+  solarImageryActive = false;
+  updateText(selectors.solarImageError, `Loading ${SOLAR_IMAGE_MODE_LABELS[activeSolarImageMode]}…`);
+  if (selectors.solarImage) {
+    selectors.solarImage.hidden = true;
+    selectors.solarImage.removeAttribute("src");
+  }
+  selectors.solarImageControls.forEach((control) => {
+    const active = control.dataset.solarImageMode === activeSolarImageMode;
+    control.classList.toggle("is-active", active);
+    control.setAttribute("aria-pressed", String(active));
+  });
+  try {
+    const payload = await fetchAstronomy(`/api/space-weather/solar-image?mode=${encodeURIComponent(activeSolarImageMode)}`);
+    await preloadScientificImage(payload.image_url);
+    if (activeCelestialTargetId !== "sun" || payload.mode !== activeSolarImageMode) return false;
+    selectors.solarImage.src = payload.image_url;
+    selectors.solarImage.alt = `${payload.instrument} ${payload.wavelength} solar observation from ${formatAstronomyValue(payload.observed_at)}`;
+    selectors.solarImage.hidden = false;
+    updateText(selectors.solarImageError, "");
+    renderSolarImageMetadata(payload);
+    solarImageryActive = true;
+    updateSunStatusMessage();
+    return true;
+  } catch {
+    updateText(selectors.solarImageError, `${SOLAR_IMAGE_MODE_LABELS[activeSolarImageMode]} scientific image unavailable.`);
+    renderSolarImageMetadata({ status: "unavailable" });
+    updateSunStatusMessage();
+    return false;
+  }
+}
+
 async function loadSolarObservation() {
   updateText(selectors.solarError, "");
   const [summaryResult, alertsResult] = await Promise.allSettled([fetchAstronomy("/api/space-weather/summary"), fetchAstronomy("/api/space-weather/alerts")]);
-  if (summaryResult.status === "rejected") { updateText(selectors.solarError, "NOAA space-weather data temporarily unavailable"); updateText(selectors.solarSystemStatus, "Solar Activity preview remains available; live NOAA summary could not be retrieved."); setObservationBadge("unavailable"); if (alertsResult.status === "fulfilled") renderAlerts(alertsResult.value); return; }
+  if (summaryResult.status === "rejected") { updateText(selectors.solarError, "NOAA space-weather data temporarily unavailable"); solarNumericalActive = false; setObservationBadge("unavailable"); if (alertsResult.status === "fulfilled") renderAlerts(alertsResult.value); updateSunStatusMessage(); return; }
   const payload = summaryResult.value, data = payload.data || {};
   const units = { solar_wind_speed_km_s: "km/s", solar_wind_density_p_cm3: "p/cm³", imf_bz_nt: "nT", xray_flux_w_m2: "W/m²" };
   selectors.solarValues.forEach((element) => {
@@ -842,8 +1013,9 @@ async function loadSolarObservation() {
     if (category) element.classList.add(category);
   });
   renderProvenance(selectors.solarProvenance, data.provenance, payload); setObservationBadge(payload.status, payload.stale);
-  updateText(selectors.solarSystemStatus, payload.stale ? `NOAA data delayed. Stale values from ${formatAstronomyValue(payload.timestamp)}.` : payload.partial ? "Solar Activity active. NOAA summary is partially available; missing fields remain unavailable." : "Solar Activity active with NOAA SWPC data.");
+  solarNumericalActive = true;
   if (alertsResult.status === "fulfilled") renderAlerts(alertsResult.value);
+  updateSunStatusMessage();
 }
 
 function renderBodyValues(elements, data) {
@@ -879,7 +1051,8 @@ async function loadPlanetObservation(body) {
 }
 
 async function loadSunObservation() {
-  const [, ephemerisResult] = await Promise.allSettled([
+  const [, , ephemerisResult] = await Promise.allSettled([
+    loadSolarImage(activeSolarImageMode),
     loadSolarObservation(),
     fetchAstronomy("/api/astronomy/body/sun"),
   ]);
@@ -890,12 +1063,18 @@ async function loadSunObservation() {
     selectors.sunValues.forEach((element) => { element.textContent = "Unavailable"; });
     updateText(selectors.sunEphemerisTime, "Unavailable");
   }
+  if (ephemerisResult.status === "fulfilled") solarNumericalActive = true;
+  updateSunStatusMessage();
 }
 
 function initializeFrameworkControls() {
   selectors.solarSystemControls.forEach((control) => {
     control.setAttribute("aria-pressed", String(control.dataset.solarTarget === "earth"));
     control.addEventListener("click", () => { void setCelestialTarget(control.dataset.solarTarget); });
+  });
+  selectors.solarImageControls.forEach((control) => {
+    control.setAttribute("aria-pressed", String(control.dataset.solarImageMode === activeSolarImageMode));
+    control.addEventListener("click", () => { void loadSolarImage(control.dataset.solarImageMode); });
   });
 
   selectors.monitoringScaleControls?.addEventListener("click", (event) => {
@@ -908,6 +1087,18 @@ function initializeFrameworkControls() {
     });
     updateText(selectors.observatoryModeStatus, `${control.textContent} scale active for ${celestialTargetConfig[activeCelestialTargetId].displayName}.`);
     updateText(selectors.monitoringScaleStatus, `${control.textContent} active`);
+    if (activeCelestialTargetId === "moon" && cesiumViewer) {
+      const mode = control.dataset.observatoryMode;
+      const view = mode === "far-side"
+        ? { lon: 0, lat: 0, altitude: 16000000 }
+        : mode === "landing-sites"
+          ? { lon: -156.53, lat: 0.67, altitude: 4500000 }
+          : { lon: 180, lat: 0, altitude: mode === "satellite-view" ? 7000000 : 16000000 };
+      cesiumViewer.camera.flyTo({
+        destination: Cesium.Cartesian3.fromDegrees(view.lon, view.lat, view.altitude),
+        duration: 1.1,
+      });
+    }
   });
 
   selectors.locateMe?.addEventListener("click", requestUserLocation);

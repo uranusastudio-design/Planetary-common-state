@@ -36,6 +36,14 @@ Returns NASA Earthdata gateway configuration status without exposing secrets.
 - `GET /api/space-weather/solar-wind` — NOAA real-time plasma and magnetic-field observations. Cached 3 minutes.
 - `GET /api/space-weather/xray` — NOAA GOES X-ray observations with a locally derived flare class. Cached 3 minutes.
 - `GET /api/space-weather/alerts` — current NOAA SWPC issued products. Cached 5 minutes.
+- `GET /api/space-weather/solar-image?mode=...` — validated metadata for NASA SDO HMI/AIA or NASA/ESA SOHO LASCO C2 imagery. Metadata and fresh imagery are cached 10 minutes; the last valid image is retained for a bounded 24-hour stale fallback.
+- `GET /api/space-weather/solar-image?mode=...&format=image` — CORS-safe validated image proxy. HTML responses and invalid JPEG/PNG signatures are rejected.
+- `GET /api/astronomy/lunar-image` — validated, CORS-safe proxy for the USGS Astrogeology `LROC_WAC` global cylindrical lunar WMS mosaic. Cached 24 hours with a 7-day last-valid cache fallback.
+
+Solar image modes are `hmi-continuum`, `hmi-magnetogram`, `aia-171`,
+`aia-193`, `aia-304`, and `coronagraph`. Observation time is taken from the
+official upstream image `Last-Modified` header; the Worker does not synthesize
+an observation timestamp.
 
 Every route uses the PCS Observatory response envelope and reports source,
 dataset time, retrieval time, cache state, stale state, upstream response time,

@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { handleAstronomyRequest, JPL_BODY_CONFIG } from "../src/astronomy.js";
+import { handleAstronomyRequest, JPL_BODY_CONFIG, SOLAR_IMAGE_MODES } from "../src/astronomy.js";
 
 function memoryEnvironment(seed = {}) {
   const kv = new Map(Object.entries(seed));
@@ -21,6 +21,19 @@ function memoryEnvironment(seed = {}) {
 
 function jsonResponse(value, status = 200) {
   return new Response(JSON.stringify(value), { status, headers: { "content-type": "application/json" } });
+}
+
+function jpegResponse(lastModified = "Mon, 13 Jul 2026 05:10:05 GMT") {
+  const bytes = new Uint8Array([0xff, 0xd8, 0xff, 0xe0, 0x00, 0x10, 0xff, 0xd9]);
+  return new Response(bytes, {
+    status: 200,
+    headers: { "content-type": "image/jpeg", "content-length": String(bytes.byteLength), "last-modified": lastModified },
+  });
+}
+
+function pngResponse() {
+  const bytes = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00]);
+  return new Response(bytes, { status: 200, headers: { "content-type": "image/png" } });
 }
 
 test("Moon route normalizes JPL ephemeris and labels local calculations", async (t) => {
@@ -49,6 +62,71 @@ test("Moon failure returns unavailable without fabricated values", async (t) => 
   assert.equal(response.status, 503);
   assert.equal(payload.data, null);
   assert.equal(payload.status, "unavailable");
+});
+
+test("Solar image metadata validates every official product and exposes only Worker image URLs", async (t) => {
+  const originalFetch = globalThis.fetch;
+  t.after(() => { globalThis.fetch = originalFetch; });
+  const requested = [];
+  globalThis.fetch = async (url) => { requested.push(String(url)); return jpegResponse(); };
+  for (const [mode, config] of Object.entries(SOLAR_IMAGE_MODES)) {
+    const { env, ctx } = memoryEnvironment();
+    const request = new Request(`https://worker.test/api/space-weather/solar-image?mode=${mode}`);
+    const response = await handleAstronomyRequest(request, env, ctx);
+    const payload = await response.json();
+    assert.equal(response.status, 200, mode);
+    assert.equal(payload.success, true, mode);
+    assert.equal(payload.product_type, "observed_image", mode);
+    assert.equal(payload.instrument, config.instrument, mode);
+    assert.equal(payload.observed_at, "2026-07-13T05:10:05.000Z", mode);
+    assert.equal(payload.image_url, `https://worker.test/api/space-weather/solar-image?mode=${mode}&format=image`, mode);
+    assert.equal(payload.source_image_url, config.full, mode);
+    assert.equal(requested.at(-1), config.full, mode);
+  }
+});
+
+test("Solar binary proxy returns a validated image and rejects an HTML 200 response", async (t) => {
+  const originalFetch = globalThis.fetch;
+  t.after(() => { globalThis.fetch = originalFetch; });
+  globalThis.fetch = async () => jpegResponse();
+  const valid = memoryEnvironment();
+  const imageResponse = await handleAstronomyRequest(new Request("https://worker.test/api/space-weather/solar-image?mode=aia-171&format=image"), valid.env, valid.ctx);
+  assert.equal(imageResponse.status, 200);
+  assert.equal(imageResponse.headers.get("content-type"), "image/jpeg");
+  assert.equal(imageResponse.headers.get("access-control-allow-origin"), "*");
+  globalThis.fetch = async () => new Response("<html>upstream error</html>", { status: 200, headers: { "content-type": "text/html" } });
+  const invalid = memoryEnvironment();
+  const rejected = await handleAstronomyRequest(new Request("https://worker.test/api/space-weather/solar-image?mode=aia-193&format=image"), invalid.env, invalid.ctx);
+  assert.equal(rejected.status, 503);
+  assert.equal((await rejected.json()).status, "unavailable");
+});
+
+test("Solar metadata uses bounded last-valid stale fallback", async (t) => {
+  const originalFetch = globalThis.fetch;
+  t.after(() => { globalThis.fetch = originalFetch; });
+  globalThis.fetch = async () => { throw new Error("offline"); };
+  const stored = {
+    success: true, source: "NASA Solar Dynamics Observatory", instrument: "SDO/HMI", wavelength: "6173 Å continuum",
+    observed_at: "2026-07-12T00:00:00.000Z", retrieved_at: "2026-07-12T00:01:00.000Z", status: "live",
+    image_url: "https://old.test/image", thumbnail_url: "https://old.test/thumb", product_type: "observed_image", mode: "hmi-continuum",
+  };
+  const { env, ctx } = memoryEnvironment({ "astronomy:last:solar-image:hmi-continuum": JSON.stringify(stored) });
+  const response = await handleAstronomyRequest(new Request("https://worker.test/api/space-weather/solar-image?mode=hmi-continuum"), env, ctx);
+  const payload = await response.json();
+  assert.equal(response.status, 200);
+  assert.equal(payload.status, "stale");
+  assert.match(payload.image_url, /^https:\/\/worker\.test\/api\/space-weather\/solar-image/);
+});
+
+test("Lunar image proxy validates PNG content and sets scientific attribution headers", async (t) => {
+  const originalFetch = globalThis.fetch;
+  t.after(() => { globalThis.fetch = originalFetch; });
+  globalThis.fetch = async () => pngResponse();
+  const { env, ctx } = memoryEnvironment();
+  const response = await handleAstronomyRequest(new Request("https://worker.test/api/astronomy/lunar-image"), env, ctx);
+  assert.equal(response.status, 200);
+  assert.equal(response.headers.get("content-type"), "image/png");
+  assert.equal(response.headers.get("x-pcs-image-source"), "USGS-LROC-WAC");
 });
 
 test("NOAA timeout is normalized as unavailable", async (t) => {

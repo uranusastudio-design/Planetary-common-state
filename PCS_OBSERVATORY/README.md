@@ -123,7 +123,13 @@ Included framework panels:
 - Audio and voice alert framework
 - Evidence Explorer
 
-Solar System Observatory keeps Earth as the only active body. Moon, Mars, Venus, Jupiter, Saturn, Solar Activity, and Deep Space are interface placeholders only.
+Solar System Observatory uses the existing single Cesium viewer for Earth and
+the Moon. The Moon loads the official USGS Astrogeology global cylindrical
+`LROC_WAC` mosaic and preserves Near Side, Far Side, Landing Sites, phase, and
+JPL controls. The Sun panel displays independently validated NASA SDO HMI/AIA
+or NASA/ESA SOHO LASCO C2 observation images while retaining the NOAA SWPC
+numerical panel and JPL ephemeris. Other planetary surfaces remain previews
+with live JPL numerical ephemerides where connected.
 
 Observatory modes keep Planet as the active scale. Continent, Country, City, and Satellite View remain placeholders until regional and local data integration is available.
 
