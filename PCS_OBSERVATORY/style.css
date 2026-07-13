@@ -564,6 +564,18 @@ h3 {
   background: rgba(34, 197, 94, 0.12);
 }
 
+.framework-button:disabled,
+.framework-button[aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.framework-button:focus-visible,
+.locate-button:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+}
+
 .framework-button small {
   display: block;
   margin-top: 4px;
@@ -604,11 +616,44 @@ h3 {
 .timeline-panel,
 .solar-system-panel,
 .observatory-mode-panel,
+.location-panel,
 .animation-panel,
 .audio-panel,
 .evidence-panel {
   padding: 16px;
 }
+
+.locate-button {
+  min-height: 40px;
+  border: 1px solid var(--cyan);
+  border-radius: 8px;
+  padding: 8px 16px;
+  color: var(--cyan);
+  background: rgba(34, 211, 238, 0.08);
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.locate-button:hover { background: rgba(34, 211, 238, 0.16); }
+
+.location-coordinates {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 12px 0 0;
+}
+
+.location-coordinates[hidden], [hidden] { display: none !important; }
+
+.location-coordinates div {
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: rgba(34, 211, 238, 0.04);
+}
+
+.location-coordinates dt { color: var(--muted); font-size: 0.72rem; text-transform: uppercase; }
+.location-coordinates dd { margin: 4px 0 0; color: var(--text); font-variant-numeric: tabular-nums; }
 
 .timeline-panel {
   display: grid;
@@ -1047,12 +1092,28 @@ h3 {
     grid-template-columns: 1fr;
   }
 
-  .framework-control-grid,
-  .framework-control-grid.compact,
+  .solar-system-panel .framework-control-grid,
+  .observatory-mode-panel .framework-control-grid {
+    display: flex;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: thin;
+    padding-bottom: 6px;
+  }
+
+  .solar-system-panel .framework-button,
+  .observatory-mode-panel .framework-button {
+    flex: 0 0 auto;
+    min-width: 132px;
+  }
+
+  .timeline-controls,
   .timeline-controls,
   .framework-toggle-row {
     grid-template-columns: 1fr;
   }
+
+  .location-coordinates { grid-template-columns: 1fr; }
 
   .observatory-footer {
     align-items: flex-start;

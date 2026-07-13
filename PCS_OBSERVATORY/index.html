@@ -145,8 +145,8 @@
           <article class="panel globe-panel">
             <div class="panel-heading">
               <div>
-                <span class="panel-label">3D Earth Observatory</span>
-                <h2>CesiumJS Globe</h2>
+                <span id="observatory-view-label" class="panel-label">3D Earth Observatory</span>
+                <h2 id="observatory-view-title">Earth — Living Planet</h2>
               </div>
               <span class="status-pill status-cyan">Visualization only</span>
             </div>
@@ -162,17 +162,17 @@
                 <span class="panel-label">Solar System Observatory</span>
                 <h2 id="solar-system-title">Observation Body</h2>
               </div>
-              <span class="status-pill status-normal">Earth active</span>
+              <span id="celestial-target-status" class="status-pill status-normal">Earth active</span>
             </div>
             <div class="framework-control-grid" role="group" aria-label="Solar System Observatory options">
               <button type="button" class="framework-button is-active" data-solar-target="earth">Earth <small>Active</small></button>
-              <button type="button" class="framework-button" data-solar-target="moon">Moon <small>Coming Soon</small></button>
-              <button type="button" class="framework-button" data-solar-target="mars">Mars <small>Coming Soon</small></button>
-              <button type="button" class="framework-button" data-solar-target="venus">Venus <small>Coming Soon</small></button>
-              <button type="button" class="framework-button" data-solar-target="jupiter">Jupiter <small>Coming Soon</small></button>
-              <button type="button" class="framework-button" data-solar-target="saturn">Saturn <small>Coming Soon</small></button>
-              <button type="button" class="framework-button" data-solar-target="solar-activity">Solar Activity <small>Coming Soon</small></button>
-              <button type="button" class="framework-button" data-solar-target="deep-space">Deep Space <small>Future</small></button>
+              <button type="button" class="framework-button" data-solar-target="moon">Moon <small>Preview</small></button>
+              <button type="button" class="framework-button" data-solar-target="mars">Mars <small>Preview</small></button>
+              <button type="button" class="framework-button" data-solar-target="venus">Venus <small>Preview</small></button>
+              <button type="button" class="framework-button" data-solar-target="jupiter">Jupiter <small>Preview</small></button>
+              <button type="button" class="framework-button" data-solar-target="saturn">Saturn <small>Preview</small></button>
+              <button type="button" class="framework-button" data-solar-target="solar-activity">Solar Activity <small>Preview</small></button>
+              <button type="button" class="framework-button" data-solar-target="deep-space">Deep Space <small>Preview</small></button>
             </div>
             <p id="solar-system-status" class="framework-status" role="status" aria-live="polite">
               Earth Observatory active. No planetary data or models are loaded.
@@ -185,9 +185,9 @@
                 <span class="panel-label">Observatory Mode Switch</span>
                 <h2 id="observatory-mode-title">Monitoring Scale</h2>
               </div>
-              <span class="status-pill status-cyan">Planet active</span>
+              <span id="monitoring-scale-status" class="status-pill status-cyan">Planet active</span>
             </div>
-            <div class="framework-control-grid compact" role="group" aria-label="Observatory mode options">
+            <div id="monitoring-scale-controls" class="framework-control-grid compact" role="group" aria-label="Observatory mode options">
               <button type="button" class="framework-button is-active" data-observatory-mode="planet">Planet</button>
               <button type="button" class="framework-button" data-observatory-mode="continent">Continent</button>
               <button type="button" class="framework-button" data-observatory-mode="country">Country</button>
@@ -197,6 +197,19 @@
             <p id="observatory-mode-status" class="framework-status" role="status" aria-live="polite">
               Planet mode active. Regional data integration pending.
             </p>
+          </article>
+
+          <article id="location-panel" class="panel location-panel" aria-labelledby="location-title">
+            <div class="panel-heading">
+              <div><span class="panel-label">Private device location</span><h2 id="location-title">Earth Location</h2></div>
+              <button id="locate-me" type="button" class="locate-button">Locate Me</button>
+            </div>
+            <p id="location-status" class="framework-status" role="status" aria-live="polite">Location is requested only when you select Locate Me and never leaves this device.</p>
+            <dl id="location-coordinates" class="location-coordinates" hidden>
+              <div><dt>Latitude</dt><dd id="location-latitude">—</dd></div>
+              <div><dt>Longitude</dt><dd id="location-longitude">—</dd></div>
+              <div><dt>Accuracy</dt><dd id="location-accuracy">—</dd></div>
+            </dl>
           </article>
 
           <article class="panel layer-control-panel" aria-labelledby="layer-control-title">

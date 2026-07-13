@@ -5,6 +5,14 @@ const LANGUAGE_STORAGE_KEY = "pcs_observatory_language";
 const REGION_STORAGE_KEY = "pcs_observatory_region";
 const WEATHER_PROXY_BASE = "https://pcs-backend.uranusastudio.workers.dev";
 const WEATHER_TILE_MAX_ZOOM = 8;
+const EARTH_IMAGERY_CONFIG = {
+  highResolution: {
+    url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+    credit: "Earth imagery: Esri, Maxar, Earthstar Geographics, and contributors",
+    maximumLevel: 19,
+  },
+  fallback: { assetPath: "Assets/Textures/NaturalEarthII" },
+};
 const WEATHER_LAYER_CONFIG = {
   clouds: { label: "Clouds", path: "clouds", opacity: 0.5 },
   rain: { label: "Rain", path: "rain", opacity: 0.6 },
@@ -85,6 +93,17 @@ const regionConfig = {
   },
 };
 
+const celestialTargetConfig = {
+  earth: { id: "earth", displayName: "Earth", subtitle: "Living Planet", status: "Active", bodyType: "planet", texture: "ArcGIS World Imagery tiled layer", cameraDestination: [120, 20, 30000000], availableMonitoringScales: ["Planet", "Continent", "Country", "City", "Satellite View"], enabledDataDomains: ["earth-system", "weather", "location"], color: "#1565c0" },
+  moon: { id: "moon", displayName: "Moon", subtitle: "Lunar Surface", status: "Preview", bodyType: "moon", texture: "Preview color texture — not live scientific imagery", cameraDestination: [0, 0, 22000000], availableMonitoringScales: ["Global", "Near Side", "Far Side", "Landing Sites", "Satellite View"], enabledDataDomains: [], color: "#9aa3ad" },
+  mars: { id: "mars", displayName: "Mars", subtitle: "The Red Planet", status: "Preview", bodyType: "planet", texture: "Preview color texture — not live scientific imagery", cameraDestination: [0, 10, 26000000], availableMonitoringScales: ["Global", "Region", "Crater", "Landing Sites", "Satellite View"], enabledDataDomains: [], color: "#a84f32" },
+  venus: { id: "venus", displayName: "Venus", subtitle: "Radar World", status: "Preview", bodyType: "planet", texture: "Preview color texture — not live scientific imagery", cameraDestination: [0, 0, 26000000], availableMonitoringScales: ["Global", "Region", "Radar Surface"], enabledDataDomains: [], color: "#c89345" },
+  jupiter: { id: "jupiter", displayName: "Jupiter", subtitle: "Gas Giant", status: "Preview", bodyType: "gas-giant", texture: "Preview color texture — not live scientific imagery", cameraDestination: [0, 0, 34000000], availableMonitoringScales: ["Global", "Atmosphere", "Great Red Spot"], enabledDataDomains: [], color: "#b58b67" },
+  saturn: { id: "saturn", displayName: "Saturn", subtitle: "Ringed Giant", status: "Preview", bodyType: "gas-giant", texture: "Preview color texture — not live scientific imagery", cameraDestination: [0, 0, 34000000], availableMonitoringScales: ["Global", "Atmosphere", "Ring System"], enabledDataDomains: [], color: "#cbb77b" },
+  "solar-activity": { id: "solar-activity", displayName: "Solar Activity", subtitle: "Heliophysics", status: "Preview", bodyType: "star", texture: "Preview color texture — not live solar imagery", cameraDestination: [0, 0, 38000000], availableMonitoringScales: ["Photosphere", "Sunspots", "Corona", "Solar Wind"], enabledDataDomains: [], color: "#f6a623" },
+  "deep-space": { id: "deep-space", displayName: "Deep Space", subtitle: "Beyond the Solar System", status: "Preview", bodyType: "space", texture: "Cesium star field preview — not a scientific sky survey", cameraDestination: [0, 0, 50000000], availableMonitoringScales: ["Solar System", "Nearby Stars", "Galaxy", "Deep Field"], enabledDataDomains: [], color: "#020712" },
+};
+
 const REGION_TRANSLATION_KEYS = {
   global: "global",
   japan: "japan",
@@ -102,6 +121,12 @@ let latestStateSignature = "";
 let lastJsonUpdateValue = null;
 let nextRefreshAt = Date.now() + REFRESH_INTERVAL_MS;
 let cesiumViewer = null;
+let activeCelestialTargetId = "earth";
+let earthBaseLayer = null;
+let earthImageryErrorUnsubscribe = null;
+let userLocationEntity = null;
+let userAccuracyEntity = null;
+let lastUserPosition = null;
 let activeRegionId = "global";
 let translations = {};
 const activeWeatherLayers = new Map();
@@ -128,6 +153,9 @@ const selectors = {
   dataMessage: document.querySelector("#data-message"),
   cesiumGlobe: document.querySelector("#cesium-globe"),
   cesiumFallback: document.querySelector("#cesium-fallback"),
+  observatoryViewLabel: document.querySelector("#observatory-view-label"),
+  observatoryViewTitle: document.querySelector("#observatory-view-title"),
+  celestialTargetStatus: document.querySelector("#celestial-target-status"),
   layerControlMessage: document.querySelector("#layer-control-message"),
   layerControls: document.querySelectorAll("[data-layer-status]"),
   buildTimestamp: document.querySelector("#build-timestamp"),
@@ -145,6 +173,15 @@ const selectors = {
   solarSystemStatus: document.querySelector("#solar-system-status"),
   observatoryModeControls: document.querySelectorAll("[data-observatory-mode]"),
   observatoryModeStatus: document.querySelector("#observatory-mode-status"),
+  monitoringScaleControls: document.querySelector("#monitoring-scale-controls"),
+  monitoringScaleStatus: document.querySelector("#monitoring-scale-status"),
+  locationPanel: document.querySelector("#location-panel"),
+  locateMe: document.querySelector("#locate-me"),
+  locationStatus: document.querySelector("#location-status"),
+  locationCoordinates: document.querySelector("#location-coordinates"),
+  locationLatitude: document.querySelector("#location-latitude"),
+  locationLongitude: document.querySelector("#location-longitude"),
+  locationAccuracy: document.querySelector("#location-accuracy"),
   timelineControls: document.querySelectorAll("[data-timeline-action]"),
   timelineStatus: document.querySelector("#timeline-status"),
   timelineSpeed: document.querySelector("#timeline-speed"),
@@ -425,7 +462,7 @@ function updateRegionContext(regionId) {
 
 function setCesiumCameraForRegion(regionId) {
   const region = regionConfig[regionId] ?? regionConfig.global;
-  if (!cesiumViewer || !window.Cesium) {
+  if (!cesiumViewer || !window.Cesium || activeCelestialTargetId !== "earth") {
     return;
   }
 
@@ -446,7 +483,51 @@ function showCesiumFallback(message) {
   selectors.cesiumFallback?.classList.add("is-error");
 }
 
-function initializeCesiumGlobe() {
+function showObservatoryMessage(message, type = "info") {
+  updateText(selectors.cesiumFallback, message);
+  selectors.cesiumFallback?.classList.toggle("is-error", type === "error" || type === "warning");
+}
+
+function clearEarthImagery() {
+  earthImageryErrorUnsubscribe?.();
+  earthImageryErrorUnsubscribe = null;
+  if (earthBaseLayer && cesiumViewer && !cesiumViewer.isDestroyed()) {
+    cesiumViewer.imageryLayers.remove(earthBaseLayer, true);
+  }
+  earthBaseLayer = null;
+}
+
+async function setEarthImageryMode(mode = "highResolution") {
+  if (!cesiumViewer || !window.Cesium) return;
+  clearEarthImagery();
+  try {
+    let provider;
+    if (mode === "highResolution") {
+      const config = EARTH_IMAGERY_CONFIG.highResolution;
+      provider = new Cesium.UrlTemplateImageryProvider({
+        url: config.url, credit: config.credit, maximumLevel: config.maximumLevel,
+        tilingScheme: new Cesium.WebMercatorTilingScheme(), enablePickFeatures: false,
+      });
+      earthImageryErrorUnsubscribe = provider.errorEvent.addEventListener(() => {
+        if (activeCelestialTargetId === "earth") void setEarthImageryMode("fallback");
+      });
+    } else {
+      provider = await Cesium.TileMapServiceImageryProvider.fromUrl(
+        Cesium.buildModuleUrl(EARTH_IMAGERY_CONFIG.fallback.assetPath),
+      );
+    }
+    if (activeCelestialTargetId !== "earth") return;
+    earthBaseLayer = cesiumViewer.imageryLayers.addImageryProvider(provider, 0);
+    showObservatoryMessage(mode === "fallback"
+      ? "High-resolution imagery unavailable — fallback layer active."
+      : "High-resolution tiled Earth imagery active. Visualization only.", mode === "fallback" ? "warning" : "info");
+  } catch (error) {
+    if (mode !== "fallback") return setEarthImageryMode("fallback");
+    showObservatoryMessage("Earth imagery unavailable. Base globe remains active.", "error");
+  }
+}
+
+async function initializeCesiumGlobe() {
   if (!selectors.cesiumGlobe) {
     return;
   }
@@ -474,10 +555,12 @@ function initializeCesiumGlobe() {
     });
 
     cesiumViewer.scene.globe.baseColor = Cesium.Color.fromCssColorString("#1565c0");
+    cesiumViewer.scene.globe.maximumScreenSpaceError = window.matchMedia("(max-width: 820px)").matches ? 2 : 1;
+    cesiumViewer.resolutionScale = Math.min(window.devicePixelRatio || 1, 2);
     cesiumViewer.scene.skyAtmosphere.show = true;
     cesiumViewer.scene.globe.enableLighting = true;
     const cameraController = cesiumViewer.scene.screenSpaceCameraController;
-    cameraController.minimumZoomDistance = 12000000;
+    cameraController.minimumZoomDistance = 100;
     cameraController.maximumZoomDistance = 50000000;
     cameraController.enableRotate = true;
     cameraController.enableTranslate = true;
@@ -485,11 +568,107 @@ function initializeCesiumGlobe() {
     cameraController.inertiaZoom = 0;
     setCesiumCameraForRegion(activeRegionId);
 
-    updateText(selectors.cesiumFallback, "CesiumJS globe initialized. Visualization only.");
-    selectors.cesiumFallback?.classList.remove("is-error");
+    await setEarthImageryMode();
   } catch (error) {
     showCesiumFallback("3D Earth unavailable. PCS data display remains operational.");
   }
+}
+
+function updateMonitoringScales(targetId) {
+  const target = celestialTargetConfig[targetId];
+  if (!target || !selectors.monitoringScaleControls) return;
+  selectors.monitoringScaleControls.replaceChildren(...target.availableMonitoringScales.map((label, index) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = `framework-button${index === 0 ? " is-active" : ""}`;
+    button.dataset.observatoryMode = label.toLowerCase().replaceAll(" ", "-");
+    button.textContent = label;
+    button.setAttribute("aria-pressed", String(index === 0));
+    return button;
+  }));
+  updateText(selectors.observatoryModeStatus, `${target.availableMonitoringScales[0]} scale active for ${target.displayName}.`);
+  updateText(selectors.monitoringScaleStatus, `${target.availableMonitoringScales[0]} active`);
+}
+
+function clearEarthLayers() {
+  [...activeWeatherLayers.keys()].forEach(removeWeatherLayer);
+  selectors.weatherLayerControls.forEach((control) => { control.checked = false; });
+  clearEarthImagery();
+  clearUserLocation();
+}
+
+async function setCelestialTarget(targetId) {
+  const target = celestialTargetConfig[targetId];
+  if (!target || !cesiumViewer || !window.Cesium || targetId === activeCelestialTargetId) return;
+  showObservatoryMessage(`Loading ${target.displayName}…`);
+  if (activeCelestialTargetId === "earth") clearEarthLayers();
+  activeCelestialTargetId = targetId;
+  selectors.solarSystemControls.forEach((button) => {
+    const active = button.dataset.solarTarget === targetId;
+    button.classList.toggle("is-active", active);
+    button.setAttribute("aria-pressed", String(active));
+  });
+  updateText(selectors.observatoryViewLabel, `${target.bodyType === "space" ? "Deep Space" : "3D Celestial"} Observatory`);
+  updateText(selectors.observatoryViewTitle, `${target.displayName} — ${target.subtitle}`);
+  updateText(selectors.celestialTargetStatus, `${target.displayName} ${target.status.toLowerCase()}`);
+  selectors.celestialTargetStatus.className = `status-pill ${target.status === "Active" ? "status-normal" : "status-attention"}`;
+  updateText(selectors.solarSystemStatus, `${target.displayName} ${target.status}. ${target.texture}`);
+  updateMonitoringScales(targetId);
+  selectors.locationPanel?.toggleAttribute("hidden", targetId !== "earth");
+  document.querySelectorAll(".layer-control-panel").forEach((panel) => panel.toggleAttribute("hidden", targetId !== "earth"));
+  cesiumViewer.scene.globe.show = target.bodyType !== "space";
+  cesiumViewer.scene.skyAtmosphere.show = targetId === "earth";
+  cesiumViewer.scene.globe.enableLighting = targetId === "earth";
+  cesiumViewer.scene.globe.baseColor = Cesium.Color.fromCssColorString(target.color);
+  const [lon, lat, altitude] = target.cameraDestination;
+  cesiumViewer.camera.flyTo({ destination: Cesium.Cartesian3.fromDegrees(lon, lat, altitude), duration: 1.2 });
+  if (targetId === "earth") {
+    await setEarthImageryMode();
+    if (lastUserPosition) showUserLocation(lastUserPosition);
+  }
+  else showObservatoryMessage(`${target.displayName} preview loaded. No live scientific planetary data is displayed.`);
+}
+
+function clearUserLocation() {
+  if (!cesiumViewer) return;
+  if (userLocationEntity) cesiumViewer.entities.remove(userLocationEntity);
+  if (userAccuracyEntity) cesiumViewer.entities.remove(userAccuracyEntity);
+  userLocationEntity = userAccuracyEntity = null;
+}
+
+function showUserLocation(position) {
+  if (!cesiumViewer || activeCelestialTargetId !== "earth") return;
+  clearUserLocation();
+  lastUserPosition = position;
+  const { latitude, longitude, accuracy } = position.coords;
+  const center = Cesium.Cartesian3.fromDegrees(longitude, latitude, 10);
+  userAccuracyEntity = cesiumViewer.entities.add({ position: center, ellipse: { semiMajorAxis: accuracy, semiMinorAxis: accuracy, material: Cesium.Color.CYAN.withAlpha(0.14), outline: true, outlineColor: Cesium.Color.CYAN.withAlpha(0.65) } });
+  userLocationEntity = cesiumViewer.entities.add({ position: center, point: { pixelSize: 12, color: Cesium.Color.CYAN, outlineColor: Cesium.Color.WHITE, outlineWidth: 2, disableDepthTestDistance: Number.POSITIVE_INFINITY }, label: { text: "You are here", font: "14px sans-serif", fillColor: Cesium.Color.WHITE, showBackground: true, backgroundColor: Cesium.Color.BLACK.withAlpha(0.7), pixelOffset: new Cesium.Cartesian2(0, -28), disableDepthTestDistance: Number.POSITIVE_INFINITY } });
+  updateText(selectors.locationLatitude, latitude.toFixed(6));
+  updateText(selectors.locationLongitude, longitude.toFixed(6));
+  updateText(selectors.locationAccuracy, `${Math.round(accuracy)} m`);
+  selectors.locationCoordinates.hidden = false;
+  updateText(selectors.locationStatus, "Location found on this device. Select Locate Me again to fly to it.");
+}
+
+function flyToUserLocation() {
+  if (!lastUserPosition || !cesiumViewer || activeCelestialTargetId !== "earth") return;
+  const { longitude, latitude, accuracy } = lastUserPosition.coords;
+  cesiumViewer.camera.flyTo({ destination: Cesium.Cartesian3.fromDegrees(longitude, latitude, Math.max(accuracy * 8, 2500)), duration: 1.8 });
+}
+
+function requestUserLocation() {
+  if (lastUserPosition) { flyToUserLocation(); return; }
+  if (!navigator.geolocation) { updateText(selectors.locationStatus, "Location is not supported by this browser."); return; }
+  updateText(selectors.locationStatus, "Requesting device location…");
+  const onError = (error) => {
+    const messages = { 1: "Location permission was denied.", 2: "Position is unavailable.", 3: "Location request timed out." };
+    updateText(selectors.locationStatus, messages[error.code] || "Location could not be determined.");
+  };
+  navigator.geolocation.getCurrentPosition(showUserLocation, (error) => {
+    if (error.code === 2 || error.code === 3) navigator.geolocation.getCurrentPosition(showUserLocation, onError, { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 });
+    else onError(error);
+  }, { enableHighAccuracy: true, timeout: 12000, maximumAge: 60000 });
 }
 
 function initializeRegionalMode() {
@@ -533,28 +712,23 @@ function initializePlaceholderSelectors() {
 
 function initializeFrameworkControls() {
   selectors.solarSystemControls.forEach((control) => {
-    control.addEventListener("click", () => {
-      const target = control.dataset.solarTarget;
-      if (target === "earth") {
-        updateText(selectors.solarSystemStatus, "Earth Observatory active. No planetary data or models are loaded.");
-        return;
-      }
-
-      updateText(selectors.solarSystemStatus, "Coming soon. Earth Observatory remains active.");
-    });
+    control.setAttribute("aria-pressed", String(control.dataset.solarTarget === "earth"));
+    control.addEventListener("click", () => { void setCelestialTarget(control.dataset.solarTarget); });
   });
 
-  selectors.observatoryModeControls.forEach((control) => {
-    control.addEventListener("click", () => {
-      const mode = control.dataset.observatoryMode;
-      if (mode === "planet") {
-        updateText(selectors.observatoryModeStatus, "Planet mode active. Regional data integration pending.");
-        return;
-      }
-
-      updateText(selectors.observatoryModeStatus, "Mode placeholder. Regional data integration pending.");
+  selectors.monitoringScaleControls?.addEventListener("click", (event) => {
+    const control = event.target.closest("[data-observatory-mode]");
+    if (!control) return;
+    selectors.monitoringScaleControls.querySelectorAll("[data-observatory-mode]").forEach((button) => {
+      const active = button === control;
+      button.classList.toggle("is-active", active);
+      button.setAttribute("aria-pressed", String(active));
     });
+    updateText(selectors.observatoryModeStatus, `${control.textContent} scale active for ${celestialTargetConfig[activeCelestialTargetId].displayName}.`);
+    updateText(selectors.monitoringScaleStatus, `${control.textContent} active`);
   });
+
+  selectors.locateMe?.addEventListener("click", requestUserLocation);
 
   selectors.timelineControls.forEach((control) => {
     control.addEventListener("click", () => {
@@ -656,7 +830,7 @@ function setWeatherTileError(message) {
 }
 
 function addWeatherLayer(layerId) {
-  if (!cesiumViewer || !window.Cesium) {
+  if (!cesiumViewer || !window.Cesium || activeCelestialTargetId !== "earth") {
     setWeatherProxyStatus("Weather proxy: globe not available.");
     return;
   }
@@ -764,7 +938,7 @@ async function initializeApp() {
   runSafe("regional mode initialization", initializeRegionalMode);
   runSafe("language selector initialization", initializeLanguageSelector);
   renderClock();
-  runSafe("Cesium globe initialization", initializeCesiumGlobe);
+  await runSafeAsync("Cesium globe initialization", initializeCesiumGlobe);
   runSafe("placeholder selector initialization", initializePlaceholderSelectors);
   runSafe("framework controls initialization", initializeFrameworkControls);
   runSafe("layer controls initialization", initializeLayerControls);
