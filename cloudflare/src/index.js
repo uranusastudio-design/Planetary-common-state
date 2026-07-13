@@ -173,23 +173,13 @@ function getSessionPayload(body) {
   return sanitizeSessionId(body?.session_id ?? body?.sessionId ?? body?.id);
 }
 
-async function registerVisitor(request, env) {
-  let body;
-  try {
-    body = await request.json();
-  } catch (error) {
-    return json({ error: "Invalid JSON body" }, 400);
-  }
-
-  const sessionId = getSessionPayload(body);
-  if (!sessionId) {
-    return json({ error: "session_id is required" }, 400);
-  }
-
-  const now = new Date().toISOString();
-  const location = getApproximateVisitorLocation(request);
-  const userAgent = sanitizeText(request.headers.get("user-agent"), 255);
-
+async function upsertVisitorSession(env, {
+  sessionId,
+  location,
+  userAgent,
+  now,
+  incrementVisitCount = false,
+}) {
   await env.PCS_DB.prepare(`
     INSERT INTO visitor_sessions
       (session_id, country, region, city, latitude, longitude, timezone, colo, first_seen_at, last_seen_at, visit_count, last_user_agent)
@@ -203,7 +193,7 @@ async function registerVisitor(request, env) {
       timezone = excluded.timezone,
       colo = excluded.colo,
       last_seen_at = excluded.last_seen_at,
-      visit_count = visitor_sessions.visit_count + 1,
+      visit_count = visitor_sessions.visit_count ${incrementVisitCount ? "+ 1" : ""},
       last_user_agent = excluded.last_user_agent
   `)
     .bind(
@@ -220,14 +210,22 @@ async function registerVisitor(request, env) {
       userAgent
     )
     .run();
+}
 
+async function insertVisitorEvent(env, {
+  sessionId,
+  eventType,
+  now,
+  location,
+}) {
   await env.PCS_DB.prepare(`
     INSERT INTO visitor_events
       (session_id, event_type, event_time, country, region, city, latitude, longitude, timezone, colo)
-    VALUES (?, 'register', ?, ?, ?, ?, ?, ?, ?, ?)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `)
     .bind(
       sessionId,
+      eventType,
       now,
       location.country,
       location.region,
@@ -238,6 +236,33 @@ async function registerVisitor(request, env) {
       location.colo
     )
     .run();
+}
+
+async function parseVisitorSessionPayload(request) {
+  let body;
+  try {
+    body = await request.json();
+  } catch (error) {
+    return { errorResponse: json({ error: "Invalid JSON body" }, 400) };
+  }
+  const sessionId = getSessionPayload(body);
+  if (!sessionId) {
+    return { errorResponse: json({ error: "session_id is required" }, 400) };
+  }
+  return { sessionId };
+}
+
+async function registerVisitor(request, env) {
+  const parsedPayload = await parseVisitorSessionPayload(request);
+  if (parsedPayload.errorResponse) return parsedPayload.errorResponse;
+
+  const sessionId = parsedPayload.sessionId;
+  const now = new Date().toISOString();
+  const location = getApproximateVisitorLocation(request);
+  const userAgent = sanitizeText(request.headers.get("user-agent"), 255);
+
+  await upsertVisitorSession(env, { sessionId, location, userAgent, now, incrementVisitCount: true });
+  await insertVisitorEvent(env, { sessionId, eventType: "register", now, location });
 
   return json({
     success: true,
@@ -248,69 +273,16 @@ async function registerVisitor(request, env) {
 }
 
 async function pingVisitor(request, env) {
-  let body;
-  try {
-    body = await request.json();
-  } catch (error) {
-    return json({ error: "Invalid JSON body" }, 400);
-  }
+  const parsedPayload = await parseVisitorSessionPayload(request);
+  if (parsedPayload.errorResponse) return parsedPayload.errorResponse;
 
-  const sessionId = getSessionPayload(body);
-  if (!sessionId) {
-    return json({ error: "session_id is required" }, 400);
-  }
-
+  const sessionId = parsedPayload.sessionId;
   const now = new Date().toISOString();
   const location = getApproximateVisitorLocation(request);
   const userAgent = sanitizeText(request.headers.get("user-agent"), 255);
 
-  await env.PCS_DB.prepare(`
-    INSERT INTO visitor_sessions
-      (session_id, country, region, city, latitude, longitude, timezone, colo, first_seen_at, last_seen_at, visit_count, last_user_agent)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?)
-    ON CONFLICT(session_id) DO UPDATE SET
-      country = excluded.country,
-      region = excluded.region,
-      city = excluded.city,
-      latitude = excluded.latitude,
-      longitude = excluded.longitude,
-      timezone = excluded.timezone,
-      colo = excluded.colo,
-      last_seen_at = excluded.last_seen_at,
-      last_user_agent = excluded.last_user_agent
-  `)
-    .bind(
-      sessionId,
-      location.country,
-      location.region,
-      location.city,
-      location.latitude,
-      location.longitude,
-      location.timezone,
-      location.colo,
-      now,
-      now,
-      userAgent
-    )
-    .run();
-
-  await env.PCS_DB.prepare(`
-    INSERT INTO visitor_events
-      (session_id, event_type, event_time, country, region, city, latitude, longitude, timezone, colo)
-    VALUES (?, 'ping', ?, ?, ?, ?, ?, ?, ?, ?)
-  `)
-    .bind(
-      sessionId,
-      now,
-      location.country,
-      location.region,
-      location.city,
-      location.latitude,
-      location.longitude,
-      location.timezone,
-      location.colo
-    )
-    .run();
+  await upsertVisitorSession(env, { sessionId, location, userAgent, now, incrementVisitCount: false });
+  await insertVisitorEvent(env, { sessionId, eventType: "ping", now, location });
 
   return json({
     success: true,

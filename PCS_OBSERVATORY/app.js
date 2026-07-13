@@ -354,9 +354,12 @@ function getOrCreateVisitorSessionId() {
   let generated = "";
   if (window.crypto?.randomUUID) {
     generated = window.crypto.randomUUID().replaceAll("-", "");
+  } else if (window.crypto?.getRandomValues) {
+    const bytes = new Uint8Array(16);
+    window.crypto.getRandomValues(bytes);
+    generated = Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("");
   } else {
-    const randomPart = Math.random().toString(36).slice(2);
-    generated = `${Date.now().toString(36)}${randomPart}${randomPart}`.slice(0, 32);
+    generated = `${Date.now().toString(16)}${performance.now().toString(16).replace(".", "")}`.slice(0, 32);
   }
   writeStorageValue(VISITOR_SESSION_STORAGE_KEY, generated);
   return generated;
