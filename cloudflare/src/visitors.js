@@ -379,37 +379,41 @@ async function visitorAnalytics(request, env) {
 }
 
 async function handleVisitorRequest(request, env) {
-  if (request.method === "OPTIONS") {
-    return visitorJson({ status: "ok" });
+  try {
+    if (request.method === "OPTIONS") {
+      return visitorJson({ status: "ok" });
+    }
+
+    if (!env.PCS_DB) {
+      return visitorJson({ error: "PCS_DB is not configured" }, 500);
+    }
+
+    const url = new URL(request.url);
+
+    if (url.pathname === "/api/visitors/register") {
+      return await registerVisitor(request, env);
+    }
+
+    if (url.pathname === "/api/visitors/ping") {
+      return await pingVisitor(request, env);
+    }
+
+    if (url.pathname === "/api/visitors/stats") {
+      return await visitorStats(request, env);
+    }
+
+    if (url.pathname === "/api/visitors/locations") {
+      return await visitorLocations(request, env);
+    }
+
+    if (url.pathname === "/api/visitors/analytics") {
+      return await visitorAnalytics(request, env);
+    }
+
+    return visitorJson({ error: "Visitor route not found" }, 404);
+  } catch {
+    return visitorJson({ error: "Visitor API unavailable" }, 500);
   }
-
-  if (!env.PCS_DB) {
-    return visitorJson({ error: "PCS_DB is not configured" }, 500);
-  }
-
-  const url = new URL(request.url);
-
-  if (url.pathname === "/api/visitors/register") {
-    return registerVisitor(request, env);
-  }
-
-  if (url.pathname === "/api/visitors/ping") {
-    return pingVisitor(request, env);
-  }
-
-  if (url.pathname === "/api/visitors/stats") {
-    return visitorStats(request, env);
-  }
-
-  if (url.pathname === "/api/visitors/locations") {
-    return visitorLocations(request, env);
-  }
-
-  if (url.pathname === "/api/visitors/analytics") {
-    return visitorAnalytics(request, env);
-  }
-
-  return visitorJson({ error: "Visitor route not found" }, 404);
 }
 
 export { handleVisitorRequest, VISITOR_ROUTES };

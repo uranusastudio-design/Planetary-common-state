@@ -275,6 +275,7 @@ h3 {
 .telemetry-panel,
 .source-panel,
 .domain-values-panel,
+.visitor-network-panel,
 .alert-panel,
 .health-panel,
 .ai-panel,
@@ -815,6 +816,148 @@ h3 {
   border-color: rgba(157, 124, 255, 0.3);
 }
 
+.visitor-network-panel {
+  border-color: rgba(34, 211, 238, 0.36);
+}
+
+.visitor-network-panel summary {
+  display: grid;
+  gap: 4px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.visitor-network-panel summary::-webkit-details-marker {
+  display: none;
+}
+
+.visitor-network-panel summary strong {
+  color: var(--text);
+  font-size: 1rem;
+}
+
+.visitor-network-body {
+  margin-top: 14px;
+}
+
+.visitor-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+}
+
+.visitor-metric-grid div,
+.visitor-section {
+  border: 1px solid rgba(142, 168, 189, 0.16);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.visitor-metric-grid div {
+  padding: 10px;
+}
+
+.visitor-metric-grid dt {
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.visitor-metric-grid dd {
+  margin: 6px 0 0;
+  color: var(--cyan);
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.visitor-metric-grid small,
+.visitor-legend,
+.visitor-ranking small {
+  color: var(--muted);
+  font-size: 0.68rem;
+}
+
+.visitor-section {
+  margin-top: 10px;
+  padding: 10px;
+}
+
+.visitor-section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.visitor-list,
+.visitor-ranking {
+  margin: 8px 0 0;
+  padding-left: 1.1rem;
+  color: var(--text);
+}
+
+.visitor-list li,
+.visitor-ranking li {
+  margin: 4px 0;
+}
+
+.visitor-legend span {
+  color: var(--cyan);
+}
+
+.visitor-range-tabs,
+.visitor-toggle-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.visitor-range-tab {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 5px 9px;
+  color: var(--muted);
+  background: rgba(7, 17, 31, 0.9);
+  cursor: pointer;
+}
+
+.visitor-range-tab.is-active,
+.visitor-range-tab:focus-visible {
+  border-color: var(--cyan);
+  color: var(--cyan);
+  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.14);
+}
+
+.visitor-toggle-grid label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 0.76rem;
+}
+
+.visitor-chart {
+  width: 100%;
+  min-height: 132px;
+  margin-top: 8px;
+  border: 1px solid rgba(142, 168, 189, 0.16);
+  border-radius: 8px;
+  padding: 8px;
+  color: var(--muted);
+  background: rgba(3, 7, 18, 0.45);
+}
+
+.visitor-chart svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .bottom-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.55fr);
@@ -1081,6 +1224,10 @@ h3 {
     grid-column: span 2;
   }
 
+  .visitor-network-panel {
+    grid-column: span 2;
+  }
+
   .domain-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
@@ -1128,6 +1275,14 @@ h3 {
   .hero-panel,
   .domain-values-panel {
     grid-column: auto;
+  }
+
+  .visitor-network-panel {
+    grid-column: auto;
+  }
+
+  .visitor-metric-grid {
+    grid-template-columns: 1fr;
   }
 
   .cesium-globe {

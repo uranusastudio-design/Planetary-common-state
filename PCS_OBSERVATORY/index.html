@@ -481,6 +481,56 @@
             <span class="panel-label" data-i18n="ai_copilot">AI Copilot Summary</span>
             <p id="ai-copilot-message" data-i18n="ai_copilot_inactive">AI Copilot not active. Future summaries will interpret validated PCS outputs without modifying data or calculations.</p>
           </article>
+
+          <article class="panel visitor-network-panel" aria-labelledby="visitor-network-title">
+            <details id="visitor-network-details">
+              <summary>
+                <span class="panel-label">PCS GLOBAL OBSERVATORY NETWORK</span>
+                <strong id="visitor-network-title">Live Visitor Observatory</strong>
+              </summary>
+              <div class="visitor-network-body">
+                <dl class="visitor-metric-grid">
+                  <div><dt>🟢 ONLINE</dt><dd id="visitor-online">—</dd><small>Current online visitors</small></div>
+                  <div><dt>👥 TODAY</dt><dd id="visitor-today">—</dd><small>Today's visits</small></div>
+                  <div><dt>🌍 TOTAL VISITS</dt><dd id="visitor-total">—</dd><small>Total page visits</small></div>
+                  <div><dt>🧭 UNIQUE SESSIONS</dt><dd id="visitor-unique">—</dd><small>Unique visitor sessions</small></div>
+                  <div><dt>🌎 COUNTRIES</dt><dd id="visitor-countries">—</dd><small>Number of unique countries</small></div>
+                  <div><dt>📍 LATEST</dt><dd id="visitor-latest">—</dd><small>Latest visitor city + country</small></div>
+                  <div><dt>🕒 UPDATED</dt><dd id="visitor-updated">—</dd><small>Last update time (local time)</small></div>
+                </dl>
+
+                <section class="visitor-section" aria-labelledby="visitor-regions-title">
+                  <h3 id="visitor-regions-title">Recent Observation Regions</h3>
+                  <ul id="visitor-recent-regions" class="visitor-list"><li>—</li></ul>
+                  <p class="visitor-legend"><span aria-hidden="true">●</span> Active Observation Region<br>Approximate location only</p>
+                </section>
+
+                <section class="visitor-section visitor-analytics-section" aria-labelledby="visitor-analytics-title">
+                  <div class="visitor-section-heading">
+                    <h3 id="visitor-analytics-title">Observation Analytics</h3>
+                    <span id="visitor-analytics-status" class="microcopy">—</span>
+                  </div>
+                  <div class="visitor-range-tabs" role="tablist" aria-label="Observation analytics time range">
+                    <button type="button" class="visitor-range-tab is-active" data-visitor-range="24h" role="tab" aria-selected="true">24H</button>
+                    <button type="button" class="visitor-range-tab" data-visitor-range="7d" role="tab" aria-selected="false">7D</button>
+                    <button type="button" class="visitor-range-tab" data-visitor-range="30d" role="tab" aria-selected="false">30D</button>
+                  </div>
+                  <div class="visitor-toggle-grid">
+                    <label><input type="checkbox" id="visitor-heat-toggle"> Observation Heat</label>
+                    <label><input type="checkbox" id="visitor-network-toggle"> Network Connections</label>
+                  </div>
+                  <h3>OBSERVATION ACTIVITY</h3>
+                  <div id="visitor-trend-chart" class="visitor-chart" role="img" aria-label="Observation activity chart">—</div>
+                  <h3>TOP OBSERVATION COUNTRIES</h3>
+                  <ol id="visitor-country-ranking" class="visitor-ranking"><li>—</li></ol>
+                </section>
+
+                <p id="visitor-network-status" class="framework-status" role="status" aria-live="polite">—</p>
+                <p class="panel-note">Approximate visitor locations are derived from Cloudflare network metadata. No precise address or full IP address is displayed.</p>
+                <p class="panel-note">All activity analytics are aggregated. Individual visitors, full IP addresses, and precise locations are not displayed.</p>
+              </div>
+            </details>
+          </article>
         </aside>
       </section>
 
@@ -576,6 +626,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/cesium@1.120.0/Build/Cesium/Cesium.js"></script>
     <script src="./moon-lighting.js"></script>
-    <script src="./app.js?v=celestial-observation-3"></script>
+    <script src="./app.js?v=observatory-network-3"></script>
   </body>
 </html>

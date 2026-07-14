@@ -2,13 +2,20 @@ const GLOBAL_STATE_SOURCE = "../PCS_ENGINE/output/latest_state.json";
 const REGIONAL_STATE_SOURCE_PREFIX = "../PCS_ENGINE/output/regions";
 const REFRESH_INTERVAL_MS = 10000;
 const MOON_LIGHTING_REFRESH_INTERVAL_MS = 20 * 60 * 1000;
+const VISITOR_STATS_REFRESH_INTERVAL_MS = 30 * 1000;
+const VISITOR_LOCATIONS_REFRESH_INTERVAL_MS = 60 * 1000;
+const VISITOR_ANALYTICS_REFRESH_INTERVAL_MS = 5 * 60 * 1000;
 const LANGUAGE_STORAGE_KEY = "pcs_observatory_language";
 const REGION_STORAGE_KEY = "pcs_observatory_region";
+const VISITOR_SESSION_STORAGE_KEY = "pcs_visitor_session_id";
+const OBSERVATION_HEAT_STORAGE_KEY = "pcs_observation_heat_enabled";
+const NETWORK_CONNECTIONS_STORAGE_KEY = "pcs_network_connections_enabled";
 const IS_LOCAL_DEVELOPMENT = ["localhost", "127.0.0.1"].includes(window.location.hostname);
 const WEATHER_PROXY_BASE = IS_LOCAL_DEVELOPMENT
   ? "http://127.0.0.1:8787"
   : "https://pcs-backend.uranusastudio.workers.dev";
 const ASTRONOMY_PROXY_BASE = WEATHER_PROXY_BASE;
+const VISITOR_API_BASE = WEATHER_PROXY_BASE;
 const LUNAR_IMAGERY_CONFIG = Object.freeze({
   url: `${ASTRONOMY_PROXY_BASE}/api/astronomy/lunar-image`,
   source: "NASA/ASU LROC via USGS Astrogeology",
@@ -201,6 +208,14 @@ let solarImageryActive = false;
 let solarNumericalActive = false;
 let activeSolarImageMode = "hmi-continuum";
 let activeSolarObservationPayload = null;
+let visitorDataSource = null;
+let visitorHeatDataSource = null;
+let visitorNetworkDataSource = null;
+let visitorLocationByEntityId = new Map();
+let visitorSessionId = null;
+let visitorAnalyticsRange = "24h";
+let latestVisitorAnalytics = null;
+let latestVisitorAnalyticsAt = 0;
 let userLocationEntity = null;
 let userAccuracyEntity = null;
 let lastUserPosition = null;
@@ -271,6 +286,22 @@ const selectors = {
   weatherProxyStatus: document.querySelector("#weather-proxy-status"),
   weatherActiveLayers: document.querySelector("#weather-active-layers"),
   weatherTileError: document.querySelector("#weather-tile-error"),
+  visitorDetails: document.querySelector("#visitor-network-details"),
+  visitorOnline: document.querySelector("#visitor-online"),
+  visitorToday: document.querySelector("#visitor-today"),
+  visitorTotal: document.querySelector("#visitor-total"),
+  visitorUnique: document.querySelector("#visitor-unique"),
+  visitorCountries: document.querySelector("#visitor-countries"),
+  visitorLatest: document.querySelector("#visitor-latest"),
+  visitorUpdated: document.querySelector("#visitor-updated"),
+  visitorRecentRegions: document.querySelector("#visitor-recent-regions"),
+  visitorNetworkStatus: document.querySelector("#visitor-network-status"),
+  visitorAnalyticsStatus: document.querySelector("#visitor-analytics-status"),
+  visitorRangeTabs: document.querySelectorAll("[data-visitor-range]"),
+  visitorHeatToggle: document.querySelector("#visitor-heat-toggle"),
+  visitorNetworkToggle: document.querySelector("#visitor-network-toggle"),
+  visitorTrendChart: document.querySelector("#visitor-trend-chart"),
+  visitorCountryRanking: document.querySelector("#visitor-country-ranking"),
   moonPanel: document.querySelector("#moon-observation-panel"),
   moonError: document.querySelector("#moon-error"),
   moonPhaseGraphic: document.querySelector("#moon-phase-graphic"),
@@ -1309,6 +1340,7 @@ async function initializeCesiumGlobe() {
     cameraController.enableZoom = true;
     cameraController.inertiaZoom = 0;
     setCesiumCameraForRegion(activeRegionId);
+    ensureVisitorDataSources();
 
     await setEarthImageryMode();
   } catch (error) {
@@ -1365,6 +1397,7 @@ async function setCelestialTarget(targetId) {
   if (activeCelestialTargetId === "earth") clearEarthLayers();
   else clearCelestialImagery();
   activeCelestialTargetId = targetId;
+  updateVisitorLayerVisibility();
   updatePcsAvailability(target);
   selectors.solarSystemControls.forEach((button) => {
     const active = button.dataset.solarTarget === targetId;
@@ -1400,6 +1433,7 @@ async function setCelestialTarget(targetId) {
     restoreEarthLighting();
     await setEarthImageryMode();
     if (lastUserPosition) showUserLocation(lastUserPosition);
+    updateVisitorLayerVisibility();
   } else if (targetId === "moon") {
     moonImageryActive = false;
     moonNumericalActive = false;
@@ -1829,6 +1863,356 @@ function renderBuildTimestamp() {
   updateText(selectors.buildTimestamp, document.lastModified || "Static prototype");
 }
 
+function visitorApiUrl(path) {
+  return `${VISITOR_API_BASE}${path}`;
+}
+
+function setVisitorMetric(element, value) {
+  updateText(element, value === null || typeof value === "undefined" ? "—" : String(value));
+}
+
+function setVisitorUnavailable() {
+  [
+    selectors.visitorOnline,
+    selectors.visitorToday,
+    selectors.visitorTotal,
+    selectors.visitorUnique,
+    selectors.visitorCountries,
+    selectors.visitorLatest,
+    selectors.visitorUpdated,
+  ].forEach((element) => updateText(element, "Unavailable"));
+  updateText(selectors.visitorNetworkStatus, "Unavailable");
+}
+
+function getVisitorSessionId() {
+  const existing = readStorageValue(VISITOR_SESSION_STORAGE_KEY, "");
+  if (existing) return existing;
+  let generated = "";
+  if (window.crypto?.randomUUID) {
+    generated = window.crypto.randomUUID();
+  } else if (window.crypto?.getRandomValues) {
+    const bytes = new Uint8Array(16);
+    window.crypto.getRandomValues(bytes);
+    generated = [...bytes].map((byte) => byte.toString(16).padStart(2, "0")).join("");
+  } else {
+    generated = `${Date.now().toString(16)}-${Math.random().toString(16).slice(2)}`;
+  }
+  writeStorageValue(VISITOR_SESSION_STORAGE_KEY, generated);
+  return generated;
+}
+
+async function postVisitorEvent(path) {
+  if (!visitorSessionId) return null;
+  const response = await fetch(visitorApiUrl(path), {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ sessionId: visitorSessionId }),
+    cache: "no-store",
+  });
+  if (!response.ok) throw new Error(`Visitor API failed: ${path}`);
+  return response.json();
+}
+
+function formatVisitorNumber(value) {
+  return typeof value === "number" ? value.toLocaleString() : "—";
+}
+
+function formatVisitorPlace(location) {
+  if (!location) return "—";
+  if (location.city && location.country) return `${location.city}, ${location.country}`;
+  if (location.city) return location.city;
+  if (location.country) return location.country;
+  return "Unknown Region";
+}
+
+function formatVisitorLocalTime(value) {
+  if (!value) return "—";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "—";
+  return date.toLocaleString([], {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
+async function refreshVisitorStats() {
+  try {
+    const response = await fetch(visitorApiUrl("/api/visitors/stats"), { cache: "no-store" });
+    if (!response.ok) throw new Error("visitor_stats_unavailable");
+    const stats = await response.json();
+    setVisitorMetric(selectors.visitorOnline, formatVisitorNumber(stats.online));
+    setVisitorMetric(selectors.visitorToday, formatVisitorNumber(stats.todayVisits));
+    setVisitorMetric(selectors.visitorTotal, formatVisitorNumber(stats.totalVisits));
+    setVisitorMetric(selectors.visitorUnique, formatVisitorNumber(stats.uniqueSessions));
+    setVisitorMetric(selectors.visitorCountries, formatVisitorNumber(stats.countries));
+    setVisitorMetric(selectors.visitorLatest, formatVisitorPlace(stats.latestVisitor));
+    setVisitorMetric(selectors.visitorUpdated, formatVisitorLocalTime(stats.lastUpdated));
+    updateText(selectors.visitorNetworkStatus, "PCS Global Observatory Network active.");
+  } catch (error) {
+    setVisitorUnavailable();
+  }
+}
+
+function updateVisitorLayerVisibility() {
+  const isEarth = activeCelestialTargetId === "earth";
+  const heatEnabled = readStorageValue(OBSERVATION_HEAT_STORAGE_KEY, "false") === "true";
+  const networkEnabled = readStorageValue(NETWORK_CONNECTIONS_STORAGE_KEY, "false") === "true";
+  if (visitorDataSource) visitorDataSource.show = isEarth;
+  if (visitorHeatDataSource) visitorHeatDataSource.show = isEarth && heatEnabled;
+  if (visitorNetworkDataSource) visitorNetworkDataSource.show = isEarth && networkEnabled;
+}
+
+function ensureVisitorDataSources() {
+  if (!cesiumViewer || !window.Cesium) return;
+  if (!visitorDataSource) {
+    visitorDataSource = new Cesium.CustomDataSource("visitorDataSource");
+    cesiumViewer.dataSources.add(visitorDataSource);
+  }
+  if (!visitorHeatDataSource) {
+    visitorHeatDataSource = new Cesium.CustomDataSource("visitorHeatDataSource");
+    cesiumViewer.dataSources.add(visitorHeatDataSource);
+  }
+  if (!visitorNetworkDataSource) {
+    visitorNetworkDataSource = new Cesium.CustomDataSource("visitorNetworkDataSource");
+    cesiumViewer.dataSources.add(visitorNetworkDataSource);
+  }
+  updateVisitorLayerVisibility();
+}
+
+function renderVisitorLocations(locations = []) {
+  ensureVisitorDataSources();
+  if (!visitorDataSource || !window.Cesium) return;
+  visitorDataSource.entities.removeAll();
+  visitorLocationByEntityId = new Map();
+  locations.slice(0, 100).forEach((location, index) => {
+    const latitude = Number(location.latitude);
+    const longitude = Number(location.longitude);
+    if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) return;
+    const count = Math.max(1, Number(location.count || 1));
+    const id = `visitor-location-${index}`;
+    visitorDataSource.entities.add({
+      id,
+      name: formatVisitorPlace(location),
+      position: Cesium.Cartesian3.fromDegrees(longitude, latitude),
+      point: {
+        pixelSize: Math.min(11, 5 + Math.log2(count + 1) * 1.6),
+        color: Cesium.Color.fromCssColorString("#38bdf8").withAlpha(0.82),
+        outlineColor: Cesium.Color.WHITE.withAlpha(0.9),
+        outlineWidth: 1.5,
+        disableDepthTestDistance: Number.POSITIVE_INFINITY,
+      },
+    });
+    visitorLocationByEntityId.set(id, location);
+  });
+  updateVisitorLayerVisibility();
+}
+
+function renderRecentVisitorRegions(locations = []) {
+  if (!selectors.visitorRecentRegions) return;
+  const items = locations.slice(0, 5).map((location) => {
+    const item = document.createElement("li");
+    item.textContent = formatVisitorPlace(location);
+    return item;
+  });
+  if (!items.length) {
+    const item = document.createElement("li");
+    item.textContent = "—";
+    items.push(item);
+  }
+  selectors.visitorRecentRegions.replaceChildren(...items);
+}
+
+async function refreshVisitorLocations() {
+  try {
+    const response = await fetch(visitorApiUrl("/api/visitors/locations"), { cache: "no-store" });
+    if (!response.ok) throw new Error("visitor_locations_unavailable");
+    const payload = await response.json();
+    const locations = Array.isArray(payload.locations) ? payload.locations : [];
+    renderVisitorLocations(locations);
+    renderRecentVisitorRegions(locations);
+  } catch (error) {
+    updateText(selectors.visitorNetworkStatus, "Visitor locations unavailable; keeping previous markers.");
+  }
+}
+
+function renderVisitorTrendChart(trend = [], range = "24h") {
+  if (!selectors.visitorTrendChart) return;
+  if (!trend.length) {
+    updateText(selectors.visitorTrendChart, "—");
+    return;
+  }
+  const width = 260;
+  const height = 112;
+  const pad = 16;
+  const maxValue = Math.max(1, ...trend.map((bucket) => Math.max(bucket.visits || 0, bucket.uniqueSessions || 0)));
+  const pointsFor = (key) => trend.map((bucket, index) => {
+    const x = trend.length <= 1 ? pad : pad + (index / (trend.length - 1)) * (width - pad * 2);
+    const y = height - pad - ((bucket[key] || 0) / maxValue) * (height - pad * 2);
+    return `${x},${y}`;
+  }).join(" ");
+  const labels = [trend[0], trend[trend.length - 1]].filter(Boolean).map((bucket) => {
+    const date = new Date(bucket.time);
+    return range === "24h"
+      ? date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+      : date.toLocaleDateString([], { month: "short", day: "numeric" });
+  });
+  selectors.visitorTrendChart.innerHTML = `
+    <svg viewBox="0 0 ${width} ${height}" aria-hidden="true">
+      <line x1="${pad}" y1="${height - pad}" x2="${width - pad}" y2="${height - pad}" stroke="rgba(159,183,213,.36)"></line>
+      <polyline points="${pointsFor("visits")}" fill="none" stroke="#22d3ee" stroke-width="2"></polyline>
+      <polyline points="${pointsFor("uniqueSessions")}" fill="none" stroke="#9d7cff" stroke-width="1.5" opacity=".86"></polyline>
+    </svg>
+    <div class="visitor-section-heading"><small>${labels[0] || ""}</small><small>${labels[1] || ""}</small></div>
+    <small><span style="color:#22d3ee">Visits</span> / <span style="color:#9d7cff">Unique sessions</span></small>`;
+}
+
+function renderVisitorCountryRanking(countries = []) {
+  if (!selectors.visitorCountryRanking) return;
+  const items = countries.slice(0, 5).map((country, index) => {
+    const item = document.createElement("li");
+    item.innerHTML = `<strong>${index + 1}. ${country.country || country.countryCode}</strong> <span>${formatVisitorNumber(country.visits)} visits</span><br><small>${formatVisitorNumber(country.uniqueSessions)} unique sessions</small>`;
+    return item;
+  });
+  if (!items.length) {
+    const item = document.createElement("li");
+    item.textContent = "—";
+    items.push(item);
+  }
+  selectors.visitorCountryRanking.replaceChildren(...items);
+}
+
+function renderVisitorHeat(heatLocations = []) {
+  ensureVisitorDataSources();
+  if (!visitorHeatDataSource || !window.Cesium) return;
+  visitorHeatDataSource.entities.removeAll();
+  heatLocations.slice(0, 100).forEach((location, index) => {
+    const latitude = Number(location.latitude);
+    const longitude = Number(location.longitude);
+    if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) return;
+    const weight = Math.max(1, Math.min(100, Number(location.weight || 1)));
+    const alpha = Math.min(0.34, 0.08 + weight / 380);
+    visitorHeatDataSource.entities.add({
+      id: `visitor-heat-${index}`,
+      position: Cesium.Cartesian3.fromDegrees(longitude, latitude),
+      point: {
+        pixelSize: Math.min(26, 8 + Math.sqrt(weight) * 2.1),
+        color: Cesium.Color.fromCssColorString("#0ea5e9").withAlpha(alpha),
+        outlineColor: Cesium.Color.fromCssColorString("#7dd3fc").withAlpha(alpha + 0.12),
+        outlineWidth: 1,
+        disableDepthTestDistance: Number.POSITIVE_INFINITY,
+      },
+    });
+  });
+  updateVisitorLayerVisibility();
+}
+
+function renderVisitorNetwork(heatLocations = []) {
+  ensureVisitorDataSources();
+  if (!visitorNetworkDataSource || !window.Cesium) return;
+  visitorNetworkDataSource.entities.removeAll();
+  const locations = heatLocations
+    .filter((location) => Number.isFinite(Number(location.latitude)) && Number.isFinite(Number(location.longitude)))
+    .slice(0, 20);
+  if (locations.length < 2) {
+    updateVisitorLayerVisibility();
+    return;
+  }
+  const totalWeight = locations.reduce((total, location) => total + Math.max(1, Number(location.weight || 1)), 0);
+  const hubLon = locations.reduce((total, location) => total + Number(location.longitude) * Math.max(1, Number(location.weight || 1)), 0) / totalWeight;
+  const hubLat = locations.reduce((total, location) => total + Number(location.latitude) * Math.max(1, Number(location.weight || 1)), 0) / totalWeight;
+  const hub = Cesium.Cartesian3.fromDegrees(hubLon, hubLat, 150000);
+  locations.forEach((location, index) => {
+    const weight = Math.max(1, Math.min(100, Number(location.weight || 1)));
+    visitorNetworkDataSource.entities.add({
+      id: `visitor-network-${index}`,
+      name: "PCS Observatory Network",
+      polyline: {
+        positions: [Cesium.Cartesian3.fromDegrees(Number(location.longitude), Number(location.latitude), 30000), hub],
+        width: Math.min(2.2, 0.8 + Math.sqrt(weight) / 12),
+        arcType: Cesium.ArcType.GEODESIC,
+        material: Cesium.Color.fromCssColorString("#38bdf8").withAlpha(0.18),
+      },
+    });
+  });
+  updateVisitorLayerVisibility();
+}
+
+async function refreshVisitorAnalytics(range = visitorAnalyticsRange) {
+  try {
+    const response = await fetch(visitorApiUrl(`/api/visitors/analytics?range=${encodeURIComponent(range)}`), { cache: "no-store" });
+    if (!response.ok) throw new Error("visitor_analytics_unavailable");
+    const analytics = await response.json();
+    latestVisitorAnalytics = analytics;
+    latestVisitorAnalyticsAt = Date.now();
+    visitorAnalyticsRange = analytics.range || range;
+    renderVisitorTrendChart(analytics.trend || [], visitorAnalyticsRange);
+    renderVisitorCountryRanking(analytics.countryRanking || []);
+    renderVisitorHeat(analytics.heatLocations || []);
+    renderVisitorNetwork(analytics.heatLocations || []);
+    updateText(selectors.visitorAnalyticsStatus, "Updated");
+  } catch (error) {
+    updateText(selectors.visitorAnalyticsStatus, "Unavailable");
+    if (latestVisitorAnalytics) {
+      renderVisitorTrendChart(latestVisitorAnalytics.trend || [], latestVisitorAnalytics.range || visitorAnalyticsRange);
+      renderVisitorCountryRanking(latestVisitorAnalytics.countryRanking || []);
+    }
+  }
+}
+
+function initializeVisitorControls() {
+  if (selectors.visitorDetails) {
+    selectors.visitorDetails.open = !window.matchMedia("(max-width: 820px)").matches;
+  }
+  if (selectors.visitorHeatToggle) {
+    selectors.visitorHeatToggle.checked = readStorageValue(OBSERVATION_HEAT_STORAGE_KEY, "false") === "true";
+    selectors.visitorHeatToggle.addEventListener("change", () => {
+      writeStorageValue(OBSERVATION_HEAT_STORAGE_KEY, String(selectors.visitorHeatToggle.checked));
+      if (!selectors.visitorHeatToggle.checked) visitorHeatDataSource?.entities.removeAll();
+      else renderVisitorHeat(latestVisitorAnalytics?.heatLocations || []);
+      updateVisitorLayerVisibility();
+    });
+  }
+  if (selectors.visitorNetworkToggle) {
+    selectors.visitorNetworkToggle.checked = readStorageValue(NETWORK_CONNECTIONS_STORAGE_KEY, "false") === "true";
+    selectors.visitorNetworkToggle.addEventListener("change", () => {
+      writeStorageValue(NETWORK_CONNECTIONS_STORAGE_KEY, String(selectors.visitorNetworkToggle.checked));
+      if (!selectors.visitorNetworkToggle.checked) visitorNetworkDataSource?.entities.removeAll();
+      else renderVisitorNetwork(latestVisitorAnalytics?.heatLocations || []);
+      updateVisitorLayerVisibility();
+    });
+  }
+  selectors.visitorRangeTabs.forEach((button) => {
+    button.addEventListener("click", () => {
+      visitorAnalyticsRange = button.dataset.visitorRange || "24h";
+      selectors.visitorRangeTabs.forEach((tab) => {
+        const active = tab === button;
+        tab.classList.toggle("is-active", active);
+        tab.setAttribute("aria-selected", String(active));
+      });
+      void runSafeAsync("visitor analytics range refresh", () => refreshVisitorAnalytics(visitorAnalyticsRange));
+    });
+  });
+}
+
+async function initializeVisitorNetwork() {
+  initializeVisitorControls();
+  ensureVisitorDataSources();
+  visitorSessionId = getVisitorSessionId();
+  try {
+    await postVisitorEvent("/api/visitors/register");
+  } catch (error) {
+    updateText(selectors.visitorNetworkStatus, "Unavailable");
+  }
+  await Promise.allSettled([
+    refreshVisitorStats(),
+    refreshVisitorLocations(),
+    refreshVisitorAnalytics(visitorAnalyticsRange),
+  ]);
+}
+
 function reportStartupError(label, error) {
   console.error(`[PCS_OBSERVATORY] ${label} failed:`, error);
   const currentMessage = selectors.dataMessage?.textContent || "";
@@ -1986,6 +2370,7 @@ async function initializeApp() {
   runSafe("framework controls initialization", initializeFrameworkControls);
   runSafe("layer controls initialization", initializeLayerControls);
   runSafe("weather layer initialization", initializeWeatherLayers);
+  await runSafeAsync("visitor network initialization", initializeVisitorNetwork);
   runSafe("build timestamp rendering", renderBuildTimestamp);
   await runSafeAsync("language loading", () => setLanguage(getCurrentLanguage()));
   await runSafeAsync("dashboard data loading", () => loadLatestState());
@@ -2015,3 +2400,27 @@ setInterval(() => {
     void runSafeAsync("Moon ephemeris and lighting refresh", () => loadMoonObservation());
   }
 }, MOON_LIGHTING_REFRESH_INTERVAL_MS);
+setInterval(() => {
+  if (document.visibilityState === "visible") {
+    void runSafeAsync("visitor ping", () => postVisitorEvent("/api/visitors/ping"));
+    void runSafeAsync("visitor stats refresh", refreshVisitorStats);
+  }
+}, VISITOR_STATS_REFRESH_INTERVAL_MS);
+setInterval(() => {
+  if (document.visibilityState === "visible") {
+    void runSafeAsync("visitor locations refresh", refreshVisitorLocations);
+  }
+}, VISITOR_LOCATIONS_REFRESH_INTERVAL_MS);
+setInterval(() => {
+  if (document.visibilityState === "visible") {
+    void runSafeAsync("visitor analytics refresh", () => refreshVisitorAnalytics(visitorAnalyticsRange));
+  }
+}, VISITOR_ANALYTICS_REFRESH_INTERVAL_MS);
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState !== "visible") return;
+  void runSafeAsync("visitor visibility stats refresh", refreshVisitorStats);
+  void runSafeAsync("visitor visibility locations refresh", refreshVisitorLocations);
+  if (Date.now() - latestVisitorAnalyticsAt > VISITOR_ANALYTICS_REFRESH_INTERVAL_MS) {
+    void runSafeAsync("visitor visibility analytics refresh", () => refreshVisitorAnalytics(visitorAnalyticsRange));
+  }
+});
