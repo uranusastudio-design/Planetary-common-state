@@ -1,5 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { PCS_BACKEND_URL } from '../config/weatherLayers';
+import type { VisitorLocation } from '../types/observatory';
+import {
+  fetchVisitorLocations,
+  observatoryApiUrl,
+  VISITOR_LOCATIONS_REFRESH_INTERVAL_MS,
+} from '../config/observatoryNetwork';
 
 const VISITOR_SESSION_KEY = 'pcs_visitor_session_id';
 const REFRESH_INTERVAL_MS = 30_000;
@@ -31,7 +36,7 @@ function getVisitorSessionId(): string {
 }
 
 function apiUrl(path: string): string {
-  return `${PCS_BACKEND_URL.replace(/\/$/, '')}${path}`;
+  return observatoryApiUrl(path);
 }
 
 async function postVisitorEvent(path: string, sessionId: string): Promise<void> {
@@ -87,6 +92,7 @@ function formatLocalTime(isoTime: string | undefined): string {
 
 export default function GlobalObservatoryNetwork() {
   const [stats, setStats] = useState<VisitorStats | null>(null);
+  const [recentLocations, setRecentLocations] = useState<VisitorLocation[]>([]);
   const [loadState, setLoadState] = useState<LoadState>('loading');
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -152,16 +158,26 @@ export default function GlobalObservatoryNetwork() {
     }
   }, []);
 
+  const refreshRecentLocations = useCallback(async () => {
+    try {
+      const response = await fetchVisitorLocations();
+      setRecentLocations(response.locations.slice(0, 5));
+    } catch {
+      setRecentLocations((current) => current);
+    }
+  }, []);
+
   useEffect(() => {
     const sessionId = getVisitorSessionId();
 
     if (!registeredThisPageView) {
       registeredThisPageView = true;
       void postVisitorEvent('/api/visitors/register', sessionId)
-        .then(refreshStats)
+        .then(() => Promise.all([refreshStats(), refreshRecentLocations()]))
         .catch(() => setLoadState('unavailable'));
     } else {
       void refreshStats();
+      void refreshRecentLocations();
     }
 
     const statsInterval = window.setInterval(() => {
@@ -172,10 +188,15 @@ export default function GlobalObservatoryNetwork() {
       void pingIfVisible(sessionId);
     }, REFRESH_INTERVAL_MS);
 
+    const locationsInterval = window.setInterval(() => {
+      void refreshRecentLocations();
+    }, VISITOR_LOCATIONS_REFRESH_INTERVAL_MS);
+
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'visible') {
         void pingIfVisible(sessionId);
         void refreshStats();
+        void refreshRecentLocations();
       }
     };
 
@@ -184,9 +205,10 @@ export default function GlobalObservatoryNetwork() {
     return () => {
       window.clearInterval(statsInterval);
       window.clearInterval(pingInterval);
+      window.clearInterval(locationsInterval);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [pingIfVisible, refreshStats]);
+  }, [pingIfVisible, refreshRecentLocations, refreshStats]);
 
   return (
     <section className="mb-8 rounded-md border border-panel-border/70 bg-panel-light/40 px-3 py-3 shadow-panel">
@@ -217,6 +239,27 @@ export default function GlobalObservatoryNetwork() {
           ))}
         </dl>
 
+        <div className="mt-4 rounded border border-panel-border/60 bg-slate-950/30 px-2.5 py-2 font-mono">
+          <h3 className="text-[11px] uppercase tracking-widest text-slate-400">Recent Observation Regions</h3>
+          <ul className="mt-2 space-y-1 text-[11px] text-slate-300">
+            {recentLocations.length > 0 ? (
+              recentLocations.map((location) => (
+                <li key={`${location.city}-${location.country}-${location.latitude}-${location.longitude}`}>
+                  {formatLocationName(location)}
+                </li>
+              ))
+            ) : (
+              <li className="text-slate-500">{loadState === 'unavailable' ? 'Unavailable' : '—'}</li>
+            )}
+          </ul>
+          <div className="mt-3 space-y-1 text-[10px] text-slate-500">
+            <p>
+              <span className="text-accent">●</span> Active Observation Region
+            </p>
+            <p>Approximate location only</p>
+          </div>
+        </div>
+
         <p className="mt-3 text-[10px] leading-relaxed text-slate-500">
           Approximate visitor locations are derived from Cloudflare network metadata. No precise address or
           full IP address is displayed.
@@ -224,4 +267,11 @@ export default function GlobalObservatoryNetwork() {
       </div>
     </section>
   );
+}
+
+function formatLocationName(location: VisitorLocation): string {
+  if (location.city && location.country) return `${location.city}, ${location.country}`;
+  if (location.city) return location.city;
+  if (location.country) return location.country;
+  return 'Unknown Region';
 }

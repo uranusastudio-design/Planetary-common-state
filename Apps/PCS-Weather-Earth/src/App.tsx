@@ -1,10 +1,12 @@
 import { useCallback, useState } from 'react';
 import EarthViewer from './components/EarthViewer';
 import ControlPanel from './components/ControlPanel';
+import type { CelestialBodyId } from './types/observatory';
 import type { WeatherDebugInfo, WeatherLayerId } from './types/weather';
 import { PCS_BACKEND_URL } from './config/weatherLayers';
 
 export default function App() {
+  const currentBody: CelestialBodyId = 'earth';
   const [activeLayerIds, setActiveLayerIds] = useState<WeatherLayerId[]>(['clouds']);
   const [debugInfo, setDebugInfo] = useState<WeatherDebugInfo>({
     hasBackend: true,
@@ -27,6 +29,7 @@ export default function App() {
         <EarthViewer
           activeLayerIds={activeLayerIds}
           backendUrl={PCS_BACKEND_URL}
+          currentBody={currentBody}
           onDebugInfoChange={setDebugInfo}
         />
       </main>

@@ -1,7 +1,8 @@
 const VISITOR_ROUTES = [
   "/api/visitors/register",
   "/api/visitors/ping",
-  "/api/visitors/stats"
+  "/api/visitors/stats",
+  "/api/visitors/locations"
 ];
 
 function visitorJson(data, status = 200) {
@@ -46,6 +47,22 @@ function cfVisitorLocation(request) {
     latitude: Number.isFinite(latitude) ? latitude : null,
     longitude: Number.isFinite(longitude) ? longitude : null
   };
+}
+
+function displayCountry(country) {
+  if (!country) return null;
+
+  try {
+    const names = new Intl.DisplayNames(["en"], { type: "region" });
+    return names.of(country) || country;
+  } catch {
+    return country;
+  }
+}
+
+function roundedCoordinate(value) {
+  const number = Number(value);
+  return Number.isFinite(number) ? Math.round(number * 100) / 100 : null;
 }
 
 async function registerVisitor(request, env) {
@@ -192,6 +209,41 @@ async function visitorStats(request, env) {
   });
 }
 
+async function visitorLocations(request, env) {
+  if (request.method !== "GET") {
+    return visitorJson({ error: "Method not allowed" }, 405);
+  }
+
+  const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+  const { results } = await env.PCS_DB.prepare(`
+    SELECT
+      country,
+      city,
+      ROUND(latitude, 2) AS latitude,
+      ROUND(longitude, 2) AS longitude,
+      COUNT(*) AS count,
+      MAX(last_seen) AS lastSeen
+    FROM visitor_sessions
+    WHERE last_seen >= ?
+      AND latitude IS NOT NULL
+      AND longitude IS NOT NULL
+    GROUP BY country, city, ROUND(latitude, 2), ROUND(longitude, 2)
+    ORDER BY lastSeen DESC
+    LIMIT 100
+  `).bind(since).all();
+
+  const locations = results.map((location) => ({
+    country: displayCountry(location.country),
+    city: location.city,
+    latitude: roundedCoordinate(location.latitude),
+    longitude: roundedCoordinate(location.longitude),
+    count: location.count ?? 0,
+    lastSeen: location.lastSeen
+  }));
+
+  return visitorJson({ locations, lastUpdated: new Date().toISOString() });
+}
+
 async function handleVisitorRequest(request, env) {
   if (request.method === "OPTIONS") {
     return visitorJson({ status: "ok" });
@@ -213,6 +265,10 @@ async function handleVisitorRequest(request, env) {
 
   if (url.pathname === "/api/visitors/stats") {
     return visitorStats(request, env);
+  }
+
+  if (url.pathname === "/api/visitors/locations") {
+    return visitorLocations(request, env);
   }
 
   return visitorJson({ error: "Visitor route not found" }, 404);
