@@ -2,7 +2,8 @@ const VISITOR_ROUTES = [
   "/api/visitors/register",
   "/api/visitors/ping",
   "/api/visitors/stats",
-  "/api/visitors/locations"
+  "/api/visitors/locations",
+  "/api/visitors/analytics"
 ];
 
 function visitorJson(data, status = 200) {
@@ -63,6 +64,30 @@ function displayCountry(country) {
 function roundedCoordinate(value) {
   const number = Number(value);
   return Number.isFinite(number) ? Math.round(number * 100) / 100 : null;
+}
+
+function analyticsRangeConfig(rawRange) {
+  const range = rawRange === "7d" || rawRange === "30d" ? rawRange : "24h";
+  const now = new Date();
+  const bucketCount = range === "24h" ? 24 : range === "7d" ? 7 : 30;
+  const bucketMs = range === "24h" ? 60 * 60 * 1000 : 24 * 60 * 60 * 1000;
+  const currentBucket = range === "24h"
+    ? Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours())
+    : Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+  const startMs = currentBucket - (bucketCount - 1) * bucketMs;
+
+  return {
+    range,
+    bucketCount,
+    bucketMs,
+    start: new Date(startMs).toISOString(),
+    bucketFormat: range === "24h" ? "%Y-%m-%dT%H:00:00.000Z" : "%Y-%m-%dT00:00:00.000Z",
+    buckets: Array.from({ length: bucketCount }, (_, index) => ({
+      time: new Date(startMs + index * bucketMs).toISOString(),
+      visits: 0,
+      uniqueSessions: 0
+    }))
+  };
 }
 
 async function registerVisitor(request, env) {
@@ -244,6 +269,115 @@ async function visitorLocations(request, env) {
   return visitorJson({ locations, lastUpdated: new Date().toISOString() });
 }
 
+async function visitorAnalytics(request, env) {
+  if (request.method !== "GET") {
+    return visitorJson({ error: "Method not allowed" }, 405);
+  }
+
+  const url = new URL(request.url);
+  const config = analyticsRangeConfig(url.searchParams.get("range"));
+
+  try {
+    const [
+      countryRankingResult,
+      trendResult,
+      heatResult
+    ] = await Promise.all([
+      env.PCS_DB.prepare(`
+        SELECT
+          s.country AS countryCode,
+          COUNT(e.id) AS visits,
+          COUNT(DISTINCT e.session_id) AS uniqueSessions
+        FROM visitor_events e
+        JOIN visitor_sessions s ON s.session_id = e.session_id
+        WHERE e.event_type = 'visit'
+          AND e.created_at >= ?
+          AND s.country IS NOT NULL
+          AND s.country != ''
+          AND UPPER(s.country) != 'UNKNOWN'
+        GROUP BY s.country
+        ORDER BY visits DESC
+        LIMIT 10
+      `).bind(config.start).all(),
+      env.PCS_DB.prepare(`
+        SELECT
+          strftime(?, e.created_at) AS bucket,
+          COUNT(e.id) AS visits,
+          COUNT(DISTINCT e.session_id) AS uniqueSessions
+        FROM visitor_events e
+        WHERE e.event_type = 'visit'
+          AND e.created_at >= ?
+        GROUP BY bucket
+        ORDER BY bucket ASC
+      `).bind(config.bucketFormat, config.start).all(),
+      env.PCS_DB.prepare(`
+        SELECT
+          s.country,
+          s.city,
+          ROUND(s.latitude, 2) AS latitude,
+          ROUND(s.longitude, 2) AS longitude,
+          CASE WHEN COUNT(e.id) > 100 THEN 100 ELSE COUNT(e.id) END AS weight,
+          MAX(e.created_at) AS lastSeen
+        FROM visitor_events e
+        JOIN visitor_sessions s ON s.session_id = e.session_id
+        WHERE e.event_type = 'visit'
+          AND e.created_at >= ?
+          AND s.latitude IS NOT NULL
+          AND s.longitude IS NOT NULL
+        GROUP BY s.country, s.city, ROUND(s.latitude, 2), ROUND(s.longitude, 2)
+        ORDER BY weight DESC, lastSeen DESC
+        LIMIT 100
+      `).bind(config.start).all()
+    ]);
+
+    const bucketByTime = new Map(config.buckets.map((bucket) => [bucket.time, bucket]));
+    for (const row of trendResult.results) {
+      const bucket = bucketByTime.get(row.bucket);
+      if (bucket) {
+        bucket.visits = row.visits ?? 0;
+        bucket.uniqueSessions = row.uniqueSessions ?? 0;
+      }
+    }
+
+    const countryRanking = countryRankingResult.results.map((country) => ({
+      country: displayCountry(country.countryCode),
+      countryCode: country.countryCode,
+      visits: country.visits ?? 0,
+      uniqueSessions: country.uniqueSessions ?? 0
+    }));
+
+    const heatLocations = heatResult.results.map((location) => ({
+      country: displayCountry(location.country),
+      city: location.city,
+      latitude: roundedCoordinate(location.latitude),
+      longitude: roundedCoordinate(location.longitude),
+      weight: Math.min(100, Math.max(0, location.weight ?? 0)),
+      lastSeen: location.lastSeen
+    }));
+
+    const peak = config.buckets.reduce(
+      (best, bucket) => bucket.visits > best.visits ? bucket : best,
+      { time: null, visits: 0, uniqueSessions: 0 }
+    );
+
+    return visitorJson({
+      range: config.range,
+      countryRanking,
+      trend: config.buckets,
+      heatLocations,
+      summary: {
+        peakVisits: peak.visits,
+        peakTime: peak.time,
+        topCountry: countryRanking[0]?.country ?? null,
+        activeRegions: heatLocations.length
+      },
+      lastUpdated: new Date().toISOString()
+    });
+  } catch {
+    return visitorJson({ error: "Visitor analytics unavailable" }, 500);
+  }
+}
+
 async function handleVisitorRequest(request, env) {
   if (request.method === "OPTIONS") {
     return visitorJson({ status: "ok" });
@@ -269,6 +403,10 @@ async function handleVisitorRequest(request, env) {
 
   if (url.pathname === "/api/visitors/locations") {
     return visitorLocations(request, env);
+  }
+
+  if (url.pathname === "/api/visitors/analytics") {
+    return visitorAnalytics(request, env);
   }
 
   return visitorJson({ error: "Visitor route not found" }, 404);

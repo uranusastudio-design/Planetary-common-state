@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import * as Cesium from 'cesium';
 import type { WeatherDebugInfo, WeatherLayerId } from '../types/weather';
-import type { CelestialBodyId, VisitorLocation } from '../types/observatory';
+import type { CelestialBodyId, VisitorAnalytics, VisitorHeatLocation, VisitorLocation } from '../types/observatory';
 import { fetchVisitorLocations, VISITOR_LOCATIONS_REFRESH_INTERVAL_MS } from '../config/observatoryNetwork';
 import { buildOpenWeatherTileUrl, getWeatherLayerConfig } from '../config/weatherLayers';
 
@@ -9,6 +9,9 @@ interface EarthViewerProps {
   activeLayerIds: WeatherLayerId[];
   backendUrl: string;
   currentBody: CelestialBodyId;
+  visitorAnalytics: VisitorAnalytics | null;
+  observationHeatEnabled: boolean;
+  networkConnectionsEnabled: boolean;
   onDebugInfoChange: (debugInfo: WeatherDebugInfo) => void;
 }
 
@@ -17,10 +20,20 @@ interface EarthViewerProps {
  * weather tile overlays on top of it. Tile requests are routed through the
  * Cloudflare worker proxy so browser traffic stays on the PCS backend host.
  */
-export default function EarthViewer({ activeLayerIds, backendUrl, currentBody, onDebugInfoChange }: EarthViewerProps) {
+export default function EarthViewer({
+  activeLayerIds,
+  backendUrl,
+  currentBody,
+  visitorAnalytics,
+  observationHeatEnabled,
+  networkConnectionsEnabled,
+  onDebugInfoChange,
+}: EarthViewerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const viewerRef = useRef<Cesium.Viewer | null>(null);
   const visitorDataSourceRef = useRef<Cesium.CustomDataSource | null>(null);
+  const heatDataSourceRef = useRef<Cesium.CustomDataSource | null>(null);
+  const networkDataSourceRef = useRef<Cesium.CustomDataSource | null>(null);
   const visitorLocationByEntityIdRef = useRef<Map<string, VisitorLocation>>(new Map());
   const weatherLayersRef = useRef<Array<{ layer: Cesium.ImageryLayer; removeErrorListener: () => void }>>([]);
   const [weatherError, setWeatherError] = useState<string | null>(null);
@@ -86,6 +99,75 @@ export default function EarthViewer({ activeLayerIds, backendUrl, currentBody, o
     }
   }, []);
 
+  const renderHeatLocations = useCallback((locations: VisitorHeatLocation[]) => {
+    const heatDataSource = heatDataSourceRef.current;
+    if (!heatDataSource) return;
+
+    heatDataSource.entities.removeAll();
+
+    for (const [index, location] of locations.slice(0, 100).entries()) {
+      if (!Number.isFinite(location.latitude) || !Number.isFinite(location.longitude)) continue;
+
+      const weight = Math.max(1, Math.min(100, location.weight));
+      const size = Math.min(26, 8 + Math.sqrt(weight) * 2.1);
+      const alpha = Math.min(0.34, 0.08 + weight / 380);
+
+      heatDataSource.entities.add({
+        id: `pcs-observation-heat-${index}`,
+        position: Cesium.Cartesian3.fromDegrees(location.longitude, location.latitude),
+        point: {
+          pixelSize: size,
+          color: Cesium.Color.fromCssColorString('#0ea5e9').withAlpha(alpha),
+          outlineColor: Cesium.Color.fromCssColorString('#7dd3fc').withAlpha(alpha + 0.12),
+          outlineWidth: 1,
+          heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
+          disableDepthTestDistance: Number.POSITIVE_INFINITY,
+        },
+      });
+    }
+  }, []);
+
+  const renderNetworkConnections = useCallback((locations: VisitorHeatLocation[]) => {
+    const networkDataSource = networkDataSourceRef.current;
+    if (!networkDataSource) return;
+
+    networkDataSource.entities.removeAll();
+
+    const activeLocations = locations
+      .filter((location) => Number.isFinite(location.latitude) && Number.isFinite(location.longitude))
+      .slice(0, 20);
+
+    if (activeLocations.length < 2) return;
+
+    const totalWeight = activeLocations.reduce((total, location) => total + Math.max(1, location.weight), 0);
+    const hubLongitude = activeLocations.reduce(
+      (total, location) => total + location.longitude * Math.max(1, location.weight),
+      0
+    ) / totalWeight;
+    const hubLatitude = activeLocations.reduce(
+      (total, location) => total + location.latitude * Math.max(1, location.weight),
+      0
+    ) / totalWeight;
+    const hub = Cesium.Cartesian3.fromDegrees(hubLongitude, hubLatitude, 150_000);
+
+    for (const [index, location] of activeLocations.entries()) {
+      const start = Cesium.Cartesian3.fromDegrees(location.longitude, location.latitude, 30_000);
+      const weight = Math.max(1, Math.min(100, location.weight));
+
+      networkDataSource.entities.add({
+        id: `pcs-observatory-network-${index}`,
+        name: 'PCS Observatory Network',
+        polyline: {
+          positions: [start, hub],
+          width: Math.min(2.2, 0.8 + Math.sqrt(weight) / 12),
+          arcType: Cesium.ArcType.GEODESIC,
+          material: Cesium.Color.fromCssColorString('#38bdf8').withAlpha(0.18),
+          clampToGround: false,
+        },
+      });
+    }
+  }, []);
+
   // Initialize the Cesium viewer once on mount.
   useEffect(() => {
     if (!containerRef.current || viewerRef.current) return;
@@ -117,6 +199,17 @@ export default function EarthViewer({ activeLayerIds, backendUrl, currentBody, o
     visitorDataSource.show = currentBody === 'earth';
     viewer.dataSources.add(visitorDataSource);
     visitorDataSourceRef.current = visitorDataSource;
+
+    const heatDataSource = new Cesium.CustomDataSource('PCS Observation Heat');
+    heatDataSource.show = currentBody === 'earth' && observationHeatEnabled;
+    viewer.dataSources.add(heatDataSource);
+    heatDataSourceRef.current = heatDataSource;
+
+    const networkDataSource = new Cesium.CustomDataSource('PCS Observatory Network Connections');
+    networkDataSource.show = currentBody === 'earth' && networkConnectionsEnabled;
+    viewer.dataSources.add(networkDataSource);
+    networkDataSourceRef.current = networkDataSource;
+
     setVisitorLayerReady(true);
 
     viewer.screenSpaceEventHandler.setInputAction((click: Cesium.ScreenSpaceEventHandler.PositionedEvent) => {
@@ -135,9 +228,17 @@ export default function EarthViewer({ activeLayerIds, backendUrl, currentBody, o
       if (visitorDataSourceRef.current) {
         viewer.dataSources.remove(visitorDataSourceRef.current, true);
       }
+      if (heatDataSourceRef.current) {
+        viewer.dataSources.remove(heatDataSourceRef.current, true);
+      }
+      if (networkDataSourceRef.current) {
+        viewer.dataSources.remove(networkDataSourceRef.current, true);
+      }
       viewer.destroy();
       viewerRef.current = null;
       visitorDataSourceRef.current = null;
+      heatDataSourceRef.current = null;
+      networkDataSourceRef.current = null;
       visitorLocationByEntityIdRef.current.clear();
       weatherLayersRef.current = [];
       setVisitorLayerReady(false);
@@ -146,13 +247,43 @@ export default function EarthViewer({ activeLayerIds, backendUrl, currentBody, o
 
   useEffect(() => {
     const visitorDataSource = visitorDataSourceRef.current;
-    if (!visitorDataSource) return;
+    const heatDataSource = heatDataSourceRef.current;
+    const networkDataSource = networkDataSourceRef.current;
+    if (!visitorDataSource || !heatDataSource || !networkDataSource) return;
 
     visitorDataSource.show = currentBody === 'earth';
+    heatDataSource.show = currentBody === 'earth' && observationHeatEnabled;
+    networkDataSource.show = currentBody === 'earth' && networkConnectionsEnabled;
     if (currentBody !== 'earth') {
       setSelectedVisitorLocation(null);
     }
-  }, [currentBody]);
+  }, [currentBody, networkConnectionsEnabled, observationHeatEnabled]);
+
+  useEffect(() => {
+    const heatDataSource = heatDataSourceRef.current;
+    if (!heatDataSource) return;
+
+    heatDataSource.show = currentBody === 'earth' && observationHeatEnabled;
+    if (!observationHeatEnabled) {
+      heatDataSource.entities.removeAll();
+      return;
+    }
+
+    renderHeatLocations(visitorAnalytics?.heatLocations ?? []);
+  }, [currentBody, observationHeatEnabled, renderHeatLocations, visitorAnalytics]);
+
+  useEffect(() => {
+    const networkDataSource = networkDataSourceRef.current;
+    if (!networkDataSource) return;
+
+    networkDataSource.show = currentBody === 'earth' && networkConnectionsEnabled;
+    if (!networkConnectionsEnabled) {
+      networkDataSource.entities.removeAll();
+      return;
+    }
+
+    renderNetworkConnections(visitorAnalytics?.heatLocations ?? []);
+  }, [currentBody, networkConnectionsEnabled, renderNetworkConnections, visitorAnalytics]);
 
   useEffect(() => {
     if (!visitorLayerReady || currentBody !== 'earth') return;
@@ -170,12 +301,28 @@ export default function EarthViewer({ activeLayerIds, backendUrl, currentBody, o
       }
     };
 
-    void refreshVisitorLocations();
-    const interval = window.setInterval(refreshVisitorLocations, VISITOR_LOCATIONS_REFRESH_INTERVAL_MS);
+    if (document.visibilityState === 'visible') {
+      void refreshVisitorLocations();
+    }
+
+    const interval = window.setInterval(() => {
+      if (document.visibilityState === 'visible') {
+        void refreshVisitorLocations();
+      }
+    }, VISITOR_LOCATIONS_REFRESH_INTERVAL_MS);
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        void refreshVisitorLocations();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 
     return () => {
       cancelled = true;
       window.clearInterval(interval);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, [currentBody, renderVisitorLocations, visitorLayerReady]);
 

@@ -2,12 +2,18 @@ import { useState } from 'react';
 import LayerSelector from './LayerSelector';
 import GlobalObservatoryNetwork from './GlobalObservatoryNetwork';
 import { SUBSYSTEMS } from '../config/subsystems';
+import type { VisitorAnalytics } from '../types/observatory';
 import type { WeatherDebugInfo, WeatherLayerId } from '../types/weather';
 
 interface ControlPanelProps {
   activeLayerIds: WeatherLayerId[];
   onToggleLayer: (id: WeatherLayerId) => void;
   debugInfo: WeatherDebugInfo;
+  observationHeatEnabled: boolean;
+  networkConnectionsEnabled: boolean;
+  onObservationHeatToggle: (enabled: boolean) => void;
+  onNetworkConnectionsToggle: (enabled: boolean) => void;
+  onAnalyticsUpdate: (analytics: VisitorAnalytics) => void;
 }
 
 /**
@@ -15,7 +21,16 @@ interface ControlPanelProps {
  * module; the subsystem list below is rendered as disabled placeholders so
  * future modules (ocean, cryosphere, etc.) have an obvious slot to plug into.
  */
-export default function ControlPanel({ activeLayerIds, onToggleLayer, debugInfo }: ControlPanelProps) {
+export default function ControlPanel({
+  activeLayerIds,
+  onToggleLayer,
+  debugInfo,
+  observationHeatEnabled,
+  networkConnectionsEnabled,
+  onObservationHeatToggle,
+  onNetworkConnectionsToggle,
+  onAnalyticsUpdate,
+}: ControlPanelProps) {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
@@ -93,7 +108,13 @@ export default function ControlPanel({ activeLayerIds, onToggleLayer, debugInfo 
           </dl>
         </section>
 
-        <GlobalObservatoryNetwork />
+        <GlobalObservatoryNetwork
+          observationHeatEnabled={observationHeatEnabled}
+          networkConnectionsEnabled={networkConnectionsEnabled}
+          onObservationHeatToggle={onObservationHeatToggle}
+          onNetworkConnectionsToggle={onNetworkConnectionsToggle}
+          onAnalyticsUpdate={onAnalyticsUpdate}
+        />
 
         <section>
           <h2 className="mb-3 font-mono text-xs uppercase tracking-widest text-slate-400">
