@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import LayerSelector from './LayerSelector';
+import GlobalObservatoryNetwork from './GlobalObservatoryNetwork';
 import { SUBSYSTEMS } from '../config/subsystems';
 import type { WeatherDebugInfo, WeatherLayerId } from '../types/weather';
 
@@ -91,6 +92,8 @@ export default function ControlPanel({ activeLayerIds, onToggleLayer, debugInfo 
             </div>
           </dl>
         </section>
+
+        <GlobalObservatoryNetwork />
 
         <section>
           <h2 className="mb-3 font-mono text-xs uppercase tracking-widest text-slate-400">

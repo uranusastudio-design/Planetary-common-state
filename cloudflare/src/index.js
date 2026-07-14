@@ -1,5 +1,6 @@
 import { handleNasaRequest, NASA_DATASET_ROUTES } from "./nasa/routes.ts";
 import { handleAstronomyRequest, ASTRONOMY_ROUTES } from "./astronomy.js";
+import { handleVisitorRequest, VISITOR_ROUTES } from "./visitors.js";
 
 const DATASETS = [
   {
@@ -390,6 +391,9 @@ export default {
     if (url.pathname === "/api/nasa/status" || url.pathname.startsWith("/api/nasa/")) {
       return handleNasaRequest(request, env, ctx);
     }
+    if (url.pathname.startsWith("/api/visitors/")) {
+      return handleVisitorRequest(request, env, ctx);
+    }
 
     if (url.pathname === "/health/openweather") {
       return json(await openWeatherHealth(env));
@@ -465,6 +469,7 @@ export default {
     "/ingest/v1",
     "/health/openweather",
     "/tiles/openweather/clouds/1/1/1.png",
+    ...VISITOR_ROUTES,
     "/api/nasa/status",
     ...NASA_DATASET_ROUTES
     ,...ASTRONOMY_ROUTES
