@@ -51,10 +51,68 @@ body {
   animation: intro-fade-up 600ms ease-out 80ms forwards;
 }
 
-.intro-screen__taglines {
-  margin-top: clamp(6px, 1.4vh, 16px);
+.intro-screen__languages {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(16px, 3vw, 30px);
+  margin-top: clamp(8px, 1.5vh, 16px);
   opacity: 0;
-  animation: intro-fade-up 600ms ease-out 380ms forwards;
+  animation: intro-fade-up 520ms ease-out 280ms forwards;
+}
+
+.intro-screen__languages button {
+  position: relative;
+  min-height: 44px;
+  border: 0;
+  padding: 10px 1px 9px;
+  color: #686868;
+  background: transparent;
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: color 180ms ease;
+}
+
+.intro-screen__languages button::after {
+  position: absolute;
+  right: 0;
+  bottom: 5px;
+  left: 0;
+  height: 1px;
+  background: #fff;
+  content: "";
+  opacity: 0;
+  transform: scaleX(0.35);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.intro-screen__languages button:hover,
+.intro-screen__languages button:focus-visible,
+.intro-screen__languages button[aria-pressed="true"] {
+  color: #fff;
+}
+
+.intro-screen__languages button[aria-pressed="true"]::after {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.intro-screen__languages button:focus-visible {
+  border-radius: 2px;
+  outline: 1px solid #fff;
+  outline-offset: 4px;
+}
+
+.intro-screen__taglines {
+  display: grid;
+  align-content: start;
+  min-height: 96px;
+  margin-top: clamp(15px, 2.4vh, 26px);
+  opacity: 0;
+  animation: intro-fade-up 600ms ease-out 480ms forwards;
 }
 
 .intro-screen__taglines h1 {
@@ -74,6 +132,14 @@ body {
   line-height: 1.5;
 }
 
+.intro-screen__localized-text {
+  transition: opacity 130ms ease;
+}
+
+.intro-screen.is-switching-language .intro-screen__localized-text {
+  opacity: 0;
+}
+
 .intro-screen__enter {
   min-width: 148px;
   min-height: 46px;
@@ -90,7 +156,7 @@ body {
   cursor: pointer;
   opacity: 0;
   transition: color 220ms ease, background-color 220ms ease, box-shadow 220ms ease;
-  animation: intro-fade-up 550ms ease-out 780ms forwards;
+  animation: intro-fade-up 550ms ease-out 820ms forwards;
 }
 
 .intro-screen__enter:hover,
@@ -106,7 +172,10 @@ body {
 }
 
 .intro-screen__mission {
+  display: grid;
+  align-content: start;
   width: min(100%, 680px);
+  min-height: 5.2em;
   margin-top: clamp(26px, 4vh, 42px);
   color: #797979;
   opacity: 0;
@@ -119,8 +188,21 @@ body {
   line-height: 1.65;
 }
 
-.intro-screen__mission p + p {
-  margin-top: 9px;
+.intro-screen__footer {
+  display: grid;
+  gap: 4px;
+  margin-top: clamp(20px, 3vh, 34px);
+  color: #565656;
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  line-height: 1.5;
+  opacity: 0;
+  animation: intro-fade-up 500ms ease-out 1250ms forwards;
+}
+
+.intro-screen__footer strong {
+  color: #747474;
+  font-weight: 500;
 }
 
 @keyframes intro-fade-up {
@@ -150,7 +232,8 @@ body {
   }
 
   .intro-screen__taglines {
-    margin-top: 2px;
+    min-height: 92px;
+    margin-top: 10px;
   }
 
   .intro-screen__taglines h1 {
@@ -167,8 +250,19 @@ body {
   }
 
   .intro-screen__mission {
-    width: min(100%, 32rem);
+    width: min(calc(100% - 4px), 32rem);
+    min-height: 9em;
     margin-top: 24px;
+  }
+
+  .intro-screen__languages {
+    width: 100%;
+    gap: clamp(12px, 5vw, 22px);
+    margin-top: 4px;
+  }
+
+  .intro-screen__languages button {
+    font-size: 0.7rem;
   }
 }
 
@@ -189,22 +283,31 @@ body {
   .intro-screen__mission {
     margin-top: 20px;
   }
+
+  .intro-screen__footer {
+    margin-top: 16px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .intro-screen,
   .intro-screen__logo,
+  .intro-screen__languages,
   .intro-screen__taglines,
   .intro-screen__enter,
-  .intro-screen__mission {
+  .intro-screen__mission,
+  .intro-screen__footer,
+  .intro-screen__localized-text {
     animation: none;
     transition-duration: 1ms;
   }
 
   .intro-screen__logo,
+  .intro-screen__languages,
   .intro-screen__taglines,
   .intro-screen__enter,
-  .intro-screen__mission {
+  .intro-screen__mission,
+  .intro-screen__footer {
     opacity: 1;
     transform: none;
   }

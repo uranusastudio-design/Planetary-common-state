@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>PCS Observatory v2.0 Shell</title>
+    <title>PCS Observatory | Uranus A Studio</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cesium@1.120.0/Build/Cesium/Widgets/widgets.css">
     <link rel="stylesheet" href="./style.css">
     <link rel="stylesheet" href="./intro-screen.css">
@@ -12,7 +12,7 @@
     </script>
   </head>
   <body class="intro-active">
-    <section id="pcs-intro" class="intro-screen" aria-labelledby="intro-title" aria-describedby="intro-mission-en intro-mission-zh">
+    <main id="pcs-intro" class="intro-screen" aria-labelledby="intro-title" aria-describedby="intro-subtitle intro-body">
       <div class="intro-screen__content">
         <img
           class="intro-screen__logo"
@@ -21,17 +21,26 @@
           width="1600"
           height="900"
         >
-        <div class="intro-screen__taglines">
-          <h1 id="intro-title">From Data to Understanding.</h1>
-          <p lang="zh-Hant">讓科學不再只屬於科學家。</p>
+        <nav class="intro-screen__languages" aria-label="Landing page language">
+          <button type="button" lang="en" data-intro-language="en" aria-pressed="true">EN</button>
+          <button type="button" lang="zh-TW" data-intro-language="zh-TW" aria-pressed="false">中文</button>
+          <button type="button" lang="ja" data-intro-language="ja" aria-pressed="false">日本語</button>
+          <button type="button" lang="ko" data-intro-language="ko" aria-pressed="false">한국어</button>
+        </nav>
+        <div class="intro-screen__taglines" aria-live="polite" aria-atomic="true">
+          <h1 id="intro-title" class="intro-screen__localized-text">From Data to Understanding.</h1>
+          <p id="intro-subtitle" class="intro-screen__localized-text">Science should not belong only to scientists.</p>
         </div>
         <button id="intro-enter" class="intro-screen__enter" type="button">ENTER</button>
         <div class="intro-screen__mission">
-          <p id="intro-mission-en">PCS transforms fragmented scientific observations into visual knowledge that anyone—from researchers to students—can explore, understand, and build upon.</p>
-          <p id="intro-mission-zh" lang="zh-Hant">PCS 將分散於各領域的科學觀測，轉化為容易探索、容易理解的視覺化知識，讓研究者、學生與大眾都能從中學習，並建立新的理解。</p>
+          <p id="intro-body" class="intro-screen__localized-text">PCS transforms fragmented scientific observations into visual knowledge that anyone—from researchers to students—can explore, understand, and build upon.</p>
         </div>
+        <footer class="intro-screen__footer">
+          <strong>Planetary Common State Observatory</strong>
+          <span>© Uranus A Studio</span>
+        </footer>
       </div>
-    </section>
+    </main>
 
     <nav class="global-nav" aria-label="PCS Observatory global navigation" data-observatory-content inert aria-hidden="true">
       <div class="nav-brand">
@@ -646,9 +655,10 @@
       </footer>
     </main>
 
+    <script src="./i18n.js"></script>
     <script src="./intro-screen.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/cesium@1.120.0/Build/Cesium/Cesium.js"></script>
     <script src="./moon-lighting.js"></script>
-    <script src="./app.js?v=observatory-network-3"></script>
+    <script src="./app.js?v=observatory-i18n-1"></script>
   </body>
 </html>

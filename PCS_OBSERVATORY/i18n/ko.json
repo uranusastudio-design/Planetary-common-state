@@ -49,5 +49,13 @@
   "engine": "엔진",
   "pcs_state": "PCS 상태",
   "observatory": "관측소",
-  "human_ai_review": "인간 + AI 검토"
+  "human_ai_review": "인간 + AI 검토",
+  "landing": {
+    "title": "데이터에서 이해로.",
+    "subtitle": "과학을 과학자만의 것으로 남기지 않습니다.",
+    "body": "PCS는 여러 분야에 흩어져 있는 과학 관측 데이터를 누구나 탐색하고 이해하며 새로운 통찰을 발전시킬 수 있는 시각적 지식으로 전환합니다. 연구자뿐 아니라 학생과 일반 대중에게도 과학으로 향하는 새로운 입구를 제공합니다.",
+    "enter": "ENTER",
+    "footerTitle": "Planetary Common State Observatory",
+    "footerCopyright": "© Uranus A Studio"
+  }
 }

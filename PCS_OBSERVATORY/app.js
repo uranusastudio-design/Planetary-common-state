@@ -5,7 +5,6 @@ const MOON_LIGHTING_REFRESH_INTERVAL_MS = 20 * 60 * 1000;
 const VISITOR_STATS_REFRESH_INTERVAL_MS = 30 * 1000;
 const VISITOR_LOCATIONS_REFRESH_INTERVAL_MS = 60 * 1000;
 const VISITOR_ANALYTICS_REFRESH_INTERVAL_MS = 5 * 60 * 1000;
-const LANGUAGE_STORAGE_KEY = "pcs_observatory_language";
 const REGION_STORAGE_KEY = "pcs_observatory_region";
 const VISITOR_SESSION_STORAGE_KEY = "pcs_visitor_session_id";
 const OBSERVATION_HEAT_STORAGE_KEY = "pcs_observation_heat_enabled";
@@ -333,7 +332,7 @@ const selectors = {
 };
 
 function t(key) {
-  return translations[key] ?? key;
+  return translations[key] ?? window.PCSI18n?.translate(key, key) ?? key;
 }
 
 function readStorageValue(key, fallbackValue) {
@@ -354,33 +353,12 @@ function writeStorageValue(key, value) {
 }
 
 function getCurrentLanguage() {
-  return readStorageValue(LANGUAGE_STORAGE_KEY, "en");
-}
-
-async function loadLanguage(lang) {
-  try {
-    const response = await fetch(`i18n/${lang}.json`, { cache: "no-store" });
-    if (!response.ok) {
-      throw new Error(`Language file unavailable: ${lang}`);
-    }
-    return await response.json();
-  } catch (error) {
-    if (lang !== "en") {
-      return loadLanguage("en");
-    }
-    return {};
-  }
+  return window.PCSI18n?.getLanguage() ?? "en";
 }
 
 async function setLanguage(lang) {
-  const selectedLanguage = lang || "en";
-  writeStorageValue(LANGUAGE_STORAGE_KEY, selectedLanguage);
-  translations = await loadLanguage(selectedLanguage);
-  if (selectors.languageSelector) {
-    selectors.languageSelector.value = selectedLanguage;
-  }
-  document.documentElement.lang = selectedLanguage;
-  translateUI();
+  if (!window.PCSI18n) return;
+  await window.PCSI18n.setLanguage(lang);
 }
 
 function translateUI() {
@@ -1518,6 +1496,14 @@ function initializeLanguageSelector() {
   selectors.languageSelector.value = getCurrentLanguage();
   selectors.languageSelector.addEventListener("change", () => {
     setLanguage(selectors.languageSelector.value);
+  });
+
+  window.addEventListener("pcs:languagechange", (event) => {
+    const language = event.detail?.language ?? "en";
+    translations = event.detail?.translations ?? {};
+    selectors.languageSelector.value = language;
+    document.documentElement.lang = language;
+    translateUI();
   });
 }
 

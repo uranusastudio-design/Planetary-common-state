@@ -49,6 +49,13 @@
   "engine": "Engine",
   "pcs_state": "PCS State",
   "observatory": "Observatory",
-  "human_ai_review": "Human + AI Review"
+  "human_ai_review": "Human + AI Review",
+  "landing": {
+    "title": "From Data to Understanding.",
+    "subtitle": "Science should not belong only to scientists.",
+    "body": "PCS transforms fragmented scientific observations into visual knowledge that anyone—from researchers to students—can explore, understand, and build upon.",
+    "enter": "ENTER",
+    "footerTitle": "Planetary Common State Observatory",
+    "footerCopyright": "© Uranus A Studio"
+  }
 }
-

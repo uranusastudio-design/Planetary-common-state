@@ -49,6 +49,13 @@
   "engine": "引擎",
   "pcs_state": "PCS 狀態",
   "observatory": "觀測站",
-  "human_ai_review": "人類與 AI 審查"
+  "human_ai_review": "人類與 AI 審查",
+  "landing": {
+    "title": "從數據走向理解。",
+    "subtitle": "讓科學不再只屬於科學家。",
+    "body": "PCS 將分散於各領域的科學觀測，轉化為容易探索、容易理解的視覺化知識，讓研究者、學生與大眾都能從中學習，並建立新的理解。",
+    "enter": "ENTER",
+    "footerTitle": "Planetary Common State Observatory",
+    "footerCopyright": "© Uranus A Studio"
+  }
 }
-

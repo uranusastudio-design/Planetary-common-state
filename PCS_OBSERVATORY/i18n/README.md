@@ -9,5 +9,11 @@ The current supported languages are:
 - `ja`: Japanese
 - `ko`: Korean
 
-All JSON files must keep identical keys. The frontend falls back to English if a translation file cannot be loaded.
+All JSON files must keep identical keys. The frontend deep-merges the selected
+dictionary over English, so missing keys and unavailable locale files fall back
+to English without rendering `undefined`.
 
+`../i18n.js` is the shared language state for the Landing page and Observatory.
+It accepts only `en`, `zh-TW`, `ja`, and `ko`, and stores the explicit user
+choice under the `pcs-language` localStorage key. English is the default when
+the key is absent, invalid, or unavailable.
