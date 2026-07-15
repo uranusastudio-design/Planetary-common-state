@@ -79,6 +79,7 @@
       document.body.classList.remove("intro-active");
       intro.remove();
       observatoryTitle?.focus({ preventScroll: true });
+      window.requestAnimationFrame(() => window.dispatchEvent(new Event("resize")));
     };
 
     const handleTransitionEnd = (event) => {
