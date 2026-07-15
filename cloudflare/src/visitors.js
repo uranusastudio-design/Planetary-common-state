@@ -38,9 +38,13 @@ function cfVisitorLocation(request) {
   const cf = request.cf || {};
   const latitude = Number(cf.latitude);
   const longitude = Number(cf.longitude);
+  const countryName = typeof cf.country_name === "string"
+    ? cf.country_name
+    : typeof cf.countryName === "string" ? cf.countryName : null;
 
   return {
     country: typeof cf.country === "string" ? cf.country : null,
+    countryName: displayCountry(countryName, typeof cf.country === "string" ? cf.country : null),
     city: typeof cf.city === "string" ? cf.city : null,
     region: typeof cf.region === "string" ? cf.region : null,
     continent: typeof cf.continent === "string" ? cf.continent : null,
@@ -50,14 +54,31 @@ function cfVisitorLocation(request) {
   };
 }
 
-function displayCountry(country) {
-  if (!country) return null;
+const COUNTRY_NAMES = {
+  TW: "Taiwan",
+  JP: "Japan",
+  US: "United States",
+  GB: "United Kingdom",
+  DE: "Germany",
+  FR: "France",
+  CA: "Canada",
+  AU: "Australia"
+};
+
+function displayCountry(countryName, countryCode) {
+  if (countryName && countryName.length > 2 && countryName.toUpperCase() !== "UNKNOWN") {
+    return countryName;
+  }
+
+  const code = (countryCode || countryName || "").toUpperCase();
+  if (!code) return null;
+  if (COUNTRY_NAMES[code]) return COUNTRY_NAMES[code];
 
   try {
     const names = new Intl.DisplayNames(["en"], { type: "region" });
-    return names.of(country) || country;
+    return names.of(code) || code;
   } catch {
-    return country;
+    return code;
   }
 }
 
@@ -133,8 +154,15 @@ async function registerVisitor(request, env) {
 
   await env.PCS_DB.prepare(`
     INSERT INTO visitor_events (session_id, event_type, created_at)
-    VALUES (?, 'visit', ?)
-  `).bind(sessionId, now).run();
+    SELECT ?, 'visit', ?
+    WHERE NOT EXISTS (
+      SELECT 1
+      FROM visitor_events
+      WHERE session_id = ?
+        AND event_type = 'visit'
+        AND julianday(created_at) >= julianday(?) - (10.0 / 1440.0)
+    )
+  `).bind(sessionId, now, sessionId, now).run();
 
   return visitorJson({ status: "ok", lastUpdated: now });
 }
@@ -226,7 +254,7 @@ async function visitorStats(request, env) {
     latestVisitor: latestVisitor
       ? {
           city: latestVisitor.city,
-          country: latestVisitor.country,
+          country: displayCountry(null, latestVisitor.country),
           timestamp: latestVisitor.created_at
         }
       : null,
@@ -241,24 +269,34 @@ async function visitorLocations(request, env) {
 
   const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
   const { results } = await env.PCS_DB.prepare(`
-    SELECT
-      country,
-      city,
-      ROUND(latitude, 2) AS latitude,
-      ROUND(longitude, 2) AS longitude,
-      COUNT(*) AS count,
-      MAX(last_seen) AS lastSeen
-    FROM visitor_sessions
-    WHERE last_seen >= ?
-      AND latitude IS NOT NULL
-      AND longitude IS NOT NULL
-    GROUP BY country, city, ROUND(latitude, 2), ROUND(longitude, 2)
-    ORDER BY lastSeen DESC
+    WITH session_regions AS (
+      SELECT country, city, ROUND(latitude, 2) AS latitude, ROUND(longitude, 2) AS longitude,
+             MAX(last_seen) AS lastSeen
+      FROM visitor_sessions
+      WHERE last_seen >= ? AND latitude IS NOT NULL AND longitude IS NOT NULL
+      GROUP BY country, city, ROUND(latitude, 2), ROUND(longitude, 2)
+    ), event_regions AS (
+      SELECT s.country, s.city, ROUND(s.latitude, 2) AS latitude, ROUND(s.longitude, 2) AS longitude,
+             COUNT(e.id) AS visits
+      FROM visitor_events e
+      JOIN visitor_sessions s ON s.session_id = e.session_id
+      WHERE e.event_type = 'visit' AND e.created_at >= ?
+        AND s.latitude IS NOT NULL AND s.longitude IS NOT NULL
+      GROUP BY s.country, s.city, ROUND(s.latitude, 2), ROUND(s.longitude, 2)
+    )
+    SELECT sr.country, sr.city, sr.latitude, sr.longitude,
+           COALESCE(er.visits, 1) AS count, sr.lastSeen
+    FROM session_regions sr
+    LEFT JOIN event_regions er
+      ON er.country IS sr.country AND er.city IS sr.city
+      AND er.latitude = sr.latitude AND er.longitude = sr.longitude
+    ORDER BY sr.lastSeen DESC
     LIMIT 100
-  `).bind(since).all();
+  `).bind(since, since).all();
 
   const locations = results.map((location) => ({
-    country: displayCountry(location.country),
+    countryCode: location.country,
+    country: displayCountry(null, location.country),
     city: location.city,
     latitude: roundedCoordinate(location.latitude),
     longitude: roundedCoordinate(location.longitude),
@@ -266,7 +304,20 @@ async function visitorLocations(request, env) {
     lastSeen: location.lastSeen
   }));
 
-  return visitorJson({ locations, lastUpdated: new Date().toISOString() });
+  const self = cfVisitorLocation(request);
+  const selfLocation = self.latitude !== null && self.longitude !== null
+    ? {
+        countryCode: self.country,
+        country: self.countryName,
+        city: self.city,
+        latitude: roundedCoordinate(self.latitude),
+        longitude: roundedCoordinate(self.longitude),
+        count: 1,
+        lastSeen: new Date().toISOString()
+      }
+    : null;
+
+  return visitorJson({ locations, selfLocation, lastUpdated: new Date().toISOString() });
 }
 
 async function visitorAnalytics(request, env) {
@@ -281,7 +332,10 @@ async function visitorAnalytics(request, env) {
     const [
       countryRankingResult,
       trendResult,
-      heatResult
+      heatResult,
+      firstObservation,
+      firstInternationalObservation,
+      countryFirstResult
     ] = await Promise.all([
       env.PCS_DB.prepare(`
         SELECT
@@ -327,7 +381,37 @@ async function visitorAnalytics(request, env) {
         GROUP BY s.country, s.city, ROUND(s.latitude, 2), ROUND(s.longitude, 2)
         ORDER BY weight DESC, lastSeen DESC
         LIMIT 100
-      `).bind(config.start).all()
+      `).bind(config.start).all(),
+      env.PCS_DB.prepare(`
+        SELECT e.created_at AS achievedAt, s.city, s.country
+        FROM visitor_events e
+        JOIN visitor_sessions s ON s.session_id = e.session_id
+        WHERE e.event_type = 'visit'
+        ORDER BY e.created_at ASC
+        LIMIT 1
+      `).first(),
+      env.PCS_DB.prepare(`
+        SELECT e.created_at AS achievedAt, s.city, s.country
+        FROM visitor_events e
+        JOIN visitor_sessions s ON s.session_id = e.session_id
+        WHERE e.event_type = 'visit'
+          AND s.country IS NOT NULL
+          AND UPPER(s.country) != 'TW'
+          AND LOWER(s.country) != 'taiwan'
+        ORDER BY e.created_at ASC
+        LIMIT 1
+      `).first(),
+      env.PCS_DB.prepare(`
+        SELECT s.country AS countryCode, MIN(e.created_at) AS achievedAt
+        FROM visitor_events e
+        JOIN visitor_sessions s ON s.session_id = e.session_id
+        WHERE e.event_type = 'visit'
+          AND s.country IS NOT NULL
+          AND s.country != ''
+          AND UPPER(s.country) != 'UNKNOWN'
+        GROUP BY s.country
+        ORDER BY achievedAt ASC
+      `).all()
     ]);
 
     const bucketByTime = new Map(config.buckets.map((bucket) => [bucket.time, bucket]));
@@ -340,14 +424,14 @@ async function visitorAnalytics(request, env) {
     }
 
     const countryRanking = countryRankingResult.results.map((country) => ({
-      country: displayCountry(country.countryCode),
+      country: displayCountry(null, country.countryCode),
       countryCode: country.countryCode,
       visits: country.visits ?? 0,
       uniqueSessions: country.uniqueSessions ?? 0
     }));
 
     const heatLocations = heatResult.results.map((location) => ({
-      country: displayCountry(location.country),
+      country: displayCountry(null, location.country),
       city: location.city,
       latitude: roundedCoordinate(location.latitude),
       longitude: roundedCoordinate(location.longitude),
@@ -360,6 +444,43 @@ async function visitorAnalytics(request, env) {
       { time: null, visits: 0, uniqueSessions: 0 }
     );
 
+    const milestones = [];
+    if (firstObservation) {
+      milestones.push({
+        kind: "first-observation",
+        title: "First Observation",
+        threshold: null,
+        achievedAt: firstObservation.achievedAt,
+        city: firstObservation.city,
+        country: displayCountry(null, firstObservation.country),
+        description: "The Global Observatory Network became operational."
+      });
+    }
+    if (firstInternationalObservation) {
+      milestones.push({
+        kind: "first-international-observation",
+        title: "First International Observation",
+        threshold: null,
+        achievedAt: firstInternationalObservation.achievedAt,
+        city: firstInternationalObservation.city,
+        country: displayCountry(null, firstInternationalObservation.country),
+        description: "PCS was observed outside Taiwan for the first time."
+      });
+    }
+    for (const threshold of [10, 25, 50, 100]) {
+      const thresholdCountry = countryFirstResult.results[threshold - 1];
+      if (!thresholdCountry) continue;
+      milestones.push({
+        kind: "countries-connected",
+        title: `${threshold} Countries Connected`,
+        threshold,
+        achievedAt: thresholdCountry.achievedAt,
+        city: null,
+        country: displayCountry(null, thresholdCountry.countryCode),
+        description: `The Global Observatory Network reached ${threshold} countries.`
+      });
+    }
+
     return visitorJson({
       range: config.range,
       countryRanking,
@@ -371,6 +492,7 @@ async function visitorAnalytics(request, env) {
         topCountry: countryRanking[0]?.country ?? null,
         activeRegions: heatLocations.length
       },
+      milestones,
       lastUpdated: new Date().toISOString()
     });
   } catch {

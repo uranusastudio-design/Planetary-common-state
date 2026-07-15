@@ -4,6 +4,12 @@ import type { WeatherDebugInfo, WeatherLayerId } from '../types/weather';
 import type { CelestialBodyId, VisitorAnalytics, VisitorHeatLocation, VisitorLocation } from '../types/observatory';
 import { fetchVisitorLocations, VISITOR_LOCATIONS_REFRESH_INTERVAL_MS } from '../config/observatoryNetwork';
 import { buildOpenWeatherTileUrl, getWeatherLayerConfig } from '../config/weatherLayers';
+import { formatLocationName, formatRelativeObservation } from '../utils/observatory';
+
+const ACTIVE_OBSERVATION_MS = 90_000;
+const LIVE_OBSERVATION_MS = 24 * 60 * 60 * 1000;
+const MAX_LIVE_REGIONS = 100;
+const SELF_LOCATION_ENTITY_ID = 'pcs-self-location';
 
 interface EarthViewerProps {
   activeLayerIds: WeatherLayerId[];
@@ -66,36 +72,89 @@ export default function EarthViewer({
     weatherLayersRef.current = [];
   }, []);
 
-  const renderVisitorLocations = useCallback((locations: VisitorLocation[]) => {
+  const renderVisitorLocations = useCallback((locations: VisitorLocation[], selfLocation: VisitorLocation | null) => {
     const visitorDataSource = visitorDataSourceRef.current;
-    if (!visitorDataSource) return;
+    const networkDataSource = networkDataSourceRef.current;
+    if (!visitorDataSource || !networkDataSource) return;
 
-    visitorDataSource.entities.removeAll();
-    visitorLocationByEntityIdRef.current.clear();
+    const now = Date.now();
+    const liveLocations = locations
+      .filter((location) => now - new Date(location.lastSeen).getTime() < LIVE_OBSERVATION_MS)
+      .slice(0, MAX_LIVE_REGIONS);
+    const nextVisitorIds = new Set<string>();
+    const nextPulseIds = new Set<string>();
+    const lowPerformanceDevice = prefersReducedMotionOrLowPerformance();
 
-    for (const [index, location] of locations.entries()) {
+    for (const location of liveLocations) {
       if (!Number.isFinite(location.latitude) || !Number.isFinite(location.longitude)) continue;
 
       const count = Math.max(1, location.count);
-      const pointSize = Math.min(11, 5 + Math.log2(count + 1) * 1.6);
-      const entityId = `pcs-visitor-location-${index}`;
-      const placeName = formatVisitorPlace(location);
+      const pointSize = Math.min(10, 5 + Math.log2(count + 1) * 1.25);
+      const entityId = visitorEntityId(location);
+      const position = Cesium.Cartesian3.fromDegrees(location.longitude, location.latitude);
+      const entity = visitorDataSource.entities.getById(entityId) ?? visitorDataSource.entities.add({ id: entityId });
+      entity.name = formatLocationName(location);
+      entity.position = new Cesium.ConstantPositionProperty(position);
+      entity.point = new Cesium.PointGraphics({
+        pixelSize: pointSize,
+        color: Cesium.Color.fromCssColorString('#22d3ee').withAlpha(0.82),
+        outlineColor: Cesium.Color.fromCssColorString('#a7f3d0').withAlpha(0.72),
+        outlineWidth: 1.25,
+        heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
+        disableDepthTestDistance: Number.POSITIVE_INFINITY,
+      });
+      nextVisitorIds.add(entityId);
 
-      visitorDataSource.entities.add({
-        id: entityId,
-        name: placeName,
-        position: Cesium.Cartesian3.fromDegrees(location.longitude, location.latitude),
-        point: {
-          pixelSize: pointSize,
-          color: Cesium.Color.fromCssColorString('#38bdf8').withAlpha(0.82),
-          outlineColor: Cesium.Color.fromCssColorString('#e0f2fe').withAlpha(0.9),
+      visitorLocationByEntityIdRef.current.set(entityId, location);
+
+      const isActive = now - new Date(location.lastSeen).getTime() < ACTIVE_OBSERVATION_MS;
+      if (isActive && !lowPerformanceDevice) {
+        const pulseId = `pcs-active-pulse-${entityId}`;
+        const pulse = networkDataSource.entities.getById(pulseId) ?? networkDataSource.entities.add({ id: pulseId });
+        pulse.position = new Cesium.ConstantPositionProperty(position);
+        pulse.point = new Cesium.PointGraphics({
+          pixelSize: new Cesium.CallbackProperty(() => {
+            const phase = (Date.now() % 2_000) / 2_000;
+            return 10 + Math.sin(phase * Math.PI) * 5;
+          }, false),
+          color: Cesium.Color.TRANSPARENT,
+          outlineColor: new Cesium.CallbackProperty(() => {
+            const phase = (Date.now() % 2_000) / 2_000;
+            return Cesium.Color.fromCssColorString('#34d399').withAlpha(0.28 * (1 - phase));
+          }, false),
           outlineWidth: 1.5,
           heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
           disableDepthTestDistance: Number.POSITIVE_INFINITY,
-        },
-      });
+        });
+        nextPulseIds.add(pulseId);
+      }
+    }
 
-      visitorLocationByEntityIdRef.current.set(entityId, location);
+    for (const entity of [...visitorDataSource.entities.values]) {
+      if (entity.id !== SELF_LOCATION_ENTITY_ID && !nextVisitorIds.has(entity.id)) {
+        visitorDataSource.entities.remove(entity);
+        visitorLocationByEntityIdRef.current.delete(entity.id);
+      }
+    }
+    for (const entity of [...networkDataSource.entities.values]) {
+      if (!nextPulseIds.has(entity.id)) networkDataSource.entities.remove(entity);
+    }
+
+    if (selfLocation && Number.isFinite(selfLocation.latitude) && Number.isFinite(selfLocation.longitude)) {
+      const selfEntity = visitorDataSource.entities.getById(SELF_LOCATION_ENTITY_ID)
+        ?? visitorDataSource.entities.add({ id: SELF_LOCATION_ENTITY_ID });
+      selfEntity.name = 'You are here';
+      selfEntity.position = new Cesium.ConstantPositionProperty(
+        Cesium.Cartesian3.fromDegrees(selfLocation.longitude, selfLocation.latitude)
+      );
+      selfEntity.point = new Cesium.PointGraphics({
+        pixelSize: 8,
+        color: Cesium.Color.fromCssColorString('#3b82f6').withAlpha(0.95),
+        outlineColor: Cesium.Color.fromCssColorString('#dbeafe'),
+        outlineWidth: 1.5,
+        heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
+        disableDepthTestDistance: Number.POSITIVE_INFINITY,
+      });
     }
   }, []);
 
@@ -109,8 +168,8 @@ export default function EarthViewer({
       if (!Number.isFinite(location.latitude) || !Number.isFinite(location.longitude)) continue;
 
       const weight = Math.max(1, Math.min(100, location.weight));
-      const size = Math.min(26, 8 + Math.sqrt(weight) * 2.1);
-      const alpha = Math.min(0.34, 0.08 + weight / 380);
+      const size = Math.min(18, 7 + Math.sqrt(weight) * 1.1);
+      const alpha = Math.min(0.22, 0.06 + weight / 700);
 
       heatDataSource.entities.add({
         id: `pcs-observation-heat-${index}`,
@@ -122,47 +181,6 @@ export default function EarthViewer({
           outlineWidth: 1,
           heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
           disableDepthTestDistance: Number.POSITIVE_INFINITY,
-        },
-      });
-    }
-  }, []);
-
-  const renderNetworkConnections = useCallback((locations: VisitorHeatLocation[]) => {
-    const networkDataSource = networkDataSourceRef.current;
-    if (!networkDataSource) return;
-
-    networkDataSource.entities.removeAll();
-
-    const activeLocations = locations
-      .filter((location) => Number.isFinite(location.latitude) && Number.isFinite(location.longitude))
-      .slice(0, 20);
-
-    if (activeLocations.length < 2) return;
-
-    const totalWeight = activeLocations.reduce((total, location) => total + Math.max(1, location.weight), 0);
-    const hubLongitude = activeLocations.reduce(
-      (total, location) => total + location.longitude * Math.max(1, location.weight),
-      0
-    ) / totalWeight;
-    const hubLatitude = activeLocations.reduce(
-      (total, location) => total + location.latitude * Math.max(1, location.weight),
-      0
-    ) / totalWeight;
-    const hub = Cesium.Cartesian3.fromDegrees(hubLongitude, hubLatitude, 150_000);
-
-    for (const [index, location] of activeLocations.entries()) {
-      const start = Cesium.Cartesian3.fromDegrees(location.longitude, location.latitude, 30_000);
-      const weight = Math.max(1, Math.min(100, location.weight));
-
-      networkDataSource.entities.add({
-        id: `pcs-observatory-network-${index}`,
-        name: 'PCS Observatory Network',
-        polyline: {
-          positions: [start, hub],
-          width: Math.min(2.2, 0.8 + Math.sqrt(weight) / 12),
-          arcType: Cesium.ArcType.GEODESIC,
-          material: Cesium.Color.fromCssColorString('#38bdf8').withAlpha(0.18),
-          clampToGround: false,
         },
       });
     }
@@ -273,19 +291,6 @@ export default function EarthViewer({
   }, [currentBody, observationHeatEnabled, renderHeatLocations, visitorAnalytics]);
 
   useEffect(() => {
-    const networkDataSource = networkDataSourceRef.current;
-    if (!networkDataSource) return;
-
-    networkDataSource.show = currentBody === 'earth' && networkConnectionsEnabled;
-    if (!networkConnectionsEnabled) {
-      networkDataSource.entities.removeAll();
-      return;
-    }
-
-    renderNetworkConnections(visitorAnalytics?.heatLocations ?? []);
-  }, [currentBody, networkConnectionsEnabled, renderNetworkConnections, visitorAnalytics]);
-
-  useEffect(() => {
     if (!visitorLayerReady || currentBody !== 'earth') return;
 
     let cancelled = false;
@@ -294,7 +299,7 @@ export default function EarthViewer({
       try {
         const response = await fetchVisitorLocations();
         if (!cancelled) {
-          renderVisitorLocations(response.locations);
+          renderVisitorLocations(response.locations, response.selfLocation ?? null);
         }
       } catch (error) {
         console.warn('Failed to refresh PCS Global Observatory Network locations:', error);
@@ -394,7 +399,7 @@ export default function EarthViewer({
         </div>
       )}
       {selectedVisitorLocation && (
-        <div className="absolute bottom-4 left-4 z-10 w-64 rounded-lg border border-accent/30 bg-panel/95 px-4 py-3 font-mono text-xs text-slate-200 shadow-panel backdrop-blur">
+        <div className="absolute bottom-4 left-4 z-10 w-[min(16rem,calc(100%-2rem))] rounded-lg border border-accent/30 bg-panel/95 px-4 py-3 font-mono text-xs text-slate-200 shadow-panel backdrop-blur">
           <button
             type="button"
             onClick={() => setSelectedVisitorLocation(null)}
@@ -403,40 +408,41 @@ export default function EarthViewer({
           >
             ×
           </button>
-          <p className="pr-4 text-sm font-semibold text-slate-100">{formatVisitorPlace(selectedVisitorLocation)}</p>
+          <p className="pr-4 text-sm font-semibold text-slate-100">{formatLocationName(selectedVisitorLocation)}</p>
           <dl className="mt-3 space-y-2">
             <div>
-              <dt className="text-slate-500">Recent Visitors</dt>
-              <dd className="text-accent">{selectedVisitorLocation.count.toLocaleString()}</dd>
+              <dt className="text-slate-500">City</dt>
+              <dd>{selectedVisitorLocation.city || 'Unknown'}</dd>
             </div>
             <div>
-              <dt className="text-slate-500">Last Activity</dt>
-              <dd className="text-slate-200">{formatVisitorActivity(selectedVisitorLocation.lastSeen)}</dd>
+              <dt className="text-slate-500">Country</dt>
+              <dd>{selectedVisitorLocation.country || selectedVisitorLocation.countryCode || 'Unknown'}</dd>
             </div>
+            <div><dt className="text-slate-500">Status</dt><dd className="text-emerald-300">Recent observation</dd></div>
+            <div><dt className="text-slate-500">Last activity</dt><dd>{formatRelativeObservation(selectedVisitorLocation.lastSeen)}</dd></div>
+            <div><dt className="text-slate-500">Approximate location</dt><dd>Cloudflare region metadata</dd></div>
+            <div><dt className="text-slate-500">Visits</dt><dd className="text-accent">{selectedVisitorLocation.count.toLocaleString()}</dd></div>
           </dl>
-          <p className="mt-3 text-slate-500">Approximate Location</p>
         </div>
       )}
     </div>
   );
 }
 
-function formatVisitorPlace(location: VisitorLocation): string {
-  if (location.city && location.country) return `${location.city}, ${location.country}`;
-  if (location.city) return location.city;
-  if (location.country) return location.country;
-  return 'Unknown Region';
+function visitorEntityId(location: VisitorLocation): string {
+  const region = [location.countryCode, location.country, location.city, location.latitude, location.longitude]
+    .filter((value) => value !== null && value !== undefined)
+    .join('|');
+  let hash = 0;
+  for (let index = 0; index < region.length; index += 1) {
+    hash = ((hash << 5) - hash + region.charCodeAt(index)) | 0;
+  }
+  return `pcs-visitor-location-${Math.abs(hash)}`;
 }
 
-function formatVisitorActivity(isoTime: string): string {
-  const date = new Date(isoTime);
-  if (Number.isNaN(date.getTime())) return 'Unknown';
-
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  const hour = String(date.getHours()).padStart(2, '0');
-  const minute = String(date.getMinutes()).padStart(2, '0');
-
-  return `${year}-${month}-${day} ${hour}:${minute}`;
+function prefersReducedMotionOrLowPerformance(): boolean {
+  const deviceMemory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory;
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    || (navigator.hardwareConcurrency > 0 && navigator.hardwareConcurrency <= 4)
+    || (typeof deviceMemory === 'number' && deviceMemory <= 4);
 }

@@ -31,13 +31,13 @@ export default function ControlPanel({
   onNetworkConnectionsToggle,
   onAnalyticsUpdate,
 }: ControlPanelProps) {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(() => window.matchMedia('(max-width: 639px)').matches);
 
   return (
     <aside
       className={`relative h-full shrink-0 border-l border-panel-border bg-panel/95 font-sans backdrop-blur
         transition-[width] duration-300 ease-in-out
-        ${collapsed ? 'w-12' : 'w-80'}`}
+        ${collapsed ? 'w-12 max-w-none' : 'w-[calc(100vw-1rem)] max-w-xs sm:w-80'}`}
     >
       <button
         type="button"

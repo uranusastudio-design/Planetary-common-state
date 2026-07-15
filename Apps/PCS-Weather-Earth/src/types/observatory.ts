@@ -1,4 +1,5 @@
 export interface VisitorLocation {
+  countryCode: string | null;
   country: string | null;
   city: string | null;
   latitude: number;
@@ -9,6 +10,7 @@ export interface VisitorLocation {
 
 export interface VisitorLocationsResponse {
   locations: VisitorLocation[];
+  selfLocation: VisitorLocation | null;
   lastUpdated: string;
 }
 
@@ -43,12 +45,28 @@ export interface VisitorAnalyticsSummary {
   activeRegions: number;
 }
 
+export type VisitorMilestoneKind =
+  | 'first-observation'
+  | 'first-international-observation'
+  | 'countries-connected';
+
+export interface VisitorMilestone {
+  kind: VisitorMilestoneKind;
+  title: string;
+  threshold: number | null;
+  achievedAt: string;
+  city: string | null;
+  country: string | null;
+  description: string;
+}
+
 export interface VisitorAnalytics {
   range: VisitorAnalyticsRange;
   countryRanking: VisitorCountryRanking[];
   trend: VisitorTrendBucket[];
   heatLocations: VisitorHeatLocation[];
   summary: VisitorAnalyticsSummary;
+  milestones: VisitorMilestone[];
   lastUpdated: string;
 }
 

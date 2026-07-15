@@ -88,6 +88,7 @@ CREATE INDEX IF NOT EXISTS idx_obs_variable_time
 -- PCS Global Observatory Network
 -- Lightweight visitor observatory tables. These tables do not
 -- participate in PCS scientific calculations.
+-- Country values are ISO 3166-1 alpha-2 codes; the Worker returns normalized names.
 -- ------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS visitor_sessions (
   session_id TEXT PRIMARY KEY,
