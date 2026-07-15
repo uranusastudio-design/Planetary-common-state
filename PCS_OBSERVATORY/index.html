@@ -6,12 +6,34 @@
     <title>PCS Observatory v2.0 Shell</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cesium@1.120.0/Build/Cesium/Widgets/widgets.css">
     <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./intro-screen.css">
     <script>
       window.CESIUM_BASE_URL = "https://cdn.jsdelivr.net/npm/cesium@1.120.0/Build/Cesium/";
     </script>
   </head>
-  <body>
-    <nav class="global-nav" aria-label="PCS Observatory global navigation">
+  <body class="intro-active">
+    <section id="pcs-intro" class="intro-screen" aria-labelledby="intro-title" aria-describedby="intro-mission-en intro-mission-zh">
+      <div class="intro-screen__content">
+        <img
+          class="intro-screen__logo"
+          src="./assets/uranus-a-studio-logo.jpeg"
+          alt="Uranus A Studio"
+          width="1600"
+          height="900"
+        >
+        <div class="intro-screen__taglines">
+          <h1 id="intro-title">From Data to Understanding.</h1>
+          <p lang="zh-Hant">讓科學不再只屬於科學家。</p>
+        </div>
+        <button id="intro-enter" class="intro-screen__enter" type="button">ENTER</button>
+        <div class="intro-screen__mission">
+          <p id="intro-mission-en">PCS transforms fragmented scientific observations into visual knowledge that anyone—from researchers to students—can explore, understand, and build upon.</p>
+          <p id="intro-mission-zh" lang="zh-Hant">PCS 將分散於各領域的科學觀測，轉化為容易探索、容易理解的視覺化知識，讓研究者、學生與大眾都能從中學習，並建立新的理解。</p>
+        </div>
+      </div>
+    </section>
+
+    <nav class="global-nav" aria-label="PCS Observatory global navigation" data-observatory-content inert aria-hidden="true">
       <div class="nav-brand">
         <strong data-i18n="pcs_observatory">PCS Observatory</strong>
         <span data-i18n="app_title">Planetary Common State</span>
@@ -81,11 +103,11 @@
         </label>
       </div>
     </nav>
-    <main class="observatory-shell">
+    <main class="observatory-shell" data-observatory-content inert aria-hidden="true">
       <header class="top-bar" aria-labelledby="page-title">
         <div>
           <p class="eyebrow">PCS Observatory v2.0 Shell</p>
-          <h1 id="page-title" data-i18n="app_title">Planetary Common State</h1>
+          <h1 id="page-title" data-i18n="app_title" tabindex="-1">Planetary Common State</h1>
         </div>
         <div class="system-strip" aria-label="Prototype operating state">
           <span class="status-pill status-normal">Prototype Shell</span>
@@ -624,6 +646,7 @@
       </footer>
     </main>
 
+    <script src="./intro-screen.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/cesium@1.120.0/Build/Cesium/Cesium.js"></script>
     <script src="./moon-lighting.js"></script>
     <script src="./app.js?v=observatory-network-3"></script>
