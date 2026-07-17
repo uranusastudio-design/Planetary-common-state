@@ -248,6 +248,8 @@ let lastUserPosition = null;
 let activeRegionId = "global";
 let translations = {};
 const activeWeatherLayers = new Map();
+let latestActiveAlertCount = 0;
+let layerSnapshotUpdateImplemented = false;
 
 const selectors = {
   currentState: document.querySelector("#current-state"),
@@ -263,6 +265,7 @@ const selectors = {
     L_C: document.querySelector("#projection-chemical"),
     L_S: document.querySelector("#projection-structural"),
     L_I: document.querySelector("#projection-informational"),
+    L_F: document.querySelector("#projection-flow"),
   },
   progress: {
     L_T: document.querySelector("#progress-thermal"),
@@ -277,6 +280,8 @@ const selectors = {
   observatoryViewTitle: document.querySelector("#observatory-view-title"),
   celestialTargetStatus: document.querySelector("#celestial-target-status"),
   layerControlMessage: document.querySelector("#layer-control-message"),
+  pcsLayerList: document.querySelector("#pcs-layer-list"),
+  layerConnectorHealth: document.querySelector("#layer-connector-health"),
   layerControls: document.querySelectorAll("[data-layer-status]"),
   buildTimestamp: document.querySelector("#build-timestamp"),
   languageSelector: document.querySelector("#language-selector"),
@@ -317,9 +322,23 @@ const selectors = {
   connectedDatasetCount: document.querySelector("#connected-dataset-count"),
   connectedDatasetList: document.querySelector("#connected-dataset-list"),
   dailyBriefList: document.querySelector("#daily-brief-list"),
+  moreIntelligenceList: document.querySelector("#more-intelligence-list"),
   massGatheringList: document.querySelector("#mass-gathering-list"),
   evidenceLedgerList: document.querySelector("#evidence-ledger-list"),
   pcsApiStatus: document.querySelector("#pcs-api-status"),
+  systemModules: document.querySelectorAll("[data-system-module]"),
+  animationStatuses: document.querySelectorAll("[data-animation-status]"),
+  evidenceExplorerForm: document.querySelector("#evidence-explorer-form"),
+  evidenceEvent: document.querySelector("#evidence-event"),
+  evidencePrimaryRegion: document.querySelector("#evidence-primary-region"),
+  evidenceComparisonRegion: document.querySelector("#evidence-comparison-region"),
+  evidenceWindowStart: document.querySelector("#evidence-window-start"),
+  evidenceWindowEnd: document.querySelector("#evidence-window-end"),
+  evidenceBaselineStart: document.querySelector("#evidence-baseline-start"),
+  evidenceBaselineEnd: document.querySelector("#evidence-baseline-end"),
+  evidenceVariables: document.querySelector("#evidence-variables"),
+  evidenceResults: document.querySelector("#evidence-explorer-results"),
+  evidenceCausalStatus: document.querySelector("#evidence-causal-status"),
   visitorDetails: document.querySelector("#visitor-network-details"),
   visitorOnline: document.querySelector("#visitor-online"),
   visitorToday: document.querySelector("#visitor-today"),
@@ -500,19 +519,13 @@ function renderState(state, source, fallbackToGlobal = false) {
   latestStateSignature = stateSignature;
   lastJsonUpdateValue = state.metadata?.generated_at_utc ?? state.timestamp ?? null;
 
-  earthPcsReference = state.S_demo ?? state.pcs_state?.value ?? state.pcs_state?.status;
-  displayValue(selectors.currentState, earthPcsReference);
+  earthPcsReference = null;
+  updateText(selectors.currentState, "UNAVAILABLE");
+  selectors.currentState?.classList.add("is-missing");
   displayCoverage(selectors.coverage, state.coverage_count);
   displayValue(selectors.latestYear, state.latest_year, 0);
-  displayValue(selectors.projections.L_T, state.projections?.L_T);
-  displayValue(selectors.projections.L_C, state.projections?.L_C);
-  displayValue(selectors.projections.L_S, state.projections?.L_S);
-  displayValue(selectors.projections.L_I, state.projections?.L_I);
-
-  displayProgressBar(selectors.progress.L_T, state.projections?.L_T);
-  displayProgressBar(selectors.progress.L_C, state.projections?.L_C);
-  displayProgressBar(selectors.progress.L_S, state.projections?.L_S);
-  displayProgressBar(selectors.progress.L_I, state.projections?.L_I);
+  Object.values(selectors.projections).forEach((element) => { updateText(element, "UNAVAILABLE"); element?.classList.add("is-missing"); });
+  Object.values(selectors.progress).forEach((element) => displayProgressBar(element, null));
 
   updateText(selectors.lastJsonUpdate, formatTimestamp(lastJsonUpdateValue));
   if (fallbackToGlobal) {
@@ -2052,10 +2065,10 @@ function clearEarthLayers() {
 function updatePcsAvailability(config) {
   if (!config || !selectors.currentState) return;
   if (config.id === "earth") {
-    updateText(selectors.pcsStateLabel, "Prototype PCS Estimate");
+    updateText(selectors.pcsStateLabel, "PCS State");
     updateText(selectors.pcsStateNote,
-      "This is a prototype estimate from partial Earth observations, not a complete planetary assessment.");
-    displayValue(selectors.currentState, earthPcsReference);
+      "UNAVAILABLE — component definitions, normalization, weights, and validation method are not scientifically configured.");
+    updateText(selectors.currentState, "UNAVAILABLE");
     return;
   }
   updateText(selectors.pcsStateLabel, "Earth PCS Reference");
@@ -2306,6 +2319,7 @@ function statusCategory(value, thresholds) {
 
 function renderAlerts(payload) {
   const alerts = Array.isArray(payload?.data) ? payload.data : [];
+  latestActiveAlertCount = alerts.length;
   updateText(selectors.solarAlertCount, String(alerts.length)); selectors.solarAlertList?.replaceChildren();
   alerts.forEach((alert) => { const entry = document.createElement("article"); entry.className = "alert-entry"; entry.textContent = `${alert.title || "NOAA alert"}\n${alert.severity || "information"} · ${formatAstronomyValue(alert.issued_at)}\n${alert.summary || "No summary supplied."}`; selectors.solarAlertList?.append(entry); });
 }
@@ -2940,6 +2954,7 @@ function updateWeatherActiveLayersStatus() {
     .map((id) => WEATHER_LAYER_CONFIG[id]?.label ?? id)
     .join(", ");
   updateText(selectors.weatherActiveLayers, labels ? `Active layers: ${labels}` : "Active layers: none");
+  refreshAnimationStatus();
 }
 
 function setWeatherProxyStatus(message) {
@@ -3062,13 +3077,10 @@ function pcsStatusClass(status) {
 }
 
 function pcsStatusLabel(status) {
-  const labels = {
-    en: { connected: "CONNECTED", live: "LIVE", delayed: "DELAYED", unavailable: "UNAVAILABLE", partial: "PARTIAL", observed: "OBSERVED", inferred: "INFERRED", estimated: "ESTIMATED", validated: "VALIDATED", unvalidated: "UNVALIDATED", insufficient_data: "INSUFFICIENT DATA" },
-    "zh-TW": { connected: "已連接", live: "即時", delayed: "延遲", unavailable: "不可用", partial: "部分", observed: "實測", inferred: "推論", estimated: "估計", validated: "已驗證", unvalidated: "未驗證", insufficient_data: "資料不足" },
-    ja: { connected: "接続済み", live: "ライブ", delayed: "遅延", unavailable: "利用不可", partial: "一部", observed: "観測", inferred: "推論", estimated: "推定", validated: "検証済み", unvalidated: "未検証", insufficient_data: "データ不足" },
-    ko: { connected: "연결됨", live: "실시간", delayed: "지연", unavailable: "사용 불가", partial: "부분", observed: "관측", inferred: "추론", estimated: "추정", validated: "검증됨", unvalidated: "미검증", insufficient_data: "데이터 부족" },
-  };
-  return labels[getCurrentLanguage()]?.[status] || String(status || "unavailable").toUpperCase();
+  const normalized = normalizedStatus(status);
+  const key = `status_${normalized}`;
+  const translated = t(key);
+  return translated === key ? normalized.toUpperCase().replaceAll("_", " ") : translated;
 }
 
 function formatPcsTime(value) {
@@ -3085,6 +3097,112 @@ function createDefinitionRow(label, value) {
   definition.textContent = value === null || value === undefined || value === "" ? "—" : String(value);
   wrapper.append(term, definition);
   return wrapper;
+}
+
+function normalizedStatus(status) {
+  return String(status || "unavailable").toLowerCase().replaceAll(" ", "_");
+}
+
+function layerDisplayName(id) {
+  const key = `layer_${String(id).replaceAll("-", "_")}`;
+  const translated = t(key);
+  return translated === key ? String(id).replaceAll("-", " ") : translated;
+}
+
+function layerValueText(layer) {
+  if (layer.value === null || layer.value === undefined) return pcsStatusLabel(normalizedStatus(layer.data_state));
+  return `${Number.isFinite(Number(layer.value)) ? Number(layer.value).toLocaleString(getCurrentLanguage(), { maximumFractionDigits: 3 }) : layer.value}${layer.unit ? ` ${layer.unit}` : ""}`;
+}
+
+function renderPcsLayers(payload) {
+  if (!selectors.pcsLayerList) return;
+  const layers = payload.layers || [];
+  selectors.pcsLayerList.replaceChildren(...layers.map((layer) => {
+    const wrapper = document.createElement("section");
+    wrapper.className = `layer-entry pcs-provider-layer ${pcsStatusClass(normalizedStatus(layer.retrieval_status))}`;
+    const label = document.createElement("label");
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.dataset.pcsLayer = layer.id;
+    const summary = document.createElement("span");
+    const title = document.createElement("strong");
+    title.textContent = layerDisplayName(layer.id);
+    const status = document.createElement("small");
+    status.textContent = `${pcsStatusLabel(normalizedStatus(layer.retrieval_status))} · ${layer.provider} · ${layerValueText(layer)}`;
+    summary.append(title, status); label.append(checkbox, summary);
+    const metadata = document.createElement("dl");
+    metadata.className = "layer-metadata";
+    metadata.hidden = true;
+    metadata.append(
+      createDefinitionRow(t("provider"), layer.provider), createDefinitionRow(t("dataset"), layer.dataset),
+      createDefinitionRow(t("endpoint"), layer.endpoint), createDefinitionRow(t("observation_time"), formatPcsTime(layer.observation_time)),
+      createDefinitionRow(t("retrieval_time"), formatPcsTime(layer.retrieved_at)), createDefinitionRow(t("data_latency"), layer.latency === null ? pcsStatusLabel("unavailable") : `${layer.latency} min`),
+      createDefinitionRow(t("spatial_resolution"), layer.spatial_resolution), createDefinitionRow(t("temporal_resolution"), layer.temporal_resolution),
+      createDefinitionRow(t("data_state"), pcsStatusLabel(normalizedStatus(layer.data_state))), createDefinitionRow(t("data_quality"), layer.quality_flag),
+      createDefinitionRow(t("uncertainty"), layer.uncertainty), createDefinitionRow(t("license"), layer.license),
+      createDefinitionRow(t("retrieval_status"), pcsStatusLabel(normalizedStatus(layer.retrieval_status))), createDefinitionRow(t("details"), JSON.stringify(layer.details || {})),
+      createDefinitionRow(t("error_details"), layer.error),
+    );
+    checkbox.addEventListener("change", () => {
+      metadata.hidden = !checkbox.checked;
+      updateText(selectors.layerControlMessage, checkbox.checked
+        ? `${layerDisplayName(layer.id)} · ${pcsStatusLabel(normalizedStatus(layer.retrieval_status))} · ${layer.error || layer.quality_flag}`
+        : t("select_layer_status"));
+    });
+    wrapper.append(label, metadata); return wrapper;
+  }));
+  if (selectors.layerConnectorHealth) selectors.layerConnectorHealth.replaceChildren(...layers.map((layer) => {
+    const item = document.createElement("li");
+    const name = document.createElement("strong"); name.textContent = `${layer.provider} · ${layer.dataset}`;
+    const badge = document.createElement("span"); badge.className = `status-pill status-${pcsStatusClass(normalizedStatus(layer.retrieval_status)) === "active" ? "normal" : "muted"}`;
+    badge.textContent = pcsStatusLabel(normalizedStatus(layer.retrieval_status)); item.title = layer.error || layer.quality_flag; item.append(name, badge); return item;
+  }));
+  layerSnapshotUpdateImplemented = true;
+  refreshAnimationStatus();
+}
+
+function renderResidualState(state) {
+  (state?.components || []).forEach((component) => {
+    const ids = { thermal: "L_T", chemical: "L_C", structural: "L_S", informational: "L_I", flow: "L_F" };
+    updateText(selectors.projections[ids[component.component]], component.value === null ? pcsStatusLabel("unavailable") : String(component.value));
+    document.querySelector(`[data-residual-reason="${component.component}"]`)?.replaceChildren(document.createTextNode(component.reason || t("residual_unavailable_reason")));
+  });
+  updateText(document.querySelector("#total-l-status"), `L(t): ${state?.total_l_t?.status || "UNAVAILABLE"} · ${state?.total_l_t?.reason || t("residual_unavailable_reason")}`);
+}
+
+function renderSystemStatus(payload) {
+  selectors.systemModules.forEach((container) => {
+    const module = container.dataset.systemModule;
+    const list = document.createElement("ul"); list.className = "system-module-list";
+    const add = (label, value) => { const item = document.createElement("li"); item.textContent = `${label}: ${value ?? pcsStatusLabel("unavailable")}`; list.append(item); };
+    if (module === "observation") (payload.observation?.variables || []).forEach((item) => add(`${item.provider} · ${item.dataset}`, `${layerValueText(item)} · ${formatPcsTime(item.observation_time)} · ${item.quality_flag} · ${item.uncertainty || t("not_reported")}`));
+    if (module === "connectors") (payload.connectors || []).forEach((item) => add(`${item.provider} · ${item.dataset}`, `${item.status} · ${item.latency === null ? "—" : `${item.latency} min`} · ${item.last_successful_retrieval || "—"} · ${item.error_details || t("none")}`));
+    if (module === "validation") Object.entries(payload.validation || {}).forEach(([key, value]) => add(key, Array.isArray(value) ? value.join(", ") : value));
+    if (module === "engine") (payload.engine || []).forEach((item) => add(item.id.replaceAll("_", " "), item.status));
+    if (module === "pcs_state") (payload.pcs_state?.components || []).forEach((item) => add(item.component, `${item.data_state} · ${item.reason}`));
+    if (module === "data_flow") add(t("data_flow"), (payload.data_flow || []).join(" → "));
+    if (module === "review") {
+      add(t("ai_proposal_status"), payload.review?.ai_proposal?.review_status || "NO_PROPOSAL");
+      add(t("human_review_status"), payload.review?.human_review_status || "NOT_REVIEWED");
+      add(t("model_version"), payload.review?.ai_proposal?.model_version || pcsStatusLabel("unavailable"));
+      (payload.review?.review_history || []).forEach((item) => add(formatPcsTime(item.reviewed_at), `${item.reviewer_type} · ${item.status} · ${item.warning_rule_version || "—"}`));
+    }
+    if (!list.children.length) add(t("empty_state"), pcsStatusLabel("unavailable"));
+    container.replaceChildren(list);
+  });
+  renderResidualState(payload.pcs_state);
+}
+
+function refreshAnimationStatus() {
+  const status = {
+    earth_rotation: cesiumViewer?.clock?.shouldAnimate ? "ACTIVE" : "NOT_CONFIGURED",
+    layer_activation: activeWeatherLayers.size ? "ACTIVE" : "DISABLED",
+    alert_pulse: latestActiveAlertCount > 0 ? "ACTIVE" : "NO_ACTIVE_ALERT",
+    data_update: layerSnapshotUpdateImplemented ? "ACTIVE" : "NOT_CONFIGURED",
+    timeline_playback: "WAITING_FOR_TIME_SERIES",
+    camera_transition: cesiumViewer ? "ACTIVE" : "NOT_CONFIGURED",
+  };
+  selectors.animationStatuses.forEach((element) => updateText(element, status[element.dataset.animationStatus]));
 }
 
 function renderDomainReadiness(payload) {
@@ -3154,8 +3272,8 @@ function appendRetrospectiveField(list, labelKey, value, status = null) {
   list.append(row);
 }
 
-function renderDailyBrief(events) {
-  if (!selectors.dailyBriefList) return;
+function renderDailyBrief(events, target = selectors.dailyBriefList) {
+  if (!target) return;
   const items = events.map((event) => {
     const details = document.createElement("details");
     details.className = "pcs-event-card";
@@ -3187,7 +3305,35 @@ function renderDailyBrief(events) {
     details.append(summary, meta, analysisTitle, list, ledgerLink);
     return details;
   });
-  selectors.dailyBriefList.replaceChildren(...items);
+  target.replaceChildren(...items);
+}
+
+function createBriefCard(item) {
+  const card = document.createElement("article");
+  card.className = "pcs-ledger-entry brief-item";
+  const title = document.createElement("strong"); title.textContent = item.title;
+  const badge = document.createElement("span"); badge.className = "pcs-evidence-tag active"; badge.textContent = pcsStatusLabel("observed");
+  const summary = document.createElement("p"); summary.textContent = item.summary || t("summary_unavailable");
+  const metadata = document.createElement("dl");
+  metadata.append(
+    createDefinitionRow(t("source"), `${item.source_name} · ${item.source_type} · ${item.reliability}`),
+    createDefinitionRow(t("published_at"), formatPcsTime(item.published_at)),
+    createDefinitionRow(t("category"), item.category), createDefinitionRow(t("region"), item.region),
+    createDefinitionRow(t("event_type"), item.event_type), createDefinitionRow(t("pcs_domain_mapping"), (item.pcs_domains || []).join(", ") || "—"),
+    createDefinitionRow(t("event_candidate"), item.event_candidate ? "YES" : `NO · ${item.event_candidate_reason}`),
+    createDefinitionRow(t("data_state"), `${pcsStatusLabel("observed")} · ${item.observed_field || "publication metadata"}`),
+  );
+  const link = document.createElement("a"); link.href = item.source_url; link.target = "_blank"; link.rel = "noreferrer"; link.textContent = t("open_source");
+  card.append(title, badge, summary, metadata, link); return card;
+}
+
+function renderDailyBriefPayload(payload, eventDetails) {
+  selectors.dailyBriefList?.replaceChildren(...(payload.primary || []).map(createBriefCard));
+  if (selectors.moreIntelligenceList) {
+    const temporary = document.createElement("div");
+    renderDailyBrief(eventDetails || [], temporary);
+    selectors.moreIntelligenceList.replaceChildren(...(payload.more_intelligence || []).map(createBriefCard), ...temporary.children);
+  }
 }
 
 function renderEvidenceLedger(entries) {
@@ -3225,26 +3371,82 @@ function renderMassGatherings(rows) {
   }));
 }
 
+function evidenceParameters() {
+  const parameters = new URLSearchParams();
+  if (selectors.evidenceEvent?.value) parameters.set("event_id", selectors.evidenceEvent.value);
+  if (selectors.evidencePrimaryRegion?.value) parameters.set("primary_region", selectors.evidencePrimaryRegion.value);
+  if (selectors.evidenceComparisonRegion?.value) parameters.set("comparison_region", selectors.evidenceComparisonRegion.value);
+  if (selectors.evidenceWindowStart?.value) parameters.set("window_start", selectors.evidenceWindowStart.value);
+  if (selectors.evidenceWindowEnd?.value) parameters.set("window_end", selectors.evidenceWindowEnd.value);
+  if (selectors.evidenceBaselineStart?.value) parameters.set("baseline_start", selectors.evidenceBaselineStart.value);
+  if (selectors.evidenceBaselineEnd?.value) parameters.set("baseline_end", selectors.evidenceBaselineEnd.value);
+  String(selectors.evidenceVariables?.value || "").split(",").map((value) => value.trim()).filter(Boolean).forEach((value) => parameters.append("variable", value));
+  return parameters;
+}
+
+function renderEvidenceExplorer(payload) {
+  if (!selectors.evidenceResults) return;
+  if (selectors.evidenceEvent && !selectors.evidenceEvent.options.length) {
+    selectors.evidenceEvent.replaceChildren(...(payload.events || []).map((event) => {
+      const option = document.createElement("option"); option.value = event.id; option.textContent = `${event.title} · ${event.region}`; return option;
+    }));
+  }
+  if (!payload.selection) { updateText(selectors.evidenceCausalStatus, "NOT_ESTABLISHED"); return; }
+  const grid = document.createElement("dl"); grid.className = "evidence-grid";
+  grid.append(
+    createDefinitionRow(t("observed_variables"), (payload.observed_variables || []).map((item) => `${item.provider}: ${item.dataset}`).join("; ") || pcsStatusLabel("unavailable")),
+    createDefinitionRow(t("missing_variables"), (payload.missing_variables || []).join(", ") || t("none")),
+    createDefinitionRow(t("anomalies"), (payload.anomalies || []).length ? JSON.stringify(payload.anomalies) : pcsStatusLabel("insufficient_data")),
+    createDefinitionRow(t("temporal_correlation"), `${payload.temporal_correlation?.status}: ${payload.temporal_correlation?.value ?? "—"}`),
+    createDefinitionRow(t("spatial_overlap"), `${payload.spatial_overlap?.status}: ${payload.spatial_overlap?.value ?? "—"}`),
+    createDefinitionRow(t("data_completeness"), payload.data_completeness === null ? pcsStatusLabel("insufficient_data") : `${(payload.data_completeness * 100).toFixed(1)}%`),
+    createDefinitionRow(t("inferred_relationships"), (payload.inferred_relationships || []).length ? JSON.stringify(payload.inferred_relationships) : t("none")),
+    createDefinitionRow(t("source_list"), (payload.source_list || []).map((item) => `${item.provider}: ${item.dataset}`).join("; ") || pcsStatusLabel("unavailable")),
+    createDefinitionRow(t("validation_state"), payload.validation_state),
+  );
+  selectors.evidenceResults.replaceChildren(grid);
+  updateText(selectors.evidenceCausalStatus, payload.causal_status || "NOT_ESTABLISHED");
+}
+
+async function loadEvidenceExplorer(withSelection = false) {
+  const query = withSelection ? `?${evidenceParameters()}` : "";
+  const response = await fetch(`${WEATHER_PROXY_BASE}/api/evidence-explorer${query}`, { cache: "no-store" });
+  if (!response.ok) throw new Error("evidence_explorer_unavailable");
+  renderEvidenceExplorer(await response.json());
+}
+
+function initializeEvidenceExplorer() {
+  selectors.evidenceExplorerForm?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    void runSafeAsync("Evidence Explorer query", () => loadEvidenceExplorer(true));
+  });
+}
+
 async function loadPcsEvidencePanels() {
   updateText(selectors.pcsApiStatus, t("loading"));
   try {
-    const [readinessResponse, eventsResponse, ledgerResponse, gatheringsResponse] = await Promise.all([
+    const [readinessResponse, eventsResponse, ledgerResponse, gatheringsResponse, briefResponse, systemResponse] = await Promise.all([
       fetch(`${WEATHER_PROXY_BASE}/api/domain-readiness`),
       fetch(`${WEATHER_PROXY_BASE}/api/events?limit=20`),
       fetch(`${WEATHER_PROXY_BASE}/api/evidence-ledger`),
       fetch(`${WEATHER_PROXY_BASE}/api/mass-gatherings`),
+      fetch(`${WEATHER_PROXY_BASE}/api/daily-brief`),
+      fetch(`${WEATHER_PROXY_BASE}/api/system-status`),
     ]);
-    if (![readinessResponse, eventsResponse, ledgerResponse, gatheringsResponse].every((response) => response.ok)) throw new Error("pcs_api_unavailable");
-    const [readiness, eventList, ledger, gatherings] = await Promise.all([readinessResponse.json(), eventsResponse.json(), ledgerResponse.json(), gatheringsResponse.json()]);
+    if (![readinessResponse, eventsResponse, ledgerResponse, gatheringsResponse, briefResponse, systemResponse].every((response) => response.ok)) throw new Error("pcs_api_unavailable");
+    const [readiness, eventList, ledger, gatherings, brief, system] = await Promise.all([readinessResponse.json(), eventsResponse.json(), ledgerResponse.json(), gatheringsResponse.json(), briefResponse.json(), systemResponse.json()]);
     const eventDetails = await Promise.all((eventList.events || []).map(async (event) => {
       const response = await fetch(`${WEATHER_PROXY_BASE}/api/events/${encodeURIComponent(event.id)}`);
       return response.ok ? response.json() : event;
     }));
     renderDomainReadiness(readiness);
-    renderDailyBrief(eventDetails);
+    renderPcsLayers({ generated_at: system.generated_at, layers: system.observation?.variables || [] });
+    renderDailyBriefPayload(brief, eventDetails);
+    renderSystemStatus(system);
     renderEvidenceLedger(ledger.entries || []);
     renderMassGatherings(gatherings.data || []);
     updateText(selectors.pcsApiStatus, `${t("last_update")}: ${formatPcsTime(readiness.generated_at)}`);
+    refreshAnimationStatus();
   } catch (error) {
     updateText(selectors.pcsApiStatus, t("pcs_api_unavailable"));
   }
@@ -3255,12 +3457,15 @@ async function initializeApp() {
   runSafe("language selector initialization", initializeLanguageSelector);
   renderClock();
   await runSafeAsync("Cesium globe initialization", initializeCesiumGlobe);
+  runSafe("animation status initialization", refreshAnimationStatus);
   runSafe("placeholder selector initialization", initializePlaceholderSelectors);
   runSafe("framework controls initialization", initializeFrameworkControls);
   runSafe("layer controls initialization", initializeLayerControls);
+  runSafe("Evidence Explorer initialization", initializeEvidenceExplorer);
   runSafe("weather layer initialization", initializeWeatherLayers);
   await runSafeAsync("visitor network initialization", initializeVisitorNetwork);
   await runSafeAsync("PCS evidence panels initialization", loadPcsEvidencePanels);
+  await runSafeAsync("Evidence Explorer event loading", () => loadEvidenceExplorer(false));
   runSafe("build timestamp rendering", renderBuildTimestamp);
   await runSafeAsync("language loading", () => setLanguage(getCurrentLanguage()));
   await runSafeAsync("PCS evidence panels translation refresh", loadPcsEvidencePanels);

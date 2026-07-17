@@ -132,6 +132,7 @@ instead of replaying the full baseline schema:
 ```bash
 cd cloudflare
 wrangler d1 execute pcsbackend --remote --file=migrations/0001_pcs_retrospective.sql
+wrangler d1 execute pcsbackend --remote --file=migrations/0002_pcs_intelligence_layers.sql
 ```
 
 The migration only uses guarded table/index creation and idempotent metadata

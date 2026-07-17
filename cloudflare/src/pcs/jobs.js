@@ -1,5 +1,7 @@
 import { domainReadiness } from "../providers/registry.js";
-import { eventSimilarity } from "./routes.js";
+import { retrieveAllLayers } from "../providers/layers.js";
+import { eventSimilarity, validationMetrics } from "./routes.js";
+import { ingestDailyBrief } from "./intelligence.js";
 
 async function persistProviderStatus(env, readiness) {
   if (!env.PCS_DB) return;
@@ -17,6 +19,19 @@ async function persistProviderStatus(env, readiness) {
   for (let index = 0; index < statements.length; index += 50) {
     await env.PCS_DB.batch(statements.slice(index, index + 50));
   }
+}
+
+async function persistLayerSnapshots(env, payload) {
+  if (!env.PCS_DB) return;
+  const statements = payload.layers.map((item) => env.PCS_DB.prepare(`INSERT OR IGNORE INTO pcs_data_snapshots
+    (id, provider, dataset, endpoint, timestamp, spatial_resolution, temporal_resolution, latency,
+     license, quality_flag, uncertainty, retrieval_status, payload, retrieved_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+    .bind(`layer:${item.id}:${item.observation_time || item.retrieved_at}`, item.provider, item.dataset, item.endpoint,
+      item.observation_time, item.spatial_resolution, item.temporal_resolution, item.latency, item.license,
+      item.quality_flag, typeof item.uncertainty === "number" ? item.uncertainty : null, item.retrieval_status,
+      JSON.stringify(item), item.retrieved_at));
+  for (let index = 0; index < statements.length; index += 50) await env.PCS_DB.batch(statements.slice(index, index + 50));
 }
 
 function classifyAlert(event) {
@@ -96,19 +111,39 @@ async function ingestUsgsEarthquakes(env, fetcher) {
   }
 }
 
+async function updateEvidenceLedgerAtEndOfDay(env) {
+  if (!env.PCS_DB) return 0;
+  const result = await env.PCS_DB.prepare(`INSERT OR IGNORE INTO pcs_evidence_ledger
+    (analysis_id, event_id, issued_at, region, event_type, input_data_snapshot, precursor_signals,
+     causal_chain, confidence, proposed_actions, result, data_missing, lessons_learned)
+    SELECT 'ledger-auto-' || a.analysis_id, a.event_id, strftime('%Y-%m-%dT%H:%M:%SZ','now'),
+      e.region, e.event_type, '[]', '[]', '[]', NULL, '[]', 'insufficient_data', 1,
+      'Automated end-of-day review found no evidence-backed validation outcome.'
+    FROM pcs_retrospective_analyses a
+    JOIN pcs_events e ON e.id = a.event_id
+    WHERE NOT EXISTS (SELECT 1 FROM pcs_evidence_ledger l WHERE l.event_id = a.event_id)`).run();
+  return result.meta?.changes || 0;
+}
+
 export async function runScheduledJobs(env, cron, fetcher = fetch) {
   const startedAt = new Date().toISOString();
-  const readiness = await domainReadiness(env, fetcher);
+  const [readiness, layers] = await Promise.all([domainReadiness(env, fetcher), retrieveAllLayers(env, fetcher)]);
   await persistProviderStatus(env, readiness);
+  await persistLayerSnapshots(env, layers);
 
   // All configured schedules refresh active official events. The operation is
   // idempotent because provider event identifiers are primary keys.
   await Promise.allSettled([ingestNoaaAlerts(env, fetcher), ingestUsgsEarthquakes(env, fetcher)]);
 
+  let brief = null;
+  if (cron === "15 0 * * *") brief = await ingestDailyBrief(env, fetcher);
+  const ledgerUpdates = cron === "45 23 * * *" ? await updateEvidenceLedgerAtEndOfDay(env) : 0;
+  const weeklyMetrics = cron === "30 1 * * 1" ? await validationMetrics(env) : null;
+
   if (env.PCS_DB) {
     await env.PCS_DB.prepare(`INSERT INTO pcs_scheduled_runs (id, cron, started_at, completed_at, status, details)
       VALUES (?, ?, ?, ?, 'completed', ?)`)
-      .bind(crypto.randomUUID(), cron, startedAt, new Date().toISOString(), JSON.stringify({ datasets_checked: readiness.datasets.length })).run();
+      .bind(crypto.randomUUID(), cron, startedAt, new Date().toISOString(), JSON.stringify({ datasets_checked: readiness.datasets.length, layers_checked: layers.layers.length, brief_items: brief ? brief.primary.length + brief.more_intelligence.length : 0, ledger_updates: ledgerUpdates, weekly_metrics: weeklyMetrics })).run();
   }
-  return readiness;
+  return { readiness, layers, brief };
 }

@@ -27,7 +27,11 @@ No scientific values are included in this prototype endpoint.
 ### PCS observation, retrospective, and validation APIs
 
 - `GET /api/domain-readiness` probes each registered public provider adapter and returns normalized provider, dataset, endpoint, timestamp, latency, quality flag, uncertainty, license, validation, and availability metadata.
-- `GET /api/daily-brief`
+- `GET /api/layers` returns the eleven provider-backed observation-layer adapters with visible provider errors and complete provenance.
+- `GET /api/daily-brief` returns ten deduplicated primary publications plus up to five `more_intelligence` items. Publication metadata is never exposed as a scientific measurement.
+- `GET /api/system-status` separates Observation, Connectors, Validation, Engine, PCS State, Data Flow, and Human/AI Review.
+- `GET /api/evidence-explorer` queries event-linked snapshots and defaults causal status to `NOT_ESTABLISHED`.
+- `GET /api/ai-analysis/status` reports the optional proposal-only AI adapter state.
 - `GET /api/events` and `GET /api/events/:id`
 - `GET /api/events/:id/retrospective`, `/timeline`, and `/evidence`
 - `GET /api/evidence-ledger` and `GET /api/evidence-ledger/:id`
@@ -36,7 +40,7 @@ No scientific values are included in this prototype endpoint.
 
 Administrative event, analysis, validation, source-linking, merge, and warning-rule routes use the existing bearer-token pattern. `ADMIN_API_KEY` is preferred and `INGEST_SECRET` remains a compatibility fallback. Event confirmation sources are kept separate from observation snapshots; missing measurements remain `null` or `unavailable`.
 
-Scheduled triggers run every six hours, at daily start/end, and weekly. They refresh provider health, ingest idempotent NOAA alert and USGS earthquake event candidates, cluster compatible events, and record job provenance. No news item is treated as a scientific measurement.
+Scheduled triggers run every six hours, at daily start/end, and weekly. They refresh provider/layer health, ingest the Daily Research Brief, ingest idempotent NOAA alert and USGS earthquake event candidates, cluster compatible events, update missing-data ledger entries, and calculate validation metrics only after a sufficient sample exists. No news item is treated as a scientific measurement.
 
 ### `GET /api/nasa/status`
 
@@ -176,9 +180,10 @@ Apply the retrospective-analysis schema to an existing production database with:
 
 ```bash
 wrangler d1 execute pcsbackend --remote --file=migrations/0001_pcs_retrospective.sql
+wrangler d1 execute pcsbackend --remote --file=migrations/0002_pcs_intelligence_layers.sql
 ```
 
-This migration is additive and idempotent. The heat-dome and World Cup case
+These migrations are additive and idempotent. The heat-dome and World Cup case
 shells contain metadata plus `NULL`/`unavailable` analytical fields only; they
 do not contain synthetic observations.
 

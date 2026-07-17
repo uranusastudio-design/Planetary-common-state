@@ -1,9 +1,12 @@
 import { domainReadiness } from "../providers/registry.js";
+import { retrieveAllLayers } from "../providers/layers.js";
+import { readDailyBrief, proposeAiAnalysis } from "./intelligence.js";
 
 export const PCS_ROUTES = [
   "/api/domain-readiness", "/api/daily-brief", "/api/events",
   "/api/evidence-ledger", "/api/mass-gatherings", "/api/human-mobility",
   "/api/validation/metrics",
+  "/api/layers", "/api/system-status", "/api/evidence-explorer", "/api/ai-analysis/status",
 ];
 
 const EVENT_COLUMNS = [
@@ -178,25 +181,123 @@ export function gatheringRisk(row) {
   return factors.every(Number.isFinite) ? factors.reduce((product, value) => product * value, 1) : null;
 }
 
-async function validationMetrics(env) {
+export async function validationMetrics(env) {
   const { results } = await env.PCS_DB.prepare("SELECT result, confidence, retrospective_score, false_positive, false_negative, partial_hit, data_missing FROM pcs_evidence_ledger WHERE result != 'unresolved'").all();
-  if (!results.length) return { sample_size: 0, precision: null, recall: null, false_positive_rate: null, false_negative_rate: null, brier_score: null, calibration_error: null, actionability_score: null, data_completeness_score: null };
-  const tp = results.filter((r) => r.result === "confirmed" || r.result === "partially_confirmed").length;
-  const fp = results.filter((r) => r.false_positive).length;
-  const fn = results.filter((r) => r.false_negative).length;
-  const scored = results.filter((r) => Number.isFinite(Number(r.confidence)));
+  const eligible = results.filter((row) => ["confirmed", "partially_confirmed", "false_alarm", "missed"].includes(row.result));
+  const base = { sample_size: eligible.length, minimum_sample_size: 5, precision: null, recall: null, false_positive_rate: null, false_negative_rate: null, brier_score: null, calibration_error: null, actionability_score: null,
+    data_completeness_score: eligible.length ? 1 - eligible.filter((r) => r.data_missing).length / eligible.length : null };
+  if (eligible.length < base.minimum_sample_size) return { ...base, status: "INSUFFICIENT_DATA" };
+  const tp = eligible.filter((r) => r.result === "confirmed" || r.result === "partially_confirmed").length;
+  const fp = eligible.filter((r) => r.false_positive).length;
+  const fn = eligible.filter((r) => r.false_negative).length;
+  const scored = eligible.filter((r) => Number.isFinite(Number(r.confidence)));
   const brier = scored.length ? scored.reduce((sum, row) => {
     const outcome = row.result === "confirmed" || row.result === "partially_confirmed" ? 1 : 0;
     return sum + (Number(row.confidence) - outcome) ** 2;
   }, 0) / scored.length : null;
   return {
-    sample_size: results.length,
+    ...base, status: "CALCULATED",
     precision: ratio(tp, tp + fp), recall: ratio(tp, tp + fn),
     false_positive_rate: ratio(fp, results.length), false_negative_rate: ratio(fn, results.length),
     brier_score: brier, calibration_error: null,
     actionability_score: null,
-    data_completeness_score: 1 - results.filter((r) => r.data_missing).length / results.length,
   };
+}
+
+export function validationEvidenceSufficient(body) {
+  if (["unresolved", "insufficient_data"].includes(body.result)) return true;
+  return Array.isArray(body.input_data_snapshot) && body.input_data_snapshot.length > 0 && Boolean(body.official_confirmation_time);
+}
+
+async function evidenceExplorer(env, url) {
+  const eventId = url.searchParams.get("event_id");
+  const primaryRegion = url.searchParams.get("primary_region");
+  const comparisonRegion = url.searchParams.get("comparison_region");
+  const windowStart = url.searchParams.get("window_start");
+  const windowEnd = url.searchParams.get("window_end");
+  const baselineStart = url.searchParams.get("baseline_start");
+  const baselineEnd = url.searchParams.get("baseline_end");
+  const variables = url.searchParams.getAll("variable");
+  const events = await listEvents(env, new URL("https://pcs.local/api/events?limit=100"));
+  if (!eventId) return { events: events.map(({ id, title, region, event_type }) => ({ id, title, region, event_type })), selection: null, causal_status: "NOT_ESTABLISHED" };
+  const event = await env.PCS_DB.prepare("SELECT * FROM pcs_events WHERE id = ?").bind(eventId).first();
+  if (!event) return null;
+  const { results } = await env.PCS_DB.prepare(`SELECT id, provider, dataset, endpoint, timestamp AS observation_time,
+    retrieved_at, spatial_resolution, temporal_resolution, latency, license, quality_flag, uncertainty,
+    retrieval_status, payload FROM pcs_data_snapshots WHERE event_id = ? ORDER BY retrieved_at DESC LIMIT 200`).bind(eventId).all();
+  const snapshots = results.map((row) => {
+    let payload = null;
+    try { payload = row.payload ? JSON.parse(row.payload) : null; } catch { payload = null; }
+    return { ...row, payload };
+  });
+  const observed = snapshots.filter((item) => item.retrieval_status === "LIVE" || item.retrieval_status === "LATEST");
+  const presentVariables = new Set(observed.map((item) => item.payload?.variable || item.dataset));
+  const missing = variables.filter((variable) => !presentVariables.has(variable));
+  const anomalies = observed.flatMap((item) => item.payload?.data_state === "CALCULATED" && Number.isFinite(item.payload?.anomaly)
+    ? [{ variable: item.payload.variable || item.dataset, anomaly: item.payload.anomaly, source_snapshot_id: item.id }] : []);
+  return {
+    events: events.map(({ id, title, region, event_type }) => ({ id, title, region, event_type })),
+    selection: { event_id: eventId, primary_region: primaryRegion || event.region, comparison_region: comparisonRegion || null,
+      time_window: { start: windowStart, end: windowEnd }, baseline_period: { start: baselineStart, end: baselineEnd }, variables },
+    event: { id: event.id, title: event.title, region: event.region, event_type: event.event_type },
+    observed_variables: observed, missing_variables: missing, anomalies,
+    temporal_correlation: { value: null, status: "INSUFFICIENT_DATA", method: null },
+    spatial_overlap: { value: null, status: "INSUFFICIENT_DATA", method: null },
+    data_completeness: variables.length ? (variables.length - missing.length) / variables.length : null,
+    inferred_relationships: [], source_list: [...new Map(snapshots.map((item) => [item.endpoint, { provider: item.provider, dataset: item.dataset, endpoint: item.endpoint }])).values()],
+    validation_state: "UNVALIDATED", causal_status: "NOT_ESTABLISHED",
+  };
+}
+
+export function residualState() {
+  const reason = "Formula, baseline, normalization, weights, coverage, uncertainty, and validation method are not configured.";
+  return {
+    total_l_t: { value: null, status: "UNAVAILABLE", reason: "Component definitions and a validated aggregation method are unavailable." },
+    components: ["thermal", "flow", "chemical", "informational", "structural"].map((component) => ({
+      component, value: null, data_state: "UNAVAILABLE", reason, formula_version: null, baseline_period: null,
+      variables_used: [], normalization_method: null, weights: null, data_coverage: null,
+      uncertainty: null, calculated_at: null, validation_status: "UNVALIDATED",
+    })),
+  };
+}
+
+async function systemStatus(env) {
+  const [layers, metrics] = await Promise.all([retrieveAllLayers(env), validationMetrics(env)]);
+  let reviewHistory = [], aiOutput = null;
+  if (env.PCS_DB) {
+    const [reviews, ai] = await Promise.all([
+      env.PCS_DB.prepare("SELECT * FROM pcs_review_history ORDER BY reviewed_at DESC LIMIT 20").all(),
+      env.PCS_DB.prepare("SELECT model_provider, model_name, model_version, generated_at, confidence, review_status, prompt_or_rule_version FROM pcs_ai_outputs ORDER BY generated_at DESC LIMIT 1").first(),
+    ]);
+    reviewHistory = reviews.results; aiOutput = ai;
+  }
+  return {
+    generated_at: new Date().toISOString(),
+    observation: { status: layers.layers.some((item) => ["LIVE", "LATEST"].includes(item.retrieval_status)) ? "ACTIVE" : "UNAVAILABLE", variables: layers.layers },
+    connectors: layers.layers.map((item) => ({ provider: item.provider, dataset: item.dataset, status: item.retrieval_status, latency: item.latency, last_successful_retrieval: ["LIVE", "LATEST", "PARTIAL"].includes(item.retrieval_status) ? item.retrieved_at : null, error_details: item.error })),
+    validation: { ...metrics, supported_results: ["confirmed", "partially_confirmed", "false_alarm", "missed", "unresolved", "insufficient_data"] },
+    engine: [
+      { id: "ingestion", status: "ACTIVE" }, { id: "event_clustering", status: "ACTIVE" },
+      { id: "retrospective", status: "CONNECTED" }, { id: "validation", status: "ACTIVE" },
+      { id: "ai_analysis", status: env.AI && env.AI_MODEL ? "CONNECTED" : "NOT_CONFIGURED" },
+      { id: "evidence_ledger_writer", status: "ACTIVE" },
+    ],
+    pcs_state: residualState(),
+    data_flow: ["provider", "adapter", "normalization", "snapshot", "event", "retrospective_analysis", "validation", "evidence_ledger"],
+    review: { ai_proposal: aiOutput || { review_status: "NO_PROPOSAL", model_version: null }, human_review_status: reviewHistory.length ? reviewHistory[0].status : "NOT_REVIEWED", review_history: reviewHistory },
+  };
+}
+
+async function saveAiProposal(env, eventId, body) {
+  const event = await getEventBundle(env, eventId);
+  if (!event) return null;
+  const output = await proposeAiAnalysis(env, { source_record: event, input_snapshot_ids: body.input_snapshot_ids || [], prompt_or_rule_version: body.prompt_or_rule_version });
+  if (output.proposal) await env.PCS_DB.prepare(`INSERT INTO pcs_ai_outputs
+    (id, event_id, model_provider, model_name, model_version, generated_at, input_snapshot_ids, confidence, review_status, prompt_or_rule_version, output)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+    .bind(crypto.randomUUID(), eventId, output.model_provider, output.model_name, output.model_version, output.generated_at,
+      JSON.stringify(output.input_snapshot_ids), output.confidence, "PROPOSAL", output.prompt_or_rule_version, JSON.stringify(output.proposal)).run();
+  return output;
 }
 
 export async function handlePcsRequest(request, env) {
@@ -213,7 +314,17 @@ export async function handlePcsRequest(request, env) {
       if (env.PCS_CACHE) await env.PCS_CACHE.put(cacheKey, JSON.stringify(readiness), { expirationTtl: 600 });
       return response(readiness);
     }
-    if (path === "/api/daily-brief") return response({ generated_at: new Date().toISOString(), events: await listEvents(env, url, true) });
+    if (path === "/api/layers") return response(await retrieveAllLayers(env));
+    if (path === "/api/daily-brief") {
+      const brief = await readDailyBrief(env);
+      return response({ ...brief, event_candidates: await listEvents(env, url, true) });
+    }
+    if (path === "/api/system-status") return response(await systemStatus(env));
+    if (path === "/api/ai-analysis/status") return response({ status: env.AI && env.AI_MODEL ? "CONNECTED" : "NOT_CONFIGURED", proposal_only: true, can_validate: false, can_create_observations: false });
+    if (path === "/api/evidence-explorer") {
+      const explorer = await evidenceExplorer(env, url);
+      return explorer ? response(explorer) : response({ error: "Event not found" }, 404);
+    }
     if (path === "/api/events" && request.method === "GET") return response({ events: await listEvents(env, url) });
     if (/^\/api\/events\/[^/]+$/.test(path)) {
       const item = await getEventBundle(env, eventIdFrom(path));
@@ -249,6 +360,10 @@ export async function handlePcsRequest(request, env) {
     if (path === "/api/admin/events" && request.method === "POST") return response(await createEvent(env, body), 201);
     if (/^\/api\/admin\/events\/[^/]+$/.test(path) && request.method === "PATCH") return response(await patchEvent(env, id, body));
     if (path.endsWith("/analyze") && request.method === "POST") return response(await saveRetrospective(env, id, body), 201);
+    if (path.endsWith("/ai-analyze") && request.method === "POST") {
+      const proposal = await saveAiProposal(env, id, body);
+      return proposal ? response(proposal, proposal.proposal ? 201 : 200) : response({ error: "Event not found" }, 404);
+    }
     if (path.endsWith("/link-source") && request.method === "POST") return response(await linkSource(env, id, body));
     if (path.endsWith("/merge") && request.method === "POST") return response(await mergeEvent(env, id, body));
     if (path.endsWith("/validate") && request.method === "POST") {
@@ -257,6 +372,7 @@ export async function handlePcsRequest(request, env) {
       if (body.result) {
         const allowedResults = ["confirmed", "partially_confirmed", "false_alarm", "missed", "unresolved", "insufficient_data"];
         if (!allowedResults.includes(body.result)) return response({ error: "Invalid validation result" }, 400);
+        if (!validationEvidenceSufficient(body)) return response({ error: "Evidence-backed validation requires input_data_snapshot and official_confirmation_time" }, 400);
         const ledgerId = body.analysis_id || `ledger-${id}`;
         const event = await env.PCS_DB.prepare("SELECT region, event_type, confidence, published_at FROM pcs_events WHERE id = ?").bind(id).first();
         await env.PCS_DB.prepare(`INSERT INTO pcs_evidence_ledger

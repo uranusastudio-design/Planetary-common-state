@@ -179,54 +179,47 @@ Observatory modes keep Planet as the active scale. Continent, Country, City, and
 
 The Timeline Framework exposes Play, Pause, Step Back, Step Forward, Speed, and Current Time Window controls. These controls do not play back data yet.
 
-The Animation Framework records future animation categories such as Earth rotation, layer activation, alert pulse, data update, timeline playback, and camera transition. No animation assets are loaded.
+Animation statuses are derived from runtime state. Missing implementations report `NOT_CONFIGURED`; timeline playback reports `WAITING_FOR_TIME_SERIES`, and alert pulse reports `NO_ACTIVE_ALERT` when no real alert exists.
 
 The Audio Framework records future alert and AI voice categories. Sound and Voice controls are placeholders only and do not play audio.
 
-The Evidence Explorer is reserved for comparing global, regional, national, and local observations. It shows observable relationships only and does not claim causality without validated analysis.
+The Evidence Explorer queries stored event snapshots, missing variables, completeness, source lists, and validation state. Its default causal status is `NOT_ESTABLISHED`.
 
 The root `assets/` directory reserves future audio, animation, imagery, and model folders. Large future assets should be stored in Cloudflare R2 or another object-storage service, not GitHub.
 
 ## Current Connected Data
 
-Connected:
+Provider-backed interfaces:
 
-- NASA GISTEMP: Global Temperature
-- NOAA Mauna Loa CO2: Atmospheric CO2
-
-Waiting:
-
-- Sea Level
-- NDVI
-
-Planned interface layers:
-
+- Global Temperature (NASA GISTEMP)
+- Sea Level (NOAA CO-OPS)
 - Precipitation
 - Tropical Cyclones
 - Wildfire
+- CO2
+- NDVI
 - Sea Ice
 - Shipping
 - Aviation
 - Satellite Observations
 
+Each adapter reports its actual `LIVE`, `LATEST`, `PARTIAL`, `DELAYED`,
+`UNAVAILABLE`, `AUTH_REQUIRED`, or `ERROR` state and exposes source provenance.
+
 ## PCS Value Interpretation
 
-The displayed PCS estimate is not a percentage. It is not a final Earth health score, a ranking, or an absolute truth claim.
-
-The value is a normalized prototype state estimate in the range `0.00000` to `1.00000`. `0.00000` represents the reference low-residual state for the active normalization rule, and `1.00000` represents the normalization upper bound. `1.00000` does not mean apocalypse, final collapse, or complete planetary failure.
-
-Prototype display may use 3 decimals, for example `0.832`. Scientific mode should prefer 5 decimals, for example `0.83214`.
-
-Interpretation bands such as Reference / Low Residual, Stable, Notice, Attention, Warning, and Near Critical are provisional until empirically calibrated. They should be treated as display guidance only, not validated alert thresholds.
+PCS component residuals and total `L(t)` display `UNAVAILABLE` until their formula,
+baseline, variables, normalization, weights, coverage, uncertainty, and validation
+method are explicitly defined. A connected provider alone never creates a residual.
 
 ## Current Limitations
 
-- This is a prototype estimate from partial observations.
+- PCS residual calculation is not scientifically configured.
 - No complete planetary assessment is claimed.
 - No validated alert model is implemented.
 - AI Copilot is not active.
 - Historical playback is not implemented.
-- Future layers do not draw overlays on the globe.
+- Provider-backed PCS layers currently expose traceable observations and status; only existing weather layers draw Cesium imagery overlays.
 - No scientific calculation is performed in the Observatory.
 - No fabricated data are added.
 - No unvalidated predictions are shown.

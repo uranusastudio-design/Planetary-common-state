@@ -358,52 +358,7 @@
                 Select a layer to view connection status.
               </p>
             </div>
-            <div class="layer-list">
-              <label class="layer-entry connected-layer">
-                <input type="checkbox" data-layer-status="connected">
-                <span><strong>Global Temperature</strong><small>Connected · NASA GISTEMP</small></span>
-              </label>
-              <label class="layer-entry waiting-layer">
-                <input type="checkbox" data-layer-status="waiting">
-                <span><strong>Sea Level</strong><small>Waiting · NOAA / NASA / AVISO</small></span>
-              </label>
-              <label class="layer-entry planned-layer">
-                <input type="checkbox" data-layer-status="planned">
-                <span><strong>Precipitation</strong><small>Planned · NASA GPM IMERG</small></span>
-              </label>
-              <label class="layer-entry planned-layer">
-                <input type="checkbox" data-layer-status="planned">
-                <span><strong>Tropical Cyclones</strong><small>Planned</small></span>
-              </label>
-              <label class="layer-entry planned-layer">
-                <input type="checkbox" data-layer-status="planned">
-                <span><strong>Wildfire</strong><small>Planned · NASA FIRMS</small></span>
-              </label>
-              <label class="layer-entry connected-layer">
-                <input type="checkbox" data-layer-status="connected">
-                <span><strong>CO2</strong><small>Connected · NOAA Mauna Loa</small></span>
-              </label>
-              <label class="layer-entry waiting-layer">
-                <input type="checkbox" data-layer-status="waiting">
-                <span><strong>NDVI</strong><small>Waiting · NASA MODIS / ESA</small></span>
-              </label>
-              <label class="layer-entry planned-layer">
-                <input type="checkbox" data-layer-status="planned">
-                <span><strong>Sea Ice</strong><small>Planned · NSIDC</small></span>
-              </label>
-              <label class="layer-entry planned-layer">
-                <input type="checkbox" data-layer-status="planned">
-                <span><strong>Shipping</strong><small>Planned</small></span>
-              </label>
-              <label class="layer-entry planned-layer">
-                <input type="checkbox" data-layer-status="planned">
-                <span><strong>Aviation</strong><small>Planned</small></span>
-              </label>
-              <label class="layer-entry planned-layer">
-                <input type="checkbox" data-layer-status="planned">
-                <span><strong>Satellite Observations</strong><small>Planned</small></span>
-              </label>
-            </div>
+            <div id="pcs-layer-list" class="layer-list" aria-live="polite"><p data-i18n="loading">Loading</p></div>
 
             <div class="weather-layers-section" aria-label="Live weather layer controls">
               <span class="panel-label weather-layers-label">Live Weather Layers</span>
@@ -491,33 +446,39 @@
             <p class="data-quality-key"><span>verified: physical radius</span><span>approximate: mean orbital elements</span><span>visual-only: focused display scale and rotation</span></p>
           </section>
           <article class="panel domain-values-panel">
-            <span class="panel-label">Prototype Domain Values</span>
+            <span class="panel-label" data-i18n="pcs_residual_status">PCS Residual Status</span>
             <div class="value-grid">
               <div class="value-card">
-                <span>Thermal Residual</span>
-                <strong id="projection-thermal">Loading</strong>
-                <small>NASA GISTEMP connected</small>
+                <span data-i18n="thermal_residual">Thermal Residual</span>
+                <strong id="projection-thermal">UNAVAILABLE</strong>
+                <small data-residual-reason="thermal">Formula and validation method are not configured.</small>
                 <div class="progress-track"><span id="progress-thermal" class="progress-fill"></span></div>
               </div>
               <div class="value-card">
-                <span>Chemical Residual</span>
-                <strong id="projection-chemical">Loading</strong>
-                <small>NOAA Mauna Loa CO2 connected</small>
+                <span data-i18n="chemical_residual">Chemical Residual</span>
+                <strong id="projection-chemical">UNAVAILABLE</strong>
+                <small data-residual-reason="chemical">Formula and validation method are not configured.</small>
                 <div class="progress-track"><span id="progress-chemical" class="progress-fill"></span></div>
               </div>
               <div class="value-card">
-                <span>Structural Residual</span>
-                <strong id="projection-structural">Loading</strong>
-                <small>Waiting for data</small>
+                <span data-i18n="structural_residual">Structural Residual</span>
+                <strong id="projection-structural">UNAVAILABLE</strong>
+                <small data-residual-reason="structural">Formula and validation method are not configured.</small>
                 <div class="progress-track"><span id="progress-structural" class="progress-fill"></span></div>
               </div>
               <div class="value-card">
-                <span>Informational Residual</span>
-                <strong id="projection-informational">Loading</strong>
-                <small>Waiting for data</small>
+                <span data-i18n="informational_residual">Informational Residual</span>
+                <strong id="projection-informational">UNAVAILABLE</strong>
+                <small data-residual-reason="informational">Formula and validation method are not configured.</small>
                 <div class="progress-track"><span id="progress-informational" class="progress-fill"></span></div>
               </div>
+              <div class="value-card">
+                <span data-i18n="flow_residual">Flow Residual</span>
+                <strong id="projection-flow">UNAVAILABLE</strong>
+                <small data-residual-reason="flow">Formula and validation method are not configured.</small>
+              </div>
             </div>
+            <p id="total-l-status" class="framework-status">L(t): UNAVAILABLE — validated component aggregation is not defined.</p>
           </article>
 
           <article class="panel alert-panel">
@@ -535,15 +496,7 @@
 
           <article class="panel health-panel">
             <span class="panel-label" data-i18n="connector_health">Connector Health</span>
-            <ul class="health-list">
-              <li><strong>NASA GISTEMP</strong><span class="status-pill status-normal">Connected</span></li>
-              <li><strong>NOAA Mauna Loa CO2</strong><span class="status-pill status-normal">Connected</span></li>
-              <li><strong>Sea Level</strong><span class="status-pill status-attention">Waiting</span></li>
-              <li><strong>NDVI</strong><span class="status-pill status-attention">Waiting</span></li>
-              <li><strong>NSIDC Sea Ice</strong><span class="status-pill status-muted">Planned</span></li>
-              <li><strong>NASA GPM IMERG</strong><span class="status-pill status-muted">Planned</span></li>
-              <li><strong>NASA FIRMS</strong><span class="status-pill status-muted">Planned</span></li>
-            </ul>
+            <ul id="layer-connector-health" class="health-list"><li data-i18n="loading">Loading</li></ul>
           </article>
 
           <article class="panel ai-panel">
@@ -619,6 +572,7 @@
           <span class="panel-label" data-i18n="daily_brief">Daily Brief</span>
           <h2 data-i18n="retrospective_analysis">PCS Retrospective Analysis</h2>
           <div id="daily-brief-list" class="pcs-card-list"><p data-i18n="loading">Loading</p></div>
+          <details id="more-intelligence"><summary data-i18n="more_intelligence">More Intelligence</summary><div id="more-intelligence-list" class="pcs-card-list"></div></details>
         </article>
 
         <article class="panel pcs-analysis-panel" id="pcs-mass-gatherings">
@@ -637,28 +591,28 @@
 
         <article class="panel pipeline-panel">
           <span class="panel-label" data-i18n="data_to_state_pipeline">PCS Data-to-State Pipeline</span>
-          <div class="pipeline-flow" aria-label="PCS Data-to-State Pipeline">
-            <span data-i18n="observation">Observation</span>
-            <span data-i18n="connector">Connector</span>
-            <span data-i18n="validation">Validation</span>
-            <span data-i18n="engine">Engine</span>
-            <span data-i18n="pcs_state">PCS State</span>
-            <span data-i18n="observatory">Observatory</span>
-            <span data-i18n="human_ai_review">Human + AI Review</span>
+          <div id="pcs-system-accordions" class="pcs-system-accordions" aria-label="PCS Data-to-State Pipeline">
+            <details open><summary data-i18n="observation">Observation</summary><div data-system-module="observation"></div></details>
+            <details><summary data-i18n="connector">Connectors</summary><div data-system-module="connectors"></div></details>
+            <details><summary data-i18n="validation">Validation</summary><div data-system-module="validation"></div></details>
+            <details><summary data-i18n="engine">Engine</summary><div data-system-module="engine"></div></details>
+            <details><summary data-i18n="pcs_state">PCS State</summary><div data-system-module="pcs_state"></div></details>
+            <details><summary data-i18n="data_flow">Data Flow</summary><div data-system-module="data_flow"></div></details>
+            <details><summary data-i18n="human_ai_review">Human + AI Review</summary><div data-system-module="review"></div></details>
           </div>
         </article>
 
         <article class="panel animation-panel">
           <span class="panel-label">Animation System</span>
-          <div class="framework-list">
-            <span>Earth rotation <strong>Framework Ready</strong></span>
-            <span>Layer activation <strong>Framework Ready</strong></span>
-            <span>Alert pulse <strong>Framework Ready</strong></span>
-            <span>Data update <strong>Framework Ready</strong></span>
-            <span>Timeline playback <strong>Framework Ready</strong></span>
-            <span>Camera transition <strong>Framework Ready</strong></span>
+          <div class="framework-list" id="animation-status-list">
+            <span><span data-i18n="earth_rotation">Earth rotation</span> <strong data-animation-status="earth_rotation">NOT_CONFIGURED</strong></span>
+            <span><span data-i18n="layer_activation">Layer activation</span> <strong data-animation-status="layer_activation">DISABLED</strong></span>
+            <span><span data-i18n="alert_pulse">Alert pulse</span> <strong data-animation-status="alert_pulse">NO_ACTIVE_ALERT</strong></span>
+            <span><span data-i18n="data_update">Data update</span> <strong data-animation-status="data_update">NOT_CONFIGURED</strong></span>
+            <span><span data-i18n="timeline_playback">Timeline playback</span> <strong data-animation-status="timeline_playback">WAITING_FOR_TIME_SERIES</strong></span>
+            <span><span data-i18n="camera_transition">Camera transition</span> <strong data-animation-status="camera_transition">NOT_CONFIGURED</strong></span>
           </div>
-          <p class="framework-status">No animation assets loaded.</p>
+          <p id="animation-system-note" class="framework-status" data-i18n="animation_runtime_status">Statuses reflect active runtime implementations.</p>
         </article>
 
         <article class="panel audio-panel">
@@ -679,16 +633,19 @@
         </article>
 
         <article class="panel evidence-panel">
-          <span class="panel-label">Evidence Explorer</span>
-          <p class="panel-note">Compare global, regional, national, and local observations.</p>
-          <dl class="evidence-grid">
-            <div><dt>Selected Region</dt><dd>Earth</dd></div>
-            <div><dt>Comparison Region</dt><dd>None</dd></div>
-            <div><dt>Observed Variables</dt><dd>Pending</dd></div>
-            <div><dt>Correlation</dt><dd>Pending</dd></div>
-            <div><dt>Causal Claim</dt><dd>Not supported</dd></div>
-          </dl>
-          <p class="framework-status">PCS Evidence Explorer shows observable relationships only. It does not claim causality without validated analysis.</p>
+          <span class="panel-label" data-i18n="evidence_explorer">Evidence Explorer</span>
+          <p class="panel-note" data-i18n="evidence_explorer_note">Compare traceable event snapshots; correlation does not establish causality.</p>
+          <form id="evidence-explorer-form" class="evidence-controls">
+            <label><span data-i18n="event">Event</span><select id="evidence-event"></select></label>
+            <label><span data-i18n="primary_region">Primary region</span><input id="evidence-primary-region" type="text"></label>
+            <label><span data-i18n="comparison_region">Comparison region</span><input id="evidence-comparison-region" type="text"></label>
+            <label><span data-i18n="time_window">Time window</span><input id="evidence-window-start" type="date"><input id="evidence-window-end" type="date"></label>
+            <label><span data-i18n="baseline_period">Baseline period</span><input id="evidence-baseline-start" type="date"><input id="evidence-baseline-end" type="date"></label>
+            <label><span data-i18n="variables">Variables</span><input id="evidence-variables" type="text" placeholder="temperature, soil moisture"></label>
+            <button type="submit" class="framework-button" data-i18n="load_evidence">Load evidence</button>
+          </form>
+          <div id="evidence-explorer-results" class="evidence-results" aria-live="polite"><p data-i18n="select_event">Select an event.</p></div>
+          <p id="evidence-causal-status" class="framework-status">NOT_ESTABLISHED</p>
         </article>
       </section>
 
@@ -707,6 +664,6 @@
     <script src="./moon-lighting.js"></script>
     <script src="./mission-imagery-registry.js?v=20260717-mission-moon-textures"></script>
     <script src="./celestial-bodies.js?v=20260717-mission-moon-textures"></script>
-    <script src="./app.js?v=20260717-pcs-evidence-ledger"></script>
+    <script src="./app.js?v=20260717-pcs-intelligence-layers"></script>
   </body>
 </html>
