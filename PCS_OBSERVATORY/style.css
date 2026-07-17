@@ -605,6 +605,57 @@ h3 {
   grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
+.celestial-system {
+  position: relative;
+  min-width: 0;
+}
+
+.celestial-system > .framework-button { width: 100%; }
+.celestial-system > .framework-button[aria-expanded] small::after { content: "  ▾"; color: var(--cyan); }
+.celestial-system.has-active-satellite > .framework-button {
+  border-color: rgba(34, 211, 238, .52);
+  background: rgba(34, 211, 238, .08);
+}
+
+.satellite-submenu {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 5px;
+  margin-top: 6px;
+  padding: 6px;
+  border: 1px solid rgba(85, 215, 255, .2);
+  border-radius: 8px;
+  background: rgba(2, 9, 18, .92);
+}
+
+.satellite-submenu[hidden] { display: none; }
+.satellite-button {
+  min-width: 0;
+  border: 1px solid rgba(142, 168, 189, .16);
+  border-radius: 6px;
+  padding: 7px 9px;
+  color: var(--muted);
+  background: rgba(255,255,255,.025);
+  cursor: pointer;
+  text-align: left;
+}
+.satellite-button:hover, .satellite-button:focus-visible { color: var(--text); border-color: var(--cyan); outline: none; }
+.satellite-button.is-active { color: #d7fff0; border-color: rgba(34,197,94,.58); background: rgba(34,197,94,.14); }
+.satellite-button small { display: block; margin-top: 3px; font-size: .68rem; color: var(--muted); }
+
+.visualization-scale-note {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 12px 0 0;
+  padding: 8px 10px;
+  border-left: 2px solid var(--cyan);
+  color: var(--muted);
+  background: rgba(34,211,238,.05);
+  font-size: .78rem;
+}
+.visualization-scale-note strong { color: var(--cyan); }
+
 .framework-button {
   min-height: 48px;
   border: 1px solid rgba(142, 168, 189, 0.2);
@@ -1223,6 +1274,12 @@ h3 {
 .observation-grid > div { padding: 9px; border: 1px solid rgba(142, 168, 189, 0.16); border-radius: 8px; background: rgba(255,255,255,.035); }
 .observation-grid dt { color: var(--muted); font-size: .72rem; font-weight: 800; text-transform: uppercase; }
 .observation-grid dd { margin: 4px 0 0; color: var(--text); overflow-wrap: anywhere; }
+.observation-grid-wide { grid-column: 1 / -1; }
+.satellite-information-panel { max-height: min(64vh, 720px); overflow-y: auto; scrollbar-width: thin; }
+.compact-science-list { margin: 0; padding-left: 18px; }
+.compact-science-list li + li { margin-top: 4px; }
+.data-quality-key { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 0; }
+.data-quality-key span { padding: 5px 7px; border-radius: 999px; color: var(--muted); background: rgba(142,168,189,.09); font-size: .7rem; }
 .data-unavailable { color: #ffb4a8; font-weight: 700; }
 .data-unavailable:empty { display: none; }
 .observation-subheading { margin: 16px 0 8px; color: var(--text); font-size: .86rem; text-transform: uppercase; letter-spacing: .04em; }
@@ -1398,6 +1455,10 @@ h3 {
     flex: 0 0 auto;
     min-width: 132px;
   }
+
+  .solar-system-panel .celestial-system { flex: 0 0 auto; min-width: 148px; }
+  .solar-system-panel .celestial-system > .framework-button { min-width: 148px; height: auto; }
+  .solar-system-panel .satellite-submenu { max-height: 158px; overflow-y: auto; }
 
   .timeline-controls,
   .timeline-controls,

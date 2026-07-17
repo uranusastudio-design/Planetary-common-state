@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>PCS Observatory | Uranus A Studio</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cesium@1.120.0/Build/Cesium/Widgets/widgets.css">
-    <link rel="stylesheet" href="./style.css?v=responsive-3">
+    <link rel="stylesheet" href="./style.css?v=phase-one-moons-1">
     <link rel="stylesheet" href="./intro-screen.css">
     <script>
       window.CESIUM_BASE_URL = "https://cdn.jsdelivr.net/npm/cesium@1.120.0/Build/Cesium/";
@@ -195,19 +195,37 @@
               </div>
               <span id="celestial-target-status" class="status-pill status-normal">Earth active</span>
             </div>
-            <div class="framework-control-grid" role="group" aria-label="Solar System Observatory options">
+            <div class="framework-control-grid celestial-navigation" role="group" aria-label="Solar System Observatory options">
               <button type="button" class="framework-button" data-solar-target="sun">Sun <small>NOAA + JPL</small></button>
               <button type="button" class="framework-button" data-solar-target="mercury">Mercury <small>JPL data + NASA/USGS imagery</small></button>
               <button type="button" class="framework-button" data-solar-target="venus">Venus <small>JPL data + NASA/USGS imagery</small></button>
-              <button type="button" class="framework-button is-active" data-solar-target="earth">Earth <small>Active</small></button>
-              <button type="button" class="framework-button" data-solar-target="moon">Moon <small>Live data</small></button>
-              <button type="button" class="framework-button" data-solar-target="mars">Mars <small>JPL data + NASA/USGS imagery</small></button>
-              <button type="button" class="framework-button" data-solar-target="jupiter">Jupiter <small>JPL data + NASA imagery</small></button>
-              <button type="button" class="framework-button" data-solar-target="saturn">Saturn <small>JPL data + NASA imagery</small></button>
-              <button type="button" class="framework-button" data-solar-target="uranus">Uranus <small>JPL data + NASA imagery</small></button>
-              <button type="button" class="framework-button" data-solar-target="neptune">Neptune <small>JPL data + NASA imagery</small></button>
+              <div class="celestial-system is-expanded" data-celestial-system="earth">
+                <button type="button" class="framework-button is-active" data-solar-target="earth" aria-expanded="true">Earth <small>1 representative moon</small></button>
+                <div class="satellite-submenu" data-satellite-submenu="earth"><button type="button" class="satellite-button" data-solar-target="moon">Moon <small>Existing live data</small></button></div>
+              </div>
+              <div class="celestial-system" data-celestial-system="mars">
+                <button type="button" class="framework-button" data-solar-target="mars" aria-expanded="false">Mars <small>2 representative moons</small></button>
+                <div class="satellite-submenu" data-satellite-submenu="mars" hidden><button type="button" class="satellite-button" data-solar-target="phobos">Phobos</button><button type="button" class="satellite-button" data-solar-target="deimos">Deimos</button></div>
+              </div>
+              <div class="celestial-system" data-celestial-system="jupiter">
+                <button type="button" class="framework-button" data-solar-target="jupiter" aria-expanded="false">Jupiter <small>4 Galilean moons</small></button>
+                <div class="satellite-submenu" data-satellite-submenu="jupiter" hidden><button type="button" class="satellite-button" data-solar-target="io">Io</button><button type="button" class="satellite-button" data-solar-target="europa">Europa</button><button type="button" class="satellite-button" data-solar-target="ganymede">Ganymede</button><button type="button" class="satellite-button" data-solar-target="callisto">Callisto</button></div>
+              </div>
+              <div class="celestial-system" data-celestial-system="saturn">
+                <button type="button" class="framework-button" data-solar-target="saturn" aria-expanded="false">Saturn <small>2 representative moons</small></button>
+                <div class="satellite-submenu" data-satellite-submenu="saturn" hidden><button type="button" class="satellite-button" data-solar-target="titan">Titan</button><button type="button" class="satellite-button" data-solar-target="enceladus">Enceladus</button></div>
+              </div>
+              <div class="celestial-system" data-celestial-system="uranus">
+                <button type="button" class="framework-button" data-solar-target="uranus" aria-expanded="false">Uranus <small>1 representative moon</small></button>
+                <div class="satellite-submenu" data-satellite-submenu="uranus" hidden><button type="button" class="satellite-button" data-solar-target="titania">Titania</button></div>
+              </div>
+              <div class="celestial-system" data-celestial-system="neptune">
+                <button type="button" class="framework-button" data-solar-target="neptune" aria-expanded="false">Neptune <small>1 representative moon</small></button>
+                <div class="satellite-submenu" data-satellite-submenu="neptune" hidden><button type="button" class="satellite-button" data-solar-target="triton">Triton</button></div>
+              </div>
               <button type="button" class="framework-button" data-solar-target="deep-space">Deep Space <small>Preview</small></button>
             </div>
+            <p class="visualization-scale-note"><strong>Visualization scale</strong><span>Not to inter-body distance scale</span></p>
             <p id="solar-system-status" class="framework-status" role="status" aria-live="polite">
               Earth Observatory active. No planetary data or models are loaded.
             </p>
@@ -451,7 +469,23 @@
           </article>
         </section>
 
-        <aside class="column right-column" aria-label="Domain values, alerts, and health">
+        <aside class="column right-column" aria-label="Body information, domain values, alerts, and health">
+          <section id="satellite-observation-panel" class="panel live-observation-panel satellite-information-panel" hidden aria-labelledby="satellite-observation-title">
+            <div class="observation-heading"><div><span class="panel-label">Representative natural satellite</span><h3 id="satellite-observation-title">Satellite Observation</h3></div><span class="status-pill status-attention">Visualization only</span></div>
+            <p id="satellite-description" class="panel-note"></p>
+            <dl class="observation-grid satellite-facts-grid">
+              <div><dt>Name</dt><dd data-satellite-value="name">—</dd></div><div><dt>Parent planet</dt><dd data-satellite-value="parent">—</dd></div>
+              <div><dt>Type</dt><dd data-satellite-value="type">—</dd></div><div><dt>Mean radius</dt><dd data-satellite-value="radius">—</dd></div>
+              <div><dt>Mean orbital distance</dt><dd data-satellite-value="distance">—</dd></div><div><dt>Orbital period</dt><dd data-satellite-value="orbit">—</dd></div>
+              <div><dt>Rotation period</dt><dd data-satellite-value="rotation">—</dd></div><div><dt>Orbital elements</dt><dd data-satellite-value="elements">—</dd></div>
+              <div class="observation-grid-wide"><dt>Surface / atmosphere summary</dt><dd data-satellite-value="surface">—</dd></div>
+              <div class="observation-grid-wide"><dt>Scientific significance</dt><dd><ul id="satellite-highlights" class="compact-science-list"></ul></dd></div>
+              <div class="observation-grid-wide"><dt>Major missions</dt><dd data-satellite-value="missions">—</dd></div>
+              <div class="observation-grid-wide"><dt>Data source</dt><dd><a id="satellite-data-source" href="#" target="_blank" rel="noreferrer">—</a></dd></div>
+              <div class="observation-grid-wide"><dt>Visualization status</dt><dd data-satellite-value="visualization">—</dd></div>
+            </dl>
+            <p class="data-quality-key"><span>verified: physical radius</span><span>approximate: mean orbital elements</span><span>visual-only: procedural surface and display rotation</span></p>
+          </section>
           <article class="panel domain-values-panel">
             <span class="panel-label">Prototype Domain Values</span>
             <div class="value-grid">
@@ -659,6 +693,7 @@
     <script src="./intro-screen.js?v=responsive-1"></script>
     <script src="https://cdn.jsdelivr.net/npm/cesium@1.120.0/Build/Cesium/Cesium.js"></script>
     <script src="./moon-lighting.js"></script>
-    <script src="./app.js?v=observatory-i18n-1"></script>
+    <script src="./celestial-bodies.js?v=phase-one-moons-5"></script>
+    <script src="./app.js?v=phase-one-moons-6"></script>
   </body>
 </html>

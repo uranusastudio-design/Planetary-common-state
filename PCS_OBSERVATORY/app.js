@@ -50,6 +50,8 @@ const EARTH_SOURCE_REGISTRY = Object.freeze({
   copernicus: { name: "Copernicus", modes: ["imagery", "archive", "account-required"] },
 });
 const PLANET_EPHEMERIS_TARGETS = new Set(["mercury", "venus", "mars", "jupiter", "saturn", "uranus", "neptune"]);
+const SATELLITE_REGISTRY = window.PCSSatelliteRegistry?.bodies || Object.freeze({});
+const SATELLITE_TARGETS = new Set(Object.keys(SATELLITE_REGISTRY).filter((id) => id !== "moon"));
 const WEATHER_TILE_MAX_ZOOM = 8;
 const EARTH_IMAGERY_CONFIG = {
   highResolution: {
@@ -162,6 +164,22 @@ Object.assign(celestialTargetConfig, {
 });
 delete celestialTargetConfig["solar-activity"];
 
+Object.values(SATELLITE_REGISTRY).forEach((satellite) => {
+  if (satellite.id === "moon") return;
+  celestialTargetConfig[satellite.id] = {
+    id: satellite.id,
+    displayName: satellite.name,
+    subtitle: `${celestialTargetConfig[satellite.parentBodyId]?.displayName || satellite.parentBodyId} system`,
+    status: "Visualization",
+    bodyType: "natural-satellite",
+    texture: satellite.texture,
+    cameraDestination: [0, 0, Math.max(satellite.radiusKm * 1000 * 4.2, 32000)],
+    availableMonitoringScales: ["Global", "Surface", "Missions"],
+    enabledDataDomains: ["verified-static-metadata"],
+    color: satellite.fallbackTexture,
+  };
+});
+
 const REGION_TRANSLATION_KEYS = {
   global: "global",
   japan: "japan",
@@ -185,6 +203,7 @@ let earthImageryErrorUnsubscribe = null;
 let celestialImageryLayer = null;
 let celestialImageryErrorUnsubscribe = null;
 let celestialDiscEntity = null;
+let celestialSatelliteEntities = [];
 let celestialRingPrimitives = [];
 let celestialDataSources = [];
 let celestialEventRemovers = [];
@@ -331,6 +350,13 @@ const selectors = {
   planetScientificPreview: document.querySelector("#planet-scientific-preview"),
   planetScientificImage: document.querySelector("#planet-scientific-image"),
   planetScientificPreviewNote: document.querySelector("#planet-scientific-preview-note"),
+  satellitePanel: document.querySelector("#satellite-observation-panel"),
+  satelliteTitle: document.querySelector("#satellite-observation-title"),
+  satelliteDescription: document.querySelector("#satellite-description"),
+  satelliteValues: document.querySelectorAll("[data-satellite-value]"),
+  satelliteHighlights: document.querySelector("#satellite-highlights"),
+  satelliteDataSource: document.querySelector("#satellite-data-source"),
+  celestialSystems: document.querySelectorAll("[data-celestial-system]"),
 };
 
 function t(key) {
@@ -704,6 +730,10 @@ function clearCelestialScene() {
     cesiumViewer.entities.remove(celestialDiscEntity);
   }
   celestialDiscEntity = null;
+  if (cesiumViewer && !cesiumViewer.isDestroyed()) {
+    celestialSatelliteEntities.forEach((entity) => cesiumViewer.entities.remove(entity));
+  }
+  celestialSatelliteEntities = [];
   if (cesiumViewer && !cesiumViewer.isDestroyed()) {
     celestialRingPrimitives.forEach((primitive) => cesiumViewer.scene.primitives.remove(primitive));
     celestialDataSources.forEach((dataSource) => cesiumViewer.dataSources.remove(dataSource, true));
@@ -1470,6 +1500,162 @@ async function initializeCesiumGlobe() {
   }
 }
 
+function satelliteVisualProfile(id) {
+  return ({
+    phobos: { base: "#4b443d", accent: "#80766a", craters: 92, lines: 0, shape: [1, 0.82, 0.76] },
+    deimos: { base: "#686159", accent: "#928a80", craters: 42, lines: 0, shape: [1, 0.88, 0.82] },
+    io: { base: "#d7a82c", accent: "#7d2f18", craters: 0, lines: 18, shape: [1, 1, 1] },
+    europa: { base: "#ddd7c5", accent: "#8d533d", craters: 5, lines: 38, shape: [1, 1, 1] },
+    ganymede: { base: "#777166", accent: "#b0aa9b", craters: 48, lines: 20, shape: [1, 1, 1] },
+    callisto: { base: "#423e3a", accent: "#c3b9a7", craters: 130, lines: 0, shape: [1, 1, 1] },
+    titan: { base: "#bd6d28", accent: "#e0a04f", craters: 0, lines: 10, shape: [1, 1, 1] },
+    enceladus: { base: "#e7f0ef", accent: "#88b5c4", craters: 22, lines: 26, shape: [1, 1, 1] },
+    titania: { base: "#777b7d", accent: "#aeb2b3", craters: 45, lines: 16, shape: [1, 1, 1] },
+    triton: { base: "#c9b8b1", accent: "#966f75", craters: 18, lines: 12, shape: [1, 1, 1] },
+  })[id];
+}
+
+function createSatelliteVisualizationTexture(satellite) {
+  const profile = satelliteVisualProfile(satellite.id);
+  if (!profile) return null;
+  const canvas = document.createElement("canvas");
+  canvas.width = 1024;
+  canvas.height = 512;
+  const context = canvas.getContext("2d", { alpha: false });
+  if (!context) return null;
+  context.fillStyle = profile.base;
+  context.fillRect(0, 0, canvas.width, canvas.height);
+  const seedBase = [...satellite.id].reduce((total, character) => total + character.charCodeAt(0), 0);
+  const pseudoRandom = (index, salt = 0) => {
+    const value = Math.sin((index + 1) * 12.9898 + seedBase * 78.233 + salt) * 43758.5453;
+    return value - Math.floor(value);
+  };
+  const shade = context.createLinearGradient(0, 0, canvas.width, canvas.height);
+  shade.addColorStop(0, "rgba(255,255,255,.18)");
+  shade.addColorStop(0.48, "rgba(255,255,255,0)");
+  shade.addColorStop(1, "rgba(0,0,0,.24)");
+  context.fillStyle = shade;
+  context.fillRect(0, 0, canvas.width, canvas.height);
+  for (let index = 0; index < profile.craters; index += 1) {
+    const x = pseudoRandom(index, 1) * canvas.width;
+    const y = pseudoRandom(index, 2) * canvas.height;
+    const radius = 3 + pseudoRandom(index, 3) * (satellite.id === "callisto" ? 24 : 16);
+    context.beginPath();
+    context.arc(x, y, radius, 0, Math.PI * 2);
+    context.fillStyle = `${profile.accent}${satellite.id === "callisto" ? "88" : "55"}`;
+    context.fill();
+    context.strokeStyle = "rgba(10,12,16,.36)";
+    context.lineWidth = Math.max(1, radius * 0.13);
+    context.stroke();
+  }
+  context.strokeStyle = `${profile.accent}aa`;
+  context.lineCap = "round";
+  for (let index = 0; index < profile.lines; index += 1) {
+    const y = pseudoRandom(index, 4) * canvas.height;
+    context.beginPath();
+    context.moveTo(-30, y);
+    context.bezierCurveTo(canvas.width * 0.3, y + pseudoRandom(index, 5) * 100 - 50,
+      canvas.width * 0.7, y + pseudoRandom(index, 6) * 130 - 65, canvas.width + 30, y + pseudoRandom(index, 7) * 80 - 40);
+    context.lineWidth = satellite.id === "europa" || satellite.id === "enceladus" ? 2 + pseudoRandom(index, 8) * 3 : 5 + pseudoRandom(index, 8) * 14;
+    context.stroke();
+  }
+  if (satellite.id === "io") {
+    for (let index = 0; index < 46; index += 1) {
+      context.beginPath();
+      context.ellipse(pseudoRandom(index, 9) * canvas.width, pseudoRandom(index, 10) * canvas.height,
+        8 + pseudoRandom(index, 11) * 28, 4 + pseudoRandom(index, 12) * 18, pseudoRandom(index, 13) * Math.PI, 0, Math.PI * 2);
+      context.fillStyle = index % 3 ? "rgba(117,43,20,.66)" : "rgba(242,224,115,.72)";
+      context.fill();
+    }
+  }
+  if (satellite.id === "triton") {
+    context.fillStyle = "rgba(155,103,117,.42)";
+    context.fillRect(0, canvas.height * 0.62, canvas.width, canvas.height * 0.24);
+  }
+  return canvas;
+}
+
+function renderSatelliteInformation(satellite) {
+  const parentName = celestialTargetConfig[satellite.parentBodyId]?.displayName || satellite.parentBodyId;
+  const values = {
+    name: satellite.name,
+    parent: parentName,
+    type: "Natural satellite",
+    radius: `${satellite.radiusKm.toLocaleString()} km (verified)`,
+    distance: `${satellite.meanOrbitalRadiusKm.toLocaleString()} km (approximate mean)`,
+    orbit: `${satellite.orbitalPeriodDays.toLocaleString()} Earth days (approximate mean)`,
+    rotation: `${satellite.rotationPeriodDays.toLocaleString()} Earth days; synchronous (approximate)`,
+    elements: `Inclination ${satellite.inclinationDeg}°; eccentricity ${satellite.eccentricity} (approximate mean)`,
+    surface: satellite.surfaceAtmosphereSummary,
+    missions: satellite.majorMissions.join(", "),
+    visualization: satellite.visualizationStatus,
+  };
+  updateText(selectors.satelliteTitle, `${satellite.name} Observation`);
+  updateText(selectors.satelliteDescription, satellite.description);
+  selectors.satelliteValues.forEach((element) => {
+    element.textContent = values[element.dataset.satelliteValue] || "Unavailable";
+  });
+  selectors.satelliteHighlights?.replaceChildren(...satellite.scientificHighlights.map((highlight) => {
+    const item = document.createElement("li");
+    item.textContent = highlight;
+    return item;
+  }));
+  if (selectors.satelliteDataSource) {
+    selectors.satelliteDataSource.textContent = satellite.dataSource;
+    selectors.satelliteDataSource.href = satellite.dataSourceUrl;
+  }
+}
+
+function renderSatellite(satellite) {
+  if (!cesiumViewer || !window.Cesium) return false;
+  const profile = satelliteVisualProfile(satellite.id);
+  const radiusMeters = satellite.radiusKm * 1000;
+  const texture = createSatelliteVisualizationTexture(satellite);
+  const startTime = Cesium.JulianDate.now();
+  const orientation = new Cesium.CallbackProperty((time, result) => {
+    const seconds = Cesium.JulianDate.secondsDifference(time, startTime);
+    return Cesium.Quaternion.fromAxisAngle(Cesium.Cartesian3.UNIT_Z, (seconds / 45) * Math.PI * 2, result);
+  }, false);
+  cesiumViewer.scene.globe.show = false;
+  cesiumViewer.scene.skyAtmosphere.show = false;
+  cesiumViewer.scene.globe.enableLighting = false;
+  const shape = profile?.shape || [1, 1, 1];
+  const entity = cesiumViewer.entities.add({
+    name: `${satellite.name} procedural visualization`,
+    position: Cesium.Cartesian3.ZERO,
+    orientation,
+    ellipsoid: {
+      radii: new Cesium.Cartesian3(radiusMeters * shape[0], radiusMeters * shape[1], radiusMeters * shape[2]),
+      material: texture
+        ? new Cesium.ImageMaterialProperty({ image: texture, transparent: false })
+        : Cesium.Color.fromCssColorString(satellite.fallbackTexture),
+    },
+  });
+  celestialSatelliteEntities.push(entity);
+  if (satellite.id === "titan") {
+    celestialSatelliteEntities.push(cesiumViewer.entities.add({
+      name: "Titan dense-atmosphere visualization",
+      position: Cesium.Cartesian3.ZERO,
+      ellipsoid: {
+        radii: new Cesium.Cartesian3(radiusMeters * 1.035, radiusMeters * 1.035, radiusMeters * 1.035),
+        material: Cesium.Color.fromCssColorString("#d98135").withAlpha(0.16),
+      },
+    }));
+  }
+  const cameraController = cesiumViewer.scene.screenSpaceCameraController;
+  cameraController.minimumZoomDistance = radiusMeters * 1.12;
+  cameraController.maximumZoomDistance = radiusMeters * 60;
+  cesiumViewer.camera.flyTo({
+    destination: new Cesium.Cartesian3(radiusMeters * 4.2, 0, radiusMeters * 0.32),
+    orientation: { direction: new Cesium.Cartesian3(-1, 0, -0.08), up: Cesium.Cartesian3.UNIT_Z },
+    duration: 1.2,
+  });
+  renderSatelliteInformation(satellite);
+  updateText(selectors.solarSystemStatus,
+    `${satellite.name} visualization active. Procedural texture is visual-only; physical radius is verified and inter-body distance is not rendered to scale.`);
+  return true;
+}
+
 function updateMonitoringScales(targetId) {
   const target = celestialTargetConfig[targetId];
   if (!target || !selectors.monitoringScaleControls) return;
@@ -1484,6 +1670,35 @@ function updateMonitoringScales(targetId) {
   }));
   updateText(selectors.observatoryModeStatus, `${target.availableMonitoringScales[0]} scale active for ${target.displayName}.`);
   updateText(selectors.monitoringScaleStatus, `${target.availableMonitoringScales[0]} active`);
+}
+
+function updateCelestialNavigation(targetId) {
+  const selectedSatellite = SATELLITE_REGISTRY[targetId];
+  const selectedParentId = selectedSatellite?.parentBodyId || null;
+  selectors.solarSystemControls.forEach((button) => {
+    const active = button.dataset.solarTarget === targetId;
+    button.classList.toggle("is-active", active);
+    button.setAttribute("aria-pressed", String(active));
+  });
+  selectors.celestialSystems.forEach((system) => {
+    const parentId = system.dataset.celestialSystem;
+    system.classList.toggle("has-active-satellite", parentId === selectedParentId);
+    if (parentId === selectedParentId) {
+      system.classList.add("is-expanded");
+      system.querySelector("[data-satellite-submenu]")?.removeAttribute("hidden");
+      system.querySelector(":scope > [data-solar-target]")?.setAttribute("aria-expanded", "true");
+    }
+  });
+}
+
+function toggleCelestialSystem(parentButton) {
+  const system = parentButton.closest("[data-celestial-system]");
+  const submenu = system?.querySelector("[data-satellite-submenu]");
+  if (!system || !submenu) return;
+  const expanded = !system.classList.contains("is-expanded");
+  system.classList.toggle("is-expanded", expanded);
+  submenu.toggleAttribute("hidden", !expanded);
+  parentButton.setAttribute("aria-expanded", String(expanded));
 }
 
 function clearEarthLayers() {
@@ -1521,11 +1736,7 @@ async function setCelestialTarget(targetId) {
   activeCelestialTargetId = targetId;
   updateVisitorLayerVisibility();
   updatePcsAvailability(target);
-  selectors.solarSystemControls.forEach((button) => {
-    const active = button.dataset.solarTarget === targetId;
-    button.classList.toggle("is-active", active);
-    button.setAttribute("aria-pressed", String(active));
-  });
+  updateCelestialNavigation(targetId);
   updateText(selectors.observatoryViewLabel, `${target.bodyType === "space" ? "Deep Space" : "3D Celestial"} Observatory`);
   updateText(selectors.observatoryViewTitle, `${target.displayName} — ${target.subtitle}`);
   updateText(selectors.celestialTargetStatus, `${target.displayName} ${target.status.toLowerCase()}`);
@@ -1535,6 +1746,7 @@ async function setCelestialTarget(targetId) {
   selectors.locationPanel?.toggleAttribute("hidden", targetId !== "earth");
   document.querySelectorAll(".layer-control-panel").forEach((panel) => panel.toggleAttribute("hidden", targetId !== "earth"));
   if (selectors.moonPanel) selectors.moonPanel.hidden = targetId !== "moon";
+  if (selectors.satellitePanel) selectors.satellitePanel.hidden = !SATELLITE_REGISTRY[targetId];
   if (selectors.solarPanel) selectors.solarPanel.hidden = targetId !== "sun";
   if (selectors.planetPanel) selectors.planetPanel.hidden = !PLANET_EPHEMERIS_TARGETS.has(targetId);
   cesiumViewer.scene.globe.show = target.bodyType !== "space";
@@ -1549,8 +1761,10 @@ async function setCelestialTarget(targetId) {
     cesiumViewer.scene.globe.enableLighting = imageryConfig.lighting;
     cesiumViewer.scene.skyAtmosphere.show = imageryConfig.atmosphereVisibility;
   }
-  const [lon, lat, altitude] = target.cameraDestination;
-  cesiumViewer.camera.flyTo({ destination: Cesium.Cartesian3.fromDegrees(lon, lat, altitude), duration: 1.2 });
+  if (!SATELLITE_TARGETS.has(targetId)) {
+    const [lon, lat, altitude] = target.cameraDestination;
+    cesiumViewer.camera.flyTo({ destination: Cesium.Cartesian3.fromDegrees(lon, lat, altitude), duration: 1.2 });
+  }
   if (targetId === "earth") {
     restoreEarthLighting();
     await setEarthImageryMode();
@@ -1559,6 +1773,7 @@ async function setCelestialTarget(targetId) {
   } else if (targetId === "moon") {
     moonImageryActive = false;
     moonNumericalActive = false;
+    renderSatelliteInformation(SATELLITE_REGISTRY.moon);
     await Promise.allSettled([loadMoonImagery(), loadMoonObservation()]);
     updateMoonStatusMessage();
   } else if (targetId === "sun") {
@@ -1567,6 +1782,8 @@ async function setCelestialTarget(targetId) {
     activeSolarObservationPayload = null;
     await loadSunObservation();
     updateSunStatusMessage();
+  } else if (SATELLITE_TARGETS.has(targetId)) {
+    renderSatellite(SATELLITE_REGISTRY[targetId]);
   } else if (PLANET_EPHEMERIS_TARGETS.has(targetId)) {
     await Promise.allSettled([loadPlanetImagery(targetId), loadPlanetObservation(targetId)]);
   }
@@ -1901,7 +2118,12 @@ async function loadSunObservation() {
 function initializeFrameworkControls() {
   selectors.solarSystemControls.forEach((control) => {
     control.setAttribute("aria-pressed", String(control.dataset.solarTarget === "earth"));
-    control.addEventListener("click", () => { void setCelestialTarget(control.dataset.solarTarget); });
+    control.addEventListener("click", () => {
+      if (control.closest("[data-celestial-system]") && !SATELLITE_REGISTRY[control.dataset.solarTarget]) {
+        toggleCelestialSystem(control);
+      }
+      void setCelestialTarget(control.dataset.solarTarget);
+    });
   });
   selectors.solarImageControls.forEach((control) => {
     control.setAttribute("aria-pressed", String(control.dataset.solarImageMode === activeSolarImageMode));

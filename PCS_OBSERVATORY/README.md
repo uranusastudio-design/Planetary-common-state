@@ -131,6 +131,40 @@ or NASA/ESA SOHO LASCO C2 observation images while retaining the NOAA SWPC
 numerical panel and JPL ephemeris. Other planetary surfaces remain previews
 with live JPL numerical ephemerides where connected.
 
+## Phase-one representative natural satellites
+
+The Observatory now includes a configuration-driven hierarchy of 11 major
+natural satellites. Moon remains the existing LROC-based feature; this phase
+adds only Phobos, Deimos, Io, Europa, Ganymede, Callisto, Titan, Enceladus,
+Titania, and Triton. Planet buttons expand compact child lists, while every
+selected satellite continues to use the existing single Cesium Viewer and its
+existing render loop.
+
+`celestial-bodies.js` is the source of truth for parent body, mean radius,
+mean orbital radius, period, inclination, eccentricity, concise science notes,
+missions, provenance, and visualization status. Physical radii are marked
+`verified`. Mean orbital elements and synchronous rotation values are marked
+`approximate`, because JPL explicitly describes its mean elements as useful for
+general orbit descriptions rather than ephemeris computation. The selected
+body's procedural surface, irregular-shape ratios, haze shell, and accelerated
+display rotation are marked `visual-only`; they are not observations, global
+scientific maps, real-time states, or orbit simulations.
+
+Numerical and science sources:
+
+- [NASA/JPL Planetary Satellite Physical Parameters](https://ssd.jpl.nasa.gov/sats/phys_par/)
+- [NASA/JPL Planetary Satellite Mean Elements](https://ssd.jpl.nasa.gov/sats/elem/)
+- [NASA Moon Facts](https://science.nasa.gov/moon/facts/)
+- [NASA Mars Moons](https://science.nasa.gov/mars/moons/facts/)
+- [NASA Jupiter Moons](https://science.nasa.gov/jupiter/moons/)
+- [NASA Saturn Moons](https://science.nasa.gov/saturn/moons/facts/)
+- [NASA Titania](https://science.nasa.gov/uranus/moons/titania/)
+- [NASA Triton](https://science.nasa.gov/neptune/moons/triton/)
+
+This phase intentionally does not include a full Solar System layout,
+real-time satellite orbit animation, Deep Space implementation, the Milky Way,
+the observable universe, or all known natural satellites.
+
 Observatory modes keep Planet as the active scale. Continent, Country, City, and Satellite View remain placeholders until regional and local data integration is available.
 
 The Timeline Framework exposes Play, Pause, Step Back, Step Forward, Speed, and Current Time Window controls. These controls do not play back data yet.
