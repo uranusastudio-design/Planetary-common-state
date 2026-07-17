@@ -146,9 +146,19 @@ missions, provenance, and visualization status. Physical radii are marked
 `verified`. Mean orbital elements and synchronous rotation values are marked
 `approximate`, because JPL explicitly describes its mean elements as useful for
 general orbit descriptions rather than ephemeris computation. The selected
-body's procedural surface, irregular-shape ratios, haze shell, and accelerated
-display rotation are marked `visual-only`; they are not observations, global
-scientific maps, real-time states, or orbit simulations.
+body's mission-derived surface image, irregular-shape ratios, Titan haze shell,
+and accelerated display rotation are marked `visual-only`. The image products
+are public NASA/JPL/USGS mission mosaics or maps, but the focused-body
+presentation is not a real-time state or orbit simulation.
+
+`mission-imagery-registry.js` is the centralized texture provenance registry.
+The ten added moons load local mission-derived JPEGs lazily; the existing Moon
+keeps its LROC-based renderer. Original source links, products, projection,
+coverage, color mode, deterministic conversion steps, and local paths are
+documented in [`assets/moons/SOURCES.md`](./assets/moons/SOURCES.md) and the
+per-body `source.json` files. Procedural textures are no longer a primary
+surface source. If a mission asset fails to load, the UI explicitly reports a
+neutral, non-scientific fallback.
 
 Numerical and science sources:
 

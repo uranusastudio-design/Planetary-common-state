@@ -1733,24 +1733,19 @@ async function createScientificSatelliteTexture(bodyConfig, options = {}) {
 }
 
 async function createSatelliteFallbackTexture(bodyConfig) {
-  const profile = bodyConfig.visualizationProfile;
   const { canvas, context } = createSatelliteCanvas(512, 256);
-  const random = seededRandom(seedFromString(`${bodyConfig.id}-fallback`));
-  const palette = profile?.palette || [bodyConfig.fallbackTexture, "#353535", "#989898"];
-  context.fillStyle = palette[0];
+  const gradient = context.createLinearGradient(0, 0, 0, canvas.height);
+  gradient.addColorStop(0, "#77797a");
+  gradient.addColorStop(0.5, "#989a9a");
+  gradient.addColorStop(1, "#686a6b");
+  context.fillStyle = gradient;
   context.fillRect(0, 0, canvas.width, canvas.height);
-  drawScientificMottling(context, canvas, { palette, mottling: 0.7 }, random, 52, [8, 62], 0.22);
-  drawScientificMottling(context, canvas, { palette, mottling: 0.7 }, random, 180, [1.5, 9], 0.14);
-  for (let index = 0; index < 22; index += 1) {
-    const radius = 2 + random() * 13;
-    drawWrappedEllipse(context, canvas, random() * canvas.width, random() * canvas.height,
-      radius, radius * 0.8, random() * Math.PI, withAlpha(palette[palette.length - 1], 0.24), "rgba(14,15,17,.34)");
-  }
-  context.drawImage(canvas, 0, 0, 2, canvas.height, canvas.width - 2, 0, 2, canvas.height);
+  context.fillStyle = "rgba(255,255,255,.06)";
+  context.fillRect(0, canvas.height * 0.34, canvas.width, canvas.height * 0.22);
   return canvasToLoadedSatelliteImage(canvas, {
     bodyId: bodyConfig.id,
     sourceType: "simplified-fallback",
-    sourceLabel: "PCS simplified scientific fallback",
+    sourceLabel: "PCS simplified non-scientific fallback",
     isFallback: true,
   });
 }
@@ -1785,7 +1780,8 @@ function loadSatelliteTextureUrl(bodyConfig, url, sourceType, sourceLabel) {
     if (new URL(url, document.baseURI).origin !== window.location.origin) image.crossOrigin = "anonymous";
     image.onload = () => resolve({
       image, bodyId: bodyConfig.id, sourceType, sourceLabel, status: "ready", isFallback: false,
-      width: image.naturalWidth, height: image.naturalHeight, dispose() { image.removeAttribute("src"); },
+      width: image.naturalWidth, height: image.naturalHeight, metadata: bodyConfig.missionImagery,
+      dispose() { image.removeAttribute("src"); },
     });
     image.onerror = () => reject(new Error(`satellite texture failed to load: ${url}`));
     image.src = new URL(url, document.baseURI).href;
@@ -1802,8 +1798,7 @@ async function getSatelliteTexture(bodyId, options = {}) {
   }
   const candidates = [
     bodyConfig.publicTextureUrl && { url: bodyConfig.publicTextureUrl, type: "public-texture", label: bodyConfig.publicTextureSource || "Public planetary imagery" },
-    bodyConfig.localTextureUrl && { url: bodyConfig.localTextureUrl, type: "local-texture", label: bodyConfig.localTextureSource || "Local public texture" },
-    bodyConfig.localVisualizationTextureUrl && { url: bodyConfig.localVisualizationTextureUrl, type: "procedural-scientific", label: "PCS repository scientific visualization texture" },
+    bodyConfig.localTextureUrl && { url: bodyConfig.localTextureUrl, type: "mission-imagery", label: bodyConfig.localTextureSource || "Mission imagery texture" },
   ].filter(Boolean);
   for (const candidate of candidates) {
     try {
@@ -1812,12 +1807,8 @@ async function getSatelliteTexture(bodyId, options = {}) {
       logSatelliteTextureWarning({ bodyId, stage: "texture-load", source: candidate.url, error, fallbackApplied: false });
     }
   }
-  try {
-    return cacheSatelliteTexture(bodyId, await createScientificSatelliteTexture(bodyConfig, options));
-  } catch (error) {
-    logSatelliteTextureWarning({ bodyId, stage: "texture-generation", source: "procedural-scientific", error, fallbackApplied: true });
-    return cacheSatelliteTexture(bodyId, await createSatelliteFallbackTexture(bodyConfig));
-  }
+  logSatelliteTextureWarning({ bodyId, stage: "fallback", source: "mission-imagery", error: "all mission imagery candidates failed", fallbackApplied: true });
+  return cacheSatelliteTexture(bodyId, await createSatelliteFallbackTexture(bodyConfig));
 }
 
 function applySatelliteTexture(target, textureResult, requestContext) {
@@ -1846,11 +1837,16 @@ async function updateSatelliteTexture(body, targetAppearance) {
   const requestContext = { generation, bodyId: body.id };
   try {
     const result = await getSatelliteTexture(body.id);
+    if (!targetAppearance) {
+      if (generation !== satelliteTextureGeneration || activeCelestialTargetId !== body.id) return null;
+      return result;
+    }
     return applySatelliteTexture(targetAppearance, result, requestContext) ? result : null;
   } catch (error) {
     if (generation !== satelliteTextureGeneration || activeCelestialTargetId !== body.id) return null;
-    logSatelliteTextureWarning({ bodyId: body.id, stage: "material-apply", source: "procedural-scientific", error, fallbackApplied: true });
+    logSatelliteTextureWarning({ bodyId: body.id, stage: "material-apply", source: "mission-imagery", error, fallbackApplied: true });
     const fallback = await createSatelliteFallbackTexture(body);
+    if (!targetAppearance) return fallback;
     if (!applySatelliteTexture(targetAppearance, fallback, requestContext)) {
       disposeSatelliteTexture(fallback);
       return null;
@@ -1862,9 +1858,9 @@ async function updateSatelliteTexture(body, targetAppearance) {
 function satelliteTexturePresentation(textureResult) {
   if (!textureResult) return { source: "Preparing texture…", type: "Loading", status: "Loading", accuracy: "Visualization-only texture" };
   if (textureResult.sourceType === "public-texture") return { source: textureResult.sourceLabel, type: "Public planetary imagery", status: "Public planetary imagery", accuracy: "Source: NASA / JPL / USGS" };
-  if (textureResult.sourceType === "local-texture") return { source: textureResult.sourceLabel, type: "Local public texture", status: "Local public texture", accuracy: "Source attribution shown above" };
-  if (textureResult.isFallback) return { source: textureResult.sourceLabel, type: "Simplified scientific fallback", status: "Texture unavailable — Using scientific fallback", accuracy: "Visualization-only texture; scientifically guided, not a complete observed global mosaic" };
-  return { source: textureResult.sourceLabel, type: "Scientific procedural approximation", status: "Visualization texture — Scientific approximation — Not a complete global observation mosaic", accuracy: "Visualization-only texture; surface colors and major visual traits are scientifically guided" };
+  if (textureResult.sourceType === "mission-imagery") return { source: textureResult.sourceLabel, type: "Mission imagery texture", status: "Mission-derived global map", accuracy: "Public planetary imagery; coverage and processing are documented below" };
+  if (textureResult.isFallback) return { source: textureResult.sourceLabel, type: "Simplified non-scientific fallback", status: "Mission imagery unavailable — Using simplified non-scientific fallback", accuracy: "Texture unavailable; no scientific surface details are represented" };
+  return { source: textureResult.sourceLabel, type: "Unknown texture source", status: "Texture source unavailable", accuracy: "Not verified" };
 }
 
 function renderSatelliteInformation(satellite, textureResult = null) {
@@ -1872,6 +1868,7 @@ function renderSatelliteInformation(satellite, textureResult = null) {
   const texturePresentation = satellite.id === "moon"
     ? { source: "NASA / USGS LROC WAC", type: "Public planetary imagery", status: satellite.visualizationStatus, accuracy: "Verified global lunar mosaic in the existing Moon renderer" }
     : satelliteTexturePresentation(textureResult);
+  const imagery = satellite.missionImagery || textureResult?.metadata || {};
   const values = {
     name: satellite.name,
     parent: parentName,
@@ -1884,16 +1881,26 @@ function renderSatelliteInformation(satellite, textureResult = null) {
     surface: satellite.surfaceAtmosphereSummary,
     missions: satellite.majorMissions.join(", "),
     visualizationSource: texturePresentation.source,
+    mission: imagery.mission,
+    instrument: imagery.instrument,
+    productId: imagery.productId,
+    projection: imagery.projection,
+    colorMode: imagery.colorMode,
+    coverage: imagery.coverage,
+    textureResolution: textureResult?.isFallback ? `${textureResult.width} × ${textureResult.height}` : imagery.deployedResolution,
+    processingStatus: imagery.processingNotes,
     textureType: texturePresentation.type,
     visualization: texturePresentation.status,
-    scientificAccuracy: satellite.visualizationProfile?.shapeAxesKm
+    scientificAccuracy: satellite.renderProfile?.shapeAxesKm
       ? `${texturePresentation.accuracy}; approximate shape visualization, not a high-resolution shape model`
       : texturePresentation.accuracy,
   };
   updateText(selectors.satelliteTitle, `${satellite.name} Observation`);
   updateText(selectors.satelliteDescription, satellite.description);
   selectors.satelliteValues.forEach((element) => {
-    element.textContent = values[element.dataset.satelliteValue] || "Unavailable";
+    const value = values[element.dataset.satelliteValue];
+    element.textContent = value || "";
+    element.closest("div")?.toggleAttribute("hidden", !value);
   });
   selectors.satelliteHighlights?.replaceChildren(...satellite.scientificHighlights.map((highlight) => {
     const item = document.createElement("li");
@@ -1908,7 +1915,7 @@ function renderSatelliteInformation(satellite, textureResult = null) {
 
 async function renderSatellite(satellite) {
   if (!cesiumViewer || !window.Cesium) return false;
-  const profile = satellite.visualizationProfile;
+  const profile = satellite.renderProfile;
   const radiusMeters = satellite.radiusKm * 1000;
   const startTime = Cesium.JulianDate.now();
   cesiumViewer.scene.globe.show = false;
@@ -1918,16 +1925,21 @@ async function renderSatellite(satellite) {
   const radii = shapeAxesMeters
     ? new Cesium.Cartesian3(...shapeAxesMeters)
     : new Cesium.Cartesian3(radiusMeters, radiusMeters, radiusMeters);
+  renderSatelliteInformation(satellite);
+  const textureResult = await updateSatelliteTexture(satellite, null);
+  if (!textureResult) return false;
   const appearance = new Cesium.MaterialAppearance({
+    material: Cesium.Material.fromType("Image", {
+      image: textureResult.image,
+      repeat: new Cesium.Cartesian2(1, 1),
+      color: Cesium.Color.WHITE,
+    }),
     materialSupport: Cesium.MaterialAppearance.MaterialSupport.TEXTURED,
     translucent: false,
     closed: true,
     flat: true,
     faceForward: true,
   });
-  renderSatelliteInformation(satellite);
-  const textureResult = await updateSatelliteTexture(satellite, appearance);
-  if (!textureResult) return false;
   const primitive = cesiumViewer.scene.primitives.add(new Cesium.Primitive({
     geometryInstances: new Cesium.GeometryInstance({
       geometry: new Cesium.EllipsoidGeometry({
@@ -1959,19 +1971,19 @@ async function renderSatellite(satellite) {
     duration: 1.2,
   });
   renderSatelliteInformation(satellite, textureResult);
-  if (profile?.haze && activeCelestialTargetId === satellite.id) {
+  if (profile?.atmosphereHaloColor && activeCelestialTargetId === satellite.id) {
     celestialSatelliteEntities.push(cesiumViewer.entities.add({
       name: `${satellite.name} dense-atmosphere visualization`,
       position: Cesium.Cartesian3.ZERO,
       ellipsoid: {
         radii: new Cesium.Cartesian3(radiusMeters * 1.035, radiusMeters * 1.035, radiusMeters * 1.035),
-        material: Cesium.Color.fromCssColorString(profile.palette[2]).withAlpha(0.13),
+        material: Cesium.Color.fromCssColorString(profile.atmosphereHaloColor).withAlpha(0.13),
       },
     }));
   }
   updateText(selectors.solarSystemStatus,
     `${satellite.name} visualization active. ${textureResult.sourceLabel}; ${textureResult.width} × ${textureResult.height}. Physical radius is verified and inter-body distance is not rendered to scale.`);
-  showObservatoryMessage(`${satellite.name} texture ready — ${textureResult.isFallback ? "scientific fallback" : "scientific procedural approximation"}.`);
+  showObservatoryMessage(`${satellite.name} texture ready — ${textureResult.isFallback ? "simplified non-scientific fallback" : "mission imagery"}.`);
   cesiumViewer.scene.requestRender();
   return true;
 }

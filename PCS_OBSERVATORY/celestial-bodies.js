@@ -226,6 +226,37 @@
     },
   ];
 
+  const missionImageryRegistry = global.PCSMissionImageryRegistry || {};
+  if (Object.keys(missionImageryRegistry).length !== 11) {
+    throw new Error("PCS mission imagery registry must load before the satellite registry");
+  }
+  const renderProfiles = Object.freeze({
+    phobos: Object.freeze({ shapeAxesKm: Object.freeze([13.5, 11, 9]) }),
+    deimos: Object.freeze({ shapeAxesKm: Object.freeze([7.5, 6, 5.5]) }),
+    titan: Object.freeze({ atmosphereHaloColor: "#d98a45" }),
+  });
+
+  bodies.forEach((body) => {
+    const imagery = missionImageryRegistry[body.id];
+    if (!imagery) throw new Error(`Missing mission imagery registry entry: ${body.id}`);
+    body.missionImagery = imagery;
+    if (body.id === "moon") return;
+    body.texture = imagery.textureType;
+    body.textureProvider = Object.freeze({
+      type: "mission-imagery",
+      sourceLabel: imagery.credit,
+    });
+    body.localTextureUrl = imagery.localPath;
+    body.localTextureSource = imagery.credit;
+    body.fallbackTexture = "#77797a";
+    body.fallbackTextureLabel = "neutral non-scientific fallback";
+    body.material = "Cesium image material using local mission-derived texture";
+    body.renderProfile = renderProfiles[body.id] || Object.freeze({});
+    body.visualizationStatus = `${imagery.textureType}; ${imagery.coverage}; not an inter-body distance model`;
+    delete body.localVisualizationTextureUrl;
+    delete body.visualizationProfile;
+  });
+
   const registry = Object.freeze(Object.fromEntries(bodies.map((body) => [body.id, Object.freeze(body)])));
   const hierarchy = Object.freeze({
     earth: Object.freeze(["moon"]), mars: Object.freeze(["phobos", "deimos"]),

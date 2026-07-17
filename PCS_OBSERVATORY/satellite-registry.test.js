@@ -6,8 +6,12 @@ const vm = require("node:vm");
 function loadRegistry() {
   const context = { window: {} };
   vm.createContext(context);
+  vm.runInContext(fs.readFileSync(`${__dirname}/mission-imagery-registry.js`, "utf8"), context);
   vm.runInContext(fs.readFileSync(`${__dirname}/celestial-bodies.js`, "utf8"), context);
-  return context.window.PCSSatelliteRegistry;
+  return {
+    ...context.window.PCSSatelliteRegistry,
+    imagery: context.window.PCSMissionImageryRegistry,
+  };
 }
 
 test("phase-one registry contains exactly Moon and the ten requested satellites", () => {
@@ -50,18 +54,40 @@ test("planet-to-satellite hierarchy matches phase-one scope", () => {
   });
 });
 
-test("every phase-one procedural satellite has a configuration-driven texture profile", () => {
-  const { bodies } = loadRegistry();
+test("every phase-one satellite has centralized verified mission imagery provenance", () => {
+  const { bodies, imagery } = loadRegistry();
+  assert.equal(Object.keys(imagery).length, 11);
   for (const body of Object.values(bodies)) {
+    const source = imagery[body.id];
+    assert.ok(source, `${body.id} mission imagery registry entry`);
+    assert.equal(source.verified, true, `${body.id} provenance verified`);
+    assert.match(source.sourcePage, /^https:\/\/(science\.nasa\.gov|astrogeology\.usgs\.gov)\//);
     if (body.id === "moon") {
       assert.equal(body.textureProvider, "existing-moon-renderer");
       continue;
     }
-    assert.equal(body.textureProvider.type, "procedural-scientific", `${body.id} provider`);
-    assert.ok(body.visualizationProfile, `${body.id} visualization profile`);
-    assert.ok(body.visualizationProfile.seed, `${body.id} deterministic seed`);
-    assert.ok(body.visualizationProfile.palette.length >= 3, `${body.id} scientific palette`);
+    assert.equal(body.textureProvider.type, "mission-imagery", `${body.id} provider`);
+    assert.equal(body.localTextureUrl, source.localPath);
+    assert.equal(body.localVisualizationTextureUrl, undefined, `${body.id} has no procedural primary texture`);
+    const localAsset = `${__dirname}/${source.localPath.replace(/^\.\//, "")}`;
+    assert.equal(fs.existsSync(localAsset), true, `${body.id} deployed texture exists`);
+    const metadata = JSON.parse(fs.readFileSync(`${__dirname}/assets/moons/${body.id}/source.json`, "utf8"));
+    for (const field of ["agency", "mission", "instrument", "productId", "sourcePage", "sourceAsset", "credit", "projection", "colorMode", "coverage", "originalResolution", "deployedResolution", "processing", "accessDate"]) {
+      assert.ok(metadata[field], `${body.id} source.json ${field}`);
+    }
   }
-  assert.deepEqual(Array.from(bodies.phobos.visualizationProfile.shapeAxesKm), [13.5, 11, 9]);
-  assert.deepEqual(Array.from(bodies.deimos.visualizationProfile.shapeAxesKm), [7.5, 6, 5.5]);
+  assert.deepEqual(Array.from(bodies.phobos.renderProfile.shapeAxesKm), [13.5, 11, 9]);
+  assert.deepEqual(Array.from(bodies.deimos.renderProfile.shapeAxesKm), [7.5, 6, 5.5]);
+});
+
+test("runtime texture selection cannot use the retired procedural primary path", () => {
+  const appSource = fs.readFileSync(`${__dirname}/app.js`, "utf8");
+  const providerBody = appSource.slice(
+    appSource.indexOf("async function getSatelliteTexture"),
+    appSource.indexOf("function applySatelliteTexture"),
+  );
+  assert.doesNotMatch(providerBody, /createScientificSatelliteTexture|localVisualizationTextureUrl|procedural-scientific/);
+  for (const bodyId of ["phobos", "deimos", "io", "europa", "ganymede", "callisto", "titan", "enceladus", "titania", "triton"]) {
+    assert.equal(fs.existsSync(`${__dirname}/assets/moons/${bodyId}-scientific.svg`), false, `${bodyId} retired SVG removed`);
+  }
 });
