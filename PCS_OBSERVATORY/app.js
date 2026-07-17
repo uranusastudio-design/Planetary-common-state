@@ -200,6 +200,8 @@ let sunVisualizationTextureUrl = null;
 let planetImageryRequestController = null;
 let planetImageryRequestId = 0;
 const planetImageryCache = new Map();
+const celestialImageCache = new Map();
+const MAX_CELESTIAL_IMAGE_CACHE_ENTRIES = 6;
 let earthPcsReference = null;
 let moonImageryActive = false;
 let moonNumericalActive = false;
@@ -758,25 +760,104 @@ function renderPlanetImageryMetadata(config, result = null, unavailable = false)
 function showPlanetImageryFallback(targetId) {
   const config = PLANET_IMAGERY_CONFIG[targetId];
   if (!config || !cesiumViewer) return;
+  const fallbackMessage = targetId === "mercury" ? "Mercury imagery unavailable" : config.fallbackMessage;
   clearCelestialScene();
   cesiumViewer.scene.globe.show = true;
-  cesiumViewer.scene.globe.baseColor = Cesium.Color.fromCssColorString(config.fallbackColor);
+  cesiumViewer.scene.globe.baseColor = Cesium.Color.fromCssColorString(targetId === "mercury" ? "#777777" : config.fallbackColor);
   renderPlanetaryRings(config);
   renderPlanetImageryMetadata(config, null, true);
-  updateText(selectors.planetImageryStatus, config.fallbackMessage);
-  updateText(selectors.solarSystemStatus, config.fallbackMessage);
-  showObservatoryMessage(config.fallbackMessage, "warning");
+  updateText(selectors.planetImageryStatus, fallbackMessage);
+  updateText(selectors.solarSystemStatus, fallbackMessage);
+  showObservatoryMessage(fallbackMessage, "warning");
 }
 
 function preloadPlanetImage(url) {
-  return new Promise((resolve, reject) => {
+  const cached = celestialImageCache.get(url);
+  if (cached) {
+    cached.lastUsed = Date.now();
+    return cached.promise;
+  }
+  const entry = { lastUsed: Date.now(), promise: null };
+  entry.promise = new Promise((resolve, reject) => {
     const image = new Image();
     image.decoding = "async";
     image.crossOrigin = "anonymous";
-    image.onload = () => resolve(image);
-    image.onerror = () => reject(new Error("planet image failed to load"));
+    image.onload = () => {
+      entry.lastUsed = Date.now();
+      resolve(image);
+    };
+    image.onerror = () => {
+      celestialImageCache.delete(url);
+      reject(new Error("planet image failed to load"));
+    };
     image.src = url;
   });
+  celestialImageCache.set(url, entry);
+  trimCelestialImageCache(url);
+  return entry.promise;
+}
+
+function trimCelestialImageCache(protectedKey) {
+  if (celestialImageCache.size > MAX_CELESTIAL_IMAGE_CACHE_ENTRIES) {
+    const removable = [...celestialImageCache.entries()]
+      .filter(([key]) => key !== protectedKey)
+      .sort((left, right) => left[1].lastUsed - right[1].lastUsed)[0];
+    if (removable) celestialImageCache.delete(removable[0]);
+  }
+}
+
+function maximumSafeCelestialTextureWidth() {
+  const canvas = cesiumViewer?.scene?.canvas;
+  const webgl = canvas?.getContext("webgl2") || canvas?.getContext("webgl");
+  const rendererLimit = webgl ? Number(webgl.getParameter(webgl.MAX_TEXTURE_SIZE)) : 2048;
+  const deviceMemory = Number(navigator.deviceMemory) || 4;
+  const mobile = window.matchMedia("(max-width: 820px)").matches;
+  const memoryLimit = mobile || deviceMemory <= 2 ? 2048 : deviceMemory <= 4 ? 4096 : 8192;
+  return Math.min(rendererLimit, memoryLimit, 8192);
+}
+
+function loadCelestialTextureVariant(variant) {
+  if (variant.image_url) return preloadPlanetImage(variant.image_url);
+  if (variant.assembly !== "horizontal" || !Array.isArray(variant.tile_urls) || variant.tile_urls.length < 2) {
+    return Promise.reject(new Error("unsupported celestial texture assembly"));
+  }
+  const cacheKey = `horizontal:${variant.tile_urls.join("|")}`;
+  const cached = celestialImageCache.get(cacheKey);
+  if (cached) {
+    cached.lastUsed = Date.now();
+    return cached.promise;
+  }
+  const entry = { lastUsed: Date.now(), promise: null };
+  entry.promise = Promise.all(variant.tile_urls.map(preloadPlanetImage)).then((tiles) => {
+    const canvas = document.createElement("canvas");
+    canvas.width = variant.width;
+    canvas.height = variant.height;
+    const context = canvas.getContext("2d", { alpha: false });
+    const tileWidth = variant.width / tiles.length;
+    tiles.forEach((tile, index) => context.drawImage(tile, index * tileWidth, 0, tileWidth, variant.height));
+    entry.lastUsed = Date.now();
+    return canvas;
+  }).catch((error) => {
+    celestialImageCache.delete(cacheKey);
+    throw error;
+  });
+  celestialImageCache.set(cacheKey, entry);
+  trimCelestialImageCache(cacheKey);
+  return entry.promise;
+}
+
+function selectCelestialTextureSequence(metadata) {
+  const variants = Array.isArray(metadata.texture_variants)
+    ? metadata.texture_variants
+      .filter((variant) => Number.isFinite(Number(variant.width))
+        && (variant.image_url || (variant.assembly === "horizontal" && variant.tile_urls?.length)))
+      .sort((left, right) => left.width - right.width)
+    : [];
+  if (!variants.length) return [{ image_url: metadata.image_url, width: null, height: null, quality: "native" }];
+  const preview = variants[0];
+  const safeWidth = maximumSafeCelestialTextureWidth();
+  const full = variants.filter((variant) => variant.width <= safeWidth).at(-1) || preview;
+  return full.width === preview.width ? [preview] : [preview, full];
 }
 
 function selectPrimaryObservationProduct(bodyId, preferredMode = null) {
@@ -853,11 +934,13 @@ function renderObservationDisc(config, image, metadata) {
   return true;
 }
 
-async function validateCelestialTexture(config, metadata) {
-  const image = await preloadPlanetImage(metadata.image_url);
+async function validateCelestialTexture(config, metadata, preloadedImage = null) {
+  const image = preloadedImage || await preloadPlanetImage(metadata.image_url);
   const projection = String(metadata.projection || config.projection || "").toLowerCase();
   const globalProjection = ["equirectangular", "simple_cylindrical", "simple cylindrical"].includes(projection);
-  const aspectRatio = image.naturalWidth / image.naturalHeight;
+  const textureWidth = image.naturalWidth || image.width;
+  const textureHeight = image.naturalHeight || image.height;
+  const aspectRatio = textureWidth / textureHeight;
   if (config.renderMode === "globe-texture" && !globalProjection) {
     return { valid: false, reason: "unsupported projection", image, aspectRatio };
   }
@@ -947,6 +1030,23 @@ function createSeamSafeGlobalTexture(image, blendColumns = 2) {
 }
 
 async function renderGlobalBodyTexture(config, metadata, image, requestId) {
+  if (metadata.use_preloaded_image) {
+    if (requestId !== planetImageryRequestId || activeCelestialTargetId !== config.id) return false;
+    cesiumViewer.scene.globe.show = false;
+    celestialDiscEntity = cesiumViewer.entities.add({
+      name: `${config.displayName} validated global texture`,
+      position: Cesium.Cartesian3.ZERO,
+      ellipsoid: {
+        radii: Cesium.Ellipsoid.WGS84.radii,
+        material: new Cesium.ImageMaterialProperty({ image, transparent: false }),
+        outline: false,
+      },
+    });
+    const width = image.naturalWidth || image.width;
+    const height = image.naturalHeight || image.height;
+    updateText(selectors.planetImageryStatus, `Validated ${width} x ${height} 2:1 global texture active.`);
+    return true;
+  }
   if (config.seamBlendColumns) {
     const textureCanvas = createSeamSafeGlobalTexture(image, config.seamBlendColumns);
     if (requestId !== planetImageryRequestId || activeCelestialTargetId !== config.id) return false;
@@ -983,6 +1083,19 @@ async function renderGlobalBodyTexture(config, metadata, image, requestId) {
   return true;
 }
 
+function releaseActiveCelestialTexture() {
+  celestialImageryErrorUnsubscribe?.();
+  celestialImageryErrorUnsubscribe = null;
+  if (celestialImageryLayer && cesiumViewer && !cesiumViewer.isDestroyed()) {
+    cesiumViewer.imageryLayers.remove(celestialImageryLayer, true);
+  }
+  celestialImageryLayer = null;
+  if (celestialDiscEntity && cesiumViewer && !cesiumViewer.isDestroyed()) {
+    cesiumViewer.entities.remove(celestialDiscEntity);
+  }
+  celestialDiscEntity = null;
+}
+
 function renderScientificPreview(config, metadata, image) {
   cesiumViewer.scene.globe.show = true;
   cesiumViewer.scene.globe.baseColor = Cesium.Color.fromCssColorString(config.fallbackColor);
@@ -1000,8 +1113,8 @@ function renderScientificPreview(config, metadata, image) {
   return true;
 }
 
-async function applyPlanetTexture(config, metadata, requestId) {
-  const validation = await validateCelestialTexture(config, metadata);
+async function applyPlanetTexture(config, metadata, requestId, preloadedImage = null) {
+  const validation = await validateCelestialTexture(config, metadata, preloadedImage);
   if (requestId !== planetImageryRequestId || activeCelestialTargetId !== config.id) return false;
   if (!validation.valid) {
     updateText(selectors.planetImageryStatus, validation.reason);
@@ -1047,9 +1160,40 @@ async function loadPlanetImagery(targetId) {
       planetImageryCache.set(targetId, metadata);
     }
     if (requestId !== planetImageryRequestId || activeCelestialTargetId !== targetId) return false;
-    const applied = await applyPlanetTexture(config, metadata, requestId);
+    const textureSequence = selectCelestialTextureSequence(metadata);
+    const previewTexture = textureSequence[0];
+    const usesProgressiveTextures = Array.isArray(metadata.texture_variants);
+    const previewMetadata = {
+      ...metadata,
+      image_url: previewTexture.image_url || metadata.image_url,
+      use_preloaded_image: usesProgressiveTextures,
+    };
+    const previewImage = await loadCelestialTextureVariant(previewTexture);
+    const applied = await applyPlanetTexture(config, previewMetadata, requestId, previewImage);
     if (!applied) return false;
     renderPlanetImageryMetadata(config, metadata);
+    const fullTexture = textureSequence[1];
+    if (fullTexture && requestId === planetImageryRequestId && activeCelestialTargetId === targetId) {
+      updateText(selectors.planetImageryStatus,
+        `${previewTexture.width} x ${previewTexture.height} preview active; loading ${fullTexture.width} x ${fullTexture.height} texture…`);
+      try {
+        const fullImage = await loadCelestialTextureVariant(fullTexture);
+        if (requestId === planetImageryRequestId && activeCelestialTargetId === targetId) {
+          releaseActiveCelestialTexture();
+          await applyPlanetTexture(config, {
+            ...metadata,
+            image_url: fullTexture.image_url || metadata.image_url,
+            use_preloaded_image: true,
+          }, requestId, fullImage);
+        }
+      } catch {
+        if (requestId === planetImageryRequestId && activeCelestialTargetId === targetId && !celestialImageryLayer && !celestialDiscEntity) {
+          await applyPlanetTexture(config, previewMetadata, requestId, previewImage);
+        }
+        updateText(selectors.planetImageryStatus,
+          `${previewTexture.width} x ${previewTexture.height} validated texture active; higher-resolution texture unavailable.`);
+      }
+    }
     if (config.renderMode !== "observation-disc") {
       updateText(selectors.solarSystemStatus, `${config.statusLabel} active. JPL numerical observations remain separate.`);
     }

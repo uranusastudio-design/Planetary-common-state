@@ -11,6 +11,11 @@ const OFFICIAL_IMAGE_HOSTS = new Set([
   "assets.science.nasa.gov",
 ]);
 const LUNAR_IMAGE_URL = "https://planetarymaps.usgs.gov/cgi-bin/mapserv?map=/maps/earth/moon_simp_cyl.map&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&LAYERS=LROC_WAC&STYLES=&SRS=EPSG:4326&BBOX=0,-90,360,90&WIDTH=2048&HEIGHT=1024&FORMAT=image/png";
+const MERCURY_MESSENGER_WMS = "https://planetarymaps.usgs.gov/cgi-bin/mapserv?map=/maps/mercury/mercury_simp_cyl.map&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&LAYERS=MESSENGER_May2013&STYLES=&SRS=EPSG:4326&FORMAT=image/jpeg";
+
+function mercuryTextureUrl(width, height = width / 2, bbox = "0,-90,360,90") {
+  return `${MERCURY_MESSENGER_WMS}&BBOX=${bbox}&WIDTH=${width}&HEIGHT=${height}`;
+}
 
 export const SOLAR_IMAGE_MODES = Object.freeze({
   "hmi-continuum": {
@@ -63,16 +68,28 @@ export const PLANET_IMAGE_PRODUCTS = Object.freeze({
     product: "Mercury MESSENGER MDIS Global Mosaic 250m",
     productType: "global_mosaic", projection: "equirectangular",
     observedAt: null, productDate: "2013-05-01",
-    sourceUrl: "https://astrogeology.usgs.gov/ckan/dataset/279e5d50-ff2f-4250-bde3-bb510096079e/resource/2b5865c2-bd0d-4962-bdb0-c12f0502def1/download/mercury_messenger_mosaic_global_1024.jpg",
+    sourceUrl: mercuryTextureUrl(2048),
+    textureVariants: Object.freeze([
+      { width: 2048, height: 1024, sourceUrl: mercuryTextureUrl(2048), quality: "preview" },
+      { width: 4096, height: 2048, sourceUrl: mercuryTextureUrl(4096), quality: "full" },
+      { width: 8192, height: 4096, sourceUrls: Object.freeze([
+        mercuryTextureUrl(4096, 4096, "0,-90,180,90"),
+        mercuryTextureUrl(4096, 4096, "180,-90,360,90"),
+      ]), quality: "full", assembly: "horizontal" },
+    ]),
+    sourceWidth: 61324, sourceHeight: 30662,
+    masterSourceUrl: "https://planetarymaps.usgs.gov/mosaic/Mercury_MESSENGER_mosaic_global_250m_2013.tif",
     catalogUrl: "https://astrogeology.usgs.gov/search/map/mercury_messenger_mdis_global_mosaic_250m",
-    attribution: "NASA MESSENGER / USGS Astrogeology Science Center",
-    notes: "Mission-derived global surface mosaic; not a live observation.", cacheSeconds: 604800,
+    attribution: "NASA MESSENGER MDIS / Arizona State University / MESSENGER Team / USGS Astrogeology Science Center",
+    notes: "May 2013 mission-derived monochrome global mosaic from MDIS NAC and WAC 750-nm imagery; browser textures are WMS derivatives of the 61,324 x 30,662 source, not upscaled browse imagery.",
+    version: "mercury-mdis-may2013-1", cacheSeconds: 604800,
   },
   venus: {
     source: "NASA / USGS Astrogeology", mission: "Magellan", instrument: "SAR / GEDR",
     product: "Venus Magellan Global C3-MDIR Colorized Topographic Mosaic 6600m",
     productType: "radar_topography_map", projection: "equirectangular",
     observedAt: null, productDate: null,
+    sourceWidth: 1024, sourceHeight: 512,
     sourceUrl: "https://astrogeology.usgs.gov/ckan/dataset/f992cb3c-4f37-4e1a-a59d-4f29d8307d7d/resource/d97f7bf8-73da-46fe-9edb-95c9ad233b10/download/venus_magellan_c3-mdir_clrtopo_global_mosaic_1024.jpg",
     catalogUrl: "https://astrogeology.usgs.gov/search/map/venus_magellan_global_c3_mdir_colorized_topographic_mosaic_6600m",
     attribution: "NASA Magellan / PDS Geosciences Node / USGS Astrogeology",
@@ -84,6 +101,7 @@ export const PLANET_IMAGE_PRODUCTS = Object.freeze({
     product: "Mars Viking Global Color Mosaic 925m",
     productType: "global_mosaic", projection: "simple_cylindrical",
     observedAt: null, productDate: null,
+    sourceWidth: 1024, sourceHeight: 512,
     sourceUrl: "https://astrogeology.usgs.gov/ckan/dataset/dfdc2242-52dc-4126-bc89-03af8253ae79/resource/0d7b31dc-0b2e-4ca6-89dc-e3c1404c0232/download/mars_viking_clrmosaic_global_1024.jpg",
     catalogUrl: "https://astrogeology.usgs.gov/search/map/mars_viking_global_color_mosaic_925m",
     attribution: "NASA Viking Orbiter / USGS Astrogeology Science Center",
@@ -94,6 +112,7 @@ export const PLANET_IMAGE_PRODUCTS = Object.freeze({
     product: "PIA02873 High Resolution Globe of Jupiter",
     productType: "observation_disc", projection: "observation_disc",
     observedAt: "2000-12-07T00:00:00.000Z", productDate: "2001-01-30",
+    sourceWidth: 1920, sourceHeight: 1080,
     sourceUrl: "https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/pia02/pia02873/PIA02873.jpg",
     catalogUrl: "https://photojournal.jpl.nasa.gov/catalog/PIA02873",
     attribution: "NASA/JPL/University of Arizona",
@@ -104,6 +123,7 @@ export const PLANET_IMAGE_PRODUCTS = Object.freeze({
     product: "PIA05389 Saturn and its Rings",
     productType: "observation_disc", projection: "observation_disc",
     observedAt: "2004-03-27T00:00:00.000Z", productDate: null,
+    sourceWidth: 1024, sourceHeight: 1024,
     sourceUrl: "https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/pia05/pia05389/PIA05389.jpg",
     catalogUrl: "https://photojournal.jpl.nasa.gov/catalog/PIA05389",
     attribution: "NASA/JPL/Space Science Institute",
@@ -114,6 +134,7 @@ export const PLANET_IMAGE_PRODUCTS = Object.freeze({
     product: "PIA00143 Uranus - Final Image",
     productType: "observation_disc", projection: "observation_disc",
     observedAt: "1986-01-25T00:00:00.000Z", productDate: "1996-01-29",
+    sourceWidth: 794, sourceHeight: 960,
     sourceUrl: "https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/pia00/pia00143/PIA00143.jpg",
     catalogUrl: "https://photojournal.jpl.nasa.gov/catalog/PIA00143",
     attribution: "NASA/JPL",
@@ -124,6 +145,7 @@ export const PLANET_IMAGE_PRODUCTS = Object.freeze({
     product: "PIA00046 Neptune Full Disk",
     productType: "observation_disc", projection: "observation_disc",
     observedAt: null, productDate: "1996-01-29",
+    sourceWidth: 1000, sourceHeight: 1000,
     sourceUrl: "https://assets.science.nasa.gov/content/dam/science/psd/photojournal/pia/pia00/pia00046/PIA00046.jpg",
     catalogUrl: "https://photojournal.jpl.nasa.gov/catalog/PIA00046",
     attribution: "NASA/JPL",
@@ -813,11 +835,20 @@ async function lunarImage(request, ctx) {
   }
 }
 
-function planetPublicImageUrl(request, body) {
+function planetTextureVariant(config, requestedWidth = null) {
+  if (!config.textureVariants?.length) return null;
+  const width = Number(requestedWidth);
+  return config.textureVariants.find((variant) => variant.width === width)
+    || config.textureVariants[0];
+}
+
+function planetPublicImageUrl(request, body, width = null, part = null) {
   const url = new URL(`/api/astronomy/planet-image/${body}`, new URL(request.url).origin);
   url.searchParams.set("format", "image");
   const version = PLANET_IMAGE_PRODUCTS[body]?.version;
   if (version) url.searchParams.set("v", version);
+  if (width) url.searchParams.set("width", String(width));
+  if (part !== null) url.searchParams.set("part", String(part));
   return url.toString();
 }
 
@@ -828,30 +859,38 @@ function assertAllowedPlanetSource(sourceUrl) {
   }
 }
 
-function planetImageCacheKey(request, body, stale = false) {
-  const url = new URL(planetPublicImageUrl(request, body));
-  url.searchParams.set("source", PLANET_IMAGE_PRODUCTS[body]?.sourceUrl || "unknown");
+function planetImageCacheKey(request, body, config, sourceUrl, width = null, part = null, stale = false) {
+  const url = new URL(planetPublicImageUrl(request, body, width, part));
+  url.searchParams.set("source", sourceUrl || config.sourceUrl || "unknown");
   if (stale) url.searchParams.set("cache", "last-valid");
   return new Request(url);
 }
 
-async function cachePlanetImage(request, ctx, body, config, image) {
+async function cachePlanetImage(request, ctx, body, config, sourceUrl, width, part, image) {
   const headers = { "x-pcs-image-status": "validated", "x-pcs-image-source": body };
   const fresh = officialImageResponse(image, config.cacheSeconds, headers);
   const stale = officialImageResponse(image, PLANET_IMAGE_STALE_SECONDS, { ...headers, "x-pcs-image-status": "last-valid" });
   ctx.waitUntil(Promise.all([
-    caches.default.put(planetImageCacheKey(request, body), fresh),
-    caches.default.put(planetImageCacheKey(request, body, true), stale),
+    caches.default.put(planetImageCacheKey(request, body, config, sourceUrl, width, part), fresh),
+    caches.default.put(planetImageCacheKey(request, body, config, sourceUrl, width, part, true), stale),
   ]));
 }
 
 async function validatedPlanetImage(request, ctx, body, config) {
-  const fresh = await caches.default.match(planetImageCacheKey(request, body));
+  const requestedWidth = new URL(request.url).searchParams.get("width");
+  const requestedPart = new URL(request.url).searchParams.get("part");
+  const variant = planetTextureVariant(config, requestedWidth);
+  const part = variant?.sourceUrls
+    ? Math.max(0, Math.min(Number(requestedPart) || 0, variant.sourceUrls.length - 1))
+    : null;
+  const sourceUrl = variant?.sourceUrls?.[part] || variant?.sourceUrl || config.sourceUrl;
+  const width = variant?.width || null;
+  const fresh = await caches.default.match(planetImageCacheKey(request, body, config, sourceUrl, width, part));
   if (fresh) return { response: fresh, status: "archival" };
-  assertAllowedPlanetSource(config.sourceUrl);
+  assertAllowedPlanetSource(sourceUrl);
   try {
-    const image = await fetchOfficialImage(config.sourceUrl, 15000);
-    await cachePlanetImage(request, ctx, body, config, image);
+    const image = await fetchOfficialImage(sourceUrl, 30000);
+    await cachePlanetImage(request, ctx, body, config, sourceUrl, width, part, image);
     return {
       response: officialImageResponse(image, config.cacheSeconds, {
         "x-pcs-image-status": "validated", "x-pcs-image-source": body,
@@ -859,7 +898,7 @@ async function validatedPlanetImage(request, ctx, body, config) {
       status: "archival",
     };
   } catch (error) {
-    const stale = await caches.default.match(planetImageCacheKey(request, body, true));
+    const stale = await caches.default.match(planetImageCacheKey(request, body, config, sourceUrl, width, part, true));
     if (stale) {
       const headers = new Headers(stale.headers);
       headers.set("x-pcs-image-status", "stale");
@@ -871,6 +910,14 @@ async function validatedPlanetImage(request, ctx, body, config) {
 }
 
 function planetMetadataPayload(request, body, config, status = "archival") {
+  const textureVariants = config.textureVariants?.map(({ width, height, quality, sourceUrls, assembly }) => ({
+    width,
+    height,
+    quality,
+    image_url: sourceUrls ? null : planetPublicImageUrl(request, body, width),
+    tile_urls: sourceUrls?.map((sourceUrl, part) => planetPublicImageUrl(request, body, width, part)) || null,
+    assembly: assembly || null,
+  })) || null;
   return {
     success: true,
     body,
@@ -885,10 +932,14 @@ function planetMetadataPayload(request, body, config, status = "archival") {
     retrieved_at: new Date().toISOString(),
     status,
     image_url: planetPublicImageUrl(request, body),
-    thumbnail_url: null,
+    thumbnail_url: textureVariants?.[0]?.image_url || null,
+    texture_variants: textureVariants,
+    source_texture_resolution: config.sourceWidth && config.sourceHeight
+      ? { width: config.sourceWidth, height: config.sourceHeight }
+      : null,
     attribution: config.attribution,
     notes: config.notes ?? null,
-    source_image_url: config.sourceUrl,
+    source_image_url: config.masterSourceUrl || config.sourceUrl,
     catalog_url: config.catalogUrl,
     texture_version: config.version ?? null,
   };

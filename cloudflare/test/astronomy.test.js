@@ -174,10 +174,47 @@ test("Planet image route validates every fixed official product and normalizes m
     expectedImageUrl.searchParams.set("format", "image");
     if (config.version) expectedImageUrl.searchParams.set("v", config.version);
     assert.equal(payload.image_url, expectedImageUrl.toString(), body);
-    assert.equal(payload.thumbnail_url, null, body);
+    if (config.textureVariants) {
+      assert.equal(payload.thumbnail_url, payload.texture_variants[0].image_url, body);
+      assert.deepEqual(payload.source_texture_resolution, {
+        width: config.sourceWidth,
+        height: config.sourceHeight,
+      }, body);
+    } else {
+      assert.equal(payload.thumbnail_url, null, body);
+    }
     assert.match(config.sourceUrl, /^https:\/\/(astrogeology\.usgs\.gov|planetarymaps\.usgs\.gov|photojournal\.jpl\.nasa\.gov|assets\.science\.nasa\.gov)\//, body);
     assert.equal(requested.at(-1), config.sourceUrl, body);
   }
+});
+
+test("Mercury exposes only official May 2013 MESSENGER progressive textures", async (t) => {
+  const mercury = PLANET_IMAGE_PRODUCTS.mercury;
+  assert.equal(mercury.version, "mercury-mdis-may2013-1");
+  assert.match(mercury.masterSourceUrl, /Mercury_MESSENGER_mosaic_global_250m_2013\.tif$/);
+  assert.deepEqual(mercury.textureVariants.map(({ width, height }) => [width, height]), [
+    [2048, 1024], [4096, 2048], [8192, 4096],
+  ]);
+  mercury.textureVariants.forEach((variant) => {
+    const urls = variant.sourceUrls || [variant.sourceUrl];
+    urls.forEach((url) => {
+      assert.match(url, /LAYERS=MESSENGER_May2013/);
+      assert.doesNotMatch(url, /moon|lroc|mariner/i);
+    });
+  });
+  assert.equal(mercury.textureVariants[2].assembly, "horizontal");
+  assert.equal(mercury.textureVariants[2].sourceUrls.length, 2);
+
+  const originalFetch = globalThis.fetch;
+  t.after(() => { globalThis.fetch = originalFetch; });
+  let requested = null;
+  globalThis.fetch = async (url) => { requested = String(url); return jpegResponse(); };
+  const { env, ctx } = memoryEnvironment();
+  const response = await handleAstronomyRequest(new Request(
+    "https://worker.test/api/astronomy/planet-image/mercury?format=image&width=8192",
+  ), env, ctx);
+  assert.equal(response.status, 200);
+  assert.equal(requested, mercury.textureVariants[2].sourceUrls[0]);
 });
 
 test("Venus uses the versioned globe-safe USGS topographic browse mosaic", () => {
