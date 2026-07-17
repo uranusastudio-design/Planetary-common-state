@@ -1,6 +1,8 @@
 import { handleNasaRequest, NASA_DATASET_ROUTES } from "./nasa/routes.ts";
 import { handleAstronomyRequest, ASTRONOMY_ROUTES } from "./astronomy.js";
 import { handleVisitorRequest, VISITOR_ROUTES } from "./visitors.js";
+import { handlePcsRequest, PCS_ROUTES } from "./pcs/routes.js";
+import { runScheduledJobs } from "./pcs/jobs.js";
 
 const DATASETS = [
   {
@@ -106,6 +108,10 @@ const OPENWEATHER_LAYERS = {
   clouds: "clouds_new",
   rain: "precipitation_new",
   temperature: "temp_new",
+  // Backward-compatible alias for PCS clients deployed before the route and
+  // UI layer identifiers were aligned. Both resolve to the documented
+  // OpenWeather Weather Maps 1.0 temperature product.
+  temp: "temp_new",
   wind: "wind_new"
 };
 
@@ -133,7 +139,7 @@ async function openWeatherHealth(env) {
   }
 
   const testUrl =
-    `https://tile.openweathermap.org/map/${OPENWEATHER_LAYERS.clouds}/1/1/1.png?appid=${apiKey}`;
+    `https://tile.openweathermap.org/map/${OPENWEATHER_LAYERS.temperature}/1/1/1.png?appid=${apiKey}`;
 
   try {
     const response = await fetch(testUrl);
@@ -394,6 +400,12 @@ export default {
     if (url.pathname.startsWith("/api/visitors/")) {
       return handleVisitorRequest(request, env, ctx);
     }
+    if (PCS_ROUTES.includes(url.pathname)
+      || url.pathname.startsWith("/api/events/")
+      || url.pathname.startsWith("/api/evidence-ledger/")
+      || url.pathname.startsWith("/api/admin/")) {
+      return handlePcsRequest(request, env, ctx);
+    }
 
     if (url.pathname === "/health/openweather") {
       return json(await openWeatherHealth(env));
@@ -477,5 +489,8 @@ export default {
   d1: !!env.PCS_DB,
   kv: !!env.PCS_CACHE
 });
-}
+  },
+  async scheduled(controller, env, ctx) {
+    ctx.waitUntil(runScheduledJobs(env, controller.cron));
+  }
 };    

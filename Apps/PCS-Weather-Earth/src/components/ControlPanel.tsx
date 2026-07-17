@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import LayerSelector from './LayerSelector';
 import GlobalObservatoryNetwork from './GlobalObservatoryNetwork';
-import { SUBSYSTEMS } from '../config/subsystems';
+import PcsPanels from './PcsPanels';
+import { PCS_BACKEND_URL } from '../config/weatherLayers';
+import { detectedLanguage, translate, type Language } from '../i18n';
 import type { VisitorAnalytics } from '../types/observatory';
 import type { WeatherDebugInfo, WeatherLayerId } from '../types/weather';
 
@@ -18,8 +20,7 @@ interface ControlPanelProps {
 
 /**
  * Right-side collapsible control panel. Currently hosts the weather layer
- * module; the subsystem list below is rendered as disabled placeholders so
- * future modules (ocean, cryosphere, etc.) have an obvious slot to plug into.
+ * module and provider-backed PCS readiness and evidence panels.
  */
 export default function ControlPanel({
   activeLayerIds,
@@ -32,6 +33,14 @@ export default function ControlPanel({
   onAnalyticsUpdate,
 }: ControlPanelProps) {
   const [collapsed, setCollapsed] = useState(() => window.matchMedia('(max-width: 639px)').matches);
+  const [language, setLanguage] = useState<Language>(() => {
+    const stored = window.localStorage.getItem('pcs_language') as Language | null;
+    return stored && ['zh-TW', 'en', 'ja', 'ko'].includes(stored) ? stored : detectedLanguage();
+  });
+  const changeLanguage = (value: Language) => {
+    window.localStorage.setItem('pcs_language', value);
+    setLanguage(value);
+  };
 
   return (
     <aside
@@ -59,12 +68,17 @@ export default function ControlPanel({
       >
         <header className="mb-6">
           <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-accent/80">PCS · Weather Earth</p>
-          <h1 className="mt-1 text-lg font-semibold text-slate-100">Control Panel</h1>
+          <div className="flex items-center justify-between gap-3">
+            <h1 className="mt-1 text-lg font-semibold text-slate-100">{translate(language, 'control')}</h1>
+            <select value={language} onChange={(event) => changeLanguage(event.target.value as Language)} aria-label="Language / 語言 / 言語 / 언어" className="rounded border border-panel-border bg-slate-900 px-1.5 py-1 font-mono text-[10px] text-slate-300">
+              <option value="zh-TW">繁中</option><option value="en">EN</option><option value="ja">日本語</option><option value="ko">한국어</option>
+            </select>
+          </div>
           <p className="mt-1 text-xs text-slate-500">v0.1 — scientific 3D Earth dashboard</p>
         </header>
 
         <section className="mb-8">
-          <h2 className="mb-3 font-mono text-xs uppercase tracking-widest text-slate-400">Weather Layers</h2>
+          <h2 className="mb-3 font-mono text-xs uppercase tracking-widest text-slate-400">{translate(language, 'weather')}</h2>
           <LayerSelector activeLayerIds={activeLayerIds} onToggle={onToggleLayer} />
         </section>
 
@@ -116,24 +130,7 @@ export default function ControlPanel({
           onAnalyticsUpdate={onAnalyticsUpdate}
         />
 
-        <section>
-          <h2 className="mb-3 font-mono text-xs uppercase tracking-widest text-slate-400">
-            Planetary Subsystems
-          </h2>
-          <div className="flex flex-col gap-1.5">
-            {SUBSYSTEMS.filter((s) => s.id !== 'weather').map((subsystem) => (
-              <div
-                key={subsystem.id}
-                className="flex items-center justify-between rounded-md border border-panel-border/70 bg-panel-light/30 px-3 py-2 text-xs text-slate-500"
-              >
-                <span>{subsystem.label}</span>
-                <span className="rounded-full bg-slate-800 px-2 py-0.5 font-mono text-[10px] uppercase tracking-wide text-slate-500">
-                  Planned
-                </span>
-              </div>
-            ))}
-          </div>
-        </section>
+        <PcsPanels backendUrl={PCS_BACKEND_URL} language={language} />
       </div>
     </aside>
   );

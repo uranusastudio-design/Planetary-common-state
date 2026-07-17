@@ -16,6 +16,9 @@ first module of the broader **PCS (Planetary-Critical-Systems)** dashboard.
 - Only one weather layer active at a time, with smooth switch transitions
 - Architecture pre-wired for future modules: Ocean, Cryosphere, Biosphere,
   Energy, Human, PCS state estimation
+- Live provider-backed readiness across PCS Earth, human, infrastructure, and space domains
+- Daily event retrospective panels, multi-city mass-gathering availability, and Evidence Ledger
+- Traditional Chinese, English, Japanese, and Korean interface labels
 
 ## Tech stack
 

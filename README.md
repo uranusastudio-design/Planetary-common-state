@@ -126,6 +126,17 @@ wrangler d1 execute pcsbackend --local --file=cloudflare/schema.sql
 The `cloudflare/schema.sql` file contains all table definitions and seed data
 required for a clean deployment.
 
+For an existing production database, apply the additive retrospective migration
+instead of replaying the full baseline schema:
+
+```bash
+cd cloudflare
+wrangler d1 execute pcsbackend --remote --file=migrations/0001_pcs_retrospective.sql
+```
+
+The migration only uses guarded table/index creation and idempotent metadata
+case-shell inserts. It does not drop, alter, delete, or overwrite existing data.
+
 ### Deployment
 
 ```bash

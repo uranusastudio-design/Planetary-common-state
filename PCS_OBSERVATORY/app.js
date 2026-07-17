@@ -10,7 +10,8 @@ const VISITOR_SESSION_STORAGE_KEY = "pcs_visitor_session_id";
 const OBSERVATION_HEAT_STORAGE_KEY = "pcs_observation_heat_enabled";
 const NETWORK_CONNECTIONS_STORAGE_KEY = "pcs_network_connections_enabled";
 const IS_LOCAL_DEVELOPMENT = ["localhost", "127.0.0.1"].includes(window.location.hostname);
-const WEATHER_PROXY_BASE = IS_LOCAL_DEVELOPMENT
+const USE_LOCAL_BACKEND = IS_LOCAL_DEVELOPMENT && new URLSearchParams(window.location.search).get("backend") !== "production";
+const WEATHER_PROXY_BASE = USE_LOCAL_BACKEND
   ? "http://127.0.0.1:8787"
   : "https://pcs-backend.uranusastudio.workers.dev";
 const ASTRONOMY_PROXY_BASE = WEATHER_PROXY_BASE;
@@ -64,7 +65,7 @@ const EARTH_IMAGERY_CONFIG = {
 const WEATHER_LAYER_CONFIG = {
   clouds: { label: "Clouds", path: "clouds", opacity: 0.5 },
   rain: { label: "Rain", path: "rain", opacity: 0.6 },
-  temp: { label: "Temperature", path: "temp", opacity: 0.6 },
+  temp: { label: "Temperature", path: "temperature", opacity: 0.6 },
   wind: { label: "Wind", path: "wind", opacity: 0.6 },
 };
 
@@ -311,6 +312,14 @@ const selectors = {
   weatherProxyStatus: document.querySelector("#weather-proxy-status"),
   weatherActiveLayers: document.querySelector("#weather-active-layers"),
   weatherTileError: document.querySelector("#weather-tile-error"),
+  domainGrid: document.querySelector("#domain-readiness-grid"),
+  domainReadinessStatus: document.querySelector("#domain-readiness-status"),
+  connectedDatasetCount: document.querySelector("#connected-dataset-count"),
+  connectedDatasetList: document.querySelector("#connected-dataset-list"),
+  dailyBriefList: document.querySelector("#daily-brief-list"),
+  massGatheringList: document.querySelector("#mass-gathering-list"),
+  evidenceLedgerList: document.querySelector("#evidence-ledger-list"),
+  pcsApiStatus: document.querySelector("#pcs-api-status"),
   visitorDetails: document.querySelector("#visitor-network-details"),
   visitorOnline: document.querySelector("#visitor-online"),
   visitorToday: document.querySelector("#visitor-today"),
@@ -2197,6 +2206,7 @@ function initializeLanguageSelector() {
     selectors.languageSelector.value = language;
     document.documentElement.lang = language;
     translateUI();
+    void runSafeAsync("PCS evidence panels language refresh", loadPcsEvidencePanels);
   });
 }
 
@@ -3045,6 +3055,201 @@ function resetWeatherStatusDisplay() {
   setWeatherTileError("");
 }
 
+function pcsStatusClass(status) {
+  if (["connected", "live", "observed", "validated", "confirmed"].includes(status)) return "active";
+  if (["delayed", "partial", "inferred", "estimated", "partially_confirmed"].includes(status)) return "waiting";
+  return "unavailable";
+}
+
+function pcsStatusLabel(status) {
+  const labels = {
+    en: { connected: "CONNECTED", live: "LIVE", delayed: "DELAYED", unavailable: "UNAVAILABLE", partial: "PARTIAL", observed: "OBSERVED", inferred: "INFERRED", estimated: "ESTIMATED", validated: "VALIDATED", unvalidated: "UNVALIDATED", insufficient_data: "INSUFFICIENT DATA" },
+    "zh-TW": { connected: "已連接", live: "即時", delayed: "延遲", unavailable: "不可用", partial: "部分", observed: "實測", inferred: "推論", estimated: "估計", validated: "已驗證", unvalidated: "未驗證", insufficient_data: "資料不足" },
+    ja: { connected: "接続済み", live: "ライブ", delayed: "遅延", unavailable: "利用不可", partial: "一部", observed: "観測", inferred: "推論", estimated: "推定", validated: "検証済み", unvalidated: "未検証", insufficient_data: "データ不足" },
+    ko: { connected: "연결됨", live: "실시간", delayed: "지연", unavailable: "사용 불가", partial: "부분", observed: "관측", inferred: "추론", estimated: "추정", validated: "검증됨", unvalidated: "미검증", insufficient_data: "데이터 부족" },
+  };
+  return labels[getCurrentLanguage()]?.[status] || String(status || "unavailable").toUpperCase();
+}
+
+function formatPcsTime(value) {
+  if (!value) return "—";
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? String(value) : date.toLocaleString(getCurrentLanguage());
+}
+
+function createDefinitionRow(label, value) {
+  const wrapper = document.createElement("div");
+  const term = document.createElement("dt");
+  const definition = document.createElement("dd");
+  term.textContent = label;
+  definition.textContent = value === null || value === undefined || value === "" ? "—" : String(value);
+  wrapper.append(term, definition);
+  return wrapper;
+}
+
+function renderDomainReadiness(payload) {
+  if (!selectors.domainGrid) return;
+  const cards = (payload.domains || []).map((domain) => {
+    const card = document.createElement("article");
+    const statuses = domain.datasets.map((dataset) => dataset.status);
+    const status = statuses.includes("live") ? "live" : statuses.includes("delayed") ? "delayed" : domain.connected ? "partial" : "unavailable";
+    card.className = `domain-card ${pcsStatusClass(status)}`;
+    card.title = domain.datasets.map((dataset) => `${dataset.provider}: ${dataset.dataset}`).join("\n");
+    const heading = document.createElement("h3");
+    heading.textContent = domain.id.replaceAll("_", " ");
+    const badge = document.createElement("span");
+    badge.textContent = pcsStatusLabel(status);
+    const count = document.createElement("strong");
+    count.textContent = `${domain.connected} / ${domain.total} ${t("datasets_connected")}`;
+    const details = document.createElement("details");
+    const summary = document.createElement("summary");
+    summary.textContent = t("dataset_list");
+    details.append(summary);
+    domain.datasets.forEach((dataset) => {
+      const item = document.createElement("section");
+      item.className = "dataset-readiness-item";
+      const title = document.createElement("b");
+      title.textContent = `${dataset.provider} · ${dataset.dataset}`;
+      const itemBadge = document.createElement("span");
+      itemBadge.className = `pcs-evidence-tag ${pcsStatusClass(dataset.status)}`;
+      itemBadge.textContent = pcsStatusLabel(dataset.status);
+      const metadata = document.createElement("dl");
+      metadata.append(
+        createDefinitionRow(t("last_update"), formatPcsTime(dataset.timestamp)),
+        createDefinitionRow(t("data_latency"), dataset.latency === null ? "—" : `${dataset.latency} min`),
+        createDefinitionRow(t("validation_status"), dataset.validation_status),
+        createDefinitionRow(t("data_quality"), dataset.quality_flag),
+        createDefinitionRow(t("availability"), dataset.availability),
+      );
+      item.append(title, itemBadge, metadata);
+      details.append(item);
+    });
+    card.append(heading, badge, count, details);
+    return card;
+  });
+  selectors.domainGrid.replaceChildren(...cards);
+  const connected = (payload.datasets || []).filter((dataset) => ["connected", "live", "delayed", "partial"].includes(dataset.status)).length;
+  updateText(selectors.domainReadinessStatus, `${t("connected_datasets")}: ${connected} / ${(payload.datasets || []).length}`);
+  updateText(selectors.connectedDatasetCount, `${connected} / ${(payload.datasets || []).length}`);
+  if (selectors.connectedDatasetList) {
+    selectors.connectedDatasetList.replaceChildren(...(payload.datasets || []).filter((dataset) => ["connected", "live", "delayed", "partial"].includes(dataset.status)).map((dataset) => {
+      const item = document.createElement("li");
+      item.textContent = `${dataset.provider}: ${dataset.dataset} (${pcsStatusLabel(dataset.status)})`;
+      return item;
+    }));
+  }
+}
+
+function appendRetrospectiveField(list, labelKey, value, status = null) {
+  const row = document.createElement("div");
+  const term = document.createElement("dt");
+  const definition = document.createElement("dd");
+  term.textContent = t(labelKey);
+  const missing = value === null || value === undefined || value === "" || (Array.isArray(value) && !value.length);
+  definition.textContent = missing ? "—" : typeof value === "string" ? value : JSON.stringify(value);
+  const badge = document.createElement("span");
+  badge.className = `pcs-evidence-tag ${pcsStatusClass(status || (missing ? "unavailable" : "observed"))}`;
+  badge.textContent = pcsStatusLabel(status || (missing ? "unavailable" : "observed"));
+  row.append(term, badge, definition);
+  list.append(row);
+}
+
+function renderDailyBrief(events) {
+  if (!selectors.dailyBriefList) return;
+  const items = events.map((event) => {
+    const details = document.createElement("details");
+    details.className = "pcs-event-card";
+    const summary = document.createElement("summary");
+    summary.textContent = `${event.title} · ${event.region}`;
+    const meta = document.createElement("p");
+    meta.textContent = `${event.event_type} · ${formatPcsTime(event.observed_event_time || event.published_at)}`;
+    const analysisTitle = document.createElement("h3");
+    analysisTitle.textContent = "PCS RETROSPECTIVE ANALYSIS";
+    const list = document.createElement("dl");
+    const analysis = event.retrospective_analysis || {};
+    appendRetrospectiveField(list, "event_outcome", event.event_summary, event.observed_event_time ? "observed" : "unavailable");
+    appendRetrospectiveField(list, "event_timeline", event.timeline, event.timeline?.length ? "observed" : "unavailable");
+    appendRetrospectiveField(list, "earliest_signal", analysis.earliest_detectable_time, analysis.earliest_detectable_time ? "observed" : "unavailable");
+    appendRetrospectiveField(list, "precursor_window", analysis.precursor_window_start && analysis.precursor_window_end ? `${analysis.precursor_window_start} — ${analysis.precursor_window_end}` : null);
+    appendRetrospectiveField(list, "causal_chain", analysis.causal_chain, analysis.causal_chain?.length ? "inferred" : "unavailable");
+    appendRetrospectiveField(list, "amplification_factors", analysis.amplification_factors);
+    appendRetrospectiveField(list, "human_exposure", analysis.exposure_factors, analysis.exposure_factors?.length ? "estimated" : "unavailable");
+    appendRetrospectiveField(list, "pcs_observability", analysis.pcs_observability, "observed");
+    appendRetrospectiveField(list, "missing_data", analysis.missing_data, "unavailable");
+    appendRetrospectiveField(list, "candidate_warning_rule", analysis.proposed_warning_rules, "unvalidated");
+    appendRetrospectiveField(list, "intervention_points", analysis.proposed_interventions, "unvalidated");
+    appendRetrospectiveField(list, "validation_status", analysis.validation_status, analysis.validation_status || "unvalidated");
+    appendRetrospectiveField(list, "lead_time", analysis.estimated_lead_time_hours === null || analysis.estimated_lead_time_hours === undefined ? null : `${analysis.estimated_lead_time_hours} h`);
+    appendRetrospectiveField(list, "confidence", analysis.analyst_confidence);
+    const ledgerLink = document.createElement("a");
+    ledgerLink.href = "#pcs-evidence-ledger";
+    ledgerLink.textContent = t("evidence_ledger_link");
+    details.append(summary, meta, analysisTitle, list, ledgerLink);
+    return details;
+  });
+  selectors.dailyBriefList.replaceChildren(...items);
+}
+
+function renderEvidenceLedger(entries) {
+  if (!selectors.evidenceLedgerList) return;
+  const items = entries.map((entry) => {
+    const item = document.createElement("article");
+    item.className = "pcs-ledger-entry";
+    const title = document.createElement("strong");
+    title.textContent = `${entry.region} · ${entry.event_type}`;
+    const badge = document.createElement("span");
+    badge.className = `pcs-evidence-tag ${pcsStatusClass(entry.result)}`;
+    badge.textContent = pcsStatusLabel(entry.result);
+    const note = document.createElement("p");
+    note.textContent = `${t("lead_time")}: ${entry.lead_time_hours === null ? "—" : `${entry.lead_time_hours} h`} · ${entry.lessons_learned || ""}`;
+    item.append(title, badge, note);
+    return item;
+  });
+  selectors.evidenceLedgerList.replaceChildren(...items);
+}
+
+function renderMassGatherings(rows) {
+  if (!selectors.massGatheringList) return;
+  selectors.massGatheringList.replaceChildren(...rows.map((row) => {
+    const item = document.createElement("article");
+    item.className = "pcs-ledger-entry";
+    const title = document.createElement("strong");
+    title.textContent = `${row.city} · ${row.event_name}`;
+    const badge = document.createElement("span");
+    badge.className = `pcs-evidence-tag ${pcsStatusClass(row.data_status)}`;
+    badge.textContent = pcsStatusLabel(row.data_status);
+    const note = document.createElement("p");
+    note.textContent = `${row.source} · ${row.source_limitations || ""}`;
+    item.append(title, badge, note);
+    return item;
+  }));
+}
+
+async function loadPcsEvidencePanels() {
+  updateText(selectors.pcsApiStatus, t("loading"));
+  try {
+    const [readinessResponse, eventsResponse, ledgerResponse, gatheringsResponse] = await Promise.all([
+      fetch(`${WEATHER_PROXY_BASE}/api/domain-readiness`),
+      fetch(`${WEATHER_PROXY_BASE}/api/events?limit=20`),
+      fetch(`${WEATHER_PROXY_BASE}/api/evidence-ledger`),
+      fetch(`${WEATHER_PROXY_BASE}/api/mass-gatherings`),
+    ]);
+    if (![readinessResponse, eventsResponse, ledgerResponse, gatheringsResponse].every((response) => response.ok)) throw new Error("pcs_api_unavailable");
+    const [readiness, eventList, ledger, gatherings] = await Promise.all([readinessResponse.json(), eventsResponse.json(), ledgerResponse.json(), gatheringsResponse.json()]);
+    const eventDetails = await Promise.all((eventList.events || []).map(async (event) => {
+      const response = await fetch(`${WEATHER_PROXY_BASE}/api/events/${encodeURIComponent(event.id)}`);
+      return response.ok ? response.json() : event;
+    }));
+    renderDomainReadiness(readiness);
+    renderDailyBrief(eventDetails);
+    renderEvidenceLedger(ledger.entries || []);
+    renderMassGatherings(gatherings.data || []);
+    updateText(selectors.pcsApiStatus, `${t("last_update")}: ${formatPcsTime(readiness.generated_at)}`);
+  } catch (error) {
+    updateText(selectors.pcsApiStatus, t("pcs_api_unavailable"));
+  }
+}
+
 async function initializeApp() {
   runSafe("regional mode initialization", initializeRegionalMode);
   runSafe("language selector initialization", initializeLanguageSelector);
@@ -3055,8 +3260,10 @@ async function initializeApp() {
   runSafe("layer controls initialization", initializeLayerControls);
   runSafe("weather layer initialization", initializeWeatherLayers);
   await runSafeAsync("visitor network initialization", initializeVisitorNetwork);
+  await runSafeAsync("PCS evidence panels initialization", loadPcsEvidencePanels);
   runSafe("build timestamp rendering", renderBuildTimestamp);
   await runSafeAsync("language loading", () => setLanguage(getCurrentLanguage()));
+  await runSafeAsync("PCS evidence panels translation refresh", loadPcsEvidencePanels);
   await runSafeAsync("dashboard data loading", () => loadLatestState());
 }
 

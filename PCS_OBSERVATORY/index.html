@@ -163,12 +163,9 @@
           <p id="data-message" class="data-message" role="status" aria-live="polite"></p>
 
           <article class="panel source-panel">
-            <span class="panel-label" data-i18n="confirmed_sources">Confirmed Data Sources</span>
-            <strong>Confirmed data sources: <span id="confirmed-source-count">2</span></strong>
-            <ul class="status-list">
-              <li><span class="dot connected"></span>NASA GISTEMP: Global Temperature</li>
-              <li><span class="dot connected"></span>NOAA Mauna Loa CO2: Atmospheric CO2</li>
-            </ul>
+            <span class="panel-label" data-i18n="connected_datasets">Connected datasets</span>
+            <strong><span data-i18n="connected_datasets">Connected datasets</span>: <span id="connected-dataset-count">—</span></strong>
+            <ul id="connected-dataset-list" class="status-list"><li data-i18n="loading">Loading</li></ul>
           </article>
         </aside>
 
@@ -614,20 +611,28 @@
               <h2>Domain Readiness</h2>
             </div>
           </div>
-          <div class="domain-grid">
-            <article class="domain-card active"><h3>Atmosphere</h3><span>Active</span><strong>2 confirmed</strong><div class="sparkline" aria-hidden="true"></div><p>Trend placeholder — awaiting validated time series.</p></article>
-            <article class="domain-card waiting"><h3>Ocean</h3><span>Waiting</span><strong>0 confirmed</strong><div class="sparkline" aria-hidden="true"></div><p>Trend placeholder — awaiting validated time series.</p></article>
-            <article class="domain-card planned"><h3>Cryosphere</h3><span>Planned</span><strong>0 confirmed</strong><div class="sparkline" aria-hidden="true"></div><p>Trend placeholder — awaiting validated time series.</p></article>
-            <article class="domain-card waiting"><h3>Biosphere</h3><span>Waiting</span><strong>0 confirmed</strong><div class="sparkline" aria-hidden="true"></div><p>Trend placeholder — awaiting validated time series.</p></article>
-            <article class="domain-card planned"><h3>Hydrology</h3><span>Planned</span><strong>0 confirmed</strong><div class="sparkline" aria-hidden="true"></div><p>Trend placeholder — awaiting validated time series.</p></article>
-            <article class="domain-card planned"><h3>Geosphere</h3><span>Planned</span><strong>0 confirmed</strong><div class="sparkline" aria-hidden="true"></div><p>Trend placeholder — awaiting validated time series.</p></article>
-            <article class="domain-card planned"><h3>Human System</h3><span>Planned</span><strong>0 confirmed</strong><div class="sparkline" aria-hidden="true"></div><p>Trend placeholder — awaiting validated time series.</p></article>
-            <article class="domain-card planned"><h3>Energy</h3><span>Planned</span><strong>0 confirmed</strong><div class="sparkline" aria-hidden="true"></div><p>Trend placeholder — awaiting validated time series.</p></article>
-            <article class="domain-card planned"><h3>Food System</h3><span>Planned</span><strong>0 confirmed</strong><div class="sparkline" aria-hidden="true"></div><p>Trend placeholder — awaiting validated time series.</p></article>
-            <article class="domain-card planned"><h3>Infrastructure</h3><span>Planned</span><strong>0 confirmed</strong><div class="sparkline" aria-hidden="true"></div><p>Trend placeholder — awaiting validated time series.</p></article>
-            <article class="domain-card planned"><h3>Space Environment</h3><span>Planned</span><strong>0 confirmed</strong><div class="sparkline" aria-hidden="true"></div><p>Trend placeholder — awaiting validated time series.</p></article>
-            <article class="domain-card planned"><h3>Planetary Common State</h3><span>Planned</span><strong>0 confirmed</strong><div class="sparkline" aria-hidden="true"></div><p>Trend placeholder — awaiting validated time series.</p></article>
-          </div>
+          <p id="domain-readiness-status" class="framework-status" role="status" aria-live="polite" data-i18n="loading">Loading</p>
+          <div id="domain-readiness-grid" class="domain-grid" aria-live="polite"></div>
+        </article>
+
+        <article class="panel pcs-analysis-panel" id="pcs-daily-brief">
+          <span class="panel-label" data-i18n="daily_brief">Daily Brief</span>
+          <h2 data-i18n="retrospective_analysis">PCS Retrospective Analysis</h2>
+          <div id="daily-brief-list" class="pcs-card-list"><p data-i18n="loading">Loading</p></div>
+        </article>
+
+        <article class="panel pcs-analysis-panel" id="pcs-mass-gatherings">
+          <span class="panel-label" data-i18n="human_mobility">Human Mobility &amp; Mass Gathering</span>
+          <h2>R<sub>gathering</sub>(c,t)</h2>
+          <p class="panel-note" data-i18n="aggregate_only">Public statistics and aggregate flows only; no personal identity data.</p>
+          <div id="mass-gathering-list" class="pcs-card-list"><p data-i18n="loading">Loading</p></div>
+        </article>
+
+        <article class="panel pcs-analysis-panel" id="pcs-evidence-ledger">
+          <span class="panel-label" data-i18n="evidence_ledger">PCS Evidence Ledger</span>
+          <h2 data-i18n="validation_metrics">Validation &amp; Evidence</h2>
+          <div id="evidence-ledger-list" class="pcs-card-list"><p data-i18n="loading">Loading</p></div>
+          <p id="pcs-api-status" class="framework-status" role="status" aria-live="polite" data-i18n="loading">Loading</p>
         </article>
 
         <article class="panel pipeline-panel">
@@ -702,6 +707,6 @@
     <script src="./moon-lighting.js"></script>
     <script src="./mission-imagery-registry.js?v=20260717-mission-moon-textures"></script>
     <script src="./celestial-bodies.js?v=20260717-mission-moon-textures"></script>
-    <script src="./app.js?v=20260717-mission-moon-textures"></script>
+    <script src="./app.js?v=20260717-pcs-evidence-ledger"></script>
   </body>
 </html>

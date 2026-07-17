@@ -1,6 +1,6 @@
 import type { WeatherLayerConfig, WeatherLayerId } from '../types/weather';
 
-export const PCS_BACKEND_URL = 'https://pcs-backend.uranusastudio.workers.dev';
+export const PCS_BACKEND_URL = import.meta.env.VITE_PCS_BACKEND_URL || 'https://pcs-backend.uranusastudio.workers.dev';
 
 /** Weather layer catalogue exposed through the PCS backend tile proxy. */
 export const WEATHER_LAYERS: WeatherLayerConfig[] = [
@@ -8,7 +8,7 @@ export const WEATHER_LAYERS: WeatherLayerConfig[] = [
     id: 'temperature',
     label: 'Temperature',
     description: 'Global surface air temperature',
-    proxyPath: 'temp',
+    proxyPath: 'temperature',
     opacity: 0.6,
   },
   {
