@@ -204,6 +204,11 @@ let celestialImageryLayer = null;
 let celestialImageryErrorUnsubscribe = null;
 let celestialDiscEntity = null;
 let celestialSatelliteEntities = [];
+let celestialSatellitePrimitives = [];
+let satelliteTextureGeneration = 0;
+const satelliteTextureCache = new Map();
+const satelliteTextureWarnings = new Set();
+const MAX_SATELLITE_TEXTURE_CACHE_ENTRIES = 6;
 let celestialRingPrimitives = [];
 let celestialDataSources = [];
 let celestialEventRemovers = [];
@@ -713,6 +718,7 @@ function clearEarthImagery() {
 }
 
 function clearCelestialScene() {
+  satelliteTextureGeneration += 1;
   celestialImageryErrorUnsubscribe?.();
   celestialImageryErrorUnsubscribe = null;
   celestialEventRemovers.forEach((removeListener) => removeListener?.());
@@ -734,6 +740,10 @@ function clearCelestialScene() {
     celestialSatelliteEntities.forEach((entity) => cesiumViewer.entities.remove(entity));
   }
   celestialSatelliteEntities = [];
+  if (cesiumViewer && !cesiumViewer.isDestroyed()) {
+    celestialSatellitePrimitives.forEach((primitive) => cesiumViewer.scene.primitives.remove(primitive));
+  }
+  celestialSatellitePrimitives = [];
   if (cesiumViewer && !cesiumViewer.isDestroyed()) {
     celestialRingPrimitives.forEach((primitive) => cesiumViewer.scene.primitives.remove(primitive));
     celestialDataSources.forEach((dataSource) => cesiumViewer.dataSources.remove(dataSource, true));
@@ -1500,83 +1510,368 @@ async function initializeCesiumGlobe() {
   }
 }
 
-function satelliteVisualProfile(id) {
-  return ({
-    phobos: { base: "#4b443d", accent: "#80766a", craters: 92, lines: 0, shape: [1, 0.82, 0.76] },
-    deimos: { base: "#686159", accent: "#928a80", craters: 42, lines: 0, shape: [1, 0.88, 0.82] },
-    io: { base: "#d7a82c", accent: "#7d2f18", craters: 0, lines: 18, shape: [1, 1, 1] },
-    europa: { base: "#ddd7c5", accent: "#8d533d", craters: 5, lines: 38, shape: [1, 1, 1] },
-    ganymede: { base: "#777166", accent: "#b0aa9b", craters: 48, lines: 20, shape: [1, 1, 1] },
-    callisto: { base: "#423e3a", accent: "#c3b9a7", craters: 130, lines: 0, shape: [1, 1, 1] },
-    titan: { base: "#bd6d28", accent: "#e0a04f", craters: 0, lines: 10, shape: [1, 1, 1] },
-    enceladus: { base: "#e7f0ef", accent: "#88b5c4", craters: 22, lines: 26, shape: [1, 1, 1] },
-    titania: { base: "#777b7d", accent: "#aeb2b3", craters: 45, lines: 16, shape: [1, 1, 1] },
-    triton: { base: "#c9b8b1", accent: "#966f75", craters: 18, lines: 12, shape: [1, 1, 1] },
-  })[id];
+function seedFromString(value) {
+  let seed = 2166136261;
+  for (const character of value) {
+    seed ^= character.charCodeAt(0);
+    seed = Math.imul(seed, 16777619);
+  }
+  return seed >>> 0;
 }
 
-function createSatelliteVisualizationTexture(satellite) {
-  const profile = satelliteVisualProfile(satellite.id);
-  if (!profile) return null;
-  const canvas = document.createElement("canvas");
-  canvas.width = 1024;
-  canvas.height = 512;
-  const context = canvas.getContext("2d", { alpha: false });
-  if (!context) return null;
-  context.fillStyle = profile.base;
-  context.fillRect(0, 0, canvas.width, canvas.height);
-  const seedBase = [...satellite.id].reduce((total, character) => total + character.charCodeAt(0), 0);
-  const pseudoRandom = (index, salt = 0) => {
-    const value = Math.sin((index + 1) * 12.9898 + seedBase * 78.233 + salt) * 43758.5453;
-    return value - Math.floor(value);
+function seededRandom(seed) {
+  let state = seed >>> 0;
+  return () => {
+    state += 0x6D2B79F5;
+    let value = state;
+    value = Math.imul(value ^ (value >>> 15), value | 1);
+    value ^= value + Math.imul(value ^ (value >>> 7), value | 61);
+    return ((value ^ (value >>> 14)) >>> 0) / 4294967296;
   };
-  const shade = context.createLinearGradient(0, 0, canvas.width, canvas.height);
-  shade.addColorStop(0, "rgba(255,255,255,.18)");
-  shade.addColorStop(0.48, "rgba(255,255,255,0)");
-  shade.addColorStop(1, "rgba(0,0,0,.24)");
-  context.fillStyle = shade;
-  context.fillRect(0, 0, canvas.width, canvas.height);
-  for (let index = 0; index < profile.craters; index += 1) {
-    const x = pseudoRandom(index, 1) * canvas.width;
-    const y = pseudoRandom(index, 2) * canvas.height;
-    const radius = 3 + pseudoRandom(index, 3) * (satellite.id === "callisto" ? 24 : 16);
+}
+
+function withAlpha(hexColor, alpha) {
+  const value = hexColor.replace("#", "");
+  const normalized = value.length === 3 ? [...value].map((part) => part + part).join("") : value;
+  const number = Number.parseInt(normalized, 16);
+  return `rgba(${(number >> 16) & 255},${(number >> 8) & 255},${number & 255},${alpha})`;
+}
+
+function drawWrappedEllipse(context, canvas, x, y, radiusX, radiusY, rotation, fillStyle, strokeStyle = null) {
+  [-canvas.width, 0, canvas.width].forEach((offset) => {
     context.beginPath();
-    context.arc(x, y, radius, 0, Math.PI * 2);
-    context.fillStyle = `${profile.accent}${satellite.id === "callisto" ? "88" : "55"}`;
+    context.ellipse(x + offset, y, radiusX, radiusY, rotation, 0, Math.PI * 2);
+    context.fillStyle = fillStyle;
     context.fill();
-    context.strokeStyle = "rgba(10,12,16,.36)";
-    context.lineWidth = Math.max(1, radius * 0.13);
-    context.stroke();
+    if (strokeStyle) {
+      context.strokeStyle = strokeStyle;
+      context.lineWidth = Math.max(1, Math.min(radiusX, radiusY) * 0.14);
+      context.stroke();
+    }
+  });
+}
+
+function drawScientificMottling(context, canvas, profile, random, count, radiusRange, opacity) {
+  const palette = profile.palette;
+  for (let index = 0; index < count; index += 1) {
+    const radius = radiusRange[0] + random() * (radiusRange[1] - radiusRange[0]);
+    drawWrappedEllipse(context, canvas, random() * canvas.width, random() * canvas.height,
+      radius * (0.7 + random() * 1.2), radius * (0.35 + random() * 0.7), random() * Math.PI,
+      withAlpha(palette[1 + (index % Math.max(1, palette.length - 1))], opacity * (0.35 + random() * 0.65)));
   }
-  context.strokeStyle = `${profile.accent}aa`;
+}
+
+function drawConfiguredSurfaceFeatures(context, canvas, profile, random) {
+  const palette = profile.palette;
+  const craterScale = profile.craterScale || [3, 24];
+  for (let index = 0; index < (profile.craterDensity || 0); index += 1) {
+    const radius = craterScale[0] + random() * (craterScale[1] - craterScale[0]);
+    const x = random() * canvas.width;
+    const y = random() * canvas.height;
+    drawWrappedEllipse(context, canvas, x, y, radius, radius * (0.72 + random() * 0.24), random() * Math.PI,
+      withAlpha(palette[Math.min(2, palette.length - 1)], 0.2 + random() * 0.28), "rgba(12,13,15,.42)");
+    drawWrappedEllipse(context, canvas, x - radius * 0.17, y - radius * 0.16, radius * 0.72, radius * 0.48, 0,
+      "rgba(8,10,12,.16)");
+  }
+
   context.lineCap = "round";
-  for (let index = 0; index < profile.lines; index += 1) {
-    const y = pseudoRandom(index, 4) * canvas.height;
+  context.lineJoin = "round";
+  for (let index = 0; index < (profile.fractures || 0); index += 1) {
+    const y = random() * canvas.height;
+    const widthRange = profile.fractureWidth || profile.canyonWidth || [2, 11];
+    const lineWidth = widthRange[0] + random() * (widthRange[1] - widthRange[0]);
     context.beginPath();
-    context.moveTo(-30, y);
-    context.bezierCurveTo(canvas.width * 0.3, y + pseudoRandom(index, 5) * 100 - 50,
-      canvas.width * 0.7, y + pseudoRandom(index, 6) * 130 - 65, canvas.width + 30, y + pseudoRandom(index, 7) * 80 - 40);
-    context.lineWidth = satellite.id === "europa" || satellite.id === "enceladus" ? 2 + pseudoRandom(index, 8) * 3 : 5 + pseudoRandom(index, 8) * 14;
+    context.moveTo(-16, y);
+    context.bezierCurveTo(canvas.width * 0.25, y + random() * 150 - 75,
+      canvas.width * 0.72, y + random() * 190 - 95, canvas.width + 16, y);
+    context.strokeStyle = withAlpha(palette[palette.length - 1], 0.45 + random() * 0.38);
+    context.lineWidth = lineWidth;
+    context.stroke();
+    context.strokeStyle = "rgba(38,28,28,.34)";
+    context.lineWidth = Math.max(1, lineWidth * 0.34);
     context.stroke();
   }
-  if (satellite.id === "io") {
-    for (let index = 0; index < 46; index += 1) {
-      context.beginPath();
-      context.ellipse(pseudoRandom(index, 9) * canvas.width, pseudoRandom(index, 10) * canvas.height,
-        8 + pseudoRandom(index, 11) * 28, 4 + pseudoRandom(index, 12) * 18, pseudoRandom(index, 13) * Math.PI, 0, Math.PI * 2);
-      context.fillStyle = index % 3 ? "rgba(117,43,20,.66)" : "rgba(242,224,115,.72)";
-      context.fill();
+
+  for (let index = 0; index < (profile.banding || 0); index += 1) {
+    const y = random() * canvas.height;
+    context.beginPath();
+    context.moveTo(0, y);
+    for (let segment = 1; segment <= 16; segment += 1) {
+      context.lineTo((canvas.width / 16) * segment, y + Math.sin(segment * 1.7 + index) * (5 + random() * 15));
+    }
+    context.strokeStyle = withAlpha(palette[(index + 1) % palette.length], 0.16 + random() * 0.2);
+    context.lineWidth = 9 + random() * 34;
+    context.stroke();
+  }
+
+  for (let index = 0; index < (profile.volcanicCenters || 0); index += 1) {
+    const dark = index % 4 !== 0;
+    drawWrappedEllipse(context, canvas, random() * canvas.width, random() * canvas.height,
+      7 + random() * 38, 4 + random() * 23, random() * Math.PI,
+      dark ? "rgba(82,26,18,.72)" : "rgba(247,230,137,.78)", dark ? "rgba(36,18,15,.45)" : null);
+  }
+
+  for (let index = 0; index < (profile.groovedTerrain || 0); index += 1) {
+    const x = random() * canvas.width;
+    const width = 22 + random() * 66;
+    context.fillStyle = withAlpha(palette[palette.length - 1], 0.13 + random() * 0.16);
+    context.fillRect(x, 0, width, canvas.height);
+    context.fillRect(x - canvas.width, 0, width, canvas.height);
+  }
+
+  if (profile.largeBasin || profile.radialBasin) {
+    const x = canvas.width * (profile.radialBasin ? 0.67 : 0.28);
+    const y = canvas.height * (profile.radialBasin ? 0.48 : 0.55);
+    const rings = profile.radialBasin ? 5 : 2;
+    for (let ring = rings; ring >= 1; ring -= 1) {
+      const radius = canvas.height * (0.055 + ring * 0.045);
+      drawWrappedEllipse(context, canvas, x, y, radius * 1.18, radius, 0,
+        withAlpha(palette[palette.length - 1], 0.06 + (rings - ring) * 0.04), withAlpha(palette[palette.length - 1], 0.42));
     }
   }
-  if (satellite.id === "triton") {
-    context.fillStyle = "rgba(155,103,117,.42)";
-    context.fillRect(0, canvas.height * 0.62, canvas.width, canvas.height * 0.24);
+
+  if (profile.tigerStripes) {
+    context.strokeStyle = withAlpha(palette[palette.length - 1], 0.82);
+    context.lineWidth = 7;
+    for (let stripe = 0; stripe < profile.tigerStripes; stripe += 1) {
+      const x = canvas.width * (0.58 + stripe * 0.025);
+      context.beginPath();
+      context.moveTo(x, canvas.height * 0.7);
+      context.bezierCurveTo(x - 20, canvas.height * 0.8, x + 24, canvas.height * 0.9, x - 8, canvas.height);
+      context.stroke();
+    }
   }
-  return canvas;
+
+  if (profile.polarContrast) {
+    const polarGradient = context.createLinearGradient(0, 0, 0, canvas.height);
+    polarGradient.addColorStop(0, "rgba(243,231,215,.42)");
+    polarGradient.addColorStop(0.48, "rgba(243,231,215,0)");
+    polarGradient.addColorStop(1, "rgba(137,91,89,.34)");
+    context.fillStyle = polarGradient;
+    context.fillRect(0, 0, canvas.width, canvas.height);
+  }
+  for (let index = 0; index < (profile.darkJets || 0); index += 1) {
+    const x = random() * canvas.width;
+    const y = canvas.height * (0.55 + random() * 0.36);
+    context.strokeStyle = "rgba(55,48,49,.48)";
+    context.lineWidth = 2 + random() * 5;
+    context.beginPath();
+    context.moveTo(x, y);
+    context.lineTo(x + 10 + random() * 54, y - 8 - random() * 30);
+    context.stroke();
+  }
+
+  if (profile.haze) {
+    context.fillStyle = `rgba(215,125,48,${profile.haze})`;
+    context.fillRect(0, 0, canvas.width, canvas.height);
+  }
 }
 
-function renderSatelliteInformation(satellite) {
+function createSatelliteCanvas(width, height) {
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const context = canvas.getContext("2d", { alpha: false });
+  if (!context || canvas.width === 0 || canvas.height === 0) throw new Error("satellite texture canvas unavailable");
+  return { canvas, context };
+}
+
+function canvasToLoadedSatelliteImage(canvas, metadata) {
+  return new Promise((resolve, reject) => {
+    canvas.toBlob((blob) => {
+      if (!blob) {
+        reject(new Error("satellite texture canvas encoding failed"));
+        return;
+      }
+      const objectUrl = URL.createObjectURL(blob);
+      const image = new Image();
+      image.decoding = "async";
+      image.onload = () => {
+        resolve({
+        image,
+        bodyId: metadata.bodyId,
+        sourceType: metadata.sourceType,
+        sourceLabel: metadata.sourceLabel,
+        status: "ready",
+        isFallback: metadata.isFallback,
+        width: image.naturalWidth,
+        height: image.naturalHeight,
+        dispose() {
+          URL.revokeObjectURL(objectUrl);
+          image.removeAttribute("src");
+        },
+        });
+      };
+      image.onerror = () => {
+        URL.revokeObjectURL(objectUrl);
+        reject(new Error("encoded satellite texture did not decode"));
+      };
+      image.src = objectUrl;
+    }, "image/png");
+  });
+}
+
+async function createScientificSatelliteTexture(bodyConfig, options = {}) {
+  const profile = bodyConfig.visualizationProfile;
+  if (!profile) throw new Error("satellite visualization profile missing");
+  const lowPerformanceMode = options.lowPerformanceMode ?? window.matchMedia("(max-width: 820px)").matches;
+  const { canvas, context } = createSatelliteCanvas(lowPerformanceMode ? 1024 : 2048, lowPerformanceMode ? 512 : 1024);
+  const random = seededRandom(seedFromString(profile.seed || bodyConfig.id));
+  context.fillStyle = profile.palette[0];
+  context.fillRect(0, 0, canvas.width, canvas.height);
+  drawScientificMottling(context, canvas, profile, random, Math.round(70 * profile.mottling), [canvas.width * 0.035, canvas.width * 0.13], 0.18);
+  drawScientificMottling(context, canvas, profile, random, Math.round(260 * profile.mottling), [8, 55], 0.15);
+  drawScientificMottling(context, canvas, profile, random, Math.round(980 * profile.roughness), [1.5, 9], 0.1);
+  drawConfiguredSurfaceFeatures(context, canvas, profile, random);
+  context.drawImage(canvas, 0, 0, 3, canvas.height, canvas.width - 3, 0, 3, canvas.height);
+  return canvasToLoadedSatelliteImage(canvas, {
+    bodyId: bodyConfig.id,
+    sourceType: "procedural-scientific",
+    sourceLabel: bodyConfig.textureProvider?.sourceLabel || "PCS scientific procedural approximation",
+    isFallback: false,
+  });
+}
+
+async function createSatelliteFallbackTexture(bodyConfig) {
+  const profile = bodyConfig.visualizationProfile;
+  const { canvas, context } = createSatelliteCanvas(512, 256);
+  const random = seededRandom(seedFromString(`${bodyConfig.id}-fallback`));
+  const palette = profile?.palette || [bodyConfig.fallbackTexture, "#353535", "#989898"];
+  context.fillStyle = palette[0];
+  context.fillRect(0, 0, canvas.width, canvas.height);
+  drawScientificMottling(context, canvas, { palette, mottling: 0.7 }, random, 52, [8, 62], 0.22);
+  drawScientificMottling(context, canvas, { palette, mottling: 0.7 }, random, 180, [1.5, 9], 0.14);
+  for (let index = 0; index < 22; index += 1) {
+    const radius = 2 + random() * 13;
+    drawWrappedEllipse(context, canvas, random() * canvas.width, random() * canvas.height,
+      radius, radius * 0.8, random() * Math.PI, withAlpha(palette[palette.length - 1], 0.24), "rgba(14,15,17,.34)");
+  }
+  context.drawImage(canvas, 0, 0, 2, canvas.height, canvas.width - 2, 0, 2, canvas.height);
+  return canvasToLoadedSatelliteImage(canvas, {
+    bodyId: bodyConfig.id,
+    sourceType: "simplified-fallback",
+    sourceLabel: "PCS simplified scientific fallback",
+    isFallback: true,
+  });
+}
+
+function logSatelliteTextureWarning({ bodyId, stage, source, error, fallbackApplied }) {
+  const warningKey = `${bodyId}:${stage}:${source}`;
+  if (satelliteTextureWarnings.has(warningKey)) return;
+  satelliteTextureWarnings.add(warningKey);
+  console.warn("[PCS Satellite Texture]", { bodyId, stage, source, error, fallbackApplied });
+}
+
+function disposeSatelliteTexture(textureResult) {
+  textureResult?.dispose?.();
+}
+
+function cacheSatelliteTexture(bodyId, result) {
+  satelliteTextureCache.delete(bodyId);
+  satelliteTextureCache.set(bodyId, result);
+  while (satelliteTextureCache.size > MAX_SATELLITE_TEXTURE_CACHE_ENTRIES) {
+    const eviction = [...satelliteTextureCache.entries()].find(([cachedBodyId]) => cachedBodyId !== activeCelestialTargetId);
+    if (!eviction) break;
+    satelliteTextureCache.delete(eviction[0]);
+    disposeSatelliteTexture(eviction[1]);
+  }
+  return result;
+}
+
+function loadSatelliteTextureUrl(bodyConfig, url, sourceType, sourceLabel) {
+  return new Promise((resolve, reject) => {
+    const image = new Image();
+    image.decoding = "async";
+    if (new URL(url, document.baseURI).origin !== window.location.origin) image.crossOrigin = "anonymous";
+    image.onload = () => resolve({
+      image, bodyId: bodyConfig.id, sourceType, sourceLabel, status: "ready", isFallback: false,
+      width: image.naturalWidth, height: image.naturalHeight, dispose() { image.removeAttribute("src"); },
+    });
+    image.onerror = () => reject(new Error(`satellite texture failed to load: ${url}`));
+    image.src = new URL(url, document.baseURI).href;
+  });
+}
+
+async function getSatelliteTexture(bodyId, options = {}) {
+  const cached = satelliteTextureCache.get(bodyId);
+  if (cached) return cacheSatelliteTexture(bodyId, cached);
+  const bodyConfig = SATELLITE_REGISTRY[bodyId];
+  if (!bodyConfig) {
+    logSatelliteTextureWarning({ bodyId, stage: "registry-lookup", source: "registry", error: "body not found", fallbackApplied: false });
+    throw new Error(`unknown satellite: ${bodyId}`);
+  }
+  const candidates = [
+    bodyConfig.publicTextureUrl && { url: bodyConfig.publicTextureUrl, type: "public-texture", label: bodyConfig.publicTextureSource || "Public planetary imagery" },
+    bodyConfig.localTextureUrl && { url: bodyConfig.localTextureUrl, type: "local-texture", label: bodyConfig.localTextureSource || "Local public texture" },
+    bodyConfig.localVisualizationTextureUrl && { url: bodyConfig.localVisualizationTextureUrl, type: "procedural-scientific", label: "PCS repository scientific visualization texture" },
+  ].filter(Boolean);
+  for (const candidate of candidates) {
+    try {
+      return cacheSatelliteTexture(bodyId, await loadSatelliteTextureUrl(bodyConfig, candidate.url, candidate.type, candidate.label));
+    } catch (error) {
+      logSatelliteTextureWarning({ bodyId, stage: "texture-load", source: candidate.url, error, fallbackApplied: false });
+    }
+  }
+  try {
+    return cacheSatelliteTexture(bodyId, await createScientificSatelliteTexture(bodyConfig, options));
+  } catch (error) {
+    logSatelliteTextureWarning({ bodyId, stage: "texture-generation", source: "procedural-scientific", error, fallbackApplied: true });
+    return cacheSatelliteTexture(bodyId, await createSatelliteFallbackTexture(bodyConfig));
+  }
+}
+
+function applySatelliteTexture(target, textureResult, requestContext) {
+  const stillActive = requestContext.generation === satelliteTextureGeneration
+    && activeCelestialTargetId === requestContext.bodyId
+    && target
+    && cesiumViewer
+    && !cesiumViewer.isDestroyed();
+  if (!stillActive) {
+    logSatelliteTextureWarning({ bodyId: requestContext.bodyId, stage: "async-stale", source: textureResult?.sourceType, error: "request superseded", fallbackApplied: false });
+    return false;
+  }
+  if (!textureResult?.image || !textureResult.width || !textureResult.height) {
+    throw new Error("satellite texture result has no decoded image");
+  }
+  target.material = Cesium.Material.fromType("Image", {
+    image: textureResult.image,
+    repeat: new Cesium.Cartesian2(1, 1),
+    color: Cesium.Color.WHITE,
+  });
+  return true;
+}
+
+async function updateSatelliteTexture(body, targetAppearance) {
+  const generation = ++satelliteTextureGeneration;
+  const requestContext = { generation, bodyId: body.id };
+  try {
+    const result = await getSatelliteTexture(body.id);
+    return applySatelliteTexture(targetAppearance, result, requestContext) ? result : null;
+  } catch (error) {
+    if (generation !== satelliteTextureGeneration || activeCelestialTargetId !== body.id) return null;
+    logSatelliteTextureWarning({ bodyId: body.id, stage: "material-apply", source: "procedural-scientific", error, fallbackApplied: true });
+    const fallback = await createSatelliteFallbackTexture(body);
+    if (!applySatelliteTexture(targetAppearance, fallback, requestContext)) {
+      disposeSatelliteTexture(fallback);
+      return null;
+    }
+    return fallback;
+  }
+}
+
+function satelliteTexturePresentation(textureResult) {
+  if (!textureResult) return { source: "Preparing texture…", type: "Loading", status: "Loading", accuracy: "Visualization-only texture" };
+  if (textureResult.sourceType === "public-texture") return { source: textureResult.sourceLabel, type: "Public planetary imagery", status: "Public planetary imagery", accuracy: "Source: NASA / JPL / USGS" };
+  if (textureResult.sourceType === "local-texture") return { source: textureResult.sourceLabel, type: "Local public texture", status: "Local public texture", accuracy: "Source attribution shown above" };
+  if (textureResult.isFallback) return { source: textureResult.sourceLabel, type: "Simplified scientific fallback", status: "Texture unavailable — Using scientific fallback", accuracy: "Visualization-only texture; scientifically guided, not a complete observed global mosaic" };
+  return { source: textureResult.sourceLabel, type: "Scientific procedural approximation", status: "Visualization texture — Scientific approximation — Not a complete global observation mosaic", accuracy: "Visualization-only texture; surface colors and major visual traits are scientifically guided" };
+}
+
+function renderSatelliteInformation(satellite, textureResult = null) {
   const parentName = celestialTargetConfig[satellite.parentBodyId]?.displayName || satellite.parentBodyId;
+  const texturePresentation = satellite.id === "moon"
+    ? { source: "NASA / USGS LROC WAC", type: "Public planetary imagery", status: satellite.visualizationStatus, accuracy: "Verified global lunar mosaic in the existing Moon renderer" }
+    : satelliteTexturePresentation(textureResult);
   const values = {
     name: satellite.name,
     parent: parentName,
@@ -1588,7 +1883,12 @@ function renderSatelliteInformation(satellite) {
     elements: `Inclination ${satellite.inclinationDeg}°; eccentricity ${satellite.eccentricity} (approximate mean)`,
     surface: satellite.surfaceAtmosphereSummary,
     missions: satellite.majorMissions.join(", "),
-    visualization: satellite.visualizationStatus,
+    visualizationSource: texturePresentation.source,
+    textureType: texturePresentation.type,
+    visualization: texturePresentation.status,
+    scientificAccuracy: satellite.visualizationProfile?.shapeAxesKm
+      ? `${texturePresentation.accuracy}; approximate shape visualization, not a high-resolution shape model`
+      : texturePresentation.accuracy,
   };
   updateText(selectors.satelliteTitle, `${satellite.name} Observation`);
   updateText(selectors.satelliteDescription, satellite.description);
@@ -1606,42 +1906,50 @@ function renderSatelliteInformation(satellite) {
   }
 }
 
-function renderSatellite(satellite) {
+async function renderSatellite(satellite) {
   if (!cesiumViewer || !window.Cesium) return false;
-  const profile = satelliteVisualProfile(satellite.id);
+  const profile = satellite.visualizationProfile;
   const radiusMeters = satellite.radiusKm * 1000;
-  const texture = createSatelliteVisualizationTexture(satellite);
   const startTime = Cesium.JulianDate.now();
-  const orientation = new Cesium.CallbackProperty((time, result) => {
-    const seconds = Cesium.JulianDate.secondsDifference(time, startTime);
-    return Cesium.Quaternion.fromAxisAngle(Cesium.Cartesian3.UNIT_Z, (seconds / 45) * Math.PI * 2, result);
-  }, false);
   cesiumViewer.scene.globe.show = false;
   cesiumViewer.scene.skyAtmosphere.show = false;
   cesiumViewer.scene.globe.enableLighting = false;
-  const shape = profile?.shape || [1, 1, 1];
-  const entity = cesiumViewer.entities.add({
-    name: `${satellite.name} procedural visualization`,
-    position: Cesium.Cartesian3.ZERO,
-    orientation,
-    ellipsoid: {
-      radii: new Cesium.Cartesian3(radiusMeters * shape[0], radiusMeters * shape[1], radiusMeters * shape[2]),
-      material: texture
-        ? new Cesium.ImageMaterialProperty({ image: texture, transparent: false })
-        : Cesium.Color.fromCssColorString(satellite.fallbackTexture),
-    },
+  const shapeAxesMeters = profile?.shapeAxesKm?.map((value) => value * 1000);
+  const radii = shapeAxesMeters
+    ? new Cesium.Cartesian3(...shapeAxesMeters)
+    : new Cesium.Cartesian3(radiusMeters, radiusMeters, radiusMeters);
+  const appearance = new Cesium.MaterialAppearance({
+    materialSupport: Cesium.MaterialAppearance.MaterialSupport.TEXTURED,
+    translucent: false,
+    closed: true,
+    flat: true,
+    faceForward: true,
   });
-  celestialSatelliteEntities.push(entity);
-  if (satellite.id === "titan") {
-    celestialSatelliteEntities.push(cesiumViewer.entities.add({
-      name: "Titan dense-atmosphere visualization",
-      position: Cesium.Cartesian3.ZERO,
-      ellipsoid: {
-        radii: new Cesium.Cartesian3(radiusMeters * 1.035, radiusMeters * 1.035, radiusMeters * 1.035),
-        material: Cesium.Color.fromCssColorString("#d98135").withAlpha(0.16),
-      },
-    }));
-  }
+  renderSatelliteInformation(satellite);
+  const textureResult = await updateSatelliteTexture(satellite, appearance);
+  if (!textureResult) return false;
+  const primitive = cesiumViewer.scene.primitives.add(new Cesium.Primitive({
+    geometryInstances: new Cesium.GeometryInstance({
+      geometry: new Cesium.EllipsoidGeometry({
+        radii,
+        stackPartitions: 96,
+        slicePartitions: 96,
+        vertexFormat: Cesium.MaterialAppearance.MaterialSupport.TEXTURED.vertexFormat,
+      }),
+    }),
+    appearance,
+    asynchronous: false,
+    releaseGeometryInstances: true,
+    modelMatrix: Cesium.Matrix4.clone(Cesium.Matrix4.IDENTITY),
+  }));
+  celestialSatellitePrimitives.push(primitive);
+  const removeRotationListener = cesiumViewer.clock.onTick.addEventListener((clock) => {
+    if (activeCelestialTargetId !== satellite.id || primitive.isDestroyed()) return;
+    const seconds = Cesium.JulianDate.secondsDifference(clock.currentTime, startTime);
+    const rotation = Cesium.Matrix3.fromRotationZ((seconds / 45) * Math.PI * 2);
+    primitive.modelMatrix = Cesium.Matrix4.fromRotationTranslation(rotation, Cesium.Cartesian3.ZERO, primitive.modelMatrix);
+  });
+  celestialEventRemovers.push(removeRotationListener);
   const cameraController = cesiumViewer.scene.screenSpaceCameraController;
   cameraController.minimumZoomDistance = radiusMeters * 1.12;
   cameraController.maximumZoomDistance = radiusMeters * 60;
@@ -1650,9 +1958,21 @@ function renderSatellite(satellite) {
     orientation: { direction: new Cesium.Cartesian3(-1, 0, -0.08), up: Cesium.Cartesian3.UNIT_Z },
     duration: 1.2,
   });
-  renderSatelliteInformation(satellite);
+  renderSatelliteInformation(satellite, textureResult);
+  if (profile?.haze && activeCelestialTargetId === satellite.id) {
+    celestialSatelliteEntities.push(cesiumViewer.entities.add({
+      name: `${satellite.name} dense-atmosphere visualization`,
+      position: Cesium.Cartesian3.ZERO,
+      ellipsoid: {
+        radii: new Cesium.Cartesian3(radiusMeters * 1.035, radiusMeters * 1.035, radiusMeters * 1.035),
+        material: Cesium.Color.fromCssColorString(profile.palette[2]).withAlpha(0.13),
+      },
+    }));
+  }
   updateText(selectors.solarSystemStatus,
-    `${satellite.name} visualization active. Procedural texture is visual-only; physical radius is verified and inter-body distance is not rendered to scale.`);
+    `${satellite.name} visualization active. ${textureResult.sourceLabel}; ${textureResult.width} × ${textureResult.height}. Physical radius is verified and inter-body distance is not rendered to scale.`);
+  showObservatoryMessage(`${satellite.name} texture ready — ${textureResult.isFallback ? "scientific fallback" : "scientific procedural approximation"}.`);
+  cesiumViewer.scene.requestRender();
   return true;
 }
 
@@ -1783,7 +2103,7 @@ async function setCelestialTarget(targetId) {
     await loadSunObservation();
     updateSunStatusMessage();
   } else if (SATELLITE_TARGETS.has(targetId)) {
-    renderSatellite(SATELLITE_REGISTRY[targetId]);
+    await renderSatellite(SATELLITE_REGISTRY[targetId]);
   } else if (PLANET_EPHEMERIS_TARGETS.has(targetId)) {
     await Promise.allSettled([loadPlanetImagery(targetId), loadPlanetObservation(targetId)]);
   }

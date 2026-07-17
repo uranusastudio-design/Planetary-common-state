@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2048" height="1024" viewBox="0 0 2048 1024">
+  <defs>
+    <filter id="rock" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency=".012 .025" numOctaves="4" seed="31"/>
+      <feColorMatrix values=".62 0 0 0 .12  0 .59 0 0 .11  0 0 .54 0 .10  0 0 0 .82 0"/>
+      <feBlend in="SourceGraphic" mode="overlay"/>
+    </filter>
+    <radialGradient id="crater"><stop offset="0" stop-color="#292b2c"/><stop offset=".68" stop-color="#555550"/><stop offset=".82" stop-color="#c1bba8"/><stop offset="1" stop-color="#484945"/></radialGradient>
+    <pattern id="grooves" width="180" height="140" patternUnits="userSpaceOnUse" patternTransform="rotate(-14)">
+      <rect width="180" height="140" fill="#8e8b80" opacity=".35"/><path d="M0 18h180M0 33h180M0 75h180M0 91h180" stroke="#d3ccba" stroke-width="5" opacity=".5"/><path d="M0 23h180M0 80h180" stroke="#3d4142" stroke-width="3" opacity=".55"/>
+    </pattern>
+  </defs>
+  <rect width="2048" height="1024" fill="#4b4d4b"/>
+  <g filter="url(#rock)"><path d="M0 0h530l190 180-130 310 140 230-210 304H0z" fill="#333638"/><path d="M1260 0h788v460l-210 160 120 404h-700l-170-300 190-250-130-210z" fill="#343637"/><path d="M420 120h1090v760H420z" fill="url(#grooves)"/></g>
+  <g opacity=".92" fill="url(#crater)"><circle cx="210" cy="210" r="78"/><circle cx="1790" cy="280" r="54"/><circle cx="320" cy="760" r="42"/><circle cx="1560" cy="810" r="72"/><circle cx="930" cy="280" r="34"/><circle cx="1130" cy="690" r="29"/><circle cx="670" cy="560" r="25"/></g>
+  <g fill="#ddd6c1" opacity=".42"><circle cx="95" cy="530" r="10"/><circle cx="1990" cy="530" r="10"/><circle cx="1440" cy="190" r="15"/><circle cx="490" cy="900" r="13"/></g>
+</svg>

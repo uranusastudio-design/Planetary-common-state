@@ -49,3 +49,19 @@ test("planet-to-satellite hierarchy matches phase-one scope", () => {
     saturn: ["titan", "enceladus"], uranus: ["titania"], neptune: ["triton"],
   });
 });
+
+test("every phase-one procedural satellite has a configuration-driven texture profile", () => {
+  const { bodies } = loadRegistry();
+  for (const body of Object.values(bodies)) {
+    if (body.id === "moon") {
+      assert.equal(body.textureProvider, "existing-moon-renderer");
+      continue;
+    }
+    assert.equal(body.textureProvider.type, "procedural-scientific", `${body.id} provider`);
+    assert.ok(body.visualizationProfile, `${body.id} visualization profile`);
+    assert.ok(body.visualizationProfile.seed, `${body.id} deterministic seed`);
+    assert.ok(body.visualizationProfile.palette.length >= 3, `${body.id} scientific palette`);
+  }
+  assert.deepEqual(Array.from(bodies.phobos.visualizationProfile.shapeAxesKm), [13.5, 11, 9]);
+  assert.deepEqual(Array.from(bodies.deimos.visualizationProfile.shapeAxesKm), [7.5, 6, 5.5]);
+});

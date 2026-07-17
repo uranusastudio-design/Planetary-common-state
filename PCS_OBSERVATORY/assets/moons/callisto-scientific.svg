@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2048" height="1024" viewBox="0 0 2048 1024">
+  <defs><filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".017" numOctaves="5" seed="37"/><feBlend in="SourceGraphic" mode="soft-light"/></filter><radialGradient id="c"><stop stop-color="#20201f"/><stop offset=".58" stop-color="#3e3a37"/><stop offset=".72" stop-color="#d1c6b2"/><stop offset=".84" stop-color="#756f68"/><stop offset="1" stop-color="#35322f"/></radialGradient></defs>
+  <rect width="2048" height="1024" fill="#393633"/><rect width="2048" height="1024" fill="#756f67" opacity=".55" filter="url(#n)"/>
+  <g fill="url(#c)"><circle cx="210" cy="210" r="74"/><circle cx="520" cy="610" r="52"/><circle cx="830" cy="260" r="35"/><circle cx="1080" cy="770" r="68"/><circle cx="1410" cy="320" r="47"/><circle cx="1780" cy="720" r="88"/><circle cx="1950" cy="190" r="34"/><circle cx="80" cy="900" r="42"/><circle cx="1180" cy="420" r="26"/><circle cx="690" cy="880" r="30"/></g>
+  <g fill="none" stroke="#d8ceba" opacity=".72"><circle cx="1540" cy="630" r="140" stroke-width="15"/><circle cx="1540" cy="630" r="205" stroke-width="10"/><circle cx="1540" cy="630" r="270" stroke-width="6"/></g>
+</svg>

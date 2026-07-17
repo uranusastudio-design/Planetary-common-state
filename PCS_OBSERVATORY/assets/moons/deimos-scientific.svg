@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2048" height="1024" viewBox="0 0 2048 1024">
+  <defs><filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".009" numOctaves="4" seed="17"/><feBlend in="SourceGraphic" mode="soft-light"/></filter><radialGradient id="c"><stop stop-color="#2c2926"/><stop offset=".7" stop-color="#5b544e"/><stop offset=".87" stop-color="#978e84"/><stop offset="1" stop-color="#5c554f"/></radialGradient></defs>
+  <rect width="2048" height="1024" fill="#686159"/><rect width="2048" height="1024" fill="#81786f" opacity=".5" filter="url(#n)"/>
+  <g fill="url(#c)" opacity=".9"><circle cx="460" cy="310" r="100"/><circle cx="1250" cy="690" r="72"/><circle cx="1760" cy="410" r="48"/><circle cx="80" cy="790" r="42"/><circle cx="2000" cy="790" r="42"/></g>
+</svg>

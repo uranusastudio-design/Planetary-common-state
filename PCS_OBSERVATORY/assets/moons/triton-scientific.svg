@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2048" height="1024" viewBox="0 0 2048 1024">
+  <defs><filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".009 .016" numOctaves="4" seed="53"/><feBlend in="SourceGraphic" mode="soft-light"/></filter><linearGradient id="p" x2="0" y2="1"><stop stop-color="#eaded2"/><stop offset=".48" stop-color="#cbb2ac"/><stop offset="1" stop-color="#9b7775"/></linearGradient></defs>
+  <rect width="2048" height="1024" fill="url(#p)"/><rect width="2048" height="1024" fill="#b79490" opacity=".4" filter="url(#n)"/>
+  <path d="M0 0h2048v300Q1680 240 1320 340T650 270T0 350z" fill="#eee5d9" opacity=".75"/><path d="M0 760Q370 650 760 760T1450 710T2048 800v224H0z" fill="#ad8582" opacity=".55"/>
+  <g stroke="#51494a" stroke-linecap="round" opacity=".75"><path d="M450 420l95 230" stroke-width="13"/><path d="M920 300l55 250" stroke-width="9"/><path d="M1490 380l115 260" stroke-width="16"/><path d="M1780 250l70 190" stroke-width="8"/></g><g fill="#6d595b" opacity=".5"><ellipse cx="530" cy="670" rx="70" ry="18"/><ellipse cx="1000" cy="570" rx="55" ry="14"/><ellipse cx="1620" cy="660" rx="85" ry="20"/></g>
+</svg>
