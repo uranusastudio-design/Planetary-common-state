@@ -10,7 +10,7 @@ export const PCS_LAYER_ADAPTERS = Object.freeze([
   { id: "ndvi", provider: "NASA MODIS", dataset: "MOD13A2 Vegetation Indices 16-Day L3 Global 1 km", endpoint: "https://cmr.earthdata.nasa.gov/search/granules.json?short_name=MOD13A2&version=061&page_size=1&sort_key=-start_date", parser: "cmr_granule", spatial_resolution: "1 km", temporal_resolution: "16 days", license: PUBLIC_DOMAIN },
   { id: "sea-ice", provider: "NSIDC", dataset: "Sea Ice Index v4 Northern Hemisphere daily extent", endpoint: "https://noaadata.apps.nsidc.org/NOAA/G02135/north/daily/data/N_seaice_extent_daily_v4.0.csv", parser: "nsidc", spatial_resolution: "Northern Hemisphere extent", temporal_resolution: "daily", license: PUBLIC_DOMAIN },
   { id: "shipping", provider: "NOAA Marine Cadastre", dataset: "AccessAIS historical vessel traffic", endpoint: "https://marinecadastre.gov/ais/", parser: "metadata_only", spatial_resolution: "historical track archive", temporal_resolution: "annual archive", license: PUBLIC_DOMAIN, partial_reason: "No sustainable anonymous public live vessel-position API is configured; no vessel positions are inferred." },
-  { id: "aviation", provider: "OpenSky Network", dataset: "State Vectors", endpoint: "https://opensky-network.org/api/states/all", parser: "opensky", spatial_resolution: "reported aircraft positions", temporal_resolution: "live state snapshot", license: "OpenSky Network terms" },
+  { id: "aviation", provider: "OpenSky Network", dataset: "State Vectors", endpoint: "https://opensky-network.org/api/states/all", parser: "opensky", authOnDenied: true, spatial_resolution: "reported aircraft positions", temporal_resolution: "live state snapshot", license: "OpenSky Network terms" },
   { id: "satellite-observations", provider: "CelesTrak", dataset: "Active Satellites GP (OMM JSON)", endpoint: "https://celestrak.org/NORAD/elements/gp.php?GROUP=active&FORMAT=json", parser: "celestrak", spatial_resolution: "orbital element per active object", temporal_resolution: "latest GP epoch", license: "CelesTrak terms" },
 ]);
 
@@ -105,7 +105,7 @@ export async function retrieveLayer(adapter, env, fetcher = fetch, now = new Dat
   const timer = setTimeout(() => controller.abort(), 12000);
   try {
     const response = await fetcher(endpoint, { headers: { "user-agent": "PCS-Observatory/2.0 public-research" }, signal: controller.signal, cf: { cacheTtl: 0 } });
-    if (!response.ok) return normalized(adapter, { endpoint, retrieved_at: retrievedAt, retrieval_status: response.status === 401 || response.status === 403 ? "AUTH_REQUIRED" : "ERROR", quality_flag: `http_${response.status}`, error: `Provider returned HTTP ${response.status}` });
+    if (!response.ok) return normalized(adapter, { endpoint, retrieved_at: retrievedAt, retrieval_status: adapter.authOnDenied && (response.status === 401 || response.status === 403) ? "AUTH_REQUIRED" : "ERROR", quality_flag: `http_${response.status}`, error: `Provider returned HTTP ${response.status}` });
     const body = await response.text();
     let result;
     if (adapter.parser === "firms") {

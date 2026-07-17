@@ -494,7 +494,7 @@ function displayCoverage(element, value) {
   } else {
     const connected = Number(value);
     const waiting = Math.max(0, 4 - connected);
-    updateText(element, `Connected: ${connected} / 4\nWaiting: ${waiting} / 4\nPlanned: future layers`);
+    updateText(element, `Connected: ${connected} / 4\nUnavailable: ${waiting} / 4`);
   }
   element?.classList.toggle("is-missing", isMissing);
 }
@@ -2225,7 +2225,7 @@ function initializeLanguageSelector() {
 
 function initializePlaceholderSelectors() {
   selectors.dataSourceSelector?.addEventListener("change", () => {
-    updateText(selectors.dataMessage, "Data-source filtering is planned.");
+    updateText(selectors.dataMessage, "Source registry selection does not alter raw observations.");
   });
 
   selectors.aiModeSelector?.addEventListener("change", () => {
@@ -2519,22 +2519,22 @@ function initializeFrameworkControls() {
     control.addEventListener("click", () => {
       const action = control.dataset.timelineAction || "timeline";
       const label = action.replace("-", " ");
-      updateText(selectors.timelineStatus, `Timeline ${label} placeholder. Timeline playback will activate after validated time-series data is available.`);
+      updateText(selectors.timelineStatus, `Timeline ${label}: WAITING_FOR_TIME_SERIES. Validated time-series data is unavailable.`);
     });
   });
 
   selectors.timelineSpeed?.addEventListener("change", () => {
-    updateText(selectors.timelineStatus, "Timeline speed placeholder. Timeline playback will activate after validated time-series data is available.");
+    updateText(selectors.timelineStatus, "WAITING_FOR_TIME_SERIES. Playback speed is inactive until validated time-series data exists.");
   });
 
   selectors.soundToggle?.addEventListener("change", () => {
     selectors.soundToggle.checked = false;
-    updateText(selectors.audioStatus, "Sound placeholder only. No audio assets loaded.");
+    updateText(selectors.audioStatus, "NOT_CONFIGURED. No audio assets loaded.");
   });
 
   selectors.voiceToggle?.addEventListener("change", () => {
     selectors.voiceToggle.checked = false;
-    updateText(selectors.audioStatus, "Voice placeholder only. No audio assets loaded.");
+    updateText(selectors.audioStatus, "NOT_CONFIGURED. No voice assets loaded.");
   });
 }
 
@@ -2562,7 +2562,7 @@ function initializeLayerControls() {
         return;
       }
 
-      updateText(selectors.layerControlMessage, "Planned layer. No data connected.");
+      updateText(selectors.layerControlMessage, "UNAVAILABLE. No provider-backed observation is connected.");
     });
   });
 }

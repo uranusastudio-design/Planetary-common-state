@@ -367,12 +367,18 @@ export async function handlePcsRequest(request, env) {
     if (path.endsWith("/link-source") && request.method === "POST") return response(await linkSource(env, id, body));
     if (path.endsWith("/merge") && request.method === "POST") return response(await mergeEvent(env, id, body));
     if (path.endsWith("/validate") && request.method === "POST") {
+      const allowedResults = ["confirmed", "partially_confirmed", "false_alarm", "missed", "unresolved", "insufficient_data"];
+      if (body.result && !allowedResults.includes(body.result)) return response({ error: "Invalid validation result" }, 400);
+      if (body.result && !validationEvidenceSufficient(body)) return response({ error: "Evidence-backed validation requires input_data_snapshot and official_confirmation_time" }, 400);
       await env.PCS_DB.prepare("UPDATE pcs_retrospective_analyses SET validation_status = ?, validation_notes = ?, updated_at = strftime('%Y-%m-%dT%H:%M:%SZ','now') WHERE event_id = ?")
         .bind(body.validation_status, body.validation_notes ?? null, id).run();
+      const reviewerType = body.reviewer_type === "rule" ? "rule" : "human";
+      await env.PCS_DB.prepare(`INSERT INTO pcs_review_history
+        (id, event_id, ai_output_id, reviewer_type, status, notes, warning_rule_version, reviewed_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`)
+        .bind(crypto.randomUUID(), id, body.ai_output_id ?? null, reviewerType, body.validation_status || "UNVALIDATED",
+          body.validation_notes ?? null, body.warning_rule_version ?? null, body.reviewed_at || new Date().toISOString()).run();
       if (body.result) {
-        const allowedResults = ["confirmed", "partially_confirmed", "false_alarm", "missed", "unresolved", "insufficient_data"];
-        if (!allowedResults.includes(body.result)) return response({ error: "Invalid validation result" }, 400);
-        if (!validationEvidenceSufficient(body)) return response({ error: "Evidence-backed validation requires input_data_snapshot and official_confirmation_time" }, 400);
         const ledgerId = body.analysis_id || `ledger-${id}`;
         const event = await env.PCS_DB.prepare("SELECT region, event_type, confidence, published_at FROM pcs_events WHERE id = ?").bind(id).first();
         await env.PCS_DB.prepare(`INSERT INTO pcs_evidence_ledger
