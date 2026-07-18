@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>PCS Observatory | Uranus A Studio</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cesium@1.120.0/Build/Cesium/Widgets/widgets.css">
-    <link rel="stylesheet" href="./style.css?v=phase-one-moons-1">
+    <link rel="stylesheet" href="./style.css?v=20260718-phase62-science-runtime-7">
     <link rel="stylesheet" href="./intro-screen.css">
     <script>
       window.CESIUM_BASE_URL = "https://cdn.jsdelivr.net/npm/cesium@1.120.0/Build/Cesium/";
@@ -365,21 +365,26 @@
               <div class="layer-list">
                 <label class="layer-entry weather-layer">
                   <input type="checkbox" id="weather-layer-clouds" data-weather-layer="clouds">
+                  <input class="weather-opacity-input" aria-label="Cloud opacity" type="range" min="0" max="1" step="0.05" value="0.5" data-weather-opacity="clouds" disabled>
                   <span><strong>Clouds</strong><small>OpenWeather · Live via proxy</small></span>
                 </label>
                 <label class="layer-entry weather-layer">
                   <input type="checkbox" id="weather-layer-rain" data-weather-layer="rain">
+                  <input class="weather-opacity-input" aria-label="Rain opacity" type="range" min="0" max="1" step="0.05" value="0.6" data-weather-opacity="rain" disabled>
                   <span><strong>Rain</strong><small>OpenWeather · Live via proxy</small></span>
                 </label>
                 <label class="layer-entry weather-layer">
                   <input type="checkbox" id="weather-layer-temp" data-weather-layer="temp">
+                  <input class="weather-opacity-input" aria-label="Temperature opacity" type="range" min="0" max="1" step="0.05" value="0.6" data-weather-opacity="temp" disabled>
                   <span><strong>Temperature</strong><small>OpenWeather · Live via proxy</small></span>
                 </label>
                 <label class="layer-entry weather-layer">
                   <input type="checkbox" id="weather-layer-wind" data-weather-layer="wind">
+                  <input class="weather-opacity-input" aria-label="Wind opacity" type="range" min="0" max="1" step="0.05" value="0.6" data-weather-opacity="wind" disabled>
                   <span><strong>Wind</strong><small>OpenWeather · Live via proxy</small></span>
                 </label>
               </div>
+              <div id="weather-legends" class="weather-legends" aria-live="polite"></div>
               <div class="weather-status-block">
                 <p id="weather-proxy-status" class="framework-status" role="status" aria-live="polite">Weather proxy: checking...</p>
                 <p id="weather-active-layers" class="framework-status" role="status" aria-live="polite">Active layers: none</p>
@@ -664,6 +669,6 @@
     <script src="./moon-lighting.js"></script>
     <script src="./mission-imagery-registry.js?v=20260717-mission-moon-textures"></script>
     <script src="./celestial-bodies.js?v=20260717-mission-moon-textures"></script>
-    <script src="./app.js?v=20260717-pcs-intelligence-layers"></script>
+    <script src="./app.js?v=20260718-phase62-science-runtime-7"></script>
   </body>
 </html>

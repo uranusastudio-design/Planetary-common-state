@@ -30,6 +30,23 @@ test("unknown OpenWeather layer remains an explicit 400", async () => {
   assert.match(await response.text(), /Invalid OpenWeather tile path/);
 });
 
+test("NHC GIS proxy allows only official KMZ archives and adds public CORS", async () => {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async (url) => {
+    assert.equal(String(url), "https://www.nhc.noaa.gov/storm_graphics/api/EP052026_012adv_TRACK.kmz");
+    return new Response(new Uint8Array([0x50, 0x4b, 0x03, 0x04, 0x01]), { status: 200, headers: { "content-type": "application/octet-stream" } });
+  };
+  try {
+    const official = encodeURIComponent("https://www.nhc.noaa.gov/storm_graphics/api/EP052026_012adv_TRACK.kmz");
+    const response = await worker.fetch(new Request(`https://pcs.test/api/layers/nhc-gis?url=${official}`), {}, {});
+    assert.equal(response.status, 200);
+    assert.equal(response.headers.get("content-type"), "application/vnd.google-earth.kmz");
+    assert.equal(response.headers.get("access-control-allow-origin"), "*");
+    const denied = await worker.fetch(new Request(`https://pcs.test/api/layers/nhc-gis?url=${encodeURIComponent("https://example.test/file.kmz")}`), {}, {});
+    assert.equal(denied.status, 400);
+  } finally { globalThis.fetch = originalFetch; }
+});
+
 test("provider adapters expose the complete replaceable metadata contract", async () => {
   const item = await probeAdapter(PROVIDER_ADAPTERS.find((entry) => entry.id === "usgs-earthquakes"), {}, async () => new Response("{}", { status: 200, headers: { "last-modified": "Thu, 16 Jul 2026 00:00:00 GMT" } }), new Date("2026-07-16T01:00:00Z"));
   for (const key of ["provider", "dataset", "endpoint", "timestamp", "latency", "quality_flag", "uncertainty", "license"]) assert.ok(Object.hasOwn(item, key), key);

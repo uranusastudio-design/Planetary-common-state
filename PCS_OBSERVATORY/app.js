@@ -63,10 +63,10 @@ const EARTH_IMAGERY_CONFIG = {
   fallback: { assetPath: "Assets/Textures/NaturalEarthII" },
 };
 const WEATHER_LAYER_CONFIG = {
-  clouds: { label: "Clouds", path: "clouds", opacity: 0.5 },
-  rain: { label: "Rain", path: "rain", opacity: 0.6 },
-  temp: { label: "Temperature", path: "temperature", opacity: 0.6 },
-  wind: { label: "Wind", path: "wind", opacity: 0.6 },
+  clouds: { id: "clouds", capabilityId: "clouds", kind: "weather", label: "Clouds", path: "clouds", opacity: 0.5, order: 10, legend: ["Clear", "Cloud cover", "Dense cloud"] },
+  rain: { id: "rain", capabilityId: "rain", kind: "weather", label: "Rain", path: "rain", opacity: 0.6, order: 20, legend: ["Light", "Moderate", "Heavy"] },
+  temp: { id: "temp", capabilityId: "temperature", kind: "weather", label: "Temperature", path: "temperature", opacity: 0.6, order: 30, legend: ["Cold", "Temperate", "Hot"] },
+  wind: { id: "wind", capabilityId: "wind", kind: "weather", label: "Wind", path: "wind", opacity: 0.6, order: 40, legend: ["Low", "Moderate", "High"] },
 };
 
 const regionConfig = {
@@ -247,9 +247,17 @@ let userAccuracyEntity = null;
 let lastUserPosition = null;
 let activeRegionId = "global";
 let translations = {};
-const activeWeatherLayers = new Map();
+const activeEarthLayers = new Map();
+const earthLayerCapabilityMatrix = new Map();
+let earthLayerRuntime = null;
+let latestLayerSnapshotSucceededAt = null;
+let latestLayerSnapshotFailed = false;
+let layerSnapshotTimer = null;
+const LAYER_SNAPSHOT_INTERVAL_MS = 10 * 60 * 1000;
+const LAYER_SNAPSHOT_STALE_MS = 20 * 60 * 1000;
+let cameraTransitionOperational = false;
+let cameraTransitionFailed = false;
 let latestActiveAlertCount = 0;
-let layerSnapshotUpdateImplemented = false;
 
 const selectors = {
   currentState: document.querySelector("#current-state"),
@@ -317,6 +325,9 @@ const selectors = {
   weatherProxyStatus: document.querySelector("#weather-proxy-status"),
   weatherActiveLayers: document.querySelector("#weather-active-layers"),
   weatherTileError: document.querySelector("#weather-tile-error"),
+  weatherOpacityControls: document.querySelectorAll("[data-weather-opacity]"),
+  weatherLegends: document.querySelector("#weather-legends"),
+  weatherLayerMetadata: document.querySelectorAll("[data-weather-metadata]"),
   domainGrid: document.querySelector("#domain-readiness-grid"),
   domainReadinessStatus: document.querySelector("#domain-readiness-status"),
   connectedDatasetCount: document.querySelector("#connected-dataset-count"),
@@ -1987,7 +1998,7 @@ async function renderSatellite(satellite) {
   const cameraController = cesiumViewer.scene.screenSpaceCameraController;
   cameraController.minimumZoomDistance = radiusMeters * 1.12;
   cameraController.maximumZoomDistance = radiusMeters * 60;
-  cesiumViewer.camera.flyTo({
+  flyToWithRuntime({
     destination: new Cesium.Cartesian3(radiusMeters * 4.2, 0, radiusMeters * 0.32),
     orientation: { direction: new Cesium.Cartesian3(-1, 0, -0.08), up: Cesium.Cartesian3.UNIT_Z },
     duration: 1.2,
@@ -2055,8 +2066,34 @@ function toggleCelestialSystem(parentButton) {
   parentButton.setAttribute("aria-expanded", String(expanded));
 }
 
+function flyToWithRuntime(options) {
+  if (!cesiumViewer || cesiumViewer.isDestroyed()) return false;
+  const originalComplete = options.complete;
+  const originalCancel = options.cancel;
+  try {
+    cesiumViewer.camera.flyTo({
+      ...options,
+      complete: () => {
+        cameraTransitionOperational = true;
+        cameraTransitionFailed = false;
+        originalComplete?.();
+        refreshAnimationStatus();
+      },
+      cancel: () => {
+        originalCancel?.();
+        refreshAnimationStatus();
+      },
+    });
+    return true;
+  } catch (error) {
+    cameraTransitionFailed = true;
+    refreshAnimationStatus();
+    return false;
+  }
+}
+
 function clearEarthLayers() {
-  [...activeWeatherLayers.keys()].forEach(removeWeatherLayer);
+  [...activeEarthLayers.keys()].forEach(removeWeatherLayer);
   selectors.weatherLayerControls.forEach((control) => { control.checked = false; });
   clearEarthImagery();
   clearUserLocation();
@@ -2117,7 +2154,7 @@ async function setCelestialTarget(targetId) {
   }
   if (!SATELLITE_TARGETS.has(targetId)) {
     const [lon, lat, altitude] = target.cameraDestination;
-    cesiumViewer.camera.flyTo({ destination: Cesium.Cartesian3.fromDegrees(lon, lat, altitude), duration: 1.2 });
+    flyToWithRuntime({ destination: Cesium.Cartesian3.fromDegrees(lon, lat, altitude), duration: 1.2 });
   }
   if (targetId === "earth") {
     restoreEarthLighting();
@@ -2168,7 +2205,7 @@ function showUserLocation(position) {
 function flyToUserLocation() {
   if (!lastUserPosition || !cesiumViewer || activeCelestialTargetId !== "earth") return;
   const { longitude, latitude, accuracy } = lastUserPosition.coords;
-  cesiumViewer.camera.flyTo({ destination: Cesium.Cartesian3.fromDegrees(longitude, latitude, Math.max(accuracy * 8, 2500)), duration: 1.8 });
+  flyToWithRuntime({ destination: Cesium.Cartesian3.fromDegrees(longitude, latitude, Math.max(accuracy * 8, 2500)), duration: 1.8 });
 }
 
 function requestUserLocation() {
@@ -2505,7 +2542,7 @@ function initializeFrameworkControls() {
         : mode === "landing-sites"
           ? { lon: -156.53, lat: 0.67, altitude: 4500000 }
           : { lon: 180, lat: 0, altitude: mode === "satellite-view" ? 7000000 : 16000000 };
-      cesiumViewer.camera.flyTo({
+      flyToWithRuntime({
         destination: Cesium.Cartesian3.fromDegrees(view.lon, view.lat, view.altitude),
         duration: 1.1,
       });
@@ -2921,6 +2958,14 @@ async function initializeVisitorNetwork() {
   ]);
 }
 
+async function pingVisitorPresence() {
+  try {
+    await postVisitorEvent("/api/visitors/ping");
+  } catch {
+    updateText(selectors.visitorNetworkStatus, "Visitor presence ping unavailable; retrying automatically.");
+  }
+}
+
 function reportStartupError(label, error) {
   console.error(`[PCS_OBSERVATORY] ${label} failed:`, error);
   const currentMessage = selectors.dataMessage?.textContent || "";
@@ -2950,10 +2995,25 @@ function buildWeatherTileUrl(layerPath) {
 }
 
 function updateWeatherActiveLayersStatus() {
-  const labels = [...activeWeatherLayers.keys()]
-    .map((id) => WEATHER_LAYER_CONFIG[id]?.label ?? id)
+  const labels = [...activeEarthLayers.keys()]
+    .map((id) => earthLayerRuntime?.registry.get(id)?.label ?? WEATHER_LAYER_CONFIG[id]?.label ?? id)
     .join(", ");
   updateText(selectors.weatherActiveLayers, labels ? `Active layers: ${labels}` : "Active layers: none");
+  if (selectors.weatherActiveLayers) {
+    selectors.weatherActiveLayers.dataset.activeLayerCount = String(activeEarthLayers.size);
+    selectors.weatherActiveLayers.dataset.activeResourceCount = String([...activeEarthLayers.values()].reduce((count, entry) => count + (entry.layer ? 1 : 0) + (entry.entities?.length || 0) + (entry.dataSources?.length || 0), 0));
+    const viewer = earthLayerRuntime?.viewerProvider?.();
+    if (viewer && !viewer.isDestroyed()) {
+      selectors.weatherActiveLayers.dataset.cesiumImageryLayerCount = String(viewer.imageryLayers.length);
+      selectors.weatherActiveLayers.dataset.cesiumEntityCount = String(viewer.entities.values.length);
+      selectors.weatherActiveLayers.dataset.cesiumDataSourceCount = String(viewer.dataSources.length);
+      selectors.weatherActiveLayers.dataset.cesiumImageryOrder = [...activeEarthLayers.entries()]
+        .filter(([, entry]) => entry.layer)
+        .sort((left, right) => viewer.imageryLayers.indexOf(left[1].layer) - viewer.imageryLayers.indexOf(right[1].layer))
+        .map(([id]) => id)
+        .join(",");
+    }
+  }
   refreshAnimationStatus();
 }
 
@@ -2965,109 +3025,455 @@ function setWeatherTileError(message) {
   updateText(selectors.weatherTileError, message);
 }
 
-function addWeatherLayer(layerId) {
-  if (!cesiumViewer || !window.Cesium || activeCelestialTargetId !== "earth") {
-    setWeatherProxyStatus("Weather proxy: globe not available.");
-    return;
-  }
-  if (activeWeatherLayers.has(layerId)) {
-    return;
-  }
-  const config = WEATHER_LAYER_CONFIG[layerId];
-  if (!config) {
-    return;
-  }
-  const tileUrl = buildWeatherTileUrl(config.path);
-  try {
-    const provider = new Cesium.UrlTemplateImageryProvider({
-      url: tileUrl,
-      tilingScheme: new Cesium.WebMercatorTilingScheme(),
-      credit: "Weather data © OpenWeather",
-      minimumLevel: 0,
-      maximumLevel: WEATHER_TILE_MAX_ZOOM,
-      tileWidth: 256,
-      tileHeight: 256,
-      enablePickFeatures: false,
-    });
-    const unsubscribeErrorListener = provider.errorEvent.addEventListener((error) => {
-      const statusCode = error.error?.statusCode ? ` (${error.error.statusCode})` : "";
-      setWeatherTileError(`Tile error: "${config.label}"${statusCode}. Weather layer remains optional.`);
-    });
-    const layer = cesiumViewer.imageryLayers.addImageryProvider(provider);
-    layer.alpha = config.opacity;
-    activeWeatherLayers.set(layerId, { layer, unsubscribeErrorListener });
-    setWeatherProxyStatus("Weather proxy: connected");
-    setWeatherTileError("");
-  } catch (error) {
-    setWeatherProxyStatus("Weather proxy: unavailable");
-  }
-  updateWeatherActiveLayersStatus();
-}
-
-function removeWeatherLayer(layerId) {
-  if (!cesiumViewer || !activeWeatherLayers.has(layerId)) {
-    return;
-  }
-  const { layer, unsubscribeErrorListener } = activeWeatherLayers.get(layerId);
-  unsubscribeErrorListener?.();
-  cesiumViewer.imageryLayers.remove(layer, true);
-  activeWeatherLayers.delete(layerId);
-  if (activeWeatherLayers.size === 0) {
-    setWeatherTileError("");
-  }
-  updateWeatherActiveLayersStatus();
-}
-
-async function checkWeatherProxyHealth() {
-  if (!selectors.weatherProxyStatus) {
-    return;
-  }
-
-  setWeatherProxyStatus("Weather proxy: checking...");
-  try {
-    const response = await fetch(`${WEATHER_PROXY_BASE}/health/openweather`, { cache: "no-store" });
-    if (!response.ok) {
-      setWeatherProxyStatus("Weather proxy: unavailable");
-      return;
-    }
-    const payload = await response.json().catch((error) => {
-      console.warn("[PCS_OBSERVATORY] Weather health response JSON parse failed:", error);
-      return {};
-    });
-    if (payload && payload.key_configured === false) {
-      setWeatherProxyStatus("Weather proxy: unavailable (OPENWEATHER_API_KEY missing)");
-      return;
-    }
-    setWeatherProxyStatus("Weather proxy: connected");
-  } catch (error) {
-    setWeatherProxyStatus("Weather proxy: unavailable");
-  }
-}
-
-function initializeWeatherLayers() {
-  if (!selectors.weatherLayerControls.length) {
-    return;
-  }
-
-  resetWeatherStatusDisplay();
-  selectors.weatherLayerControls.forEach((control) => {
-    control.addEventListener("change", () => {
-      const layerId = control.dataset.weatherLayer;
-      if (control.checked) {
-        addWeatherLayer(layerId);
-      } else {
-        removeWeatherLayer(layerId);
-      }
-    });
-  });
-  checkWeatherProxyHealth().catch(() => {
-    setWeatherProxyStatus("Weather proxy: unavailable");
-  });
-}
-
 function resetWeatherStatusDisplay() {
   updateWeatherActiveLayersStatus();
   setWeatherTileError("");
+}
+
+function weatherControl(layerId) {
+  return [...selectors.weatherLayerControls].find((control) => control.dataset.weatherLayer === layerId) || null;
+}
+
+function weatherOpacityControl(layerId) {
+  return [...selectors.weatherOpacityControls].find((control) => control.dataset.weatherOpacity === layerId) || null;
+}
+
+function earthLayerControl(layerId) {
+  return weatherControl(layerId) || document.querySelector(`[data-pcs-layer="${CSS.escape(layerId)}"]`);
+}
+
+function earthLayerOpacityControl(layerId) {
+  return weatherOpacityControl(layerId) || document.querySelector(`[data-pcs-opacity="${CSS.escape(layerId)}"]`);
+}
+
+function updateWeatherLayerMetadata(layerId, status, observationTime = null, retrievalTime = null, reason = null) {
+  const source = weatherControl(layerId)?.closest(".weather-layer")?.querySelector("small");
+  if (!source) return;
+  const times = [
+    observationTime ? `observed ${formatPcsTime(observationTime)}` : "observation time not supplied",
+    retrievalTime ? `retrieved ${formatPcsTime(retrievalTime)}` : null,
+  ].filter(Boolean).join("; ");
+  source.textContent = `OpenWeather · ${status}${times ? ` · ${times}` : ""}${reason ? ` · ${reason}` : ""}`;
+}
+
+function updateLayerCapabilityRuntime(layerId, runtimeStatus, failureReason = null, timestamps = {}) {
+  const config = WEATHER_LAYER_CONFIG[layerId];
+  const capabilityId = config?.capabilityId || layerId;
+  const current = earthLayerCapabilityMatrix.get(capabilityId) || { layer_id: capabilityId };
+  earthLayerCapabilityMatrix.set(capabilityId, {
+    ...current,
+    runtime_status: runtimeStatus,
+    failure_reason: failureReason,
+    latest_observation_time: timestamps.observationTime || current.latest_observation_time || null,
+    latest_retrieval_time: timestamps.retrievalTime || current.latest_retrieval_time || null,
+  });
+  if (config) updateWeatherLayerMetadata(layerId, runtimeStatus, timestamps.observationTime, timestamps.retrievalTime, failureReason);
+  const providerStatus = document.querySelector(`[data-pcs-layer-entry="${CSS.escape(capabilityId)}"] [data-pcs-provider-status]`);
+  if (providerStatus) {
+    const layer = earthLayerCapabilityMatrix.get(capabilityId);
+    providerStatus.textContent = `${runtimeStatus} · ${layer.provider || "Provider unavailable"} · ${layerValueText(layer)}`;
+  }
+  const wrapper = document.querySelector(`[data-pcs-layer-entry="${CSS.escape(capabilityId)}"]`);
+  const mapObservation = wrapper?.querySelector("[data-pcs-map-observation]");
+  const mapObservationEnd = wrapper?.querySelector("[data-pcs-map-observation-end]");
+  const mapRetrieval = wrapper?.querySelector("[data-pcs-map-retrieval]");
+  if (mapObservation && timestamps.observationTime) mapObservation.textContent = formatPcsTime(timestamps.observationTime);
+  if (mapObservationEnd && timestamps.observationEndTime) mapObservationEnd.textContent = formatPcsTime(timestamps.observationEndTime);
+  if (mapRetrieval && timestamps.retrievalTime) mapRetrieval.textContent = formatPcsTime(timestamps.retrievalTime);
+}
+
+function renderWeatherLegend(config, visible) {
+  const host = config.kind === "weather" ? selectors.weatherLegends : document.querySelector(`[data-pcs-layer-entry="${CSS.escape(config.id)}"] [data-scientific-legend]`);
+  if (!host) return;
+  let legend = host.querySelector(`[data-weather-legend="${config.id}"]`);
+  if (!legend) {
+    legend = document.createElement("div");
+    legend.className = "weather-legend";
+    legend.dataset.weatherLegend = config.id;
+    const label = document.createElement("span");
+    label.textContent = `${config.label}: ${(config.legend || []).join(" · ")}`;
+    legend.append(label);
+    if (config.legendUrl) {
+      const image = document.createElement("img");
+      image.className = "scientific-legend-image";
+      image.src = config.legendUrl;
+      image.alt = `${config.label} legend`;
+      legend.append(image);
+    } else {
+      const scale = document.createElement("span");
+      scale.className = "weather-legend-scale";
+      scale.setAttribute("aria-hidden", "true");
+      legend.append(scale);
+    }
+    host.append(legend);
+  }
+  legend.hidden = !visible;
+}
+
+async function validateWeatherTile(config) {
+  const response = await fetch(`${WEATHER_PROXY_BASE}/tiles/openweather/${config.path}/1/1/1.png`, { cache: "default" });
+  if (!response.ok) {
+    const error = new Error(`HTTP ${response.status} from ${config.label} tile proxy`);
+    error.status = response.status;
+    throw error;
+  }
+  const contentType = response.headers.get("content-type") || "";
+  const bytes = new Uint8Array(await response.arrayBuffer());
+  if (!contentType.startsWith("image/") || bytes.length < 4 || bytes[0] !== 0x89 || bytes[1] !== 0x50 || bytes[2] !== 0x4e || bytes[3] !== 0x47) {
+    throw new Error(`${config.label} tile proxy returned a non-PNG response`);
+  }
+  const observationHeader = response.headers.get("x-pcs-observation-time");
+  return {
+    observationTime: observationHeader && observationHeader !== "unavailable" ? observationHeader : null,
+    retrievalTime: response.headers.get("x-pcs-retrieved-at") || new Date().toISOString(),
+  };
+}
+
+let gibsCapabilitiesPromise = null;
+
+function directXmlChildText(element, localName) {
+  return element ? [...element.children].find((child) => child.localName === localName)?.textContent?.trim() || null : null;
+}
+
+async function resolveGibsDefinition(config) {
+  if (!gibsCapabilitiesPromise) {
+    gibsCapabilitiesPromise = fetch(config.capabilitiesUrl, { cache: "no-store" }).then(async (response) => {
+      if (!response.ok) throw new Error(`NASA GIBS capabilities returned HTTP ${response.status}`);
+      return new DOMParser().parseFromString(await response.text(), "application/xml");
+    }).catch((error) => {
+      gibsCapabilitiesPromise = null;
+      throw error;
+    });
+  }
+  const xml = await gibsCapabilitiesPromise;
+  const layer = [...xml.getElementsByTagNameNS("*", "Layer")].find((item) => directXmlChildText(item, "Identifier") === config.gibsLayer);
+  if (!layer) throw new Error(`NASA GIBS layer ${config.gibsLayer} is unavailable`);
+  const time = [...layer.getElementsByTagNameNS("*", "Dimension")].find((item) => directXmlChildText(item, "Identifier") === "Time");
+  const observationTime = directXmlChildText(time, "Default");
+  if (!observationTime) throw new Error(`NASA GIBS did not publish a current time for ${config.gibsLayer}`);
+  let observationEndTime = null;
+  if (config.compositeDays) {
+    const end = new Date(observationTime);
+    end.setUTCDate(end.getUTCDate() + config.compositeDays - 1);
+    observationEndTime = end.toISOString();
+  }
+  return { observationTime, observationEndTime, retrievalTime: new Date().toISOString() };
+}
+
+async function validateImageResource(url, label) {
+  const response = await fetch(url, { cache: "default" });
+  if (!response.ok) {
+    const error = new Error(`HTTP ${response.status} from ${label}`);
+    error.status = response.status;
+    throw error;
+  }
+  const contentType = response.headers.get("content-type") || "";
+  const bytes = new Uint8Array(await response.arrayBuffer());
+  if (!contentType.startsWith("image/") || bytes.length < 4 || bytes[0] !== 0x89 || bytes[1] !== 0x50 || bytes[2] !== 0x4e || bytes[3] !== 0x47) throw new Error(`${label} returned a non-PNG response`);
+}
+
+function escapeLayerText(value) {
+  return String(value ?? "Unavailable").replace(/[&<>"']/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[character]);
+}
+
+function layerEntityDescription(rows) {
+  return `<table>${rows.map(([label, value]) => `<tr><th>${escapeLayerText(label)}</th><td>${escapeLayerText(value)}</td></tr>`).join("")}</table>`;
+}
+
+function entityColor(config, opacity) {
+  return Cesium.Color.fromCssColorString(config.color || "#ff7043").withAlpha(opacity);
+}
+
+function applyEntityOpacity(entry, config, opacity) {
+  const color = entityColor(config, opacity);
+  [...(entry.entities || []), ...(entry.dataSources || []).flatMap((source) => source.entities?.values || [])].forEach((entity) => {
+    if (entity.point) entity.point.color = color;
+    if (entity.label) entity.label.fillColor = color;
+    if (entity.billboard) entity.billboard.color = Cesium.Color.WHITE.withAlpha(opacity);
+    if (entity.polyline) entity.polyline.material = color;
+    if (entity.polygon) entity.polygon.material = color.withAlpha(Math.min(opacity, 0.35));
+    if (entity.ellipse) entity.ellipse.material = color.withAlpha(Math.min(opacity, 0.25));
+  });
+}
+
+class CesiumLayerRuntimeController {
+  constructor(viewerProvider) {
+    this.viewerProvider = viewerProvider;
+    this.registry = new Map();
+    this.lastActivationError = null;
+  }
+
+  register(config) {
+    this.registry.set(config.id, config);
+    renderWeatherLegend(config, activeEarthLayers.has(config.id));
+  }
+
+  get activeCount() {
+    return activeEarthLayers.size;
+  }
+
+  synchronizeControl(layerId, active) {
+    const control = earthLayerControl(layerId);
+    const opacity = earthLayerOpacityControl(layerId);
+    if (control) control.checked = active;
+    if (opacity) opacity.disabled = !active;
+    if (opacity && !active) delete opacity.dataset.appliedOpacity;
+    const config = this.registry.get(layerId);
+    if (config) renderWeatherLegend(config, active);
+  }
+
+  preserveOrder() {
+    const viewer = this.viewerProvider();
+    if (!viewer || viewer.isDestroyed()) return;
+    [...activeEarthLayers.entries()]
+      .filter(([, entry]) => entry.layer)
+      .sort((left, right) => (this.registry.get(left[0])?.order || 0) - (this.registry.get(right[0])?.order || 0))
+      .forEach(([, entry]) => viewer.imageryLayers.raiseToTop(entry.layer));
+  }
+
+  async createImageryEntry(config, viewer) {
+    let timestamps;
+    let url;
+    let credit;
+    let maximumLevel;
+    if (config.kind === "weather") {
+      timestamps = await validateWeatherTile(config);
+      url = buildWeatherTileUrl(config.path);
+      credit = "Weather data · OpenWeather";
+      maximumLevel = WEATHER_TILE_MAX_ZOOM;
+    } else {
+      timestamps = await resolveGibsDefinition(config);
+      const encodedTime = encodeURIComponent(timestamps.observationTime);
+      url = `${config.tileBaseUrl}/${config.gibsLayer}/default/${encodedTime}/${config.matrixSet}/{z}/{y}/{x}.png`;
+      await validateImageResource(url.replace("{z}", "1").replace("{y}", "1").replace("{x}", "1"), `${config.label} NASA GIBS tile`);
+      credit = `Scientific imagery · ${config.product}`;
+      maximumLevel = config.maximumLevel;
+    }
+    const provider = new Cesium.UrlTemplateImageryProvider({
+      url, tilingScheme: new Cesium.WebMercatorTilingScheme(), credit, minimumLevel: 0, maximumLevel,
+      tileWidth: 256, tileHeight: 256, enablePickFeatures: false,
+    });
+    const layer = viewer.imageryLayers.addImageryProvider(provider);
+    return { kind: "imagery", layer, provider, timestamps };
+  }
+
+  createStationEntry(config, viewer) {
+    const visualization = config.record.visualization;
+    const entity = viewer.entities.add({
+      id: `pcs-science-${config.id}-${visualization.station_id}`,
+      name: `${visualization.station_name} · ${config.label}`,
+      position: Cesium.Cartesian3.fromDegrees(visualization.longitude, visualization.latitude, visualization.altitude_m || 0),
+      point: { pixelSize: 12, color: entityColor(config, config.opacity), outlineColor: Cesium.Color.WHITE, outlineWidth: 2, disableDepthTestDistance: Number.POSITIVE_INFINITY },
+      label: { text: `${visualization.station_name}\n${layerValueText(config.record)}`, font: "12px sans-serif", fillColor: entityColor(config, config.opacity), outlineColor: Cesium.Color.BLACK, outlineWidth: 2, style: Cesium.LabelStyle.FILL_AND_OUTLINE, pixelOffset: new Cesium.Cartesian2(0, -24), disableDepthTestDistance: Number.POSITIVE_INFINITY },
+      description: layerEntityDescription([
+        ["Product", visualization.product], ["Value", layerValueText(config.record)], ["Observation time", formatPcsTime(config.record.latest_observation_time)],
+        ["Retrieved", formatPcsTime(config.record.latest_retrieval_time)], ["Datum", visualization.datum || "Not applicable"], ["Uncertainty", config.record.uncertainty],
+      ]),
+    });
+    return { kind: "entities", entities: [entity], dataSources: [], timestamps: { observationTime: config.record.latest_observation_time, retrievalTime: config.record.latest_retrieval_time } };
+  }
+
+  async createCycloneEntry(config, viewer) {
+    const storms = (config.record.details?.storms || []).filter((storm) => Number.isFinite(storm.latitude) && Number.isFinite(storm.longitude));
+    if (!storms.length) {
+      const error = new Error("NOAA NHC reports no active storm center with usable coordinates.");
+      error.runtimeStatus = "UNAVAILABLE";
+      throw error;
+    }
+    const entities = storms.map((storm) => viewer.entities.add({
+      id: `pcs-storm-${storm.id}`,
+      name: `${storm.name} · ${storm.classification?.regional_name || "tropical cyclone"}`,
+      position: Cesium.Cartesian3.fromDegrees(storm.longitude, storm.latitude),
+      point: { pixelSize: 15, color: entityColor(config, config.opacity), outlineColor: Cesium.Color.WHITE, outlineWidth: 3, disableDepthTestDistance: Number.POSITIVE_INFINITY },
+      label: { text: `${storm.name} · ${storm.classification?.regional_name || "cyclone"}\n${storm.intensity_kt ?? "?"} kt`, font: "bold 13px sans-serif", fillColor: entityColor(config, config.opacity), outlineColor: Cesium.Color.BLACK, outlineWidth: 3, style: Cesium.LabelStyle.FILL_AND_OUTLINE, pixelOffset: new Cesium.Cartesian2(0, -28), disableDepthTestDistance: Number.POSITIVE_INFINITY },
+      description: layerEntityDescription([
+        ["Classification", storm.classification?.regional_name], ["Intensity", `${storm.intensity_kt ?? "Unavailable"} kt`], ["Pressure", `${storm.pressure_hpa ?? "Unavailable"} hPa`],
+        ["Advisory", storm.advisory_number], ["Advisory time", formatPcsTime(storm.advisory_time)], ["Source", storm.source], ["Uncertainty", storm.uncertainty],
+      ]),
+    }));
+    const gisUrls = [...new Set(storms.flatMap((storm) => Object.values(storm.gis || {})).filter(Boolean))];
+    const settled = await Promise.allSettled(gisUrls.map((url) => Cesium.KmlDataSource.load(`${WEATHER_PROXY_BASE}/api/layers/nhc-gis?url=${encodeURIComponent(url)}`, { camera: viewer.scene.camera, canvas: viewer.scene.canvas, clampToGround: false })));
+    const dataSources = [];
+    for (const result of settled) if (result.status === "fulfilled") dataSources.push(await viewer.dataSources.add(result.value));
+    return { kind: "entities", entities, dataSources, timestamps: { observationTime: config.record.latest_observation_time, retrievalTime: config.record.latest_retrieval_time } };
+  }
+
+  createFireEntry(config, viewer) {
+    const detections = config.record.details?.detections || [];
+    if (!detections.length) {
+      const error = new Error("NASA FIRMS returned no usable fire detections.");
+      error.runtimeStatus = config.record.runtime_status === "AUTH_REQUIRED" ? "AUTH_REQUIRED" : "UNAVAILABLE";
+      throw error;
+    }
+    const entities = detections.map((detection, index) => viewer.entities.add({
+      id: `pcs-fire-${index}-${detection.latitude}-${detection.longitude}`,
+      name: `${detection.satellite} ${detection.instrument} fire detection`,
+      position: Cesium.Cartesian3.fromDegrees(detection.longitude, detection.latitude),
+      point: { pixelSize: 6, color: entityColor(config, config.opacity), outlineColor: Cesium.Color.YELLOW, outlineWidth: 1 },
+      description: layerEntityDescription([["Acquired", formatPcsTime(detection.observation_time)], ["Satellite", detection.satellite], ["Sensor", detection.instrument], ["Confidence", detection.confidence], ["Status", detection.status]]),
+    }));
+    return { kind: "entities", entities, dataSources: [], timestamps: { observationTime: config.record.latest_observation_time, retrievalTime: config.record.latest_retrieval_time } };
+  }
+
+  async createEntry(config, viewer) {
+    if (["weather", "gibs_wmts"].includes(config.kind)) return this.createImageryEntry(config, viewer);
+    if (config.kind === "station") return this.createStationEntry(config, viewer);
+    if (config.kind === "tropical_cyclones") return this.createCycloneEntry(config, viewer);
+    if (config.kind === "fire_detections") return this.createFireEntry(config, viewer);
+    throw new Error(`Unsupported Cesium layer kind: ${config.kind}`);
+  }
+
+  async activate(layerId) {
+    const config = this.registry.get(layerId);
+    const viewer = this.viewerProvider();
+    if (!config) return this.activationFailure(layerId, "Layer is not registered.");
+    if (!viewer || viewer.isDestroyed() || !window.Cesium || activeCelestialTargetId !== "earth") return this.activationFailure(layerId, "Earth Cesium globe is not available.");
+    if (activeEarthLayers.has(layerId)) {
+      this.synchronizeControl(layerId, true);
+      return { ok: true, duplicatePrevented: true, resource: activeEarthLayers.get(layerId) };
+    }
+    try {
+      const entry = await this.createEntry(config, viewer);
+      const opacity = Number(earthLayerOpacityControl(layerId)?.value) || config.opacity;
+      entry.opacity = opacity;
+      if (entry.layer) entry.layer.alpha = opacity;
+      else applyEntityOpacity(entry, config, opacity);
+      const opacityControl = earthLayerOpacityControl(layerId);
+      if (opacityControl) opacityControl.dataset.appliedOpacity = String(opacity);
+      if (entry.provider) entry.unsubscribeErrorListener = entry.provider.errorEvent.addEventListener((error) => {
+        const code = error.error?.statusCode || error.statusCode || null;
+        if (config.kind === "gibs_wmts" && code === 404) {
+          error.retry = false;
+          return;
+        }
+        const message = `${config.label} tile failed${code ? ` with HTTP ${code}` : ""}`;
+        this.deactivate(layerId, { preserveError: true });
+        updateLayerCapabilityRuntime(layerId, [401, 403].includes(code) ? "AUTH_REQUIRED" : "ERROR", message);
+        this.activationFailure(layerId, message);
+      });
+      activeEarthLayers.set(layerId, entry);
+      this.lastActivationError = null;
+      this.synchronizeControl(layerId, true);
+      this.preserveOrder();
+      updateLayerCapabilityRuntime(layerId, "ACTIVE", null, entry.timestamps);
+      if (config.kind === "weather") setWeatherProxyStatus("Weather proxy: connected");
+      setWeatherTileError("");
+      updateWeatherActiveLayersStatus();
+      return { ok: true, resource: entry, timestamps: entry.timestamps };
+    } catch (error) {
+      const reason = error?.message || `${config.label} activation failed`;
+      const status = error?.runtimeStatus || ([401, 403].includes(error?.status) ? "AUTH_REQUIRED" : "ERROR");
+      updateLayerCapabilityRuntime(layerId, status, reason);
+      return this.activationFailure(layerId, reason);
+    }
+  }
+
+  activationFailure(layerId, reason) {
+    this.lastActivationError = { layerId, reason, at: new Date().toISOString() };
+    this.synchronizeControl(layerId, false);
+    setWeatherTileError(`Activation failed: ${reason}`);
+    updateWeatherActiveLayersStatus();
+    return { ok: false, layerId, error: reason };
+  }
+
+  deactivate(layerId, options = {}) {
+    const entry = activeEarthLayers.get(layerId);
+    const viewer = this.viewerProvider();
+    if (entry) {
+      entry.unsubscribeErrorListener?.();
+      if (viewer && !viewer.isDestroyed()) {
+        if (entry.layer) viewer.imageryLayers.remove(entry.layer, true);
+        (entry.entities || []).forEach((entity) => viewer.entities.remove(entity));
+        (entry.dataSources || []).forEach((source) => viewer.dataSources.remove(source, true));
+      }
+      activeEarthLayers.delete(layerId);
+    }
+    this.synchronizeControl(layerId, false);
+    if (!options.preserveError) {
+      const config = this.registry.get(layerId);
+      updateLayerCapabilityRuntime(layerId, config?.availableStatus || "AVAILABLE");
+      if (!activeEarthLayers.size) setWeatherTileError("");
+    }
+    updateWeatherActiveLayersStatus();
+    return { ok: true, removed: Boolean(entry) };
+  }
+
+  deactivateAll() {
+    [...activeEarthLayers.keys()].forEach((layerId) => this.deactivate(layerId));
+  }
+
+  updateOpacity(layerId, opacity) {
+    const entry = activeEarthLayers.get(layerId);
+    const config = this.registry.get(layerId);
+    const value = Math.max(0, Math.min(1, Number(opacity)));
+    if (!entry || !config || !Number.isFinite(value)) return { ok: false, error: "Layer is not active." };
+    if (entry.layer) entry.layer.alpha = value;
+    else applyEntityOpacity(entry, config, value);
+    entry.opacity = value;
+    const control = earthLayerOpacityControl(layerId);
+    if (control) control.dataset.appliedOpacity = String(value);
+    return { ok: true, opacity: value };
+  }
+}
+
+async function checkWeatherProxyHealth() {
+  if (!selectors.weatherProxyStatus) return { ok: false, error: "Weather controls unavailable" };
+  setWeatherProxyStatus("Weather proxy: checking...");
+  try {
+    const response = await fetch(`${WEATHER_PROXY_BASE}/health/openweather`, { cache: "no-store" });
+    const payload = response.ok ? await response.json() : {};
+    if (!response.ok || payload.key_configured === false || payload.upstream_ok === false) {
+      const authRequired = payload.key_configured === false;
+      const reason = authRequired ? "OPENWEATHER_API_KEY is not configured" : payload.error_message || `HTTP ${response.status}`;
+      selectors.weatherLayerControls.forEach((control) => { control.disabled = true; control.checked = false; });
+      Object.keys(WEATHER_LAYER_CONFIG).forEach((layerId) => updateLayerCapabilityRuntime(layerId, authRequired ? "AUTH_REQUIRED" : "ERROR", reason));
+      setWeatherProxyStatus(`Weather proxy: ${authRequired ? "authentication required" : "unavailable"} (${reason})`);
+      return { ok: false, error: reason };
+    }
+    selectors.weatherLayerControls.forEach((control) => { control.disabled = false; });
+    Object.keys(WEATHER_LAYER_CONFIG).forEach((layerId) => {
+      if (!activeEarthLayers.has(layerId)) updateLayerCapabilityRuntime(layerId, "AVAILABLE");
+    });
+    setWeatherProxyStatus("Weather proxy: connected");
+    return { ok: true };
+  } catch (error) {
+    const reason = error?.message || "Weather health request failed";
+    selectors.weatherLayerControls.forEach((control) => { control.disabled = true; control.checked = false; });
+    Object.keys(WEATHER_LAYER_CONFIG).forEach((layerId) => updateLayerCapabilityRuntime(layerId, "ERROR", reason));
+    setWeatherProxyStatus(`Weather proxy: unavailable (${reason})`);
+    return { ok: false, error: reason };
+  }
+}
+
+async function addWeatherLayer(layerId) {
+  return earthLayerRuntime?.activate(layerId) || { ok: false, layerId, error: "Layer runtime is not initialized." };
+}
+
+function removeWeatherLayer(layerId) {
+  return earthLayerRuntime?.deactivate(layerId) || { ok: true, removed: false };
+}
+
+function initializeWeatherLayers() {
+  if (!selectors.weatherLayerControls.length) return;
+  earthLayerRuntime = new CesiumLayerRuntimeController(() => cesiumViewer);
+  window.PCSEarthLayerRuntime = earthLayerRuntime;
+  Object.values(WEATHER_LAYER_CONFIG).forEach((config) => earthLayerRuntime.register(config));
+  resetWeatherStatusDisplay();
+  selectors.weatherLayerControls.forEach((control) => {
+    control.addEventListener("change", async () => {
+      const layerId = control.dataset.weatherLayer;
+      if (control.checked) {
+        control.disabled = true;
+        const result = await addWeatherLayer(layerId);
+        control.disabled = false;
+        if (!result.ok) control.checked = false;
+      } else removeWeatherLayer(layerId);
+    });
+  });
+  selectors.weatherOpacityControls.forEach((control) => {
+    control.addEventListener("input", () => earthLayerRuntime.updateOpacity(control.dataset.weatherOpacity, control.value));
+  });
+  void checkWeatherProxyHealth();
 }
 
 function pcsStatusClass(status) {
@@ -3114,50 +3520,167 @@ function layerValueText(layer) {
   return `${Number.isFinite(Number(layer.value)) ? Number(layer.value).toLocaleString(getCurrentLanguage(), { maximumFractionDigits: 3 }) : layer.value}${layer.unit ? ` ${layer.unit}` : ""}`;
 }
 
+function scientificLayerConfig(layer, index) {
+  const visualization = layer.visualization || {};
+  const legends = {
+    station: ["Station observation", visualization.units || layer.unit || "units unavailable"],
+    tropical_cyclones: ["Depression", "Tropical storm", "Hurricane / Typhoon / Cyclone", "NHC forecast uncertainty"],
+    fire_detections: ["VIIRS active-fire detection", "confidence in feature details"],
+  };
+  const colors = { "sea-level": "#29b6f6", co2: "#ab47bc", "tropical-cyclones": "#ef5350", wildfire: "#ff6d00" };
+  return {
+    id: layer.id, capabilityId: layer.id, kind: visualization.kind, label: layerDisplayName(layer.id), record: layer,
+    opacity: 0.65, order: 100 + index, color: colors[layer.id] || "#00acc1",
+    legend: legends[visualization.kind] || [visualization.units || "Provider color scale", visualization.product || layer.dataset],
+    legendUrl: visualization.legend_url || null, availableStatus: layer.runtime_status === "DELAYED" ? "DELAYED" : "AVAILABLE",
+    capabilitiesUrl: visualization.capabilities_url, tileBaseUrl: visualization.tile_base_url, gibsLayer: visualization.layer,
+    matrixSet: visualization.matrix_set, maximumLevel: visualization.maximum_level, compositeDays: visualization.composite_days || null, product: visualization.product || layer.dataset,
+  };
+}
+
+function compactLayerDetails(layer) {
+  const details = layer.details || {};
+  return Object.entries(details)
+    .filter(([key]) => !["storms", "detections"].includes(key))
+    .map(([key, value]) => `${key.replaceAll("_", " ")}: ${Array.isArray(value) ? value.join(", ") : typeof value === "object" ? JSON.stringify(value) : value}`)
+    .join(" · ") || null;
+}
+
+function compactVisualizationDetails(visualization = {}) {
+  return Object.entries(visualization)
+    .filter(([key]) => !["kind", "capabilities_url", "tile_base_url", "legend_url", "layer", "matrix_set", "format", "maximum_level", "product", "units"].includes(key))
+    .map(([key, value]) => `${key.replaceAll("_", " ")}: ${Array.isArray(value) ? value.join(", ") : typeof value === "object" ? JSON.stringify(value) : value}`)
+    .join(" · ") || null;
+}
+
+function createRuntimeMetadataRow(label, dataAttribute, value) {
+  const row = createDefinitionRow(label, value);
+  const definition = row.querySelector("dd");
+  if (definition) definition.dataset[dataAttribute] = "";
+  return row;
+}
+
 function renderPcsLayers(payload) {
   if (!selectors.pcsLayerList) return;
-  const layers = payload.layers || [];
-  selectors.pcsLayerList.replaceChildren(...layers.map((layer) => {
+  const layers = (Array.isArray(payload.layers) ? payload.layers : []).map((layer) => {
+    const activeEntry = activeEarthLayers.get(layer.id);
+    if (!activeEntry) return layer;
+    return {
+      ...layer,
+      runtime_status: "ACTIVE",
+      latest_observation_time: activeEntry.timestamps?.observationTime || layer.latest_observation_time,
+      latest_retrieval_time: activeEntry.timestamps?.retrievalTime || layer.latest_retrieval_time,
+      failure_reason: null,
+    };
+  });
+  layers.forEach((layer) => earthLayerCapabilityMatrix.set(layer.layer_id || layer.id, { ...layer }));
+  Object.entries(WEATHER_LAYER_CONFIG).forEach(([layerId, config]) => {
+    const capability = earthLayerCapabilityMatrix.get(config.capabilityId);
+    if (!capability || activeEarthLayers.has(layerId)) return;
+    updateLayerCapabilityRuntime(layerId, capability.runtime_status, capability.failure_reason, {
+      observationTime: capability.latest_observation_time,
+      retrievalTime: capability.latest_retrieval_time,
+    });
+  });
+  const weatherCapabilityIds = new Set(["clouds", "rain", "temperature", "wind"]);
+  const earthScienceLayers = layers.filter((layer) => !weatherCapabilityIds.has(layer.id));
+  selectors.pcsLayerList.replaceChildren(...earthScienceLayers.map((layer, index) => {
+    const config = layer.cesium_renderer_available ? scientificLayerConfig(layer, index) : null;
+    const blocked = ["AUTH_REQUIRED", "ERROR", "UNAVAILABLE", "METADATA_ONLY"].includes(layer.runtime_status);
     const wrapper = document.createElement("section");
-    wrapper.className = `layer-entry pcs-provider-layer ${pcsStatusClass(normalizedStatus(layer.retrieval_status))}`;
+    wrapper.className = `layer-entry pcs-provider-layer ${pcsStatusClass(normalizedStatus(layer.runtime_status))}`;
+    wrapper.dataset.pcsLayerEntry = layer.id;
     const label = document.createElement("label");
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.dataset.pcsLayer = layer.id;
+    checkbox.disabled = !config || blocked;
+    checkbox.checked = activeEarthLayers.has(layer.id);
+    checkbox.setAttribute("aria-label", `${layerDisplayName(layer.id)} Cesium layer`);
     const summary = document.createElement("span");
     const title = document.createElement("strong");
     title.textContent = layerDisplayName(layer.id);
     const status = document.createElement("small");
-    status.textContent = `${pcsStatusLabel(normalizedStatus(layer.retrieval_status))} · ${layer.provider} · ${layerValueText(layer)}`;
-    summary.append(title, status); label.append(checkbox, summary);
+    status.dataset.pcsProviderStatus = "";
+    status.textContent = `${layer.runtime_status || "METADATA_ONLY"} · ${layer.provider} · ${layerValueText(layer)}`;
+    summary.append(title, status);
+    label.append(checkbox, summary);
+    const opacity = document.createElement("input");
+    opacity.type = "range";
+    opacity.min = "0";
+    opacity.max = "1";
+    opacity.step = "0.05";
+    opacity.className = "weather-opacity-input";
+    opacity.value = String(activeEarthLayers.get(layer.id)?.opacity ?? config?.opacity ?? 0.65);
+    opacity.dataset.pcsOpacity = layer.id;
+    opacity.setAttribute("aria-label", `${layerDisplayName(layer.id)} opacity`);
+    opacity.disabled = !activeEarthLayers.has(layer.id);
+    const legendHost = document.createElement("div");
+    legendHost.className = "weather-legends scientific-legends";
+    legendHost.dataset.scientificLegend = "";
+    const details = document.createElement("details");
+    details.className = "layer-provider-details";
+    const detailsSummary = document.createElement("summary");
+    detailsSummary.textContent = "Provider metadata";
     const metadata = document.createElement("dl");
     metadata.className = "layer-metadata";
-    metadata.hidden = true;
     metadata.append(
       createDefinitionRow(t("provider"), layer.provider), createDefinitionRow(t("dataset"), layer.dataset),
-      createDefinitionRow(t("endpoint"), layer.endpoint), createDefinitionRow(t("observation_time"), formatPcsTime(layer.observation_time)),
-      createDefinitionRow(t("retrieval_time"), formatPcsTime(layer.retrieved_at)), createDefinitionRow(t("data_latency"), layer.latency === null ? pcsStatusLabel("unavailable") : `${layer.latency} min`),
+      createDefinitionRow(t("endpoint"), layer.data_endpoint || layer.endpoint), createDefinitionRow(t("observation_time"), formatPcsTime(layer.latest_observation_time || layer.observation_time)),
+      createDefinitionRow(t("retrieval_time"), formatPcsTime(layer.latest_retrieval_time || layer.retrieved_at)), createDefinitionRow(t("data_latency"), layer.latency === null ? pcsStatusLabel("unavailable") : `${layer.latency} min`),
       createDefinitionRow(t("spatial_resolution"), layer.spatial_resolution), createDefinitionRow(t("temporal_resolution"), layer.temporal_resolution),
-      createDefinitionRow(t("data_state"), pcsStatusLabel(normalizedStatus(layer.data_state))), createDefinitionRow(t("data_quality"), layer.quality_flag),
+      createDefinitionRow(t("data_state"), pcsStatusLabel(normalizedStatus(layer.data_state))), createDefinitionRow(t("data_quality"), layer.data_quality || layer.quality_flag),
       createDefinitionRow(t("uncertainty"), layer.uncertainty), createDefinitionRow(t("license"), layer.license),
-      createDefinitionRow(t("retrieval_status"), pcsStatusLabel(normalizedStatus(layer.retrieval_status))), createDefinitionRow(t("details"), JSON.stringify(layer.details || {})),
-      createDefinitionRow(t("error_details"), layer.error),
+      createDefinitionRow("Source type", layer.source_type), createDefinitionRow("Visualization", layer.visualization_type),
+      createDefinitionRow("Spatial data available", layer.spatial_data_available), createDefinitionRow("Time series available", layer.time_series_available),
+      createDefinitionRow("Cesium renderer available", layer.cesium_renderer_available), createDefinitionRow("Checkbox connected", layer.checkbox_connected),
+      createDefinitionRow("Legend available", layer.legend_available), createDefinitionRow("Opacity control available", layer.opacity_control_available),
+      createDefinitionRow("Runtime status", layer.runtime_status), createDefinitionRow("Failure reason", layer.failure_reason),
+      createDefinitionRow("Value semantics", layer.data_state === "OBSERVED" ? "Provider-observed or provider-published; no PCS calculation" : layer.data_state),
+      createDefinitionRow("Scientific details", compactLayerDetails(layer)), createDefinitionRow("Map product", layer.visualization?.product),
+      createDefinitionRow("Map units", layer.visualization?.units), createDefinitionRow("Visualization details", compactVisualizationDetails(layer.visualization)), createDefinitionRow("Authentication requirement", layer.authentication_requirement),
+      createRuntimeMetadataRow("Map observation time", "pcsMapObservation", layer.cesium_renderer_available ? "Resolved from provider when loaded" : null),
+      createRuntimeMetadataRow("Map observation end", "pcsMapObservationEnd", layer.visualization?.composite_days ? "Resolved from composite length when loaded" : null),
+      createRuntimeMetadataRow("Map retrieval time", "pcsMapRetrieval", layer.cesium_renderer_available ? "Resolved when loaded" : null),
+      createDefinitionRow("Last successful request", formatPcsTime(layer.last_successful_request)), createDefinitionRow("Planned adapter interface", layer.planned_adapter_interface),
     );
-    checkbox.addEventListener("change", () => {
-      metadata.hidden = !checkbox.checked;
-      updateText(selectors.layerControlMessage, checkbox.checked
-        ? `${layerDisplayName(layer.id)} · ${pcsStatusLabel(normalizedStatus(layer.retrieval_status))} · ${layer.error || layer.quality_flag}`
-        : t("select_layer_status"));
-    });
-    wrapper.append(label, metadata); return wrapper;
+    details.append(detailsSummary, metadata);
+    if (config) {
+      checkbox.addEventListener("change", async () => {
+        if (checkbox.checked) {
+          checkbox.disabled = true;
+          const result = await earthLayerRuntime.activate(layer.id);
+          checkbox.disabled = blocked;
+          if (!result.ok) checkbox.checked = false;
+        } else earthLayerRuntime.deactivate(layer.id);
+        updateText(selectors.layerControlMessage, checkbox.checked ? `${layerDisplayName(layer.id)} · ACTIVE` : t("select_layer_status"));
+      });
+      opacity.addEventListener("input", () => earthLayerRuntime.updateOpacity(layer.id, opacity.value));
+    }
+    wrapper.append(label);
+    if (config) wrapper.append(opacity, legendHost);
+    wrapper.append(details);
+    return wrapper;
   }));
+  earthScienceLayers.forEach((layer, index) => {
+    if (!layer.cesium_renderer_available || !layer.visualization?.kind) return;
+    const config = scientificLayerConfig(layer, index);
+    earthLayerRuntime?.register(config);
+    earthLayerRuntime?.synchronizeControl(layer.id, activeEarthLayers.has(layer.id));
+  });
   if (selectors.layerConnectorHealth) selectors.layerConnectorHealth.replaceChildren(...layers.map((layer) => {
     const item = document.createElement("li");
-    const name = document.createElement("strong"); name.textContent = `${layer.provider} · ${layer.dataset}`;
-    const badge = document.createElement("span"); badge.className = `status-pill status-${pcsStatusClass(normalizedStatus(layer.retrieval_status)) === "active" ? "normal" : "muted"}`;
-    badge.textContent = pcsStatusLabel(normalizedStatus(layer.retrieval_status)); item.title = layer.error || layer.quality_flag; item.append(name, badge); return item;
+    const name = document.createElement("strong");
+    name.textContent = `${layer.provider} · ${layer.dataset}`;
+    const badge = document.createElement("span");
+    badge.className = `status-pill status-${["ACTIVE", "AVAILABLE"].includes(layer.runtime_status) ? "normal" : "muted"}`;
+    badge.textContent = layer.runtime_status || "UNAVAILABLE";
+    item.title = layer.failure_reason || layer.data_quality || "";
+    item.append(name, badge);
+    return item;
   }));
-  layerSnapshotUpdateImplemented = true;
+  latestLayerSnapshotSucceededAt = payload.generated_at || new Date().toISOString();
+  latestLayerSnapshotFailed = false;
   refreshAnimationStatus();
 }
 
@@ -3194,13 +3717,18 @@ function renderSystemStatus(payload) {
 }
 
 function refreshAnimationStatus() {
+  const lastSnapshotMs = latestLayerSnapshotSucceededAt ? new Date(latestLayerSnapshotSucceededAt).getTime() : 0;
+  const snapshotConfigured = Boolean(layerSnapshotTimer);
+  const dataUpdateStatus = !snapshotConfigured ? "NOT_CONFIGURED"
+    : latestLayerSnapshotFailed ? "ERROR"
+      : lastSnapshotMs && Date.now() - lastSnapshotMs <= LAYER_SNAPSHOT_STALE_MS ? "ACTIVE" : "STALE";
   const status = {
-    earth_rotation: cesiumViewer?.clock?.shouldAnimate ? "ACTIVE" : "NOT_CONFIGURED",
-    layer_activation: activeWeatherLayers.size ? "ACTIVE" : "DISABLED",
+    earth_rotation: "NOT_CONFIGURED",
+    layer_activation: earthLayerRuntime?.lastActivationError ? "ERROR" : activeEarthLayers.size ? "ACTIVE" : "DISABLED",
     alert_pulse: latestActiveAlertCount > 0 ? "ACTIVE" : "NO_ACTIVE_ALERT",
-    data_update: layerSnapshotUpdateImplemented ? "ACTIVE" : "NOT_CONFIGURED",
+    data_update: dataUpdateStatus,
     timeline_playback: "WAITING_FOR_TIME_SERIES",
-    camera_transition: cesiumViewer ? "ACTIVE" : "NOT_CONFIGURED",
+    camera_transition: cameraTransitionFailed ? "ERROR" : cameraTransitionOperational ? "ACTIVE" : "NOT_CONFIGURED",
   };
   selectors.animationStatuses.forEach((element) => updateText(element, status[element.dataset.animationStatus]));
 }
@@ -3422,6 +3950,30 @@ function initializeEvidenceExplorer() {
   });
 }
 
+async function loadLayerCapabilitySnapshot() {
+  try {
+    const response = await fetch(`${WEATHER_PROXY_BASE}/api/layers`, { cache: "no-store" });
+    if (!response.ok) throw new Error(`Layer capability endpoint returned HTTP ${response.status}`);
+    const payload = await response.json();
+    renderPcsLayers(payload);
+    latestLayerSnapshotSucceededAt = payload.generated_at || new Date().toISOString();
+    latestLayerSnapshotFailed = false;
+    refreshAnimationStatus();
+    return { ok: true, payload };
+  } catch (error) {
+    latestLayerSnapshotFailed = true;
+    refreshAnimationStatus();
+    updateText(selectors.layerControlMessage, `Layer capability audit unavailable: ${error?.message || "request failed"}`);
+    return { ok: false, error: error?.message || "Layer capability request failed" };
+  }
+}
+
+function initializeLayerSnapshotRuntime() {
+  if (layerSnapshotTimer) clearInterval(layerSnapshotTimer);
+  layerSnapshotTimer = setInterval(() => { void loadLayerCapabilitySnapshot(); }, LAYER_SNAPSHOT_INTERVAL_MS);
+  refreshAnimationStatus();
+}
+
 async function loadPcsEvidencePanels() {
   updateText(selectors.pcsApiStatus, t("loading"));
   try {
@@ -3463,6 +4015,8 @@ async function initializeApp() {
   runSafe("layer controls initialization", initializeLayerControls);
   runSafe("Evidence Explorer initialization", initializeEvidenceExplorer);
   runSafe("weather layer initialization", initializeWeatherLayers);
+  runSafe("layer snapshot runtime initialization", initializeLayerSnapshotRuntime);
+  await loadLayerCapabilitySnapshot();
   await runSafeAsync("visitor network initialization", initializeVisitorNetwork);
   await runSafeAsync("PCS evidence panels initialization", loadPcsEvidencePanels);
   await runSafeAsync("Evidence Explorer event loading", () => loadEvidenceExplorer(false));
@@ -3498,7 +4052,7 @@ setInterval(() => {
 }, MOON_LIGHTING_REFRESH_INTERVAL_MS);
 setInterval(() => {
   if (document.visibilityState === "visible") {
-    void runSafeAsync("visitor ping", () => postVisitorEvent("/api/visitors/ping"));
+    void pingVisitorPresence();
     void runSafeAsync("visitor stats refresh", refreshVisitorStats);
   }
 }, VISITOR_STATS_REFRESH_INTERVAL_MS);

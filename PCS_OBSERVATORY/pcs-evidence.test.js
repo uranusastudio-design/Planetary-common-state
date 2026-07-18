@@ -4,6 +4,7 @@ import { readFile } from "node:fs/promises";
 
 const app = await readFile(new URL("./app.js", import.meta.url), "utf8");
 const html = await readFile(new URL("./index.html", import.meta.url), "utf8");
+const layerProviders = await readFile(new URL("../cloudflare/src/providers/layers.js", import.meta.url), "utf8");
 
 test("Temperature uses the Worker route contract and one Cesium Viewer", () => {
   assert.match(app, /temp:\s*\{[^}]*path:\s*"temperature"/);
@@ -43,6 +44,44 @@ test("Evidence Explorer and runtime animation statuses are data-driven", () => {
   assert.match(app, /\/api\/evidence-explorer/);
   assert.doesNotMatch(html, /Framework Ready/);
   for (const status of ["NO_ACTIVE_ALERT", "WAITING_FOR_TIME_SERIES", "NOT_CONFIGURED"]) assert.match(html, new RegExp(status));
+});
+
+test("Earth layer audit uses one shared Cesium runtime with honest activation controls", () => {
+  assert.match(app, /class CesiumLayerRuntimeController/);
+  assert.match(app, /duplicatePrevented: true/);
+  assert.match(app, /validateWeatherTile/);
+  assert.match(app, /control\.checked = false/);
+  assert.match(app, /updateOpacity\(layerId, opacity\)/);
+  assert.match(app, /earthLayerCapabilityMatrix/);
+  assert.match(html, /id="weather-legends"/);
+  for (const layer of ["clouds", "rain", "temp", "wind"]) {
+    assert.match(html, new RegExp(`data-weather-opacity="${layer}"`));
+  }
+  assert.equal((app.match(/new Cesium\.Viewer\(/g) || []).length, 1);
+});
+
+test("Phase 6.2 scientific layers use the shared runtime and exact spatial products", () => {
+  for (const product of [
+    "MODIS_Terra_Land_Surface_Temp_Day_TES",
+    "IMERG_Precipitation_Rate_30min",
+    "MODIS_Terra_L3_NDVI_16Day",
+    "GHRSST_L4_MUR_Sea_Ice_Concentration",
+  ]) assert.match(layerProviders, new RegExp(product));
+  for (const kind of ["gibs_wmts", "station", "tropical_cyclones", "fire_detections"]) assert.match(app, new RegExp(kind));
+  assert.match(app, /resolveGibsDefinition/);
+  assert.match(app, /Cesium\.KmlDataSource\.load/);
+  assert.match(app, /viewer\.entities\.add/);
+  assert.match(app, /failed provider|control\.checked = active|checkbox\.checked = false/i);
+  assert.equal((app.match(/new Cesium\.Viewer\(/g) || []).length, 1);
+});
+
+test("scientific layer metadata exposes provenance, time, units, latency, uncertainty, and auth", () => {
+  for (const label of ["Map product", "Map units", "Map observation end", "Visualization details", "Authentication requirement", "Last successful request", "Planned adapter interface", "Value semantics"]) assert.ok(app.includes(label), label);
+  assert.match(app, /latest_observation_time/);
+  assert.match(app, /latest_retrieval_time/);
+  assert.match(app, /layer\.latency/);
+  assert.match(app, /layer\.uncertainty/);
+  assert.match(app, /scientific-legend-image/);
 });
 
 test("all Observatory dictionaries contain the PCS evidence labels", async () => {

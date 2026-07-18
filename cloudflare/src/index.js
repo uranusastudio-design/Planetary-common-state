@@ -115,13 +115,17 @@ const OPENWEATHER_LAYERS = {
   wind: "wind_new"
 };
 
-function tileResponse(body, status = 200, contentType = "image/png") {
+function tileResponse(body, status = 200, contentType = "image/png", metadata = {}) {
   return new Response(body, {
     status,
     headers: {
       "content-type": contentType,
       "access-control-allow-origin": "*",
-      "cache-control": "public, max-age=600"
+      "access-control-expose-headers": "x-pcs-observation-time, x-pcs-retrieved-at, x-pcs-weather-layer",
+      "cache-control": "public, max-age=600",
+      "x-pcs-observation-time": metadata.observationTime || "unavailable",
+      "x-pcs-retrieved-at": metadata.retrievedAt || new Date().toISOString(),
+      "x-pcs-weather-layer": metadata.layer || "unknown"
     }
   });
 }
@@ -201,7 +205,42 @@ async function openWeatherTile(request, env) {
     }, response.status);
   }
 
-  return tileResponse(await response.arrayBuffer(), 200, response.headers.get("content-type") || "image/png");
+  return tileResponse(await response.arrayBuffer(), 200, response.headers.get("content-type") || "image/png", {
+    layer: layerKey === "temp" ? "temperature" : layerKey,
+    observationTime: response.headers.get("last-modified"),
+    retrievedAt: new Date().toISOString(),
+  });
+}
+
+async function nhcGisProxy(request) {
+  const requestUrl = new URL(request.url);
+  const rawUrl = requestUrl.searchParams.get("url");
+  let upstream;
+  try {
+    upstream = new URL(rawUrl || "");
+  } catch {
+    return json({ error: "A valid NHC GIS URL is required" }, 400);
+  }
+  const allowedPath = upstream.pathname.startsWith("/storm_graphics/api/") || upstream.pathname.startsWith("/gis/");
+  if (upstream.protocol !== "https:" || upstream.hostname !== "www.nhc.noaa.gov" || !allowedPath || !upstream.pathname.toLowerCase().endsWith(".kmz")) {
+    return json({ error: "Only official NOAA NHC KMZ products are allowed" }, 400);
+  }
+  const response = await fetch(upstream.toString(), { headers: { "user-agent": "PCS-Observatory/2.0 public-research" } });
+  if (!response.ok) return json({ error: "NOAA NHC GIS product request failed", upstream_status: response.status }, response.status);
+  const bytes = new Uint8Array(await response.arrayBuffer());
+  const signature = bytes.length >= 4 ? `${bytes[0]},${bytes[1]},${bytes[2]},${bytes[3]}` : "";
+  const isZip = ["80,75,3,4", "80,75,5,6", "80,75,7,8"].includes(signature);
+  if (!isZip) return json({ error: "NOAA NHC response was not a valid KMZ archive" }, 502);
+  return new Response(bytes, {
+    status: 200,
+    headers: {
+      "content-type": "application/vnd.google-earth.kmz",
+      "cache-control": "public, max-age=300",
+      "access-control-allow-origin": "*",
+      "x-pcs-source": "NOAA National Hurricane Center",
+      "x-content-type-options": "nosniff",
+    },
+  });
 }
 function latestNumericFromCsv(text) {
   const lines = text.split("\n")
@@ -399,6 +438,9 @@ export default {
     }
     if (url.pathname.startsWith("/api/visitors/")) {
       return handleVisitorRequest(request, env, ctx);
+    }
+    if (url.pathname === "/api/layers/nhc-gis") {
+      return nhcGisProxy(request);
     }
     if (PCS_ROUTES.includes(url.pathname)
       || url.pathname.startsWith("/api/events/")
