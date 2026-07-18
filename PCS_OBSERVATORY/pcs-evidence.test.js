@@ -84,6 +84,16 @@ test("scientific layer metadata exposes provenance, time, units, latency, uncert
   assert.match(app, /scientific-legend-image/);
 });
 
+test("Phase 6.3 regional observations preserve one Viewer and honest hazard controls", () => {
+  for (const id of ["regional-observation-panel", "regional-weather", "regional-coastal", "regional-hazards", "regional-seasonal", "regional-sources"]) assert.match(html, new RegExp(`id="${id}"`));
+  for (const group of ["COUNTRY", "CRITICAL REGION", "SEASONAL & CIVILIZATION"]) assert.ok(app.includes(group));
+  for (const id of ["regional-earthquakes", "regional-coastal"]) assert.ok(app.includes(id));
+  for (const status of ["PREDICTED_TIDE", "OBSERVED_WATER_LEVEL", "STORM_SURGE_RESIDUAL", "FORECAST", "OBSERVED"]) assert.ok(app.includes(status));
+  assert.match(app, /regionalObservationAbortController\?\.abort/);
+  assert.match(app, /earthLayerRuntime\?\.deactivate\("regional-earthquakes"\)/);
+  assert.equal((app.match(/new Cesium\.Viewer\(/g) || []).length, 1);
+});
+
 test("all Observatory dictionaries contain the PCS evidence labels", async () => {
   for (const language of ["en", "zh-TW", "ja", "ko"]) {
     const dictionary = JSON.parse(await readFile(new URL(`./i18n/${language}.json`, import.meta.url), "utf8"));

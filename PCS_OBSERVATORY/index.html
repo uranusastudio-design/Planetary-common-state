@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>PCS Observatory | Uranus A Studio</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cesium@1.120.0/Build/Cesium/Widgets/widgets.css">
-    <link rel="stylesheet" href="./style.css?v=20260718-phase62-science-runtime-7">
+    <link rel="stylesheet" href="./style.css?v=20260718-phase63-regional-runtime-1">
     <link rel="stylesheet" href="./intro-screen.css">
     <script>
       window.CESIUM_BASE_URL = "https://cdn.jsdelivr.net/npm/cesium@1.120.0/Build/Cesium/";
@@ -427,6 +427,23 @@
         </section>
 
         <aside class="column right-column" aria-label="Body information, domain values, alerts, and health">
+          <article id="regional-observation-panel" class="panel regional-observation-panel" aria-labelledby="regional-observation-title">
+            <div class="panel-heading">
+              <div><span class="panel-label">Regional observation & hazards</span><h2 id="regional-observation-title">Global</h2></div>
+              <span id="regional-observation-status" class="status-pill status-muted">LOADING</span>
+            </div>
+            <p id="regional-local-time" class="framework-status">Local time: loading</p>
+            <p id="regional-suggestions" class="panel-note">Relevant layers will be suggested, never enabled automatically.</p>
+            <div class="regional-layer-controls" aria-label="Regional Cesium layer controls">
+              <label class="layer-entry"><input type="checkbox" data-pcs-layer="regional-earthquakes"><input class="weather-opacity-input" aria-label="Earthquake opacity" type="range" min="0" max="1" step="0.05" value="0.85" data-pcs-opacity="regional-earthquakes" disabled><span><strong>Recent earthquakes</strong><small>USGS · select to load</small></span></label>
+              <label class="layer-entry"><input type="checkbox" data-pcs-layer="regional-coastal"><input class="weather-opacity-input" aria-label="Coastal station opacity" type="range" min="0" max="1" step="0.05" value="0.8" data-pcs-opacity="regional-coastal" disabled><span><strong>Coastal stations</strong><small>Official station catalog + model/observation status</small></span></label>
+            </div>
+            <div id="regional-weather" class="regional-observation-section" aria-live="polite"><h3>Weather</h3><p>Loading</p></div>
+            <div id="regional-coastal" class="regional-observation-section" aria-live="polite"><h3>Tide & coastal</h3><p>Loading</p></div>
+            <div id="regional-hazards" class="regional-observation-section" aria-live="polite"><h3>Earthquake, tsunami & cyclone</h3><p>Loading</p></div>
+            <div id="regional-seasonal" class="regional-observation-section" aria-live="polite"><h3>Seasonal & civilization</h3><p>Loading</p></div>
+            <details class="layer-provider-details"><summary>Regional sources and limitations</summary><ul id="regional-sources" class="status-list"><li>Loading</li></ul></details>
+          </article>
           <section id="satellite-observation-panel" class="panel live-observation-panel satellite-information-panel" hidden aria-labelledby="satellite-observation-title">
             <div class="observation-heading"><div><span class="panel-label">Representative natural satellite</span><h3 id="satellite-observation-title">Satellite Observation</h3></div><span class="status-pill status-attention">Visualization only</span></div>
             <p id="satellite-description" class="panel-note"></p>
@@ -669,6 +686,6 @@
     <script src="./moon-lighting.js"></script>
     <script src="./mission-imagery-registry.js?v=20260717-mission-moon-textures"></script>
     <script src="./celestial-bodies.js?v=20260717-mission-moon-textures"></script>
-    <script src="./app.js?v=20260718-phase62-science-runtime-7"></script>
+    <script src="./app.js?v=20260718-phase63-regional-runtime-1"></script>
   </body>
 </html>

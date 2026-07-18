@@ -142,6 +142,38 @@ const regionConfig = {
   },
 };
 
+Object.assign(regionConfig, {
+  global: { ...regionConfig.global, group: "COUNTRY", timeZone: "UTC", suggestions: ["global-temperature", "precipitation", "tropical-cyclones", "sea-ice"] },
+  taiwan: { ...regionConfig.taiwan, group: "COUNTRY", timeZone: "Asia/Taipei", suggestions: ["regional-earthquakes", "regional-coastal", "precipitation", "tropical-cyclones"] },
+  japan: { ...regionConfig.japan, group: "COUNTRY", timeZone: "Asia/Tokyo", suggestions: ["regional-earthquakes", "regional-coastal", "precipitation", "sea-ice"] },
+  korea: { ...regionConfig.korea, group: "COUNTRY", timeZone: "Asia/Seoul", suggestions: ["precipitation", "regional-earthquakes"] },
+  canada: { ...regionConfig.canada, group: "COUNTRY", timeZone: "America/Toronto", suggestions: ["wildfire", "sea-ice", "ndvi"] },
+  uk: { ...regionConfig.uk, group: "COUNTRY", timeZone: "Europe/London", suggestions: ["precipitation", "wind"] },
+  usa: { ...regionConfig.usa, group: "COUNTRY", timeZone: "America/Chicago", suggestions: ["regional-earthquakes", "regional-coastal", "tropical-cyclones", "wildfire"] },
+  china: { ...regionConfig.china, group: "COUNTRY", timeZone: "Asia/Shanghai", suggestions: ["regional-earthquakes", "precipitation", "global-temperature"] },
+  singapore: { ...regionConfig.singapore, group: "COUNTRY", timeZone: "Asia/Singapore", suggestions: ["precipitation", "global-temperature"] },
+  dubai: { ...regionConfig.dubai, group: "COUNTRY", timeZone: "Asia/Dubai", suggestions: ["global-temperature", "ndvi"] },
+  himalaya: { id: "himalaya", displayName: "Tibetan Plateau & Himalaya", group: "CRITICAL REGION", lat: 30.5, lon: 84, altitude: 5000000, timeZone: "Asia/Kathmandu", suggestions: ["regional-earthquakes", "global-temperature", "ndvi"] },
+  iceland_glaciers: { id: "iceland_glaciers", displayName: "Iceland Glaciers", group: "CRITICAL REGION", lat: 64.8, lon: -18.8, altitude: 2300000, timeZone: "Atlantic/Reykjavik", suggestions: ["regional-earthquakes", "sea-ice"] },
+  new_zealand_glaciers: { id: "new_zealand_glaciers", displayName: "New Zealand Glaciers", group: "CRITICAL REGION", lat: -43.5, lon: 170.2, altitude: 2600000, timeZone: "Pacific/Auckland", suggestions: ["regional-earthquakes", "sea-ice"] },
+  alaska_glaciers: { id: "alaska_glaciers", displayName: "Alaska Glaciers", group: "CRITICAL REGION", lat: 61.2, lon: -149.5, altitude: 4500000, timeZone: "America/Anchorage", suggestions: ["regional-earthquakes", "regional-coastal", "sea-ice"] },
+  drylands: { id: "drylands", displayName: "Global Drylands & Desertification", group: "CRITICAL REGION", lat: 23, lon: 15, altitude: 16000000, timeZone: "UTC", suggestions: ["ndvi", "global-temperature"] },
+  amazon: { id: "amazon", displayName: "Amazon Basin", group: "CRITICAL REGION", lat: -3.5, lon: -62, altitude: 6500000, timeZone: "America/Manaus", suggestions: ["ndvi", "wildfire", "precipitation"] },
+  african_savanna: { id: "african_savanna", displayName: "African Savanna", group: "CRITICAL REGION", lat: -2, lon: 25, altitude: 9500000, timeZone: "Africa/Nairobi", suggestions: ["ndvi", "wildfire", "global-temperature"] },
+  niagara: { id: "niagara", displayName: "Niagara Falls", group: "CRITICAL REGION", lat: 43.08, lon: -79.07, altitude: 500000, timeZone: "America/Toronto", suggestions: ["precipitation", "global-temperature"] },
+  iguazu: { id: "iguazu", displayName: "Iguazú Falls", group: "CRITICAL REGION", lat: -25.69, lon: -54.44, altitude: 500000, timeZone: "America/Argentina/Cordoba", suggestions: ["precipitation", "ndvi"] },
+  victoria_falls: { id: "victoria_falls", displayName: "Victoria Falls", group: "CRITICAL REGION", lat: -17.925, lon: 25.856, altitude: 500000, timeZone: "Africa/Harare", suggestions: ["precipitation", "ndvi"] },
+  new_year: { id: "new_year", displayName: "Global New Year Observatory", group: "SEASONAL & CIVILIZATION", lat: 20, lon: 0, altitude: 30000000, timeZone: "UTC", suggestions: ["precipitation", "temp", "wind"] },
+  taiwan_festivals: { id: "taiwan_festivals", displayName: "Taiwan Seasonal Observatory", group: "SEASONAL & CIVILIZATION", lat: 23.7, lon: 121, altitude: 2500000, timeZone: "Asia/Taipei", suggestions: ["regional-coastal", "precipitation"] },
+  japan_seasons: { id: "japan_seasons", displayName: "Japan Seasonal Observatory", group: "SEASONAL & CIVILIZATION", lat: 36.2, lon: 138.3, altitude: 6000000, timeZone: "Asia/Tokyo", suggestions: ["regional-earthquakes", "precipitation"] },
+});
+
+const REGION_GROUPS = ["COUNTRY", "CRITICAL REGION", "SEASONAL & CIVILIZATION"];
+const REGIONAL_LAYER_CONFIG = {
+  "regional-earthquakes": { id: "regional-earthquakes", kind: "regional_earthquakes", label: "Recent earthquakes", opacity: 0.85, order: 70, color: "#ffb74d", legend: ["M2.5–3.9", "M4.0–5.9", "M6.0+"] },
+  "regional-coastal": { id: "regional-coastal", kind: "regional_coastal", label: "Coastal stations", opacity: 0.8, order: 75, color: "#4dd0e1", legend: ["Forecast model available", "Observed / predicted available", "Unavailable / authorization required"] },
+};
+
 const celestialTargetConfig = {
   earth: { id: "earth", displayName: "Earth", subtitle: "Living Planet", status: "Active", bodyType: "planet", texture: "ArcGIS World Imagery tiled layer", cameraDestination: [120, 20, 30000000], availableMonitoringScales: ["Planet", "Continent", "Country", "City", "Satellite View"], enabledDataDomains: ["earth-system", "weather", "location"], color: "#1565c0" },
   moon: { id: "moon", displayName: "Moon", subtitle: "Lunar Surface", status: "Scientific imagery", bodyType: "moon", texture: "NASA/USGS LROC WAC global mosaic", cameraDestination: [180, 0, 22000000], availableMonitoringScales: ["Global", "Near Side", "Far Side", "Landing Sites", "Satellite View"], enabledDataDomains: ["imagery", "ephemeris"], color: "#9aa3ad" },
@@ -246,6 +278,9 @@ let userLocationEntity = null;
 let userAccuracyEntity = null;
 let lastUserPosition = null;
 let activeRegionId = "global";
+let activeRegionalObservation = null;
+let regionalObservationGeneration = 0;
+let regionalObservationAbortController = null;
 let translations = {};
 const activeEarthLayers = new Map();
 const earthLayerCapabilityMatrix = new Map();
@@ -299,6 +334,17 @@ const selectors = {
   activeRegionName: document.querySelector("#active-region-name"),
   navCurrentRegion: document.querySelector("#nav-current-region"),
   regionalModeStatus: document.querySelector("#regional-mode-status"),
+  regionalObservationTitle: document.querySelector("#regional-observation-title"),
+  regionalObservationStatus: document.querySelector("#regional-observation-status"),
+  regionalLocalTime: document.querySelector("#regional-local-time"),
+  regionalSuggestions: document.querySelector("#regional-suggestions"),
+  regionalWeather: document.querySelector("#regional-weather"),
+  regionalCoastal: document.querySelector("#regional-coastal"),
+  regionalHazards: document.querySelector("#regional-hazards"),
+  regionalSeasonal: document.querySelector("#regional-seasonal"),
+  regionalSources: document.querySelector("#regional-sources"),
+  regionalLayerControls: document.querySelectorAll('[data-pcs-layer^="regional-"]'),
+  regionalOpacityControls: document.querySelectorAll('[data-pcs-opacity^="regional-"]'),
   navLocalTime: document.querySelector("#nav-local-time"),
   navUtcTime: document.querySelector("#nav-utc-time"),
   aiCopilotMessage: document.querySelector("#ai-copilot-message"),
@@ -585,7 +631,10 @@ function renderClock() {
   const secondsRemaining = Math.max(0, Math.ceil((nextRefreshAt - now) / 1000));
 
   updateText(selectors.localBrowserTime, nowDate.toLocaleString());
-  updateText(selectors.navLocalTime, nowDate.toLocaleString());
+  const region = regionConfig[activeRegionId] || regionConfig.global;
+  const regionalTime = new Intl.DateTimeFormat(getCurrentLanguage(), { timeZone: region.timeZone || "UTC", year: "numeric", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit", timeZoneName: "short" }).format(nowDate);
+  updateText(selectors.navLocalTime, regionalTime);
+  updateText(selectors.regionalLocalTime, `Local time · ${regionalTime} · ${region.timeZone || "UTC"}`);
   updateText(selectors.navUtcTime, nowDate.toISOString().replace("T", " ").replace(/\.\d{3}Z$/, " UTC"));
   updateText(selectors.lastJsonUpdate, formatTimestamp(lastJsonUpdateValue));
   updateText(selectors.autoRefreshCountdown, `Next refresh in ${secondsRemaining}s`);
@@ -607,7 +656,6 @@ async function updateDashboardData() {
   } catch (error) {
     if (activeRegionId !== "global") {
       // Regional mode falls back to global latest_state when regional output is unavailable.
-      console.warn("Regional state load failed, using global fallback:", requestedSource, error);
       try {
         const fallbackResponse = await fetch(GLOBAL_STATE_SOURCE, { cache: "no-store" });
         if (!fallbackResponse.ok) {
@@ -640,7 +688,116 @@ function updateRegionContext(regionId) {
   if (region.id === "global") {
     updateText(selectors.regionalModeStatus, "Global mode selected.");
   } else {
-    updateText(selectors.regionalModeStatus, "Regional mode selected. Regional data pending.");
+    updateText(selectors.regionalModeStatus, `${region.group || "COUNTRY"} profile selected. Regional observations update independently.`);
+  }
+  updateText(selectors.regionalObservationTitle, label);
+  updateText(selectors.regionalSuggestions, `Suggested, not forced: ${(region.suggestions || []).map((id) => REGIONAL_LAYER_CONFIG[id]?.label || layerDisplayName(id)).join(", ") || "none"}.`);
+}
+
+function rebuildRegionSelector() {
+  if (!selectors.regionSelector) return;
+  const groups = REGION_GROUPS.map((groupName) => {
+    const optgroup = document.createElement("optgroup");
+    optgroup.label = groupName;
+    Object.values(regionConfig).filter((region) => region.group === groupName).forEach((region) => {
+      const option = document.createElement("option"); option.value = region.id; option.textContent = regionLabel(region.id); optgroup.append(option);
+    });
+    return optgroup;
+  });
+  selectors.regionSelector.replaceChildren(...groups);
+  selectors.regionSelector.value = activeRegionId;
+}
+
+function regionalStatusLine(name, status, detail = "") {
+  const line = document.createElement("p"); line.className = "regional-status-line";
+  const strong = document.createElement("strong"); strong.textContent = name;
+  line.append(strong, document.createTextNode(`${status || "UNAVAILABLE"}${detail ? ` · ${detail}` : ""}`));
+  return line;
+}
+
+function renderRegionalWeather(payload) {
+  if (!selectors.regionalWeather) return;
+  const heading = document.createElement("h3"); heading.textContent = "Weather · OBSERVED vs FORECAST";
+  const observed = payload.weather?.observed || []; const forecast = payload.weather?.forecast || [];
+  const observedStatus = regionalStatusLine("OBSERVED", observed.length ? "AVAILABLE" : "UNAVAILABLE", observed.length ? `${observed.length} variables` : "No station observation adapter is configured; model output is not relabeled as observed.");
+  const point = payload.weather?.observation_point;
+  const forecastStatus = regionalStatusLine("FORECAST", forecast.some((item) => item.status === "AVAILABLE") ? "AVAILABLE" : "UNAVAILABLE", `Open-Meteo weather and CAMS air-quality grids · ${point?.name || "profile center"} (${point?.lat ?? "?"}, ${point?.lon ?? "?"})`);
+  const grid = document.createElement("dl"); grid.className = "regional-data-grid";
+  forecast.forEach((item) => {
+    const wrap = document.createElement("div"); const dt = document.createElement("dt"); const dd = document.createElement("dd");
+    dt.textContent = `${item.label} · ${item.data_class}`;
+    dd.textContent = item.status === "AVAILABLE" ? `${item.value} ${item.unit}` : item.status;
+    const meta = document.createElement("small"); meta.textContent = `Provider: ${item.provider} · Valid: ${formatPcsTime(item.valid_time)} · Retrieved: ${formatPcsTime(item.retrieval_time)} · Quality: ${item.quality} · Uncertainty: ${item.uncertainty}`;
+    dd.append(document.createElement("br"), meta); wrap.append(dt, dd); grid.append(wrap);
+  });
+  selectors.regionalWeather.replaceChildren(heading, observedStatus, forecastStatus, grid);
+}
+
+function renderRegionalCoastal(payload) {
+  if (!selectors.regionalCoastal) return;
+  const heading = document.createElement("h3"); heading.textContent = "Tide & coastal observation";
+  const note = regionalStatusLine("Provider status", payload.coastal?.status || "UNAVAILABLE", payload.coastal?.navigation_warning || payload.coastal?.reason || "No coastal profile");
+  const list = document.createElement("div");
+  (payload.coastal?.stations || []).forEach((station) => {
+    const details = document.createElement("details"); const summary = document.createElement("summary"); summary.textContent = `${station.name} · ${station.status}`;
+    const rows = document.createElement("div"); rows.className = "regional-data-grid";
+    const values = [station.modelled_sea_level, station.wave_height, station.sea_surface_temperature, station.predicted_tide, station.observed_water_level, station.storm_surge_residual, station.tsunami_alert];
+    values.forEach((item, index) => {
+      if (!item) return; const names = ["MODELLED_SEA_LEVEL_FORECAST", "Wave height", "Sea-surface temperature", "PREDICTED_TIDE", "OBSERVED_WATER_LEVEL", "STORM_SURGE_RESIDUAL", "Tsunami alert"];
+      const row = document.createElement("div"); const title = document.createElement("dt"); const value = document.createElement("dd");
+      title.textContent = names[index]; value.textContent = item.value !== null && item.value !== undefined ? `${item.value} ${item.unit || ""} · ${item.status}` : item.status || "UNAVAILABLE";
+      const meta = document.createElement("small"); meta.textContent = `Provider: ${item.provider || station.authority || "Unavailable"} · Time: ${formatPcsTime(item.observation_time || item.prediction_time || item.valid_time)} · Datum: ${item.datum || "UNAVAILABLE"} · ${item.uncertainty || item.reason || "No published uncertainty"}`;
+      value.append(document.createElement("br"), meta); row.append(title, value); rows.append(row);
+    });
+    details.append(summary, rows); list.append(details);
+  });
+  if (!list.childElementCount) list.append(regionalStatusLine("Stations", "UNAVAILABLE", "No station positions are invented."));
+  selectors.regionalCoastal.replaceChildren(heading, note, list);
+}
+
+function renderRegionalHazards(payload) {
+  if (!selectors.regionalHazards) return;
+  const heading = document.createElement("h3"); heading.textContent = "Earthquake, tsunami & tropical cyclone";
+  const earthquake = regionalStatusLine("Earthquakes", payload.earthquakes?.status, `${payload.earthquakes?.events?.length || 0} USGS events · ${formatPcsTime(payload.earthquakes?.retrieved_at)}`);
+  const list = document.createElement("div");
+  (payload.earthquakes?.events || []).slice(0, 8).forEach((event) => list.append(regionalStatusLine(`M${event.magnitude ?? "?"} · ${event.place}`, event.reviewed_status?.toUpperCase(), `${event.depth_km ?? "?"} km · ${formatPcsTime(event.time)} · tsunami linkage ${event.tsunami_flag ? "YES" : "NO"} · ${event.source}`)));
+  const tsunami = regionalStatusLine("Tsunami alert", payload.alerts?.tsunami?.status, payload.alerts?.tsunami?.reason);
+  const cyclone = regionalStatusLine("Cyclones", payload.tropical_cyclones?.status, `${payload.tropical_cyclones?.source} · ${payload.tropical_cyclones?.normalized_model}`);
+  selectors.regionalHazards.replaceChildren(heading, earthquake, list, tsunami, cyclone);
+}
+
+function renderRegionalSeasonal(payload) {
+  if (!selectors.regionalSeasonal) return;
+  const heading = document.createElement("h3"); heading.textContent = "Seasonal & civilization";
+  const list = document.createElement("div");
+  (payload.seasonal || []).forEach((item) => list.append(regionalStatusLine(item.name, item.status, item.data_status)));
+  (payload.features || []).forEach((item) => list.append(regionalStatusLine(item.name, item.status, item.provider || item.reason)));
+  (payload.new_year_cities || []).forEach((city) => list.append(regionalStatusLine(city.name, "COUNTDOWN", `${city.local_time} · ${city.countdown_seconds}s · event ${city.public_event_status} · aggregate crowd ${city.aggregate_crowd_status}`)));
+  if (!list.childElementCount) list.append(regionalStatusLine("Seasonal feeds", "UNAVAILABLE", "Profile contains no current validated seasonal feed."));
+  selectors.regionalSeasonal.replaceChildren(heading, list);
+}
+
+function renderRegionalObservation(payload) {
+  activeRegionalObservation = payload;
+  selectors.regionalObservationStatus.textContent = "AVAILABLE"; selectors.regionalObservationStatus.className = "status-pill status-normal";
+  renderRegionalWeather(payload); renderRegionalCoastal(payload); renderRegionalHazards(payload); renderRegionalSeasonal(payload);
+  if (selectors.regionalSources) selectors.regionalSources.replaceChildren(...(payload.sources || []).map((source) => { const item = document.createElement("li"); item.textContent = source; return item; }));
+}
+
+async function loadRegionalObservation(regionId = activeRegionId) {
+  const generation = ++regionalObservationGeneration;
+  regionalObservationAbortController?.abort(); regionalObservationAbortController = new AbortController(); activeRegionalObservation = null;
+  selectors.regionalObservationStatus.textContent = "LOADING"; selectors.regionalObservationStatus.className = "status-pill status-muted";
+  [selectors.regionalWeather, selectors.regionalCoastal, selectors.regionalHazards, selectors.regionalSeasonal].forEach((element) => { if (element) element.replaceChildren(regionalStatusLine("Data", "LOADING", "Previous region data cleared")); });
+  try {
+    const response = await fetch(`${WEATHER_PROXY_BASE}/api/regional/observation?region=${encodeURIComponent(regionId)}`, { cache: "no-store", signal: regionalObservationAbortController.signal });
+    if (!response.ok) throw new Error(`Regional API ${response.status}`); const payload = await response.json();
+    if (generation !== regionalObservationGeneration || regionId !== activeRegionId) return { ok: false, stale: true };
+    renderRegionalObservation(payload); return { ok: true, payload };
+  } catch (error) {
+    if (error?.name === "AbortError") return { ok: false, aborted: true };
+    if (generation === regionalObservationGeneration) { selectors.regionalObservationStatus.textContent = "UNAVAILABLE"; selectors.regionalObservationStatus.className = "status-pill status-alert"; selectors.regionalWeather.replaceChildren(regionalStatusLine("Regional API", "UNAVAILABLE", error.message)); }
+    return { ok: false, error: error.message };
   }
 }
 
@@ -650,15 +807,14 @@ function setCesiumCameraForRegion(regionId) {
     return;
   }
 
-  cesiumViewer.camera.cancelFlight();
-  cesiumViewer.scene.tweens.removeAll();
-  cesiumViewer.camera.setView({
+  flyToWithRuntime({
     destination: Cesium.Cartesian3.fromDegrees(region.lon, region.lat, region.altitude),
     orientation: {
       heading: Cesium.Math.toRadians(0),
       pitch: Cesium.Math.toRadians(-90),
       roll: Cesium.Math.toRadians(0),
     },
+    duration: 1.6,
   });
 }
 
@@ -2225,19 +2381,25 @@ function requestUserLocation() {
 function initializeRegionalMode() {
   const storedRegion = readStorageValue(REGION_STORAGE_KEY, "global");
   activeRegionId = regionConfig[storedRegion] ? storedRegion : "global";
+  rebuildRegionSelector();
 
   if (selectors.regionSelector) {
     selectors.regionSelector.value = activeRegionId;
     selectors.regionSelector.addEventListener("change", () => {
       const selectedRegion = selectors.regionSelector.value;
       writeStorageValue(REGION_STORAGE_KEY, selectedRegion);
+      earthLayerRuntime?.deactivate("regional-earthquakes");
+      earthLayerRuntime?.deactivate("regional-coastal");
       updateRegionContext(selectedRegion);
       setCesiumCameraForRegion(activeRegionId);
       loadLatestState();
+      void loadRegionalObservation(selectedRegion);
     });
   }
 
   updateRegionContext(activeRegionId);
+  rebuildRegionSelector();
+  void loadRegionalObservation(activeRegionId);
 }
 
 function initializeLanguageSelector() {
@@ -3315,11 +3477,44 @@ class CesiumLayerRuntimeController {
     return { kind: "entities", entities, dataSources: [], timestamps: { observationTime: config.record.latest_observation_time, retrievalTime: config.record.latest_retrieval_time } };
   }
 
+  async regionalPayload() {
+    if (activeRegionalObservation?.profile_id === activeRegionId) return activeRegionalObservation;
+    const result = await loadRegionalObservation(activeRegionId);
+    if (!result.ok || !activeRegionalObservation) throw new Error(result.error || "Regional observations are unavailable.");
+    return activeRegionalObservation;
+  }
+
+  async createRegionalEarthquakeEntry(config, viewer) {
+    const payload = await this.regionalPayload(); const events = payload.earthquakes?.events || [];
+    if (!events.length) { const error = new Error("USGS returned no qualifying earthquake points for this profile."); error.runtimeStatus = "UNAVAILABLE"; throw error; }
+    const entities = events.map((event) => viewer.entities.add({
+      id: `pcs-regional-earthquake-${event.id}`, name: `M${event.magnitude ?? "?"} · ${event.place}`,
+      position: Cesium.Cartesian3.fromDegrees(event.longitude, event.latitude, -Math.max(0, Number(event.depth_km) || 0) * 1000),
+      point: { pixelSize: Math.max(7, Math.min(20, 4 + (Number(event.magnitude) || 0) * 2)), color: entityColor(config, config.opacity), outlineColor: Cesium.Color.WHITE, outlineWidth: 1, disableDepthTestDistance: Number.POSITIVE_INFINITY },
+      description: layerEntityDescription([["Magnitude", event.magnitude], ["Depth", `${event.depth_km} km`], ["Time", formatPcsTime(event.time)], ["Official intensity CDI / MMI", `${event.intensity_cdi ?? "Unavailable"} / ${event.intensity_mmi ?? "Unavailable"}`], ["Reviewed status", event.reviewed_status], ["Tectonic context", event.tectonic_context || "Unavailable"], ["Tsunami linkage flag", event.tsunami_flag ? "YES · follow official warning authority" : "NO"], ["Source", event.source], ["Cluster label", "None · PCS does not infer foreshock/aftershock clusters"]]),
+    }));
+    return { kind: "entities", entities, dataSources: [], timestamps: { observationTime: events[0]?.time, retrievalTime: payload.earthquakes?.retrieved_at } };
+  }
+
+  async createRegionalCoastalEntry(config, viewer) {
+    const payload = await this.regionalPayload(); const stations = payload.coastal?.stations || [];
+    if (!stations.length) { const error = new Error("This regional profile has no configured coastal station positions."); error.runtimeStatus = "UNAVAILABLE"; throw error; }
+    const entities = stations.map((station) => viewer.entities.add({
+      id: `pcs-regional-coastal-${activeRegionId}-${station.id}`, name: `${station.name} coastal station`, position: Cesium.Cartesian3.fromDegrees(station.lon, station.lat),
+      point: { pixelSize: 11, color: entityColor(config, station.status === "AVAILABLE" ? config.opacity : 0.35), outlineColor: Cesium.Color.WHITE, outlineWidth: 2, disableDepthTestDistance: Number.POSITIVE_INFINITY },
+      label: { text: station.name, font: "12px sans-serif", fillColor: entityColor(config, config.opacity), outlineColor: Cesium.Color.BLACK, outlineWidth: 2, style: Cesium.LabelStyle.FILL_AND_OUTLINE, pixelOffset: new Cesium.Cartesian2(0, -21), disableDepthTestDistance: Number.POSITIVE_INFINITY },
+      description: layerEntityDescription([["Station authority", station.authority], ["Model sea level", station.modelled_sea_level?.status === "AVAILABLE" ? `${station.modelled_sea_level.value} ${station.modelled_sea_level.unit} · global MSL` : "Unavailable"], ["PREDICTED_TIDE", station.predicted_tide?.status], ["OBSERVED_WATER_LEVEL", station.observed_water_level?.status], ["STORM_SURGE_RESIDUAL", station.storm_surge_residual?.status], ["Wave height", station.wave_height?.status === "AVAILABLE" ? `${station.wave_height.value} ${station.wave_height.unit}` : "Unavailable"], ["Sea-surface temperature", station.sea_surface_temperature?.status === "AVAILABLE" ? `${station.sea_surface_temperature.value} ${station.sea_surface_temperature.unit}` : "Unavailable"], ["Observation / forecast time", formatPcsTime(station.observation_time)], ["Navigation warning", payload.coastal.navigation_warning]]),
+    }));
+    return { kind: "entities", entities, dataSources: [], timestamps: { observationTime: stations[0]?.observation_time, retrievalTime: payload.retrieved_at } };
+  }
+
   async createEntry(config, viewer) {
     if (["weather", "gibs_wmts"].includes(config.kind)) return this.createImageryEntry(config, viewer);
     if (config.kind === "station") return this.createStationEntry(config, viewer);
     if (config.kind === "tropical_cyclones") return this.createCycloneEntry(config, viewer);
     if (config.kind === "fire_detections") return this.createFireEntry(config, viewer);
+    if (config.kind === "regional_earthquakes") return this.createRegionalEarthquakeEntry(config, viewer);
+    if (config.kind === "regional_coastal") return this.createRegionalCoastalEntry(config, viewer);
     throw new Error(`Unsupported Cesium layer kind: ${config.kind}`);
   }
 
@@ -3458,6 +3653,7 @@ function initializeWeatherLayers() {
   earthLayerRuntime = new CesiumLayerRuntimeController(() => cesiumViewer);
   window.PCSEarthLayerRuntime = earthLayerRuntime;
   Object.values(WEATHER_LAYER_CONFIG).forEach((config) => earthLayerRuntime.register(config));
+  Object.values(REGIONAL_LAYER_CONFIG).forEach((config) => earthLayerRuntime.register(config));
   resetWeatherStatusDisplay();
   selectors.weatherLayerControls.forEach((control) => {
     control.addEventListener("change", async () => {
@@ -3473,6 +3669,16 @@ function initializeWeatherLayers() {
   selectors.weatherOpacityControls.forEach((control) => {
     control.addEventListener("input", () => earthLayerRuntime.updateOpacity(control.dataset.weatherOpacity, control.value));
   });
+  selectors.regionalLayerControls.forEach((control) => {
+    control.addEventListener("change", async () => {
+      const layerId = control.dataset.pcsLayer;
+      if (control.checked) {
+        control.disabled = true; const result = await earthLayerRuntime.activate(layerId); control.disabled = false;
+        if (!result.ok) control.checked = false;
+      } else earthLayerRuntime.deactivate(layerId);
+    });
+  });
+  selectors.regionalOpacityControls.forEach((control) => control.addEventListener("input", () => earthLayerRuntime.updateOpacity(control.dataset.pcsOpacity, control.value)));
   void checkWeatherProxyHealth();
 }
 
@@ -3547,7 +3753,7 @@ function compactLayerDetails(layer) {
 }
 
 function compactVisualizationDetails(visualization = {}) {
-  return Object.entries(visualization)
+  return Object.entries(visualization || {})
     .filter(([key]) => !["kind", "capabilities_url", "tile_base_url", "legend_url", "layer", "matrix_set", "format", "maximum_level", "product", "units"].includes(key))
     .map(([key, value]) => `${key.replaceAll("_", " ")}: ${Array.isArray(value) ? value.join(", ") : typeof value === "object" ? JSON.stringify(value) : value}`)
     .join(" · ") || null;

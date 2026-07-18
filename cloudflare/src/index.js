@@ -3,6 +3,7 @@ import { handleAstronomyRequest, ASTRONOMY_ROUTES } from "./astronomy.js";
 import { handleVisitorRequest, VISITOR_ROUTES } from "./visitors.js";
 import { handlePcsRequest, PCS_ROUTES } from "./pcs/routes.js";
 import { runScheduledJobs } from "./pcs/jobs.js";
+import { handleRegionalRequest } from "./regional.js";
 
 const DATASETS = [
   {
@@ -442,6 +443,9 @@ export default {
     if (url.pathname === "/api/layers/nhc-gis") {
       return nhcGisProxy(request);
     }
+    if (url.pathname.startsWith("/api/regional/")) {
+      return handleRegionalRequest(request);
+    }
     if (PCS_ROUTES.includes(url.pathname)
       || url.pathname.startsWith("/api/events/")
       || url.pathname.startsWith("/api/evidence-ledger/")
@@ -527,6 +531,8 @@ export default {
     "/api/nasa/status",
     ...NASA_DATASET_ROUTES
     ,...ASTRONOMY_ROUTES
+    ,"/api/regional/profiles"
+    ,"/api/regional/observation?region=taiwan"
   ],
   d1: !!env.PCS_DB,
   kv: !!env.PCS_CACHE
