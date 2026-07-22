@@ -3980,7 +3980,7 @@ function refreshAnimationStatus() {
   const status = {
     earth_rotation: latestRuntimeStatus?.earth_rotation?.status || "DISABLED",
     layer_activation: earthLayerRuntime?.lastActivationError ? "ERROR" : activeEarthLayers.size ? "ACTIVE" : "DISABLED",
-    alert_pulse: latestActiveAlertCount > 0 ? "ACTIVE" : "NO_ACTIVE_ALERT",
+    alert_pulse: latestRuntimeStatus?.alert_pulse?.status || (latestActiveAlertCount > 0 ? "ACTIVE" : "NO_ACTIVE_ALERT"),
     data_update: latestRuntimeStatus?.data_update?.status || dataUpdateStatus,
     timeline_playback: latestRuntimeStatus?.timeline_playback?.status === "ACTIVE" ? "ACTIVE" : "WAITING_FOR_TIME_SERIES",
     camera_transition: cameraTransitionFailed ? "ERROR" : cameraTransitionOperational ? "ACTIVE" : "NOT_CONFIGURED",
@@ -3989,7 +3989,7 @@ function refreshAnimationStatus() {
   const details = {
     earth_rotation: latestRuntimeStatus?.earth_rotation?.reason,
     layer_activation: `${activeEarthLayers.size} ${t("active_layer_count")}`,
-    alert_pulse: `${latestActiveAlertCount} ${t("active_advisories")}`,
+    alert_pulse: `${latestRuntimeStatus?.alert_pulse?.active_advisories ?? latestActiveAlertCount} ${t("active_advisories")}`,
     data_update: latestRuntimeStatus?.data_update ? `${t("last_successful_update")}: ${formatPcsTime(latestRuntimeStatus.data_update.last_successful_update)} · ${t("next_expected_update")}: ${formatPcsTime(latestRuntimeStatus.data_update.next_expected_update)} · ${latestRuntimeStatus.data_update.scheduled_run_result || "—"}` : null,
     timeline_playback: latestRuntimeStatus?.timeline_playback ? `${formatPcsTime(latestRuntimeStatus.timeline_playback.available_start_time)} — ${formatPcsTime(latestRuntimeStatus.timeline_playback.available_end_time)} · ${latestRuntimeStatus.timeline_playback.frame_count || 0} ${t("frames")}` : null,
     camera_transition: cameraTransitionOperational ? t("camera_transition_verified") : null,
