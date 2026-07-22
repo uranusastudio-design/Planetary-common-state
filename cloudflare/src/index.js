@@ -443,7 +443,7 @@ export default {
     if (url.pathname === "/api/layers/nhc-gis") {
       return nhcGisProxy(request);
     }
-    if (url.pathname.startsWith("/api/regional/")) {
+    if (url.pathname === "/api/regional" || url.pathname.startsWith("/api/regional/")) {
       return handleRegionalRequest(request);
     }
     if (PCS_ROUTES.includes(url.pathname)

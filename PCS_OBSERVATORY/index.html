@@ -594,6 +594,7 @@
         <article class="panel pcs-analysis-panel" id="pcs-daily-brief">
           <span class="panel-label" data-i18n="daily_brief">Daily Brief</span>
           <h2 data-i18n="retrospective_analysis">PCS Retrospective Analysis</h2>
+          <p id="daily-brief-status" class="framework-status" role="status" aria-live="polite"></p>
           <div id="daily-brief-list" class="pcs-card-list"><p data-i18n="loading">Loading</p></div>
           <details id="more-intelligence"><summary data-i18n="more_intelligence">More Intelligence</summary><div id="more-intelligence-list" class="pcs-card-list"></div></details>
         </article>
@@ -628,12 +629,12 @@
         <article class="panel animation-panel">
           <span class="panel-label">Animation System</span>
           <div class="framework-list" id="animation-status-list">
-            <span><span data-i18n="earth_rotation">Earth rotation</span> <strong data-animation-status="earth_rotation">NOT_CONFIGURED</strong></span>
-            <span><span data-i18n="layer_activation">Layer activation</span> <strong data-animation-status="layer_activation">DISABLED</strong></span>
-            <span><span data-i18n="alert_pulse">Alert pulse</span> <strong data-animation-status="alert_pulse">NO_ACTIVE_ALERT</strong></span>
-            <span><span data-i18n="data_update">Data update</span> <strong data-animation-status="data_update">NOT_CONFIGURED</strong></span>
-            <span><span data-i18n="timeline_playback">Timeline playback</span> <strong data-animation-status="timeline_playback">WAITING_FOR_TIME_SERIES</strong></span>
-            <span><span data-i18n="camera_transition">Camera transition</span> <strong data-animation-status="camera_transition">NOT_CONFIGURED</strong></span>
+            <span><span data-i18n="earth_rotation">Earth rotation</span> <strong data-animation-status="earth_rotation">DISABLED</strong><small data-animation-detail="earth_rotation"></small></span>
+            <span><span data-i18n="layer_activation">Layer activation</span> <strong data-animation-status="layer_activation">DISABLED</strong><small data-animation-detail="layer_activation"></small></span>
+            <span><span data-i18n="alert_pulse">Alert pulse</span> <strong data-animation-status="alert_pulse">NO_ACTIVE_ALERT</strong><small data-animation-detail="alert_pulse"></small></span>
+            <span><span data-i18n="data_update">Data update</span> <strong data-animation-status="data_update">NOT_CONFIGURED</strong><small data-animation-detail="data_update"></small></span>
+            <span><span data-i18n="timeline_playback">Timeline playback</span> <strong data-animation-status="timeline_playback">WAITING_FOR_TIME_SERIES</strong><small data-animation-detail="timeline_playback"></small></span>
+            <span><span data-i18n="camera_transition">Camera transition</span> <strong data-animation-status="camera_transition">NOT_CONFIGURED</strong><small data-animation-detail="camera_transition"></small></span>
           </div>
           <p id="animation-system-note" class="framework-status" data-i18n="animation_runtime_status">Statuses reflect active runtime implementations.</p>
         </article>
@@ -662,7 +663,7 @@
             <label><span data-i18n="event">Event</span><select id="evidence-event"></select></label>
             <label><span data-i18n="primary_region">Primary region</span><input id="evidence-primary-region" type="text"></label>
             <label><span data-i18n="comparison_region">Comparison region</span><input id="evidence-comparison-region" type="text"></label>
-            <label><span data-i18n="time_window">Time window</span><input id="evidence-window-start" type="date"><input id="evidence-window-end" type="date"></label>
+            <label><span data-i18n="precursor_window">Precursor window</span><input id="evidence-window-start" type="date"><input id="evidence-window-end" type="date"></label>
             <label><span data-i18n="baseline_period">Baseline period</span><input id="evidence-baseline-start" type="date"><input id="evidence-baseline-end" type="date"></label>
             <label><span data-i18n="variables">Variables</span><input id="evidence-variables" type="text" placeholder="temperature, soil moisture"></label>
             <button type="submit" class="framework-button" data-i18n="load_evidence">Load evidence</button>
@@ -687,6 +688,6 @@
     <script src="./moon-lighting.js"></script>
     <script src="./mission-imagery-registry.js?v=20260717-mission-moon-textures"></script>
     <script src="./celestial-bodies.js?v=20260717-mission-moon-textures"></script>
-    <script src="./app.js?v=20260718-phase63-regional-runtime-1"></script>
+    <script src="./app.js?v=20260722-phase64-evidence-runtime-1"></script>
   </body>
 </html>

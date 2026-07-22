@@ -56,12 +56,17 @@ async function insertOfficialEvent(env, candidate) {
   const cluster = await existingCluster(env, candidate);
   await env.PCS_DB.prepare(`INSERT OR IGNORE INTO pcs_events
     (id, cluster_id, title, category, region, event_type, event_summary, why_it_matters, research_relevance,
-     published_at, observed_event_time, source_url, source_name, source_type, confidence)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+     published_at, observed_event_time, source_url, source_name, source_type, confidence, latitude, longitude)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
     .bind(candidate.id, cluster, candidate.title, candidate.category, candidate.region, candidate.event_type,
       candidate.event_summary, candidate.why_it_matters, candidate.research_relevance,
       candidate.published_at, candidate.observed_event_time, candidate.source_url,
-      candidate.source_name, "official_scientific_feed", null).run();
+      candidate.source_name, "official_scientific_feed", null, candidate.latitude ?? null, candidate.longitude ?? null).run();
+  await env.PCS_DB.prepare(`INSERT OR IGNORE INTO pcs_data_snapshots
+    (id, event_id, provider, dataset, endpoint, timestamp, quality_flag, retrieval_status, payload, retrieved_at)
+    VALUES (?, ?, ?, ?, ?, ?, 'OFFICIAL_PROVIDER_RECORD', 'LIVE', ?, ?)`)
+    .bind(`event:${candidate.id}:${candidate.published_at || candidate.observed_event_time || "undated"}`, candidate.id, candidate.source_name, candidate.event_type, candidate.source_url,
+      candidate.observed_event_time, JSON.stringify({ ...candidate, data_state: "OBSERVED" }), new Date().toISOString()).run();
 }
 
 async function ingestNoaaAlerts(env, fetcher) {
@@ -83,6 +88,8 @@ async function ingestNoaaAlerts(env, fetcher) {
       observed_event_time: p.onset || p.effective || null,
       source_url: p.web || feature.id,
       source_name: "NOAA National Weather Service",
+      latitude: feature.geometry?.type === "Point" ? feature.geometry.coordinates?.[1] : null,
+      longitude: feature.geometry?.type === "Point" ? feature.geometry.coordinates?.[0] : null,
     });
   }
 }
@@ -107,6 +114,8 @@ async function ingestUsgsEarthquakes(env, fetcher) {
       observed_event_time: occurred,
       source_url: p.url,
       source_name: "USGS Earthquake Hazards Program",
+      latitude: feature.geometry?.coordinates?.[1] ?? null,
+      longitude: feature.geometry?.coordinates?.[0] ?? null,
     });
   }
 }
@@ -127,23 +136,30 @@ async function updateEvidenceLedgerAtEndOfDay(env) {
 
 export async function runScheduledJobs(env, cron, fetcher = fetch) {
   const startedAt = new Date().toISOString();
-  const [readiness, layers] = await Promise.all([domainReadiness(env, fetcher), retrieveAllLayers(env, fetcher)]);
-  await persistProviderStatus(env, readiness);
-  await persistLayerSnapshots(env, layers);
+  try {
+    const [readiness, layers] = await Promise.all([domainReadiness(env, fetcher), retrieveAllLayers(env, fetcher)]);
+    await persistProviderStatus(env, readiness);
+    await persistLayerSnapshots(env, layers);
 
   // All configured schedules refresh active official events. The operation is
   // idempotent because provider event identifiers are primary keys.
-  await Promise.allSettled([ingestNoaaAlerts(env, fetcher), ingestUsgsEarthquakes(env, fetcher)]);
+    await Promise.allSettled([ingestNoaaAlerts(env, fetcher), ingestUsgsEarthquakes(env, fetcher)]);
 
-  let brief = null;
-  if (cron === "15 0 * * *") brief = await ingestDailyBrief(env, fetcher);
-  const ledgerUpdates = cron === "45 23 * * *" ? await updateEvidenceLedgerAtEndOfDay(env) : 0;
-  const weeklyMetrics = cron === "30 1 * * 1" ? await validationMetrics(env) : null;
+    let brief = null;
+    if (cron === "15 0 * * *") brief = await ingestDailyBrief(env, fetcher);
+    const ledgerUpdates = cron === "45 23 * * *" ? await updateEvidenceLedgerAtEndOfDay(env) : 0;
+    const weeklyMetrics = cron === "30 1 * * 1" ? await validationMetrics(env) : null;
 
-  if (env.PCS_DB) {
-    await env.PCS_DB.prepare(`INSERT INTO pcs_scheduled_runs (id, cron, started_at, completed_at, status, details)
-      VALUES (?, ?, ?, ?, 'completed', ?)`)
-      .bind(crypto.randomUUID(), cron, startedAt, new Date().toISOString(), JSON.stringify({ datasets_checked: readiness.datasets.length, layers_checked: layers.layers.length, brief_items: brief ? brief.primary.length + brief.more_intelligence.length : 0, ledger_updates: ledgerUpdates, weekly_metrics: weeklyMetrics })).run();
+    if (env.PCS_DB) {
+      await env.PCS_DB.prepare(`INSERT INTO pcs_scheduled_runs (id, cron, started_at, completed_at, status, details)
+        VALUES (?, ?, ?, ?, 'completed', ?)`)
+        .bind(crypto.randomUUID(), cron, startedAt, new Date().toISOString(), JSON.stringify({ datasets_checked: readiness.datasets.length, layers_checked: layers.layers.length, brief_items: brief ? brief.primary.length + brief.more_intelligence.length : 0, ledger_updates: ledgerUpdates, weekly_metrics: weeklyMetrics })).run();
+    }
+    return { readiness, layers, brief };
+  } catch (error) {
+    if (env.PCS_DB) await env.PCS_DB.prepare(`INSERT INTO pcs_scheduled_runs (id, cron, started_at, completed_at, status, details)
+      VALUES (?, ?, ?, ?, 'failed', ?)`)
+      .bind(crypto.randomUUID(), cron, startedAt, new Date().toISOString(), JSON.stringify({ error: error?.message || "Scheduled job failed" })).run();
+    throw error;
   }
-  return { readiness, layers, brief };
 }

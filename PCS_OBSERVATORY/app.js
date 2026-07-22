@@ -293,6 +293,10 @@ const LAYER_SNAPSHOT_STALE_MS = 20 * 60 * 1000;
 let cameraTransitionOperational = false;
 let cameraTransitionFailed = false;
 let latestActiveAlertCount = 0;
+let latestRuntimeStatus = null;
+let timelineFrames = [];
+let timelineFrameIndex = 0;
+let timelinePlaybackTimer = null;
 
 const selectors = {
   currentState: document.querySelector("#current-state"),
@@ -380,12 +384,14 @@ const selectors = {
   connectedDatasetCount: document.querySelector("#connected-dataset-count"),
   connectedDatasetList: document.querySelector("#connected-dataset-list"),
   dailyBriefList: document.querySelector("#daily-brief-list"),
+  dailyBriefStatus: document.querySelector("#daily-brief-status"),
   moreIntelligenceList: document.querySelector("#more-intelligence-list"),
   massGatheringList: document.querySelector("#mass-gathering-list"),
   evidenceLedgerList: document.querySelector("#evidence-ledger-list"),
   pcsApiStatus: document.querySelector("#pcs-api-status"),
   systemModules: document.querySelectorAll("[data-system-module]"),
   animationStatuses: document.querySelectorAll("[data-animation-status]"),
+  animationDetails: document.querySelectorAll("[data-animation-detail]"),
   evidenceExplorerForm: document.querySelector("#evidence-explorer-form"),
   evidenceEvent: document.querySelector("#evidence-event"),
   evidencePrimaryRegion: document.querySelector("#evidence-primary-region"),
@@ -2725,13 +2731,25 @@ function initializeFrameworkControls() {
   selectors.timelineControls.forEach((control) => {
     control.addEventListener("click", () => {
       const action = control.dataset.timelineAction || "timeline";
-      const label = action.replace("-", " ");
-      updateText(selectors.timelineStatus, `Timeline ${label}: WAITING_FOR_TIME_SERIES. Validated time-series data is unavailable.`);
+      if (!timelineFrames.length) { updateText(selectors.timelineStatus, `${pcsStatusLabel("waiting_for_time_series")}. ${t("validated_timeline_unavailable")}`); return; }
+      const showFrame = () => {
+        const frame = timelineFrames[timelineFrameIndex];
+        updateText(selectors.timelineStatus, `${pcsStatusLabel("active")} · ${timelineFrameIndex + 1}/${timelineFrames.length} · ${formatPcsTime(frame?.occurred_at)} · ${frame?.description || frame?.milestone_type || ""}`);
+      };
+      if (action === "pause") { clearInterval(timelinePlaybackTimer); timelinePlaybackTimer = null; showFrame(); return; }
+      if (action === "step-back") timelineFrameIndex = (timelineFrameIndex - 1 + timelineFrames.length) % timelineFrames.length;
+      if (action === "step-forward") timelineFrameIndex = (timelineFrameIndex + 1) % timelineFrames.length;
+      if (action === "play") {
+        clearInterval(timelinePlaybackTimer);
+        const speed = Math.max(0.5, Number(selectors.timelineSpeed?.value) || 1);
+        timelinePlaybackTimer = setInterval(() => { timelineFrameIndex = (timelineFrameIndex + 1) % timelineFrames.length; showFrame(); }, 2000 / speed);
+      }
+      showFrame();
     });
   });
 
   selectors.timelineSpeed?.addEventListener("change", () => {
-    updateText(selectors.timelineStatus, "WAITING_FOR_TIME_SERIES. Playback speed is inactive until validated time-series data exists.");
+    updateText(selectors.timelineStatus, timelineFrames.length ? `${t("timeline_speed")}: ${selectors.timelineSpeed.value}×` : `${pcsStatusLabel("waiting_for_time_series")}. ${t("validated_timeline_unavailable")}`);
   });
 
   selectors.soundToggle?.addEventListener("change", () => {
@@ -3906,12 +3924,30 @@ function renderResidualState(state) {
   (state?.components || []).forEach((component) => {
     const ids = { thermal: "L_T", chemical: "L_C", structural: "L_S", informational: "L_I", flow: "L_F" };
     updateText(selectors.projections[ids[component.component]], component.value === null ? pcsStatusLabel("unavailable") : String(component.value));
-    document.querySelector(`[data-residual-reason="${component.component}"]`)?.replaceChildren(document.createTextNode(component.reason || t("residual_unavailable_reason")));
+    const host = document.querySelector(`[data-residual-reason="${component.component}"]`);
+    if (!host) return;
+    const details = document.createElement("details"); details.className = "residual-readiness-details";
+    const summary = document.createElement("summary"); summary.textContent = pcsStatusLabel(component.readiness_state);
+    const list = document.createElement("dl"); list.className = "evidence-grid";
+    const fields = [
+      ["connected_datasets", (component.connected_datasets || []).map((item) => `${item.provider}: ${item.dataset}`).join("; ")],
+      ["required_datasets", (component.required_datasets || []).map((item) => item.id).join(", ")],
+      ["missing_datasets", (component.missing_datasets || []).map((item) => item.id).join(", ")],
+      ["spatial_coverage", component.spatial_coverage], ["temporal_coverage", component.temporal_coverage],
+      ["formula_version", component.formula_version], ["baseline_period", component.baseline_period],
+      ["normalization_method", component.normalization_method], ["weights", component.weights],
+      ["uncertainty", component.uncertainty], ["validation_method", component.validation_method],
+      ["last_calculated_at", component.last_calculated_at], ["validation_status", component.validation_status],
+      ["unavailable_reason", component.unavailable_reason],
+    ];
+    fields.forEach(([label, value]) => list.append(createDefinitionRow(t(label), value === null || value === undefined || value === "" || (Array.isArray(value) && !value.length) ? pcsStatusLabel("unavailable") : typeof value === "string" ? value : JSON.stringify(value))));
+    details.append(summary, list); host.replaceChildren(details);
   });
-  updateText(document.querySelector("#total-l-status"), `L(t): ${state?.total_l_t?.status || "UNAVAILABLE"} · ${state?.total_l_t?.reason || t("residual_unavailable_reason")}`);
+  updateText(document.querySelector("#total-l-status"), `L(t): ${state?.total_l_t?.status || "UNAVAILABLE"} — ${state?.total_l_t?.unavailable_reason || t("residual_unavailable_reason")}`);
 }
 
 function renderSystemStatus(payload) {
+  latestRuntimeStatus = payload.runtime || null;
   selectors.systemModules.forEach((container) => {
     const module = container.dataset.systemModule;
     const list = document.createElement("ul"); list.className = "system-module-list";
@@ -3932,6 +3968,7 @@ function renderSystemStatus(payload) {
     container.replaceChildren(list);
   });
   renderResidualState(payload.pcs_state);
+  refreshAnimationStatus();
 }
 
 function refreshAnimationStatus() {
@@ -3941,14 +3978,23 @@ function refreshAnimationStatus() {
     : latestLayerSnapshotFailed ? "ERROR"
       : lastSnapshotMs && Date.now() - lastSnapshotMs <= LAYER_SNAPSHOT_STALE_MS ? "ACTIVE" : "STALE";
   const status = {
-    earth_rotation: "NOT_CONFIGURED",
+    earth_rotation: latestRuntimeStatus?.earth_rotation?.status || "DISABLED",
     layer_activation: earthLayerRuntime?.lastActivationError ? "ERROR" : activeEarthLayers.size ? "ACTIVE" : "DISABLED",
     alert_pulse: latestActiveAlertCount > 0 ? "ACTIVE" : "NO_ACTIVE_ALERT",
-    data_update: dataUpdateStatus,
-    timeline_playback: "WAITING_FOR_TIME_SERIES",
+    data_update: latestRuntimeStatus?.data_update?.status || dataUpdateStatus,
+    timeline_playback: latestRuntimeStatus?.timeline_playback?.status === "ACTIVE" ? "ACTIVE" : "WAITING_FOR_TIME_SERIES",
     camera_transition: cameraTransitionFailed ? "ERROR" : cameraTransitionOperational ? "ACTIVE" : "NOT_CONFIGURED",
   };
   selectors.animationStatuses.forEach((element) => updateText(element, status[element.dataset.animationStatus]));
+  const details = {
+    earth_rotation: latestRuntimeStatus?.earth_rotation?.reason,
+    layer_activation: `${activeEarthLayers.size} ${t("active_layer_count")}`,
+    alert_pulse: `${latestActiveAlertCount} ${t("active_advisories")}`,
+    data_update: latestRuntimeStatus?.data_update ? `${t("last_successful_update")}: ${formatPcsTime(latestRuntimeStatus.data_update.last_successful_update)} · ${t("next_expected_update")}: ${formatPcsTime(latestRuntimeStatus.data_update.next_expected_update)} · ${latestRuntimeStatus.data_update.scheduled_run_result || "—"}` : null,
+    timeline_playback: latestRuntimeStatus?.timeline_playback ? `${formatPcsTime(latestRuntimeStatus.timeline_playback.available_start_time)} — ${formatPcsTime(latestRuntimeStatus.timeline_playback.available_end_time)} · ${latestRuntimeStatus.timeline_playback.frame_count || 0} ${t("frames")}` : null,
+    camera_transition: cameraTransitionOperational ? t("camera_transition_verified") : null,
+  };
+  selectors.animationDetails.forEach((element) => updateText(element, details[element.dataset.animationDetail] || ""));
 }
 
 function renderDomainReadiness(payload) {
@@ -4058,7 +4104,7 @@ function createBriefCard(item) {
   const card = document.createElement("article");
   card.className = "pcs-ledger-entry brief-item";
   const title = document.createElement("strong"); title.textContent = item.title;
-  const badge = document.createElement("span"); badge.className = "pcs-evidence-tag active"; badge.textContent = pcsStatusLabel("observed");
+  const badge = document.createElement("span"); badge.className = "pcs-evidence-tag active"; badge.textContent = item.data_state || "PUBLICATION_METADATA";
   const summary = document.createElement("p"); summary.textContent = item.summary || t("summary_unavailable");
   const metadata = document.createElement("dl");
   metadata.append(
@@ -4067,13 +4113,14 @@ function createBriefCard(item) {
     createDefinitionRow(t("category"), item.category), createDefinitionRow(t("region"), item.region),
     createDefinitionRow(t("event_type"), item.event_type), createDefinitionRow(t("pcs_domain_mapping"), (item.pcs_domains || []).join(", ") || "—"),
     createDefinitionRow(t("event_candidate"), item.event_candidate ? "YES" : `NO · ${item.event_candidate_reason}`),
-    createDefinitionRow(t("data_state"), `${pcsStatusLabel("observed")} · ${item.observed_field || "publication metadata"}`),
+    createDefinitionRow(t("data_state"), item.data_state || "PUBLICATION_METADATA"),
   );
   const link = document.createElement("a"); link.href = item.source_url; link.target = "_blank"; link.rel = "noreferrer"; link.textContent = t("open_source");
   card.append(title, badge, summary, metadata, link); return card;
 }
 
 function renderDailyBriefPayload(payload, eventDetails) {
+  updateText(selectors.dailyBriefStatus, `${payload.operational_status || "UNAVAILABLE"} · ${t("brief_item_count")}: ${payload.counts?.brief_items ?? 0} · ${t("event_candidate_count")}: ${payload.counts?.event_candidates ?? 0} · ${t("retrospective_count")}: ${payload.counts?.retrospective_analyses ?? 0}`);
   selectors.dailyBriefList?.replaceChildren(...(payload.primary || []).map(createBriefCard));
   if (selectors.moreIntelligenceList) {
     const temporary = document.createElement("div");
@@ -4086,15 +4133,21 @@ function renderEvidenceLedger(entries) {
   if (!selectors.evidenceLedgerList) return;
   const items = entries.map((entry) => {
     const item = document.createElement("article");
-    item.className = "pcs-ledger-entry";
+    item.className = "pcs-ledger-entry"; item.id = `ledger-${entry.analysis_id}`;
     const title = document.createElement("strong");
     title.textContent = `${entry.region} · ${entry.event_type}`;
     const badge = document.createElement("span");
     badge.className = `pcs-evidence-tag ${pcsStatusClass(entry.result)}`;
     badge.textContent = pcsStatusLabel(entry.result);
-    const note = document.createElement("p");
-    note.textContent = `${t("lead_time")}: ${entry.lead_time_hours === null ? "—" : `${entry.lead_time_hours} h`} · ${entry.lessons_learned || ""}`;
-    item.append(title, badge, note);
+    const details = document.createElement("details");
+    const summary = document.createElement("summary"); summary.textContent = t("ledger_record_details");
+    const list = document.createElement("dl"); list.className = "evidence-grid";
+    const fields = ["analysis_id", "issued_at", "region", "event_type", "expected_event_window", "input_data_snapshot", "precursor_signals", "causal_chain", "warning_rule_version", "confidence", "proposed_actions", "actual_event", "official_confirmation_time", "news_publication_time", "lead_time_hours", "false_positive", "false_negative", "partial_hit", "data_missing", "retrospective_score", "lessons_learned", "model_revision", "reviewed_at"];
+    fields.forEach((field) => {
+      const value = entry[field];
+      list.append(createDefinitionRow(t(field), value === null || value === undefined || value === "" || (Array.isArray(value) && !value.length) ? pcsStatusLabel("unavailable") : typeof value === "object" ? JSON.stringify(value) : String(value)));
+    });
+    details.append(summary, list); item.append(title, badge, details);
     return item;
   });
   selectors.evidenceLedgerList.replaceChildren(...items);
@@ -4138,19 +4191,26 @@ function renderEvidenceExplorer(payload) {
     }));
   }
   if (!payload.selection) { updateText(selectors.evidenceCausalStatus, "NOT_ESTABLISHED"); return; }
+  timelineFrames = payload.timeline_frames || []; timelineFrameIndex = 0;
   const grid = document.createElement("dl"); grid.className = "evidence-grid";
   grid.append(
     createDefinitionRow(t("observed_variables"), (payload.observed_variables || []).map((item) => `${item.provider}: ${item.dataset}`).join("; ") || pcsStatusLabel("unavailable")),
-    createDefinitionRow(t("missing_variables"), (payload.missing_variables || []).join(", ") || t("none")),
+    createDefinitionRow(t("calculated_variables"), (payload.calculated_variables || []).map((item) => `${item.variable}: ${item.anomaly}`).join("; ") || pcsStatusLabel("insufficient_data")),
+    createDefinitionRow(t("missing_variables"), (payload.missing_variables || []).map((item) => item.variable || item).join(", ") || t("none")),
     createDefinitionRow(t("anomalies"), (payload.anomalies || []).length ? JSON.stringify(payload.anomalies) : pcsStatusLabel("insufficient_data")),
     createDefinitionRow(t("temporal_correlation"), `${payload.temporal_correlation?.status}: ${payload.temporal_correlation?.value ?? "—"}`),
     createDefinitionRow(t("spatial_overlap"), `${payload.spatial_overlap?.status}: ${payload.spatial_overlap?.value ?? "—"}`),
-    createDefinitionRow(t("data_completeness"), payload.data_completeness === null ? pcsStatusLabel("insufficient_data") : `${(payload.data_completeness * 100).toFixed(1)}%`),
+    createDefinitionRow(t("lead_time"), `${payload.lead_time?.status || "INSUFFICIENT_DATA"}: ${payload.lead_time?.value ?? "—"}`),
+    createDefinitionRow(t("uncertainty"), `${payload.uncertainty?.status || "INSUFFICIENT_DATA"}: ${payload.uncertainty?.value ?? "—"}`),
+    createDefinitionRow(t("data_completeness"), payload.data_completeness?.value === null || payload.data_completeness?.value === undefined ? pcsStatusLabel("insufficient_data") : `${(payload.data_completeness.value * 100).toFixed(1)}% (${payload.data_completeness.status})`),
     createDefinitionRow(t("inferred_relationships"), (payload.inferred_relationships || []).length ? JSON.stringify(payload.inferred_relationships) : t("none")),
     createDefinitionRow(t("source_list"), (payload.source_list || []).map((item) => `${item.provider}: ${item.dataset}`).join("; ") || pcsStatusLabel("unavailable")),
     createDefinitionRow(t("validation_state"), payload.validation_state),
   );
   selectors.evidenceResults.replaceChildren(grid);
+  if (payload.evidence_ledger_url) {
+    const link = document.createElement("a"); link.href = "#pcs-evidence-ledger"; link.textContent = t("evidence_ledger_link"); selectors.evidenceResults.append(link);
+  }
   updateText(selectors.evidenceCausalStatus, payload.causal_status || "NOT_ESTABLISHED");
 }
 

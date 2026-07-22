@@ -89,6 +89,10 @@
   "earth_rotation": "地球回転", "layer_activation": "レイヤー有効化", "alert_pulse": "警報パルス", "data_update": "データ更新", "timeline_playback": "タイムライン再生", "camera_transition": "カメラ遷移", "animation_runtime_status": "状態は実際の実行機能を反映します。",
   "status_live": "ライブ", "status_latest": "最新", "status_connected": "接続済み", "status_partial": "一部", "status_delayed": "遅延", "status_unavailable": "利用不可", "status_auth_required": "認証が必要", "status_error": "エラー", "status_observed": "観測", "status_calculated": "計算", "status_inferred": "推論", "status_estimated": "推定", "status_validated": "検証済み", "status_unvalidated": "未検証", "status_insufficient_data": "データ不足",
   "pcs_api_unavailable": "PCS エビデンス API は利用できません",
+  "required_datasets": "必須データセット", "missing_datasets": "不足データセット", "spatial_coverage": "空間カバレッジ", "temporal_coverage": "時間カバレッジ", "formula_version": "数式バージョン", "normalization_method": "正規化方法", "weights": "重み", "validation_method": "検証方法", "last_calculated_at": "最終計算日時", "unavailable_reason": "利用不可の理由",
+  "active_layer_count": "アクティブレイヤー", "active_advisories": "有効な勧告", "last_successful_update": "最終成功更新", "next_expected_update": "次回予定更新", "frames": "フレーム", "camera_transition_verified": "地域・イベント・地球へのカメラ遷移は同一 Viewer を使用します。",
+  "brief_item_count": "ブリーフ項目", "event_candidate_count": "イベント候補", "retrospective_count": "回顧分析", "ledger_record_details": "台帳レコード詳細", "calculated_variables": "計算変数", "validated_timeline_unavailable": "検証済み時系列データは利用できません。", "timeline_speed": "タイムライン速度",
+  "analysis_id": "分析 ID", "issued_at": "発行日時", "expected_event_window": "予想イベント期間", "input_data_snapshot": "入力データスナップショット", "precursor_signals": "先行シグナル", "warning_rule_version": "警告ルール版", "proposed_actions": "提案アクション", "actual_event": "実際のイベント", "official_confirmation_time": "公式確認日時", "news_publication_time": "ニュース公開日時", "lead_time_hours": "リードタイム（時間）", "false_positive": "偽陽性", "false_negative": "偽陰性", "partial_hit": "部分的中", "data_missing": "データ不足", "retrospective_score": "回顧スコア", "lessons_learned": "教訓", "model_revision": "モデル改訂", "reviewed_at": "レビュー日時",
   "landing": {
     "title": "データから理解へ。",
     "subtitle": "科学を、科学者だけのものにしない。",

@@ -89,6 +89,10 @@
   "earth_rotation": "지구 회전", "layer_activation": "레이어 활성화", "alert_pulse": "경보 펄스", "data_update": "데이터 업데이트", "timeline_playback": "타임라인 재생", "camera_transition": "카메라 전환", "animation_runtime_status": "상태는 실제 런타임 기능을 반영합니다.",
   "status_live": "실시간", "status_latest": "최신", "status_connected": "연결됨", "status_partial": "부분", "status_delayed": "지연", "status_unavailable": "사용 불가", "status_auth_required": "인증 필요", "status_error": "오류", "status_observed": "관측", "status_calculated": "계산", "status_inferred": "추론", "status_estimated": "추정", "status_validated": "검증됨", "status_unvalidated": "미검증", "status_insufficient_data": "데이터 부족",
   "pcs_api_unavailable": "PCS 증거 API를 사용할 수 없습니다",
+  "required_datasets": "필수 데이터셋", "missing_datasets": "누락 데이터셋", "spatial_coverage": "공간 범위", "temporal_coverage": "시간 범위", "formula_version": "공식 버전", "normalization_method": "정규화 방법", "weights": "가중치", "validation_method": "검증 방법", "last_calculated_at": "마지막 계산 시각", "unavailable_reason": "사용 불가 이유",
+  "active_layer_count": "활성 레이어", "active_advisories": "활성 주의보", "last_successful_update": "마지막 성공 업데이트", "next_expected_update": "다음 예상 업데이트", "frames": "프레임", "camera_transition_verified": "지역·이벤트·지구 카메라 전환은 동일 Viewer를 사용합니다.",
+  "brief_item_count": "브리프 항목", "event_candidate_count": "이벤트 후보", "retrospective_count": "회고 분석", "ledger_record_details": "원장 기록 세부 정보", "calculated_variables": "계산 변수", "validated_timeline_unavailable": "검증된 시계열 데이터를 사용할 수 없습니다.", "timeline_speed": "타임라인 속도",
+  "analysis_id": "분석 ID", "issued_at": "발행 시각", "expected_event_window": "예상 이벤트 기간", "input_data_snapshot": "입력 데이터 스냅샷", "precursor_signals": "전조 신호", "warning_rule_version": "경고 규칙 버전", "proposed_actions": "제안 조치", "actual_event": "실제 이벤트", "official_confirmation_time": "공식 확인 시각", "news_publication_time": "뉴스 게시 시각", "lead_time_hours": "선행 시간(시간)", "false_positive": "거짓 양성", "false_negative": "거짓 음성", "partial_hit": "부분 적중", "data_missing": "데이터 누락", "retrospective_score": "회고 점수", "lessons_learned": "교훈", "model_revision": "모델 개정", "reviewed_at": "검토 시각",
   "landing": {
     "title": "데이터에서 이해로.",
     "subtitle": "과학을 과학자만의 것으로 남기지 않습니다.",

@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import { PCS_LAYER_ADAPTERS, retrieveLayer } from "../src/providers/layers.js";
 import { ingestDailyBrief, proposeAiAnalysis } from "../src/pcs/intelligence.js";
 import { residualState, validationEvidenceSufficient } from "../src/pcs/routes.js";
@@ -109,8 +110,16 @@ test("daily brief produces ten deduplicated publication items and no measurement
   assert.equal(result.primary.length, 10);
   assert.equal(new Set(result.primary.map((item) => item.source_url)).size, 10);
   assert.ok(result.primary.every((item) => item.event_candidate === false));
-  assert.ok(result.primary.every((item) => item.observed_field === "publication metadata"));
+  assert.ok(result.primary.every((item) => item.data_state === "PUBLICATION_METADATA"));
+  assert.ok(result.primary.every((item) => item.observed_event_time === null && item.confidence === null));
+  assert.deepEqual(result.counts, { brief_items: 10, event_candidates: 0, retrospective_analyses: 0 });
   assert.equal(result.policy.article_measurements, false);
+});
+
+test("historical Daily Brief rows are migrated away from OBSERVED", async () => {
+  const migration = await readFile(new URL("../migrations/0004_phase64_brief_metadata_classification.sql", import.meta.url), "utf8");
+  assert.match(migration, /SET data_state = 'PUBLICATION_METADATA'/);
+  assert.match(migration, /observed_event_time = NULL/);
 });
 
 test("AI adapter is proposal-only and does not invent output when unconfigured", async () => {
@@ -125,8 +134,11 @@ test("PCS residuals and total L(t) remain unavailable without scientific definit
   const state = residualState();
   assert.equal(state.total_l_t.value, null);
   assert.equal(state.total_l_t.status, "UNAVAILABLE");
-  assert.deepEqual(state.components.map((item) => item.component), ["thermal", "flow", "chemical", "informational", "structural"]);
+  assert.deepEqual(state.components.map((item) => item.component), ["thermal", "flow", "chemical", "structural", "informational"]);
   assert.ok(state.components.every((item) => item.value === null && item.validation_status === "UNVALIDATED"));
+  for (const component of state.components) {
+    for (const field of ["connected_datasets", "required_datasets", "missing_datasets", "spatial_coverage", "temporal_coverage", "formula_version", "baseline_period", "normalization_method", "weights", "uncertainty", "validation_method", "last_calculated_at", "validation_status", "unavailable_reason"]) assert.ok(Object.hasOwn(component, field), `${component.component}.${field}`);
+  }
 });
 
 test("resolved validation requires evidence snapshots and official confirmation", () => {

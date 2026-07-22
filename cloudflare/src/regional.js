@@ -239,6 +239,7 @@ export function newYearCities(now = new Date()) {
 
 export async function handleRegionalRequest(request, fetcher = fetch) {
   const url = new URL(request.url);
+  if (url.pathname === "/api/regional") return json({ profiles: REGIONAL_PROFILES, profile_count: Object.keys(REGIONAL_PROFILES).length, new_year_cities: newYearCities(), data_state: "METADATA" });
   if (url.pathname === "/api/regional/profiles") return json({ profiles: REGIONAL_PROFILES, new_year_cities: newYearCities() });
   if (url.pathname === "/api/regional/observation") {
     const region = url.searchParams.get("region") || "global";

@@ -1,18 +1,22 @@
 import { domainReadiness } from "../providers/registry.js";
 import { retrieveAllLayers } from "../providers/layers.js";
 import { readDailyBrief, proposeAiAnalysis } from "./intelligence.js";
+import { residualState } from "./readiness.js";
 
 export const PCS_ROUTES = [
   "/api/domain-readiness", "/api/daily-brief", "/api/events",
   "/api/evidence-ledger", "/api/mass-gatherings", "/api/human-mobility",
   "/api/validation/metrics",
-  "/api/layers", "/api/system-status", "/api/evidence-explorer", "/api/ai-analysis/status",
+  "/api/layers", "/api/system-status", "/api/residual-readiness", "/api/evidence-explorer", "/api/ai-analysis/status",
 ];
+
+export { residualState };
 
 const EVENT_COLUMNS = [
   "id", "title", "category", "region", "event_type", "event_summary",
   "why_it_matters", "research_relevance", "published_at", "observed_event_time",
   "source_url", "source_name", "source_type", "image_url", "confidence",
+  "latitude", "longitude",
 ];
 
 const RETROSPECTIVE_JSON = [
@@ -185,22 +189,30 @@ export async function validationMetrics(env) {
   const { results } = await env.PCS_DB.prepare("SELECT result, confidence, retrospective_score, false_positive, false_negative, partial_hit, data_missing FROM pcs_evidence_ledger WHERE result != 'unresolved'").all();
   const eligible = results.filter((row) => ["confirmed", "partially_confirmed", "false_alarm", "missed"].includes(row.result));
   const base = { sample_size: eligible.length, minimum_sample_size: 5, precision: null, recall: null, false_positive_rate: null, false_negative_rate: null, brier_score: null, calibration_error: null, actionability_score: null,
-    data_completeness_score: eligible.length ? 1 - eligible.filter((r) => r.data_missing).length / eligible.length : null };
-  if (eligible.length < base.minimum_sample_size) return { ...base, status: "INSUFFICIENT_DATA" };
+    data_completeness_score: null };
+  if (eligible.length < base.minimum_sample_size) return { ...base, status: "INSUFFICIENT_DATA", metric_states: Object.fromEntries(["precision", "recall", "false_positive_rate", "false_negative_rate", "brier_score", "calibration_error", "actionability_score", "data_completeness_score"].map((key) => [key, "INSUFFICIENT_DATA"])) };
   const tp = eligible.filter((r) => r.result === "confirmed" || r.result === "partially_confirmed").length;
   const fp = eligible.filter((r) => r.false_positive).length;
   const fn = eligible.filter((r) => r.false_negative).length;
   const scored = eligible.filter((r) => Number.isFinite(Number(r.confidence)));
-  const brier = scored.length ? scored.reduce((sum, row) => {
+  const brier = scored.length >= base.minimum_sample_size ? scored.reduce((sum, row) => {
     const outcome = row.result === "confirmed" || row.result === "partially_confirmed" ? 1 : 0;
     return sum + (Number(row.confidence) - outcome) ** 2;
   }, 0) / scored.length : null;
+  const calculated = (value) => value === null ? "INSUFFICIENT_DATA" : "CALCULATED";
+  const precision = ratio(tp, tp + fp), recall = ratio(tp, tp + fn);
+  const falsePositiveRate = ratio(fp, eligible.length), falseNegativeRate = ratio(fn, eligible.length);
+  const completeness = 1 - eligible.filter((row) => row.data_missing).length / eligible.length;
   return {
     ...base, status: "CALCULATED",
-    precision: ratio(tp, tp + fp), recall: ratio(tp, tp + fn),
-    false_positive_rate: ratio(fp, results.length), false_negative_rate: ratio(fn, results.length),
+    precision, recall,
+    false_positive_rate: falsePositiveRate, false_negative_rate: falseNegativeRate,
     brier_score: brier, calibration_error: null,
-    actionability_score: null,
+    actionability_score: null, data_completeness_score: completeness,
+    metric_states: {
+      precision: calculated(precision), recall: calculated(recall), false_positive_rate: calculated(falsePositiveRate), false_negative_rate: calculated(falseNegativeRate),
+      brier_score: calculated(brier), calibration_error: "INSUFFICIENT_DATA", actionability_score: "INSUFFICIENT_DATA", data_completeness_score: "CALCULATED",
+    },
   };
 }
 
@@ -222,9 +234,13 @@ async function evidenceExplorer(env, url) {
   if (!eventId) return { events: events.map(({ id, title, region, event_type }) => ({ id, title, region, event_type })), selection: null, causal_status: "NOT_ESTABLISHED" };
   const event = await env.PCS_DB.prepare("SELECT * FROM pcs_events WHERE id = ?").bind(eventId).first();
   if (!event) return null;
-  const { results } = await env.PCS_DB.prepare(`SELECT id, provider, dataset, endpoint, timestamp AS observation_time,
+  const [{ results }, retrospective, timeline] = await Promise.all([
+    env.PCS_DB.prepare(`SELECT id, provider, dataset, endpoint, timestamp AS observation_time,
     retrieved_at, spatial_resolution, temporal_resolution, latency, license, quality_flag, uncertainty,
-    retrieval_status, payload FROM pcs_data_snapshots WHERE event_id = ? ORDER BY retrieved_at DESC LIMIT 200`).bind(eventId).all();
+    retrieval_status, payload FROM pcs_data_snapshots WHERE event_id = ? ORDER BY retrieved_at DESC LIMIT 200`).bind(eventId).all(),
+    env.PCS_DB.prepare("SELECT validation_status FROM pcs_retrospective_analyses WHERE event_id = ? ORDER BY created_at DESC LIMIT 1").bind(eventId).first(),
+    env.PCS_DB.prepare("SELECT occurred_at, milestone_type, value_status, description, source_url, confidence FROM pcs_event_timeline WHERE event_id = ? AND occurred_at IS NOT NULL ORDER BY occurred_at").bind(eventId).all(),
+  ]);
   const snapshots = results.map((row) => {
     let payload = null;
     try { payload = row.payload ? JSON.parse(row.payload) : null; } catch { payload = null; }
@@ -240,37 +256,48 @@ async function evidenceExplorer(env, url) {
     selection: { event_id: eventId, primary_region: primaryRegion || event.region, comparison_region: comparisonRegion || null,
       time_window: { start: windowStart, end: windowEnd }, baseline_period: { start: baselineStart, end: baselineEnd }, variables },
     event: { id: event.id, title: event.title, region: event.region, event_type: event.event_type },
-    observed_variables: observed, missing_variables: missing, anomalies,
+    precursor_window: { start: windowStart, end: windowEnd },
+    observed_variables: observed.map((item) => ({ ...item, data_state: "OBSERVED" })),
+    calculated_variables: anomalies.map((item) => ({ ...item, data_state: "CALCULATED" })),
+    inferred_relationships: [], missing_variables: missing.map((variable) => ({ variable, data_state: "UNAVAILABLE" })), anomalies,
     temporal_correlation: { value: null, status: "INSUFFICIENT_DATA", method: null },
     spatial_overlap: { value: null, status: "INSUFFICIENT_DATA", method: null },
-    data_completeness: variables.length ? (variables.length - missing.length) / variables.length : null,
-    inferred_relationships: [], source_list: [...new Map(snapshots.map((item) => [item.endpoint, { provider: item.provider, dataset: item.dataset, endpoint: item.endpoint }])).values()],
-    validation_state: "UNVALIDATED", causal_status: "NOT_ESTABLISHED",
-  };
-}
-
-export function residualState() {
-  const reason = "Formula, baseline, normalization, weights, coverage, uncertainty, and validation method are not configured.";
-  return {
-    total_l_t: { value: null, status: "UNAVAILABLE", reason: "Component definitions and a validated aggregation method are unavailable." },
-    components: ["thermal", "flow", "chemical", "informational", "structural"].map((component) => ({
-      component, value: null, data_state: "UNAVAILABLE", reason, formula_version: null, baseline_period: null,
-      variables_used: [], normalization_method: null, weights: null, data_coverage: null,
-      uncertainty: null, calculated_at: null, validation_status: "UNVALIDATED",
-    })),
+    lead_time: { value: null, unit: "hours", status: "INSUFFICIENT_DATA" },
+    uncertainty: { value: null, status: "INSUFFICIENT_DATA" },
+    data_completeness: { value: variables.length ? (variables.length - missing.length) / variables.length : null, status: variables.length ? "CALCULATED" : "INSUFFICIENT_DATA" },
+    source_list: [...new Map(snapshots.map((item) => [item.endpoint, { provider: item.provider, dataset: item.dataset, endpoint: item.endpoint }])).values()],
+    evidence_ledger_url: `/api/events/${encodeURIComponent(eventId)}/evidence`,
+    timeline_frames: String(retrospective?.validation_status || "").toUpperCase() === "VALIDATED" ? timeline.results : [],
+    validation_state: retrospective?.validation_status || "UNVALIDATED", causal_status: "NOT_ESTABLISHED",
   };
 }
 
 async function systemStatus(env) {
   const [layers, metrics] = await Promise.all([retrieveAllLayers(env), validationMetrics(env)]);
-  let reviewHistory = [], aiOutput = null;
+  let reviewHistory = [], aiOutput = null, calculations = [], scheduledRun = null, timelineWindow = null;
   if (env.PCS_DB) {
-    const [reviews, ai] = await Promise.all([
+    const [reviews, ai, residuals, run, timeline] = await Promise.all([
       env.PCS_DB.prepare("SELECT * FROM pcs_review_history ORDER BY reviewed_at DESC LIMIT 20").all(),
       env.PCS_DB.prepare("SELECT model_provider, model_name, model_version, generated_at, confidence, review_status, prompt_or_rule_version FROM pcs_ai_outputs ORDER BY generated_at DESC LIMIT 1").first(),
+      env.PCS_DB.prepare(`SELECT calculation.* FROM pcs_residual_calculations calculation
+        JOIN (SELECT component, MAX(calculated_at) AS calculated_at FROM pcs_residual_calculations GROUP BY component) latest
+          ON calculation.component = latest.component AND calculation.calculated_at = latest.calculated_at`).all(),
+      env.PCS_DB.prepare("SELECT * FROM pcs_scheduled_runs ORDER BY started_at DESC LIMIT 1").first(),
+      env.PCS_DB.prepare(`SELECT MIN(t.occurred_at) AS start_time, MAX(t.occurred_at) AS end_time, COUNT(*) AS frame_count
+        FROM pcs_event_timeline t JOIN pcs_retrospective_analyses a ON a.event_id = t.event_id
+        WHERE UPPER(a.validation_status) = 'VALIDATED' AND t.occurred_at IS NOT NULL`).first(),
     ]);
-    reviewHistory = reviews.results; aiOutput = ai;
+    reviewHistory = reviews.results; aiOutput = ai; calculations = residuals.results; scheduledRun = run; timelineWindow = timeline;
   }
+  const now = new Date();
+  const completedAt = scheduledRun?.completed_at ? new Date(scheduledRun.completed_at) : null;
+  const intervalHours = scheduledRun?.cron === "0 */6 * * *" ? 6 : scheduledRun?.cron === "30 1 * * 1" ? 168 : 24;
+  const nextExpected = completedAt && Number.isFinite(completedAt.getTime()) ? new Date(completedAt.getTime() + intervalHours * 60 * 60 * 1000) : null;
+  const updateStatus = !scheduledRun ? "NOT_CONFIGURED"
+    : scheduledRun.status !== "completed" ? "ERROR"
+      : nextExpected && now.getTime() <= nextExpected.getTime() + 2 * 60 * 60 * 1000 ? "ACTIVE" : "STALE";
+  const cycloneLayer = layers.layers.find((item) => item.id === "tropical-cyclones");
+  const timelineFrames = Number(timelineWindow?.frame_count || 0);
   return {
     generated_at: new Date().toISOString(),
     observation: { status: layers.layers.some((item) => ["LIVE", "LATEST"].includes(item.retrieval_status)) ? "ACTIVE" : "UNAVAILABLE", variables: layers.layers },
@@ -282,9 +309,20 @@ async function systemStatus(env) {
       { id: "ai_analysis", status: env.AI && env.AI_MODEL ? "CONNECTED" : "NOT_CONFIGURED" },
       { id: "evidence_ledger_writer", status: "ACTIVE" },
     ],
-    pcs_state: residualState(),
+    pcs_state: residualState(layers.layers, calculations),
     data_flow: ["provider", "adapter", "normalization", "snapshot", "event", "retrospective_analysis", "validation", "evidence_ledger"],
-    review: { ai_proposal: aiOutput || { review_status: "NO_PROPOSAL", model_version: null }, human_review_status: reviewHistory.length ? reviewHistory[0].status : "NOT_REVIEWED", review_history: reviewHistory },
+    review: {
+      ai_provider_status: env.AI && env.AI_MODEL ? "CONNECTED" : "NOT_CONFIGURED",
+      supported_states: ["PROPOSAL", "HUMAN_REVIEW_PENDING", "HUMAN_APPROVED", "RULE_VALIDATED", "REJECTED"],
+      ai_proposal: aiOutput || { review_status: "NO_PROPOSAL", model_version: null },
+      human_review_status: reviewHistory.length ? reviewHistory[0].status : "NOT_REVIEWED", review_history: reviewHistory,
+    },
+    runtime: {
+      earth_rotation: { status: "DISABLED", reason: "Automatic Earth rotation is not running." },
+      alert_pulse: { status: Number(cycloneLayer?.value || 0) > 0 ? "ACTIVE" : "NO_ACTIVE_ALERT", source: cycloneLayer?.provider || "NOAA NHC", active_advisories: Number(cycloneLayer?.value || 0) },
+      data_update: { status: updateStatus, last_successful_update: scheduledRun?.status === "completed" ? scheduledRun.completed_at : null, next_expected_update: nextExpected?.toISOString() || null, scheduled_run_result: scheduledRun?.status || null, cron: scheduledRun?.cron || null },
+      timeline_playback: { status: timelineFrames > 0 ? "ACTIVE" : "WAITING_FOR_TIME_SERIES", available_start_time: timelineWindow?.start_time || null, available_end_time: timelineWindow?.end_time || null, current_frame_timestamp: null, frame_count: timelineFrames },
+    },
   };
 }
 
@@ -315,9 +353,16 @@ export async function handlePcsRequest(request, env) {
       return response(readiness);
     }
     if (path === "/api/layers") return response(await retrieveAllLayers(env));
+    if (path === "/api/residual-readiness") {
+      const status = await systemStatus(env);
+      return response(status.pcs_state);
+    }
     if (path === "/api/daily-brief") {
       const brief = await readDailyBrief(env);
-      return response({ ...brief, event_candidates: await listEvents(env, url, true) });
+      const eventCandidates = (await listEvents(env, url, true)).slice(0, 6);
+      const retrospective = env.PCS_DB ? await env.PCS_DB.prepare("SELECT COUNT(*) AS count FROM pcs_retrospective_analyses WHERE UPPER(validation_status) IN ('VALIDATED','HUMAN_APPROVED','RULE_VALIDATED')").first() : null;
+      return response({ ...brief, event_candidates: eventCandidates,
+        counts: { ...(brief.counts || {}), brief_items: (brief.primary?.length || 0) + (brief.more_intelligence?.length || 0), event_candidates: eventCandidates.length, retrospective_analyses: Number(retrospective?.count || 0) } });
     }
     if (path === "/api/system-status") return response(await systemStatus(env));
     if (path === "/api/ai-analysis/status") return response({ status: env.AI && env.AI_MODEL ? "CONNECTED" : "NOT_CONFIGURED", proposal_only: true, can_validate: false, can_create_observations: false });

@@ -141,6 +141,8 @@ CREATE TABLE IF NOT EXISTS pcs_events (
   source_type TEXT,
   image_url TEXT,
   confidence REAL,
+  latitude REAL,
+  longitude REAL,
   merge_status TEXT NOT NULL DEFAULT 'unreviewed',
   created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ','now')),
   updated_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ','now'))
@@ -401,6 +403,9 @@ CREATE TABLE IF NOT EXISTS pcs_daily_brief_items (
   id TEXT PRIMARY KEY,
   title TEXT NOT NULL,
   summary TEXT,
+  event_summary TEXT,
+  why_it_matters TEXT,
+  research_relevance TEXT,
   category TEXT NOT NULL,
   region TEXT NOT NULL,
   event_type TEXT NOT NULL,
@@ -410,11 +415,15 @@ CREATE TABLE IF NOT EXISTS pcs_daily_brief_items (
   source_type TEXT NOT NULL,
   reliability TEXT NOT NULL,
   published_at TEXT,
+  observed_event_time TEXT,
+  confidence REAL,
   image_url TEXT,
   event_candidate INTEGER NOT NULL DEFAULT 0,
   event_candidate_reason TEXT,
-  data_state TEXT NOT NULL DEFAULT 'OBSERVED',
+  data_state TEXT NOT NULL DEFAULT 'PUBLICATION_METADATA',
   retrieved_at TEXT NOT NULL,
+  created_at TEXT,
+  updated_at TEXT,
   UNIQUE(source_url)
 );
 CREATE INDEX IF NOT EXISTS idx_pcs_brief_published ON pcs_daily_brief_items(published_at DESC);
@@ -457,7 +466,11 @@ CREATE TABLE IF NOT EXISTS pcs_residual_calculations (
   normalization_method TEXT NOT NULL,
   weights TEXT NOT NULL,
   data_coverage REAL NOT NULL,
+  spatial_coverage TEXT,
+  temporal_coverage TEXT,
   uncertainty REAL,
+  validation_method TEXT,
+  unavailable_reason TEXT,
   calculated_at TEXT NOT NULL,
   validation_status TEXT NOT NULL,
   input_snapshot_ids TEXT NOT NULL DEFAULT '[]'

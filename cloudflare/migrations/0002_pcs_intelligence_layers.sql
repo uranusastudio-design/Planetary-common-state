@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS pcs_daily_brief_items (
   image_url TEXT,
   event_candidate INTEGER NOT NULL DEFAULT 0,
   event_candidate_reason TEXT,
-  data_state TEXT NOT NULL DEFAULT 'OBSERVED',
+  data_state TEXT NOT NULL DEFAULT 'PUBLICATION_METADATA',
   retrieved_at TEXT NOT NULL,
   UNIQUE(source_url)
 );

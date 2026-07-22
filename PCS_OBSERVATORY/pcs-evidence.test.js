@@ -100,6 +100,15 @@ test("Phase 6.3 regional observations preserve one Viewer and honest hazard cont
 test("all Observatory dictionaries contain the PCS evidence labels", async () => {
   for (const language of ["en", "zh-TW", "ja", "ko"]) {
     const dictionary = JSON.parse(await readFile(new URL(`./i18n/${language}.json`, import.meta.url), "utf8"));
-    for (const key of ["connected_datasets", "retrospective_analysis", "human_mobility", "evidence_ledger", "validation_status", "data_quality", "evidence_explorer", "ai_proposal_status", "pcs_residual_status", "status_auth_required", "animation_runtime_status"]) assert.equal(typeof dictionary[key], "string", `${language}.${key}`);
+    for (const key of ["connected_datasets", "retrospective_analysis", "human_mobility", "evidence_ledger", "validation_status", "data_quality", "evidence_explorer", "ai_proposal_status", "pcs_residual_status", "status_auth_required", "animation_runtime_status", "required_datasets", "validation_method", "brief_item_count", "ledger_record_details", "calculated_variables", "validated_timeline_unavailable"]) assert.equal(typeof dictionary[key], "string", `${language}.${key}`);
   }
+});
+
+test("Phase 6.4 exposes provenance-rich readiness, publication metadata, and runtime details", () => {
+  for (const token of ["connected_datasets", "required_datasets", "missing_datasets", "formula_version", "normalization_method", "validation_method", "unavailable_reason"]) assert.ok(app.includes(token));
+  assert.match(app, /PUBLICATION_METADATA/);
+  assert.match(html, /id="daily-brief-status"/);
+  assert.match(html, /data-animation-detail="data_update"/);
+  assert.match(app, /timelineFrames/);
+  assert.equal((app.match(/new Cesium\.Viewer\(/g) || []).length, 1);
 });

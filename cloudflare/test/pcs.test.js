@@ -73,3 +73,16 @@ test("gathering risk is computed only when every aggregate factor is available",
   assert.equal(gatheringRisk({ hazard_index: 0.5, crowd_density: 0.4, vulnerability: 0.3, exposure_duration: 0.2 }), 0.012);
   assert.equal(gatheringRisk({ hazard_index: 0.5, crowd_density: null, vulnerability: 0.3, exposure_duration: 0.2 }), null);
 });
+
+test("all Phase 6.4 admin routes retain bearer authentication", async () => {
+  const requests = [
+    ["POST", "/api/admin/events"], ["PATCH", "/api/admin/events/event-1"],
+    ["POST", "/api/admin/events/event-1/analyze"], ["POST", "/api/admin/events/event-1/validate"],
+    ["POST", "/api/admin/events/event-1/link-source"], ["POST", "/api/admin/events/event-1/merge"],
+    ["POST", "/api/admin/warning-rules"], ["PATCH", "/api/admin/warning-rules/rule-1"],
+  ];
+  for (const [method, path] of requests) {
+    const response = await worker.fetch(new Request(`https://pcs.test${path}`, { method, headers: { "content-type": "application/json" }, body: "{}" }), { ADMIN_API_KEY: "server-only" }, {});
+    assert.equal(response.status, 401, `${method} ${path}`);
+  }
+});

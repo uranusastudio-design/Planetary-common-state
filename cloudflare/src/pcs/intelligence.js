@@ -80,7 +80,13 @@ export function normalizeBriefItems(items, now = new Date()) {
     return { ...item, id: item.id || crypto.randomUUID(), category, region: region(text), event_type: mappedEvent,
       pcs_domains: pcsDomains(text), event_candidate: false,
       event_candidate_reason: "Research/news brief content is not an observation or event confirmation feed.",
-      data_state: "OBSERVED", observed_field: "publication metadata", generated_at: now.toISOString() };
+      event_summary: item.summary || null,
+      why_it_matters: null,
+      research_relevance: pcsDomains(text).length ? `Mapped to PCS domains: ${pcsDomains(text).join(", ")}.` : null,
+      observed_event_time: null,
+      confidence: null,
+      data_state: "PUBLICATION_METADATA", generated_at: now.toISOString(),
+      created_at: now.toISOString(), updated_at: now.toISOString() };
   }).sort((a, b) => new Date(b.published_at || 0) - new Date(a.published_at || 0));
 }
 
@@ -99,12 +105,14 @@ async function retrieveSources(fetcher) {
 async function persistBrief(env, items) {
   if (!env.PCS_DB || !items.length) return;
   const statements = items.map((item) => env.PCS_DB.prepare(`INSERT OR IGNORE INTO pcs_daily_brief_items
-    (id, title, summary, category, region, event_type, pcs_domains, source_url, source_name, source_type,
-     reliability, published_at, image_url, event_candidate, event_candidate_reason, data_state, retrieved_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
-    .bind(item.id, item.title, item.summary || null, item.category, item.region, item.event_type, JSON.stringify(item.pcs_domains),
+    (id, title, summary, event_summary, why_it_matters, research_relevance, category, region, event_type,
+     observed_event_time, confidence, pcs_domains, source_url, source_name, source_type,
+     reliability, published_at, image_url, event_candidate, event_candidate_reason, data_state, retrieved_at, created_at, updated_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+    .bind(item.id, item.title, item.summary || null, item.event_summary, item.why_it_matters, item.research_relevance,
+      item.category, item.region, item.event_type, item.observed_event_time, item.confidence, JSON.stringify(item.pcs_domains),
       item.source_url, item.source_name, item.source_type, item.reliability, item.published_at, item.image_url,
-      item.event_candidate ? 1 : 0, item.event_candidate_reason, item.data_state, item.generated_at));
+      item.event_candidate ? 1 : 0, item.event_candidate_reason, item.data_state, item.generated_at, item.created_at, item.updated_at));
   for (let index = 0; index < statements.length; index += 50) await env.PCS_DB.batch(statements.slice(index, index + 50));
 }
 
@@ -114,7 +122,11 @@ export async function ingestDailyBrief(env, fetcher = fetch, now = new Date()) {
   const highImportance = normalized.filter((item) => item.event_type !== "other" && item.reliability === "primary").length >= 5;
   const selected = normalized.slice(0, highImportance ? 15 : 10);
   await persistBrief(env, selected);
-  return { generated_at: now.toISOString(), primary: selected.slice(0, 10), more_intelligence: selected.slice(10, 15), sources: retrieved.sources, policy: { primary_size: 10, maximum_size: 15, article_measurements: false } };
+  const workingSources = retrieved.sources.filter((source) => source.retrieval_status === "LIVE").length;
+  return { generated_at: now.toISOString(), operational_status: workingSources ? (workingSources === retrieved.sources.length ? "ACTIVE" : "PARTIAL") : "ERROR",
+    primary: selected.slice(0, 10), more_intelligence: selected.slice(10, 15), sources: retrieved.sources,
+    counts: { brief_items: selected.length, event_candidates: 0, retrospective_analyses: 0 },
+    policy: { primary_size: 10, maximum_size: 15, article_measurements: false } };
 }
 
 export async function readDailyBrief(env, fetcher = fetch, now = new Date()) {
@@ -122,7 +134,12 @@ export async function readDailyBrief(env, fetcher = fetch, now = new Date()) {
     const { results } = await env.PCS_DB.prepare(`SELECT * FROM pcs_daily_brief_items WHERE retrieved_at >= datetime('now','-2 days') ORDER BY COALESCE(published_at, retrieved_at) DESC LIMIT 15`).all();
     if (results.length >= 10) {
       const decoded = results.map((item) => ({ ...item, pcs_domains: JSON.parse(item.pcs_domains || "[]"), event_candidate: Boolean(item.event_candidate) }));
-      return { generated_at: now.toISOString(), primary: decoded.slice(0, 10), more_intelligence: decoded.slice(10, 15), sources: [], policy: { primary_size: 10, maximum_size: 15, article_measurements: false } };
+      const cachedNames = new Set(decoded.map((item) => item.source_name));
+      const cachedSources = BRIEF_SOURCES.map((source) => ({ provider: source.name, endpoint: source.url,
+        retrieval_status: cachedNames.has(source.name) ? "CACHED" : "NOT_RETRIEVED", error: null }));
+      return { generated_at: now.toISOString(), operational_status: "ACTIVE", primary: decoded.slice(0, 10), more_intelligence: decoded.slice(10, 15), sources: cachedSources,
+        counts: { brief_items: decoded.length, event_candidates: decoded.filter((item) => item.event_candidate).length, retrospective_analyses: 0 },
+        policy: { primary_size: 10, maximum_size: 15, article_measurements: false } };
     }
   }
   return ingestDailyBrief(env, fetcher, now);
