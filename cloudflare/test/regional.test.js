@@ -26,6 +26,7 @@ test("regional observation keeps model forecast separate from observations and e
   assert.equal(payload.weather.observed.length, 0);
   assert.ok(payload.weather.forecast.every((item) => ["FORECAST", "OBSERVED"].includes(item.data_class)));
   assert.equal(payload.weather.forecast.find((item) => item.key === "temperature_2m").value, 30);
+  assert.equal(payload.weather.forecast.find((item) => item.key === "uv_index").unit, "index");
   assert.equal(payload.weather.forecast.find((item) => item.key === "lightning").status, "UNAVAILABLE");
   assert.equal(payload.earthquakes.events[0].cluster_label, null);
   assert.equal(payload.coastal.stations.length, 5);

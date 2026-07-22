@@ -338,6 +338,7 @@ const selectors = {
   regionalObservationStatus: document.querySelector("#regional-observation-status"),
   regionalLocalTime: document.querySelector("#regional-local-time"),
   regionalSuggestions: document.querySelector("#regional-suggestions"),
+  regionalLegends: document.querySelector("#regional-legends"),
   regionalWeather: document.querySelector("#regional-weather"),
   regionalCoastal: document.querySelector("#regional-coastal"),
   regionalHazards: document.querySelector("#regional-hazards"),
@@ -804,6 +805,7 @@ async function loadRegionalObservation(regionId = activeRegionId) {
 function setCesiumCameraForRegion(regionId) {
   const region = regionConfig[regionId] ?? regionConfig.global;
   if (!cesiumViewer || !window.Cesium || activeCelestialTargetId !== "earth") {
+    if (selectors.regionalModeStatus) selectors.regionalModeStatus.dataset.cameraAction = "unavailable";
     return;
   }
 
@@ -816,6 +818,12 @@ function setCesiumCameraForRegion(regionId) {
     },
     duration: 1.6,
   });
+  if (selectors.regionalModeStatus) {
+    selectors.regionalModeStatus.dataset.cameraAction = "flyTo";
+    selectors.regionalModeStatus.dataset.lastFlyToRegion = region.id;
+    selectors.regionalModeStatus.dataset.lastFlyToLatitude = String(region.lat);
+    selectors.regionalModeStatus.dataset.lastFlyToLongitude = String(region.lon);
+  }
 }
 
 function showCesiumFallback(message) {
@@ -3245,7 +3253,11 @@ function updateLayerCapabilityRuntime(layerId, runtimeStatus, failureReason = nu
 }
 
 function renderWeatherLegend(config, visible) {
-  const host = config.kind === "weather" ? selectors.weatherLegends : document.querySelector(`[data-pcs-layer-entry="${CSS.escape(config.id)}"] [data-scientific-legend]`);
+  const host = config.kind === "weather"
+    ? selectors.weatherLegends
+    : config.kind.startsWith("regional_")
+      ? selectors.regionalLegends
+      : document.querySelector(`[data-pcs-layer-entry="${CSS.escape(config.id)}"] [data-scientific-legend]`);
   if (!host) return;
   let legend = host.querySelector(`[data-weather-legend="${config.id}"]`);
   if (!legend) {

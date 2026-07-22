@@ -95,7 +95,10 @@ async function loadWeather(profileData, fetcher, retrievedAt) {
   const weather = weatherResult.status === "fulfilled" ? weatherResult.value : null;
   const air = airResult.status === "fulfilled" ? airResult.value : null;
   const forecast = [];
-  for (const [key, label] of WEATHER_VARIABLES) forecast.push(valueRecord(key, label, "Open-Meteo multi-model forecast", "FORECAST", weather?.current?.[key], weather?.current_units?.[key], weather?.current?.time, retrievedAt));
+  for (const [key, label] of WEATHER_VARIABLES) {
+    const unit = key === "uv_index" ? "index" : weather?.current_units?.[key];
+    forecast.push(valueRecord(key, label, "Open-Meteo multi-model forecast", "FORECAST", weather?.current?.[key], unit, weather?.current?.time, retrievedAt));
+  }
   for (const [key, label] of AIR_VARIABLES) forecast.push(valueRecord(key, label, "CAMS via Open-Meteo", "FORECAST", air?.current?.[key], air?.current_units?.[key], air?.current?.time, retrievedAt, "MODEL_OUTPUT", "CAMS grid resolution and model uncertainty apply"));
   forecast.push(valueRecord("wbgt", "WBGT / heat stress", "No validated adapter", "FORECAST", null, "°C", null, retrievedAt, "NOT_ASSESSED", "Not calculated from incomplete inputs"));
   forecast.push(valueRecord("lightning", "Lightning", "No sustainable public adapter", "OBSERVED", null, "events", null, retrievedAt, "NOT_ASSESSED", "No positions are inferred"));
