@@ -5,11 +5,13 @@ import type { CelestialBodyId, VisitorAnalytics, VisitorHeatLocation, VisitorLoc
 import { fetchVisitorLocations, VISITOR_LOCATIONS_REFRESH_INTERVAL_MS } from '../config/observatoryNetwork';
 import { buildOpenWeatherTileUrl, getWeatherLayerConfig } from '../config/weatherLayers';
 import { formatLocationName, formatRelativeObservation } from '../utils/observatory';
+import { createGeographicMarker } from '../utils/geographicMarkers';
+import LayerSelector from './LayerSelector';
 
 const ACTIVE_OBSERVATION_MS = 90_000;
 const LIVE_OBSERVATION_MS = 24 * 60 * 60 * 1000;
 const MAX_LIVE_REGIONS = 100;
-const SELF_LOCATION_ENTITY_ID = 'pcs-self-location';
+const SELF_LOCATION_ENTITY_ID = 'visitor-locations:self-location';
 
 interface EarthViewerProps {
   activeLayerIds: WeatherLayerId[];
@@ -18,7 +20,21 @@ interface EarthViewerProps {
   visitorAnalytics: VisitorAnalytics | null;
   observationHeatEnabled: boolean;
   networkConnectionsEnabled: boolean;
+  onToggleLayer: (id: WeatherLayerId) => void;
+  onObservationHeatToggle: (enabled: boolean) => void;
+  onNetworkConnectionsToggle: (enabled: boolean) => void;
   onDebugInfoChange: (debugInfo: WeatherDebugInfo) => void;
+}
+
+type ViewerMode = 'normal' | 'pinned' | 'expanded';
+
+interface CameraState {
+  destination: Cesium.Cartesian3;
+  orientation: {
+    heading: number;
+    pitch: number;
+    roll: number;
+  };
 }
 
 /**
@@ -33,6 +49,9 @@ export default function EarthViewer({
   visitorAnalytics,
   observationHeatEnabled,
   networkConnectionsEnabled,
+  onToggleLayer,
+  onObservationHeatToggle,
+  onNetworkConnectionsToggle,
   onDebugInfoChange,
 }: EarthViewerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -42,9 +61,12 @@ export default function EarthViewer({
   const networkDataSourceRef = useRef<Cesium.CustomDataSource | null>(null);
   const visitorLocationByEntityIdRef = useRef<Map<string, VisitorLocation>>(new Map());
   const weatherLayersRef = useRef<Array<{ layer: Cesium.ImageryLayer; removeErrorListener: () => void }>>([]);
+  const initialCameraRef = useRef<CameraState | null>(null);
   const [weatherError, setWeatherError] = useState<string | null>(null);
   const [visitorLayerReady, setVisitorLayerReady] = useState(false);
   const [selectedVisitorLocation, setSelectedVisitorLocation] = useState<VisitorLocation | null>(null);
+  const [viewerMode, setViewerMode] = useState<ViewerMode>('normal');
+  const [layerDrawerOpen, setLayerDrawerOpen] = useState(true);
 
   const updateDebugInfo = useCallback(
     (latestTileError: string | null, tileUrls: string[] = [], latestFailedTileUrl: string | null = null) => {
@@ -90,18 +112,18 @@ export default function EarthViewer({
 
       const count = Math.max(1, location.count);
       const pointSize = Math.min(10, 5 + Math.log2(count + 1) * 1.25);
-      const entityId = visitorEntityId(location);
-      const position = Cesium.Cartesian3.fromDegrees(location.longitude, location.latitude);
+      const marker = createGeographicMarker({ layerId: 'visitor-locations', markerId: visitorEntityId(location), type: 'point', ...location });
+      if (!marker) continue;
+      const entityId = marker.id;
       const entity = visitorDataSource.entities.getById(entityId) ?? visitorDataSource.entities.add({ id: entityId });
       entity.name = formatLocationName(location);
-      entity.position = new Cesium.ConstantPositionProperty(position);
+      entity.position = new Cesium.ConstantPositionProperty(marker.position);
       entity.point = new Cesium.PointGraphics({
         pixelSize: pointSize,
         color: Cesium.Color.fromCssColorString('#22d3ee').withAlpha(0.82),
         outlineColor: Cesium.Color.fromCssColorString('#a7f3d0').withAlpha(0.72),
         outlineWidth: 1.25,
         heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
-        disableDepthTestDistance: Number.POSITIVE_INFINITY,
       });
       nextVisitorIds.add(entityId);
 
@@ -111,7 +133,7 @@ export default function EarthViewer({
       if (isActive && !lowPerformanceDevice) {
         const pulseId = `pcs-active-pulse-${entityId}`;
         const pulse = networkDataSource.entities.getById(pulseId) ?? networkDataSource.entities.add({ id: pulseId });
-        pulse.position = new Cesium.ConstantPositionProperty(position);
+        pulse.position = new Cesium.ConstantPositionProperty(marker.position);
         pulse.point = new Cesium.PointGraphics({
           pixelSize: new Cesium.CallbackProperty(() => {
             const phase = (Date.now() % 2_000) / 2_000;
@@ -124,7 +146,6 @@ export default function EarthViewer({
           }, false),
           outlineWidth: 1.5,
           heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
-          disableDepthTestDistance: Number.POSITIVE_INFINITY,
         });
         nextPulseIds.add(pulseId);
       }
@@ -141,20 +162,21 @@ export default function EarthViewer({
     }
 
     if (selfLocation && Number.isFinite(selfLocation.latitude) && Number.isFinite(selfLocation.longitude)) {
+      const marker = createGeographicMarker({ layerId: 'visitor-locations', markerId: 'self-location', type: 'point', ...selfLocation });
+      if (!marker) return;
       const selfEntity = visitorDataSource.entities.getById(SELF_LOCATION_ENTITY_ID)
         ?? visitorDataSource.entities.add({ id: SELF_LOCATION_ENTITY_ID });
       selfEntity.name = 'You are here';
-      selfEntity.position = new Cesium.ConstantPositionProperty(
-        Cesium.Cartesian3.fromDegrees(selfLocation.longitude, selfLocation.latitude)
-      );
+      selfEntity.position = new Cesium.ConstantPositionProperty(marker.position);
       selfEntity.point = new Cesium.PointGraphics({
         pixelSize: 8,
         color: Cesium.Color.fromCssColorString('#3b82f6').withAlpha(0.95),
         outlineColor: Cesium.Color.fromCssColorString('#dbeafe'),
         outlineWidth: 1.5,
         heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
-        disableDepthTestDistance: Number.POSITIVE_INFINITY,
       });
+    } else {
+      visitorDataSource.entities.removeById(SELF_LOCATION_ENTITY_ID);
     }
   }, []);
 
@@ -162,27 +184,31 @@ export default function EarthViewer({
     const heatDataSource = heatDataSourceRef.current;
     if (!heatDataSource) return;
 
-    heatDataSource.entities.removeAll();
+    const nextIds = new Set<string>();
 
-    for (const [index, location] of locations.slice(0, 100).entries()) {
+    for (const location of locations.slice(0, 100)) {
       if (!Number.isFinite(location.latitude) || !Number.isFinite(location.longitude)) continue;
 
       const weight = Math.max(1, Math.min(100, location.weight));
       const size = Math.min(18, 7 + Math.sqrt(weight) * 1.1);
       const alpha = Math.min(0.22, 0.06 + weight / 700);
 
-      heatDataSource.entities.add({
-        id: `pcs-observation-heat-${index}`,
-        position: Cesium.Cartesian3.fromDegrees(location.longitude, location.latitude),
-        point: {
+      const marker = createGeographicMarker({ layerId: 'observation-heat', markerId: `${location.latitude}|${location.longitude}`, type: 'heat-point', ...location });
+      if (!marker) continue;
+      const entity = heatDataSource.entities.getById(marker.id) ?? heatDataSource.entities.add({ id: marker.id });
+      entity.position = new Cesium.ConstantPositionProperty(marker.position);
+      entity.point = new Cesium.PointGraphics({
           pixelSize: size,
           color: Cesium.Color.fromCssColorString('#0ea5e9').withAlpha(alpha),
           outlineColor: Cesium.Color.fromCssColorString('#7dd3fc').withAlpha(alpha + 0.12),
           outlineWidth: 1,
           heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
-          disableDepthTestDistance: Number.POSITIVE_INFINITY,
-        },
       });
+      nextIds.add(marker.id);
+    }
+
+    for (const entity of [...heatDataSource.entities.values]) {
+      if (!nextIds.has(entity.id)) heatDataSource.entities.remove(entity);
     }
   }, []);
 
@@ -211,6 +237,8 @@ export default function EarthViewer({
     }
     viewer.scene.backgroundColor = Cesium.Color.fromCssColorString('#020617');
     viewer.scene.globe.baseColor = Cesium.Color.fromCssColorString('#0b1220');
+    viewer.scene.globe.depthTestAgainstTerrain = true;
+    viewer.scene.screenSpaceCameraController.minimumZoomDistance = 2_500;
     (viewer.bottomContainer as HTMLElement).style.display = 'none';
 
     const visitorDataSource = new Cesium.CustomDataSource('PCS Global Observatory Network');
@@ -237,12 +265,45 @@ export default function EarthViewer({
       setSelectedVisitorLocation(visitorLocation ?? null);
     }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
+    viewer.screenSpaceEventHandler.setInputAction((movement: Cesium.ScreenSpaceEventHandler.PositionedEvent) => {
+      const pickedPosition = (
+        viewer.scene.pickPositionSupported
+          ? viewer.scene.pickPosition(movement.position)
+          : undefined
+      ) ?? viewer.camera.pickEllipsoid(movement.position, viewer.scene.globe.ellipsoid);
+
+      if (!pickedPosition) return;
+
+      const cameraHeight = viewer.camera.positionCartographic.height;
+      const targetRadius = Cesium.Math.clamp(cameraHeight * 0.18, 5_000, 2_500_000);
+      viewer.camera.flyToBoundingSphere(new Cesium.BoundingSphere(pickedPosition, targetRadius), {
+        duration: 0.8,
+      });
+    }, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
+
     viewer.camera.flyHome(0);
+    initialCameraRef.current = {
+      destination: Cesium.Cartesian3.clone(viewer.camera.positionWC),
+      orientation: {
+        heading: viewer.camera.heading,
+        pitch: viewer.camera.pitch,
+        roll: viewer.camera.roll,
+      },
+    };
     viewerRef.current = viewer;
+
+    const resizeObserver = new ResizeObserver(() => {
+      if (viewer.isDestroyed()) return;
+      viewer.resize();
+      viewer.scene.requestRender();
+    });
+    resizeObserver.observe(containerRef.current);
 
     return () => {
       clearWeatherLayers();
+      resizeObserver.disconnect();
       viewer.screenSpaceEventHandler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_CLICK);
+      viewer.screenSpaceEventHandler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
       if (visitorDataSourceRef.current) {
         viewer.dataSources.remove(visitorDataSourceRef.current, true);
       }
@@ -259,8 +320,48 @@ export default function EarthViewer({
       networkDataSourceRef.current = null;
       visitorLocationByEntityIdRef.current.clear();
       weatherLayersRef.current = [];
+      initialCameraRef.current = null;
       setVisitorLayerReady(false);
     };
+  }, []);
+
+  const resizeViewer = useCallback(() => {
+    window.requestAnimationFrame(() => {
+      const viewer = viewerRef.current;
+      if (!viewer || viewer.isDestroyed()) return;
+      viewer.resize();
+      viewer.scene.requestRender();
+    });
+  }, []);
+
+  useEffect(() => {
+    resizeViewer();
+  }, [layerDrawerOpen, resizeViewer, viewerMode]);
+
+  useEffect(() => {
+    document.body.classList.toggle('pcs-earth-overlay-open', viewerMode === 'expanded');
+    return () => document.body.classList.remove('pcs-earth-overlay-open');
+  }, [viewerMode]);
+
+  const resetView = useCallback(() => {
+    const viewer = viewerRef.current;
+    const initialCamera = initialCameraRef.current;
+    if (!viewer || !initialCamera) return;
+
+    viewer.camera.flyTo({
+      destination: Cesium.Cartesian3.clone(initialCamera.destination),
+      orientation: { ...initialCamera.orientation },
+      duration: 1,
+    });
+  }, []);
+
+  const togglePinned = useCallback(() => {
+    setViewerMode((mode) => mode === 'pinned' ? 'normal' : 'pinned');
+  }, []);
+
+  const toggleExpanded = useCallback(() => {
+    setLayerDrawerOpen(true);
+    setViewerMode((mode) => mode === 'expanded' ? 'normal' : 'expanded');
   }, []);
 
   useEffect(() => {
@@ -390,9 +491,87 @@ export default function EarthViewer({
     };
   }, [activeLayerIds, backendUrl, clearWeatherLayers, updateDebugInfo]);
 
+  const viewerFrameClass = viewerMode === 'expanded'
+    ? 'fixed inset-3 z-[1000] overflow-hidden rounded-xl border border-accent/40 bg-slate-950 shadow-2xl'
+    : viewerMode === 'pinned'
+      ? 'fixed right-[21rem] top-[72px] z-[900] aspect-[16/10] w-[min(440px,38vw)] overflow-hidden rounded-xl border border-accent/50 bg-slate-950 shadow-2xl max-sm:bottom-3 max-sm:left-3 max-sm:right-3 max-sm:top-auto max-sm:w-auto'
+      : 'relative h-full w-full';
+
   return (
-    <div className="relative h-full w-full">
+    <div className={viewerFrameClass} data-viewer-mode={viewerMode}>
       <div ref={containerRef} className="h-full w-full" />
+      <div
+        className="absolute right-3 top-3 z-20 flex max-w-[calc(100%-1.5rem)] flex-wrap justify-end gap-1.5 rounded-lg border border-slate-600/70 bg-slate-950/85 p-1.5 font-mono text-[11px] text-slate-200 shadow-panel backdrop-blur-md"
+        role="toolbar"
+        aria-label="Earth viewer controls"
+      >
+        <ViewerControlButton label="Reset View" title="Return to the initial Earth view" onClick={resetView}>
+          <span aria-hidden="true">↺</span>
+        </ViewerControlButton>
+        <ViewerControlButton
+          label={viewerMode === 'pinned' ? 'Unpin' : 'Pin'}
+          title={viewerMode === 'pinned' ? 'Restore viewer to the dashboard' : 'Keep a compact Earth viewer visible'}
+          active={viewerMode === 'pinned'}
+          onClick={togglePinned}
+        >
+          <span aria-hidden="true">⌖</span>
+        </ViewerControlButton>
+        {viewerMode === 'expanded' && (
+          <ViewerControlButton
+            label="Layers"
+            title="Show or hide layer controls"
+            active={layerDrawerOpen}
+            onClick={() => setLayerDrawerOpen((open) => !open)}
+          >
+            <span aria-hidden="true">☷</span>
+          </ViewerControlButton>
+        )}
+        <ViewerControlButton
+          label={viewerMode === 'expanded' ? 'Restore' : 'Expand'}
+          title={viewerMode === 'expanded' ? 'Restore the dashboard viewer' : 'Expand the Earth viewer'}
+          active={viewerMode === 'expanded'}
+          onClick={toggleExpanded}
+        >
+          <span aria-hidden="true">{viewerMode === 'expanded' ? '✕' : '⛶'}</span>
+        </ViewerControlButton>
+      </div>
+      {viewerMode === 'expanded' && layerDrawerOpen && (
+        <aside className="absolute bottom-3 right-3 top-16 z-20 w-[min(20rem,calc(100%-1.5rem))] overflow-y-auto rounded-lg border border-panel-border bg-panel/95 p-4 shadow-panel backdrop-blur-md">
+          <div className="mb-4 flex items-center justify-between gap-3">
+            <h2 className="font-mono text-xs uppercase tracking-widest text-slate-300">Layers</h2>
+            <button
+              type="button"
+              className="rounded px-2 py-1 text-xs text-slate-400 transition hover:bg-slate-800 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
+              onClick={() => setLayerDrawerOpen(false)}
+              aria-label="Close layer drawer"
+              title="Close layer drawer"
+            >
+              ✕
+            </button>
+          </div>
+          <LayerSelector activeLayerIds={activeLayerIds} onToggle={onToggleLayer} />
+          <div className="mt-5 space-y-3 border-t border-panel-border pt-4 font-mono text-xs text-slate-300">
+            <label className="flex cursor-pointer items-center gap-2">
+              <input
+                type="checkbox"
+                checked={observationHeatEnabled}
+                onChange={(event) => onObservationHeatToggle(event.target.checked)}
+                className="h-4 w-4 rounded border-panel-border bg-slate-900 text-accent focus:ring-accent"
+              />
+              Observation heat
+            </label>
+            <label className="flex cursor-pointer items-center gap-2">
+              <input
+                type="checkbox"
+                checked={networkConnectionsEnabled}
+                onChange={(event) => onNetworkConnectionsToggle(event.target.checked)}
+                className="h-4 w-4 rounded border-panel-border bg-slate-900 text-accent focus:ring-accent"
+              />
+              Network markers
+            </label>
+          </div>
+        </aside>
+      )}
       {weatherError && (
         <div className="pointer-events-none absolute left-1/2 top-4 z-10 w-[min(90%,32rem)] -translate-x-1/2 rounded-lg border border-red-500/40 bg-red-950/90 px-4 py-3 text-center font-mono text-xs text-red-200 shadow-panel backdrop-blur transition-opacity duration-300">
           {weatherError}
@@ -426,6 +605,34 @@ export default function EarthViewer({
         </div>
       )}
     </div>
+  );
+}
+
+interface ViewerControlButtonProps {
+  active?: boolean;
+  children: React.ReactNode;
+  label: string;
+  onClick: () => void;
+  title: string;
+}
+
+function ViewerControlButton({ active = false, children, label, onClick, title }: ViewerControlButtonProps) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      title={title}
+      aria-label={title}
+      aria-pressed={active}
+      className={`flex min-h-8 items-center gap-1.5 rounded-md border px-2.5 py-1.5 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent ${
+        active
+          ? 'border-accent/70 bg-accent/20 text-cyan-100 shadow-[0_0_10px_rgba(56,189,248,0.2)]'
+          : 'border-slate-600/70 bg-slate-900/80 hover:border-accent/60 hover:bg-slate-800 hover:text-white'
+      }`}
+    >
+      {children}
+      <span>{label}</span>
+    </button>
   );
 }
 

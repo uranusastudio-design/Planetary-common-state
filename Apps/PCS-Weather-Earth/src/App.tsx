@@ -55,6 +55,9 @@ export default function App() {
           visitorAnalytics={visitorAnalytics}
           observationHeatEnabled={observationHeatEnabled}
           networkConnectionsEnabled={networkConnectionsEnabled}
+          onToggleLayer={toggleLayer}
+          onObservationHeatToggle={toggleObservationHeat}
+          onNetworkConnectionsToggle={toggleNetworkConnections}
           onDebugInfoChange={setDebugInfo}
         />
       </main>

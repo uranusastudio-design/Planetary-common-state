@@ -70,7 +70,7 @@ test("Phase 6.2 scientific layers use the shared runtime and exact spatial produ
   for (const kind of ["gibs_wmts", "station", "tropical_cyclones", "fire_detections"]) assert.match(app, new RegExp(kind));
   assert.match(app, /resolveGibsDefinition/);
   assert.match(app, /Cesium\.KmlDataSource\.load/);
-  assert.match(app, /viewer\.entities\.add/);
+  assert.match(app, /upsertGeographicEntity/);
   assert.match(app, /failed provider|control\.checked = active|checkbox\.checked = false/i);
   assert.equal((app.match(/new Cesium\.Viewer\(/g) || []).length, 1);
 });
