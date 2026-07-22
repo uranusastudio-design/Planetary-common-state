@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>PCS Observatory | Uranus A Studio</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cesium@1.120.0/Build/Cesium/Widgets/widgets.css">
-    <link rel="stylesheet" href="./style.css?v=20260718-phase63-regional-runtime-1">
+    <link rel="stylesheet" href="./style.css?v=20260722-phase71-history-1">
     <link rel="stylesheet" href="./intro-screen.css">
     <script>
       window.CESIUM_BASE_URL = "https://cdn.jsdelivr.net/npm/cesium@1.120.0/Build/Cesium/";
@@ -48,6 +48,10 @@
         <span data-i18n="app_title">Planetary Common State</span>
       </div>
       <div class="nav-status" aria-label="Current region and time">
+        <div class="history-mode-indicator">
+          <span data-i18n="system_mode">System Mode</span>
+          <strong id="history-mode-indicator" class="status-pill status-normal" aria-live="polite">LIVE</strong>
+        </div>
         <div>
           <span data-i18n="region">Region</span>
           <strong id="nav-current-region">Global</strong>
@@ -132,13 +136,13 @@
 
       <section class="dashboard-layout" aria-label="PCS planetary monitoring dashboard">
         <aside class="column left-column" aria-label="PCS estimate and source status">
-          <article class="panel hero-panel">
+          <article class="panel hero-panel" data-live-context>
             <span id="pcs-state-label" class="panel-label" data-i18n="prototype_pcs_estimate">Prototype PCS Estimate</span>
             <strong id="current-state" class="state-value">Loading</strong>
             <p id="pcs-state-note" class="panel-note">This is a prototype estimate from partial Earth observations, not a complete planetary assessment.</p>
           </article>
 
-          <article class="panel compact-panel">
+          <article class="panel compact-panel" data-live-context>
             <span class="panel-label" data-i18n="observation_coverage">Observation Coverage</span>
             <strong id="coverage" class="metric-value">Loading</strong>
           </article>
@@ -149,7 +153,7 @@
             <span class="microcopy">Prototype Observatory v2.0 Shell</span>
           </article>
 
-          <article class="panel telemetry-panel">
+          <article class="panel telemetry-panel" data-live-context>
             <span class="panel-label">Latest Update Year</span>
             <strong id="latest-year" class="metric-value">Loading</strong>
             <span class="panel-label" data-i18n="latest_update">Last JSON Update</span>
@@ -162,7 +166,7 @@
 
           <p id="data-message" class="data-message" role="status" aria-live="polite"></p>
 
-          <article class="panel source-panel">
+          <article class="panel source-panel" data-live-context>
             <span class="panel-label" data-i18n="connected_datasets">Connected datasets</span>
             <strong><span data-i18n="connected_datasets">Connected datasets</span>: <span id="connected-dataset-count">—</span></strong>
             <ul id="connected-dataset-list" class="status-list"><li data-i18n="loading">Loading</li></ul>
@@ -400,25 +404,50 @@
                 <span class="panel-label">Timeline Framework</span>
                 <h2 id="timeline-title">Observation Timeline</h2>
               </div>
-              <span class="status-pill status-muted">WAITING_FOR_TIME_SERIES</span>
+              <span id="history-playback-status" class="status-pill status-normal" aria-live="polite">LIVE</span>
             </div>
-            <div class="timeline-controls" role="group" aria-label="Timeline controls">
-              <button type="button" class="framework-button" data-timeline-action="step-back">Step Back</button>
-              <button type="button" class="framework-button" data-timeline-action="play">Play</button>
-              <button type="button" class="framework-button" data-timeline-action="pause">Pause</button>
-              <button type="button" class="framework-button" data-timeline-action="step-forward">Step Forward</button>
+            <div class="history-mode-controls" role="group" data-i18n-aria-label="historical_mode_controls" aria-label="Historical mode controls">
               <label class="timeline-setting">
-                <span>Speed</span>
+                <span data-i18n="system_mode">System Mode</span>
+                <select id="history-mode-selector" aria-label="System mode">
+                  <option value="LIVE" data-i18n="mode_live">LIVE</option>
+                  <option value="REPLAY" data-i18n="mode_replay">REPLAY</option>
+                  <option value="ARCHIVED" data-i18n="mode_archived">ARCHIVED</option>
+                </select>
+              </label>
+              <label class="timeline-setting">
+                <span data-i18n="historical_day">Historical Day</span>
+                <input id="history-date" type="date" min="2026-07-01" aria-label="Historical day">
+              </label>
+              <button type="button" class="framework-button" data-timeline-action="return-live" data-i18n="return_to_live">Return to LIVE</button>
+            </div>
+            <div class="timeline-controls" role="group" data-i18n-aria-label="replay_controls" aria-label="Replay controls">
+              <button type="button" class="framework-button" data-timeline-action="step-back" data-i18n="previous_frame">Previous Frame</button>
+              <button type="button" class="framework-button" data-timeline-action="play" data-i18n="play">Play</button>
+              <button type="button" class="framework-button" data-timeline-action="pause" data-i18n="pause">Pause</button>
+              <button type="button" class="framework-button" data-timeline-action="step-forward" data-i18n="next_frame">Next Frame</button>
+              <label class="timeline-setting">
+                <span data-i18n="playback_speed">Playback Speed</span>
                 <select id="timeline-speed">
-                  <option>1x</option>
-                  <option>2x</option>
-                  <option>4x</option>
+                  <option value="1">1 frame/s</option>
+                  <option value="2">2 frames/s</option>
+                  <option value="0.5">1 frame / 2s</option>
+                </select>
+              </label>
+              <label class="timeline-setting">
+                <span data-i18n="missing_frame_behavior">Missing Frames</span>
+                <select id="history-gap-policy" aria-label="Missing frame behavior">
+                  <option value="stop" data-i18n="stop_on_gap">Stop on gap</option>
+                  <option value="skip" data-i18n="skip_gap">Skip gap</option>
                 </select>
               </label>
             </div>
-            <div class="timeline-window">
-              <span>Current Time Window</span>
-              <strong>UNAVAILABLE</strong>
+            <div class="timeline-window history-time-grid">
+              <span data-i18n="available_range">Available Range</span><strong id="history-available-range">NOT_ARCHIVED</strong>
+              <span data-i18n="utc_timestamp">UTC Timestamp</span><strong id="history-utc-time">—</strong>
+              <span data-i18n="regional_local_timestamp">Regional Local Timestamp</span><strong id="history-local-time">—</strong>
+              <span data-i18n="reconstruction_completeness">Reconstruction Completeness</span><strong id="history-completeness">—</strong>
+              <span data-i18n="missing_frames">Missing Frames</span><strong id="history-missing-frame">—</strong>
             </div>
             <p id="timeline-status" class="framework-status" role="status" aria-live="polite">
               Timeline playback will activate after validated time-series data is available.
@@ -430,20 +459,31 @@
           <article id="regional-observation-panel" class="panel regional-observation-panel" aria-labelledby="regional-observation-title">
             <div class="panel-heading">
               <div><span class="panel-label">Regional observation & hazards</span><h2 id="regional-observation-title">Global</h2></div>
-              <span id="regional-observation-status" class="status-pill status-muted">LOADING</span>
+              <span id="regional-observation-status" class="status-pill status-muted" data-live-context>LOADING</span>
             </div>
-            <p id="regional-local-time" class="framework-status">Local time: loading</p>
-            <p id="regional-suggestions" class="panel-note">Relevant layers will be suggested, never enabled automatically.</p>
+            <p id="regional-local-time" class="framework-status" data-live-context>Local time: loading</p>
+            <p id="regional-suggestions" class="panel-note" data-live-context>Relevant layers will be suggested, never enabled automatically.</p>
             <div class="regional-layer-controls" aria-label="Regional Cesium layer controls">
               <label class="layer-entry"><input type="checkbox" data-pcs-layer="regional-earthquakes"><input class="weather-opacity-input" aria-label="Earthquake opacity" type="range" min="0" max="1" step="0.05" value="0.85" data-pcs-opacity="regional-earthquakes" disabled><span><strong>Recent earthquakes</strong><small>USGS · select to load</small></span></label>
               <label class="layer-entry"><input type="checkbox" data-pcs-layer="regional-coastal"><input class="weather-opacity-input" aria-label="Coastal station opacity" type="range" min="0" max="1" step="0.05" value="0.8" data-pcs-opacity="regional-coastal" disabled><span><strong>Coastal stations</strong><small>Official station catalog + model/observation status</small></span></label>
             </div>
             <div id="regional-legends" class="weather-legends" aria-live="polite"></div>
-            <div id="regional-weather" class="regional-observation-section" aria-live="polite"><h3>Weather</h3><p>Loading</p></div>
-            <div id="regional-coastal" class="regional-observation-section" aria-live="polite"><h3>Tide & coastal</h3><p>Loading</p></div>
-            <div id="regional-hazards" class="regional-observation-section" aria-live="polite"><h3>Earthquake, tsunami & cyclone</h3><p>Loading</p></div>
-            <div id="regional-seasonal" class="regional-observation-section" aria-live="polite"><h3>Seasonal & civilization</h3><p>Loading</p></div>
-            <details class="layer-provider-details"><summary>Regional sources and limitations</summary><ul id="regional-sources" class="status-list"><li>Loading</li></ul></details>
+            <div id="regional-weather" class="regional-observation-section" aria-live="polite" data-live-context><h3>Weather</h3><p>Loading</p></div>
+            <div id="regional-coastal" class="regional-observation-section" aria-live="polite" data-live-context><h3>Tide & coastal</h3><p>Loading</p></div>
+            <div id="regional-hazards" class="regional-observation-section" aria-live="polite" data-live-context><h3>Earthquake, tsunami & cyclone</h3><p>Loading</p></div>
+            <div id="regional-seasonal" class="regional-observation-section" aria-live="polite" data-live-context><h3>Seasonal & civilization</h3><p>Loading</p></div>
+            <details class="layer-provider-details" data-live-context><summary>Regional sources and limitations</summary><ul id="regional-sources" class="status-list"><li>Loading</li></ul></details>
+          </article>
+          <article id="history-reconstruction-panel" class="panel history-reconstruction-panel" aria-labelledby="history-panel-title" hidden>
+            <div class="panel-heading">
+              <div><span class="panel-label" data-i18n="historical_reconstruction">Historical Reconstruction</span><h2 id="history-panel-title" data-i18n="historical_day">Historical Day</h2></div>
+              <span id="history-panel-status" class="status-pill status-muted">NOT_ARCHIVED</span>
+            </div>
+            <p id="history-integrity-note" class="panel-note" data-i18n="historical_integrity_note">Only records documented as available to PCS at this frame are shown. No live fallback.</p>
+            <dl id="history-summary" class="observation-grid"></dl>
+            <section class="regional-observation-section"><h3 data-i18n="daily_brief_history">Daily Brief History</h3><div id="history-daily-brief" class="status-list"><p data-i18n="empty_state">No data</p></div></section>
+            <section class="regional-observation-section"><h3 data-i18n="historical_event_view">Historical Event View</h3><div id="history-events" class="status-list"><p data-i18n="empty_state">No data</p></div></section>
+            <details class="layer-provider-details" open><summary data-i18n="source_availability">Source Availability</summary><ul id="history-sources" class="status-list"><li data-i18n="empty_state">No data</li></ul></details>
           </article>
           <section id="satellite-observation-panel" class="panel live-observation-panel satellite-information-panel" hidden aria-labelledby="satellite-observation-title">
             <div class="observation-heading"><div><span class="panel-label">Representative natural satellite</span><h3 id="satellite-observation-title">Satellite Observation</h3></div><span class="status-pill status-attention">Visualization only</span></div>
@@ -468,7 +508,7 @@
             </dl>
             <p class="data-quality-key"><span>verified: physical radius</span><span>approximate: mean orbital elements</span><span>visual-only: focused display scale and rotation</span></p>
           </section>
-          <article class="panel domain-values-panel">
+          <article class="panel domain-values-panel" data-live-context>
             <span class="panel-label" data-i18n="pcs_residual_status">PCS Residual Status</span>
             <div class="value-grid">
               <div class="value-card">
@@ -504,7 +544,7 @@
             <p id="total-l-status" class="framework-status">L(t): UNAVAILABLE — validated component aggregation is not defined.</p>
           </article>
 
-          <article class="panel alert-panel">
+          <article class="panel alert-panel" data-live-context>
             <span class="panel-label" data-i18n="alert_status">Alert Status</span>
             <strong class="status-text">Current state: <span data-i18n="normal">Normal</span></strong>
             <p>No validated alert model implemented yet.</p>
@@ -517,7 +557,7 @@
             </div>
           </article>
 
-          <article class="panel health-panel">
+          <article class="panel health-panel" data-live-context>
             <span class="panel-label" data-i18n="connector_health">Connector Health</span>
             <ul id="layer-connector-health" class="health-list"><li data-i18n="loading">Loading</li></ul>
           </article>
@@ -580,7 +620,7 @@
       </section>
 
       <section class="bottom-grid" aria-label="Domain panels and PCS pipeline">
-        <article class="panel domains-panel">
+        <article class="panel domains-panel" data-live-context>
           <div class="panel-heading">
             <div>
               <span class="panel-label" data-i18n="scientific_domain_panels">Scientific Domain Panels</span>
@@ -591,7 +631,7 @@
           <div id="domain-readiness-grid" class="domain-grid" aria-live="polite"></div>
         </article>
 
-        <article class="panel pcs-analysis-panel" id="pcs-daily-brief">
+        <article class="panel pcs-analysis-panel" id="pcs-daily-brief" data-live-context>
           <span class="panel-label" data-i18n="daily_brief">Daily Brief</span>
           <h2 data-i18n="retrospective_analysis">PCS Retrospective Analysis</h2>
           <p id="daily-brief-status" class="framework-status" role="status" aria-live="polite"></p>
@@ -599,14 +639,14 @@
           <details id="more-intelligence"><summary data-i18n="more_intelligence">More Intelligence</summary><div id="more-intelligence-list" class="pcs-card-list"></div></details>
         </article>
 
-        <article class="panel pcs-analysis-panel" id="pcs-mass-gatherings">
+        <article class="panel pcs-analysis-panel" id="pcs-mass-gatherings" data-live-context>
           <span class="panel-label" data-i18n="human_mobility">Human Mobility &amp; Mass Gathering</span>
           <h2>R<sub>gathering</sub>(c,t)</h2>
           <p class="panel-note" data-i18n="aggregate_only">Public statistics and aggregate flows only; no personal identity data.</p>
           <div id="mass-gathering-list" class="pcs-card-list"><p data-i18n="loading">Loading</p></div>
         </article>
 
-        <article class="panel pcs-analysis-panel" id="pcs-evidence-ledger">
+        <article class="panel pcs-analysis-panel" id="pcs-evidence-ledger" data-live-context>
           <span class="panel-label" data-i18n="evidence_ledger">PCS Evidence Ledger</span>
           <h2 data-i18n="validation_metrics">Validation &amp; Evidence</h2>
           <div id="evidence-ledger-list" class="pcs-card-list"><p data-i18n="loading">Loading</p></div>
@@ -626,7 +666,7 @@
           </div>
         </article>
 
-        <article class="panel animation-panel">
+        <article class="panel animation-panel" data-live-context>
           <span class="panel-label">Animation System</span>
           <div class="framework-list" id="animation-status-list">
             <span><span data-i18n="earth_rotation">Earth rotation</span> <strong data-animation-status="earth_rotation">DISABLED</strong><small data-animation-detail="earth_rotation"></small></span>
@@ -656,7 +696,7 @@
           <p id="audio-status" class="framework-status" role="status" aria-live="polite">No audio assets loaded.</p>
         </article>
 
-        <article class="panel evidence-panel">
+        <article class="panel evidence-panel" data-live-context>
           <span class="panel-label" data-i18n="evidence_explorer">Evidence Explorer</span>
           <p class="panel-note" data-i18n="evidence_explorer_note">Compare traceable event snapshots; correlation does not establish causality.</p>
           <form id="evidence-explorer-form" class="evidence-controls">
@@ -689,6 +729,6 @@
     <script src="./geographic-markers.js?v=20260722-marker-pipeline-1"></script>
     <script src="./mission-imagery-registry.js?v=20260717-mission-moon-textures"></script>
     <script src="./celestial-bodies.js?v=20260717-mission-moon-textures"></script>
-    <script src="./app.js?v=20260722-phase64-evidence-runtime-2"></script>
+    <script src="./app.js?v=20260722-phase71-history-5"></script>
   </body>
 </html>

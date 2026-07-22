@@ -4,6 +4,7 @@ import { handleVisitorRequest, VISITOR_ROUTES } from "./visitors.js";
 import { handlePcsRequest, PCS_ROUTES } from "./pcs/routes.js";
 import { runScheduledJobs } from "./pcs/jobs.js";
 import { handleRegionalRequest } from "./regional.js";
+import { handleHistoryRequest, HISTORY_ADMIN_PREFIX, HISTORY_PUBLIC_PREFIX } from "./history/routes.js";
 
 const DATASETS = [
   {
@@ -446,6 +447,9 @@ export default {
     if (url.pathname === "/api/regional" || url.pathname.startsWith("/api/regional/")) {
       return handleRegionalRequest(request);
     }
+    if (url.pathname.startsWith(HISTORY_PUBLIC_PREFIX) || url.pathname.startsWith(HISTORY_ADMIN_PREFIX)) {
+      return handleHistoryRequest(request, env, ctx);
+    }
     if (PCS_ROUTES.includes(url.pathname)
       || url.pathname.startsWith("/api/events/")
       || url.pathname.startsWith("/api/evidence-ledger/")
@@ -533,6 +537,9 @@ export default {
     ,...ASTRONOMY_ROUTES
     ,"/api/regional/profiles"
     ,"/api/regional/observation?region=taiwan"
+    ,"/api/history/status"
+    ,"/api/history/days"
+    ,"/api/history/replay?date=2026-07-01&timestamp=2026-07-01T00:00:00Z"
   ],
   d1: !!env.PCS_DB,
   kv: !!env.PCS_CACHE

@@ -301,6 +301,17 @@ let latestRuntimeStatus = null;
 let timelineFrames = [];
 let timelineFrameIndex = 0;
 let timelinePlaybackTimer = null;
+let pcsSystemMode = "LIVE";
+let historyStatus = null;
+let historyDays = [];
+let historyTimelineFrames = [];
+let historyFrameIndex = 0;
+let historyCurrentFrame = null;
+let historyRequestGeneration = 0;
+let historyAbortController = null;
+let replaySelectedLayers = new Set();
+let replaySelectionInitialized = false;
+let liveStateBeforeReplay = null;
 
 const selectors = {
   currentState: document.querySelector("#current-state"),
@@ -356,6 +367,23 @@ const selectors = {
   regionalOpacityControls: document.querySelectorAll('[data-pcs-opacity^="regional-"]'),
   navLocalTime: document.querySelector("#nav-local-time"),
   navUtcTime: document.querySelector("#nav-utc-time"),
+  historyModeIndicator: document.querySelector("#history-mode-indicator"),
+  historyModeSelector: document.querySelector("#history-mode-selector"),
+  historyDate: document.querySelector("#history-date"),
+  historyPlaybackStatus: document.querySelector("#history-playback-status"),
+  historyGapPolicy: document.querySelector("#history-gap-policy"),
+  historyAvailableRange: document.querySelector("#history-available-range"),
+  historyUtcTime: document.querySelector("#history-utc-time"),
+  historyLocalTime: document.querySelector("#history-local-time"),
+  historyCompleteness: document.querySelector("#history-completeness"),
+  historyMissingFrame: document.querySelector("#history-missing-frame"),
+  historyPanel: document.querySelector("#history-reconstruction-panel"),
+  historyPanelTitle: document.querySelector("#history-panel-title"),
+  historyPanelStatus: document.querySelector("#history-panel-status"),
+  historySummary: document.querySelector("#history-summary"),
+  historyDailyBrief: document.querySelector("#history-daily-brief"),
+  historyEvents: document.querySelector("#history-events"),
+  historySources: document.querySelector("#history-sources"),
   aiCopilotMessage: document.querySelector("#ai-copilot-message"),
   solarSystemControls: document.querySelectorAll("[data-solar-target]"),
   solarSystemStatus: document.querySelector("#solar-system-status"),
@@ -497,8 +525,13 @@ function translateUI() {
       element.textContent = translations[key];
     }
   });
+  document.querySelectorAll("[data-i18n-aria-label]").forEach((element) => {
+    const key = element.dataset.i18nAriaLabel;
+    if (key && translations[key]) element.setAttribute("aria-label", translations[key]);
+  });
   updateRegionContext(activeRegionId);
   updateText(selectors.aiCopilotMessage, t("ai_copilot_inactive"));
+  if (pcsSystemMode !== "LIVE" && historyCurrentFrame) renderHistoryPanel(historyCurrentFrame, pcsSystemMode === "ARCHIVED");
 }
 
 function regionLabel(regionId) {
@@ -638,7 +671,8 @@ function renderConnectionFailure(error, source) {
 
 function renderClock() {
   const now = Date.now();
-  const nowDate = new Date(now);
+  const replayTime = historyCurrentFrame?.frame_timestamp_utc;
+  const nowDate = pcsSystemMode === "LIVE" || !replayTime ? new Date(now) : new Date(replayTime);
   const secondsRemaining = Math.max(0, Math.ceil((nextRefreshAt - now) / 1000));
 
   updateText(selectors.localBrowserTime, nowDate.toLocaleString());
@@ -647,11 +681,14 @@ function renderClock() {
   updateText(selectors.navLocalTime, regionalTime);
   updateText(selectors.regionalLocalTime, `Local time · ${regionalTime} · ${region.timeZone || "UTC"}`);
   updateText(selectors.navUtcTime, nowDate.toISOString().replace("T", " ").replace(/\.\d{3}Z$/, " UTC"));
+  updateText(selectors.historyUtcTime, pcsSystemMode === "LIVE" ? "LIVE" : nowDate.toISOString());
+  updateText(selectors.historyLocalTime, pcsSystemMode === "LIVE" ? regionalTime : `${regionalTime} · ${region.timeZone || "UTC"}`);
   updateText(selectors.lastJsonUpdate, formatTimestamp(lastJsonUpdateValue));
-  updateText(selectors.autoRefreshCountdown, `Next refresh in ${secondsRemaining}s`);
+  updateText(selectors.autoRefreshCountdown, pcsSystemMode === "LIVE" ? `Next refresh in ${secondsRemaining}s` : t("live_refresh_paused"));
 }
 
 async function updateDashboardData() {
+  if (pcsSystemMode !== "LIVE") return { ok: false, skipped: true, reason: "LIVE_DATA_DISABLED_IN_HISTORICAL_MODE" };
   const requestedSource = stateSourceForRegion(activeRegionId);
 
   try {
@@ -796,6 +833,7 @@ function renderRegionalObservation(payload) {
 }
 
 async function loadRegionalObservation(regionId = activeRegionId) {
+  if (pcsSystemMode !== "LIVE") return { ok: false, skipped: true, reason: "LIVE_REGIONAL_DATA_DISABLED_IN_HISTORICAL_MODE" };
   const generation = ++regionalObservationGeneration;
   regionalObservationAbortController?.abort(); regionalObservationAbortController = new AbortController(); activeRegionalObservation = null;
   selectors.regionalObservationStatus.textContent = "LOADING"; selectors.regionalObservationStatus.className = "status-pill status-muted";
@@ -2432,14 +2470,18 @@ function initializeRegionalMode() {
       earthLayerRuntime?.deactivate("regional-coastal");
       updateRegionContext(selectedRegion);
       setCesiumCameraForRegion(activeRegionId);
-      loadLatestState();
-      void loadRegionalObservation(selectedRegion);
+      if (pcsSystemMode === "LIVE") {
+        loadLatestState();
+        void loadRegionalObservation(selectedRegion);
+      } else {
+        void loadSelectedHistoryFrame();
+      }
     });
   }
 
   updateRegionContext(activeRegionId);
   rebuildRegionSelector();
-  void loadRegionalObservation(activeRegionId);
+  if (pcsSystemMode === "LIVE") void loadRegionalObservation(activeRegionId);
 }
 
 function initializeLanguageSelector() {
@@ -2458,7 +2500,8 @@ function initializeLanguageSelector() {
     selectors.languageSelector.value = language;
     document.documentElement.lang = language;
     translateUI();
-    void runSafeAsync("PCS evidence panels language refresh", loadPcsEvidencePanels);
+    if (pcsSystemMode === "LIVE") void runSafeAsync("PCS evidence panels language refresh", loadPcsEvidencePanels);
+    else renderClock();
   });
 }
 
@@ -2710,6 +2753,253 @@ async function loadSunObservation() {
   updateSunStatusMessage();
 }
 
+function setHistoryPlaybackStatus(status, detail = "") {
+  const value = String(status || "ERROR").toUpperCase();
+  updateText(selectors.historyPlaybackStatus, value);
+  updateText(selectors.historyModeIndicator, pcsSystemMode);
+  if (selectors.historyPlaybackStatus) selectors.historyPlaybackStatus.className = `status-pill ${["LIVE", "REPLAY_READY", "PLAYING", "PAUSED", "ARCHIVED"].includes(value) ? "status-normal" : value === "FRAME_LOADING" ? "status-muted" : "status-alert"}`;
+  if (selectors.historyModeIndicator) selectors.historyModeIndicator.className = `status-pill ${pcsSystemMode === "LIVE" ? "status-normal" : "status-attention"}`;
+  if (detail) updateText(selectors.timelineStatus, detail);
+}
+
+function historyLocalTimestamp(value) {
+  if (!value) return "—";
+  const region = regionConfig[activeRegionId] || regionConfig.global;
+  const date = new Date(value);
+  if (!Number.isFinite(date.getTime())) return "—";
+  return new Intl.DateTimeFormat(getCurrentLanguage(), { timeZone: region.timeZone || "UTC", dateStyle: "medium", timeStyle: "long" }).format(date);
+}
+
+function setReplayLayerControls(availableLayerIds = new Set()) {
+  document.querySelectorAll("[data-weather-layer], [data-pcs-layer]").forEach((control) => {
+    const layerId = control.dataset.weatherLayer || control.dataset.pcsLayer;
+    if (pcsSystemMode === "LIVE") {
+      control.disabled = false;
+      control.title = "";
+      return;
+    }
+    const available = availableLayerIds.has(layerId);
+    control.disabled = !available;
+    control.checked = available && replaySelectedLayers.has(layerId);
+    control.title = available ? t("historical_layer_available") : t("historical_layer_unavailable");
+    const opacity = earthLayerOpacityControl(layerId);
+    if (opacity) opacity.disabled = !available || !control.checked;
+    const config = earthLayerRuntime?.registry.get(layerId) || REGIONAL_LAYER_CONFIG[layerId] || EARTH_IMAGERY_CONFIG[layerId];
+    if (config) renderWeatherLegend(config, available && control.checked);
+  });
+}
+
+function historyListItem(title, detail, status = null) {
+  const item = document.createElement("li");
+  const strong = document.createElement("strong"); strong.textContent = title || t("unavailable"); item.append(strong);
+  if (status) { const badge = document.createElement("span"); badge.className = "status-pill status-muted"; badge.textContent = status; item.append(" ", badge); }
+  if (detail) { const small = document.createElement("small"); small.textContent = detail; item.append(small); }
+  return item;
+}
+
+function renderHistoryPanel(payload, archived = false) {
+  if (!selectors.historyPanel) return;
+  selectors.historyPanel.hidden = false;
+  const day = payload.day || {};
+  updateText(selectors.historyPanelTitle, day.date_utc || payload.replay_date || t("historical_day"));
+  const status = archived ? "ARCHIVED" : payload.playback_status || day.reconstruction_status || "FRAME_UNAVAILABLE";
+  updateText(selectors.historyPanelStatus, status);
+  selectors.historyPanelStatus.className = `status-pill ${["ARCHIVED", "REPLAY_READY"].includes(status) ? "status-normal" : "status-muted"}`;
+  const completeness = payload.completeness || day.reconstruction_completeness || {};
+  const score = completeness.score;
+  updateText(selectors.historyCompleteness, score == null ? `${t("insufficient_data")} · ${(completeness.missing_components || []).join(", ") || t("archive_coverage_partial")}` : `${(Number(score) * 100).toFixed(1)}% · ${completeness.formula_version}`);
+  const summary = document.createDocumentFragment();
+  summary.append(
+    createDefinitionRow(t("mode_live"), pcsSystemMode),
+    createDefinitionRow(t("utc_timestamp"), payload.frame_timestamp_utc || day.date_utc || "—"),
+    createDefinitionRow(t("snapshot_count"), archived ? day.snapshot_count ?? 0 : payload.snapshots?.length ?? 0),
+    createDefinitionRow(t("source_count"), archived ? day.source_count ?? 0 : payload.sources?.length ?? 0),
+    createDefinitionRow(t("archive_coverage"), day.reconstruction_status || payload.playback_status || "NOT_ARCHIVED"),
+  );
+  selectors.historySummary?.replaceChildren(summary);
+
+  const briefItems = payload.daily_brief_items || [];
+  const briefNodes = briefItems.map((snapshot) => {
+    const item = snapshot.value_json || snapshot;
+    const times = `${t("published_at")}: ${formatPcsTime(item.published_at || snapshot.published_at)} · ${t("retrieval_time")}: ${formatPcsTime(item.retrieved_at || snapshot.retrieved_at)} · ${t("available_to_pcs_at")}: ${formatPcsTime(snapshot.available_to_pcs_at || item.retrieved_at)}`;
+    return historyListItem(item.title || snapshot.dataset, `${item.source_name || snapshot.source_name} · ${times}`, item.historical_status || snapshot.data_state_at_request || snapshot.data_state);
+  });
+  selectors.historyDailyBrief?.replaceChildren(...(briefNodes.length ? briefNodes : [historyListItem(t("daily_brief_history"), t("not_archived"), "NOT_ARCHIVED")]));
+
+  const eventNodes = (payload.events || payload.event_candidates || []).map((event) => {
+    const wrapper = document.createElement("article"); wrapper.className = "history-event-section";
+    const title = document.createElement("strong"); title.textContent = event.title; wrapper.append(title);
+    const before = document.createElement("div"); before.className = "history-event-before";
+    const beforeTitle = document.createElement("h4"); beforeTitle.textContent = t("before_event");
+    const beforeText = document.createElement("p"); beforeText.textContent = `${t("information_available")}: ${event.before_event?.information_available?.length ?? (event.event_status === "AVAILABLE_AT_TIME" ? 1 : 0)} · ${t("causal_status")}: ${event.before_event?.causal_status || event.causal_status || "NOT_ESTABLISHED"} · ${t("uncertainty")}: ${event.before_event?.uncertainty ?? "—"}`;
+    before.append(beforeTitle, beforeText); wrapper.append(before);
+    const after = document.createElement("div"); after.className = "history-event-after";
+    const afterTitle = document.createElement("h4"); afterTitle.textContent = t("after_event");
+    const confirmations = event.after_event?.official_confirmation || [];
+    const afterText = document.createElement("p"); afterText.textContent = confirmations.length ? `${t("official_confirmation_time")}: ${confirmations.map((item) => formatPcsTime(item.official_confirmation_time)).join(", ")}` : t("not_available_at_time");
+    after.append(afterTitle, afterText); wrapper.append(after); return wrapper;
+  });
+  selectors.historyEvents?.replaceChildren(...(eventNodes.length ? eventNodes : [historyListItem(t("historical_event_view"), t("not_archived"), "NOT_ARCHIVED")]));
+
+  const sources = payload.sources || payload.source_availability || [];
+  const sourceNodes = sources.map((source) => historyListItem(`${source.provider} · ${source.dataset}`, `${source.source_name || ""} · ${t("publication_time")}: ${formatPcsTime(source.publication_time)} · ${t("retrieval_time")}: ${formatPcsTime(source.retrieval_time)} · ${t("available_to_pcs_at")}: ${formatPcsTime(source.first_known_available_time)}`, source.access_status || "AVAILABLE_AT_TIME"));
+  selectors.historySources?.replaceChildren(...(sourceNodes.length ? sourceNodes : [historyListItem(t("source_availability"), t("not_archived"), "NOT_ARCHIVED")]));
+}
+
+async function loadHistoryStatus() {
+  const response = await fetch(`${WEATHER_PROXY_BASE}/api/history/status`, { cache: "no-store" });
+  if (!response.ok) throw new Error(`History status HTTP ${response.status}`);
+  historyStatus = await response.json();
+  const daysResponse = await fetch(`${WEATHER_PROXY_BASE}/api/history/days?start=2026-07-01&limit=100`, { cache: "no-store" });
+  if (!daysResponse.ok) throw new Error(`History days HTTP ${daysResponse.status}`);
+  historyDays = (await daysResponse.json()).days || [];
+  const first = historyStatus.earliest_reconstructed_day || historyDays[0]?.date_utc;
+  const last = historyStatus.latest_reconstructed_day || historyDays.at(-1)?.date_utc;
+  if (selectors.historyDate) {
+    if (first) selectors.historyDate.min = first;
+    if (last) selectors.historyDate.max = last;
+    selectors.historyDate.value = selectors.historyDate.value || last || new Date().toISOString().slice(0, 10);
+  }
+  updateText(selectors.historyAvailableRange, first && last ? `${first} — ${last}` : "NOT_ARCHIVED");
+  return historyStatus;
+}
+
+async function loadHistoryTimeline(date) {
+  const generation = ++historyRequestGeneration;
+  historyAbortController?.abort(); historyAbortController = new AbortController();
+  const region = activeRegionId === "global" ? "" : `&region=${encodeURIComponent(activeRegionId)}`;
+  const response = await fetch(`${WEATHER_PROXY_BASE}/api/history/replay/timeline?date=${encodeURIComponent(date)}${region}`, { cache: "no-store", signal: historyAbortController.signal });
+  if (generation !== historyRequestGeneration) return null;
+  if (!response.ok) {
+    const body = await response.json().catch(() => ({}));
+    throw new Error(body.error || `Timeline HTTP ${response.status}`);
+  }
+  const timeline = await response.json();
+  if (generation !== historyRequestGeneration) return null;
+  historyTimelineFrames = timeline.available_frame_timestamps || [];
+  historyFrameIndex = Math.max(0, Math.min(historyFrameIndex, historyTimelineFrames.length - 1));
+  updateText(selectors.historyMissingFrame, timeline.gaps?.length ? `${timeline.gaps.length} · ${selectors.historyGapPolicy?.value || "stop"}` : t("none"));
+  return timeline;
+}
+
+async function loadArchivedDay() {
+  const date = selectors.historyDate?.value;
+  if (!date) return;
+  const generation = ++historyRequestGeneration;
+  historyAbortController?.abort(); historyAbortController = new AbortController();
+  setHistoryPlaybackStatus("FRAME_LOADING", `${t("mode_archived")} · ${date}`);
+  const response = await fetch(`${WEATHER_PROXY_BASE}/api/history/day/${encodeURIComponent(date)}`, { cache: "no-store", signal: historyAbortController.signal });
+  if (generation !== historyRequestGeneration) return;
+  if (!response.ok) {
+    earthLayerRuntime?.clearReplayFrame();
+    setHistoryPlaybackStatus("FRAME_UNAVAILABLE", `${date} · ${t("not_archived")}`);
+    renderHistoryPanel({ day: { date_utc: date, reconstruction_status: "NOT_ARCHIVED" }, snapshots: [], sources: [], event_candidates: [], daily_brief_items: [] }, true);
+    return;
+  }
+  const payload = await response.json();
+  historyCurrentFrame = { ...payload, frame_timestamp_utc: `${date}T23:59:59.999Z`, replay_date: date };
+  earthLayerRuntime?.clearReplayFrame();
+  setReplayLayerControls(new Set());
+  renderHistoryPanel(payload, true);
+  setHistoryPlaybackStatus("ARCHIVED", `${t("mode_archived")} · ${date} · ${payload.day?.snapshot_count || 0} ${t("snapshots")}`);
+  renderClock();
+}
+
+async function loadSelectedHistoryFrame(timestamp = null) {
+  if (pcsSystemMode !== "REPLAY") return;
+  const date = selectors.historyDate?.value;
+  if (!date) return;
+  const generation = ++historyRequestGeneration;
+  historyAbortController?.abort(); historyAbortController = new AbortController();
+  const selectedTimestamp = timestamp || historyTimelineFrames[historyFrameIndex] || `${date}T23:59:59.999Z`;
+  setHistoryPlaybackStatus("FRAME_LOADING", `${t("frame_loading")} · ${selectedTimestamp}`);
+  const parameters = new URLSearchParams({ date, timestamp: selectedTimestamp, region: activeRegionId });
+  if (replaySelectionInitialized) parameters.set("layers", replaySelectedLayers.size ? [...replaySelectedLayers].join(",") : "__none__");
+  try {
+    const response = await fetch(`${WEATHER_PROXY_BASE}/api/history/replay/frame?${parameters}`, { cache: "no-store", signal: historyAbortController.signal });
+    if (generation !== historyRequestGeneration) return;
+    const payload = await response.json();
+    if (!response.ok) throw new Error(payload.error || `Replay frame HTTP ${response.status}`);
+    historyCurrentFrame = payload;
+    const availableLayers = new Set(payload.available_layer_ids || (payload.snapshots || []).map((item) => item.layer_id).filter(Boolean));
+    if (!replaySelectionInitialized && availableLayers.size) {
+      replaySelectedLayers = new Set(availableLayers);
+      replaySelectionInitialized = true;
+    }
+    setReplayLayerControls(availableLayers);
+    const applied = await earthLayerRuntime.applyReplayFrame(payload, generation);
+    if (generation !== historyRequestGeneration || applied.stale) return;
+    renderHistoryPanel(payload, false);
+    updateText(selectors.historyUtcTime, payload.frame_timestamp_utc);
+    updateText(selectors.historyLocalTime, historyLocalTimestamp(payload.frame_timestamp_utc));
+    updateText(selectors.historyMissingFrame, payload.missing_frame ? t("frame_unavailable") : t("none"));
+    setHistoryPlaybackStatus(payload.playback_status, `${payload.playback_status} · ${historyFrameIndex + 1}/${Math.max(1, historyTimelineFrames.length)} · ${payload.frame_timestamp_utc} · ${applied.layer_count || 0} ${t("active_layer_count")}`);
+    renderClock();
+  } catch (error) {
+    if (error?.name === "AbortError") return;
+    if (generation !== historyRequestGeneration) return;
+    earthLayerRuntime?.clearReplayFrame();
+    setHistoryPlaybackStatus("FRAME_UNAVAILABLE", `${t("frame_unavailable")} · ${error.message}`);
+  }
+}
+
+async function setPcsSystemMode(mode) {
+  const requested = ["LIVE", "REPLAY", "ARCHIVED"].includes(mode) ? mode : "LIVE";
+  if (requested === pcsSystemMode && requested === "LIVE") return;
+  clearInterval(timelinePlaybackTimer); timelinePlaybackTimer = null;
+  historyAbortController?.abort(); historyAbortController = null; historyRequestGeneration += 1;
+  if (requested !== "LIVE" && pcsSystemMode === "LIVE") {
+    liveStateBeforeReplay = {
+      regionId: activeRegionId,
+      layers: [...activeEarthLayers.entries()].map(([layerId, entry]) => ({ layerId, opacity: entry.opacity })),
+    };
+    earthLayerRuntime?.deactivateAll();
+    regionalObservationAbortController?.abort();
+  }
+  pcsSystemMode = requested;
+  document.body.dataset.pcsSystemMode = requested;
+  if (selectors.historyModeSelector) selectors.historyModeSelector.value = requested;
+  updateText(selectors.historyModeIndicator, requested);
+  selectors.historyPanel.hidden = requested === "LIVE";
+  if (requested === "LIVE") {
+    historyCurrentFrame = null; historyTimelineFrames = []; historyFrameIndex = 0;
+    replaySelectionInitialized = false; replaySelectedLayers.clear();
+    earthLayerRuntime?.clearReplayFrame();
+    earthLayerRuntime?.registry.forEach((_, layerId) => earthLayerRuntime.synchronizeControl(layerId, false));
+    setReplayLayerControls(new Set());
+    setHistoryPlaybackStatus("LIVE", t("live_restored"));
+    await loadLayerCapabilitySnapshot();
+    const restore = liveStateBeforeReplay; liveStateBeforeReplay = null;
+    if (restore) {
+      for (const item of restore.layers) {
+        const opacity = earthLayerOpacityControl(item.layerId); if (opacity && Number.isFinite(item.opacity)) opacity.value = String(item.opacity);
+        await earthLayerRuntime?.activate(item.layerId);
+      }
+    }
+    await Promise.allSettled([loadLatestState(), loadRegionalObservation(activeRegionId), loadPcsEvidencePanels()]);
+    renderClock(); return;
+  }
+  setReplayLayerControls(new Set());
+  await loadHistoryStatus();
+  if (requested === "ARCHIVED") { await loadArchivedDay(); return; }
+  replaySelectionInitialized = false; replaySelectedLayers.clear();
+  await loadHistoryTimeline(selectors.historyDate.value);
+  historyFrameIndex = 0;
+  await loadSelectedHistoryFrame();
+}
+
+function initializeHistoricalMode() {
+  document.body.dataset.pcsSystemMode = pcsSystemMode;
+  selectors.historyModeSelector?.addEventListener("change", () => { void runSafeAsync("historical mode switch", () => setPcsSystemMode(selectors.historyModeSelector.value)); });
+  selectors.historyDate?.addEventListener("change", () => {
+    historyFrameIndex = 0; replaySelectionInitialized = false; replaySelectedLayers.clear();
+    if (pcsSystemMode === "ARCHIVED") void runSafeAsync("archived day loading", loadArchivedDay);
+    if (pcsSystemMode === "REPLAY") void runSafeAsync("replay date loading", async () => { await loadHistoryTimeline(selectors.historyDate.value); await loadSelectedHistoryFrame(); });
+  });
+  selectors.historyGapPolicy?.addEventListener("change", () => updateText(selectors.historyMissingFrame, `${selectors.historyGapPolicy.value.toUpperCase()} · ${historyTimelineFrames.length} ${t("frames")}`));
+  void runSafeAsync("historical status initialization", loadHistoryStatus);
+}
+
 function initializeFrameworkControls() {
   selectors.solarSystemControls.forEach((control) => {
     control.setAttribute("aria-pressed", String(control.dataset.solarTarget === "earth"));
@@ -2757,6 +3047,44 @@ function initializeFrameworkControls() {
   selectors.timelineControls.forEach((control) => {
     control.addEventListener("click", () => {
       const action = control.dataset.timelineAction || "timeline";
+      if (action === "return-live") { void runSafeAsync("return to live", () => setPcsSystemMode("LIVE")); return; }
+      if (pcsSystemMode === "ARCHIVED") { setHistoryPlaybackStatus("ARCHIVED", t("archived_no_playback")); return; }
+      if (pcsSystemMode === "REPLAY") {
+        if (!historyTimelineFrames.length) { setHistoryPlaybackStatus("FRAME_UNAVAILABLE", t("missing_frames")); return; }
+        const loadAtIndex = () => loadSelectedHistoryFrame(historyTimelineFrames[historyFrameIndex]);
+        if (action === "pause") {
+          clearInterval(timelinePlaybackTimer); timelinePlaybackTimer = null;
+          setHistoryPlaybackStatus("PAUSED", `${t("pause")} · ${historyTimelineFrames[historyFrameIndex]}`); return;
+        }
+        if (action === "step-back") historyFrameIndex = Math.max(0, historyFrameIndex - 1);
+        if (action === "step-forward") {
+          if (historyFrameIndex >= historyTimelineFrames.length - 1) { setHistoryPlaybackStatus("END_OF_ARCHIVE", t("end_of_archive")); return; }
+          const current = new Date(historyTimelineFrames[historyFrameIndex]).getTime();
+          const next = new Date(historyTimelineFrames[historyFrameIndex + 1]).getTime();
+          if (next - current > 21600000 && selectors.historyGapPolicy?.value === "stop") { setHistoryPlaybackStatus("PAUSED", t("stopped_at_missing_frame")); return; }
+          historyFrameIndex += 1;
+        }
+        if (action === "play") {
+          clearInterval(timelinePlaybackTimer);
+          const speed = Math.max(0.5, Number(selectors.timelineSpeed?.value) || 1);
+          setHistoryPlaybackStatus("PLAYING", `${t("play")} · ${speed}`);
+          timelinePlaybackTimer = setInterval(() => {
+            if (historyFrameIndex >= historyTimelineFrames.length - 1) {
+              clearInterval(timelinePlaybackTimer); timelinePlaybackTimer = null;
+              setHistoryPlaybackStatus("END_OF_ARCHIVE", t("end_of_archive")); return;
+            }
+            const current = new Date(historyTimelineFrames[historyFrameIndex]).getTime();
+            const next = new Date(historyTimelineFrames[historyFrameIndex + 1]).getTime();
+            if (next - current > 21600000 && selectors.historyGapPolicy?.value === "stop") {
+              clearInterval(timelinePlaybackTimer); timelinePlaybackTimer = null;
+              setHistoryPlaybackStatus("PAUSED", t("stopped_at_missing_frame")); return;
+            }
+            historyFrameIndex += 1; void loadAtIndex();
+          }, 1000 / speed);
+          return;
+        }
+        void loadAtIndex(); return;
+      }
       if (!timelineFrames.length) { updateText(selectors.timelineStatus, `${pcsStatusLabel("waiting_for_time_series")}. ${t("validated_timeline_unavailable")}`); return; }
       const showFrame = () => {
         const frame = timelineFrames[timelineFrameIndex];
@@ -3454,6 +3782,7 @@ class CesiumLayerRuntimeController {
     this.registry = new Map();
     this.refreshingLayers = new Map();
     this.lastActivationError = null;
+    this.replayScope = { generation: 0, imageryLayers: [], dataSources: [], resourcesByLayer: new Map() };
   }
 
   register(config) {
@@ -3731,6 +4060,94 @@ class CesiumLayerRuntimeController {
     if (control) control.dataset.appliedOpacity = String(value);
     return { ok: true, opacity: value };
   }
+
+  clearReplayFrame() {
+    const viewer = this.viewerProvider();
+    if (viewer && !viewer.isDestroyed()) {
+      this.replayScope.imageryLayers.forEach((layer) => viewer.imageryLayers.remove(layer, true));
+      this.replayScope.dataSources.forEach((source) => viewer.dataSources.remove(source, true));
+    }
+    this.replayScope = { generation: this.replayScope.generation + 1, imageryLayers: [], dataSources: [], resourcesByLayer: new Map() };
+    return { ok: true };
+  }
+
+  async applyReplayFrame(frame, generation) {
+    const viewer = this.viewerProvider();
+    if (!viewer || viewer.isDestroyed() || !window.Cesium || activeCelestialTargetId !== "earth") return { ok: false, error: "Shared Earth Viewer is unavailable." };
+    this.clearReplayFrame();
+    this.replayScope.generation = generation;
+    const dataSource = new Cesium.CustomDataSource(`pcs-history-frame-${generation}`);
+    await viewer.dataSources.add(dataSource);
+    if (this.replayScope.generation !== generation) {
+      viewer.dataSources.remove(dataSource, true);
+      return { ok: false, stale: true };
+    }
+    this.replayScope.dataSources.push(dataSource);
+    const resources = frame.cesium_resources || [];
+    for (const resource of resources) {
+      if (this.replayScope.generation !== generation) return { ok: false, stale: true };
+      const visualization = resource.visualization || {};
+      const record = resource.data || {};
+      const opacity = Math.max(0, Math.min(1, Number(resource.opacity ?? earthLayerOpacityControl(resource.layer_id)?.value ?? 0.8)));
+      const scoped = this.replayScope.resourcesByLayer.get(resource.layer_id) || { imageryLayers: [], entities: [], opacity };
+      if (visualization.kind === "gibs_wmts" && visualization.tile_base_url && visualization.layer && visualization.matrix_set) {
+        const imageryDate = String(resource.observation_time || frame.replay_date).slice(0, 10);
+        const provider = new Cesium.UrlTemplateImageryProvider({
+          url: `${visualization.tile_base_url}/${visualization.layer}/default/${encodeURIComponent(imageryDate)}/${visualization.matrix_set}/{z}/{y}/{x}.png`,
+          tilingScheme: new Cesium.WebMercatorTilingScheme(), minimumLevel: 0,
+          maximumLevel: Number(visualization.maximum_level || 7), tileWidth: 256, tileHeight: 256,
+          enablePickFeatures: false, credit: `${resource.provider} · archived ${imageryDate}`,
+        });
+        const layer = viewer.imageryLayers.addImageryProvider(provider); layer.alpha = opacity;
+        this.replayScope.imageryLayers.push(layer); scoped.imageryLayers.push(layer);
+      } else if (visualization.kind === "station" && Number.isFinite(Number(visualization.latitude)) && Number.isFinite(Number(visualization.longitude))) {
+        const entity = dataSource.entities.add({
+          id: `history|${resource.snapshot_id}`, name: `${visualization.station_name || resource.dataset} · archived`,
+          position: Cesium.Cartesian3.fromDegrees(Number(visualization.longitude), Number(visualization.latitude), Number(visualization.altitude_m || 0)),
+          point: { pixelSize: 12, color: Cesium.Color.CYAN.withAlpha(opacity), outlineColor: Cesium.Color.WHITE, outlineWidth: 2 },
+          label: { text: `${visualization.station_name || resource.dataset}\n${record.value ?? "UNAVAILABLE"} ${record.unit || ""}`, font: "12px sans-serif", fillColor: Cesium.Color.WHITE.withAlpha(opacity), outlineColor: Cesium.Color.BLACK, outlineWidth: 2, style: Cesium.LabelStyle.FILL_AND_OUTLINE, pixelOffset: new Cesium.Cartesian2(0, -24) },
+          description: layerEntityDescription([["Mode", "REPLAY"], ["Provider", resource.provider], ["Dataset", resource.dataset], ["Observation time", formatPcsTime(resource.observation_time)], ["Available to PCS", formatPcsTime(resource.available_to_pcs_at)]])
+        });
+        scoped.entities.push(entity);
+      } else if (visualization.kind === "tropical_cyclones") {
+        (record.details?.storms || []).filter((storm) => Number.isFinite(storm.latitude) && Number.isFinite(storm.longitude)).forEach((storm) => {
+          const entity = dataSource.entities.add({ id: `history|${resource.snapshot_id}|${storm.id}`, name: storm.name,
+            position: Cesium.Cartesian3.fromDegrees(storm.longitude, storm.latitude),
+            point: { pixelSize: 14, color: Cesium.Color.ORANGE.withAlpha(opacity), outlineColor: Cesium.Color.WHITE, outlineWidth: 2 },
+            label: { text: `${storm.name} · ${storm.classification?.regional_name || "cyclone"}`, font: "12px sans-serif", fillColor: Cesium.Color.WHITE.withAlpha(opacity), outlineColor: Cesium.Color.BLACK, outlineWidth: 2, style: Cesium.LabelStyle.FILL_AND_OUTLINE, pixelOffset: new Cesium.Cartesian2(0, -24) } });
+          scoped.entities.push(entity);
+        });
+      } else if (visualization.kind === "fire_detections") {
+        (record.details?.detections || []).filter((item) => Number.isFinite(item.latitude) && Number.isFinite(item.longitude)).forEach((item, index) => {
+          const entity = dataSource.entities.add({ id: `history|${resource.snapshot_id}|fire|${index}`,
+            position: Cesium.Cartesian3.fromDegrees(item.longitude, item.latitude),
+            point: { pixelSize: 6, color: Cesium.Color.RED.withAlpha(opacity), outlineColor: Cesium.Color.YELLOW, outlineWidth: 1 } });
+          scoped.entities.push(entity);
+        });
+      } else if (visualization.kind === "earthquake_point" && Number.isFinite(Number(visualization.latitude)) && Number.isFinite(Number(visualization.longitude))) {
+        const entity = dataSource.entities.add({ id: `history|${resource.snapshot_id}|earthquake`, name: record.title || resource.dataset,
+          position: Cesium.Cartesian3.fromDegrees(Number(visualization.longitude), Number(visualization.latitude)),
+          point: { pixelSize: Math.max(7, Math.min(20, 4 + (Number(record.magnitude) || 0) * 2)), color: Cesium.Color.YELLOW.withAlpha(opacity), outlineColor: Cesium.Color.WHITE, outlineWidth: 1 },
+          description: layerEntityDescription([["Mode", "REPLAY"], ["Magnitude", record.magnitude], ["Depth", `${record.depth_km ?? "—"} km`], ["Observation time", formatPcsTime(resource.observation_time)], ["Available to PCS", formatPcsTime(resource.available_to_pcs_at)], ["Reviewed status", record.reviewed_status]]) });
+        scoped.entities.push(entity);
+      }
+      this.replayScope.resourcesByLayer.set(resource.layer_id, scoped);
+    }
+    return { ok: true, resource_count: resources.length, layer_count: this.replayScope.resourcesByLayer.size };
+  }
+
+  updateReplayOpacity(layerId, opacity) {
+    const scoped = this.replayScope.resourcesByLayer.get(layerId);
+    const value = Math.max(0, Math.min(1, Number(opacity)));
+    if (!scoped || !Number.isFinite(value)) return { ok: false, error: "Historical layer is not active." };
+    scoped.imageryLayers.forEach((layer) => { layer.alpha = value; });
+    scoped.entities.forEach((entity) => {
+      if (entity.point) entity.point.color = entity.point.color?.getValue?.()?.withAlpha(value) || Cesium.Color.CYAN.withAlpha(value);
+      if (entity.label) entity.label.fillColor = Cesium.Color.WHITE.withAlpha(value);
+    });
+    scoped.opacity = value;
+    return { ok: true, opacity: value };
+  }
 }
 
 async function checkWeatherProxyHealth() {
@@ -3780,6 +4197,12 @@ function initializeWeatherLayers() {
   selectors.weatherLayerControls.forEach((control) => {
     control.addEventListener("change", async () => {
       const layerId = control.dataset.weatherLayer;
+      if (pcsSystemMode !== "LIVE") {
+        if (control.checked) replaySelectedLayers.add(layerId); else replaySelectedLayers.delete(layerId);
+        replaySelectionInitialized = true;
+        await loadSelectedHistoryFrame();
+        return;
+      }
       if (control.checked) {
         control.disabled = true;
         const result = await addWeatherLayer(layerId);
@@ -3789,18 +4212,24 @@ function initializeWeatherLayers() {
     });
   });
   selectors.weatherOpacityControls.forEach((control) => {
-    control.addEventListener("input", () => earthLayerRuntime.updateOpacity(control.dataset.weatherOpacity, control.value));
+    control.addEventListener("input", () => pcsSystemMode === "LIVE" ? earthLayerRuntime.updateOpacity(control.dataset.weatherOpacity, control.value) : earthLayerRuntime.updateReplayOpacity(control.dataset.weatherOpacity, control.value));
   });
   selectors.regionalLayerControls.forEach((control) => {
     control.addEventListener("change", async () => {
       const layerId = control.dataset.pcsLayer;
+      if (pcsSystemMode !== "LIVE") {
+        if (control.checked) replaySelectedLayers.add(layerId); else replaySelectedLayers.delete(layerId);
+        replaySelectionInitialized = true;
+        await loadSelectedHistoryFrame();
+        return;
+      }
       if (control.checked) {
         control.disabled = true; const result = await earthLayerRuntime.activate(layerId); control.disabled = false;
         if (!result.ok) control.checked = false;
       } else earthLayerRuntime.deactivate(layerId);
     });
   });
-  selectors.regionalOpacityControls.forEach((control) => control.addEventListener("input", () => earthLayerRuntime.updateOpacity(control.dataset.pcsOpacity, control.value)));
+  selectors.regionalOpacityControls.forEach((control) => control.addEventListener("input", () => pcsSystemMode === "LIVE" ? earthLayerRuntime.updateOpacity(control.dataset.pcsOpacity, control.value) : earthLayerRuntime.updateReplayOpacity(control.dataset.pcsOpacity, control.value)));
   void checkWeatherProxyHealth();
 }
 
@@ -3975,6 +4404,12 @@ function renderPcsLayers(payload) {
     details.append(detailsSummary, metadata);
     if (config) {
       checkbox.addEventListener("change", async () => {
+        if (pcsSystemMode !== "LIVE") {
+          if (checkbox.checked) replaySelectedLayers.add(layer.id); else replaySelectedLayers.delete(layer.id);
+          replaySelectionInitialized = true;
+          await loadSelectedHistoryFrame();
+          return;
+        }
         if (checkbox.checked) {
           checkbox.disabled = true;
           const result = await earthLayerRuntime.activate(layer.id);
@@ -3983,7 +4418,7 @@ function renderPcsLayers(payload) {
         } else earthLayerRuntime.deactivate(layer.id);
         updateText(selectors.layerControlMessage, checkbox.checked ? `${layerDisplayName(layer.id)} · ACTIVE` : t("select_layer_status"));
       });
-      opacity.addEventListener("input", () => earthLayerRuntime.updateOpacity(layer.id, opacity.value));
+      opacity.addEventListener("input", () => pcsSystemMode === "LIVE" ? earthLayerRuntime.updateOpacity(layer.id, opacity.value) : earthLayerRuntime.updateReplayOpacity(layer.id, opacity.value));
     }
     wrapper.append(label);
     if (config) wrapper.append(opacity, legendHost);
@@ -4321,6 +4756,7 @@ function initializeEvidenceExplorer() {
 }
 
 async function loadLayerCapabilitySnapshot() {
+  if (pcsSystemMode !== "LIVE") return { ok: false, skipped: true, reason: "LIVE_LAYER_REFRESH_DISABLED_IN_HISTORICAL_MODE" };
   try {
     const response = await fetch(`${WEATHER_PROXY_BASE}/api/layers`, { cache: "no-store" });
     if (!response.ok) throw new Error(`Layer capability endpoint returned HTTP ${response.status}`);
@@ -4385,6 +4821,7 @@ async function initializeApp() {
   runSafe("layer controls initialization", initializeLayerControls);
   runSafe("Evidence Explorer initialization", initializeEvidenceExplorer);
   runSafe("weather layer initialization", initializeWeatherLayers);
+  runSafe("historical reconstruction initialization", initializeHistoricalMode);
   runSafe("layer snapshot runtime initialization", initializeLayerSnapshotRuntime);
   await loadLayerCapabilitySnapshot();
   await runSafeAsync("visitor network initialization", initializeVisitorNetwork);
@@ -4413,7 +4850,7 @@ window.addEventListener("resize", () => {
 });
 setInterval(() => runSafe("clock rendering", renderClock), 1000);
 setInterval(() => {
-  void runSafeAsync("auto dashboard refresh", () => loadLatestState());
+  if (pcsSystemMode === "LIVE") void runSafeAsync("auto dashboard refresh", () => loadLatestState());
 }, REFRESH_INTERVAL_MS);
 setInterval(() => {
   if (activeCelestialTargetId === "moon") {

@@ -2,6 +2,7 @@ import { domainReadiness } from "../providers/registry.js";
 import { retrieveAllLayers } from "../providers/layers.js";
 import { eventSimilarity, validationMetrics } from "./routes.js";
 import { ingestDailyBrief } from "./intelligence.js";
+import { runScheduledHistoryReconstruction } from "../history/reconstruction.js";
 
 async function persistProviderStatus(env, readiness) {
   if (!env.PCS_DB) return;
@@ -146,16 +147,18 @@ export async function runScheduledJobs(env, cron, fetcher = fetch) {
     await Promise.allSettled([ingestNoaaAlerts(env, fetcher), ingestUsgsEarthquakes(env, fetcher)]);
 
     let brief = null;
+    let history = null;
     if (cron === "15 0 * * *") brief = await ingestDailyBrief(env, fetcher);
+    if (cron === "15 0 * * *") history = await runScheduledHistoryReconstruction(env);
     const ledgerUpdates = cron === "45 23 * * *" ? await updateEvidenceLedgerAtEndOfDay(env) : 0;
     const weeklyMetrics = cron === "30 1 * * 1" ? await validationMetrics(env) : null;
 
     if (env.PCS_DB) {
       await env.PCS_DB.prepare(`INSERT INTO pcs_scheduled_runs (id, cron, started_at, completed_at, status, details)
         VALUES (?, ?, ?, ?, 'completed', ?)`)
-        .bind(crypto.randomUUID(), cron, startedAt, new Date().toISOString(), JSON.stringify({ datasets_checked: readiness.datasets.length, layers_checked: layers.layers.length, brief_items: brief ? brief.primary.length + brief.more_intelligence.length : 0, ledger_updates: ledgerUpdates, weekly_metrics: weeklyMetrics })).run();
+        .bind(crypto.randomUUID(), cron, startedAt, new Date().toISOString(), JSON.stringify({ datasets_checked: readiness.datasets.length, layers_checked: layers.layers.length, brief_items: brief ? brief.primary.length + brief.more_intelligence.length : 0, history_job: history?.job?.id || null, history_status: history?.execution?.job?.status || history?.job?.status || null, ledger_updates: ledgerUpdates, weekly_metrics: weeklyMetrics })).run();
     }
-    return { readiness, layers, brief };
+    return { readiness, layers, brief, history };
   } catch (error) {
     if (env.PCS_DB) await env.PCS_DB.prepare(`INSERT INTO pcs_scheduled_runs (id, cron, started_at, completed_at, status, details)
       VALUES (?, ?, ?, ?, 'failed', ?)`)
