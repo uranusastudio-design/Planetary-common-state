@@ -60,7 +60,7 @@ PCS-Weather-Earth/
 
 ## Prerequisites
 
-- Node.js 18+ and npm
+- Node.js 22+ and npm 11+
 - The deployed `pcs-backend` Cloudflare Worker at
   `https://pcs-backend.uranusastudio.workers.dev` with
   `OPENWEATHER_API_KEY` set as a Worker secret (see the
@@ -73,7 +73,7 @@ PCS-Weather-Earth/
 1. **Install dependencies**
 
    ```bash
-   npm install
+   npm ci
    ```
 
 2. **Run the dev server**
