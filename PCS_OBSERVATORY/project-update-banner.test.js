@@ -25,6 +25,14 @@ test("runtime safely handles API failure, malformed dates and missing details", 
   assert.ok(app.includes("Number.isNaN(Date.parse(value))"));
   assert.ok(app.includes("selectors.updateDetails.hidden = !detailsUrl"));
   assert.doesNotMatch(app, /Invalid Date/);
+  const formatter = app.slice(app.indexOf("function formatProjectUpdateTime"), app.indexOf("function renderProjectUpdate"));
+  assert.doesNotMatch(formatter, /dateStyle: "medium"/);
+});
+
+test("regional switching uses global PCS state while regional observations remain API-driven", () => {
+  assert.match(app, /function stateSourceForRegion[\s\S]*return GLOBAL_STATE_SOURCE/);
+  assert.match(app, /api\/regional\/observation/);
+  assert.match(app, /if \(error\?\.name === "AbortError"\) return/);
 });
 
 test("language rendering falls back to English and refreshes at runtime", () => {

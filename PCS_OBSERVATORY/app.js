@@ -1,5 +1,4 @@
 const GLOBAL_STATE_SOURCE = "../PCS_ENGINE/output/latest_state.json";
-const REGIONAL_STATE_SOURCE_PREFIX = "../PCS_ENGINE/output/regions";
 const REFRESH_INTERVAL_MS = 10000;
 const MOON_LIGHTING_REFRESH_INTERVAL_MS = 20 * 60 * 1000;
 const VISITOR_STATS_REFRESH_INTERVAL_MS = 30 * 1000;
@@ -553,8 +552,11 @@ function formatProjectUpdateTime(value) {
   if (!value || Number.isNaN(Date.parse(value))) return null;
   try {
     return new Intl.DateTimeFormat(getCurrentLanguage(), {
-      dateStyle: "medium",
-      timeStyle: "short",
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
       timeZoneName: "short",
     }).format(new Date(value));
   } catch {
@@ -649,10 +651,10 @@ function regionLabel(regionId) {
 }
 
 function stateSourceForRegion(regionId) {
-  if (regionId === "global") {
-    return GLOBAL_STATE_SOURCE;
-  }
-  return `${REGIONAL_STATE_SOURCE_PREFIX}/${regionId}_state.json`;
+  // The PCS state is global. Region-specific observations are loaded
+  // independently from the Worker API and must not probe missing generated
+  // state files before falling back to this same global state.
+  return GLOBAL_STATE_SOURCE;
 }
 
 function formatDisplayValue(value, digits = 3) {
@@ -3650,6 +3652,7 @@ async function runSafeAsync(label, operation) {
   try {
     await operation();
   } catch (error) {
+    if (error?.name === "AbortError") return;
     reportStartupError(label, error);
   }
 }
