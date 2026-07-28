@@ -5,6 +5,7 @@ import { handlePcsRequest, PCS_ROUTES } from "./pcs/routes.js";
 import { runScheduledJobs } from "./pcs/jobs.js";
 import { handleRegionalRequest } from "./regional.js";
 import { handleHistoryRequest, HISTORY_ADMIN_PREFIX, HISTORY_PUBLIC_PREFIX } from "./history/routes.js";
+import { handleProjectUpdateRequest, PROJECT_UPDATE_ADMIN_PREFIX, PROJECT_UPDATE_PREFIX } from "./project-updates/routes.js";
 
 const DATASETS = [
   {
@@ -449,6 +450,9 @@ export default {
     }
     if (url.pathname.startsWith(HISTORY_PUBLIC_PREFIX) || url.pathname.startsWith(HISTORY_ADMIN_PREFIX)) {
       return handleHistoryRequest(request, env, ctx);
+    }
+    if (url.pathname.startsWith(PROJECT_UPDATE_PREFIX) || url.pathname.startsWith(PROJECT_UPDATE_ADMIN_PREFIX)) {
+      return handleProjectUpdateRequest(request, env, ctx);
     }
     if (PCS_ROUTES.includes(url.pathname)
       || url.pathname.startsWith("/api/events/")

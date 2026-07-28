@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>PCS Observatory | Uranus A Studio</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cesium@1.120.0/Build/Cesium/Widgets/widgets.css">
-    <link rel="stylesheet" href="./style.css?v=20260722-phase71-history-1">
+    <link rel="stylesheet" href="./style.css?v=20260728-update-banner-1">
     <link rel="stylesheet" href="./intro-screen.css">
     <script>
       window.CESIUM_BASE_URL = "https://cdn.jsdelivr.net/npm/cesium@1.120.0/Build/Cesium/";
@@ -133,6 +133,27 @@
           <span id="regional-mode-status">Global mode selected.</span>
         </div>
       </header>
+
+      <section id="pcs-update-banner" class="pcs-update-banner" hidden aria-labelledby="pcs-update-title">
+        <div class="pcs-update-banner__heading">
+          <div class="pcs-update-banner__identity">
+            <span class="pcs-update-banner__label" data-i18n="pcs_update">PCS Update</span>
+            <span id="pcs-update-phase" class="pcs-update-banner__phase"></span>
+            <span id="pcs-update-status" class="pcs-update-banner__status"></span>
+          </div>
+          <button id="pcs-update-toggle" class="pcs-update-banner__toggle" type="button" aria-expanded="true" aria-controls="pcs-update-content"></button>
+        </div>
+        <div id="pcs-update-content" class="pcs-update-banner__content">
+          <div>
+            <h2 id="pcs-update-title"></h2>
+            <p id="pcs-update-summary"></p>
+          </div>
+          <div class="pcs-update-banner__meta">
+            <time id="pcs-update-time"></time>
+            <a id="pcs-update-details" class="pcs-update-banner__details" target="_blank" rel="noopener noreferrer"></a>
+          </div>
+        </div>
+      </section>
 
       <section class="dashboard-layout" aria-label="PCS planetary monitoring dashboard">
         <aside class="column left-column" aria-label="PCS estimate and source status">
@@ -729,6 +750,6 @@
     <script src="./geographic-markers.js?v=20260722-marker-pipeline-1"></script>
     <script src="./mission-imagery-registry.js?v=20260717-mission-moon-textures"></script>
     <script src="./celestial-bodies.js?v=20260717-mission-moon-textures"></script>
-    <script src="./app.js?v=20260722-phase71-history-5"></script>
+    <script src="./app.js?v=20260728-update-banner-1"></script>
   </body>
 </html>

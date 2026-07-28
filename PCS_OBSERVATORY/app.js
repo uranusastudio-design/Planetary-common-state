@@ -346,6 +346,15 @@ const selectors = {
   layerConnectorHealth: document.querySelector("#layer-connector-health"),
   layerControls: document.querySelectorAll("[data-layer-status]"),
   buildTimestamp: document.querySelector("#build-timestamp"),
+  updateBanner: document.querySelector("#pcs-update-banner"),
+  updatePhase: document.querySelector("#pcs-update-phase"),
+  updateStatus: document.querySelector("#pcs-update-status"),
+  updateTitle: document.querySelector("#pcs-update-title"),
+  updateSummary: document.querySelector("#pcs-update-summary"),
+  updateTime: document.querySelector("#pcs-update-time"),
+  updateDetails: document.querySelector("#pcs-update-details"),
+  updateToggle: document.querySelector("#pcs-update-toggle"),
+  updateContent: document.querySelector("#pcs-update-content"),
   languageSelector: document.querySelector("#language-selector"),
   regionSelector: document.querySelector("#region-selector"),
   dataSourceSelector: document.querySelector("#data-source-selector"),
@@ -509,8 +518,108 @@ function writeStorageValue(key, value) {
   }
 }
 
+const PROJECT_UPDATE_STATUS_KEYS = {
+  DEPLOYED: "update_status_deployed",
+  CHECKPOINT: "update_status_checkpoint",
+  IN_PROGRESS: "update_status_in_progress",
+  MAINTENANCE: "update_status_maintenance",
+  DATA_UPDATE: "update_status_data_update",
+  FIXED: "update_status_fixed",
+  SECURITY_UPDATE: "update_status_security",
+  ARCHIVED: "update_status_archived",
+};
+let currentProjectUpdate = null;
+let projectUpdateCollapsed = false;
+
 function getCurrentLanguage() {
   return window.PCSI18n?.getLanguage() ?? "en";
+}
+
+function projectUpdateLanguageField(prefix, update) {
+  const language = getCurrentLanguage();
+  const suffix = language === "zh-TW" ? "zh" : language;
+  return update?.[`${prefix}_${suffix}`] || update?.[`${prefix}_en`] || "";
+}
+
+function validProjectUpdate(value) {
+  if (!value || typeof value !== "object") return null;
+  if (typeof value.id !== "string" || !value.id || typeof value.status !== "string") return null;
+  if (!PROJECT_UPDATE_STATUS_KEYS[value.status]) return null;
+  if (!projectUpdateLanguageField("title", value) || !projectUpdateLanguageField("summary", value)) return null;
+  return value;
+}
+
+function formatProjectUpdateTime(value) {
+  if (!value || Number.isNaN(Date.parse(value))) return null;
+  try {
+    return new Intl.DateTimeFormat(getCurrentLanguage(), {
+      dateStyle: "medium",
+      timeStyle: "short",
+      timeZoneName: "short",
+    }).format(new Date(value));
+  } catch {
+    return null;
+  }
+}
+
+function renderProjectUpdate() {
+  const update = validProjectUpdate(currentProjectUpdate);
+  if (!update || !selectors.updateBanner) {
+    if (selectors.updateBanner) selectors.updateBanner.hidden = true;
+    return;
+  }
+  updateText(selectors.updatePhase, update.phase || update.version || "");
+  updateText(selectors.updateStatus, t(PROJECT_UPDATE_STATUS_KEYS[update.status]));
+  updateText(selectors.updateTitle, projectUpdateLanguageField("title", update));
+  updateText(selectors.updateSummary, projectUpdateLanguageField("summary", update));
+  const displayTime = formatProjectUpdateTime(update.deployed_at || update.published_at || update.updated_at);
+  selectors.updateTime.hidden = !displayTime;
+  updateText(selectors.updateTime, displayTime ? `${t("update_time")}: ${displayTime}` : "");
+  const detailsUrl = typeof update.details_url === "string" && /^https?:\/\//.test(update.details_url) ? update.details_url : null;
+  selectors.updateDetails.hidden = !detailsUrl;
+  if (detailsUrl) {
+    selectors.updateDetails.href = detailsUrl;
+    updateText(selectors.updateDetails, t("view_details"));
+  } else {
+    selectors.updateDetails.removeAttribute("href");
+  }
+  selectors.updateBanner.hidden = false;
+  selectors.updateBanner.classList.toggle("is-collapsed", projectUpdateCollapsed);
+  selectors.updateToggle.setAttribute("aria-expanded", String(!projectUpdateCollapsed));
+  selectors.updateToggle.setAttribute("aria-label", t(projectUpdateCollapsed ? "expand" : "collapse"));
+  updateText(selectors.updateToggle, t(projectUpdateCollapsed ? "expand" : "collapse"));
+}
+
+async function loadLatestProjectUpdate() {
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 5000);
+    const response = await fetch(`${WEATHER_PROXY_BASE}/api/project-updates/latest`, { cache: "no-store", signal: controller.signal });
+    clearTimeout(timeout);
+    if (!response.ok) throw new Error(`Project update API returned ${response.status}`);
+    const payload = await response.json();
+    currentProjectUpdate = validProjectUpdate(payload?.update);
+    if (!currentProjectUpdate) {
+      selectors.updateBanner.hidden = true;
+      return;
+    }
+    projectUpdateCollapsed = readStorageValue(`pcs-update-dismissed:${currentProjectUpdate.id}`, "false") === "true";
+    renderProjectUpdate();
+  } catch {
+    currentProjectUpdate = null;
+    if (selectors.updateBanner) selectors.updateBanner.hidden = true;
+  }
+}
+
+function initializeProjectUpdateBanner() {
+  selectors.updateToggle?.addEventListener("click", () => {
+    if (!currentProjectUpdate) return;
+    projectUpdateCollapsed = !projectUpdateCollapsed;
+    writeStorageValue(`pcs-update-dismissed:${currentProjectUpdate.id}`, String(projectUpdateCollapsed));
+    renderProjectUpdate();
+  });
+  window.addEventListener("pcs:languagechange", () => queueMicrotask(renderProjectUpdate));
+  void loadLatestProjectUpdate();
 }
 
 async function setLanguage(lang) {
@@ -4811,6 +4920,7 @@ async function loadPcsEvidencePanels() {
 }
 
 async function initializeApp() {
+  runSafe("project update banner initialization", initializeProjectUpdateBanner);
   runSafe("regional mode initialization", initializeRegionalMode);
   runSafe("language selector initialization", initializeLanguageSelector);
   renderClock();

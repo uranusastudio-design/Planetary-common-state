@@ -93,6 +93,8 @@
   "active_layer_count": "個啟用圖層", "active_advisories": "個有效警報", "last_successful_update": "最後成功更新", "next_expected_update": "下次預期更新", "frames": "影格", "camera_transition_verified": "區域、事件及地球視角共用同一個 Viewer。",
   "brief_item_count": "簡報項目", "event_candidate_count": "事件候選", "retrospective_count": "回溯分析", "ledger_record_details": "帳本紀錄明細", "calculated_variables": "計算變數", "validated_timeline_unavailable": "沒有可用的已驗證時間序列資料。", "timeline_speed": "時間軸速度",
   "analysis_id": "分析 ID", "issued_at": "發布時間", "expected_event_window": "預期事件時窗", "input_data_snapshot": "輸入資料快照", "precursor_signals": "前兆訊號", "warning_rule_version": "警示規則版本", "proposed_actions": "建議行動", "actual_event": "實際事件", "official_confirmation_time": "官方確認時間", "news_publication_time": "新聞發布時間", "lead_time_hours": "提前時間（小時）", "false_positive": "偽陽性", "false_negative": "偽陰性", "partial_hit": "部分命中", "data_missing": "資料缺漏", "retrospective_score": "回溯評分", "lessons_learned": "經驗教訓", "model_revision": "模型修訂", "reviewed_at": "審查時間",
+  "pcs_update": "PCS 更新", "view_details": "查看詳情", "collapse": "收合", "expand": "展開", "update_time": "更新時間",
+  "update_status_deployed": "已部署", "update_status_checkpoint": "階段檢查點", "update_status_in_progress": "開發中", "update_status_maintenance": "維護中", "update_status_data_update": "資料更新", "update_status_fixed": "已修正", "update_status_security": "安全性更新", "update_status_archived": "已封存",
   "system_mode": "系統模式", "mode_live": "即時", "mode_replay": "重播", "mode_archived": "封存",
   "historical_mode_controls": "歷史模式控制", "replay_controls": "重播控制", "historical_day": "歷史日期", "return_to_live": "返回即時模式",
   "previous_frame": "上一影格", "next_frame": "下一影格", "play": "播放", "pause": "暫停", "playback_speed": "播放速度",

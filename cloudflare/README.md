@@ -270,6 +270,33 @@ For repository-controlled production deploys, use
 to ensure deployment runs from this directory and preserves dashboard runtime
 secrets with `--keep-vars`.
 
+## Project update banner API
+
+The PCS Update Banner uses a versioned baseline at
+`data/project-updates.json`. This keeps checkpoint history reviewable in Git
+without requiring a D1 migration. Authenticated maintenance uses the existing
+`PCS_CACHE` binding as a validated overlay at the dedicated
+`project-updates:v1` key; repository records remain the fallback if KV is
+unavailable or malformed.
+
+Public routes:
+
+- `GET /api/project-updates/latest`
+- `GET /api/project-updates`
+
+Authenticated routes retain the existing `ADMIN_API_KEY` or `INGEST_SECRET`
+Bearer requirement:
+
+```text
+POST /api/admin/project-updates
+PATCH /api/admin/project-updates/:id
+Authorization: Bearer <server-side credential>
+Content-Type: application/json
+```
+
+The server validates update status, dates, text lengths and HTTP(S) details
+URLs. Credentials must never be embedded in Observatory frontend code.
+
 ## Verification
 
 Expected checks:

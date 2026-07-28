@@ -184,6 +184,129 @@ select {
   padding: 16px clamp(16px, 2vw, 32px) 18px;
 }
 
+.pcs-update-banner {
+  width: 100%;
+  margin: 0 0 14px;
+  padding: 12px 14px;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(10, 31, 49, 0.96), rgba(11, 24, 42, 0.94));
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+}
+
+.pcs-update-banner__heading,
+.pcs-update-banner__identity,
+.pcs-update-banner__content,
+.pcs-update-banner__meta {
+  display: flex;
+  align-items: center;
+}
+
+.pcs-update-banner__heading {
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.pcs-update-banner__identity,
+.pcs-update-banner__meta {
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pcs-update-banner__label {
+  color: var(--cyan);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.pcs-update-banner__phase,
+.pcs-update-banner__status {
+  padding: 3px 8px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text);
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.pcs-update-banner__status {
+  color: var(--amber);
+  border-color: rgba(245, 158, 11, 0.55);
+}
+
+.pcs-update-banner__content {
+  justify-content: space-between;
+  gap: 20px;
+  padding-top: 9px;
+}
+
+.pcs-update-banner__content h2 {
+  margin: 0 0 4px;
+  font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+}
+
+.pcs-update-banner__content p {
+  max-width: 78ch;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.pcs-update-banner__meta {
+  flex: 0 0 auto;
+  justify-content: flex-end;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.pcs-update-banner__details {
+  color: var(--cyan);
+  font-weight: 800;
+}
+
+.pcs-update-banner__toggle {
+  min-height: 34px;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  background: rgba(7, 17, 31, 0.88);
+  cursor: pointer;
+}
+
+.pcs-update-banner__toggle:focus-visible,
+.pcs-update-banner__details:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+}
+
+.pcs-update-banner.is-collapsed .pcs-update-banner__content {
+  display: none;
+}
+
+@media (max-width: 620px) {
+  .pcs-update-banner {
+    padding: 10px;
+  }
+
+  .pcs-update-banner__heading,
+  .pcs-update-banner__content {
+    align-items: flex-start;
+  }
+
+  .pcs-update-banner__content {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .pcs-update-banner__meta {
+    justify-content: flex-start;
+  }
+}
+
 .top-bar {
   display: grid;
   grid-template-columns: minmax(0, 1.4fr) minmax(180px, auto) minmax(0, 1fr);

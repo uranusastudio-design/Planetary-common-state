@@ -1,0 +1,24 @@
+[
+  {
+    "id": "phase-7-1-checkpoint-bb724d3",
+    "slug": "phase-7-1-historical-reconstruction-foundation",
+    "phase": "Phase 7.1",
+    "version": null,
+    "status": "CHECKPOINT",
+    "title_zh": "PCS 歷史重建基礎已加入",
+    "title_en": "PCS Historical Reconstruction Foundation Added",
+    "title_ja": "PCS 歴史再構築基盤を追加",
+    "title_ko": "PCS 역사 재구성 기반 추가",
+    "summary_zh": "PCS 已開始建立 LIVE、REPLAY 與 ARCHIVED 歷史模式，以及歷史快照、來源時間與重建 API 基礎。Phase 7.1 尚未完成，後續仍需補齊測試、瀏覽器驗證與正式部署確認。",
+    "summary_en": "PCS has begun implementing LIVE, REPLAY and ARCHIVED historical modes, together with the foundations for historical snapshots, source timing and reconstruction APIs. Phase 7.1 is not yet complete and still requires remaining tests, browser validation and final deployment verification.",
+    "summary_ja": "PCSでは、LIVE、REPLAY、ARCHIVEDの履歴モードと、履歴スナップショット、情報源の時刻、再構築APIの基盤実装を開始しました。フェーズ7.1はまだ完了しておらず、残りのテスト、ブラウザ検証、最終デプロイ確認が必要です。",
+    "summary_ko": "PCS는 LIVE, REPLAY, ARCHIVED 역사 모드와 역사 스냅샷, 출처 시각 및 재구성 API의 기반 구현을 시작했습니다. Phase 7.1은 아직 완료되지 않았으며 남은 테스트, 브라우저 검증 및 최종 배포 확인이 필요합니다.",
+    "details_url": null,
+    "deployed_at": null,
+    "published_at": "2026-07-22T20:09:46+08:00",
+    "commit_hash": "bb724d3a79e06a50085333bc73258743c54f2842",
+    "is_pinned": true,
+    "created_at": "2026-07-22T20:09:46+08:00",
+    "updated_at": "2026-07-22T20:09:46+08:00"
+  }
+]
