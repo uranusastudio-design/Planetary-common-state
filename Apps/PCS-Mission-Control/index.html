@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="dark">
+    <title>PCS Mission Control</title>
+    <link rel="icon" href="../../PCS_OBSERVATORY/assets/uranus-a-studio-logo.jpeg">
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <div class="app-shell">
+      <header class="top-status" aria-label="Mission Control status">
+        <button id="nav-toggle" class="icon-button nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar">☰</button>
+        <div class="brand">
+          <span class="eyebrow">PLANETARY COMMON STATE</span>
+          <strong>PCS Mission Control · LOCAL ADMIN</strong>
+        </div>
+        <div class="top-metrics">
+          <div><span>System state</span><strong class="status-text status-warning">DEGRADED_OR_INCOMPLETE</strong></div>
+          <div><span>Current phase</span><strong id="current-phase">OBS-7.1 · CHECKPOINT</strong></div>
+          <div><span>Runtime</span><strong>LOCAL_ADMIN_ONLY</strong></div>
+          <div><span>Data</span><strong><span class="source-dot"></span>CACHED</strong></div>
+          <div><span>Local time · UTC+8</span><time id="local-clock">Loading</time></div>
+        </div>
+      </header>
+
+      <aside id="sidebar" class="sidebar" aria-label="Primary navigation">
+        <nav>
+          <a href="#dashboard" data-route="dashboard" aria-current="page">Dashboard</a>
+          <a href="#phases" data-route="phases">Phase Control</a>
+          <a href="#ai-agents" data-route="placeholder">AI Agents</a>
+          <a href="../../PCS_OBSERVATORY/" data-external-module>Earth Observatory <span>↗</span></a>
+          <a href="../../PCS_OBSERVATORY/#solar-system-title" data-external-module>Solar System <span>↗</span></a>
+          <a href="../../PCS_OBSERVATORY/#solar-system-title" data-external-module>Deep Space <span>↗</span></a>
+          <a href="#research" data-route="placeholder">Research Center</a>
+          <a href="#codex" data-route="placeholder">Codex Studio</a>
+          <a href="#site" data-route="placeholder">Site Manager</a>
+          <a href="#reports" data-route="placeholder">Report Center</a>
+          <a href="#communications" data-route="placeholder">Communications</a>
+          <a href="#messages" data-route="placeholder">Message Center</a>
+          <a href="#data" data-route="placeholder">Data Center</a>
+          <a href="#tasks" data-route="placeholder">Task Manager</a>
+          <a href="#users" data-route="placeholder">User Manager</a>
+          <a href="#settings" data-route="placeholder">System Settings</a>
+        </nav>
+        <div class="sidebar-note">
+          <span>Gateway · L(t) · Agents</span>
+          <strong>UNAVAILABLE</strong>
+        </div>
+      </aside>
+      <button id="drawer-backdrop" class="drawer-backdrop" type="button" aria-label="Close navigation" hidden></button>
+
+      <main id="main-content" tabindex="-1">
+        <section id="dashboard-page" class="page" aria-labelledby="dashboard-title">
+          <div class="page-heading">
+            <div><span class="eyebrow">MC-02 · APP SHELL</span><h1 id="dashboard-title">Mission overview</h1></div>
+            <span class="data-label">Source: MC-01 AUDIT · CACHED</span>
+          </div>
+          <section class="alert-panel" aria-labelledby="system-state-title">
+            <div><span class="eyebrow">CURRENT SYSTEM STATE</span><h2 id="system-state-title">DEGRADED_OR_INCOMPLETE</h2></div>
+            <p>The phase registry includes unresolved checkpoints, incomplete integrations and disconnected telemetry. This shell does not imply operational readiness.</p>
+          </section>
+
+          <section aria-labelledby="phase-summary-title">
+            <div class="section-heading"><h2 id="phase-summary-title">Phase summary</h2><span id="registry-total">Loading registry</span></div>
+            <div id="phase-summary" class="summary-grid" aria-live="polite"></div>
+          </section>
+
+          <div class="dashboard-grid">
+            <section class="panel blockers-panel" aria-labelledby="blockers-title">
+              <div class="panel-heading"><h2 id="blockers-title">Current blockers</h2><span class="status-badge status-warning">ACTION REQUIRED</span></div>
+              <ul id="blocker-list"></ul>
+            </section>
+            <section class="panel update-panel" aria-labelledby="latest-update-title">
+              <div class="panel-heading"><h2 id="latest-update-title">Latest PCS Update</h2><span id="update-source" class="data-label">LIVE API</span></div>
+              <div id="latest-update" class="loading-state" role="status">Loading latest update…</div>
+            </section>
+          </div>
+
+          <section aria-labelledby="modules-title">
+            <div class="section-heading"><h2 id="modules-title">Mission modules</h2><span>Truth-labelled connections</span></div>
+            <div id="module-grid" class="module-grid"></div>
+          </section>
+        </section>
+
+        <section id="phases-page" class="page" aria-labelledby="phases-title" hidden>
+          <div class="page-heading">
+            <div><span class="eyebrow">CANONICAL REGISTRY</span><h1 id="phases-title">Phase Control</h1></div>
+            <span class="data-label">READ ONLY</span>
+          </div>
+          <section class="gate-panel" aria-labelledby="gate-title">
+            <div><span class="eyebrow">NEXT PHASE GATE</span><h2 id="gate-title">Phase 7.2 · LOCKED</h2></div>
+            <p id="phase-gate-reason"></p>
+          </section>
+          <form class="filters" role="search" aria-label="Filter phases">
+            <label>Search<input id="phase-search" type="search" placeholder="ID, phase or title"></label>
+            <label>Namespace<select id="namespace-filter"><option value="">All namespaces</option></select></label>
+            <label>Status<select id="status-filter"><option value="">All statuses</option></select></label>
+            <label>Sort<select id="sort-select"><option value="id">Stable ID</option><option value="phase">Phase</option><option value="status">Status</option><option value="namespace">Namespace</option></select></label>
+          </form>
+          <p id="phase-result-count" class="result-count" aria-live="polite"></p>
+          <div class="phase-table-wrap">
+            <table>
+              <thead><tr><th scope="col">Stable ID</th><th scope="col">Phase / title</th><th scope="col">Namespace</th><th scope="col">Status</th><th scope="col">Function</th><th scope="col">Tests</th><th scope="col">Browser</th><th scope="col">Commit</th><th scope="col">Push</th><th scope="col">Deploy</th><th scope="col">Lifecycle</th><th scope="col">Blockers / next approved task</th></tr></thead>
+              <tbody id="phase-table-body"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="placeholder-page" class="page placeholder-page" aria-labelledby="placeholder-title" hidden>
+          <span class="eyebrow">BOUNDED DELIVERY</span>
+          <h1 id="placeholder-title">Module</h1>
+          <div class="unavailable-state"><strong>COMING_IN_MC-XX</strong><p>This module is intentionally not connected in MC-02. No synthetic status or activity is shown.</p></div>
+        </section>
+      </main>
+
+      <aside class="right-rail" aria-label="Connection status">
+        <h2>Connection status</h2>
+        <dl>
+          <div><dt>Phase registry</dt><dd class="status-text status-cached">CACHED</dd></div>
+          <div><dt>Update API</dt><dd id="update-health">CHECKING</dd></div>
+          <div><dt>OpenClaw</dt><dd>NOT_CONNECTED</dd></div>
+          <div><dt>WhatsApp</dt><dd>NOT_CONNECTED</dd></div>
+          <div><dt>Resource monitor</dt><dd>NOT_CONNECTED</dd></div>
+          <div><dt>Agent telemetry</dt><dd>UNAVAILABLE</dd></div>
+          <div><dt>L(t)</dt><dd>UNAVAILABLE</dd></div>
+        </dl>
+        <div class="rail-event"><span>Latest shell event</span><strong>MC-02 LOCAL BUILD</strong><small>No live activity feed connected.</small></div>
+      </aside>
+
+      <footer>
+        <span>PCS Mission Control v0.1 · MC-02</span>
+        <span>LOCAL_ADMIN_ONLY · loopback access · no telemetry · no deployment</span>
+      </footer>
+    </div>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

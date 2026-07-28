@@ -1,0 +1,4 @@
+# GitHub Pages must never publish the local-only Mission Control runtime.
+exclude:
+  - Apps/PCS-Mission-Control
+  - data/phase-registry.json

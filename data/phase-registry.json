@@ -1,0 +1,94 @@
+{
+  "schema_version": "pcs.phase-registry.v1",
+  "generated_at": "2026-07-28T14:34:37+08:00",
+  "mode": "MC-01_AUDIT",
+  "overall_state": "DEGRADED_OR_INCOMPLETE",
+  "current_phase_id": "OBS-7.1",
+  "source": {
+    "kind": "AUDIT_ARTIFACT",
+    "freshness": "CACHED",
+    "audit_id": "Phase-Audit-20260728-143437",
+    "audit_registry_sha256": "2953c43f9290dee575eef76da1a78bdebd9ab407597e459c6760154e4b187dbf",
+    "repository": "Planetary-common-state",
+    "branch": "main",
+    "audited_head": "a32c59d2a6261d89c440f1f36f1344a5c095af03",
+    "note": "Runtime-safe copy of the MC-01 canonical registry; phase records and statuses are unchanged."
+  },
+  "status_vocabulary": [
+    "NOT_STARTED",
+    "IN_PROGRESS",
+    "CHECKPOINT",
+    "TESTING",
+    "VALIDATED_LOCAL",
+    "PUSHED_NOT_DEPLOYED",
+    "DEPLOYED",
+    "ARCHIVED"
+  ],
+  "completion_rule": "DEPLOYED requires function, automated tests, real-browser validation, commit, push, production deployment, online verification, and no unresolved blocker.",
+  "records": [
+    {"id":"PLAT-M1","namespace":"platform_milestone","phase":"Milestone 1","name":"PCS Observatory Prototype UI v1.0","status":"ARCHIVED","commit":"fe15424e02043d980782d95990a66e34925e07be","push":true,"deploy":true,"blockers":[]},
+    {"id":"PLAT-M2","namespace":"platform_milestone","phase":"Milestone 2","name":"PCS Connector Framework v1.0","status":"PUSHED_NOT_DEPLOYED","commit":"d58302ac22afacf603e05abddb580887dece3777","push":true,"deploy":false,"blockers":["No phase-specific automated/browser/deployment verification"]},
+    {"id":"PLAT-M3.1","namespace":"platform_milestone","phase":"Milestone 3.1","name":"Formalize NASA and NOAA connectors","status":"PUSHED_NOT_DEPLOYED","commit":"34f9f1a3612060438bab0420d4c25f4590b08c46","push":true,"deploy":false,"blockers":["No phase-specific online connector verification"]},
+    {"id":"PLAT-M3.2","namespace":"platform_milestone","phase":"Milestone 3.2","name":"Sea-level connector planning","status":"CHECKPOINT","commit":"9fc4c7283c8e7f46e00c38626edf1c70fc372120","push":true,"deploy":false,"blockers":["Planning artifact is not implementation"]},
+    {"id":"PLAT-M3.3","namespace":"platform_milestone","phase":"Milestone 3.3","name":"ERA5 connector planning","status":"CHECKPOINT","commit":"6432cd27875d9e1efcc60b8c585d4cb324cc04c6","push":true,"deploy":false,"blockers":["Planning artifact is not implementation"]},
+    {"id":"PLAT-M3.4","namespace":"platform_milestone","phase":"Milestone 3.4","name":"NASA GISTEMP connector v0.1","status":"PUSHED_NOT_DEPLOYED","commit":"a314518e531235666323abc10d83a9c7892dd422","push":true,"deploy":false,"blockers":["Online source verification deferred"]},
+    {"id":"PLAT-M3.5","namespace":"platform_milestone","phase":"Milestone 3.5","name":"NOAA CO2 connector v0.1","status":"PUSHED_NOT_DEPLOYED","commit":"dbb734abc8d86a738a14d0a1dab962019801c60c","push":true,"deploy":false,"blockers":["Online source verification deferred"]},
+    {"id":"PLAT-M3.6","namespace":"platform_milestone","phase":"Milestone 3.6","name":"Sea-level connector v0.1","status":"PUSHED_NOT_DEPLOYED","commit":"81c08a0803877bb02a31a0122d3277060f6a2fe9","push":true,"deploy":false,"blockers":["No phase-specific production verification"]},
+    {"id":"PLAT-M3.7","namespace":"platform_milestone","phase":"Milestone 3.7","name":"NDVI connector v0.1","status":"PUSHED_NOT_DEPLOYED","commit":"bca66bb1bd575628f42a640570537f1db9fef3f0","push":true,"deploy":false,"blockers":["No phase-specific production verification"]},
+    {"id":"PLAT-M3.8","namespace":"platform_milestone","phase":"Milestone 3.8","name":"Connector fallback strategy","status":"PUSHED_NOT_DEPLOYED","commit":"26344c4d78de79b218b72a475e26667527de2e70","push":true,"deploy":false,"blockers":["No end-to-end failure-mode browser evidence"]},
+    {"id":"PLAT-M3.9","namespace":"platform_milestone","phase":"Milestone 3.9","name":"Connector validation layer v0.1","status":"PUSHED_NOT_DEPLOYED","commit":"bfea0f6223027489b17e9501c583808d00f6a49f","push":true,"deploy":false,"blockers":["Only later partial offline validation is recorded"]},
+    {"id":"PLAT-M4","namespace":"platform_milestone","phase":"Milestone 4","name":"PCS Engine Core v1.0","status":"VALIDATED_LOCAL","commit":"1aa3a85438ffb5f1dc2971948a33a8eb7c9373ed","push":true,"deploy":false,"blockers":["Engine is locally validated but not a deployment-verified service"]},
+    {"id":"PLAT-M5","namespace":"platform_milestone","phase":"Milestone 5","name":"PCS Data Assimilation Framework v1.0","status":"CHECKPOINT","commit":"20b68591ed742b1de14123c4bbb67f92b1783aee","push":true,"deploy":false,"blockers":["Repository audit describes assimilation as architecture, not an active algorithm"]},
+    {"id":"PLAT-M6","namespace":"platform_milestone","phase":"Milestone 6","name":"PCS AI Copilot Framework v1.0","status":"CHECKPOINT","commit":"9255c99d11972e6b51794a3078edcd744430932d","push":true,"deploy":false,"blockers":["Framework documents exist; no connected validated AI runtime"]},
+
+    {"id":"DATA-2.1","namespace":"data_integration","phase":"Phase 2.1","name":"Core Data Integration Queue","status":"CHECKPOINT","commit":"3f22f3f4f7181307e13f62747662a9139c7bf15d","push":true,"deploy":false,"blockers":["Planning queue only; target ten validated datasets not complete"]},
+    {"id":"DATA-2.2","namespace":"data_integration","phase":"Phase 2.2","name":"Multi-Agency Connector Framework","status":"CHECKPOINT","commit":"a53ca5a9caf4ff115b4f68006fbf933ea518b0bd","push":true,"deploy":false,"blockers":["Framework lacks full source-by-source validation"]},
+    {"id":"DATA-2.3","namespace":"data_integration","phase":"Phase 2.3","name":"NSIDC Sea Ice Connector v1.0","status":"PUSHED_NOT_DEPLOYED","commit":"e6ead35a9cf9630c0a5e895f39dec99f56b631fc","push":true,"deploy":false,"blockers":["No current online connector test and deployment verification"]},
+    {"id":"DATA-2.4","namespace":"data_integration","phase":"Phase 2.4","name":"NASA GPM IMERG Connector v1.0","status":"PUSHED_NOT_DEPLOYED","commit":"abeef10a69298fe5469fc1d6e85ba6aac9ad7e99","push":true,"deploy":false,"blockers":["No current online connector test and deployment verification"]},
+    {"id":"DATA-2.5","namespace":"data_integration","phase":"Phase 2.5","name":"NASA FIRMS Wildfire Connector v1.0","status":"PUSHED_NOT_DEPLOYED","commit":"2aa22f7bd14958b0dccaec89cf1a7b3f03830f4d","push":true,"deploy":false,"blockers":["No current online connector test and deployment verification"]},
+    {"id":"DATA-2.6","namespace":"data_integration","phase":"Phase 2.6","name":"Argo Global Ocean Connector v1.0","status":"PUSHED_NOT_DEPLOYED","commit":"19072c07e44fc02c644e58c1b03b903e3590437d","push":true,"deploy":false,"blockers":["No current online connector test and deployment verification"]},
+    {"id":"DATA-2.6.5","namespace":"data_integration","phase":"Phase 2.6.5","name":"PCS Aggregation Engine v0.1","status":"VALIDATED_LOCAL","commit":"b7edda8f1cd934b71c6f9989a75edd6cd8b0533e","push":true,"deploy":false,"blockers":["Local Engine verification exists; production pipeline verification does not"]},
+    {"id":"DATA-2.6.6","namespace":"data_integration","phase":"Phase 2.6.6","name":"First Live Data Integration Test (CWA)","status":"CHECKPOINT","commit":"21403a7ed317f2af8030661773fee086d604a4ee","push":true,"deploy":false,"blockers":["Historical live test exists; current external API validation intentionally deferred"]},
+
+    {"id":"CF-1","namespace":"cloudflare","phase":"Phase CF-1","name":"Cloudflare Worker Prototype","status":"ARCHIVED","commit":"77707f860bf2f4a5b74bf64e78c865e530a4130e","push":true,"deploy":true,"blockers":[]},
+
+    {"id":"OBS-2","namespace":"observatory","phase":"Phase 2","name":"Final Observatory UI Framework","status":"DEPLOYED","commit":"4e23256a14e49ae6da2353abd08bfba62341a431","push":true,"deploy":true,"blockers":[]},
+    {"id":"OBS-GON-1","namespace":"observatory","phase":"Global Observatory Network Phase 1","name":"Network data and UI foundation","status":"DEPLOYED","commit":"e0b7ec3ed9e795f69e3bede7bf9d6eb9b28abdb8","push":true,"deploy":true,"blockers":[]},
+    {"id":"OBS-GON-2","namespace":"observatory","phase":"Global Observatory Network Phase 2","name":"Live observation region visualization","status":"DEPLOYED","commit":"ba451c13c83bbfc61eece19017900d0f17e7d6b2","push":true,"deploy":true,"blockers":[]},
+    {"id":"OBS-GON-3","namespace":"observatory","phase":"Global Observatory Network Phase 3","name":"Network completion and visitor integration","status":"DEPLOYED","commit":"6763de13bdb46ff73a2a6b642042e055c95ee252","push":true,"deploy":true,"blockers":[]},
+    {"id":"OBS-SAT-1","namespace":"observatory","phase":"Phase 1 satellites","name":"Representative natural satellites","status":"DEPLOYED","commit":"0f8ac353fb5fbe53b498ca2de07e5045fe170638","push":true,"deploy":true,"blockers":[]},
+    {"id":"OBS-6.2","namespace":"observatory","phase":"Phase 6.2","name":"Core scientific layer visualization","status":"DEPLOYED","commit":"a7f00fd9372e8fc2f76694c64e327dc06dd83977","push":true,"deploy":true,"blockers":[]},
+    {"id":"OBS-6.3","namespace":"observatory","phase":"Phase 6.3","name":"Regional observation and hazard integration","status":"DEPLOYED","commit":"fc01a4df46c90da6cfc2ede42a2becc50875f0bb","push":true,"deploy":true,"blockers":[]},
+    {"id":"OBS-7.1","namespace":"observatory","phase":"Phase 7.1","name":"Historical reconstruction and PCS Update Banner","status":"CHECKPOINT","commit":"bb724d3a79e06a50085333bc73258743c54f2842","latest_implementation_commit":"a32c59d2a6261d89c440f1f36f1344a5c095af03","push":true,"deploy":true,"evidence":{"function":"VALIDATED","tests":"PASSED","browser":"PASSED","deployment":"VERIFIED","lifecycle":"CHECKPOINT"},"blockers":["Public latest lifecycle record remains CHECKPOINT","No authenticated final DEPLOYED record with actual deployment commit/timestamp","Phase 7.2 remains locked"]},
+
+    {"id":"VR-1","namespace":"variable_registry","phase":"Phase 1","name":"Registry Framework","status":"CHECKPOINT","commit":null,"push":true,"deploy":false,"blockers":["No dedicated acceptance/test/deployment evidence"]},
+    {"id":"VR-2","namespace":"variable_registry","phase":"Phase 2","name":"Domain Registry","status":"CHECKPOINT","commit":null,"push":true,"deploy":false,"blockers":["Phase number conflicts with separate Global Data Integration heading"]},
+    {"id":"VR-3","namespace":"variable_registry","phase":"Phase 3","name":"Scientific Taxonomy","status":"CHECKPOINT","commit":null,"push":true,"deploy":false,"blockers":["Documentation exists without dedicated validation"]},
+    {"id":"VR-4","namespace":"variable_registry","phase":"Phase 4","name":"100+ Core Variables","status":"NOT_STARTED","commit":null,"push":false,"deploy":false,"blockers":["Required 100+ accepted variable entries not evidenced"]},
+    {"id":"VR-5","namespace":"variable_registry","phase":"Phase 5","name":"250+ Extended Variables","status":"NOT_STARTED","commit":null,"push":false,"deploy":false,"blockers":["Required 250+ accepted variable entries not evidenced"]},
+    {"id":"VR-6","namespace":"variable_registry","phase":"Phase 6","name":"Connector Registry","status":"IN_PROGRESS","commit":null,"push":true,"deploy":false,"blockers":["Connector mapping is partial and online validation is deferred"]},
+    {"id":"VR-7","namespace":"variable_registry","phase":"Phase 7","name":"PCS Engine integration","status":"IN_PROGRESS","commit":null,"push":true,"deploy":false,"blockers":["Only a subset of registry variables is operational in Engine"]},
+    {"id":"VR-8","namespace":"variable_registry","phase":"Phase 8","name":"Observatory Integration","status":"IN_PROGRESS","commit":null,"push":true,"deploy":true,"blockers":["Selected variables are exposed; full registry integration is incomplete"]},
+    {"id":"VR-9","namespace":"variable_registry","phase":"Phase 9","name":"AI-assisted Planetary Monitoring","status":"NOT_STARTED","commit":null,"push":false,"deploy":false,"blockers":["AI Copilot is explicitly inactive"]},
+
+    {"id":"XAI-A","namespace":"cross_platform_ai","phase":"Phase A","name":"Complete Web Observatory","status":"DEPLOYED","commit":"a32c59d2a6261d89c440f1f36f1344a5c095af03","push":true,"deploy":true,"blockers":[]},
+    {"id":"XAI-B","namespace":"cross_platform_ai","phase":"Phase B","name":"Complete Connector and Engine Integration","status":"IN_PROGRESS","commit":null,"push":true,"deploy":false,"blockers":["Validated dataset integration remains partial"]},
+    {"id":"XAI-C","namespace":"cross_platform_ai","phase":"Phase C","name":"Activate AI Copilot Summaries","status":"NOT_STARTED","commit":null,"push":false,"deploy":false,"blockers":["Validated grounded AI runtime is absent"]},
+    {"id":"XAI-D","namespace":"cross_platform_ai","phase":"Phase D","name":"Convert Observatory to PWA","status":"NOT_STARTED","commit":null,"push":false,"deploy":false,"blockers":["No service worker/manifest acceptance evidence"]},
+    {"id":"XAI-E","namespace":"cross_platform_ai","phase":"Phase E","name":"Prepare iPad/iPhone SwiftUI Roadmap","status":"NOT_STARTED","commit":null,"push":false,"deploy":false,"blockers":["Explicitly future work"]},
+
+    {"id":"SB-1","namespace":"safe_boundary","phase":"Phase 1","name":"Boundary reports and classification baseline","status":"VALIDATED_LOCAL","commit":"55afb69d132dcdf4700064cb58421bf97549a5f3","push":true,"deploy":false,"blockers":["Governance artifact; no production deployment criterion applies"]},
+    {"id":"SB-2","namespace":"safe_boundary","phase":"Phase 2","name":"Migration plan and exact manifest refresh","status":"VALIDATED_LOCAL","commit":"178d39d98c641602f8d74551f5f4714cd70099c7","push":true,"deploy":false,"blockers":["Planning phase only"]},
+    {"id":"SB-3A","namespace":"safe_boundary","phase":"Phase 3A","name":"Small PCS-Lab research isolation","status":"IN_PROGRESS","commit":null,"push":false,"deploy":false,"blockers":["PCS-Lab remains intentionally modified/untracked","No accepted frozen completion record"]}
+  ],
+  "aliases_and_conflicts": [
+    {"label":"Phase 2","records":["DATA-2.1","OBS-2","VR-2","SB-2"],"resolution":"Always qualify with namespace."},
+    {"label":"Phase 1","records":["OBS-SAT-1","VR-1","SB-1","OBS-GON-1"],"resolution":"Always qualify with namespace."},
+    {"label":"Variable Registry Phase 2 Global Data Integration","canonical_reference":"DATA-2.1","resolution":"Treat as cross-reference, not an additional canonical phase."},
+    {"label":"Phase 7","records":["VR-7","OBS-7.1"],"resolution":"Variable Registry Phase 7 and Observatory Phase 7.1 are unrelated scopes."}
+  ],
+  "phase_7_2_gate": {
+    "allowed": false,
+    "reason": "OBS-7.1 remains CHECKPOINT until the final DEPLOYED lifecycle record and its authenticated publication evidence exist."
+  }
+}
