@@ -1,6 +1,6 @@
-import { STATUS_ORDER, filterRecords, moduleCard, statusBadge, summarize, validateRegistry } from "./components.js";
+import { STATUS_ORDER, filterQueueItems, filterRecords, moduleCard, statusBadge, summarize, summarizeQueue } from "./components.js";
+import { fetchProjectUpdateState, loadLocalAdminData } from "./data-adapter.js";
 
-const REGISTRY_URL = "../../data/phase-registry.json";
 const UPDATE_API = "https://pcs-backend.uranusastudio.workers.dev/api/project-updates/latest";
 const BLOCKER_SUMMARY = [
   "Phase 7.1 needs an authenticated final DEPLOYED lifecycle record.",
@@ -24,6 +24,8 @@ const MODULES = [
 ];
 
 let registry;
+let missionQueue;
+let localStatus;
 
 function setClock() {
   const now = new Date();
@@ -51,11 +53,60 @@ function renderSummary(records) {
   document.querySelector("#registry-total").textContent = `${records.length} canonical records`;
 }
 
+function renderLocalAdminStatus() {
+  document.querySelector("#runtime-mode").textContent = localStatus.runtime_mode;
+  document.querySelector("#refresh-state").textContent = localStatus.refresh_state;
+  document.querySelector("#mc-phase-cards").replaceChildren(...localStatus.mission_control_phases.map((phase) => {
+    const card = document.createElement("article");
+    card.className = "summary-card";
+    const label = document.createElement("span");
+    label.className = "eyebrow";
+    label.textContent = phase.id;
+    const title = document.createElement("strong");
+    title.className = "phase-card-title";
+    title.textContent = phase.title;
+    card.append(label, title, statusBadge(phase.status));
+    return card;
+  }));
+
+  const source = localStatus.history_source;
+  const values = {
+    "history-source-name": source.name,
+    "history-source-status": source.status,
+    "history-conversations": source.conversations.toLocaleString(),
+    "history-messages": source.messages.toLocaleString(),
+    "history-chunks": source.chunks.toLocaleString(),
+    "history-index": source.index,
+    "history-boundary": `${source.scope} · ${source.access}`,
+    "history-memory": source.automatic_memory_write ? "ENABLED" : "NO_AUTOMATIC_MEMORY_WRITE",
+    "history-embedding": source.embedding ? "ENABLED" : "NO_EMBEDDING",
+    "history-approval": source.approval,
+    "history-traceability": source.traceability
+  };
+  Object.entries(values).forEach(([id, value]) => {
+    document.querySelector(`#${id}`).textContent = value;
+  });
+  const notice = localStatus.new_conversations;
+  document.querySelector("#new-conversations-list").replaceChildren(...[
+    notice.snapshot,
+    notice.policy,
+    notice.required_process,
+    notice.restriction
+  ].map((value) => {
+    const li = document.createElement("li");
+    li.textContent = value;
+    return li;
+  }));
+}
+
 function renderPhaseTable() {
   const state = {
     query: document.querySelector("#phase-search").value,
     namespace: document.querySelector("#namespace-filter").value,
     status: document.querySelector("#status-filter").value,
+    functional: document.querySelector("#functional-filter").value,
+    deployment: document.querySelector("#deployment-filter").value,
+    lock: document.querySelector("#lock-filter").value,
     sort: document.querySelector("#sort-select").value
   };
   const rows = filterRecords(registry.records, state);
@@ -65,24 +116,30 @@ function renderPhaseTable() {
     const tr = document.createElement("tr");
     const fields = [
       record.id,
-      `${record.phase}\n${record.name}`,
       record.namespace,
+      `${record.phase}\n${record.name}`,
       record.status,
-      record.evidence?.function || "UNAVAILABLE",
-      record.evidence?.tests || "UNAVAILABLE",
-      record.evidence?.browser || "UNAVAILABLE",
-      record.commit || record.latest_implementation_commit ? "RECORDED" : "UNAVAILABLE",
-      record.push ? "PUSHED" : "NOT_PUSHED",
-      record.evidence?.deployment || (record.deploy ? "RECORDED" : "NOT_DEPLOYED"),
-      record.evidence?.lifecycle || record.status,
-      `${record.blockers.length ? record.blockers.join(" · ") : "No unresolved blocker recorded"} · Next approved task: UNAVAILABLE`
+      record.functional_status || "UNAVAILABLE",
+      record.deployment_status || "UNAVAILABLE",
+      record.validation_status || "UNAVAILABLE",
+      record.lock_status || "UNAVAILABLE",
+      formatVerifiedTime(record.last_verified_at),
+      record.source_indicator || "UNAVAILABLE"
     ];
     fields.forEach((value, index) => {
       const cell = document.createElement("td");
-      if (index === 3 || index === 10) cell.append(statusBadge(value));
+      if (index === 0) {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "record-detail-button";
+        button.textContent = value;
+        button.setAttribute("aria-label", `View details for ${value}`);
+        button.addEventListener("click", () => openRecordDetail(record));
+        cell.append(button);
+      } else if ([3, 4, 5, 6, 7].includes(index)) cell.append(statusBadge(value));
       else {
         cell.textContent = value;
-        if (index === 1) cell.className = "phase-title-cell";
+        if (index === 2) cell.className = "phase-title-cell";
       }
       tr.append(cell);
     });
@@ -92,6 +149,138 @@ function renderPhaseTable() {
   document.querySelector("#phase-result-count").textContent = `${rows.length} of ${registry.records.length} records`;
 }
 
+function renderQueueSummary() {
+  const counts = summarizeQueue(missionQueue.items, missionQueue.queue_status_vocabulary);
+  const container = document.querySelector("#queue-summary");
+  container.replaceChildren();
+  missionQueue.queue_status_vocabulary.forEach((status) => {
+    const card = document.createElement("article");
+    card.className = "summary-card";
+    card.append(statusBadge(status));
+    const count = document.createElement("strong");
+    count.textContent = counts[status];
+    const label = document.createElement("span");
+    label.textContent = "queue items";
+    card.append(count, label);
+    container.append(card);
+  });
+  document.querySelector("#queue-total").textContent = `${missionQueue.items.length} projected items`;
+}
+
+function renderQueueTable() {
+  const rows = filterQueueItems(missionQueue.items, {
+    query: document.querySelector("#queue-search").value,
+    status: document.querySelector("#queue-status-filter").value,
+    namespace: document.querySelector("#queue-namespace-filter").value,
+    priority: document.querySelector("#queue-priority-filter").value,
+    lock: document.querySelector("#queue-lock-filter").value,
+    validation: document.querySelector("#queue-validation-filter").value,
+    blockers: document.querySelector("#queue-blocker-filter").value,
+    sort: document.querySelector("#queue-sort-select").value
+  });
+  const body = document.querySelector("#queue-table-body");
+  body.replaceChildren();
+  rows.forEach((item) => {
+    const tr = document.createElement("tr");
+    const fields = [
+      item.queue_item_id,
+      item.title,
+      item.namespace,
+      item.queue_status,
+      item.lifecycle_status,
+      item.priority,
+      item.dependency_ids.length ? item.dependency_ids.join(" · ") : "UNAVAILABLE",
+      item.blockers.length ? item.blockers.join(" · ") : "NONE",
+      item.validation_status,
+      item.lock_status,
+      formatVerifiedTime(item.last_verified_at)
+    ];
+    fields.forEach((value, index) => {
+      const cell = document.createElement("td");
+      if (index === 0) {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "record-detail-button queue-detail-button";
+        button.textContent = value;
+        button.setAttribute("aria-label", `View queue details for ${value}`);
+        button.addEventListener("click", () => openQueueDetail(item));
+        cell.append(button);
+      } else if ([3, 4, 8, 9].includes(index)) cell.append(statusBadge(value));
+      else {
+        cell.textContent = value;
+        if ([1, 6, 7].includes(index)) cell.className = "phase-title-cell";
+      }
+      tr.append(cell);
+    });
+    body.append(tr);
+  });
+  document.querySelector("#queue-result-count").textContent = `${rows.length} of ${missionQueue.items.length} queue items`;
+}
+
+function formatVerifiedTime(value) {
+  if (!value) return "UNAVAILABLE";
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? "UNAVAILABLE" : new Intl.DateTimeFormat("en-GB", {
+    dateStyle: "medium",
+    timeStyle: "short",
+    timeZone: "Asia/Taipei"
+  }).format(date);
+}
+
+function detailValue(value) {
+  if (Array.isArray(value)) return value.length ? value.join(" · ") : "UNAVAILABLE";
+  return value || "UNAVAILABLE";
+}
+
+function openRecordDetail(record) {
+  const dialog = document.querySelector("#record-detail");
+  const values = {
+    "detail-id": record.id,
+    "detail-title": record.name,
+    "detail-namespace": record.namespace,
+    "detail-lifecycle": record.status,
+    "detail-functional": record.functional_status,
+    "detail-deployment": record.deployment_status,
+    "detail-dependencies": detailValue(record.dependencies),
+    "detail-locks": detailValue(record.locks),
+    "detail-source": record.source_file,
+    "detail-artifact": record.validation_artifact,
+    "detail-notes": detailValue(record.blockers),
+    "detail-verified": formatVerifiedTime(record.last_verified_at),
+    "detail-source-id": record.source_record_id,
+    "detail-source-hash": record.source_record_sha256
+  };
+  Object.entries(values).forEach(([id, value]) => {
+    document.querySelector(`#${id}`).textContent = value || "UNAVAILABLE";
+  });
+  dialog.showModal();
+}
+
+function openQueueDetail(item) {
+  const dialog = document.querySelector("#queue-detail");
+  const values = {
+    "queue-detail-title": item.title,
+    "queue-detail-id": item.queue_item_id,
+    "queue-detail-record": item.canonical_record_id,
+    "queue-detail-namespace": item.namespace,
+    "queue-detail-status": item.queue_status,
+    "queue-detail-lifecycle": item.lifecycle_status,
+    "queue-detail-basis": item.status_basis,
+    "queue-detail-dependencies": detailValue(item.dependency_ids),
+    "queue-detail-blockers": detailValue(item.blockers),
+    "queue-detail-locks": item.lock_status,
+    "queue-detail-validation": `${item.validation_status} · ${item.deployment_status}`,
+    "queue-detail-source": item.source_evidence.validation_artifact,
+    "queue-detail-verified": formatVerifiedTime(item.last_verified_at),
+    "queue-detail-next": item.next_allowed_action,
+    "queue-detail-approval": item.action_authorization_state
+  };
+  Object.entries(values).forEach(([id, value]) => {
+    document.querySelector(`#${id}`).textContent = value || "UNAVAILABLE";
+  });
+  dialog.showModal();
+}
+
 function populateFilters() {
   const namespaceSelect = document.querySelector("#namespace-filter");
   [...new Set(registry.records.map((record) => record.namespace))].sort().forEach((namespace) => {
@@ -99,7 +288,28 @@ function populateFilters() {
   });
   const statusSelect = document.querySelector("#status-filter");
   STATUS_ORDER.forEach((status) => statusSelect.add(new Option(status, status)));
+  for (const [id, field] of [
+    ["functional-filter", "functional_status"],
+    ["deployment-filter", "deployment_status"],
+    ["lock-filter", "lock_status"]
+  ]) {
+    const select = document.querySelector(`#${id}`);
+    [...new Set(registry.records.map((record) => record[field] || "UNAVAILABLE"))].sort().forEach((value) => select.add(new Option(value, value)));
+  }
   document.querySelectorAll(".filters input, .filters select").forEach((control) => control.addEventListener("input", renderPhaseTable));
+}
+
+function populateQueueFilters() {
+  for (const [id, values] of [
+    ["queue-status-filter", missionQueue.queue_status_vocabulary],
+    ["queue-namespace-filter", missionQueue.namespaces],
+    ["queue-priority-filter", [...new Set(missionQueue.items.map((item) => item.priority))]],
+    ["queue-validation-filter", [...new Set(missionQueue.items.map((item) => item.validation_status))]]
+  ]) {
+    const select = document.querySelector(`#${id}`);
+    [...values].sort().forEach((value) => select.add(new Option(value.replaceAll("_", " "), value)));
+  }
+  document.querySelectorAll(".queue-filters input, .queue-filters select").forEach((control) => control.addEventListener("input", renderQueueTable));
 }
 
 function renderModules() {
@@ -118,12 +328,21 @@ function renderBlockers() {
 
 async function loadLatestUpdate() {
   const container = document.querySelector("#latest-update");
-  try {
-    const response = await fetch(UPDATE_API, { headers: { Accept: "application/json" } });
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const payload = await response.json();
-    const update = payload.update || payload;
-    if (!update || !update.id || !update.status) throw new Error("Malformed update");
+  const health = document.querySelector("#update-health");
+  const retry = document.querySelector("#update-retry");
+  health.textContent = "CHECKING";
+  retry.disabled = true;
+  container.className = "loading-state";
+  container.textContent = "Checking latest update…";
+  const result = await fetchProjectUpdateState({ url: UPDATE_API });
+  document.querySelector("#update-last-check").textContent = new Intl.DateTimeFormat("en-GB", {
+    dateStyle: "medium",
+    timeStyle: "medium",
+    timeZone: "Asia/Taipei"
+  }).format(new Date(result.checkedAt));
+  retry.disabled = false;
+  if (result.state === "AVAILABLE") {
+    const update = result.update;
     container.className = "";
     container.replaceChildren();
     const meta = document.createElement("p");
@@ -135,12 +354,17 @@ async function loadLatestUpdate() {
     const summary = document.createElement("p");
     summary.textContent = update.summary_en || update.summary_zh || "Summary unavailable.";
     container.append(meta, title, summary);
-    document.querySelector("#update-health").textContent = "AVAILABLE";
-  } catch {
+    health.textContent = "AVAILABLE";
+  } else {
     container.className = "unavailable-state";
-    container.textContent = "UPDATE_UNAVAILABLE — Mission Control remains available.";
+    container.replaceChildren();
+    const title = document.createElement("strong");
+    title.textContent = "UPDATE_UNAVAILABLE";
+    const detail = document.createElement("p");
+    detail.textContent = "Update service unavailable. Local Mission Control remains available.";
+    container.append(title, detail);
     document.querySelector("#update-source").textContent = "LIVE API · UNAVAILABLE";
-    document.querySelector("#update-health").textContent = "UNAVAILABLE";
+    health.textContent = "UPDATE_UNAVAILABLE";
   }
 }
 
@@ -158,13 +382,17 @@ function setRoute() {
   const route = window.location.hash.slice(1) || "dashboard";
   const isDashboard = route === "dashboard";
   const isPhases = route === "phases";
+  const isMissionQueue = route === "mission-queue";
+  const isDataSources = route === "data-sources";
   document.querySelector("#dashboard-page").hidden = !isDashboard;
   document.querySelector("#phases-page").hidden = !isPhases;
-  document.querySelector("#placeholder-page").hidden = isDashboard || isPhases;
+  document.querySelector("#mission-queue-page").hidden = !isMissionQueue;
+  document.querySelector("#data-source-page").hidden = !isDataSources;
+  document.querySelector("#placeholder-page").hidden = isDashboard || isPhases || isMissionQueue || isDataSources;
   document.querySelectorAll("[data-route]").forEach((link) => link.removeAttribute("aria-current"));
   const active = document.querySelector(`[href="#${CSS.escape(route)}"]`);
   active?.setAttribute("aria-current", "page");
-  if (!isDashboard && !isPhases) document.querySelector("#placeholder-title").textContent = active?.textContent.trim() || "Module";
+  if (!isDashboard && !isPhases && !isMissionQueue && !isDataSources) document.querySelector("#placeholder-title").textContent = active?.textContent.trim() || "Module";
   closeDrawer();
   document.querySelector("#main-content").focus({ preventScroll: true });
 }
@@ -175,15 +403,35 @@ async function init() {
   renderBlockers();
   renderModules();
   try {
-    const response = await fetch(REGISTRY_URL);
-    if (!response.ok) throw new Error(`Registry HTTP ${response.status}`);
-    registry = validateRegistry(await response.json());
+    const data = await loadLocalAdminData();
+    registry = data.registry;
+    missionQueue = data.queue;
+    localStatus = data.localStatus;
+    renderLocalAdminStatus();
     renderSummary(registry.records);
     populateFilters();
     renderPhaseTable();
+    renderQueueSummary();
+    populateQueueFilters();
+    renderQueueTable();
+    document.querySelector("#next-mission-title").textContent = `${missionQueue.next_allowed_mission.id} — ${missionQueue.next_allowed_mission.title}`;
+    document.querySelector("#queue-source-path").textContent = missionQueue.source.registry.registry_file;
+    document.querySelector("#queue-source-sha").textContent = missionQueue.source.registry.registry_sha256;
     document.querySelector("#phase-gate-reason").textContent = registry.phase_7_2_gate.reason;
+    document.querySelector("#registry-source-path").textContent = registry.source.registry_file;
+    document.querySelector("#registry-source-sha").textContent = registry.source.registry_sha256;
   } catch (error) {
-    document.querySelector("#phase-summary").innerHTML = `<div class="error-state">REGISTRY_UNAVAILABLE — ${error.message}</div>`;
+    const category = error.message.includes("Registry") ? "REGISTRY_UNAVAILABLE" : "LOCAL_DATA_UNAVAILABLE";
+    document.querySelector("#phase-summary").innerHTML = `<div class="error-state">${category} — ${error.message}</div>`;
+    document.querySelector("#phase-table-body").replaceChildren();
+    document.querySelector("#phase-result-count").textContent = "Registry data unavailable; no cached phase rows shown.";
+    document.querySelector("#registry-error").hidden = false;
+    document.querySelector("#registry-error").textContent = `${category} — source validation failed. Mission Control shell remains available.`;
+    document.querySelector("#data-source-page").classList.add("data-unavailable");
+    document.querySelector("#queue-error").hidden = false;
+    document.querySelector("#queue-error").textContent = `QUEUE_UNAVAILABLE — ${error.message}. Mission Control shell remains available.`;
+    document.querySelector("#queue-table-body").replaceChildren();
+    document.querySelector("#queue-result-count").textContent = "Queue data unavailable; no projected rows shown.";
   }
   loadLatestUpdate();
   setRoute();
@@ -197,6 +445,9 @@ document.querySelector("#nav-toggle").addEventListener("click", () => {
   document.querySelector("#drawer-backdrop").hidden = !open;
 });
 document.querySelector("#drawer-backdrop").addEventListener("click", closeDrawer);
+document.querySelector("#update-retry").addEventListener("click", loadLatestUpdate);
+document.querySelector("#record-detail-close").addEventListener("click", () => document.querySelector("#record-detail").close());
+document.querySelector("#queue-detail-close").addEventListener("click", () => document.querySelector("#queue-detail").close());
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") closeDrawer();
 });

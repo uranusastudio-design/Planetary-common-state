@@ -20,30 +20,22 @@
         <div class="top-metrics">
           <div><span>System state</span><strong class="status-text status-warning">DEGRADED_OR_INCOMPLETE</strong></div>
           <div><span>Current phase</span><strong id="current-phase">OBS-7.1 · CHECKPOINT</strong></div>
-          <div><span>Runtime</span><strong>LOCAL_ADMIN_ONLY</strong></div>
-          <div><span>Data</span><strong><span class="source-dot"></span>CACHED</strong></div>
+          <div><span>Runtime</span><strong id="runtime-mode">LOCAL_ADMIN_ONLY</strong></div>
+          <div><span>Data refresh</span><strong><span class="source-dot"></span><span id="refresh-state">LOADING</span></strong></div>
           <div><span>Local time · UTC+8</span><time id="local-clock">Loading</time></div>
         </div>
       </header>
 
       <aside id="sidebar" class="sidebar" aria-label="Primary navigation">
         <nav>
-          <a href="#dashboard" data-route="dashboard" aria-current="page">Dashboard</a>
-          <a href="#phases" data-route="phases">Phase Control</a>
-          <a href="#ai-agents" data-route="placeholder">AI Agents</a>
-          <a href="../../PCS_OBSERVATORY/" data-external-module>Earth Observatory <span>↗</span></a>
-          <a href="../../PCS_OBSERVATORY/#solar-system-title" data-external-module>Solar System <span>↗</span></a>
-          <a href="../../PCS_OBSERVATORY/#solar-system-title" data-external-module>Deep Space <span>↗</span></a>
-          <a href="#research" data-route="placeholder">Research Center</a>
-          <a href="#codex" data-route="placeholder">Codex Studio</a>
-          <a href="#site" data-route="placeholder">Site Manager</a>
-          <a href="#reports" data-route="placeholder">Report Center</a>
-          <a href="#communications" data-route="placeholder">Communications</a>
-          <a href="#messages" data-route="placeholder">Message Center</a>
-          <a href="#data" data-route="placeholder">Data Center</a>
-          <a href="#tasks" data-route="placeholder">Task Manager</a>
-          <a href="#users" data-route="placeholder">User Manager</a>
-          <a href="#settings" data-route="placeholder">System Settings</a>
+          <a href="#dashboard" data-route="dashboard" aria-current="page">Overview</a>
+          <a href="#phases" data-route="phases">Phase Registry</a>
+          <a href="#mission-queue" data-route="mission-queue">Mission Queue</a>
+          <a href="#systems" data-route="placeholder">Systems</a>
+          <a href="#data-sources" data-route="data-sources">Data Sources</a>
+          <a href="#validation-records" data-route="placeholder">Validation Records</a>
+          <a href="#activity-log" data-route="placeholder">Activity Log</a>
+          <a href="#settings" data-route="placeholder">Settings</a>
         </nav>
         <div class="sidebar-note">
           <span>Gateway · L(t) · Agents</span>
@@ -68,6 +60,13 @@
             <div id="phase-summary" class="summary-grid" aria-live="polite"></div>
           </section>
 
+          <section aria-labelledby="mc-progress-title">
+            <div class="section-heading"><h2 id="mc-progress-title">Mission Control delivery</h2><span>Approval-bounded state</span></div>
+            <div id="mc-phase-cards" class="mc-phase-grid" aria-live="polite">
+              <div class="loading-state">Loading local validation state…</div>
+            </div>
+          </section>
+
           <div class="dashboard-grid">
             <section class="panel blockers-panel" aria-labelledby="blockers-title">
               <div class="panel-heading"><h2 id="blockers-title">Current blockers</h2><span class="status-badge status-warning">ACTION REQUIRED</span></div>
@@ -76,12 +75,45 @@
             <section class="panel update-panel" aria-labelledby="latest-update-title">
               <div class="panel-heading"><h2 id="latest-update-title">Latest PCS Update</h2><span id="update-source" class="data-label">LIVE API</span></div>
               <div id="latest-update" class="loading-state" role="status">Loading latest update…</div>
+              <div class="update-actions">
+                <span>Last check: <time id="update-last-check">Not checked</time></span>
+                <button id="update-retry" type="button">Retry</button>
+              </div>
             </section>
           </div>
 
           <section aria-labelledby="modules-title">
             <div class="section-heading"><h2 id="modules-title">Mission modules</h2><span>Truth-labelled connections</span></div>
             <div id="module-grid" class="module-grid"></div>
+          </section>
+        </section>
+
+        <section id="data-source-page" class="page" aria-labelledby="data-source-title" hidden>
+          <div class="page-heading">
+            <div><span class="eyebrow">LOCAL READ-ONLY SOURCES</span><h1 id="data-source-title">Data Sources</h1></div>
+            <span class="data-label">LOCAL ADMIN ONLY</span>
+          </div>
+          <section class="panel source-detail" aria-labelledby="history-source-name">
+            <div class="panel-heading">
+              <div><span class="eyebrow">VALIDATED SNAPSHOT</span><h2 id="history-source-name">Loading source</h2></div>
+              <span id="history-source-status" class="status-badge status-cached">LOADING</span>
+            </div>
+            <dl class="source-grid">
+              <div><dt>Boundary</dt><dd id="history-boundary">UNAVAILABLE</dd></div>
+              <div><dt>Conversations</dt><dd id="history-conversations">UNAVAILABLE</dd></div>
+              <div><dt>Messages</dt><dd id="history-messages">UNAVAILABLE</dd></div>
+              <div><dt>Chunks</dt><dd id="history-chunks">UNAVAILABLE</dd></div>
+              <div><dt>Index</dt><dd id="history-index">UNAVAILABLE</dd></div>
+              <div><dt>Embedding</dt><dd id="history-embedding">UNAVAILABLE</dd></div>
+              <div><dt>Memory writes</dt><dd id="history-memory">UNAVAILABLE</dd></div>
+              <div><dt>Approval</dt><dd id="history-approval">UNAVAILABLE</dd></div>
+              <div><dt>Traceability</dt><dd id="history-traceability">UNAVAILABLE</dd></div>
+            </dl>
+            <p class="privacy-note">Private conversation text is not rendered by MC-02. This page exposes validation status only.</p>
+          </section>
+          <section class="panel new-conversations" aria-labelledby="new-conversations-title">
+            <div class="panel-heading"><h2 id="new-conversations-title">New Conversations</h2><span class="status-badge status-not-connected">MANUAL APPROVAL REQUIRED</span></div>
+            <ul id="new-conversations-list"><li>UNAVAILABLE</li></ul>
           </section>
         </section>
 
@@ -94,17 +126,62 @@
             <div><span class="eyebrow">NEXT PHASE GATE</span><h2 id="gate-title">Phase 7.2 · LOCKED</h2></div>
             <p id="phase-gate-reason"></p>
           </section>
+          <div id="registry-error" class="error-state" role="alert" hidden></div>
+          <section class="registry-provenance" aria-label="Registry source">
+            <span>Source</span><code id="registry-source-path">UNAVAILABLE</code>
+            <span>SHA-256</span><code id="registry-source-sha">UNAVAILABLE</code>
+          </section>
           <form class="filters" role="search" aria-label="Filter phases">
             <label>Search<input id="phase-search" type="search" placeholder="ID, phase or title"></label>
             <label>Namespace<select id="namespace-filter"><option value="">All namespaces</option></select></label>
-            <label>Status<select id="status-filter"><option value="">All statuses</option></select></label>
-            <label>Sort<select id="sort-select"><option value="id">Stable ID</option><option value="phase">Phase</option><option value="status">Status</option><option value="namespace">Namespace</option></select></label>
+            <label>Lifecycle<select id="status-filter"><option value="">All lifecycle states</option></select></label>
+            <label>Functional<select id="functional-filter"><option value="">All functional states</option></select></label>
+            <label>Deployment<select id="deployment-filter"><option value="">All deployment states</option></select></label>
+            <label>Lock<select id="lock-filter"><option value="">All lock states</option></select></label>
+            <label>Sort<select id="sort-select"><option value="id">Record ID</option><option value="namespace">Namespace</option><option value="status">Status</option><option value="last_verified_at">Last verified</option></select></label>
           </form>
           <p id="phase-result-count" class="result-count" aria-live="polite"></p>
           <div class="phase-table-wrap">
             <table>
-              <thead><tr><th scope="col">Stable ID</th><th scope="col">Phase / title</th><th scope="col">Namespace</th><th scope="col">Status</th><th scope="col">Function</th><th scope="col">Tests</th><th scope="col">Browser</th><th scope="col">Commit</th><th scope="col">Push</th><th scope="col">Deploy</th><th scope="col">Lifecycle</th><th scope="col">Blockers / next approved task</th></tr></thead>
+              <thead><tr><th scope="col">Record ID</th><th scope="col">Namespace</th><th scope="col">Phase / title</th><th scope="col">Lifecycle</th><th scope="col">Functional</th><th scope="col">Deployment</th><th scope="col">Validation</th><th scope="col">Lock</th><th scope="col">Last verified</th><th scope="col">Source / evidence</th></tr></thead>
               <tbody id="phase-table-body"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="mission-queue-page" class="page" aria-labelledby="mission-queue-title" hidden>
+          <div class="page-heading">
+            <div><span class="eyebrow">MC-04 · DETERMINISTIC PROJECTION</span><h1 id="mission-queue-title">Mission Queue</h1></div>
+            <span class="data-label">LOCAL READ ONLY</span>
+          </div>
+          <section class="gate-panel" aria-labelledby="next-mission-title">
+            <div><span class="eyebrow">NEXT ALLOWED MISSION</span><h2 id="next-mission-title">MC-04 — Mission Queue Read-Only Integration</h2></div>
+            <p id="next-mission-policy">This display does not start tasks. Automatic execution, unlock and status mutation are disabled.</p>
+          </section>
+          <div id="queue-error" class="error-state" role="alert" hidden></div>
+          <section class="registry-provenance" aria-label="Mission Queue source">
+            <span>Projection source</span><code id="queue-source-path">UNAVAILABLE</code>
+            <span>Registry SHA-256</span><code id="queue-source-sha">UNAVAILABLE</code>
+          </section>
+          <section aria-labelledby="queue-summary-title">
+            <div class="section-heading"><h2 id="queue-summary-title">Queue summary</h2><span id="queue-total">Loading queue</span></div>
+            <div id="queue-summary" class="queue-summary-grid" aria-live="polite"></div>
+          </section>
+          <form class="filters queue-filters" role="search" aria-label="Filter mission queue">
+            <label>Search<input id="queue-search" type="search" placeholder="ID, mission, blocker or dependency"></label>
+            <label>Queue status<select id="queue-status-filter"><option value="">All queue states</option></select></label>
+            <label>Namespace<select id="queue-namespace-filter"><option value="">All namespaces</option></select></label>
+            <label>Priority<select id="queue-priority-filter"><option value="">All priorities</option></select></label>
+            <label>Lock<select id="queue-lock-filter"><option value="">All lock states</option><option value="LOCKED">LOCKED</option><option value="UNLOCKED">UNLOCKED</option><option value="UNAVAILABLE">UNAVAILABLE</option></select></label>
+            <label>Validation<select id="queue-validation-filter"><option value="">All validation states</option></select></label>
+            <label>Blockers<select id="queue-blocker-filter"><option value="">All blocker states</option><option value="HAS_BLOCKERS">Has blockers</option><option value="NO_BLOCKERS">No blockers</option></select></label>
+            <label>Sort<select id="queue-sort-select"><option value="priority">Priority</option><option value="queue_item_id">Queue ID</option><option value="queue_status">Status</option><option value="namespace">Namespace</option><option value="last_verified_at">Last verified</option></select></label>
+          </form>
+          <p id="queue-result-count" class="result-count" aria-live="polite"></p>
+          <div class="phase-table-wrap">
+            <table>
+              <thead><tr><th scope="col">Queue ID</th><th scope="col">Mission / phase</th><th scope="col">Namespace</th><th scope="col">Queue status</th><th scope="col">Lifecycle</th><th scope="col">Priority</th><th scope="col">Dependencies</th><th scope="col">Blockers</th><th scope="col">Validation</th><th scope="col">Lock</th><th scope="col">Last verified</th></tr></thead>
+              <tbody id="queue-table-body"></tbody>
             </table>
           </div>
         </section>
@@ -135,6 +212,45 @@
         <span>LOCAL_ADMIN_ONLY · loopback access · no telemetry · no deployment</span>
       </footer>
     </div>
+    <dialog id="record-detail" class="record-detail" aria-labelledby="detail-title">
+      <div class="panel-heading"><span class="eyebrow">READ-ONLY RECORD</span><button id="record-detail-close" type="button">Close</button></div>
+      <h2 id="detail-title">Record detail</h2>
+      <dl>
+        <div><dt>Canonical ID</dt><dd id="detail-id"></dd></div>
+        <div><dt>Namespace</dt><dd id="detail-namespace"></dd></div>
+        <div><dt>Lifecycle</dt><dd id="detail-lifecycle"></dd></div>
+        <div><dt>Functional validation</dt><dd id="detail-functional"></dd></div>
+        <div><dt>Deployment evidence</dt><dd id="detail-deployment"></dd></div>
+        <div><dt>Dependencies</dt><dd id="detail-dependencies"></dd></div>
+        <div><dt>Locks</dt><dd id="detail-locks"></dd></div>
+        <div><dt>Source file</dt><dd id="detail-source"></dd></div>
+        <div><dt>Validation artifact</dt><dd id="detail-artifact"></dd></div>
+        <div><dt>Notes</dt><dd id="detail-notes"></dd></div>
+        <div><dt>Last verified</dt><dd id="detail-verified"></dd></div>
+        <div><dt>Source record ID</dt><dd id="detail-source-id"></dd></div>
+        <div><dt>Source record SHA-256</dt><dd id="detail-source-hash"></dd></div>
+      </dl>
+    </dialog>
+    <dialog id="queue-detail" class="record-detail" aria-labelledby="queue-detail-title">
+      <div class="panel-heading"><span class="eyebrow">READ-ONLY QUEUE ITEM</span><button id="queue-detail-close" type="button">Close</button></div>
+      <h2 id="queue-detail-title">Queue item detail</h2>
+      <dl>
+        <div><dt>Queue item ID</dt><dd id="queue-detail-id"></dd></div>
+        <div><dt>Canonical record</dt><dd id="queue-detail-record"></dd></div>
+        <div><dt>Namespace</dt><dd id="queue-detail-namespace"></dd></div>
+        <div><dt>Queue status</dt><dd id="queue-detail-status"></dd></div>
+        <div><dt>Lifecycle status</dt><dd id="queue-detail-lifecycle"></dd></div>
+        <div><dt>Status basis</dt><dd id="queue-detail-basis"></dd></div>
+        <div><dt>Dependencies</dt><dd id="queue-detail-dependencies"></dd></div>
+        <div><dt>Blockers</dt><dd id="queue-detail-blockers"></dd></div>
+        <div><dt>Locks</dt><dd id="queue-detail-locks"></dd></div>
+        <div><dt>Validation evidence</dt><dd id="queue-detail-validation"></dd></div>
+        <div><dt>Source artifact</dt><dd id="queue-detail-source"></dd></div>
+        <div><dt>Last verified</dt><dd id="queue-detail-verified"></dd></div>
+        <div><dt>Next allowed action</dt><dd id="queue-detail-next"></dd></div>
+        <div><dt>Required human approval</dt><dd id="queue-detail-approval"></dd></div>
+      </dl>
+    </dialog>
     <script type="module" src="./app.js"></script>
   </body>
 </html>

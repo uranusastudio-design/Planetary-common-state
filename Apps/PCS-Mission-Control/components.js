@@ -17,7 +17,7 @@ export function summarize(records) {
 }
 
 export function validateRegistry(registry) {
-  if (!registry || registry.schema_version !== "pcs.phase-registry.v1" || !Array.isArray(registry.records)) {
+  if (!registry || !["pcs.phase-registry.v1", "pcs.phase-registry.local-readonly.v1"].includes(registry.schema_version) || !Array.isArray(registry.records)) {
     throw new Error("Unsupported phase registry");
   }
   if (registry.records.length !== 48) throw new Error("Expected 48 canonical phase records");
@@ -30,13 +30,92 @@ export function validateRegistry(registry) {
   return registry;
 }
 
-export function filterRecords(records, { query = "", namespace = "", status = "", sort = "id" } = {}) {
+export function validateLocalAdminStatus(status) {
+  if (!status || status.schema_version !== "pcs.mission-control.local-admin-status.v1") {
+    throw new Error("Unsupported local-admin status source");
+  }
+  if (status.runtime_mode !== "LOCAL_ADMIN_ONLY" || status.system_state !== "DEGRADED_OR_INCOMPLETE") {
+    throw new Error("Unsafe Mission Control runtime state");
+  }
+  const source = status.history_source;
+  if (!source || source.name !== "chatgpt-pcs-history" || source.access !== "READ_ONLY" || source.scope !== "LOCAL_ONLY") {
+    throw new Error("Invalid history-source boundary");
+  }
+  if (source.conversations !== 83 || source.messages !== 2384 || source.chunks !== 3013) {
+    throw new Error("History-source validation counts changed");
+  }
+  return status;
+}
+
+export function filterRecords(records, {
+  query = "",
+  namespace = "",
+  status = "",
+  functional = "",
+  deployment = "",
+  lock = "",
+  sort = "id"
+} = {}) {
   const needle = query.trim().toLowerCase();
   return records
     .filter((record) => !namespace || record.namespace === namespace)
     .filter((record) => !status || record.status === status)
-    .filter((record) => !needle || [record.id, record.phase, record.name, record.namespace].some((value) => String(value).toLowerCase().includes(needle)))
-    .sort((a, b) => String(a[sort] || "").localeCompare(String(b[sort] || ""), undefined, { numeric: true }));
+    .filter((record) => !functional || record.functional_status === functional)
+    .filter((record) => !deployment || record.deployment_status === deployment)
+    .filter((record) => !lock || record.lock_status === lock)
+    .filter((record) => !needle || [
+      record.id,
+      record.phase,
+      record.name,
+      record.namespace,
+      record.status,
+      record.functional_status,
+      record.deployment_status,
+      ...(record.blockers || [])
+    ].some((value) => String(value).toLowerCase().includes(needle)))
+    .sort((a, b) => String(a[sort] ?? "").localeCompare(String(b[sort] ?? ""), undefined, { numeric: true }));
+}
+
+export function summarizeQueue(items, vocabulary) {
+  const counts = Object.fromEntries(vocabulary.map((status) => [status, 0]));
+  items.forEach((item) => {
+    if (!(item.queue_status in counts)) throw new Error(`Unknown queue status: ${item.queue_status}`);
+    counts[item.queue_status] += 1;
+  });
+  return counts;
+}
+
+export function filterQueueItems(items, {
+  query = "",
+  status = "",
+  namespace = "",
+  priority = "",
+  lock = "",
+  validation = "",
+  blockers = "",
+  sort = "queue_item_id"
+} = {}) {
+  const needle = query.trim().toLowerCase();
+  const direction = sort === "priority" ? -1 : 1;
+  return items
+    .filter((item) => !status || item.queue_status === status)
+    .filter((item) => !namespace || item.namespace === namespace)
+    .filter((item) => !priority || item.priority === priority)
+    .filter((item) => !lock || item.lock_status === lock)
+    .filter((item) => !validation || item.validation_status === validation)
+    .filter((item) => !blockers || (blockers === "HAS_BLOCKERS" ? item.blockers.length > 0 : item.blockers.length === 0))
+    .filter((item) => !needle || [
+      item.queue_item_id,
+      item.canonical_record_id,
+      item.title,
+      item.namespace,
+      item.lifecycle_status,
+      item.queue_status,
+      item.priority,
+      ...item.blockers,
+      ...item.dependency_ids
+    ].some((value) => String(value ?? "").toLowerCase().includes(needle)))
+    .sort((a, b) => direction * String(a[sort] ?? "").localeCompare(String(b[sort] ?? ""), undefined, { numeric: true }));
 }
 
 export function statusBadge(status) {

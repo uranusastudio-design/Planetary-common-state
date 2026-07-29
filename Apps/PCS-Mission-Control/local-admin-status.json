@@ -1,0 +1,67 @@
+{
+  "schema_version": "pcs.mission-control.local-admin-status.v1",
+  "runtime_mode": "LOCAL_ADMIN_ONLY",
+  "system_state": "DEGRADED_OR_INCOMPLETE",
+  "refresh_state": "CACHED_VALIDATED_SNAPSHOT",
+  "provenance": {
+    "phase_audit_id": "Phase-Audit-20260728-143437",
+    "history_index_validation_id": "OpenClaw-Conversation-Index-Validation-20260728-220913",
+    "history_source_activation_id": "OpenClaw-Conversation-Source-Activation-20260728-230816"
+  },
+  "mission_control_phases": [
+    {
+      "id": "MC-01",
+      "title": "Phase Audit and Registry",
+      "status": "COMPLETED"
+    },
+    {
+      "id": "MC-02",
+      "title": "Local Admin Shell",
+      "status": "COMPLETED"
+    },
+    {
+      "id": "MC-03",
+      "title": "Phase Registry Read-Only Integration",
+      "status": "COMPLETED"
+    },
+    {
+      "id": "MC-04",
+      "title": "Mission Queue Read-Only Integration",
+      "status": "COMPLETED"
+    },
+    {
+      "id": "MC-05",
+      "title": "Next Mission Control Phase",
+      "status": "LOCKED"
+    }
+  ],
+  "history_source": {
+    "name": "chatgpt-pcs-history",
+    "status": "ENABLED",
+    "scope": "LOCAL_ONLY",
+    "access": "READ_ONLY",
+    "conversations": 83,
+    "messages": 2384,
+    "chunks": 3013,
+    "index": "FTS5",
+    "embedding": false,
+    "automatic_memory_write": false,
+    "approval": "APPROVED_WHITELIST",
+    "traceability": "SOURCE_TRACEABLE"
+  },
+  "new_conversations": {
+    "snapshot": "Current index is a validated snapshot.",
+    "automatic_import": false,
+    "policy": "New ChatGPT conversations are not imported automatically.",
+    "required_process": "New conversations require export, metadata review, Alvin approval, incremental indexing and validation.",
+    "restriction": "Automatic unrestricted ingestion is disabled."
+  },
+  "unavailable_capabilities": [
+    "Gateway telemetry",
+    "L(t)",
+    "Lorenz APE",
+    "Agent connectivity",
+    "WhatsApp telemetry",
+    "Resource monitor"
+  ]
+}

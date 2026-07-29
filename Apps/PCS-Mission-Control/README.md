@@ -36,10 +36,16 @@ npm test
 
 ## Data sources
 
-- `../../data/phase-registry.json`: runtime-safe copy of the MC-01 canonical audit registry.
+- `/local-api/phase-registry`: loopback-only, read-only adapter that validates and reads the MC-01 audit registry and status matrix directly.
+- `./local-admin-status.json`: single runtime-safe adapter source for MC-01/MC-02 and the validated `chatgpt-pcs-history` status.
 - Existing `GET /api/project-updates/latest`: latest PCS Update source.
 - Existing Observatory paths: Earth, Solar System and Deep Space links.
 
-The phase registry source SHA-256 and audit ID are preserved in its `source` object. The 48 phase records, their statuses and the Phase 7.2 gate are unchanged. Local absolute paths from the audit artifact are intentionally excluded from the browser-safe source.
+The registry adapter verifies the MC-01 source checksum, schema, 48 record IDs,
+seven namespaces and evidence matrix before returning records. It never writes
+to the audit artifact and never falls back to the repository runtime copy when
+the source is unavailable or invalid.
 
 Unknown operational values are truth-labelled `UNAVAILABLE`, `NOT_CONNECTED` or `COMING_IN_MC-XX`.
+
+The history source status is metadata only. MC-02 never renders private conversation text, automatically imports new conversations, or writes query results to OpenClaw memory.
