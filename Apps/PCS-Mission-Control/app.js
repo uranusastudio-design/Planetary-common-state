@@ -1,6 +1,8 @@
 import { STATUS_ORDER, filterQueueItems, filterRecords, moduleCard, statusBadge, summarize, summarizeQueue } from "./components.js";
 import { fetchProjectUpdateState, loadLocalAdminData } from "./data-adapter.js";
 
+const AGENT_STATUS_API = "/local-api/agent-status";
+
 const UPDATE_API = "https://pcs-backend.uranusastudio.workers.dev/api/project-updates/latest";
 const BLOCKER_SUMMARY = [
   "Phase 7.1 needs an authenticated final DEPLOYED lifecycle record.",
@@ -312,6 +314,65 @@ function populateQueueFilters() {
   document.querySelectorAll(".queue-filters input, .queue-filters select").forEach((control) => control.addEventListener("input", renderQueueTable));
 }
 
+function agentStatusClass(status) {
+  if (status === "ONLINE") return "status-deployed";
+  if (status === "DEGRADED") return "status-checkpoint";
+  return "status-not-connected";
+}
+
+async function loadAgentPanel() {
+  const panel = document.querySelector("#agent-panel");
+  const checkedAt = document.querySelector("#agent-checked-at");
+  try {
+    const res = await fetch(AGENT_STATUS_API);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    checkedAt.textContent = new Intl.DateTimeFormat("en-GB", {
+      timeStyle: "medium", timeZone: "Asia/Taipei"
+    }).format(new Date(data.checked_at));
+    panel.replaceChildren(...data.agents.map((agent) => {
+      const card = document.createElement("article");
+      card.className = "agent-card";
+      const header = document.createElement("div");
+      header.className = "agent-card-header";
+      const nameEl = document.createElement("strong");
+      nameEl.textContent = agent.name;
+      const badge = document.createElement("span");
+      badge.className = `status-badge ${agentStatusClass(agent.status)}`;
+      badge.textContent = agent.status;
+      header.append(nameEl, badge);
+      const role = document.createElement("p");
+      role.className = "agent-role";
+      role.textContent = agent.role;
+      const provider = document.createElement("p");
+      provider.className = "agent-provider eyebrow";
+      provider.textContent = agent.provider;
+      const detail = document.createElement("p");
+      detail.className = "agent-detail";
+      if (agent.id === "claude") {
+        detail.textContent = agent.current_task ? `Task: ${agent.current_task}` : agent.detail;
+      } else {
+        detail.textContent = agent.last_update
+          ? `Latest: ${agent.last_update}${agent.title ? ` — ${agent.title}` : ""}`
+          : agent.detail;
+      }
+      card.append(header, role, provider, detail);
+      if (agent.site_url) {
+        const link = document.createElement("a");
+        link.href = agent.site_url;
+        link.textContent = "View research site";
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        card.append(link);
+      }
+      return card;
+    }));
+  } catch {
+    panel.innerHTML = `<div class="error-state">AGENT_STATUS_UNAVAILABLE — retry later</div>`;
+    checkedAt.textContent = "UNAVAILABLE";
+  }
+}
+
 function renderModules() {
   const grid = document.querySelector("#module-grid");
   MODULES.forEach((module) => grid.append(moduleCard(module)));
@@ -434,6 +495,8 @@ async function init() {
     document.querySelector("#queue-result-count").textContent = "Queue data unavailable; no projected rows shown.";
   }
   loadLatestUpdate();
+  loadAgentPanel();
+  setInterval(loadAgentPanel, 60_000);
   setRoute();
 }
 

@@ -173,6 +173,15 @@ tbody tr:hover, tbody tr[data-current-phase="true"] { background: rgba(105,215,2
   td:nth-child(10)::before { content: "Source / evidence"; }
   footer { margin-top: 1rem; flex-direction: column; gap: .35rem; }
 }
+.agent-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
+.agent-card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 1rem 1.1rem; display: flex; flex-direction: column; gap: .5rem; }
+.agent-card-header { display: flex; align-items: center; justify-content: space-between; gap: .5rem; flex-wrap: wrap; }
+.agent-card-header strong { font-size: .95rem; }
+.agent-role { font-size: .82rem; color: var(--text); margin: 0; }
+.agent-provider { color: var(--muted); font-size: .65rem; margin: 0; }
+.agent-detail { font-size: .78rem; color: var(--muted); margin: 0; line-height: 1.45; }
+.agent-card a { font-size: .75rem; color: var(--accent); margin-top: auto; padding-top: .5rem; }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
 }

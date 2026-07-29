@@ -3,6 +3,7 @@ import { createServer } from "node:http";
 import { extname, join, normalize } from "node:path";
 import { loadCanonicalRegistry } from "./registry-adapter.mjs";
 import { loadMissionQueue } from "./queue-adapter.mjs";
+import { loadAgentStatus } from "./agent-adapter.mjs";
 
 const repositoryRoot = new URL("../../", import.meta.url).pathname;
 const port = Number(process.env.PORT || 4173);
@@ -34,6 +35,26 @@ createServer(async (request, response) => {
         "Cache-Control": "no-store",
         "X-Content-Type-Options": "nosniff"
       }).end(JSON.stringify({ error: category, source: "MC-01_AUDIT_ARTIFACT" }));
+    }
+    return;
+  }
+  if (pathname === "/local-api/agent-status") {
+    if (request.method !== "GET") {
+      response.writeHead(405, { "Content-Type": "application/json; charset=utf-8", Allow: "GET" }).end(JSON.stringify({ error: "READ_ONLY_ENDPOINT" }));
+      return;
+    }
+    try {
+      const payload = await loadAgentStatus();
+      response.writeHead(200, {
+        "Content-Type": "application/json; charset=utf-8",
+        "Cache-Control": "no-store",
+        "X-Content-Type-Options": "nosniff"
+      }).end(JSON.stringify(payload));
+    } catch (error) {
+      response.writeHead(503, {
+        "Content-Type": "application/json; charset=utf-8",
+        "Cache-Control": "no-store"
+      }).end(JSON.stringify({ error: "AGENT_STATUS_UNAVAILABLE", detail: error.message }));
     }
     return;
   }
