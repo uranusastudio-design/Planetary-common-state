@@ -173,6 +173,17 @@ tbody tr:hover, tbody tr[data-current-phase="true"] { background: rgba(105,215,2
   td:nth-child(10)::before { content: "Source / evidence"; }
   footer { margin-top: 1rem; flex-direction: column; gap: .35rem; }
 }
+.pcs-core-grid { display: grid; grid-template-columns: auto 1fr; gap: 1.2rem; align-items: start; }
+.pcs-l-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 1rem 1.25rem; display: flex; flex-direction: column; gap: .5rem; min-width: 160px; }
+.pcs-l-display { font-size: 2rem; font-variant-numeric: tabular-nums; letter-spacing: -.02em; line-height: 1; }
+.pcs-residuals-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: .75rem; }
+.residual-card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: .75rem 1rem; display: flex; flex-direction: column; gap: .3rem; }
+.residual-value { font-size: .82rem; font-variant-numeric: tabular-nums; color: var(--text); }
+.activity-feed { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: .5rem; }
+.activity-item { background: var(--surface); border: 1px solid var(--border); border-radius: 5px; padding: .6rem 1rem; display: flex; flex-direction: column; gap: .2rem; }
+.activity-meta { font-size: .65rem; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+@media (max-width: 640px) { .pcs-core-grid { grid-template-columns: 1fr; } }
+
 .agent-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
 .agent-card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 1rem 1.1rem; display: flex; flex-direction: column; gap: .5rem; }
 .agent-card-header { display: flex; align-items: center; justify-content: space-between; gap: .5rem; flex-wrap: wrap; }

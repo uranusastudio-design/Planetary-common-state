@@ -4,6 +4,7 @@ import { extname, join, normalize } from "node:path";
 import { loadCanonicalRegistry } from "./registry-adapter.mjs";
 import { loadMissionQueue } from "./queue-adapter.mjs";
 import { loadAgentStatus } from "./agent-adapter.mjs";
+import { loadPcsState } from "./pcs-state-adapter.mjs";
 
 const repositoryRoot = new URL("../../", import.meta.url).pathname;
 const port = Number(process.env.PORT || 4173);
@@ -35,6 +36,26 @@ createServer(async (request, response) => {
         "Cache-Control": "no-store",
         "X-Content-Type-Options": "nosniff"
       }).end(JSON.stringify({ error: category, source: "MC-01_AUDIT_ARTIFACT" }));
+    }
+    return;
+  }
+  if (pathname === "/local-api/pcs-state") {
+    if (request.method !== "GET") {
+      response.writeHead(405, { "Content-Type": "application/json; charset=utf-8", Allow: "GET" }).end(JSON.stringify({ error: "READ_ONLY_ENDPOINT" }));
+      return;
+    }
+    try {
+      const payload = await loadPcsState();
+      response.writeHead(200, {
+        "Content-Type": "application/json; charset=utf-8",
+        "Cache-Control": "no-store",
+        "X-Content-Type-Options": "nosniff"
+      }).end(JSON.stringify(payload));
+    } catch (error) {
+      response.writeHead(503, {
+        "Content-Type": "application/json; charset=utf-8",
+        "Cache-Control": "no-store"
+      }).end(JSON.stringify({ error: "PCS_STATE_UNAVAILABLE", detail: error.message }));
     }
     return;
   }

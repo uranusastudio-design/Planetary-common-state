@@ -2,6 +2,7 @@ import { STATUS_ORDER, filterQueueItems, filterRecords, moduleCard, statusBadge,
 import { fetchProjectUpdateState, loadLocalAdminData } from "./data-adapter.js";
 
 const AGENT_STATUS_API = "/local-api/agent-status";
+const PCS_STATE_API = "/local-api/pcs-state";
 
 const UPDATE_API = "https://pcs-backend.uranusastudio.workers.dev/api/project-updates/latest";
 const BLOCKER_SUMMARY = [
@@ -314,6 +315,71 @@ function populateQueueFilters() {
   document.querySelectorAll(".queue-filters input, .queue-filters select").forEach((control) => control.addEventListener("input", renderQueueTable));
 }
 
+function formatTime(iso) {
+  if (!iso) return "UNAVAILABLE";
+  const d = new Date(iso);
+  return Number.isNaN(d.getTime()) ? "UNAVAILABLE" : new Intl.DateTimeFormat("en-GB", {
+    dateStyle: "medium", timeStyle: "short", timeZone: "Asia/Taipei"
+  }).format(d);
+}
+
+async function loadPcsStatePanel() {
+  try {
+    const res = await fetch(PCS_STATE_API);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+
+    document.querySelector("#pcs-state-checked").textContent = formatTime(data.checked_at);
+
+    const lVal = document.querySelector("#pcs-l-value");
+    const lStatus = document.querySelector("#pcs-l-status");
+    lVal.textContent = data.l_value.value != null ? data.l_value.value.toFixed(3) : "—";
+    const lStatusText = data.l_value.status.toUpperCase().replaceAll("_", " ");
+    lStatus.textContent = lStatusText;
+    lStatus.className = `status-badge ${data.l_value.value != null ? "status-deployed" : "status-not-connected"}`;
+
+    const residualsEl = document.querySelector("#pcs-residuals");
+    residualsEl.replaceChildren(...data.residuals.map((r) => {
+      const div = document.createElement("div");
+      div.className = "residual-card";
+      const label = document.createElement("span");
+      label.className = "eyebrow";
+      label.textContent = r.key;
+      const name = document.createElement("strong");
+      name.textContent = r.label;
+      const value = document.createElement("span");
+      value.className = "residual-value";
+      value.textContent = r.value != null ? `${r.value} ${r.unit}` : "NO_DATA";
+      const badge = document.createElement("span");
+      badge.className = `status-badge ${r.status === "AVAILABLE" ? "status-deployed" : "status-not-connected"}`;
+      badge.textContent = r.status;
+      div.append(label, name, value, badge);
+      return div;
+    }));
+
+    const feedEl = document.querySelector("#activity-feed");
+    const items = [
+      ...data.activity,
+      { source: "Claude Agent", type: "MC_TASK", text: "MC-05 Agent Panel — deployed", time: new Date().toISOString() }
+    ];
+    feedEl.replaceChildren(...items.map((item) => {
+      const li = document.createElement("li");
+      li.className = "activity-item";
+      const meta = document.createElement("span");
+      meta.className = "activity-meta";
+      meta.textContent = `${item.source} · ${formatTime(item.time)}`;
+      const text = document.createElement("span");
+      text.textContent = item.text;
+      li.append(meta, text);
+      return li;
+    }));
+  } catch {
+    document.querySelector("#pcs-l-value").textContent = "—";
+    document.querySelector("#pcs-l-status").textContent = "UNAVAILABLE";
+    document.querySelector("#pcs-residuals").innerHTML = `<div class="error-state">PCS_STATE_UNAVAILABLE</div>`;
+  }
+}
+
 function agentStatusClass(status) {
   if (status === "ONLINE") return "status-deployed";
   if (status === "DEGRADED") return "status-checkpoint";
@@ -495,6 +561,8 @@ async function init() {
     document.querySelector("#queue-result-count").textContent = "Queue data unavailable; no projected rows shown.";
   }
   loadLatestUpdate();
+  loadPcsStatePanel();
+  setInterval(loadPcsStatePanel, 120_000);
   loadAgentPanel();
   setInterval(loadAgentPanel, 60_000);
   setRoute();
