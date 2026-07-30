@@ -291,7 +291,7 @@ export async function retrieveLayer(adapter, env, fetcher = fetch, now = new Dat
   }
   const endpoint = adapter.endpoint.replace("{FIRMS_MAP_KEY}", env?.FIRMS_MAP_KEY || "");
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 12000);
+  const timer = setTimeout(() => controller.abort(), 5000);
   try {
     const response = await fetcher(endpoint, { headers: { "user-agent": "PCS-Observatory/2.0 public-research" }, signal: controller.signal, cf: { cacheTtl: 0 } });
     if (!response.ok) return normalized(adapter, { endpoint, retrieved_at: retrievedAt, retrieval_status: adapter.authOnDenied && (response.status === 401 || response.status === 403) ? "AUTH_REQUIRED" : "ERROR", quality_flag: `http_${response.status}`, error: `Provider returned HTTP ${response.status}` });
@@ -350,7 +350,39 @@ function normalized(adapter, runtime) {
   };
 }
 
+const LAYERS_CACHE_KEY = "layers:v2";
+const LAYERS_CACHE_TTL_MS = 5 * 60 * 1000;
+
+function buildSourceHealth(layers) {
+  const sources = {};
+  let ok = 0, err = 0, partial = 0, auth = 0;
+  for (const layer of layers) {
+    sources[layer.id] = { provider: layer.provider, status: layer.retrieval_status, error: layer.error || null };
+    if (layer.retrieval_status === "ERROR" || layer.retrieval_status === "DELAYED" || layer.retrieval_status === "UNAVAILABLE") err++;
+    else if (layer.retrieval_status === "PARTIAL") partial++;
+    else if (layer.retrieval_status === "AUTH_REQUIRED") auth++;
+    else ok++;
+  }
+  return { sources, health: { ok, partial, auth_required: auth, error: err, total: layers.length } };
+}
+
 export async function retrieveAllLayers(env, fetcher = fetch, now = new Date()) {
+  if (env?.PCS_CACHE) {
+    try {
+      const cached = await env.PCS_CACHE.get(LAYERS_CACHE_KEY, "json");
+      if (cached && cached.ts && (now.getTime() - cached.ts) < LAYERS_CACHE_TTL_MS) {
+        return { ...cached.data, cache_status: "hit", cache_age_ms: now.getTime() - cached.ts };
+      }
+    } catch { /* cache miss on error, fall through to fresh */ }
+  }
   const layers = await Promise.all(PCS_LAYER_ADAPTERS.map((adapter) => retrieveLayer(adapter, env, fetcher, now)));
-  return { generated_at: now.toISOString(), layers };
+  const { sources, health } = buildSourceHealth(layers);
+  const status = health.error === 0 && health.partial === 0 && health.auth_required === 0 ? "ok" : "partial";
+  const payload = { generated_at: now.toISOString(), status, sources, health, layers };
+  if (env?.PCS_CACHE) {
+    try {
+      await env.PCS_CACHE.put(LAYERS_CACHE_KEY, JSON.stringify({ ts: now.getTime(), data: payload }), { expirationTtl: 900 });
+    } catch { /* cache write is best-effort */ }
+  }
+  return { ...payload, cache_status: "miss", cache_age_ms: 0 };
 }
