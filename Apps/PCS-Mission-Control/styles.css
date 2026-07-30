@@ -32,7 +32,7 @@ a { color: var(--cyan); }
 .top-metrics span { color: var(--muted); font-size: .68rem; text-transform: uppercase; letter-spacing: .08em; }
 .top-metrics strong, .top-metrics time { font-size: .76rem; overflow-wrap: anywhere; }
 .source-dot { display: inline-block; width: .5rem; height: .5rem; border-radius: 50%; background: var(--blue); margin-right: .35rem; }
-.sidebar { grid-area: side; border-right: 1px solid var(--border); background: #07131c; padding: 1rem .75rem; display: flex; flex-direction: column; justify-content: space-between; z-index: 30; }
+.sidebar { grid-area: side; border-right: 1px solid var(--border); background: #07131c; padding: 1rem .75rem; display: flex; flex-direction: column; justify-content: space-between; z-index: 30; position: sticky; top: 78px; align-self: start; max-height: calc(100vh - 78px); overflow-y: auto; }
 .sidebar nav { display: grid; gap: .2rem; }
 .sidebar nav a { color: var(--muted); text-decoration: none; padding: .62rem .75rem; border-left: 2px solid transparent; display: flex; justify-content: space-between; font-size: .84rem; }
 .sidebar nav a:hover, .sidebar nav a[aria-current="page"] { color: var(--text); background: var(--surface-2); border-left-color: var(--cyan); }
@@ -63,12 +63,17 @@ h2 { margin-bottom: 0; font-size: 1rem; letter-spacing: .025em; }
 .summary-card > span:last-child { color: var(--muted); font-size: .72rem; }
 .phase-card-title { font-size: .9rem !important; }
 .mc-phase-grid { display: grid; grid-template-columns: repeat(2, minmax(180px, 1fr)); gap: .65rem; max-width: 700px; }
-.status-badge { width: fit-content; max-width: 100%; padding: .25rem .4rem; border: 1px solid currentColor; font-size: .62rem; letter-spacing: .06em; overflow-wrap: anywhere; }
+.status-badge { width: fit-content; max-width: 100%; padding: .25rem .4rem; border: 1px solid currentColor; font-size: .62rem; letter-spacing: .06em; white-space: nowrap; }
 .status-deployed { color: var(--green); }
 .status-archived, .status-cached { color: var(--blue); }
 .status-validated-local, .status-pushed-not-deployed { color: #a8bbff; }
 .status-checkpoint, .status-in-progress, .status-warning { color: var(--amber); }
-.status-not-started, .status-not-connected { color: var(--muted); }
+.status-not-started, body[data-theme="terminal"] { filter: hue-rotate(90deg) saturate(1.4); }
+body[data-theme="high-contrast"] { filter: contrast(1.35); }
+.severity-high { background: #3d1a1a; color: #ff8080; }
+.severity-medium { background: #3d2f1a; color: #f0b070; }
+.severity-low { background: #1a2f3d; color: #70b0f0; }
+.status-not-connected { color: var(--muted); }
 .status-completed, .status-ready { color: var(--green); }
 .status-blocked, .status-locked, .status-requires-review, .status-unavailable { color: var(--amber); }
 .status-text { font-weight: 750; }

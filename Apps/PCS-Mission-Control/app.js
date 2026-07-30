@@ -5,15 +5,7 @@ const AGENT_STATUS_API = "/local-api/agent-status";
 const PCS_STATE_API = "/local-api/pcs-state";
 
 const UPDATE_API = "https://pcs-backend.uranusastudio.workers.dev/api/project-updates/latest";
-const BLOCKER_SUMMARY = [
-  "Phase 7.1 needs an authenticated final DEPLOYED lifecycle record.",
-  "Connector production API verification remains incomplete.",
-  "Variable Registry targets remain incomplete.",
-  "AI Copilot runtime is not connected.",
-  "PWA and Apple client work has not started.",
-  "PCS-Lab retains protected research changes.",
-  "Mission Control telemetry is not connected."
-];
+const BLOCKERS_API = "/local-api/blockers";
 
 const MODULES = [
   { title: "Earth Observatory", status: "DEPLOYED", description: "Existing PCS Observatory. Mission Control does not create a second viewer.", href: "../../PCS_OBSERVATORY/" },
@@ -333,10 +325,11 @@ async function loadPcsStatePanel() {
 
     const lVal = document.querySelector("#pcs-l-value");
     const lStatus = document.querySelector("#pcs-l-status");
-    lVal.textContent = data.l_value.value != null ? data.l_value.value.toFixed(3) : "—";
-    const lStatusText = data.l_value.status.toUpperCase().replaceAll("_", " ");
-    lStatus.textContent = lStatusText;
-    lStatus.className = `status-badge ${data.l_value.value != null ? "status-deployed" : "status-not-connected"}`;
+    const L = data.l_value;
+    lVal.textContent = L.display;
+    lStatus.textContent = `${L.label} · ${L.contributor_count}/${L.total_domains} normalized · ${L.raw_available}/${L.total_domains} raw`;
+    lStatus.className = `status-badge ${L.value != null ? "status-deployed" : "status-checkpoint"}`;
+    lStatus.title = `${L.formula}\n\n${L.note}`;
 
     const residualsEl = document.querySelector("#pcs-residuals");
     residualsEl.replaceChildren(...data.residuals.map((r) => {
@@ -347,15 +340,41 @@ async function loadPcsStatePanel() {
       label.textContent = r.key;
       const name = document.createElement("strong");
       name.textContent = r.label;
-      const value = document.createElement("span");
-      value.className = "residual-value";
-      value.textContent = r.value != null ? `${r.value} ${r.unit}` : "NO_DATA";
+
+      const rawRow = document.createElement("div");
+      rawRow.style.cssText = "font-size:12px; margin-top:6px;";
+      rawRow.innerHTML = `<span style="opacity:0.6">Raw:</span> <b>${r.raw != null ? `${r.raw} ${r.unit}` : "Waiting…"}</b>`;
+
+      const normRow = document.createElement("div");
+      normRow.style.cssText = "font-size:12px;";
+      const normText = r.normalized != null ? r.normalized.toFixed(3) : `<span style="color:#f0b070">Normalization Pending</span>`;
+      normRow.innerHTML = `<span style="opacity:0.6">Normalized:</span> <b>${normText}</b>`;
+
+      const weightRow = document.createElement("div");
+      weightRow.style.cssText = "font-size:12px;";
+      weightRow.innerHTML = `<span style="opacity:0.6">Weight:</span> <b>${r.weight.toFixed(1)}</b>`;
+
+      const src = document.createElement("small");
+      src.style.cssText = "opacity:0.7; display:block; margin-top:6px;";
+      src.textContent = r.source ? `📡 ${r.source}` : `Source: ${r.source_hint}`;
+
       const badge = document.createElement("span");
-      badge.className = `status-badge ${r.status === "AVAILABLE" ? "status-deployed" : "status-not-connected"}`;
-      badge.textContent = r.status;
-      div.append(label, name, value, badge);
+      badge.className = `status-badge ${r.status === "available" ? "status-deployed" : "status-not-connected"}`;
+      badge.textContent = r.status === "available" ? "✓ Available" : "○ Waiting";
+      badge.style.marginTop = "6px";
+
+      div.append(label, name, rawRow, normRow, weightRow, src, badge);
       return div;
     }));
+
+    const formulaEl = document.querySelector("#pcs-l-formula");
+    if (formulaEl) formulaEl.textContent = L.formula;
+
+    const labelEl = document.querySelector("#pcs-l-label");
+    if (labelEl) {
+      labelEl.textContent = L.label;
+      labelEl.style.color = L.value != null ? "#6ee76e" : "#f0b070";
+    }
 
     const feedEl = document.querySelector("#activity-feed");
     const items = [
@@ -415,13 +434,12 @@ async function loadAgentPanel() {
       provider.textContent = agent.provider;
       const detail = document.createElement("p");
       detail.className = "agent-detail";
-      if (agent.id === "claude") {
-        detail.textContent = agent.current_task ? `Task: ${agent.current_task}` : agent.detail;
-      } else {
-        detail.textContent = agent.last_update
-          ? `Latest: ${agent.last_update}${agent.title ? ` — ${agent.title}` : ""}`
-          : agent.detail;
-      }
+      const parts = [];
+      if (agent.model) parts.push(`Model: ${agent.model}`);
+      if (agent.current_task) parts.push(`Task: ${agent.current_task}`);
+      if (agent.last_update) parts.push(`Latest: ${agent.last_update}${agent.title ? ` — ${agent.title}` : ""}`);
+      if (parts.length === 0 && agent.detail) parts.push(agent.detail);
+      detail.textContent = parts.join(" · ");
       card.append(header, role, provider, detail);
       if (agent.site_url) {
         const link = document.createElement("a");
@@ -444,13 +462,32 @@ function renderModules() {
   MODULES.forEach((module) => grid.append(moduleCard(module)));
 }
 
-function renderBlockers() {
+async function renderBlockers() {
   const list = document.querySelector("#blocker-list");
-  BLOCKER_SUMMARY.forEach((blocker) => {
-    const li = document.createElement("li");
-    li.textContent = blocker;
-    list.append(li);
-  });
+  list.replaceChildren();
+  try {
+    const res = await fetch(BLOCKERS_API);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    data.items.forEach((b) => {
+      const li = document.createElement("li");
+      li.dataset.severity = b.severity;
+      const sev = document.createElement("span");
+      sev.className = `status-badge severity-${b.severity.toLowerCase()}`;
+      sev.textContent = b.severity;
+      const text = document.createElement("span");
+      text.textContent = ` ${b.text}`;
+      const owner = document.createElement("small");
+      owner.style.opacity = "0.6";
+      owner.textContent = ` (${b.owner})`;
+      li.append(sev, text, owner);
+      list.append(li);
+    });
+    const heading = document.querySelector("#blockers-title");
+    if (heading) heading.textContent = `Current blockers (${data.counts.total})`;
+  } catch (e) {
+    list.innerHTML = `<li class="error-state">BLOCKERS_UNAVAILABLE — ${e.message}</li>`;
+  }
 }
 
 async function loadLatestUpdate() {
@@ -505,23 +542,226 @@ function closeDrawer() {
   backdrop.hidden = true;
 }
 
+const ROUTE_MAP = {
+  "dashboard": "#dashboard-page",
+  "phases": "#phases-page",
+  "mission-queue": "#mission-queue-page",
+  "data-sources": "#data-source-page",
+  "systems": "#systems-page",
+  "validation-records": "#validation-page",
+  "activity-log": "#activity-log-page",
+  "settings": "#settings-page"
+};
+
 function setRoute() {
   const route = window.location.hash.slice(1) || "dashboard";
-  const isDashboard = route === "dashboard";
-  const isPhases = route === "phases";
-  const isMissionQueue = route === "mission-queue";
-  const isDataSources = route === "data-sources";
-  document.querySelector("#dashboard-page").hidden = !isDashboard;
-  document.querySelector("#phases-page").hidden = !isPhases;
-  document.querySelector("#mission-queue-page").hidden = !isMissionQueue;
-  document.querySelector("#data-source-page").hidden = !isDataSources;
-  document.querySelector("#placeholder-page").hidden = isDashboard || isPhases || isMissionQueue || isDataSources;
+  const allPages = ["#dashboard-page","#phases-page","#mission-queue-page","#data-source-page","#systems-page","#validation-page","#activity-log-page","#settings-page","#placeholder-page"];
+  allPages.forEach(sel => { const el = document.querySelector(sel); if (el) el.hidden = true; });
+  const target = ROUTE_MAP[route];
+  if (target) {
+    document.querySelector(target).hidden = false;
+    if (route === "systems") loadSystemsPanel();
+    if (route === "validation-records") renderValidationPage();
+    if (route === "activity-log") renderActivityLogPage();
+  } else {
+    document.querySelector("#placeholder-page").hidden = false;
+    const active = document.querySelector(`[href="#${CSS.escape(route)}"]`);
+    document.querySelector("#placeholder-title").textContent = active?.textContent.trim() || "Module";
+  }
   document.querySelectorAll("[data-route]").forEach((link) => link.removeAttribute("aria-current"));
-  const active = document.querySelector(`[href="#${CSS.escape(route)}"]`);
-  active?.setAttribute("aria-current", "page");
-  if (!isDashboard && !isPhases && !isMissionQueue && !isDataSources) document.querySelector("#placeholder-title").textContent = active?.textContent.trim() || "Module";
+  document.querySelector(`[href="#${CSS.escape(route)}"]`)?.setAttribute("aria-current", "page");
   closeDrawer();
   document.querySelector("#main-content").focus({ preventScroll: true });
+}
+
+async function loadSystemsPanel() {
+  const services = document.querySelector("#systems-services");
+  const resources = document.querySelector("#systems-resources");
+  const checked = document.querySelector("#systems-checked");
+  services.innerHTML = '<div class="loading-state">Probing services…</div>';
+  try {
+    const r = await fetch("/local-api/systems");
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const d = await r.json();
+    checked.textContent = formatTime(d.checked_at);
+    services.replaceChildren(...d.services.map(s => {
+      const card = document.createElement("article");
+      card.className = "summary-card";
+      const eb = document.createElement("span"); eb.className = "eyebrow"; eb.textContent = s.name;
+      const badge = document.createElement("span");
+      badge.className = `status-badge ${s.status === "ONLINE" ? "status-deployed" : s.status === "DEGRADED" ? "status-checkpoint" : "status-not-connected"}`;
+      badge.textContent = s.status;
+      const detail = document.createElement("small");
+      detail.textContent = [s.code ? `HTTP ${s.code}` : null, s.latency_ms != null ? `${s.latency_ms}ms` : null, s.error].filter(Boolean).join(" · ");
+      const url = document.createElement("code"); url.style.fontSize = "10px"; url.style.opacity = "0.7"; url.textContent = s.url;
+      card.append(eb, badge, detail, url);
+      return card;
+    }));
+    const R = d.resources;
+    const items = [
+      { label: "CPU", value: `${R.cpu.cores} cores`, sub: `load 1m/5m/15m: ${R.cpu.load_1m} / ${R.cpu.load_5m} / ${R.cpu.load_15m}` },
+      { label: "Memory", value: `${R.memory.used_pct}% used`, sub: `${R.memory.free_gb} / ${R.memory.total_gb} GB free` },
+      R.disk ? { label: "Disk (/)", value: `${R.disk.used_pct}% used`, sub: `${R.disk.free_gb} / ${R.disk.total_gb} GB free` } : null,
+      { label: "Host uptime", value: `${R.uptime_hours} h`, sub: "since last boot" }
+    ].filter(Boolean);
+    resources.replaceChildren(...items.map(i => {
+      const card = document.createElement("article");
+      card.className = "summary-card";
+      const eb = document.createElement("span"); eb.className = "eyebrow"; eb.textContent = i.label;
+      const v = document.createElement("strong"); v.textContent = i.value;
+      const s = document.createElement("small"); s.textContent = i.sub;
+      card.append(eb, v, s);
+      return card;
+    }));
+  } catch (e) {
+    services.innerHTML = `<div class="error-state">SYSTEMS_UNAVAILABLE — ${e.message}</div>`;
+    resources.replaceChildren();
+  }
+}
+
+function renderValidationPage() {
+  const body = document.querySelector("#validation-body");
+  const countEl = document.querySelector("#validation-count");
+  const search = document.querySelector("#validation-search");
+  const statusFilter = document.querySelector("#validation-status-filter");
+  if (!registry) { body.innerHTML = `<tr><td colspan="5" class="error-state">Registry unavailable</td></tr>`; return; }
+
+  if (!statusFilter.dataset.populated) {
+    [...new Set(registry.records.map(r => r.validation_status || "UNAVAILABLE"))].sort().forEach(v => statusFilter.add(new Option(v, v)));
+    statusFilter.dataset.populated = "1";
+    search.addEventListener("input", renderValidationPage);
+    statusFilter.addEventListener("change", renderValidationPage);
+  }
+
+  const q = search.value.toLowerCase().trim();
+  const sf = statusFilter.value;
+  const rows = registry.records.filter(r => (r.validation_artifact || r.validation_status) &&
+    (!sf || (r.validation_status || "UNAVAILABLE") === sf) &&
+    (!q || `${r.id} ${r.namespace} ${r.name} ${r.validation_artifact || ""}`.toLowerCase().includes(q)));
+
+  body.replaceChildren(...rows.map(r => {
+    const tr = document.createElement("tr");
+    const cells = [
+      `${r.id} · ${r.name}`,
+      r.namespace,
+      r.validation_status || "UNAVAILABLE",
+      r.validation_artifact || "UNAVAILABLE",
+      formatVerifiedTime(r.last_verified_at)
+    ];
+    cells.forEach((v, i) => {
+      const td = document.createElement("td");
+      if (i === 2) td.append(statusBadge(v)); else td.textContent = v;
+      tr.append(td);
+    });
+    return tr;
+  }));
+  countEl.textContent = `${rows.length} of ${registry.records.length} records`;
+}
+
+async function renderActivityLogPage() {
+  const list = document.querySelector("#activity-log-list");
+  const countEl = document.querySelector("#activity-log-count");
+  const typeFilter = document.querySelector("#activity-type-filter");
+  const sourceFilter = document.querySelector("#activity-source-filter");
+  list.innerHTML = '<li class="loading-state">Loading activity…</li>';
+  try {
+    const r = await fetch("/local-api/pcs-state");
+    const d = await r.json();
+    const activity = d.activity || [];
+    if (!typeFilter.dataset.populated) {
+      [...new Set(activity.map(a => a.type))].sort().forEach(v => typeFilter.add(new Option(v, v)));
+      [...new Set(activity.map(a => a.source))].sort().forEach(v => sourceFilter.add(new Option(v, v)));
+      typeFilter.dataset.populated = "1";
+      typeFilter.addEventListener("change", renderActivityLogPage);
+      sourceFilter.addEventListener("change", renderActivityLogPage);
+    }
+    const tf = typeFilter.value, sf = sourceFilter.value;
+    const filtered = activity.filter(a => (!tf || a.type === tf) && (!sf || a.source === sf));
+    list.replaceChildren(...filtered.map(item => {
+      const li = document.createElement("li");
+      li.className = "activity-item";
+      const meta = document.createElement("span");
+      meta.className = "activity-meta";
+      meta.textContent = `${item.source} · ${item.type} · ${formatTime(item.time)}`;
+      const text = document.createElement("span");
+      text.textContent = item.text;
+      li.append(meta, text);
+      return li;
+    }));
+    countEl.textContent = `${filtered.length} of ${activity.length} events`;
+  } catch (e) {
+    list.innerHTML = `<li class="error-state">ACTIVITY_UNAVAILABLE — ${e.message}</li>`;
+  }
+}
+
+function setRail(id, text, cls) {
+  const el = document.querySelector(`#${id}`);
+  if (!el) return;
+  el.textContent = text;
+  el.className = cls || "";
+}
+
+async function refreshRightRail() {
+  try {
+    const [sys, pcs, agents] = await Promise.allSettled([
+      fetch("/local-api/systems").then(r => r.json()),
+      fetch("/local-api/pcs-state").then(r => r.json()),
+      fetch("/local-api/agent-status").then(r => r.json())
+    ]);
+
+    setRail("rail-registry", registry ? `LOADED · ${registry.records.length}` : "UNAVAILABLE", registry ? "status-text status-cached" : "status-text status-not-connected");
+
+    if (sys.status === "fulfilled") {
+      const s = sys.value.services;
+      const find = id => s.find(x => x.id === id);
+      const oc = find("openclaw"), be = find("pcs-backend"), ol = find("ollama");
+      setRail("rail-openclaw", oc?.status || "OFFLINE", `status-text ${oc?.status === "ONLINE" ? "status-cached" : "status-not-connected"}`);
+      setRail("rail-backend", be?.status || "OFFLINE", `status-text ${be?.status === "ONLINE" ? "status-cached" : "status-not-connected"}`);
+      setRail("rail-ollama", ol?.status || "OFFLINE", `status-text ${ol?.status === "ONLINE" ? "status-cached" : "status-not-connected"}`);
+      const R = sys.value.resources;
+      const memPct = parseFloat(R.memory.used_pct);
+      setRail("rail-ram", `${R.memory.used_pct}% · ${R.memory.free_gb}GB free`, `status-text ${memPct > 90 ? "status-not-connected" : memPct > 75 ? "status-checkpoint" : "status-cached"}`);
+    } else {
+      ["rail-openclaw","rail-backend","rail-ollama","rail-ram"].forEach(id => setRail(id, "PROBE_FAILED", "status-text status-not-connected"));
+    }
+
+    if (pcs.status === "fulfilled") {
+      const L = pcs.value.l_value;
+      setRail("rail-l", `${L.display} · ${L.contributor_count}/${L.total_domains}`, `status-text ${L.value != null ? "status-cached" : "status-not-connected"}`);
+      const latest = pcs.value.activity?.[0];
+      if (latest) {
+        document.querySelector("#rail-event-title").textContent = latest.text.slice(0, 60);
+        document.querySelector("#rail-event-time").textContent = `${latest.source} · ${formatTime(latest.time)}`;
+      }
+    } else {
+      setRail("rail-l", "UNAVAILABLE", "status-text status-not-connected");
+    }
+
+    if (agents.status === "fulfilled") {
+      const online = agents.value.agents.filter(a => a.status === "ONLINE").length;
+      const total = agents.value.agents.length;
+      setRail("rail-agents", `${online}/${total} ONLINE`, `status-text ${online === total ? "status-cached" : online > 0 ? "status-checkpoint" : "status-not-connected"}`);
+    } else {
+      setRail("rail-agents", "UNAVAILABLE", "status-text status-not-connected");
+    }
+  } catch (e) {
+    console.error("right-rail refresh failed", e);
+  }
+}
+
+function initSettings() {
+  const theme = localStorage.getItem("mc-theme") || "dark";
+  const refresh = localStorage.getItem("mc-refresh") || "60";
+  document.querySelector(`input[name="theme"][value="${theme}"]`)?.setAttribute("checked", "");
+  document.querySelector(`input[name="refresh"][value="${refresh}"]`)?.setAttribute("checked", "");
+  document.body.dataset.theme = theme;
+  document.querySelectorAll('input[name="theme"]').forEach(el => el.addEventListener("change", e => {
+    localStorage.setItem("mc-theme", e.target.value);
+    document.body.dataset.theme = e.target.value;
+  }));
+  document.querySelectorAll('input[name="refresh"]').forEach(el => el.addEventListener("change", e => {
+    localStorage.setItem("mc-refresh", e.target.value);
+  }));
 }
 
 async function init() {
@@ -565,6 +805,9 @@ async function init() {
   setInterval(loadPcsStatePanel, 120_000);
   loadAgentPanel();
   setInterval(loadAgentPanel, 60_000);
+  initSettings();
+  refreshRightRail();
+  setInterval(refreshRightRail, 30_000);
   setRoute();
 }
 

@@ -31,11 +31,11 @@
           <a href="#dashboard" data-route="dashboard" aria-current="page">Overview</a>
           <a href="#phases" data-route="phases">Phase Registry</a>
           <a href="#mission-queue" data-route="mission-queue">Mission Queue</a>
-          <a href="#systems" data-route="placeholder">Systems</a>
+          <a href="#systems" data-route="systems">Systems</a>
           <a href="#data-sources" data-route="data-sources">Data Sources</a>
-          <a href="#validation-records" data-route="placeholder">Validation Records</a>
-          <a href="#activity-log" data-route="placeholder">Activity Log</a>
-          <a href="#settings" data-route="placeholder">Settings</a>
+          <a href="#validation-records" data-route="validation">Validation Records</a>
+          <a href="#activity-log" data-route="activity-log">Activity Log</a>
+          <a href="#settings" data-route="settings">Settings</a>
         </nav>
         <div class="sidebar-note">
           <span>Gateway · L(t) · Agents</span>
@@ -74,9 +74,10 @@
             </div>
             <div class="pcs-core-grid">
               <div class="pcs-l-panel">
-                <span class="eyebrow">L(t) · Unified Constraint Index</span>
+                <span class="eyebrow">L(t) · <span id="pcs-l-label">Development Value</span></span>
                 <strong id="pcs-l-value" class="pcs-l-display">—</strong>
                 <span id="pcs-l-status" class="status-badge status-not-connected">LOADING</span>
+                <code id="pcs-l-formula" style="display:block; margin-top:8px; font-size:11px; opacity:0.7;">L(t) = Σ(normalized · weight) / Σ weights</code>
               </div>
               <div id="pcs-residuals" class="pcs-residuals-grid" aria-live="polite">
                 <div class="loading-state">Loading residuals…</div>
@@ -223,25 +224,111 @@
           </div>
         </section>
 
+        <section id="systems-page" class="page" aria-labelledby="systems-title" hidden>
+          <div class="page-heading">
+            <div><span class="eyebrow">MC-06 · LIVE PROBES</span><h1 id="systems-title">Systems</h1></div>
+            <span class="data-label" id="systems-checked">CHECKING</span>
+          </div>
+          <section aria-labelledby="services-title">
+            <div class="section-heading"><h2 id="services-title">Services</h2><button id="systems-refresh" type="button">Refresh</button></div>
+            <div id="systems-services" class="summary-grid"></div>
+          </section>
+          <section aria-labelledby="resources-title">
+            <div class="section-heading"><h2 id="resources-title">Local resources</h2></div>
+            <div id="systems-resources" class="summary-grid"></div>
+          </section>
+        </section>
+
+        <section id="validation-page" class="page" aria-labelledby="validation-title" hidden>
+          <div class="page-heading">
+            <div><span class="eyebrow">MC-06 · REGISTRY-DERIVED</span><h1 id="validation-title">Validation Records</h1></div>
+            <span class="data-label" id="validation-count">Loading…</span>
+          </div>
+          <form class="filters" role="search" aria-label="Filter validation">
+            <label>Search<input id="validation-search" type="search" placeholder="Artifact, record, namespace"></label>
+            <label>Status<select id="validation-status-filter"><option value="">All statuses</option></select></label>
+          </form>
+          <div class="phase-table-wrap">
+            <table>
+              <thead><tr><th>Record</th><th>Namespace</th><th>Validation status</th><th>Artifact</th><th>Last verified</th></tr></thead>
+              <tbody id="validation-body"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="activity-log-page" class="page" aria-labelledby="activity-log-title" hidden>
+          <div class="page-heading">
+            <div><span class="eyebrow">MC-06 · MERGED FEED</span><h1 id="activity-log-title">Activity Log</h1></div>
+            <span class="data-label" id="activity-log-count">Loading…</span>
+          </div>
+          <form class="filters" role="search" aria-label="Filter activity">
+            <label>Type<select id="activity-type-filter"><option value="">All types</option></select></label>
+            <label>Source<select id="activity-source-filter"><option value="">All sources</option></select></label>
+          </form>
+          <ul id="activity-log-list" class="activity-feed"></ul>
+        </section>
+
+        <section id="settings-page" class="page" aria-labelledby="settings-title" hidden>
+          <div class="page-heading">
+            <div><span class="eyebrow">MC-06 · LOCAL PREFERENCES</span><h1 id="settings-title">Settings</h1></div>
+            <span class="data-label">LOCAL ONLY · localStorage</span>
+          </div>
+          <section aria-labelledby="theme-title">
+            <div class="section-heading"><h2 id="theme-title">Theme</h2></div>
+            <div class="summary-grid">
+              <label class="summary-card"><input type="radio" name="theme" value="dark"> Dark (default)</label>
+              <label class="summary-card"><input type="radio" name="theme" value="high-contrast"> High Contrast</label>
+              <label class="summary-card"><input type="radio" name="theme" value="terminal"> Retro Green Terminal</label>
+            </div>
+          </section>
+          <section aria-labelledby="refresh-title">
+            <div class="section-heading"><h2 id="refresh-title">Auto-refresh interval</h2></div>
+            <div class="summary-grid">
+              <label class="summary-card"><input type="radio" name="refresh" value="15"> 15 seconds</label>
+              <label class="summary-card"><input type="radio" name="refresh" value="60"> 60 seconds (default)</label>
+              <label class="summary-card"><input type="radio" name="refresh" value="300"> 5 minutes</label>
+              <label class="summary-card"><input type="radio" name="refresh" value="0"> Off (manual)</label>
+            </div>
+          </section>
+          <section aria-labelledby="endpoints-title">
+            <div class="section-heading"><h2 id="endpoints-title">Endpoints (read-only)</h2></div>
+            <dl class="source-grid">
+              <div><dt>Phase Registry</dt><dd><code>/local-api/phase-registry</code></dd></div>
+              <div><dt>Mission Queue</dt><dd><code>/local-api/mission-queue</code></dd></div>
+              <div><dt>PCS State</dt><dd><code>/local-api/pcs-state</code></dd></div>
+              <div><dt>Agent Status</dt><dd><code>/local-api/agent-status</code></dd></div>
+              <div><dt>Blockers</dt><dd><code>/local-api/blockers</code></dd></div>
+              <div><dt>Systems</dt><dd><code>/local-api/systems</code></dd></div>
+              <div><dt>PCS Backend</dt><dd><code>https://pcs-backend.uranusastudio.workers.dev</code></dd></div>
+              <div><dt>OpenClaw Gateway</dt><dd><code>http://127.0.0.1:18789</code></dd></div>
+            </dl>
+          </section>
+        </section>
+
         <section id="placeholder-page" class="page placeholder-page" aria-labelledby="placeholder-title" hidden>
           <span class="eyebrow">BOUNDED DELIVERY</span>
           <h1 id="placeholder-title">Module</h1>
-          <div class="unavailable-state"><strong>COMING_IN_MC-XX</strong><p>This module is intentionally not connected in MC-02. No synthetic status or activity is shown.</p></div>
+          <div class="unavailable-state"><strong>COMING_IN_MC-XX</strong><p>This module is intentionally not connected. No synthetic status or activity is shown.</p></div>
         </section>
       </main>
 
       <aside class="right-rail" aria-label="Connection status">
         <h2>Connection status</h2>
         <dl>
-          <div><dt>Phase registry</dt><dd class="status-text status-cached">CACHED</dd></div>
+          <div><dt>Phase registry</dt><dd id="rail-registry" class="status-text status-cached">CHECKING</dd></div>
           <div><dt>Update API</dt><dd id="update-health">CHECKING</dd></div>
-          <div><dt>OpenClaw</dt><dd>NOT_CONNECTED</dd></div>
-          <div><dt>WhatsApp</dt><dd>NOT_CONNECTED</dd></div>
-          <div><dt>Resource monitor</dt><dd>NOT_CONNECTED</dd></div>
-          <div><dt>Agent telemetry</dt><dd>UNAVAILABLE</dd></div>
-          <div><dt>L(t)</dt><dd>UNAVAILABLE</dd></div>
+          <div><dt>OpenClaw</dt><dd id="rail-openclaw">CHECKING</dd></div>
+          <div><dt>PCS Backend</dt><dd id="rail-backend">CHECKING</dd></div>
+          <div><dt>Ollama</dt><dd id="rail-ollama">CHECKING</dd></div>
+          <div><dt>Resource (RAM)</dt><dd id="rail-ram">CHECKING</dd></div>
+          <div><dt>Agent telemetry</dt><dd id="rail-agents">CHECKING</dd></div>
+          <div><dt>L(t)</dt><dd id="rail-l">CHECKING</dd></div>
         </dl>
-        <div class="rail-event"><span>Latest shell event</span><strong>MC-02 LOCAL BUILD</strong><small>No live activity feed connected.</small></div>
+        <div class="rail-event">
+          <span>Latest event</span>
+          <strong id="rail-event-title">Loading…</strong>
+          <small id="rail-event-time"></small>
+        </div>
       </aside>
 
       <footer>

@@ -31,7 +31,32 @@
     },
     {
       "id": "MC-05",
-      "title": "Next Mission Control Phase",
+      "title": "AI Agent Panel + Blockers Dynamic + Git Activity",
+      "status": "COMPLETED"
+    },
+    {
+      "id": "MC-06",
+      "title": "Placeholder Pages: Systems / Validation / Activity Log / Settings",
+      "status": "COMPLETED"
+    },
+    {
+      "id": "MC-07",
+      "title": "L(t) Formula (mean of available) + Right-rail live wiring",
+      "status": "COMPLETED"
+    },
+    {
+      "id": "MC-08",
+      "title": "PCS Residual Normalization Engine (weights.json + normalization.mjs + weighted formula)",
+      "status": "COMPLETED"
+    },
+    {
+      "id": "MC-09",
+      "title": "PCS Normalization Specification (docs/PCS_NORMALIZATION_SPEC.md · v1.0 Draft)",
+      "status": "IN_PROGRESS"
+    },
+    {
+      "id": "MC-10",
+      "title": "Implement approved normalization mappings in normalization.mjs (unlocks Official PCS Index)",
       "status": "LOCKED"
     }
   ],
