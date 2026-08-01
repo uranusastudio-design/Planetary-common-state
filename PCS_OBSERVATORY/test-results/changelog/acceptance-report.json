@@ -1,0 +1,450 @@
+{
+  "url": "http://127.0.0.1:8765/PCS_OBSERVATORY/?v=observatory-changelog",
+  "initial": {
+    "canvas": 2,
+    "viewer": 1,
+    "selected": "Earth — Living Planet",
+    "deepSpace": false,
+    "collapsed": true,
+    "version": "v2.1.0"
+  },
+  "finalState": {
+    "canvas": 2,
+    "viewer": 1,
+    "selected": "Earth — Living Planet",
+    "deepSpace": false,
+    "githubApi": false,
+    "releaseLoaded": true
+  },
+  "deepSpaceRegression": {
+    "status": "not-initialized-in-local-acceptance"
+  },
+  "tabs": {
+    "changelog": {
+      "selected": "true",
+      "text": "Versionv2.1.0Date2026-08-01StatusStableDeep Space and planetary-system expansionVerified Solar System and Gaia nearby-star foundations, mission-derived satellite imagery, and regional observing modes.AddedDeep Space Phase 1 — Solar System foundationDeep Space Phase 2 — Gaia nearby stars (10 / 25 / 50 / 100 pc)Proper-motion analysis and local catalog search11 representative natural satellitesNASA / JPL / USGS mission imageryScientific / Exhibition ScaleFour-language Deep Space UIRegional Mode — Taiwan and JapanChangedSolar System and Deep Space scale navigationNatural-satellite hierarchy and celestial-body registryDeep Space resource lifecycle and data-source labelingFixedSatellite white-sphere material failureProcedural satellite previews replaced by mission imageryCesium texture lifecycle and async body-overwrite guardViewer reuse, cache-busting, and GitHub Pages pathsKnown IssuesTitania lower-hemisphere imagery coverage / projection issue remains deferredCold-start offline operation still depends on the Cesium CDNDeep Space Phase 3 is in progressDeep Space Phase 4 has not startedCommitsDeep Space Phase 174b892c4d2View Commit View DiffDeep Space Phase 2d47397777cView Commit View DiffSatellite mission imageryd20f070b7aView Commit View DiffDocumentationDeep Space Phase 1View DocumentationDeep Space Phase 2View DocumentationMission imagery sourcesView DocumentationNearby-star sourcesView DocumentationDeploymentView Deployment",
+      "overflow": false
+    },
+    "roadmap": {
+      "selected": "true",
+      "text": "Current ProgressPhase 1、2 completed · Phase 3 in progress · Phase 4 planned. No numeric percentage is asserted.✔Deep Space Phase 1 — Solar SystemSolar System foundationCompleted✔Deep Space Phase 2 — Nearby Stars / Gaia10 / 25 / 50 / 100 pcCompleted▶Deep Space Phase 3 — Milky Way / Local GroupMilky Way + Local GroupIn progress○Deep Space Phase 4 — Cosmic Web / Observable UniverseNot startedPlanned◇Titania texture repairKnown imagery coverage / projection issueDeferred○Comets and asteroidsOutside the current phasePlanned○Orbital uncertainty bandsMethod not yet implementedPlanned○Civilization-variable analysisNot started; no prediction claimsPlanned",
+      "overflow": false
+    },
+    "notes": {
+      "selected": "true",
+      "text": "PCS ObservatoryDeep Space and planetary-system expansionVersionv2.1.0Date2026-08-01StatusStableVerified Solar System and Gaia nearby-star foundations, mission-derived satellite imagery, and regional observing modes.Assets✓ Deep Space Phase 1✓ Deep Space Phase 2✓ Nearby Stars✓ Natural Satellite Registry✓ Mission Imagery Registry✓ Translation✓ UI✓ TestsKnown LimitationsTitania lower-hemisphere imagery coverage / projection issue remains deferredCold-start offline operation still depends on the Cesium CDNDeep Space Phase 3 is in progressDeep Space Phase 4 has not startedCommitsDeep Space Phase 174b892c4d2View Commit View DiffDeep Space Phase 2d47397777cView Commit View DiffSatellite mission imageryd20f070b7aView Commit View DiffDocumentationDeep Space Phase 1View DocumentationDeep Space Phase 2View DocumentationMission imagery sourcesView DocumentationNearby-star sourcesView DocumentationDeploymentView Deployment",
+      "overflow": false
+    },
+    "latest": {
+      "selected": "true",
+      "text": "Versionv2.1.0Date2026-08-01StatusStableLatest UpdateDeep Space Phase 1Solar System foundationDeep Space Phase 2Nearby Stars — 10 / 25 / 50 / 100 pc11 representative natural satellitesMoon through TritonNASA / JPL / USGS mission imageryCassini, Voyager, Galileo, LROCRegional ModeTaiwan · JapanCurrent Development▶ Deep Space Phase 3 — Milky Way / Local GroupMilky Way + Local Group · In progressNext○ Deep Space Phase 4 — Cosmic Web / Observable UniverseNot started · Planned",
+      "overflow": false
+    }
+  },
+  "links": [],
+  "zoomResults": {
+    "1": {
+      "overflow": false,
+      "toggle": true,
+      "tabs": true
+    },
+    "0.67": {
+      "overflow": false,
+      "toggle": true,
+      "tabs": true
+    },
+    "0.5": {
+      "overflow": false,
+      "toggle": true,
+      "tabs": true
+    },
+    "0.33": {
+      "overflow": false,
+      "toggle": true,
+      "tabs": true
+    }
+  },
+  "languages": {
+    "en": {
+      "label": "PCS Updates",
+      "tabs": [
+        "Latest",
+        "Changelog",
+        "Roadmap",
+        "Release Notes"
+      ],
+      "overflow": false
+    },
+    "zh-TW": {
+      "label": "PCS 更新",
+      "tabs": [
+        "最新",
+        "變更紀錄",
+        "路線圖",
+        "發行說明"
+      ],
+      "overflow": false
+    },
+    "ja": {
+      "label": "PCS 更新",
+      "tabs": [
+        "最新",
+        "変更履歴",
+        "ロードマップ",
+        "リリースノート"
+      ],
+      "overflow": false
+    },
+    "ko": {
+      "label": "PCS 업데이트",
+      "tabs": [
+        "최신",
+        "변경 기록",
+        "로드맵",
+        "릴리스 노트"
+      ],
+      "overflow": false
+    }
+  },
+  "mobile": {
+    "overflow": false,
+    "panel": 370,
+    "viewport": 390,
+    "toggleVisible": true,
+    "longHashes": true
+  },
+  "consoleErrors": [
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED"
+  ],
+  "relevantConsoleErrors": [],
+  "networkFailures": [
+    {
+      "url": "http://127.0.0.1:8787/api/regional/observation?region=global",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/health/openweather",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/history/status",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/layers",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/visitors/register",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/visitors/register",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/visitors/stats",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/visitors/locations",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/visitors/analytics?range=24h",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/domain-readiness",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/events?limit=20",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/evidence-ledger",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/mass-gatherings",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/daily-brief",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/system-status",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/domain-readiness",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/events?limit=20",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/evidence-ledger",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/mass-gatherings",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/daily-brief",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/system-status",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/evidence-explorer",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/domain-readiness",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/events?limit=20",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/evidence-ledger",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/mass-gatherings",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/daily-brief",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/system-status",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/events?limit=20",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/domain-readiness",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/mass-gatherings",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/evidence-ledger",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/daily-brief",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/system-status",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/domain-readiness",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/events?limit=20",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/evidence-ledger",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/mass-gatherings",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/daily-brief",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/system-status",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/domain-readiness",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/events?limit=20",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/evidence-ledger",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/mass-gatherings",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/daily-brief",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/system-status",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/domain-readiness",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/events?limit=20",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/evidence-ledger",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/mass-gatherings",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/daily-brief",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/system-status",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/domain-readiness",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/events?limit=20",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/evidence-ledger",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/mass-gatherings",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/system-status",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/daily-brief",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/domain-readiness",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/events?limit=20",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/evidence-ledger",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/mass-gatherings",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/daily-brief",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/system-status",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    }
+  ],
+  "requiredFailures": [],
+  "screenshots": [
+    "01-collapsed-latest.png",
+    "02-expanded-latest.png",
+    "03-mobile-390x844.png",
+    "tab-changelog.png",
+    "tab-latest.png",
+    "tab-notes.png",
+    "tab-roadmap.png"
+  ]
+}

@@ -4924,7 +4924,7 @@ async function loadPcsEvidencePanels() {
 }
 
 async function initializeApp() {
-  runSafe("project update banner initialization", initializeProjectUpdateBanner);
+  // The versioned local release center owns the PCS Updates panel.
   runSafe("regional mode initialization", initializeRegionalMode);
   runSafe("language selector initialization", initializeLanguageSelector);
   renderClock();

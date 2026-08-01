@@ -6,7 +6,7 @@
     <title>PCS Observatory | Uranus A Studio</title>
     <link rel="icon" href="./assets/uranus-a-studio-logo.jpeg">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cesium@1.120.0/Build/Cesium/Widgets/widgets.css">
-    <link rel="stylesheet" href="./style.css?v=20260728-update-banner-1">
+    <link rel="stylesheet" href="./style.css?v=20260801-release-center-1">
     <link rel="stylesheet" href="./intro-screen.css">
     <script>
       window.CESIUM_BASE_URL = "https://cdn.jsdelivr.net/npm/cesium@1.120.0/Build/Cesium/";
@@ -135,24 +135,27 @@
         </div>
       </header>
 
-      <section id="pcs-update-banner" class="pcs-update-banner" hidden aria-labelledby="pcs-update-title">
+      <section id="pcs-update-banner" class="pcs-update-banner is-collapsed" hidden aria-labelledby="pcs-update-title" data-release-center>
         <div class="pcs-update-banner__heading">
           <div class="pcs-update-banner__identity">
-            <span class="pcs-update-banner__label" data-i18n="pcs_update">PCS Update</span>
+            <span class="pcs-update-banner__label" data-release-text="pcsUpdates">PCS Updates</span>
             <span id="pcs-update-phase" class="pcs-update-banner__phase"></span>
             <span id="pcs-update-status" class="pcs-update-banner__status"></span>
           </div>
-          <button id="pcs-update-toggle" class="pcs-update-banner__toggle" type="button" aria-expanded="true" aria-controls="pcs-update-content"></button>
+          <button id="pcs-update-toggle" class="pcs-update-banner__toggle" type="button" aria-expanded="false" aria-controls="pcs-update-content">Expand</button>
         </div>
-        <div id="pcs-update-content" class="pcs-update-banner__content">
-          <div>
-            <h2 id="pcs-update-title"></h2>
-            <p id="pcs-update-summary"></p>
+        <div class="pcs-update-banner__summary" aria-live="polite">
+          <h2 id="pcs-update-title">Latest Update</h2>
+          <p id="pcs-update-summary"></p>
+        </div>
+        <div id="pcs-update-content" class="pcs-update-banner__content" tabindex="-1">
+          <div class="pcs-release-tabs" role="tablist" aria-label="Release center views">
+            <button type="button" role="tab" data-release-tab="latest" aria-selected="true">Latest</button>
+            <button type="button" role="tab" data-release-tab="changelog" aria-selected="false">Changelog</button>
+            <button type="button" role="tab" data-release-tab="roadmap" aria-selected="false">Roadmap</button>
+            <button type="button" role="tab" data-release-tab="notes" aria-selected="false">Release Notes</button>
           </div>
-          <div class="pcs-update-banner__meta">
-            <time id="pcs-update-time"></time>
-            <a id="pcs-update-details" class="pcs-update-banner__details" target="_blank" rel="noopener noreferrer"></a>
-          </div>
+          <div id="pcs-release-view" class="pcs-release-view" role="tabpanel"></div>
         </div>
       </section>
 
@@ -757,6 +760,7 @@
     <script src="./deep-space-ephemeris.js?v=phase-1"></script>
     <script src="./nearby-stars.js?v=phase-2"></script>
     <script src="./deep-space.js?v=phase-2"></script>
-    <script src="./app.js?v=20260728-update-banner-1"></script>
+    <script src="./app.js?v=20260801-release-center-1"></script>
+    <script src="./release-center.js?v=20260801-release-center-1"></script>
   </body>
 </html>
