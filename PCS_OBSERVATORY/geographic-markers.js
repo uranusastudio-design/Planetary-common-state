@@ -3,7 +3,10 @@
 
   const markerRegistry = new Map();
   let debugEnabled = false;
-  const HORIZON_SAFETY_THRESHOLD = 0.03;
+  // Hide geographic symbols before their pixel footprint intersects the limb.
+  // The anchor can still be mathematically front-facing while the billboard's
+  // lower pixels are already behind the ellipsoid in wide orbital views.
+  const HORIZON_SAFETY_THRESHOLD = 0.12;
   const MARKER_VISUAL_OFFSETS_METERS = Object.freeze({
     earthquake: 5000,
     fire: 4000,
