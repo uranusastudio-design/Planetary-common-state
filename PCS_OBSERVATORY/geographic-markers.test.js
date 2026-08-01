@@ -77,9 +77,9 @@ test("camera movement cannot alter stored geographic Cartesian positions", () =>
 
 test("stable keys include canonical region and visual offsets use bounded camera bands", () => {
   assert.equal(markers.markerKey("coastal", "station-1", "taiwan"), "taiwan:coastal:station-1");
-  assert.equal(markers.visualOffsetForCamera(20_000_000, "cyclone"), 8000);
-  assert.equal(markers.visualOffsetForCamera(1_000_000, "cyclone"), 1200);
-  assert.equal(markers.visualOffsetForCamera(100_000, "cyclone"), 300);
+  assert.equal(markers.visualOffsetForCamera(20_000_000, "cyclone"), 40000);
+  assert.equal(markers.visualOffsetForCamera(1_000_000, "cyclone"), 4000);
+  assert.equal(markers.visualOffsetForCamera(100_000, "cyclone"), 800);
 });
 
 test("one HTML overlay controller uses one postRender listener and cleans it up", () => {

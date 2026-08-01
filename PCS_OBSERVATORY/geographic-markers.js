@@ -89,10 +89,13 @@
 
   function visualOffsetForCamera(cameraHeight, markerType = "default") {
     const base = MARKER_VISUAL_OFFSETS_METERS[markerType] ?? MARKER_VISUAL_OFFSETS_METERS.default;
-    if (cameraHeight > 10000000) return base;
-    if (cameraHeight > 2000000) return Math.min(base, 3000);
-    if (cameraHeight > 500000) return Math.min(base, 1200);
-    return Math.min(base, 300);
+    // A marker's fixed pixel footprint represents many kilometres in orbital
+    // views. Keep its geographic anchor unchanged, but raise the rendering-only
+    // Cartesian position enough that the entire billboard clears the limb.
+    if (cameraHeight > 10000000) return Math.max(base, 40000);
+    if (cameraHeight > 2000000) return Math.max(base, 12000);
+    if (cameraHeight > 500000) return 4000;
+    return 800;
   }
 
   function createGeographicMarker({ layerId, markerId, canonicalRegionId = "global", longitude, latitude, observedAltitudeMeters = 0, visualOffsetMeters = 0, visualCategory = "default", height, type = "point", label = null, metadata = null }, CesiumApi = global.Cesium) {
