@@ -1,0 +1,651 @@
+{
+  "url": "http://127.0.0.1:8877/PCS_OBSERVATORY/?v=deep-space-phase-2",
+  "initial": {
+    "viewer": 1,
+    "canvas": 2,
+    "primitiveCount": 1
+  },
+  "layers": {
+    "10pc": {
+      "loadMs": 36,
+      "records": 312,
+      "points": 312,
+      "labels": 21,
+      "guides": 6,
+      "motion": 21,
+      "lod": "near",
+      "visible": true
+    },
+    "25pc": {
+      "loadMs": 147,
+      "records": 4910,
+      "points": 4910,
+      "labels": 22,
+      "guides": 6,
+      "motion": 21,
+      "lod": "medium",
+      "visible": true
+    },
+    "50pc": {
+      "loadMs": 134,
+      "records": 8000,
+      "points": 8000,
+      "labels": 22,
+      "guides": 6,
+      "motion": 21,
+      "lod": "medium",
+      "visible": true
+    },
+    "100pc": {
+      "loadMs": 132,
+      "records": 10000,
+      "points": 10000,
+      "labels": 22,
+      "guides": 6,
+      "motion": 21,
+      "lod": "far",
+      "visible": true
+    }
+  },
+  "reduced": {
+    "records": 22,
+    "points": 22,
+    "labels": 22,
+    "guides": 6,
+    "motion": 21,
+    "lod": "far",
+    "visible": true
+  },
+  "landmarkSearches": [
+    {
+      "query": "Proxima Centauri",
+      "result": "Proxima Centauri",
+      "source": "5853498713190525696",
+      "distance": 1.3019705311704333,
+      "status": "high-confidence astrometry",
+      "system": null,
+      "infoOk": true
+    },
+    {
+      "query": "Alpha Centauri A",
+      "result": "Alpha Centauri A",
+      "source": "HIP 71683",
+      "distance": 1.324836713875015,
+      "status": "supplemental Hipparcos",
+      "system": "alpha-centauri",
+      "infoOk": true
+    },
+    {
+      "query": "Alpha Centauri B",
+      "result": "Alpha Centauri B",
+      "source": "HIP 71681",
+      "distance": 1.2548310997339758,
+      "status": "supplemental Hipparcos",
+      "system": "alpha-centauri",
+      "infoOk": true
+    },
+    {
+      "query": "Barnard's Star",
+      "result": "Barnard's Star",
+      "source": "4472832130942575872",
+      "distance": 1.828233981355542,
+      "status": "high-confidence astrometry",
+      "system": null,
+      "infoOk": true
+    },
+    {
+      "query": "Wolf 359",
+      "result": "Wolf 359",
+      "source": "3864972938605115520",
+      "distance": 2.408597252748958,
+      "status": "incomplete 6D state",
+      "system": null,
+      "infoOk": true
+    },
+    {
+      "query": "Lalande 21185",
+      "result": "Lalande 21185",
+      "source": "762815470562110464",
+      "distance": 2.5461298549469777,
+      "status": "high-confidence astrometry",
+      "system": null,
+      "infoOk": true
+    },
+    {
+      "query": "Sirius A",
+      "result": "Sirius A",
+      "source": "HIP 32349",
+      "distance": 2.6370612589330453,
+      "status": "supplemental Hipparcos",
+      "system": "sirius",
+      "infoOk": true
+    },
+    {
+      "query": "Sirius B",
+      "result": "Sirius B",
+      "source": "2947050466531873024",
+      "distance": 2.6703012063129745,
+      "status": "incomplete 6D state",
+      "system": "sirius",
+      "infoOk": true
+    },
+    {
+      "query": "Epsilon Eridani",
+      "result": "Epsilon Eridani",
+      "source": "5164707970261890560",
+      "distance": 3.219810408490127,
+      "status": "incomplete 6D state",
+      "system": null,
+      "infoOk": true
+    },
+    {
+      "query": "Tau Ceti",
+      "result": "Tau Ceti",
+      "source": "2452378776434477184",
+      "distance": 3.6521709611425766,
+      "status": "incomplete 6D state",
+      "system": null,
+      "infoOk": true
+    },
+    {
+      "query": "Procyon A",
+      "result": "Procyon A",
+      "source": "HIP 37279",
+      "distance": 3.5141973573235874,
+      "status": "supplemental Hipparcos",
+      "system": "procyon",
+      "infoOk": true
+    },
+    {
+      "query": "Procyon B",
+      "result": "Procyon B",
+      "source": "* alf CMi B",
+      "distance": 3.5141973573235874,
+      "status": "representative only",
+      "system": "procyon",
+      "infoOk": true
+    },
+    {
+      "query": "Ross 128",
+      "result": "Ross 128",
+      "source": "3796072592206250624",
+      "distance": 3.374897355164646,
+      "status": "incomplete 6D state",
+      "system": null,
+      "infoOk": true
+    },
+    {
+      "query": "Ross 154",
+      "result": "Ross 154",
+      "source": "4075141768785646848",
+      "distance": 2.9759548649868903,
+      "status": "high-confidence astrometry",
+      "system": null,
+      "infoOk": true
+    },
+    {
+      "query": "Ross 248",
+      "result": "Ross 248",
+      "source": "1926461164913660160",
+      "distance": 3.159745481768476,
+      "status": "high-confidence astrometry",
+      "system": null,
+      "infoOk": true
+    },
+    {
+      "query": "Altair",
+      "result": "Altair",
+      "source": "HIP 97649",
+      "distance": 5.12952038984355,
+      "status": "supplemental Hipparcos",
+      "system": null,
+      "infoOk": true
+    },
+    {
+      "query": "Vega",
+      "result": "Vega",
+      "source": "HIP 91262",
+      "distance": 7.678722260615834,
+      "status": "supplemental Hipparcos",
+      "system": null,
+      "infoOk": true
+    },
+    {
+      "query": "Fomalhaut",
+      "result": "Fomalhaut",
+      "source": "HIP 113368",
+      "distance": 7.7035667514059005,
+      "status": "supplemental Hipparcos",
+      "system": null,
+      "infoOk": true
+    },
+    {
+      "query": "TRAPPIST-1",
+      "result": "TRAPPIST-1",
+      "source": "2635476908753563008",
+      "distance": 12.46691341544997,
+      "status": "incomplete 6D state",
+      "system": null,
+      "infoOk": true
+    }
+  ],
+  "searches": {
+    "Proxima Centauri": {
+      "result": "Proxima Centauri",
+      "source": "5853498713190525696",
+      "distance": 1.3019705311704333,
+      "status": "high-confidence astrometry",
+      "info": "Primary nameProxima CentauriAlternate identifiersGJ 551, Gaia DR3 5853498713190525696, HIP 70890Object typePM*System membershipUnavailableSource identifier5853498713190525696Distance1.3020 pc / 4.2465 lyDistance methodinverse parallax; only used when fractional uncertainty <= 20%RA217.3923215°Dec-62.6760751°Parallax768.0665391873573 ± 0.049872905 masProper motion RA-3781.741008265163 ± 0.031386077 mas/yrProper motion Dec769.4650146478623 ± 0.050524533 mas/yrRadial velocity-21.942726 km/s3D velocity status6D catalog stateApparent G magnitude8.984749BP-RP3.8045802Reference epochJ2016Astrometric qualityhigh-confidence astrometryData statushigh-confidence astrometryCatalogGaia DR3; name/type cross-checked with SIMBADCatalog build date2026-08-01Quality notesUnavailableUncertainty notesUnavailableVisualization noticeStar marker size is visually enhanced. Not to physical stellar-radius scale."
+    },
+    "Barnard's Star": {
+      "result": "Barnard's Star",
+      "source": "4472832130942575872",
+      "distance": 1.828233981355542,
+      "status": "high-confidence astrometry",
+      "info": "Primary nameBarnard's StarAlternate identifiersGJ 699, Gaia DR3 4472832130942575872, HIP 87937Object typeBY*System membershipUnavailableSource identifier4472832130942575872Distance1.8282 pc / 5.9629 lyDistance methodinverse parallax; only used when fractional uncertainty <= 20%RA269.4485025°Dec4.7394201°Parallax546.975939730948 ± 0.040116355 masProper motion RA-801.5509783684709 ± 0.031820867 mas/yrProper motion Dec10362.394206546573 ± 0.036070455 mas/yrRadial velocity-110.46822 km/s3D velocity status6D catalog stateApparent G magnitude8.1939745BP-RP2.8336968Reference epochJ2016Astrometric qualityhigh-confidence astrometryData statushigh-confidence astrometryCatalogGaia DR3; name/type cross-checked with SIMBADCatalog build date2026-08-01Quality notesUnavailableUncertainty notesUnavailableVisualization noticeStar marker size is visually enhanced. Not to physical stellar-radius scale."
+    },
+    "Sirius A": {
+      "result": "Sirius A",
+      "source": "HIP 32349",
+      "distance": 2.6370612589330453,
+      "status": "supplemental Hipparcos",
+      "info": "Primary nameSirius AAlternate identifiersGJ 244, HD 48915, HD 48915A, HIP 32349Object typeSB*System membershipsiriusSource identifierHIP 32349Distance2.6371 pc / 8.6009 lyDistance methodinverse Hipparcos parallax; only used when fractional uncertainty <= 20%RA101.2885411°Dec-16.7131431°Parallax379.21 ± 1.58 masProper motion RA-546.01 ± 1.33 mas/yrProper motion Dec-1223.07 ± 1.24 mas/yrRadial velocityUnavailable3D velocity statusIncompleteApparent G magnitudeUnavailableBP-RPUnavailableReference epochJ1991.25Astrometric qualitysupplemental HipparcosData statussupplemental HipparcosCatalogHipparcos new reduction; name/type cross-checked with SIMBADCatalog build date2026-08-01Quality notesGaia DR3 identifier unavailable or saturated bright sourceUncertainty notesradial velocity unavailable in deployed record; 3D velocity incomplete; component separation/orbit not visualizedVisualization noticeStar marker size is visually enhanced. Not to physical stellar-radius scale."
+    }
+  },
+  "gaiaSourceIdSearch": "5853498713190525696",
+  "aliasSearches": [
+    "Sirius A",
+    "Sirius A"
+  ],
+  "phase3": "Milky Way — Available in Phase 3",
+  "modes": {
+    "sci": "Scientific scale — radii and distances use the same linear kilometre scale",
+    "exhibition": "Exhibition scale — Distances visually compressed — Not a single linear scale"
+  },
+  "languages": {
+    "en": {
+      "nearby": "Nearby Stars",
+      "search": "Search",
+      "phase3": "Milky Way — Available in Phase 3",
+      "overflow": true
+    },
+    "zh-TW": {
+      "nearby": "鄰近恆星",
+      "search": "搜尋",
+      "phase3": "銀河系 — Phase 3 開放",
+      "overflow": true
+    },
+    "ja": {
+      "nearby": "近傍恒星",
+      "search": "検索",
+      "phase3": "天の川銀河 — Phase 3で利用可能",
+      "overflow": true
+    },
+    "ko": {
+      "nearby": "인접 항성",
+      "search": "검색",
+      "phase3": "은하수 — Phase 3에서 제공",
+      "overflow": true
+    }
+  },
+  "cycles": 20,
+  "focusRuns": 30,
+  "desktop": {
+    "viewport": [
+      1280,
+      720
+    ],
+    "browser": "Google Chrome CDP",
+    "objects": 10000,
+    "fps": 60.12721128991294,
+    "heapBefore": 54601612,
+    "heapAfter": 55495168,
+    "heapDeltaBytes": 893556
+  },
+  "mobile": {
+    "viewport": [
+      390,
+      844
+    ],
+    "overflow": true,
+    "closeVisible": true,
+    "records": 5000,
+    "points": 5000,
+    "browser": "Google Chrome CDP",
+    "fps": 60.013887511026546,
+    "heapBytes": 47690232
+  },
+  "phase1Before": {
+    "bodies": 9,
+    "debug": {
+      "viewerCount": 1,
+      "canvasCount": 2,
+      "active": true,
+      "mode": "exhibition",
+      "epoch": "2026-08-01T12:10:37.350Z",
+      "tickListenerActive": true,
+      "zoomEnabled": true,
+      "selected": "neptune",
+      "nearbyActive": false,
+      "nearbyTier": "10pc",
+      "nearbySelected": null,
+      "nearby": {
+        "records": 0,
+        "points": 0,
+        "labels": 0,
+        "guides": 0,
+        "motion": 0,
+        "lod": "far",
+        "visible": false
+      }
+    },
+    "info": "NameNeptuneObject typeplanetParent systemSunMean radius24,622 kmCurrent heliocentric distance29.878511 AUPosition epoch2026-08-01T12:10:37.350ZCoordinate frameHeliocentric ecliptic frame; J2000 referenceOrbital period60,182 daysRotation period0.671 daysData sourcehttps://ssd.jpl.nasa.gov/planets/approx_pos.htmlData statusapproximateVisualization scaleexhibitionNoticeOrbital-element approximation — not mission-navigation precision"
+  },
+  "phase1After": {
+    "debug": {
+      "viewerCount": 1,
+      "canvasCount": 2,
+      "active": true,
+      "mode": "exhibition",
+      "epoch": "2026-08-01T12:10:37.436Z",
+      "tickListenerActive": true,
+      "zoomEnabled": true,
+      "selected": "earth",
+      "nearbyActive": false,
+      "nearbyTier": "100pc",
+      "nearbySelected": "Sun",
+      "nearby": {
+        "records": 0,
+        "points": 0,
+        "labels": 0,
+        "guides": 0,
+        "motion": 0,
+        "lod": "far",
+        "visible": false
+      }
+    },
+    "info": "NameEarthObject typeplanetParent systemSunMean radius6,371.008 kmCurrent heliocentric distance1.014975 AUPosition epoch2026-08-01T12:10:37.436ZCoordinate frameHeliocentric ecliptic frame; J2000 referenceOrbital period365.256 daysRotation period0.997 daysData sourcehttps://ssd.jpl.nasa.gov/planets/approx_pos.htmlData statusapproximateVisualization scaleexhibitionNoticeOrbital-element approximation — not mission-navigation precision"
+  },
+  "reopened": {
+    "viewerCount": 1,
+    "canvasCount": 2,
+    "active": true,
+    "mode": "exhibition",
+    "epoch": "2026-08-01T12:10:37.437Z",
+    "tickListenerActive": true,
+    "zoomEnabled": true,
+    "selected": "sun",
+    "nearbyActive": false,
+    "nearbyTier": "100pc",
+    "nearbySelected": "Sun",
+    "nearby": {
+      "records": 0,
+      "points": 0,
+      "labels": 0,
+      "guides": 0,
+      "motion": 0,
+      "lod": "far",
+      "visible": false
+    },
+    "phase1TimeVisible": true,
+    "nearControlsHidden": true
+  },
+  "consoleErrors": [
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED"
+  ],
+  "requiredConsoleErrors": [],
+  "networkFailures": [
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/project-updates/latest"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/regional/observation?region=global"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/health/openweather"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/history/status"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/layers"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/register"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/register"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/domain-readiness"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/events?limit=20"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/evidence-ledger"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/mass-gatherings"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/daily-brief"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/system-status"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/stats"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/locations"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/analytics?range=24h"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/domain-readiness"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/events?limit=20"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/evidence-ledger"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/mass-gatherings"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/daily-brief"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/system-status"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/evidence-explorer"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/events?limit=20"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/domain-readiness"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/daily-brief"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/evidence-ledger"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/mass-gatherings"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/system-status"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/domain-readiness"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/events?limit=20"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/evidence-ledger"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/mass-gatherings"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/system-status"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/daily-brief"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/domain-readiness"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/events?limit=20"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/evidence-ledger"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/mass-gatherings"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/daily-brief"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/system-status"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/domain-readiness"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/events?limit=20"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/evidence-ledger"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/daily-brief"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/mass-gatherings"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/system-status"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/events?limit=20"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/domain-readiness"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/evidence-ledger"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/daily-brief"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/mass-gatherings"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/system-status"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/domain-readiness"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/events?limit=20"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/evidence-ledger"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/mass-gatherings"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/daily-brief"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/system-status"
+    }
+  ],
+  "requiredNetworkFailures": [],
+  "screenshots": [
+    "01-solar-to-nearby-transition.png",
+    "02-10pc.png",
+    "03-25pc.png",
+    "04-50pc.png",
+    "05-100pc.png",
+    "acceptance-report.json",
+    "data-quality-legend.png",
+    "mobile-view.png",
+    "phase-3-placeholder.png",
+    "proper-motion-analysis.png",
+    "selected-barnard-s-star.png",
+    "selected-proxima-centauri.png",
+    "selected-sirius-a.png"
+  ]
+}

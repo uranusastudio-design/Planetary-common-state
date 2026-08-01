@@ -1,0 +1,15 @@
+SELECT TOP {max_objects}
+  c.source_id, c.ra, c.dec, c.ra_error, c.dec_error,
+  c.parallax, c.parallax_error, c.pmra, c.pmra_error, c.pmdec, c.pmdec_error,
+  c.adoptedrv, c.adoptedrv_error, c.radial_velocity_is_valid,
+  c.phot_g_mean_mag, c.phot_bp_mean_mag, c.phot_rp_mean_mag, c.ruwe,
+  c.ipd_frac_multi_peak, c.gcns_prob, c.dist_16, c.dist_50, c.dist_84,
+  c.xcoord_50, c.ycoord_50, c.zcoord_50,
+  g.astrometric_params_solved, g.duplicated_source
+FROM external.gaiaedr3_gcns_main_1 AS c
+JOIN gaiaedr3.gaia_source AS g ON c.source_id = g.source_id
+WHERE c.dist_50 <= {radius_kpc}
+  AND c.parallax IS NOT NULL
+  AND c.parallax > 0
+  AND c.gcns_prob >= 0.5
+ORDER BY c.phot_g_mean_mag ASC

@@ -1,0 +1,59 @@
+{
+  "catalog": "Gaia Catalogue of Nearby Stars",
+  "release": "Gaia EDR3 / GCNS v1",
+  "queryDate": "2026-08-01T12:05:41+00:00",
+  "referenceEpoch": "J2016.0",
+  "queryFile": "scripts/nearby-stars-gcns.adql",
+  "qualityFilters": [
+    "positive non-null parallax",
+    "gcns_prob >= 0.5",
+    "tier magnitude limit",
+    "bounded maxObjects"
+  ],
+  "coordinateFrame": "ICRS input; GCNS heliocentric Galactic Cartesian output",
+  "distanceMethod": "GCNS dist_50 posterior median",
+  "recordCounts": {
+    "10pc": 303,
+    "25pc": 4901,
+    "50pc": 8000,
+    "100pc": 10000
+  },
+  "excludedCounts": {
+    "10pc": {
+      "magnitudeLimit": 7,
+      "invalidCoordinate": 0,
+      "objectCap": 0,
+      "nestedCarryForward": 0
+    },
+    "25pc": {
+      "magnitudeLimit": 209,
+      "invalidCoordinate": 0,
+      "objectCap": 12,
+      "nestedCarryForward": 303
+    },
+    "50pc": {
+      "magnitudeLimit": 0,
+      "invalidCoordinate": 0,
+      "objectCap": 9762,
+      "nestedCarryForward": 4901
+    },
+    "100pc": {
+      "magnitudeLimit": 0,
+      "invalidCoordinate": 0,
+      "objectCap": 13982,
+      "nestedCarryForward": 8000
+    }
+  },
+  "processing": [
+    "convert kpc to pc",
+    "preserve null radial velocity",
+    "classify multi-factor astrometric quality",
+    "retain queried fields or lossless derived equivalents",
+    "carry each inner tier into the next outer tier before capped fill"
+  ],
+  "licenseCredit": "ESA/Gaia/DPAC; Gaia Collaboration, Smart et al. (2021), A&A 649 A6",
+  "notes": [
+    "DR3 source_id is not assumed to match EDR3 source_id across releases.",
+    "No Gaia DR4 data used."
+  ]
+}

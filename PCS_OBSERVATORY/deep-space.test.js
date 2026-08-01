@@ -56,10 +56,12 @@ test("the cache is an explicit JPL vector and out-of-window epochs fall back hon
   assert.equal(fallback.dataStatus, "approximate");
 });
 
-test("Phase 2 content remains a notice and later-phase providers return no fabricated objects", () => {
-  assert.match(manager, /Nearby Stars/);
+test("Phase 2 uses the local Gaia layer while later-phase providers return no fabricated objects", () => {
+  assert.match(manager, /PCSNearbyStars/);
+  assert.match(manager, /Milky Way — Available in Phase 3/);
   assert.match(manager, /smallBodyProvider=Object\.freeze\(\{status:"unavailable",getObjects:\(\)=>Promise\.resolve\(\[\]\)/);
-  assert.doesNotMatch(manager, /Gaia|Milky Way|Local Group|Cosmic Web/);
+  assert.doesNotMatch(manager, /Local Group|Cosmic Web|Sagittarius A|Andromeda/);
+  assert.doesNotMatch(manager, /new Cesium\.Viewer|requestAnimationFrame|new Worker/);
 });
 
 test("Titania assets and metadata are not implemented or rewritten by Deep Space", () => {
