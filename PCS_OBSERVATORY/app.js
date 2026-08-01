@@ -295,6 +295,13 @@ const LAYER_SNAPSHOT_INTERVAL_MS = 10 * 60 * 1000;
 const LAYER_SNAPSHOT_STALE_MS = 20 * 60 * 1000;
 let cameraTransitionOperational = false;
 let cameraTransitionFailed = false;
+let earthViewerMode = "normal";
+let earthViewerResizeObserver = null;
+let earthViewerPreviousBodyOverflow = "";
+let earthViewerToolbarInitialized = false;
+const earthViewerEscapeHandler = (event) => {
+  if (event.key === "Escape" && earthViewerMode === "expanded") setEarthViewerMode("normal");
+};
 let latestActiveAlertCount = 0;
 let latestRuntimeStatus = null;
 let timelineFrames = [];
@@ -336,6 +343,8 @@ const selectors = {
   },
   dataMessage: document.querySelector("#data-message"),
   cesiumGlobe: document.querySelector("#cesium-globe"),
+  earthViewerShell: document.querySelector("#pcs-earth-viewer-shell"),
+  earthViewerControls: document.querySelectorAll("[data-earth-viewer-action]"),
   cesiumFallback: document.querySelector("#cesium-fallback"),
   observatoryViewLabel: document.querySelector("#observatory-view-label"),
   observatoryViewTitle: document.querySelector("#observatory-view-title"),
@@ -984,6 +993,68 @@ function setCesiumCameraForRegion(regionId) {
     selectors.regionalModeStatus.dataset.lastFlyToLongitude = String(region.lon);
   }
 }
+
+function resizeEarthViewer() {
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    if (!cesiumViewer || cesiumViewer.isDestroyed()) return;
+    cesiumViewer.resize();
+    cesiumViewer.scene.requestRender();
+  }));
+}
+
+function updateEarthViewerControls() {
+  selectors.earthViewerControls.forEach((button) => {
+    const action = button.dataset.earthViewerAction;
+    button.hidden = (action === "pin" && earthViewerMode !== "normal")
+      || (action === "restore" && earthViewerMode === "normal")
+      || (action === "expand" && earthViewerMode === "expanded");
+    button.setAttribute("aria-pressed", String((action === "pin" && earthViewerMode === "pinned") || (action === "expand" && earthViewerMode === "expanded")));
+  });
+}
+
+function setEarthViewerMode(nextMode, { focus = true } = {}) {
+  if (!selectors.earthViewerShell || !["normal", "pinned", "expanded"].includes(nextMode)) return false;
+  earthViewerMode = nextMode;
+  selectors.earthViewerShell.dataset.earthViewerMode = nextMode;
+  if (nextMode === "expanded") {
+    earthViewerPreviousBodyOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+  } else {
+    document.body.style.overflow = earthViewerPreviousBodyOverflow;
+  }
+  updateEarthViewerControls();
+  resizeEarthViewer();
+  if (focus) {
+    const focusAction = nextMode === "normal" ? "pin" : "restore";
+    selectors.earthViewerShell.querySelector(`[data-earth-viewer-action="${focusAction}"]:not([hidden])`)?.focus();
+  }
+  return true;
+}
+
+function initializeEarthViewerToolbar() {
+  if (earthViewerToolbarInitialized || !selectors.earthViewerShell || !selectors.earthViewerControls.length) return;
+  updateEarthViewerControls();
+  selectors.earthViewerControls.forEach((button) => button.addEventListener("click", () => {
+    const action = button.dataset.earthViewerAction;
+    if (action === "reset") setCesiumCameraForRegion(activeRegionId);
+    else if (action === "pin") setEarthViewerMode("pinned");
+    else if (action === "expand") setEarthViewerMode("expanded");
+    else if (action === "restore") setEarthViewerMode("normal");
+  }));
+  document.addEventListener("keydown", earthViewerEscapeHandler);
+  if (window.ResizeObserver) {
+    earthViewerResizeObserver = new ResizeObserver(resizeEarthViewer);
+    earthViewerResizeObserver.observe(selectors.earthViewerShell);
+  }
+  earthViewerToolbarInitialized = true;
+}
+
+window.addEventListener("pagehide", () => {
+  earthViewerResizeObserver?.disconnect();
+  earthViewerResizeObserver = null;
+  document.removeEventListener("keydown", earthViewerEscapeHandler);
+  if (earthViewerMode === "expanded") document.body.style.overflow = earthViewerPreviousBodyOverflow;
+}, { once: true });
 
 function showCesiumFallback(message) {
   updateText(selectors.cesiumFallback, message);
@@ -1857,6 +1928,17 @@ async function initializeCesiumGlobe() {
     cesiumViewer.scene.skyAtmosphere.show = true;
     cesiumViewer.scene.globe.enableLighting = true;
     cesiumViewer.scene.globe.depthTestAgainstTerrain = true;
+    let markerCameraBand = null;
+    cesiumViewer.camera.moveEnd.addEventListener(() => {
+      const height = currentCameraHeight();
+      const nextBand = height > 10000000 ? "far" : height > 2000000 ? "medium" : height > 500000 ? "near" : "close";
+      if (nextBand !== markerCameraBand) {
+        markerCameraBand = nextBand;
+        geographicMarkers.updateVisualOffsetsForCamera(height, Cesium);
+      }
+      geographicMarkers.updateCesiumVisibility(cesiumViewer.scene, Cesium);
+      cesiumViewer.scene.requestRender();
+    });
     const cameraController = cesiumViewer.scene.screenSpaceCameraController;
     cameraController.minimumZoomDistance = 100;
     cameraController.maximumZoomDistance = 50000000;
@@ -1865,6 +1947,7 @@ async function initializeCesiumGlobe() {
     cameraController.enableZoom = true;
     cameraController.inertiaZoom = 0;
     setCesiumCameraForRegion(activeRegionId);
+    initializeEarthViewerToolbar();
     ensureVisitorDataSources();
 
     window.PCSMarkerDebug = Object.freeze({
@@ -2537,8 +2620,8 @@ function showUserLocation(position) {
   userLocationEntity = upsertGeographicEntity({
     layerId: "user-location", markerId: "position", coordinates, type: "point+label", label: "You are here",
     entityOptions: {
-      point: { pixelSize: 12, color: Cesium.Color.CYAN, outlineColor: Cesium.Color.WHITE, outlineWidth: 2, heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND },
-      label: { text: "You are here", font: "14px sans-serif", fillColor: Cesium.Color.WHITE, showBackground: true, backgroundColor: Cesium.Color.BLACK.withAlpha(0.7), pixelOffset: new Cesium.Cartesian2(0, -28), heightReference: Cesium.HeightReference.RELATIVE_TO_GROUND },
+      point: { pixelSize: 12, color: Cesium.Color.CYAN, outlineColor: Cesium.Color.WHITE, outlineWidth: 2, heightReference: Cesium.HeightReference.NONE },
+      label: { text: "You are here", font: "14px sans-serif", fillColor: Cesium.Color.WHITE, showBackground: true, backgroundColor: Cesium.Color.BLACK.withAlpha(0.7), pixelOffset: new Cesium.Cartesian2(0, -28), heightReference: Cesium.HeightReference.NONE },
     },
   });
   updateText(selectors.locationLatitude, latitude.toFixed(6));
@@ -3394,15 +3477,16 @@ function renderVisitorLocations(locations = []) {
       collection: visitorDataSource.entities,
       layerId: "visitor-locations",
       markerId,
+      canonicalRegionId: "global",
       coordinates,
-      type: "point",
+      type: "visitor-point",
       metadata: location,
       entityOptions: { name: formatVisitorPlace(location), point: {
         pixelSize: Math.min(11, 5 + Math.log2(count + 1) * 1.6),
         color: Cesium.Color.fromCssColorString("#38bdf8").withAlpha(0.82),
         outlineColor: Cesium.Color.WHITE.withAlpha(0.9),
         outlineWidth: 1.5,
-        heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
+        heightReference: Cesium.HeightReference.NONE,
       } },
     });
     if (!entity) return;
@@ -3500,6 +3584,7 @@ function renderVisitorHeat(heatLocations = []) {
       collection: visitorHeatDataSource.entities,
       layerId: "visitor-heat",
       markerId,
+      canonicalRegionId: "global",
       coordinates,
       type: "heat-point",
       metadata: { weight },
@@ -3508,7 +3593,7 @@ function renderVisitorHeat(heatLocations = []) {
         color: Cesium.Color.fromCssColorString("#0ea5e9").withAlpha(alpha),
         outlineColor: Cesium.Color.fromCssColorString("#7dd3fc").withAlpha(alpha + 0.12),
         outlineWidth: 1,
-        heightReference: Cesium.HeightReference.CLAMP_TO_GROUND,
+        heightReference: Cesium.HeightReference.NONE,
       } },
     });
     if (entity) activeMarkerIds.add(markerId);
@@ -3856,19 +3941,108 @@ function entityColor(config, opacity) {
   return Cesium.Color.fromCssColorString(config.color || "#ff7043").withAlpha(opacity);
 }
 
-function upsertGeographicEntity({ collection = cesiumViewer?.entities, layerId, markerId, coordinates, height = 0, type = "point", label = null, metadata = null, entityOptions = {} }) {
-  const normalized = geographicMarkers.normalizeCoordinates(coordinates, { defaultHeight: height });
+function markerCategoryForType(type = "") {
+  if (type.includes("earthquake")) return "earthquake";
+  if (type.includes("fire")) return "fire";
+  if (type.includes("cyclone")) return "cyclone";
+  if (type.includes("coastal")) return "coastalStation";
+  if (type.includes("station")) return "scienceStation";
+  if (type.includes("visitor") || type.includes("heat")) return "visitor";
+  if (type.includes("user")) return "userLocation";
+  if (type.includes("alert")) return "alert";
+  return "regionalObservation";
+}
+
+function currentCameraHeight() {
+  return Number(cesiumViewer?.camera?.positionCartographic?.height) || Number.POSITIVE_INFINITY;
+}
+
+const geographicPointIconCache = new Map();
+
+function cssColorValue(color, fallback) {
+  try {
+    return color?.toCssColorString?.() || fallback;
+  } catch (_error) {
+    return fallback;
+  }
+}
+
+function geographicPointBillboard(point) {
+  if (!point || typeof document === "undefined") return null;
+  const pixelSize = Math.max(4, Math.ceil(Number(point.pixelSize) || 8));
+  const outlineWidth = Math.max(0, Math.ceil(Number(point.outlineWidth) || 0));
+  const fill = cssColorValue(point.color, "rgba(0, 229, 255, 1)");
+  const outline = cssColorValue(point.outlineColor, "rgba(0, 0, 0, 1)");
+  const cacheKey = `${pixelSize}|${outlineWidth}|${fill}|${outline}`;
+  if (!geographicPointIconCache.has(cacheKey)) {
+    const padding = Math.max(2, outlineWidth + 1);
+    const canvas = document.createElement("canvas");
+    canvas.width = pixelSize + padding * 2;
+    canvas.height = pixelSize + padding * 2;
+    const context = canvas.getContext("2d");
+    const radius = pixelSize / 2;
+    context.beginPath();
+    context.arc(canvas.width / 2, canvas.height / 2, radius, 0, Math.PI * 2);
+    context.fillStyle = fill;
+    context.fill();
+    if (outlineWidth > 0) {
+      context.lineWidth = outlineWidth;
+      context.strokeStyle = outline;
+      context.stroke();
+    }
+    geographicPointIconCache.set(cacheKey, canvas);
+  }
+  return {
+    image: geographicPointIconCache.get(cacheKey),
+    verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+    horizontalOrigin: Cesium.HorizontalOrigin.CENTER,
+    heightReference: Cesium.HeightReference.NONE,
+    distanceDisplayCondition: point.distanceDisplayCondition,
+    scaleByDistance: point.scaleByDistance,
+    translucencyByDistance: point.translucencyByDistance,
+    show: point.show,
+  };
+}
+
+function normalizeMarkerGraphics(entityOptions) {
+  const normalized = { ...entityOptions };
+  // Cesium PointGraphics is centred on its Cartesian anchor. At grazing globe
+  // angles its lower half can be depth-clipped, appearing as an arc. Geographic
+  // symbols use the same position but a bottom-anchored billboard so the full
+  // marker remains above the surface while normal far-side occlusion is kept.
+  if (normalized.point && !normalized.billboard) {
+    const billboard = geographicPointBillboard(normalized.point);
+    if (billboard) {
+      normalized.billboard = billboard;
+      delete normalized.point;
+    }
+  }
+  if (normalized.billboard) normalized.billboard = { verticalOrigin: Cesium.VerticalOrigin.BOTTOM, ...normalized.billboard, heightReference: Cesium.HeightReference.NONE };
+  if (normalized.point) normalized.point = { ...normalized.point, heightReference: Cesium.HeightReference.NONE };
+  if (normalized.label) normalized.label = { verticalOrigin: Cesium.VerticalOrigin.BOTTOM, ...normalized.label, heightReference: Cesium.HeightReference.NONE };
+  return normalized;
+}
+
+function upsertGeographicEntity({ collection = cesiumViewer?.entities, layerId, markerId, canonicalRegionId = activeRegionId || "global", coordinates, height = 0, visualOffsetMeters, type = "point", label = null, metadata = null, entityOptions = {} }) {
+  const category = markerCategoryForType(type);
+  const normalized = geographicMarkers.normalizeCoordinates(coordinates, {
+    defaultObservedAltitudeMeters: height,
+    visualOffsetMeters: visualOffsetMeters ?? geographicMarkers.visualOffsetForCamera(currentCameraHeight(), category),
+  });
   return geographicMarkers.upsertCesiumEntity({
     collection,
     layerId,
     markerId,
+    canonicalRegionId,
     longitude: normalized.longitude,
     latitude: normalized.latitude,
-    height: normalized.height,
+    observedAltitudeMeters: normalized.observedAltitudeMeters,
+    visualOffsetMeters: normalized.visualOffsetMeters,
+    visualCategory: category,
     type,
     label,
-    metadata,
-    entityOptions,
+    metadata: { ...metadata, observedAltitudeMeters: normalized.observedAltitudeMeters, visualOffsetMeters: normalized.visualOffsetMeters },
+    entityOptions: normalizeMarkerGraphics(entityOptions),
     CesiumApi: Cesium,
   });
 }
@@ -3895,7 +4069,38 @@ class CesiumLayerRuntimeController {
     this.registry = new Map();
     this.refreshingLayers = new Map();
     this.lastActivationError = null;
+    this.operationGeneration = new Map();
+    this.cameraPreservationResults = [];
     this.replayScope = { generation: 0, imageryLayers: [], dataSources: [], resourcesByLayer: new Map() };
+  }
+
+  captureCameraState(viewer = this.viewerProvider()) {
+    if (!viewer?.camera || !window.Cesium) return null;
+    const camera = viewer.camera;
+    return {
+      positionWC: { x: Number(camera.positionWC.x), y: Number(camera.positionWC.y), z: Number(camera.positionWC.z) },
+      heading: Number(camera.heading),
+      pitch: Number(camera.pitch),
+      roll: Number(camera.roll),
+      height: Number(camera.positionCartographic?.height),
+    };
+  }
+
+  recordCameraPreservation(layerId, operation, before, viewer = this.viewerProvider()) {
+    const after = this.captureCameraState(viewer);
+    if (!before || !after) return null;
+    const angularDifference = (left, right) => Math.abs(Cesium.Math.negativePiToPi(left - right));
+    const record = {
+      layerId,
+      operation,
+      cameraPositionPreserved: Cesium.Cartesian3.distance(before.positionWC, after.positionWC) <= 0.5,
+      cameraOrientationPreserved: Math.max(angularDifference(before.heading, after.heading), angularDifference(before.pitch, after.pitch), angularDifference(before.roll, after.roll)) <= Cesium.Math.toRadians(0.001),
+      cameraHeightPreserved: Math.abs(before.height - after.height) <= 0.5,
+      measuredAt: new Date().toISOString(),
+    };
+    this.cameraPreservationResults.push(record);
+    if (this.cameraPreservationResults.length > 200) this.cameraPreservationResults.shift();
+    return record;
   }
 
   register(config) {
@@ -3963,8 +4168,8 @@ class CesiumLayerRuntimeController {
       layerId: config.id, markerId: visualization.station_id, coordinates: visualization, type: "station-point+label", label: visualization.station_name, metadata: config.record,
       entityOptions: {
         name: `${visualization.station_name} · ${config.label}`,
-        point: { pixelSize: 12, color: entityColor(config, config.opacity), outlineColor: Cesium.Color.WHITE, outlineWidth: 2, heightReference: visualization.altitude_m ? Cesium.HeightReference.NONE : Cesium.HeightReference.CLAMP_TO_GROUND },
-        label: { text: `${visualization.station_name}\n${layerValueText(config.record)}`, font: "12px sans-serif", fillColor: entityColor(config, config.opacity), outlineColor: Cesium.Color.BLACK, outlineWidth: 2, style: Cesium.LabelStyle.FILL_AND_OUTLINE, pixelOffset: new Cesium.Cartesian2(0, -24), heightReference: visualization.altitude_m ? Cesium.HeightReference.NONE : Cesium.HeightReference.CLAMP_TO_GROUND },
+        point: { pixelSize: 12, color: entityColor(config, config.opacity), outlineColor: Cesium.Color.WHITE, outlineWidth: 2, heightReference: Cesium.HeightReference.NONE },
+        label: { text: `${visualization.station_name}\n${layerValueText(config.record)}`, font: "12px sans-serif", fillColor: entityColor(config, config.opacity), outlineColor: Cesium.Color.BLACK, outlineWidth: 2, style: Cesium.LabelStyle.FILL_AND_OUTLINE, pixelOffset: new Cesium.Cartesian2(0, -24), heightReference: Cesium.HeightReference.NONE },
         description: layerEntityDescription([
           ["Product", visualization.product], ["Value", layerValueText(config.record)], ["Observation time", formatPcsTime(config.record.latest_observation_time)],
           ["Retrieved", formatPcsTime(config.record.latest_retrieval_time)], ["Datum", visualization.datum || "Not applicable"], ["Uncertainty", config.record.uncertainty],
@@ -3986,8 +4191,8 @@ class CesiumLayerRuntimeController {
       layerId: config.id, markerId: storm.id, coordinates: storm, type: "cyclone-point+label", label: storm.name, metadata: storm,
       entityOptions: {
         name: `${storm.name} · ${storm.classification?.regional_name || "tropical cyclone"}`,
-        point: { pixelSize: 15, color: entityColor(config, config.opacity), outlineColor: Cesium.Color.WHITE, outlineWidth: 3, heightReference: Cesium.HeightReference.CLAMP_TO_GROUND },
-        label: { text: `${storm.name} · ${storm.classification?.regional_name || "cyclone"}\n${storm.intensity_kt ?? "?"} kt`, font: "bold 13px sans-serif", fillColor: entityColor(config, config.opacity), outlineColor: Cesium.Color.BLACK, outlineWidth: 3, style: Cesium.LabelStyle.FILL_AND_OUTLINE, pixelOffset: new Cesium.Cartesian2(0, -28), heightReference: Cesium.HeightReference.CLAMP_TO_GROUND },
+        point: { pixelSize: 15, color: entityColor(config, config.opacity), outlineColor: Cesium.Color.WHITE, outlineWidth: 3, heightReference: Cesium.HeightReference.NONE },
+        label: { text: `${storm.name} · ${storm.classification?.regional_name || "cyclone"}\n${storm.intensity_kt ?? "?"} kt`, font: "bold 13px sans-serif", fillColor: entityColor(config, config.opacity), outlineColor: Cesium.Color.BLACK, outlineWidth: 3, style: Cesium.LabelStyle.FILL_AND_OUTLINE, pixelOffset: new Cesium.Cartesian2(0, -28), heightReference: Cesium.HeightReference.NONE },
         description: layerEntityDescription([
           ["Classification", storm.classification?.regional_name], ["Intensity", `${storm.intensity_kt ?? "Unavailable"} kt`], ["Pressure", `${storm.pressure_hpa ?? "Unavailable"} hPa`],
           ["Advisory", storm.advisory_number], ["Advisory time", formatPcsTime(storm.advisory_time)], ["Source", storm.source], ["Uncertainty", storm.uncertainty],
@@ -4017,7 +4222,7 @@ class CesiumLayerRuntimeController {
       metadata: detection,
       entityOptions: {
         name: `${detection.satellite} ${detection.instrument} fire detection`,
-        point: { pixelSize: 6, color: entityColor(config, config.opacity), outlineColor: Cesium.Color.YELLOW, outlineWidth: 1, heightReference: Cesium.HeightReference.CLAMP_TO_GROUND },
+        point: { pixelSize: 6, color: entityColor(config, config.opacity), outlineColor: Cesium.Color.YELLOW, outlineWidth: 1, heightReference: Cesium.HeightReference.NONE },
         description: layerEntityDescription([["Acquired", formatPcsTime(detection.observation_time)], ["Satellite", detection.satellite], ["Sensor", detection.instrument], ["Confidence", detection.confidence], ["Status", detection.status]]),
       },
     })).filter(Boolean);
@@ -4038,7 +4243,7 @@ class CesiumLayerRuntimeController {
       layerId: config.id, markerId: event.id, coordinates: event, type: "earthquake-point", metadata: event,
       entityOptions: {
         name: `M${event.magnitude ?? "?"} · ${event.place}`,
-        point: { pixelSize: Math.max(7, Math.min(20, 4 + (Number(event.magnitude) || 0) * 2)), color: entityColor(config, config.opacity), outlineColor: Cesium.Color.WHITE, outlineWidth: 1, heightReference: Cesium.HeightReference.CLAMP_TO_GROUND },
+        point: { pixelSize: Math.max(7, Math.min(20, 4 + (Number(event.magnitude) || 0) * 2)), color: entityColor(config, config.opacity), outlineColor: Cesium.Color.WHITE, outlineWidth: 1, heightReference: Cesium.HeightReference.NONE },
         description: layerEntityDescription([["Magnitude", event.magnitude], ["Depth", `${event.depth_km} km`], ["Time", formatPcsTime(event.time)], ["Official intensity CDI / MMI", `${event.intensity_cdi ?? "Unavailable"} / ${event.intensity_mmi ?? "Unavailable"}`], ["Reviewed status", event.reviewed_status], ["Tectonic context", event.tectonic_context || "Unavailable"], ["Tsunami linkage flag", event.tsunami_flag ? "YES · follow official warning authority" : "NO"], ["Source", event.source], ["Cluster label", "None · PCS does not infer foreshock/aftershock clusters"]]),
       },
     })).filter(Boolean);
@@ -4052,8 +4257,8 @@ class CesiumLayerRuntimeController {
       layerId: config.id, markerId: `${activeRegionId}|${station.id}`, coordinates: station, type: "coastal-station-point+label", label: station.name, metadata: station,
       entityOptions: {
         name: `${station.name} coastal station`,
-        point: { pixelSize: 11, color: entityColor(config, station.status === "AVAILABLE" ? config.opacity : 0.35), outlineColor: Cesium.Color.WHITE, outlineWidth: 2, heightReference: Cesium.HeightReference.CLAMP_TO_GROUND },
-        label: { text: station.name, font: "12px sans-serif", fillColor: entityColor(config, config.opacity), outlineColor: Cesium.Color.BLACK, outlineWidth: 2, style: Cesium.LabelStyle.FILL_AND_OUTLINE, pixelOffset: new Cesium.Cartesian2(0, -21), heightReference: Cesium.HeightReference.CLAMP_TO_GROUND },
+        point: { pixelSize: 11, color: entityColor(config, station.status === "AVAILABLE" ? config.opacity : 0.35), outlineColor: Cesium.Color.WHITE, outlineWidth: 2, heightReference: Cesium.HeightReference.NONE },
+        label: { text: station.name, font: "12px sans-serif", fillColor: entityColor(config, config.opacity), outlineColor: Cesium.Color.BLACK, outlineWidth: 2, style: Cesium.LabelStyle.FILL_AND_OUTLINE, pixelOffset: new Cesium.Cartesian2(0, -21), heightReference: Cesium.HeightReference.NONE },
         description: layerEntityDescription([["Station authority", station.authority], ["Model sea level", station.modelled_sea_level?.status === "AVAILABLE" ? `${station.modelled_sea_level.value} ${station.modelled_sea_level.unit} · global MSL` : "Unavailable"], ["PREDICTED_TIDE", station.predicted_tide?.status], ["OBSERVED_WATER_LEVEL", station.observed_water_level?.status], ["STORM_SURGE_RESIDUAL", station.storm_surge_residual?.status], ["Wave height", station.wave_height?.status === "AVAILABLE" ? `${station.wave_height.value} ${station.wave_height.unit}` : "Unavailable"], ["Sea-surface temperature", station.sea_surface_temperature?.status === "AVAILABLE" ? `${station.sea_surface_temperature.value} ${station.sea_surface_temperature.unit}` : "Unavailable"], ["Observation / forecast time", formatPcsTime(station.observation_time)], ["Navigation warning", payload.coastal.navigation_warning]]),
       },
     })).filter(Boolean);
@@ -4079,8 +4284,20 @@ class CesiumLayerRuntimeController {
       this.synchronizeControl(layerId, true);
       return { ok: true, duplicatePrevented: true, resource: activeEarthLayers.get(layerId) };
     }
+    const cameraBefore = this.captureCameraState(viewer);
+    const requestedRegionId = activeRegionId;
+    const generation = (this.operationGeneration.get(layerId) || 0) + 1;
+    this.operationGeneration.set(layerId, generation);
     try {
       const entry = await this.createEntry(config, viewer);
+      if (this.operationGeneration.get(layerId) !== generation || activeRegionId !== requestedRegionId) {
+        if (entry.layer) viewer.imageryLayers.remove(entry.layer, true);
+        (entry.entities || []).forEach((entity) => viewer.entities.remove(entity));
+        (entry.dataSources || []).forEach((source) => viewer.dataSources.remove(source, true));
+        geographicMarkers.removeLayer(layerId);
+        this.recordCameraPreservation(layerId, "activate-stale", cameraBefore, viewer);
+        return { ok: false, stale: true, layerId };
+      }
       const opacity = Number(earthLayerOpacityControl(layerId)?.value) || config.opacity;
       entry.opacity = opacity;
       if (entry.layer) entry.layer.alpha = opacity;
@@ -4099,6 +4316,7 @@ class CesiumLayerRuntimeController {
         this.activationFailure(layerId, message);
       });
       activeEarthLayers.set(layerId, entry);
+      geographicMarkers.updateCesiumVisibility(viewer.scene, Cesium);
       this.lastActivationError = null;
       this.synchronizeControl(layerId, true);
       this.preserveOrder();
@@ -4106,7 +4324,8 @@ class CesiumLayerRuntimeController {
       if (config.kind === "weather") setWeatherProxyStatus("Weather proxy: connected");
       setWeatherTileError("");
       updateWeatherActiveLayersStatus();
-      return { ok: true, resource: entry, timestamps: entry.timestamps };
+      const cameraPreservation = this.recordCameraPreservation(layerId, "activate", cameraBefore, viewer);
+      return { ok: true, resource: entry, timestamps: entry.timestamps, cameraPreservation };
     } catch (error) {
       const reason = error?.message || `${config.label} activation failed`;
       const status = error?.runtimeStatus || ([401, 403].includes(error?.status) ? "AUTH_REQUIRED" : "ERROR");
@@ -4126,6 +4345,8 @@ class CesiumLayerRuntimeController {
   deactivate(layerId, options = {}) {
     const entry = activeEarthLayers.get(layerId);
     const viewer = this.viewerProvider();
+    const cameraBefore = this.captureCameraState(viewer);
+    this.operationGeneration.set(layerId, (this.operationGeneration.get(layerId) || 0) + 1);
     if (entry) {
       entry.unsubscribeErrorListener?.();
       geographicMarkers.removeLayer(layerId);
@@ -4143,7 +4364,8 @@ class CesiumLayerRuntimeController {
       if (!activeEarthLayers.size) setWeatherTileError("");
     }
     updateWeatherActiveLayersStatus();
-    return { ok: true, removed: Boolean(entry) };
+    const cameraPreservation = this.recordCameraPreservation(layerId, "deactivate", cameraBefore, viewer);
+    return { ok: true, removed: Boolean(entry), cameraPreservation };
   }
 
   deactivateAll() {
@@ -4214,34 +4436,34 @@ class CesiumLayerRuntimeController {
         const layer = viewer.imageryLayers.addImageryProvider(provider); layer.alpha = opacity;
         this.replayScope.imageryLayers.push(layer); scoped.imageryLayers.push(layer);
       } else if (visualization.kind === "station" && Number.isFinite(Number(visualization.latitude)) && Number.isFinite(Number(visualization.longitude))) {
-        const entity = dataSource.entities.add({
-          id: `history|${resource.snapshot_id}`, name: `${visualization.station_name || resource.dataset} · archived`,
-          position: Cesium.Cartesian3.fromDegrees(Number(visualization.longitude), Number(visualization.latitude), Number(visualization.altitude_m || 0)),
+        const entity = upsertGeographicEntity({
+          collection: dataSource.entities, layerId: `history-${resource.layer_id}`, markerId: resource.snapshot_id,
+          canonicalRegionId: activeRegionId, coordinates: visualization, type: "station-point+label", name: `${visualization.station_name || resource.dataset} · archived`,
+          entityOptions: { name: `${visualization.station_name || resource.dataset} · archived`,
           point: { pixelSize: 12, color: Cesium.Color.CYAN.withAlpha(opacity), outlineColor: Cesium.Color.WHITE, outlineWidth: 2 },
           label: { text: `${visualization.station_name || resource.dataset}\n${record.value ?? "UNAVAILABLE"} ${record.unit || ""}`, font: "12px sans-serif", fillColor: Cesium.Color.WHITE.withAlpha(opacity), outlineColor: Cesium.Color.BLACK, outlineWidth: 2, style: Cesium.LabelStyle.FILL_AND_OUTLINE, pixelOffset: new Cesium.Cartesian2(0, -24) },
           description: layerEntityDescription([["Mode", "REPLAY"], ["Provider", resource.provider], ["Dataset", resource.dataset], ["Observation time", formatPcsTime(resource.observation_time)], ["Available to PCS", formatPcsTime(resource.available_to_pcs_at)]])
-        });
+        }});
         scoped.entities.push(entity);
       } else if (visualization.kind === "tropical_cyclones") {
         (record.details?.storms || []).filter((storm) => Number.isFinite(storm.latitude) && Number.isFinite(storm.longitude)).forEach((storm) => {
-          const entity = dataSource.entities.add({ id: `history|${resource.snapshot_id}|${storm.id}`, name: storm.name,
-            position: Cesium.Cartesian3.fromDegrees(storm.longitude, storm.latitude),
+          const entity = upsertGeographicEntity({ collection: dataSource.entities, layerId: `history-${resource.layer_id}`, markerId: `${resource.snapshot_id}|${storm.id}`, canonicalRegionId: activeRegionId, coordinates: storm, type: "cyclone-point+label",
+            entityOptions: { name: storm.name,
             point: { pixelSize: 14, color: Cesium.Color.ORANGE.withAlpha(opacity), outlineColor: Cesium.Color.WHITE, outlineWidth: 2 },
-            label: { text: `${storm.name} · ${storm.classification?.regional_name || "cyclone"}`, font: "12px sans-serif", fillColor: Cesium.Color.WHITE.withAlpha(opacity), outlineColor: Cesium.Color.BLACK, outlineWidth: 2, style: Cesium.LabelStyle.FILL_AND_OUTLINE, pixelOffset: new Cesium.Cartesian2(0, -24) } });
+            label: { text: `${storm.name} · ${storm.classification?.regional_name || "cyclone"}`, font: "12px sans-serif", fillColor: Cesium.Color.WHITE.withAlpha(opacity), outlineColor: Cesium.Color.BLACK, outlineWidth: 2, style: Cesium.LabelStyle.FILL_AND_OUTLINE, pixelOffset: new Cesium.Cartesian2(0, -24) } } });
           scoped.entities.push(entity);
         });
       } else if (visualization.kind === "fire_detections") {
         (record.details?.detections || []).filter((item) => Number.isFinite(item.latitude) && Number.isFinite(item.longitude)).forEach((item, index) => {
-          const entity = dataSource.entities.add({ id: `history|${resource.snapshot_id}|fire|${index}`,
-            position: Cesium.Cartesian3.fromDegrees(item.longitude, item.latitude),
-            point: { pixelSize: 6, color: Cesium.Color.RED.withAlpha(opacity), outlineColor: Cesium.Color.YELLOW, outlineWidth: 1 } });
+          const entity = upsertGeographicEntity({ collection: dataSource.entities, layerId: `history-${resource.layer_id}`, markerId: `${resource.snapshot_id}|fire|${index}`, canonicalRegionId: activeRegionId, coordinates: item, type: "fire-point",
+            entityOptions: { point: { pixelSize: 6, color: Cesium.Color.RED.withAlpha(opacity), outlineColor: Cesium.Color.YELLOW, outlineWidth: 1 } } });
           scoped.entities.push(entity);
         });
       } else if (visualization.kind === "earthquake_point" && Number.isFinite(Number(visualization.latitude)) && Number.isFinite(Number(visualization.longitude))) {
-        const entity = dataSource.entities.add({ id: `history|${resource.snapshot_id}|earthquake`, name: record.title || resource.dataset,
-          position: Cesium.Cartesian3.fromDegrees(Number(visualization.longitude), Number(visualization.latitude)),
+        const entity = upsertGeographicEntity({ collection: dataSource.entities, layerId: `history-${resource.layer_id}`, markerId: `${resource.snapshot_id}|earthquake`, canonicalRegionId: activeRegionId, coordinates: visualization, type: "earthquake-point",
+          entityOptions: { name: record.title || resource.dataset,
           point: { pixelSize: Math.max(7, Math.min(20, 4 + (Number(record.magnitude) || 0) * 2)), color: Cesium.Color.YELLOW.withAlpha(opacity), outlineColor: Cesium.Color.WHITE, outlineWidth: 1 },
-          description: layerEntityDescription([["Mode", "REPLAY"], ["Magnitude", record.magnitude], ["Depth", `${record.depth_km ?? "—"} km`], ["Observation time", formatPcsTime(resource.observation_time)], ["Available to PCS", formatPcsTime(resource.available_to_pcs_at)], ["Reviewed status", record.reviewed_status]]) });
+          description: layerEntityDescription([["Mode", "REPLAY"], ["Magnitude", record.magnitude], ["Depth", `${record.depth_km ?? "—"} km`], ["Observation time", formatPcsTime(resource.observation_time)], ["Available to PCS", formatPcsTime(resource.available_to_pcs_at)], ["Reviewed status", record.reviewed_status]]) } });
         scoped.entities.push(entity);
       }
       this.replayScope.resourcesByLayer.set(resource.layer_id, scoped);
@@ -4343,7 +4565,78 @@ function initializeWeatherLayers() {
     });
   });
   selectors.regionalOpacityControls.forEach((control) => control.addEventListener("input", () => pcsSystemMode === "LIVE" ? earthLayerRuntime.updateOpacity(control.dataset.pcsOpacity, control.value) : earthLayerRuntime.updateReplayOpacity(control.dataset.pcsOpacity, control.value)));
+  installEarthViewerAuditApi();
   void checkWeatherProxyHealth();
+}
+
+function normalizedEarthRegionRegistry() {
+  return Object.values(regionConfig).map((region) => ({
+    regionId: region.id,
+    regionLabel: region.displayName,
+    regionType: region.group === "COUNTRY" ? (region.id === "global" ? "global" : "country") : region.group === "CRITICAL REGION" ? "regional-observation-profile" : "seasonal-profile",
+    canonicalProfileId: region.id,
+    aliases: [],
+    isFallback: false,
+    cameraProfileId: region.id,
+    camera: { longitude: region.lon, latitude: region.lat, altitudeMeters: region.altitude, headingRadians: 0, pitchRadians: -Math.PI / 2, rollRadians: 0 },
+    availableLayers: [...(region.suggestions || [])],
+  }));
+}
+
+function normalizedMarkerLayerRegistry() {
+  const configured = earthLayerRuntime ? [...earthLayerRuntime.registry.values()] : [...Object.values(REGIONAL_LAYER_CONFIG)];
+  const rendered = configured.filter((config) => ["station", "tropical_cyclones", "fire_detections", "regional_earthquakes", "regional_coastal"].includes(config.kind)).map((config) => ({
+    layerId: config.id,
+    layerLabel: config.label,
+    rendererType: config.kind === "tropical_cyclones" ? "cesium-native+kml" : "cesium-native",
+    providerId: config.record?.provider || config.record?.dataset || config.kind,
+    createsMarkers: true,
+    regional: config.kind.startsWith("regional_"),
+    requiresAuthorization: config.record?.runtime_status === "AUTH_REQUIRED",
+  }));
+  const automatic = [
+    ["sea-level", "Sea level · Honolulu station", "cesium-native", "NOAA CO-OPS", false, false],
+    ["co2", "Atmospheric CO₂ · Mauna Loa station", "cesium-native", "NOAA GML", false, false],
+    ["tropical-cyclones", "Tropical cyclones", "cesium-native+kml", "NOAA NHC", false, false],
+    ["wildfire", "Wildfire detections", "cesium-native", "NASA FIRMS", false, true],
+    ["visitor-locations", "Visitor locations", "cesium-native", "visitor-api", false, false],
+    ["visitor-heat", "Observation heat", "cesium-native", "visitor-api", false, false],
+    ["visitor-network", "Visitor network", "cesium-polyline", "visitor-api", false, false],
+    ["user-location", "User location", "cesium-native", "browser-geolocation", false, false],
+    ["moon-landing-sites", "Moon landing sites", "cesium-native", "static-official-registry", false, false],
+  ].map(([layerId, layerLabel, rendererType, providerId, regional, requiresAuthorization]) => ({ layerId, layerLabel, rendererType, providerId, createsMarkers: true, regional, requiresAuthorization }));
+  return [...new Map([...rendered, ...automatic].map((layer) => [layer.layerId, layer])).values()];
+}
+
+function installEarthViewerAuditApi() {
+  window.PCSEarthViewerAudit = Object.freeze({
+    regions: normalizedEarthRegionRegistry,
+    markerLayers: normalizedMarkerLayerRegistry,
+    state: () => ({
+      activeRegionId,
+      viewerMode: earthViewerMode,
+      viewerCount: document.querySelectorAll(".cesium-viewer").length,
+      cesiumCanvasCount: selectors.earthViewerShell?.querySelectorAll("canvas").length || 0,
+      camera: earthLayerRuntime?.captureCameraState() || null,
+      cameraPreservationResults: [...(earthLayerRuntime?.cameraPreservationResults || [])],
+      markers: geographicMarkers.debugSnapshot(cesiumViewer?.scene, Cesium),
+      activeLayers: [...activeEarthLayers.keys()],
+    }),
+    setRegion: async (regionId) => {
+      if (!regionConfig[regionId]) return false;
+      selectors.regionSelector.value = regionId;
+      selectors.regionSelector.dispatchEvent(new Event("change", { bubbles: true }));
+      return true;
+    },
+    setViewerMode: setEarthViewerMode,
+    setLayer: async (layerId, enabled) => {
+      const result = enabled ? await earthLayerRuntime.activate(layerId) : earthLayerRuntime.deactivate(layerId);
+      return { ok: result.ok, stale: Boolean(result.stale), error: result.error || null, timestamps: result.timestamps || null, cameraPreservation: result.cameraPreservation || null };
+    },
+    resetView: () => setCesiumCameraForRegion(activeRegionId),
+    rotateForAudit: (radians = Math.PI) => { cesiumViewer.camera.rotateRight(Number(radians)); cesiumViewer.scene.requestRender(); return true; },
+    zoomForAudit: (amountMeters = 100000) => { cesiumViewer.camera.zoomIn(Number(amountMeters)); cesiumViewer.scene.requestRender(); return true; },
+  });
 }
 
 function pcsStatusClass(status) {
@@ -4929,6 +5222,7 @@ async function initializeApp() {
   runSafe("language selector initialization", initializeLanguageSelector);
   renderClock();
   await runSafeAsync("Cesium globe initialization", initializeCesiumGlobe);
+  runSafe("Earth viewer toolbar initialization", initializeEarthViewerToolbar);
   runSafe("animation status initialization", refreshAnimationStatus);
   runSafe("placeholder selector initialization", initializePlaceholderSelectors);
   runSafe("framework controls initialization", initializeFrameworkControls);

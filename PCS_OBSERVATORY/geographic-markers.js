@@ -3,34 +3,67 @@
 
   const markerRegistry = new Map();
   let debugEnabled = false;
+  const HORIZON_SAFETY_THRESHOLD = 0.03;
+  const MARKER_VISUAL_OFFSETS_METERS = Object.freeze({
+    earthquake: 5000,
+    fire: 4000,
+    cyclone: 8000,
+    coastalStation: 2500,
+    weatherStation: 2500,
+    scienceStation: 2500,
+    visitor: 3500,
+    userLocation: 4000,
+    regionalObservation: 3500,
+    alert: 6000,
+    default: 3000,
+  });
 
   function normalizeCoordinates(input, options = {}) {
     let longitude;
     let latitude;
-    let height;
+    let observedAltitudeMeters;
+    let visualOffsetMeters;
 
     if (Array.isArray(input)) {
       if (options.coordinateOrder !== "geojson") {
         throw new TypeError("Array coordinates require coordinateOrder: geojson ([longitude, latitude, height]).");
       }
-      [longitude, latitude, height] = input;
+      [longitude, latitude, observedAltitudeMeters] = input;
     } else {
       longitude = input?.longitude ?? input?.lon ?? input?.lng;
       latitude = input?.latitude ?? input?.lat;
-      height = input?.height ?? input?.altitude ?? input?.altitude_m;
+      observedAltitudeMeters = input?.observedAltitudeMeters
+        ?? input?.observed_altitude_m
+        ?? input?.altitude_m
+        ?? input?.altitude
+        ?? input?.height;
+      visualOffsetMeters = input?.visualOffsetMeters ?? input?.visual_offset_m;
     }
+
+    const observed = observedAltitudeMeters === null || observedAltitudeMeters === undefined || observedAltitudeMeters === ""
+      ? Number(options.defaultObservedAltitudeMeters ?? options.defaultHeight ?? 0)
+      : Number(observedAltitudeMeters);
+    const visualOffset = visualOffsetMeters === null || visualOffsetMeters === undefined || visualOffsetMeters === ""
+      ? Number(options.visualOffsetMeters ?? 0)
+      : Number(visualOffsetMeters);
 
     return {
       longitude: Number(longitude),
       latitude: Number(latitude),
-      height: height === null || height === undefined || height === "" ? Number(options.defaultHeight ?? 0) : Number(height),
+      observedAltitudeMeters: observed,
+      visualOffsetMeters: visualOffset,
+      renderedHeight: observed + visualOffset,
+      // Backwards-compatible read-only rendering height for older callers and diagnostics.
+      height: observed + visualOffset,
     };
   }
 
   function validCoordinates(coordinates) {
     return Number.isFinite(coordinates.longitude)
       && Number.isFinite(coordinates.latitude)
-      && Number.isFinite(coordinates.height)
+      && Number.isFinite(coordinates.observedAltitudeMeters)
+      && Number.isFinite(coordinates.visualOffsetMeters)
+      && Number.isFinite(coordinates.renderedHeight)
       && coordinates.longitude >= -180
       && coordinates.longitude <= 180
       && coordinates.latitude >= -90
@@ -44,33 +77,48 @@
       type: context.type,
       longitude: coordinates.longitude,
       latitude: coordinates.latitude,
-      height: coordinates.height,
+      observedAltitudeMeters: coordinates.observedAltitudeMeters,
+      visualOffsetMeters: coordinates.visualOffsetMeters,
+      renderedHeight: coordinates.renderedHeight,
     });
   }
 
-  function markerKey(layerId, markerId) {
-    return `${String(layerId)}:${String(markerId)}`;
+  function markerKey(layerId, markerId, canonicalRegionId = "global") {
+    return `${String(canonicalRegionId || "global")}:${String(layerId)}:${String(markerId)}`;
   }
 
-  function createGeographicMarker({ layerId, markerId, longitude, latitude, height = 0, type = "point", label = null, metadata = null }, CesiumApi = global.Cesium) {
-    const coordinates = normalizeCoordinates({ longitude, latitude, height });
-    const context = { layerId, markerId, type };
+  function visualOffsetForCamera(cameraHeight, markerType = "default") {
+    const base = MARKER_VISUAL_OFFSETS_METERS[markerType] ?? MARKER_VISUAL_OFFSETS_METERS.default;
+    if (cameraHeight > 10000000) return base;
+    if (cameraHeight > 2000000) return Math.min(base, 3000);
+    if (cameraHeight > 500000) return Math.min(base, 1200);
+    return Math.min(base, 300);
+  }
+
+  function createGeographicMarker({ layerId, markerId, canonicalRegionId = "global", longitude, latitude, observedAltitudeMeters = 0, visualOffsetMeters = 0, visualCategory = "default", height, type = "point", label = null, metadata = null }, CesiumApi = global.Cesium) {
+    const coordinates = normalizeCoordinates({ longitude, latitude, observedAltitudeMeters: height ?? observedAltitudeMeters, visualOffsetMeters });
+    const context = { layerId, markerId, canonicalRegionId, type };
     if (!layerId || markerId === null || markerId === undefined || !validCoordinates(coordinates)) {
       warnInvalidCoordinates(context, coordinates);
       return null;
     }
     if (!CesiumApi?.Cartesian3?.fromDegrees) throw new Error("Cesium Cartesian3.fromDegrees is unavailable.");
     return {
-      id: markerKey(layerId, markerId),
+      id: markerKey(layerId, markerId, canonicalRegionId),
       layerId: String(layerId),
       markerId: String(markerId),
+      canonicalRegionId: String(canonicalRegionId || "global"),
       longitude: coordinates.longitude,
       latitude: coordinates.latitude,
-      height: coordinates.height,
+      observedAltitudeMeters: coordinates.observedAltitudeMeters,
+      visualOffsetMeters: coordinates.visualOffsetMeters,
+      visualCategory,
+      renderedHeight: coordinates.renderedHeight,
+      height: coordinates.renderedHeight,
       type,
       label,
       metadata,
-      cartesianPosition: CesiumApi.Cartesian3.fromDegrees(coordinates.longitude, coordinates.latitude, coordinates.height),
+      cartesianPosition: CesiumApi.Cartesian3.fromDegrees(coordinates.longitude, coordinates.latitude, coordinates.renderedHeight),
     };
   }
 
@@ -99,9 +147,13 @@
     collection,
     layerId,
     markerId,
+    canonicalRegionId = "global",
     longitude,
     latitude,
-    height = 0,
+    height,
+    observedAltitudeMeters = 0,
+    visualOffsetMeters = 0,
+    visualCategory = "default",
     type = "point",
     label = null,
     metadata = null,
@@ -109,7 +161,7 @@
     CesiumApi = global.Cesium,
   }) {
     if (!collection?.getById || !collection?.add) throw new TypeError("A Cesium EntityCollection is required.");
-    const marker = createGeographicMarker({ layerId, markerId, longitude, latitude, height, type, label, metadata }, CesiumApi);
+    const marker = createGeographicMarker({ layerId, markerId, canonicalRegionId, longitude, latitude, height, observedAltitudeMeters, visualOffsetMeters, visualCategory, type, label, metadata }, CesiumApi);
     if (!marker) return null;
 
     let entity = collection.getById(marker.id);
@@ -144,11 +196,14 @@
     return true;
   }
 
-  function reconcileLayer(layerId, activeMarkerIds) {
-    const activeKeys = new Set([...activeMarkerIds].map((id) => markerKey(layerId, id)));
+  function reconcileLayer(layerId, activeMarkerIds, canonicalRegionId = null) {
+    const activeKeys = new Set([...activeMarkerIds].map((id) => markerKey(layerId, id, canonicalRegionId || "global")));
     let removed = 0;
     [...markerRegistry.values()].forEach((record) => {
-      if (record.layerId === String(layerId) && !activeKeys.has(record.id) && removeMarker(record.id)) removed += 1;
+      if (record.layerId === String(layerId)
+        && (!canonicalRegionId || record.canonicalRegionId === String(canonicalRegionId))
+        && !activeKeys.has(record.id)
+        && removeMarker(record.id)) removed += 1;
     });
     return removed;
   }
@@ -163,7 +218,7 @@
       warnInvalidCoordinates({ layerId: options.layerId, markerId: options.markerId, type: options.type }, coordinates);
       return null;
     }
-    return CesiumApi.Cartesian3.fromDegrees(coordinates.longitude, coordinates.latitude, coordinates.height);
+    return CesiumApi.Cartesian3.fromDegrees(coordinates.longitude, coordinates.latitude, coordinates.renderedHeight);
   }
 
   function isPositionVisible(position, scene, CesiumApi = global.Cesium) {
@@ -173,7 +228,7 @@
       CesiumApi.Cartesian3.subtract(scene.camera.positionWC, position, new CesiumApi.Cartesian3()),
       new CesiumApi.Cartesian3(),
     );
-    return CesiumApi.Cartesian3.dot(normal, cameraDirection) > 0;
+    return CesiumApi.Cartesian3.dot(normal, cameraDirection) > HORIZON_SAFETY_THRESHOLD;
   }
 
   function canvasVisibility(position, scene, CesiumApi = global.Cesium) {
@@ -230,9 +285,12 @@
       return {
         layerId: record.layerId,
         markerId: record.markerId,
+        canonicalRegionId: record.canonicalRegionId,
         longitude: record.longitude,
         latitude: record.latitude,
-        height: record.height,
+        observedAltitudeMeters: record.observedAltitudeMeters,
+        visualOffsetMeters: record.visualOffsetMeters,
+        renderedHeight: record.renderedHeight,
         markerImplementationType: record.type,
         rendererType: record.rendererType,
         frontFacing: visibility.frontFacing,
@@ -252,7 +310,7 @@
     const rows = [];
     markerRegistry.forEach((record) => {
       if (record.rendererType !== "cesium-native") return;
-      const expected = CesiumApi.Cartesian3.fromDegrees(record.longitude, record.latitude, record.height);
+      const expected = CesiumApi.Cartesian3.fromDegrees(record.longitude, record.latitude, record.renderedHeight);
       const actual = record.entity?.position?.getValue ? record.entity.position.getValue(time ?? CesiumApi.JulianDate?.now?.()) : record.entity?.position;
       const errorMeters = actual ? CesiumApi.Cartesian3.distance(expected, actual) : Number.POSITIVE_INFINITY;
       rows.push({ id: record.id, layerId: record.layerId, errorMeters });
@@ -265,6 +323,35 @@
     debugEnabled = Boolean(enabled);
   }
 
+  function updateCesiumVisibility(scene, CesiumApi = global.Cesium) {
+    let updated = 0;
+    markerRegistry.forEach((record) => {
+      if (record.rendererType !== "cesium-native" || !record.entity) return;
+      const visible = isPositionVisible(record.cartesianPosition, scene, CesiumApi);
+      if (record.entity.show !== visible) {
+        record.entity.show = visible;
+        updated += 1;
+      }
+    });
+    return updated;
+  }
+
+  function updateVisualOffsetsForCamera(cameraHeight, CesiumApi = global.Cesium) {
+    let updated = 0;
+    markerRegistry.forEach((record) => {
+      if (record.rendererType !== "cesium-native") return;
+      const nextOffset = visualOffsetForCamera(cameraHeight, record.visualCategory);
+      if (nextOffset === record.visualOffsetMeters) return;
+      record.visualOffsetMeters = nextOffset;
+      record.renderedHeight = record.observedAltitudeMeters + nextOffset;
+      record.height = record.renderedHeight;
+      record.cartesianPosition = CesiumApi.Cartesian3.fromDegrees(record.longitude, record.latitude, record.renderedHeight);
+      record.entity.position = constantPosition(CesiumApi, record.cartesianPosition);
+      updated += 1;
+    });
+    return updated;
+  }
+
   global.PCSGeographicMarkers = Object.freeze({
     createGeographicMarker,
     createHtmlOverlayController,
@@ -273,13 +360,17 @@
     isPositionVisible,
     logDebugSnapshot,
     markerKey,
+    MARKER_VISUAL_OFFSETS_METERS,
     normalizeCoordinates,
     reconcileLayer,
     removeLayer,
     removeMarker,
     setDebugEnabled,
     upsertCesiumEntity,
+    updateCesiumVisibility,
+    updateVisualOffsetsForCamera,
     validCoordinates,
+    visualOffsetForCamera,
     verifyNoDrift,
   });
 })(typeof window === "undefined" ? globalThis : window);

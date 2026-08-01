@@ -38,8 +38,8 @@ vm.runInNewContext(await readFile(new URL("./geographic-markers.js", import.meta
 const markers = context.PCSGeographicMarkers;
 
 test("normalizes object aliases and preserves GeoJSON longitude-latitude order", () => {
-  assert.deepEqual({ ...markers.normalizeCoordinates({ lng: "121.5", lat: "23.5", altitude: "12" }) }, { longitude: 121.5, latitude: 23.5, height: 12 });
-  assert.deepEqual({ ...markers.normalizeCoordinates([170.2, -43.5, 5], { coordinateOrder: "geojson" }) }, { longitude: 170.2, latitude: -43.5, height: 5 });
+  assert.deepEqual({ ...markers.normalizeCoordinates({ lng: "121.5", lat: "23.5", altitude: "12", visualOffsetMeters: 2500 }) }, { longitude: 121.5, latitude: 23.5, observedAltitudeMeters: 12, visualOffsetMeters: 2500, renderedHeight: 2512, height: 2512 });
+  assert.deepEqual({ ...markers.normalizeCoordinates([170.2, -43.5, 5], { coordinateOrder: "geojson" }) }, { longitude: 170.2, latitude: -43.5, observedAltitudeMeters: 5, visualOffsetMeters: 0, renderedHeight: 5, height: 5 });
   assert.throws(() => markers.normalizeCoordinates([23.5, 121.5]), /coordinateOrder: geojson/);
 });
 
@@ -69,10 +69,17 @@ test("camera movement cannot alter stored geographic Cartesian positions", () =>
   simulatedCamera.zoom = 12;
   const after = entity.position.getValue();
   assert.deepEqual(after, before);
-  assert.equal(markers.verifyNoDrift({ toleranceMeters: 0.001, CesiumApi: Cesium }).find((row) => row.id === "test-drift:nz").errorMeters, 0);
+  assert.equal(markers.verifyNoDrift({ toleranceMeters: 0.001, CesiumApi: Cesium }).find((row) => row.id === "global:test-drift:nz").errorMeters, 0);
   entity.position = new ConstantPositionProperty(new Cartesian3());
-  assert.throws(() => markers.verifyNoDrift({ toleranceMeters: 0.001, CesiumApi: Cesium }), /Marker drift detected: test-drift:nz/);
+  assert.throws(() => markers.verifyNoDrift({ toleranceMeters: 0.001, CesiumApi: Cesium }), /Marker drift detected: global:test-drift:nz/);
   markers.removeLayer("test-drift");
+});
+
+test("stable keys include canonical region and visual offsets use bounded camera bands", () => {
+  assert.equal(markers.markerKey("coastal", "station-1", "taiwan"), "taiwan:coastal:station-1");
+  assert.equal(markers.visualOffsetForCamera(20_000_000, "cyclone"), 8000);
+  assert.equal(markers.visualOffsetForCamera(1_000_000, "cyclone"), 1200);
+  assert.equal(markers.visualOffsetForCamera(100_000, "cyclone"), 300);
 });
 
 test("one HTML overlay controller uses one postRender listener and cleans it up", () => {
@@ -92,6 +99,20 @@ test("one HTML overlay controller uses one postRender listener and cleans it up"
   controller.destroy();
   assert.equal(removed, 1);
   assert.equal(element.removed, true);
+});
+
+test("one camera-settled visibility update hides rear-side Cesium markers before the horizon", () => {
+  const collection = new EntityCollection();
+  const front = markers.upsertCesiumEntity({ collection, layerId: "visibility", markerId: "front", longitude: 10, latitude: 10, CesiumApi: Cesium });
+  const rear = markers.upsertCesiumEntity({ collection, layerId: "visibility", markerId: "rear", longitude: -10, latitude: -10, CesiumApi: Cesium });
+  const scene = {
+    camera: { positionWC: new Cartesian3(500000, 500000, 500000) },
+    globe: { ellipsoid: { geodeticSurfaceNormal: (position, result) => Cartesian3.normalize(position, result) } },
+  };
+  markers.updateCesiumVisibility(scene, Cesium);
+  assert.equal(front.show, true);
+  assert.equal(rear.show, false);
+  markers.removeLayer("visibility");
 });
 
 test("source audit routes geographic renderers through the shared pipeline", async () => {

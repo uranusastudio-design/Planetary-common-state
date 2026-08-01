@@ -207,7 +207,15 @@
               </div>
               <span class="status-pill status-cyan">Visualization only</span>
             </div>
-            <div id="cesium-globe" class="cesium-globe" aria-label="CesiumJS 3D Earth view"></div>
+            <div id="pcs-earth-viewer-shell" class="pcs-earth-viewer-shell" data-earth-viewer-mode="normal">
+              <div class="pcs-earth-toolbar" role="toolbar" aria-label="Earth viewer controls">
+                <button type="button" data-earth-viewer-action="reset" title="Reset to the active region view" aria-label="Reset Earth view">Reset View</button>
+                <button type="button" data-earth-viewer-action="pin" title="Keep the Earth viewer visible while scrolling" aria-label="Pin Earth viewer">Pin</button>
+                <button type="button" data-earth-viewer-action="restore" title="Restore the Earth viewer to the dashboard" aria-label="Restore Earth viewer" hidden>Restore</button>
+                <button type="button" data-earth-viewer-action="expand" title="Expand the Earth viewer" aria-label="Expand Earth viewer">Expand</button>
+              </div>
+              <div id="cesium-globe" class="cesium-globe" aria-label="CesiumJS 3D Earth view"></div>
+            </div>
             <p id="cesium-fallback" class="cesium-fallback" role="status" aria-live="polite">
               Loading 3D Earth view.
             </p>
