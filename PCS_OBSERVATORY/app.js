@@ -1875,6 +1875,7 @@ async function initializeCesiumGlobe() {
     });
 
     await setEarthImageryMode();
+    window.PCSDeepSpaceManager?.initialize({ viewer: cesiumViewer, host: selectors.cesiumGlobe });
   } catch (error) {
     showCesiumFallback("3D Earth unavailable. PCS data display remains operational.");
   }
