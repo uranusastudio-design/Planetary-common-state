@@ -89,6 +89,14 @@ test("Phase 3 interface vocabulary is complete in all four existing languages", 
   assert.doesNotMatch(manager, /distanceKpc\?\?0/);
 });
 
+test("runtime translation rerenders stable scale contexts instead of caching localized Phase 3 titles", () => {
+  assert.match(manager, /function renderScaleTitle\(\)/);
+  assert.match(manager, /scaleContext==="milky-way"[\s\S]*p3\(\)\.milkyWay[\s\S]*p3\(\)\.galacticCenter/);
+  assert.match(manager, /scaleContext==="local-group"[\s\S]*p3\(\)\.localGroup/);
+  assert.match(manager, /function translate\(\)[\s\S]*renderScaleTitle\(\)/);
+  assert.match(manager, /phase3Search\.placeholder=p3\(\)\.searchLabel/);
+});
+
 test("Phase 3 scales use the existing Deep Space state machine and cleanup path", () => {
   assert.match(manager, /let scaleContext="solar"/);
   for (const context of ["nearby", "milky-way", "local-group", "solar"]) assert.ok(manager.includes(`setScaleControls("${context}")`));

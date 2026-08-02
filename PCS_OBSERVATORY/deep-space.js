@@ -72,13 +72,19 @@
       </aside><div class="deep-space-error" data-ds-error hidden role="alert"><p data-ds-error-message></p><div class="deep-space-row"><button data-ds-retry data-near="retry"></button><button data-ds-reduced data-near="reduced"></button><button data-ds-error-solar data-near="returnSolar"></button><button data-ds-error-close data-near="close"></button></div></div>
     </section>`;
   }
+  function renderScaleTitle(){
+    if(scaleContext==="nearby")q("[data-ds-level]").textContent=`Level ${4+Nearby.CONFIG.findIndex(c=>c.id===nearbyTier)} — ${nl().neighborhood} ${nearbyTier.replace("pc"," pc")}`;
+    else if(scaleContext==="milky-way")q("[data-ds-level]").textContent=`Level 8 — ${p3().milkyWay} / ${p3().galacticCenter}`;
+    else if(scaleContext==="local-group")q("[data-ds-level]").textContent=`Level 9 — ${p3().localGroup}`;
+  }
   function translate(){
     if(!overlay)return; const c=l(); q("#deep-space-title").textContent=c.title; q("[data-ds-close]").textContent=c.close;
     overlay.querySelectorAll("[data-copy]").forEach((el)=>el.textContent=c[el.dataset.copy]);
     q('[data-mode="exhibition"]').textContent=c.exhibition;q('[data-mode="scientific"]').textContent=c.scientific;q("[data-ds-play]").textContent=paused?c.play:c.pause;q("[data-ds-now]").textContent=c.now;q("[data-ds-phase2]").textContent=nearbyActive?`${nl().frame}: ${nearbySelected?.coordinateFrame||"GCNS heliocentric Galactic Cartesian"}`:c.phase2;q("[data-ds-nearby]").textContent=nl().nearby;q("[data-ds-phase3]").textContent=nl().phase3;overlay.querySelectorAll("[data-near]").forEach(el=>el.textContent=nl()[el.dataset.near]);
     overlay.querySelectorAll("[data-ds-later]").forEach((el)=>el.textContent=c.later);
-    overlay.querySelectorAll("[data-p3]").forEach((el)=>el.textContent=p3()[el.dataset.p3]);
-    q("[data-ds-phase3-search-input]").setAttribute("aria-label",p3().searchLabel);
+    overlay.querySelectorAll("[data-p3]").forEach((el)=>{const text=p3()[el.dataset.p3];el.textContent=text;if(el.matches("button")){el.title=text;el.setAttribute("aria-label",text);}});
+    const phase3Search=q("[data-ds-phase3-search-input]");phase3Search.placeholder=p3().searchLabel;phase3Search.setAttribute("aria-label",p3().searchLabel);
+    renderScaleTitle();
     [["[data-ds-reset]","reset"],["[data-ds-solar]","solar"],["[data-ds-earth]","earth"],["[data-ds-follow]","follow"],["[data-ds-top]","top"],["[data-ds-inclined]","inclined"]].forEach(([s,k])=>q(s).textContent=c[k]);
     q("[data-ds-collapse]").textContent=q("[data-ds-controls]").classList.contains("is-collapsed")?c.expand:c.collapse;
     const connectivity=CONNECTIVITY[global.PCSI18n?.getLanguage?.()]||CONNECTIVITY.en;q("[data-ds-connectivity]").textContent=navigator.onLine?connectivity.online:connectivity.offline;q("[data-ds-connectivity]").classList.toggle("is-offline",!navigator.onLine);
