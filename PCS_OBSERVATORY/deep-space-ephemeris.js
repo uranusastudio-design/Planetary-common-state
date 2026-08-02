@@ -73,5 +73,15 @@
     return Object.freeze({ bodyId,epoch:date.toISOString(),positionAu:Object.freeze([radiusAu*Math.cos(phase),radiusAu*Math.sin(phase)*Math.cos(inc),radiusAu*Math.sin(phase)*Math.sin(inc)]),dataStatus:"approximate",source:body.orbitalDataSource,notice:body.uncertainty });
   }
 
-  global.PCSDeepSpaceEphemeris = Object.freeze({ AU_KM, getBodyState, getCachedEphemeris, getFallbackOrbitalState, getSatelliteRelativeState });
+  function sampleOrbit(bodyId, centerEpoch, options={}) {
+    const body=registry[bodyId],date=validEpoch(centerEpoch);
+    if (!body?.orbit || !body.orbitalPeriodDays) return Object.freeze([]);
+    const density=Math.max(24,Math.min(720,Number(options.sampleDensity)||180));
+    const periodDays=Math.abs(body.orbitalPeriodDays),pastDays=Number.isFinite(options.pastDays)?Math.max(0,options.pastDays):periodDays/2,futureDays=Number.isFinite(options.futureDays)?Math.max(0,options.futureDays):periodDays/2;
+    const span=Math.max(pastDays+futureDays,periodDays/density),samples=[];
+    for(let index=0;index<=density;index+=1){const epoch=new Date(date.getTime()+(-pastDays+span*index/density)*DAY_MS);const state=body.type==="natural-satellite"?getSatelliteRelativeState(bodyId,epoch):getBodyState(bodyId,epoch);if(state)samples.push(Object.freeze({...state,relativeTo:body.parentBodyId||null}));}
+    return Object.freeze(samples);
+  }
+
+  global.PCSDeepSpaceEphemeris = Object.freeze({ AU_KM, getBodyState, getCachedEphemeris, getFallbackOrbitalState, getSatelliteRelativeState, sampleOrbit });
 })(window);

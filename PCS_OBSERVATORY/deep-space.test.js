@@ -56,6 +56,48 @@ test("the cache is an explicit JPL vector and out-of-window epochs fall back hon
   assert.equal(fallback.dataStatus, "approximate");
 });
 
+test("all planet and representative-satellite orbits expose the precision contract", () => {
+  const { PCSDeepSpaceRegistry: registry } = loadDataRuntime();
+  for (const id of [...registry.PLANET_IDS, ...registry.SATELLITE_IDS]) {
+    const body = registry.BODY_REGISTRY[id];
+    assert.equal(body.orbit.objectId, id);
+    assert.equal(body.orbit.parentBodyId, body.parentBodyId);
+    assert.ok(body.orbit.dataSource);
+    assert.ok(body.orbit.epoch);
+    assert.ok(body.orbit.coordinateFrame);
+    assert.ok(body.orbit.validTimeRange);
+    assert.ok(body.orbit.sampleIntervalDays > 0);
+    assert.equal(body.orbit.precisionStatus, "Orbital-element approximation");
+    assert.equal(body.orbit.renderStatus, body.type === "planet" ? "available" : "available when the parent planetary system is focused");
+    assert.ok(body.orbit.fallbackStatus);
+    assert.ok(body.orbit.periapsisKm > 0);
+    assert.ok(body.orbit.apoapsisKm >= body.orbit.periapsisKm);
+    assert.ok(Number.isFinite(body.orbit.inclinationDeg));
+  }
+});
+
+test("orbit sampling follows the active epoch and keeps satellites parent-relative", () => {
+  const runtime = loadDataRuntime();
+  const planet = runtime.PCSDeepSpaceEphemeris.sampleOrbit("earth", "2026-08-02T00:00:00Z", {sampleDensity:36});
+  const moon = runtime.PCSDeepSpaceEphemeris.sampleOrbit("moon", "2026-08-02T00:00:00Z", {sampleDensity:36});
+  assert.equal(planet.length, 37);
+  assert.equal(moon.length, 37);
+  assert.equal(planet[0].relativeTo, "sun");
+  assert.equal(moon[0].relativeTo, "earth");
+  assert.ok(planet.every(sample => sample.positionAu.every(Number.isFinite)));
+  assert.ok(moon.every(sample => sample.positionAu.every(Number.isFinite)));
+  assert.equal(moon[0].dataStatus, "approximate");
+  assert.match(moon[0].notice, /not a navigation ephemeris/i);
+});
+
+test("solar rendering creates planet and focused-satellite orbit entities without another renderer", () => {
+  for (const token of ["function addOrbit(entry,parentPosition)","satelliteOrbitPoints",'id:`deep-space-orbit-${entry.id}`',"precisionStatus:entry.orbit.precisionStatus","fallbackStatus:entry.orbit.fallbackStatus"]) assert.ok(manager.includes(token), token);
+  assert.match(manager, /if\(showOrbits\)addOrbit\(satellite,parentPosition\)/);
+  assert.match(manager, /entry\.id===selected\?3:1/);
+  assert.doesNotMatch(manager, /else\{renderAll\(\);resetView\(\);\}/);
+  assert.doesNotMatch(manager, /new Cesium\.Viewer|requestAnimationFrame|setInterval/);
+});
+
 test("Phase 2 Gaia and Phase 3 catalog layers share one manager while Phase 4 remains unavailable", () => {
   assert.match(manager, /PCSNearbyStars/);
   assert.match(manager, /PCSMilkyWay/);

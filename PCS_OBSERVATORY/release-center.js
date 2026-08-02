@@ -57,7 +57,7 @@
   function renderRoadmap() {
     const c = copy();
     const symbols = {completed:"✔","in-progress":"▶",planned:"○",blocked:"!",deferred:"◇"};
-    return `<h3>${c.currentProgress}</h3><p class="pcs-release-notice">Phase 1、2、3 completed · Phase 4 planned. No numeric percentage is asserted.</p><ol class="pcs-roadmap">${registry.roadmap.map(item => `<li data-status="${escapeHtml(item.status)}"><span class="pcs-roadmap-symbol">${symbols[item.status]}</span><div><strong>${escapeHtml(item.title)}</strong><span>${escapeHtml(item.detail)}</span></div><span class="pcs-release-status" data-status="${escapeHtml(item.status)}">${escapeHtml(statusText(item.status))}</span></li>`).join("")}</ol>`;
+    return `<h3>${c.currentProgress}</h3><p class="pcs-release-notice">${escapeHtml(registry.currentVersion)} Foundation ${escapeHtml(statusText("in-progress"))} · Phase 4A–4F ${escapeHtml(statusText("planned"))}. No numeric percentage is asserted.</p><ol class="pcs-roadmap">${registry.roadmap.map(item => `<li data-status="${escapeHtml(item.status)}"><span class="pcs-roadmap-symbol">${symbols[item.status]}</span><div><strong>${escapeHtml(item.title)}</strong><span>${escapeHtml(item.detail)}</span></div><span class="pcs-release-status" data-status="${escapeHtml(item.status)}">${escapeHtml(statusText(item.status))}</span></li>`).join("")}</ol>`;
   }
   function renderNotes(release) {
     const c = copy();
@@ -76,7 +76,7 @@
     coverage.innerHTML = coverageLabels.map(label => `<li>${escapeHtml(label)}</li>`).join("");
     coverage.setAttribute("aria-label", c.scientificCoverage);
     const phase4 = registry.roadmap.find(item => item.id === "deep-space-phase-4");
-    nextVersion.textContent = `${c.plannedVersion}: ${registry.plannedVersion} — ${statusText(phase4.status)}`;
+    nextVersion.textContent = registry.currentStatus === "stable" ? `${c.plannedVersion}: ${registry.plannedVersion} — ${statusText(phase4.status)}` : `${registry.currentVersion} — ${c.inProgress}`;
     openObservatory.textContent = c.openObservatory;
     openObservatory.setAttribute("aria-label", c.openObservatory);
     releaseNotes.textContent = c.releaseNotes;

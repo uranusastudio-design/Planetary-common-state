@@ -23,15 +23,18 @@ test("registry schema, version, date, statuses and ordering are valid", () => {
   const versions = registry.releases.map(release => release.version);
   assert.equal(new Set(versions).size, versions.length);
   assert.ok(versions.includes(registry.currentVersion));
+  assert.equal(registry.stableVersion, "v2.1.0");
   assert.equal(registry.plannedVersion, "v2.2.0");
-  assert.equal(registry.currentPhase, "deep-space-phase-3");
+  assert.equal(registry.currentVersion, "v2.2.0");
+  assert.equal(registry.currentStatus, "preview");
+  assert.equal(registry.currentPhase, "v2.2.0-foundation");
   for (const release of registry.releases) {
     assert.match(release.version, /^v\d+\.\d+\.\d+$/);
     assert.equal(new Date(`${release.date}T00:00:00Z`).toISOString().slice(0, 10), release.date);
     assert.ok(["stable", "preview", "archived"].includes(release.status));
   }
-  assert.deepEqual(registry.roadmap.slice(0, 4).map(item => item.id), ["deep-space-phase-1", "deep-space-phase-2", "deep-space-phase-3", "deep-space-phase-4"]);
-  assert.equal(registry.roadmap.filter(item => item.status === "in-progress").length, 0);
+  assert.deepEqual(registry.roadmap.slice(0, 5).map(item => item.id), ["deep-space-phase-1", "deep-space-phase-2", "deep-space-phase-3", "v2.2.0-foundation", "deep-space-phase-4"]);
+  assert.deepEqual(registry.roadmap.filter(item => item.status === "in-progress").map(item=>item.id), ["v2.2.0-foundation"]);
   assert.ok(registry.roadmap.every(item => validRoadmapStatuses.has(item.status)));
 });
 
@@ -51,9 +54,11 @@ test("commits, compare URLs and documentation are verifiable and deployable", as
 
 test("honest milestone boundaries and known issues are preserved", () => {
   const phase3 = registry.roadmap.find(item => item.id === "deep-space-phase-3");
+  const foundation = registry.roadmap.find(item => item.id === "v2.2.0-foundation");
   const phase4 = registry.roadmap.find(item => item.id === "deep-space-phase-4");
   const titania = registry.roadmap.find(item => item.id === "titania-texture");
   assert.equal(phase3.status, "completed");
+  assert.equal(foundation.status, "in-progress");
   assert.equal(phase4.status, "planned");
   assert.equal(titania.status, "deferred");
   assert.ok(registry.releases[0].knownIssues.some(issue => issue.includes("Titania")));
