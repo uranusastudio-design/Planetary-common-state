@@ -1,6 +1,6 @@
 # Pointer-Anchored Navigation
 
-Status: **In Development**
+Status: **Functionally completed; physical-gesture acceptance pending**
 
 ## Interaction contract
 

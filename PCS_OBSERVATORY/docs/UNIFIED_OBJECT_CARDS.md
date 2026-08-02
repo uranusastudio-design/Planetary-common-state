@@ -1,6 +1,6 @@
 # Unified Deep Space Object Cards
 
-Status: **In Development**
+Status: **Functionally completed; Foundation Release Audit pending**
 
 ## Model contract
 
