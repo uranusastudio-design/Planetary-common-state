@@ -1,2 +1,5 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Preserve byte-exact upstream catalog downloads and their recorded checksums.
+PCS_OBSERVATORY/assets/deep-space/phase-3/raw/*.tsv -text -diff

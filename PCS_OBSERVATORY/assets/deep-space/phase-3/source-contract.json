@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "buildDate": "2026-08-02",
+  "scientificStates": ["catalog-observation", "observation-based-reconstruction", "representative-visualization"],
+  "coordinateFrames": {
+    "milkyWay": {
+      "id": "pcs-galactocentric-reid2019-v1",
+      "units": "kpc",
+      "handedness": "right-handed",
+      "galcenDistanceKpc": 8.15,
+      "zSunKpc": 0.0208,
+      "sunPositionKpc": [-8.15, 0.0, 0.0208],
+      "axes": {"x": "Sun projection toward Galactic center", "y": "Galactic longitude l=90 deg", "z": "North Galactic Pole"}
+    },
+    "localGroup": {
+      "id": "heliocentric-galactic-cartesian-v1",
+      "units": "kpc",
+      "origin": "Sun",
+      "note": "No precise Local Group barycenter is asserted. Catalog distances remain heliocentric."
+    }
+  },
+  "datasets": [
+    {
+      "id": "reid2019-hmsfr",
+      "catalog": "VizieR J/ApJ/885/131/table1",
+      "recordsExpected": 199,
+      "doi": "10.26093/cds/vizier.18850131",
+      "paperDoi": "10.3847/1538-4357/ab4a11",
+      "status": "catalog-observation",
+      "purpose": "VLBI parallax anchors and published spiral-arm membership"
+    },
+    {
+      "id": "reid2019-spiral-reconstruction",
+      "paperDoi": "10.3847/1538-4357/ab4a11",
+      "status": "observation-based-reconstruction",
+      "purpose": "Four-arm model, arm segments, bar and disk context; never described as an external photograph"
+    },
+    {
+      "id": "mcconnachie2012-local-group",
+      "catalog": "VizieR J/AJ/144/4/catalog",
+      "recordsExpected": 102,
+      "doi": "10.26093/cds/vizier.51440004",
+      "paperBibcode": "2012AJ....144....4M",
+      "status": "catalog-observation",
+      "purpose": "Observed Local Group and nearby dwarf-galaxy properties"
+    },
+    {
+      "id": "sgr-a-star",
+      "catalog": "SIMBAD NAME Sgr A*",
+      "reference": "2011AJ....142...35P",
+      "status": "catalog-observation",
+      "purpose": "Galactic-center marker; ICRS J2000 radio position"
+    },
+    {
+      "id": "gaia-dr3-density",
+      "catalog": "Gaia DR3",
+      "status": "representative-visualization",
+      "purpose": "Bounded density context only; no full Gaia catalog deployment in Phase 3"
+    }
+  ],
+  "boundaries": [
+    "No random stars, galaxies, spiral arms or nebulae",
+    "No claim that the external Milky Way view is a photograph",
+    "No Phase 4, Cosmic Web, Observable Universe or CMB",
+    "No Titania modification"
+  ]
+}

@@ -1,0 +1,10 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import {readFile} from "node:fs/promises";
+const source=await readFile(new URL("./local-group-layer.js",import.meta.url),"utf8");
+const registry=JSON.parse(await readFile(new URL("./assets/deep-space/phase-3/local-group-galaxies.json",import.meta.url),"utf8"));
+test("Local Group registry retains all 102 catalog rows",()=>{assert.equal(registry.records.length,102);assert.equal(registry.recordCount,102);});
+test("Milky Way, M31, M33, LMC and SMC are explicit searchable landmarks",()=>{for(const token of ["Milky Way","Andromeda","Triangulum","LMC","SMC"])assert.ok(source.includes(token));});
+test("catalog 3D positions and distance intervals contain no invented barycenter",()=>{assert.match(source,/heliocentricGalacticCartesianKpc/);assert.match(source,/distanceErrorMinusKpc/);assert.match(source,/distanceErrorPlusKpc/);assert.doesNotMatch(source,/barycenter|Math\.random/);});
+test("visual marker pixels are separate from physical diameter",()=>{assert.match(source,/visualMarkerPixels/);assert.doesNotMatch(source,/physicalDiameterKpc.*pixelSize|pixelSize.*physicalDiameterKpc/);});
+test("Local Group layer reuses primitive collections and has full lifecycle",()=>{for(const token of ["PointPrimitiveCollection","PolylineCollection","LabelCollection","load(","show()","hide()","unload()","dispose()"] )assert.ok(source.includes(token));assert.doesNotMatch(source,/new Cesium\.Viewer|createElement\(["']canvas|requestAnimationFrame/);});

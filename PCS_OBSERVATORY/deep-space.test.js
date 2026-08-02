@@ -56,11 +56,14 @@ test("the cache is an explicit JPL vector and out-of-window epochs fall back hon
   assert.equal(fallback.dataStatus, "approximate");
 });
 
-test("Phase 2 uses the local Gaia layer while later-phase providers return no fabricated objects", () => {
+test("Phase 2 Gaia and Phase 3 catalog layers share one manager while Phase 4 remains unavailable", () => {
   assert.match(manager, /PCSNearbyStars/);
-  assert.match(manager, /Milky Way — Available in Phase 3/);
+  assert.match(manager, /PCSMilkyWay/);
+  assert.match(manager, /PCSLocalGroup/);
+  assert.match(manager, /scaleContext="solar"/);
+  assert.match(manager, /phase4:"Cosmic Web \/ Observable Universe — Available in Phase 4"/);
   assert.match(manager, /smallBodyProvider=Object\.freeze\(\{status:"unavailable",getObjects:\(\)=>Promise\.resolve\(\[\]\)/);
-  assert.doesNotMatch(manager, /Local Group|Cosmic Web|Sagittarius A|Andromeda/);
+  assert.doesNotMatch(manager, /Math\.random|cosmicWebLayer|observableUniverseLayer/);
   assert.doesNotMatch(manager, /new Cesium\.Viewer|requestAnimationFrame|new Worker/);
 });
 
@@ -75,4 +78,21 @@ test("overlay is keyboard-modal, mobile-safe, and uses the existing language sta
   assert.match(manager, /pcs:languagechange/);
   assert.match(manager, /global\.PCSI18n\?\.getLanguage/);
   assert.match(html, /deep-space\.css/);
+});
+
+test("Phase 3 interface vocabulary is complete in all four existing languages", () => {
+  const phase3Copy = manager.match(/const PHASE3_COPY=Object\.freeze\(\{([\s\S]*?)\n  \}\);/)?.[1] || "";
+  for (const key of ["milkyWay","galacticCenter","sagittarius","galacticDisk","galacticBar","spiralArms","magellanic","localGroup","catalogObservation","observationReconstruction","representative","uncertainty","reduced","retry","returnNearby","phase4"]) {
+    assert.equal((phase3Copy.match(new RegExp(`${key}:`, "g")) || []).length, 4, `${key} must exist in four Phase 3 dictionaries`);
+  }
+  assert.match(manager, /data-ds-return-nearby/);
+  assert.doesNotMatch(manager, /distanceKpc\?\?0/);
+});
+
+test("Phase 3 scales use the existing Deep Space state machine and cleanup path", () => {
+  assert.match(manager, /let scaleContext="solar"/);
+  for (const context of ["nearby", "milky-way", "local-group", "solar"]) assert.ok(manager.includes(`setScaleControls("${context}")`));
+  assert.match(manager, /function clearScaleLayers\(\)\{nearbyLayer\?\.unload\(\);milkyWayLayer\?\.unload\(\);localGroupLayer\?\.unload\(\)/);
+  assert.match(manager, /function close\(\)[\s\S]*milkyWayLayer\?\.dispose\(\)[\s\S]*localGroupLayer\?\.dispose\(\)/);
+  assert.doesNotMatch(manager, /new Cesium\.Viewer|createElement\(["']canvas|requestAnimationFrame/);
 });
