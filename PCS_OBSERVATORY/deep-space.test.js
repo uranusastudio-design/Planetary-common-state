@@ -7,6 +7,7 @@ const root = __dirname;
 const read = (name) => fs.readFileSync(`${root}/${name}`, "utf8");
 const app = read("app.js");
 const manager = read("deep-space.js");
+const objectCard = read("unified-object-card.js");
 const html = read("index.html");
 
 function loadDataRuntime() {
@@ -111,7 +112,7 @@ test("Phase 2 Gaia and Phase 3 catalog layers share one manager while Phase 4 re
 
 test("Titania assets and metadata are not implemented or rewritten by Deep Space", () => {
   assert.doesNotMatch(manager, /titania-global-1440\.jpg|mission-imagery-registry/);
-  assert.match(manager, /Known issue: mission texture has incomplete lower-hemisphere coverage/);
+  assert.match(objectCard, /Known issue: mission texture has incomplete lower-hemisphere coverage/);
 });
 
 test("overlay is keyboard-modal, mobile-safe, and uses the existing language state", () => {
