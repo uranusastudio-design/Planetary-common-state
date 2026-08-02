@@ -87,6 +87,7 @@ test("four languages contain every release-center interface term", () => {
 
 test("release banner derives version, status, coverage, and next state from the release registry", () => {
   assert.match(center, /registry\.currentStatus === "stable"/);
+  assert.match(center, /status === "in-progress" \|\| status === "preview"/);
   assert.match(center, /registry\.plannedVersion/);
   assert.match(center, /item\.id === "deep-space-phase-4"/);
   assert.match(center, /coverageLabels/);
