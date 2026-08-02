@@ -1,0 +1,36 @@
+import process from "node:process";
+
+const port=Number(process.env.PCS_CDP_PORT||9224),url=process.env.PCS_TEST_URL||"http://127.0.0.1:18765/PCS_OBSERVATORY/?v=2.2.0-pointer-navigation";
+const target=await fetch(`http://127.0.0.1:${port}/json/new?${encodeURIComponent(url)}`,{method:"PUT"}).then(response=>response.json()),socket=new WebSocket(target.webSocketDebuggerUrl);
+await new Promise((resolve,reject)=>{socket.addEventListener("open",resolve,{once:true});socket.addEventListener("error",reject,{once:true});});
+let id=0;const pending=new Map(),consoleErrors=[],networkFailures=[];
+socket.addEventListener("message",event=>{const message=JSON.parse(event.data);if(message.id&&pending.has(message.id)){const handlers=pending.get(message.id);pending.delete(message.id);return message.error?handlers.reject(new Error(message.error.message)):handlers.resolve(message.result);}if(message.method==="Runtime.exceptionThrown")consoleErrors.push(message.params.exceptionDetails.text);if(message.method==="Log.entryAdded"&&message.params.entry.level==="error")consoleErrors.push(message.params.entry.text);if(message.method==="Network.loadingFailed"&&!message.params.canceled)networkFailures.push(message.params.errorText);});
+const send=(method,params={})=>{const current=++id;socket.send(JSON.stringify({id:current,method,params}));return new Promise((resolve,reject)=>pending.set(current,{resolve,reject}));};
+const evaluate=async expression=>{const result=await send("Runtime.evaluate",{expression,awaitPromise:true,returnByValue:true});if(result.exceptionDetails)throw new Error(result.exceptionDetails.text);return result.result.value;};
+const waitFor=async(expression,timeout=60000)=>{const start=Date.now();while(Date.now()-start<timeout){if(await evaluate(`Boolean(${expression})`))return;await new Promise(resolve=>setTimeout(resolve,200));}throw new Error(`Timeout: ${expression}`);};
+const assert=(value,message)=>{if(!value)throw new Error(message);};
+
+await Promise.all([send("Runtime.enable"),send("Log.enable"),send("Network.enable"),send("Page.enable")]);
+await waitFor("window.PCSDeepSpaceManager && typeof cesiumViewer !== 'undefined'");
+await evaluate("PCSDeepSpaceManager.open()");
+const initial=await evaluate(`({viewer:document.querySelectorAll('.cesium-viewer').length,canvas:document.querySelectorAll('canvas').length,nativeZoom:cesiumViewer.scene.screenSpaceCameraController.enableZoom,pointer:PCSDeepSpaceManager.debug().pointerNavigationActive})`);
+assert(initial.viewer===1&&initial.pointer&&!initial.nativeZoom,"custom pointer lifecycle not active");
+
+const wheel=await evaluate(`(async()=>{document.querySelector('[data-body="earth"]').click();await new Promise(resolve=>setTimeout(resolve,900));const canvas=cesiumViewer.scene.canvas,rect=canvas.getBoundingClientRect(),before=[cesiumViewer.camera.positionWC.x,cesiumViewer.camera.positionWC.y,cesiumViewer.camera.positionWC.z],selected=PCSDeepSpaceManager.debug().selected;canvas.dispatchEvent(new WheelEvent('wheel',{deltaY:-120,clientX:rect.left+rect.width*.42,clientY:rect.top+rect.height*.47,bubbles:true,cancelable:true}));await new Promise(resolve=>setTimeout(resolve,50));const after=[cesiumViewer.camera.positionWC.x,cesiumViewer.camera.positionWC.y,cesiumViewer.camera.positionWC.z],debug=PCSDeepSpaceManager.debug();canvas.dispatchEvent(new WheelEvent('wheel',{deltaY:-80,ctrlKey:true,clientX:rect.left+rect.width*.5,clientY:rect.top+rect.height*.5,bubbles:true,cancelable:true}));await new Promise(resolve=>setTimeout(resolve,50));return {moved:before.some((value,index)=>Math.abs(value-after[index])>1),selectedBefore:selected,selectedAfter:debug.selected,wheel:debug.lastPointerZoom,trackpad:PCSDeepSpaceManager.debug().lastPointerZoom};})()`);
+assert(wheel.moved&&wheel.selectedBefore==="earth"&&wheel.selectedAfter==="earth","wheel changed selection or failed to move");
+assert(wheel.wheel?.inputType==="mouse-wheel"&&wheel.trackpad?.inputType==="trackpad-pinch","wheel/trackpad input classification failed");
+
+const scales={};
+for(const [name,action] of [["nearby","await PCSDeepSpaceManager.enterNearby('10pc')"],["milky-way","await PCSDeepSpaceManager.enterMilkyWay({reduced:true})"],["local-group","await PCSDeepSpaceManager.enterLocalGroup({reduced:true})"]]){
+  scales[name]=await evaluate(`(async()=>{${action};const canvas=cesiumViewer.scene.canvas,rect=canvas.getBoundingClientRect(),before=[cesiumViewer.camera.positionWC.x,cesiumViewer.camera.positionWC.y,cesiumViewer.camera.positionWC.z],selected=PCSDeepSpaceManager.debug();canvas.dispatchEvent(new WheelEvent('wheel',{deltaY:100,clientX:rect.left+2,clientY:rect.top+2,bubbles:true,cancelable:true}));await new Promise(resolve=>setTimeout(resolve,50));const after=[cesiumViewer.camera.positionWC.x,cesiumViewer.camera.positionWC.y,cesiumViewer.camera.positionWC.z],debug=PCSDeepSpaceManager.debug();return {moved:before.some((value,index)=>Math.abs(value-after[index])>1),context:debug.scaleContext,selectedBefore:selected.selected||selected.nearbySelected||selected.phase3Selected,selectedAfter:debug.selected||debug.nearbySelected||debug.phase3Selected,anchor:debug.lastPointerZoom?.anchorSource};})()`);
+  assert(scales[name].moved&&scales[name].context===name,`${name} pointer zoom failed`);
+}
+
+await send("Emulation.setDeviceMetricsOverride",{width:390,height:844,deviceScaleFactor:2,mobile:true,screenWidth:390,screenHeight:844});
+const mobile=await evaluate(`(async()=>{await PCSDeepSpaceManager.returnSolar();document.querySelector('[data-body="earth"]').click();await new Promise(resolve=>setTimeout(resolve,100));const canvas=cesiumViewer.scene.canvas,rect=canvas.getBoundingClientRect();if(typeof Touch!=="function"||typeof TouchEvent!=="function")return {supported:false};const make=(identifier,x,y)=>new Touch({identifier,target:canvas,clientX:rect.left+x,clientY:rect.top+y,pageX:rect.left+x,pageY:rect.top+y,screenX:x,screenY:y});const first=[make(1,120,400),make(2,270,400)],second=[make(1,90,400),make(2,300,400)];canvas.dispatchEvent(new TouchEvent('touchstart',{touches:first,targetTouches:first,changedTouches:first,bubbles:true,cancelable:true}));canvas.dispatchEvent(new TouchEvent('touchmove',{touches:second,targetTouches:second,changedTouches:second,bubbles:true,cancelable:true}));await new Promise(resolve=>setTimeout(resolve,50));return {supported:true,input:PCSDeepSpaceManager.debug().lastPointerZoom?.inputType,selected:PCSDeepSpaceManager.debug().selected,overflow:document.documentElement.scrollWidth<=document.documentElement.clientWidth};})()`);
+assert(!mobile.supported||(mobile.input==="mobile-pinch"&&mobile.selected==="earth"&&mobile.overflow),"mobile pinch acceptance failed");
+
+await evaluate("PCSDeepSpaceManager.close()");
+const finalState=await evaluate(`({viewer:document.querySelectorAll('.cesium-viewer').length,canvas:document.querySelectorAll('canvas').length,pointer:PCSDeepSpaceManager.debug().pointerNavigationActive,nativeZoom:cesiumViewer.scene.screenSpaceCameraController.enableZoom})`);
+assert(finalState.viewer===1&&finalState.canvas===initial.canvas&&!finalState.pointer&&finalState.nativeZoom,"pointer cleanup or native zoom restore failed");
+console.log(JSON.stringify({url,initial,wheel,scales,mobile,finalState,consoleErrors:[...new Set(consoleErrors)],networkFailures:[...new Set(networkFailures)]},null,2));socket.close();

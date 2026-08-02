@@ -6,7 +6,8 @@
   const MilkyWay = global.PCSMilkyWay;
   const LocalGroup = global.PCSLocalGroup;
   const Coordinates = global.PCSPhase3Coordinates;
-  if (!DS || !Eph || !Nearby || !MilkyWay || !LocalGroup) return;
+  const PointerNavigation = global.PCSPointerAnchoredNavigation;
+  if (!DS || !Eph || !Nearby || !MilkyWay || !LocalGroup || !PointerNavigation) return;
 
   const COPY = {
     en:{title:"PCS DEEP SPACE",scale:"Scale",time:"Time",objects:"Objects",orbits:"Orbits",labels:"Labels",data:"Data",close:"Close Deep Space",reset:"Reset view",earth:"Return to Earth",solar:"Return to Solar System",follow:"Follow selected body",top:"Top view",inclined:"Inclined view",scientific:"Scientific Scale",exhibition:"Exhibition Scale",play:"Play",pause:"Pause",now:"Reset to now",phase2:"Nearby Stars — Available in Phase 2",noticeEx:"Exhibition scale — Distances visually compressed — Not a single linear scale",noticeSci:"Scientific scale — radii and distances use the same linear kilometre scale",ephemeris:"Ephemeris-based orbital visualization",approx:"Orbital-element approximation — Not mission-navigation precision",collapse:"Collapse controls",expand:"Expand controls",retry:"Retry",cached:"Use cached ephemeris",fallback:"Use orbital approximation",later:"Available in a later phase"},
@@ -34,7 +35,7 @@
     ko:{phase3:"Phase 3",milkyWay:"은하수",galacticCenter:"은하 중심",sagittarius:"궁수자리 A*",galacticDisk:"은하 원반",galacticBar:"은하 막대",spiralArms:"나선팔",magellanic:"마젤란계",localGroup:"국부 은하군",search:"검색",searchLabel:"Phase 3 카탈로그 검색",labels:"레이블",reconstruction:"관측 기반 재구성",catalog:"관측 카탈로그",uncertainty:"거리 불확도",dataStatus:"데이터 상태",catalogObservation:"카탈로그 관측",observationReconstruction:"관측 기반 재구성",representative:"대표 시각화",notice:"관측 기반 재구성이며 은하수 외부에서 촬영한 사진이 아닙니다. 마커는 시인성을 위해 확대되었으며 실제 은하 직경 축척이 아닙니다.",reduced:"축소 모드",retry:"다시 시도",returnNearby:"인접 항성으로 돌아가기",phase4:"우주 거미줄／관측 가능한 우주 — Phase 4에서 제공",loadingMilky:"Reid 2019 HMSFR 카탈로그 로드 중…",loadingLocal:"국부 은하군 카탈로그 로드 중…",noResult:"배포된 카탈로그에 결과가 없습니다",primary:"기본 이름",aliases:"별칭",objectType:"천체 유형",sourceId:"소스 ID",distance:"거리",raDec:"적경／적위",spiralArm:"나선팔",parallax:"시차",visualizationStatus:"시각화 상태",coordinateFrame:"좌표계",sourceCatalog:"출처 카탈로그",visualNotice:"시각화 안내"}
   });
   const PLANETS = DS.PLANET_IDS;
-  let viewer, host, overlay, viewport, sourceParent, sourceNext, dataSource, clickHandler, tickRemover, nearbyCatalog, nearbyLayer, milkyWayCatalog, milkyWayLayer, localGroupCatalog, localGroupLayer;
+  let viewer, host, overlay, viewport, sourceParent, sourceNext, dataSource, clickHandler, tickRemover, navigationAbort, pinchState, nearbyCatalog, nearbyLayer, milkyWayCatalog, milkyWayLayer, localGroupCatalog, localGroupLayer;
   let active=false, paused=false, speed=1, epoch=new Date(), lastTick=0, mode="exhibition", selected="sun", focusParent=null, follow=false;
   let scaleContext="solar",nearbyActive=false,nearbyTier="10pc",nearbySelected=null,phase3Selected=null,loadToken=0,lastSatelliteOrbitDay=null;
   let saved={};
@@ -56,6 +57,34 @@
     return new Cesium.Cartesian3(...state.positionAu.map((value)=>value/norm*mapped));
   };
   const radiusFor=(entry)=> mode==="scientific"?entry.radiusKm:Math.max(8000,Math.log10(entry.radiusKm+10)*3700);
+  const cartesianArray=(value)=>[value.x,value.y,value.z];
+
+  function selectedScenePosition(){
+    if(scaleContext==="solar")return dataSource?.entities?.getById(`deep-space-${selected}`)?.position?.getValue(Cesium.JulianDate.now())||null;
+    if(scaleContext==="nearby"&&nearbySelected?.cartesianPc){const value=Nearby.scenePosition(nearbySelected,mode);return new Cesium.Cartesian3(...value);}
+    if((scaleContext==="milky-way"||scaleContext==="local-group")&&phase3Selected){const xyz=phase3Selected.galactocentricCartesianKpc||phase3Selected.heliocentricGalacticCartesianKpc;if(xyz){const value=Coordinates.scenePosition(xyz,mode,scaleContext==="milky-way"?"milky-way":"local-group");return new Cesium.Cartesian3(...value);}}
+    return null;
+  }
+  function screenCenterAnchor(){const distance=Math.max(viewer.camera.frustum.near*20,Cesium.Cartesian3.magnitude(viewer.camera.positionWC)*.2,1000);return Cesium.Cartesian3.add(viewer.camera.positionWC,Cesium.Cartesian3.multiplyByScalar(viewer.camera.directionWC,distance,new Cesium.Cartesian3()),new Cesium.Cartesian3());}
+  function navigationAnchor(screenPosition){
+    const picked=viewer.scene.pick(screenPosition),orbitId=picked?.id?.properties?.orbitBodyId?.getValue?.()||picked?.id?.properties?.orbitBodyId;
+    if(!orbitId&&picked&&viewer.scene.pickPositionSupported){const position=viewer.scene.pickPosition(screenPosition);if(position&&[position.x,position.y,position.z].every(Number.isFinite)){const bodyId=picked?.id?.properties?.deepSpaceBodyId?.getValue?.(),entry=body(bodyId);return {position,minDistance:entry?Math.max(radiusFor(entry)*1.08,viewer.camera.frustum.near*4):viewer.camera.frustum.near*4,source:"picked-scene"};}}
+    const selectedPosition=selectedScenePosition();if(selectedPosition)return {position:selectedPosition,minDistance:scaleContext==="solar"?Math.max(radiusFor(body(selected))*1.08,viewer.camera.frustum.near*4):viewer.camera.frustum.near*4,source:orbitId?"selected-object-after-orbit-rejection":"selected-object"};
+    return {position:screenCenterAnchor(),minDistance:viewer.camera.frustum.near*4,source:"screen-center"};
+  }
+  function applyAnchoredZoom(screenPosition,scale,inputType){
+    if(!active)return false;const anchor=navigationAnchor(screenPosition),result=PointerNavigation.anchoredPosition(cartesianArray(viewer.camera.positionWC),cartesianArray(anchor.position),scale,anchor.minDistance,viewer.scene.screenSpaceCameraController.maximumZoomDistance);if(!result)return false;
+    viewer.camera.setView({destination:new Cesium.Cartesian3(...result.position),orientation:{direction:viewer.camera.directionWC,up:viewer.camera.upWC}});viewer.scene.requestRender();saved.lastPointerZoom={inputType,anchorSource:anchor.source,scale:result.scale};return true;
+  }
+  function setupPointerNavigation(){
+    const canvas=viewer.scene.canvas;navigationAbort=new AbortController();const options={signal:navigationAbort.signal,passive:false};
+    canvas.addEventListener("wheel",event=>{const rect=canvas.getBoundingClientRect(),position=new Cesium.Cartesian2(event.clientX-rect.left,event.clientY-rect.top);if(applyAnchoredZoom(position,PointerNavigation.wheelScale(event.deltaY),event.ctrlKey?"trackpad-pinch":"mouse-wheel"))event.preventDefault();},options);
+    canvas.addEventListener("touchstart",event=>{if(event.touches.length===2)pinchState=PointerNavigation.touchMetrics(event.touches,canvas.getBoundingClientRect());},{signal:navigationAbort.signal,passive:true});
+    canvas.addEventListener("touchmove",event=>{if(event.touches.length!==2||!pinchState)return;const current=PointerNavigation.touchMetrics(event.touches,canvas.getBoundingClientRect());if(current&&applyAnchoredZoom(new Cesium.Cartesian2(...current.center),PointerNavigation.pinchScale(pinchState.distance,current.distance),"mobile-pinch")){event.preventDefault();pinchState=current;}},options);
+    canvas.addEventListener("touchend",()=>{pinchState=null;},{signal:navigationAbort.signal,passive:true});canvas.addEventListener("touchcancel",()=>{pinchState=null;},{signal:navigationAbort.signal,passive:true});
+    viewer.scene.screenSpaceCameraController.enableZoom=false;
+  }
+  function disposePointerNavigation(){navigationAbort?.abort();navigationAbort=null;pinchState=null;viewer.scene.screenSpaceCameraController.enableZoom=saved.zoomEnabled;}
 
   function template(){
     return `<section class="deep-space-shell" role="dialog" aria-modal="true" aria-labelledby="deep-space-title">
@@ -147,16 +176,16 @@
   function onTick(){const now=performance.now();if(!lastTick)lastTick=now;const delta=Math.min(now-lastTick,250);lastTick=now;if(!paused&&!nearbyActive){epoch=new Date(epoch.getTime()+delta*speed);updatePositions();}}
   function trapFocus(event){if(event.key==="Escape")return close();if(event.key!=="Tab")return;const items=[...overlay.querySelectorAll('button:not([disabled]),select,input')].filter(el=>el.offsetParent!==null);if(!items.length)return;const first=items[0],last=items.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}}
   function open(){
-    if(active||!viewer)return;active=true;sourceParent=host.parentNode;sourceNext=host.nextSibling;saved={globe:viewer.scene.globe.show,atmosphere:viewer.scene.skyAtmosphere.show,maxZoom:viewer.scene.screenSpaceCameraController.maximumZoomDistance,focus:document.activeElement};
+    if(active||!viewer)return;active=true;sourceParent=host.parentNode;sourceNext=host.nextSibling;saved={globe:viewer.scene.globe.show,atmosphere:viewer.scene.skyAtmosphere.show,maxZoom:viewer.scene.screenSpaceCameraController.maximumZoomDistance,zoomEnabled:viewer.scene.screenSpaceCameraController.enableZoom,focus:document.activeElement};
     saved.layers=[...viewer.imageryLayers._layers].map((layer)=>[layer,layer.show]);overlay.hidden=false;document.body.classList.add("deep-space-open");viewport.append(host);viewer.scene.globe.show=false;viewer.scene.skyAtmosphere.show=false;saved.layers.forEach(([layer])=>layer.show=false);viewer.scene.screenSpaceCameraController.maximumZoomDistance=1e11;viewer.resize();
     dataSource=new Cesium.CustomDataSource("pcs-deep-space-phase-1");viewer.dataSources.add(dataSource);nearbyCatalog=new Nearby.NearbyStarsCatalog();nearbyLayer=new Nearby.NearbyStarsLayer(viewer);milkyWayCatalog=new MilkyWay.MilkyWayCatalog();milkyWayLayer=new MilkyWay.MilkyWayLayer(viewer);localGroupCatalog=new LocalGroup.LocalGroupCatalog();localGroupLayer=new LocalGroup.LocalGroupLayer(viewer);scaleContext="solar";renderAll();resetView();lastTick=performance.now();tickRemover=viewer.clock.onTick.addEventListener(onTick);
-    clickHandler=new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);clickHandler.setInputAction((movement)=>{const picked=viewer.scene.pick(movement.position),star=picked?.id?.nearbyStar,phase3=picked?.id?.phase3Object,id=picked?.id?.properties?.deepSpaceBodyId?.getValue?.();if(star)renderNearbyInfo(star);else if(phase3)selectPhase3(phase3);else if(id)selectBody(id);},Cesium.ScreenSpaceEventType.LEFT_CLICK);q("[data-ds-close]").focus();
+    clickHandler=new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);clickHandler.setInputAction((movement)=>{const picked=viewer.scene.pick(movement.position),star=picked?.id?.nearbyStar,phase3=picked?.id?.phase3Object,id=picked?.id?.properties?.deepSpaceBodyId?.getValue?.();if(star)renderNearbyInfo(star);else if(phase3)selectPhase3(phase3);else if(id)selectBody(id);},Cesium.ScreenSpaceEventType.LEFT_CLICK);setupPointerNavigation();q("[data-ds-close]").focus();
   }
   function close(){
-    if(!active)return;active=false;++loadToken;setScaleControls("solar");viewer.camera.cancelFlight();if(tickRemover){tickRemover();tickRemover=null;}if(clickHandler){clickHandler.destroy();clickHandler=null;}nearbyLayer?.dispose();nearbyLayer=null;nearbyCatalog?.unload();nearbyCatalog=null;milkyWayLayer?.dispose();milkyWayLayer=null;milkyWayCatalog?.unload();milkyWayCatalog=null;localGroupLayer?.dispose();localGroupLayer=null;localGroupCatalog?.unload();localGroupCatalog=null;viewer.trackedEntity=undefined;if(dataSource){viewer.dataSources.remove(dataSource,true);dataSource=null;}
+    if(!active)return;active=false;++loadToken;setScaleControls("solar");viewer.camera.cancelFlight();disposePointerNavigation();if(tickRemover){tickRemover();tickRemover=null;}if(clickHandler){clickHandler.destroy();clickHandler=null;}nearbyLayer?.dispose();nearbyLayer=null;nearbyCatalog?.unload();nearbyCatalog=null;milkyWayLayer?.dispose();milkyWayLayer=null;milkyWayCatalog?.unload();milkyWayCatalog=null;localGroupLayer?.dispose();localGroupLayer=null;localGroupCatalog?.unload();localGroupCatalog=null;viewer.trackedEntity=undefined;if(dataSource){viewer.dataSources.remove(dataSource,true);dataSource=null;}
     if(sourceNext&&sourceNext.parentNode===sourceParent)sourceParent.insertBefore(host,sourceNext);else sourceParent.append(host);viewer.scene.globe.show=saved.globe;viewer.scene.skyAtmosphere.show=saved.atmosphere;saved.layers?.forEach(([layer,show])=>layer.show=show);viewer.scene.screenSpaceCameraController.maximumZoomDistance=saved.maxZoom;overlay.hidden=true;document.body.classList.remove("deep-space-open");viewer.resize();saved.focus?.focus?.();
   }
   function initialize(options){viewer=options.viewer;host=options.host;if(!overlay)setupOverlay();document.querySelector('[data-solar-target="deep-space"]')?.addEventListener("click",(event)=>{event.preventDefault();event.stopImmediatePropagation();open();},{capture:true});}
   const smallBodyProvider=Object.freeze({status:"unavailable",getObjects:()=>Promise.resolve([])}),cometEphemerisProvider=Object.freeze({status:"unavailable",getState:()=>null}),orbitUncertaintyProvider=Object.freeze({status:"unavailable",getUncertainty:()=>null});
-  global.PCSDeepSpaceManager=Object.freeze({initialize,open,close,enterNearby,enterMilkyWay,enterLocalGroup,returnSolar,searchNearby,searchPhase3,isOpen:()=>active,debug:()=>({initialized:Boolean(viewer),viewerCount:document.querySelectorAll(".cesium-viewer").length,canvasCount:document.querySelectorAll("canvas").length,active,scaleContext,mode,epoch:epoch.toISOString(),tickListenerActive:Boolean(tickRemover),zoomEnabled:Boolean(viewer?.scene?.screenSpaceCameraController?.enableZoom),selected,nearbyActive,nearbyTier,nearbySelected:nearbySelected?.primaryName||nearbySelected?.source_id||null,phase3Selected:phase3Selected?.canonicalName||null,nearby:nearbyLayer?.debug()||null,milkyWay:milkyWayLayer?.debug()||null,localGroup:localGroupLayer?.debug()||null}),smallBodyProvider,cometEphemerisProvider,orbitUncertaintyProvider});
+  global.PCSDeepSpaceManager=Object.freeze({initialize,open,close,enterNearby,enterMilkyWay,enterLocalGroup,returnSolar,searchNearby,searchPhase3,isOpen:()=>active,debug:()=>({initialized:Boolean(viewer),viewerCount:document.querySelectorAll(".cesium-viewer").length,canvasCount:document.querySelectorAll("canvas").length,active,scaleContext,mode,epoch:epoch.toISOString(),tickListenerActive:Boolean(tickRemover),pointerNavigationActive:Boolean(navigationAbort),nativeZoomEnabled:Boolean(viewer?.scene?.screenSpaceCameraController?.enableZoom),lastPointerZoom:saved.lastPointerZoom||null,selected,nearbyActive,nearbyTier,nearbySelected:nearbySelected?.primaryName||nearbySelected?.source_id||null,phase3Selected:phase3Selected?.canonicalName||null,nearby:nearbyLayer?.debug()||null,milkyWay:milkyWayLayer?.debug()||null,localGroup:localGroupLayer?.debug()||null}),smallBodyProvider,cometEphemerisProvider,orbitUncertaintyProvider});
 })(window);
