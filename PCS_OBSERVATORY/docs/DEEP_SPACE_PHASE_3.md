@@ -44,6 +44,8 @@ Local Chrome CDP acceptance used an already-created SwiftShader WebGL Cesium Vie
 - JavaScript heap delta after the stress sequence: +29,180,539 bytes. This includes retained browser/application caches and does not prove a leak.
 - Console exceptions: 0. Local backend network failures: 52; these are recorded separately and must not be reported as production-network success.
 
+Production GitHub Pages repeated the same 20-cycle／30-search acceptance against the deployed files: 10 pc loaded in 502 ms, Milky Way in 296 ms, and Local Group in 227 ms; Console exceptions and Network failures were both 0. Headless SwiftShader measured 1.84 FPS and a heap delta of −6,257,144 bytes. These values describe only this constrained test environment and are not general browser performance guarantees.
+
 ## Limitations
 
 - The Milky Way external perspective is an observation-based reconstruction, not an external photograph.
