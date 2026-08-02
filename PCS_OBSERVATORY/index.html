@@ -6,7 +6,7 @@
     <title>PCS Observatory | Uranus A Studio</title>
     <link rel="icon" href="./assets/uranus-a-studio-logo.jpeg">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cesium@1.120.0/Build/Cesium/Widgets/widgets.css">
-    <link rel="stylesheet" href="./style.css?v=20260801-release-center-1">
+    <link rel="stylesheet" href="./style.css?v=2.1.0-release-banner">
     <link rel="stylesheet" href="./intro-screen.css">
     <script>
       window.CESIUM_BASE_URL = "https://cdn.jsdelivr.net/npm/cesium@1.120.0/Build/Cesium/";
@@ -135,7 +135,7 @@
         </div>
       </header>
 
-      <section id="pcs-update-banner" class="pcs-update-banner is-collapsed" hidden aria-labelledby="pcs-update-title" data-release-center>
+      <section id="pcs-update-banner" class="pcs-update-banner" hidden aria-labelledby="pcs-update-title" data-release-center>
         <div class="pcs-update-banner__heading">
           <div class="pcs-update-banner__identity">
             <span class="pcs-update-banner__label" data-release-text="pcsUpdates">PCS Updates</span>
@@ -145,8 +145,15 @@
           <button id="pcs-update-toggle" class="pcs-update-banner__toggle" type="button" aria-expanded="false" aria-controls="pcs-update-content">Expand</button>
         </div>
         <div class="pcs-update-banner__summary" aria-live="polite">
-          <h2 id="pcs-update-title">Latest Update</h2>
+          <span class="pcs-release-banner__eyebrow">PCS Observatory</span>
+          <h2 id="pcs-update-title">PCS Observatory</h2>
           <p id="pcs-update-summary"></p>
+          <ol class="pcs-release-banner__coverage" data-release-banner-ready hidden aria-label="Scientific coverage"></ol>
+          <p class="pcs-release-banner__next" data-release-banner-ready hidden></p>
+          <div class="pcs-release-banner__actions" data-release-banner-ready hidden>
+            <button id="pcs-release-open" type="button">Open Observatory</button>
+            <button id="pcs-release-notes" type="button">Release Notes</button>
+          </div>
         </div>
         <div id="pcs-update-content" class="pcs-update-banner__content" tabindex="-1">
           <div class="pcs-release-tabs" role="tablist" aria-label="Release center views">
@@ -772,6 +779,6 @@
     <script src="./local-group-layer.js?v=phase-3"></script>
     <script src="./deep-space.js?v=2.1.0-language-fix"></script>
     <script src="./app.js?v=20260801-release-center-1"></script>
-    <script src="./release-center.js?v=2.1.0-release-final"></script>
+    <script src="./release-center.js?v=2.1.0-release-banner"></script>
   </body>
 </html>

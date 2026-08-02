@@ -23,6 +23,7 @@ test("registry schema, version, date, statuses and ordering are valid", () => {
   const versions = registry.releases.map(release => release.version);
   assert.equal(new Set(versions).size, versions.length);
   assert.ok(versions.includes(registry.currentVersion));
+  assert.equal(registry.plannedVersion, "v2.2.0");
   assert.equal(registry.currentPhase, "deep-space-phase-3");
   for (const release of registry.releases) {
     assert.match(release.version, /^v\d+\.\d+\.\d+$/);
@@ -67,18 +68,32 @@ test("tabs, session-only persistence, keyboard and focus behavior are accessible
   assert.match(center, /ArrowLeft/);
   assert.match(center, /focusBeforeExpand/);
   assert.match(center, /aria-selected/);
+  assert.match(html, /id="pcs-release-open"/);
+  assert.match(html, /id="pcs-release-notes"/);
+  assert.match(center, /scrollIntoView/);
+  assert.match(center, /prefers-reduced-motion: reduce/);
+  assert.match(center, /stored === null \? true/);
 });
 
 test("four languages contain every release-center interface term", () => {
   for (const language of ["en", "zh-TW", "ja", "ko"]) assert.ok(center.includes(language === "zh-TW" ? '"zh-TW":' : `${language}:`));
-  for (const key of ["pcsUpdates","latestUpdate","version","date","status","stable","inProgress","planned","deferred","added","changed","fixed","knownIssues","roadmap","releaseNotes","documentation","viewCommit","viewDiff","viewDeployment","expand","collapse","currentDevelopment","next","milestone","assets","knownLimitations"]) assert.match(center, new RegExp(`${key}:`));
+  for (const key of ["pcsUpdates","latestUpdate","version","date","status","stable","inProgress","planned","deferred","added","changed","fixed","knownIssues","roadmap","releaseNotes","documentation","viewCommit","viewDiff","viewDeployment","expand","collapse","currentDevelopment","next","milestone","assets","knownLimitations","baseline","stableFrozen","scientificCoverage","earth","solarSystem","nearbyStars","milkyWay","localGroup","openObservatory","plannedVersion","restoreBanner"]) assert.match(center, new RegExp(`${key}:`));
+});
+
+test("release banner derives version, status, coverage, and next state from the release registry", () => {
+  assert.match(center, /registry\.currentStatus === "stable"/);
+  assert.match(center, /registry\.plannedVersion/);
+  assert.match(center, /item\.id === "deep-space-phase-4"/);
+  assert.match(center, /coverageLabels/);
+  assert.doesNotMatch(center, /v2\.1\.0|v2\.2\.0/);
+  assert.doesNotMatch(center, /Phase 4A[^\n]*(?:In Development|in-progress)/i);
 });
 
 test("feature does not add Cesium, canvas, WebGL, animation loops, or live GitHub API", () => {
   assert.equal(app.split("new Cesium.Viewer(").length - 1, 1);
   assert.equal(html.split('id="cesium-globe"').length - 1, 1);
   assert.doesNotMatch(center, /new Cesium\.Viewer|createElement\(["']canvas|requestAnimationFrame|api\.github\.com/);
-  assert.match(css, /@media \(max-width: 620px\)[\s\S]*\.pcs-release-tabs/);
+  assert.match(css, /@media \(max-width: 620px\)[\s\S]*\.pcs-release-banner__actions[\s\S]*\.pcs-release-tabs/);
 });
 
 test("registry and production files contain no local absolute paths", () => {
