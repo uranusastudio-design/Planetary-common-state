@@ -8,6 +8,7 @@ Status: Stable
 
 - Deep Space Phase 1 Solar System foundation.
 - Deep Space Phase 2 Gaia nearby-star layers at 10, 25, 50, and 100 pc.
+- Deep Space Phase 3 Milky Way reconstruction, 199 Reid et al. HMSFR tracers, and 102-row Local Group catalog visualization.
 - Proper-motion analysis, local catalog search, selection, data-quality layer, and LOD.
 - Eleven representative natural satellites and mission-derived imagery.
 - Scientific and Exhibition Scale and four-language Deep Space UI.
@@ -25,10 +26,10 @@ Status: Stable
 - Replaced procedural satellite previews with traceable mission imagery.
 - Corrected Cesium texture lifecycle and asynchronous body-overwrite behavior.
 - Preserved single Viewer reuse and GitHub Pages-compatible asset paths.
+- Synchronized active Phase 3 scale titles, navigation labels, information headings, and accessibility text with runtime language changes.
 
 ### Known Issues
 
 - Titania lower-hemisphere imagery coverage / projection remains a frozen, deferred issue.
 - Cold-start offline operation still depends on the Cesium CDN.
-- Deep Space Phase 3 is in progress.
 - Deep Space Phase 4 has not started.

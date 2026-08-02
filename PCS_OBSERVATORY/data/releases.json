@@ -4,38 +4,43 @@
   "currentVersion": "v2.1.0",
   "currentStatus": "stable",
   "currentPhase": "deep-space-phase-3",
-  "updatedAt": "2026-08-01T20:34:00+08:00",
+  "updatedAt": "2026-08-02T10:22:00+08:00",
   "releases": [
     {
       "version": "v2.1.0",
       "date": "2026-08-01",
       "status": "stable",
       "title": {"en":"Deep Space and planetary-system expansion","zh-TW":"深空與行星系統擴充","ja":"深宇宙・惑星系拡張","ko":"심우주 및 행성계 확장"},
-      "summary": {"en":"Verified Solar System and Gaia nearby-star foundations, mission-derived satellite imagery, and regional observing modes.","zh-TW":"已驗證的太陽系與 Gaia 鄰近恆星基礎、任務來源衛星影像及區域觀測模式。","ja":"検証済みの太陽系・Gaia近傍星基盤、ミッション由来衛星画像、地域観測モード。","ko":"검증된 태양계·Gaia 근방별 기반, 임무 기반 위성 영상 및 지역 관측 모드."},
-      "added": ["Deep Space Phase 1 — Solar System foundation","Deep Space Phase 2 — Gaia nearby stars (10 / 25 / 50 / 100 pc)","Proper-motion analysis and local catalog search","11 representative natural satellites","NASA / JPL / USGS mission imagery","Scientific / Exhibition Scale","Four-language Deep Space UI","Regional Mode — Taiwan and Japan"],
+      "summary": {"en":"Verified Solar System, Gaia nearby-star, Milky Way, and Local Group foundations, mission-derived satellite imagery, and regional observing modes.","zh-TW":"已驗證的太陽系、Gaia 鄰近恆星、銀河系與本星系群基礎、任務來源衛星影像及區域觀測模式。","ja":"検証済みの太陽系、Gaia近傍星、天の川銀河、局所銀河群基盤、ミッション由来衛星画像、地域観測モード。","ko":"검증된 태양계, Gaia 인접 항성, 은하수 및 국부 은하군 기반, 임무 기반 위성 영상과 지역 관측 모드."},
+      "added": ["Deep Space Phase 1 — Solar System foundation","Deep Space Phase 2 — Gaia nearby stars (10 / 25 / 50 / 100 pc)","Deep Space Phase 3 — Milky Way / Local Group","Proper-motion analysis and local catalog search","11 representative natural satellites","NASA / JPL / USGS mission imagery","Scientific / Exhibition Scale","Four-language Deep Space UI","Regional Mode — Taiwan and Japan"],
       "changed": ["Solar System and Deep Space scale navigation","Natural-satellite hierarchy and celestial-body registry","Deep Space resource lifecycle and data-source labeling"],
-      "fixed": ["Satellite white-sphere material failure","Procedural satellite previews replaced by mission imagery","Cesium texture lifecycle and async body-overwrite guard","Viewer reuse, cache-busting, and GitHub Pages paths"],
-      "knownIssues": ["Titania lower-hemisphere imagery coverage / projection issue remains deferred","Cold-start offline operation still depends on the Cesium CDN","Deep Space Phase 3 is in progress","Deep Space Phase 4 has not started"],
-      "assets": ["Deep Space Phase 1","Deep Space Phase 2","Nearby Stars","Natural Satellite Registry","Mission Imagery Registry","Translation","UI","Tests"],
+      "fixed": ["Satellite white-sphere material failure","Procedural satellite previews replaced by mission imagery","Cesium texture lifecycle and async body-overwrite guard","Viewer reuse, cache-busting, and GitHub Pages paths","Phase 3 runtime language synchronization"],
+      "knownIssues": ["Titania lower-hemisphere imagery coverage / projection issue remains deferred","Cold-start offline operation still depends on the Cesium CDN","Deep Space Phase 4 has not started"],
+      "assets": ["Deep Space Phase 1","Deep Space Phase 2","Deep Space Phase 3","Nearby Stars","Milky Way","Local Group","Natural Satellite Registry","Mission Imagery Registry","Translation","UI","Tests"],
       "commits": [
         {"label":"Deep Space Phase 1","hash":"74b892c4d2f8638288ed0ca150d69a57f9ded593","previous":"6f73904"},
         {"label":"Deep Space Phase 2","hash":"d47397777cf5e1c8fdb74a0f542a3a3e815ebb71","previous":"74b892c4d2f8638288ed0ca150d69a57f9ded593"},
-        {"label":"Satellite mission imagery","hash":"d20f070b7afc98ea4626ab4a833cdc179606a419","previous":"480d908"}
+        {"label":"Satellite mission imagery","hash":"d20f070b7afc98ea4626ab4a833cdc179606a419","previous":"480d908"},
+        {"label":"Deep Space Phase 3","hash":"35fc50cca9d9cb03bea9b8eb92efa344e7709ad0","previous":"d47397777cf5e1c8fdb74a0f542a3a3e815ebb71"},
+        {"label":"Phase 3 production evidence","hash":"1a99ee1ff790c98bd46f616b57a3b33ba8ae1e79","previous":"35fc50cca9d9cb03bea9b8eb92efa344e7709ad0"},
+        {"label":"Phase 3 runtime translations","hash":"21a1eaaed6fb6b9d4f415286fcdf4b4fcc71fce5","previous":"1a99ee1ff790c98bd46f616b57a3b33ba8ae1e79"}
       ],
       "deploymentUrl": "https://uranusastudio-design.github.io/Planetary-common-state/PCS_OBSERVATORY/",
       "documentation": [
         {"label":"Deep Space Phase 1","path":"docs/DEEP_SPACE_PHASE_1.md"},
         {"label":"Deep Space Phase 2","path":"docs/DEEP_SPACE_PHASE_2.md"},
+        {"label":"Deep Space Phase 3","path":"docs/DEEP_SPACE_PHASE_3.md"},
+        {"label":"v2.1.0 Release Audit","path":"docs/RELEASE_AUDIT_V2.1.0.md"},
         {"label":"Mission imagery sources","path":"assets/moons/SOURCES.md"},
         {"label":"Nearby-star sources","path":"assets/deep-space/nearby-stars/SOURCES.md"}
       ],
-      "dataSources": ["Gaia EDR3 GCNS v1","Gaia DR3 landmark supplements","JPL Horizons DE441 cache","NASA / JPL / USGS mission imagery"]
+      "dataSources": ["Gaia EDR3 GCNS v1","Gaia DR3 landmark supplements","Reid et al. 2019 HMSFR","McConnachie 2012 Local Group catalog","JPL Horizons DE441 cache","NASA / JPL / USGS mission imagery"]
     }
   ],
   "roadmap": [
     {"id":"deep-space-phase-1","title":"Deep Space Phase 1 — Solar System","status":"completed","detail":"Solar System foundation"},
     {"id":"deep-space-phase-2","title":"Deep Space Phase 2 — Nearby Stars / Gaia","status":"completed","detail":"10 / 25 / 50 / 100 pc"},
-    {"id":"deep-space-phase-3","title":"Deep Space Phase 3 — Milky Way / Local Group","status":"in-progress","detail":"Milky Way + Local Group"},
+    {"id":"deep-space-phase-3","title":"Deep Space Phase 3 — Milky Way / Local Group","status":"completed","detail":"Milky Way + Local Group"},
     {"id":"deep-space-phase-4","title":"Deep Space Phase 4 — Cosmic Web / Observable Universe","status":"planned","detail":"Not started"},
     {"id":"titania-texture","title":"Titania texture repair","status":"deferred","detail":"Known imagery coverage / projection issue"},
     {"id":"comets-asteroids","title":"Comets and asteroids","status":"planned","detail":"Outside the current phase"},
@@ -45,6 +50,7 @@
   "latestAdditions": [
     {"title":"Deep Space Phase 1","detail":"Solar System foundation"},
     {"title":"Deep Space Phase 2","detail":"Nearby Stars — 10 / 25 / 50 / 100 pc"},
+    {"title":"Deep Space Phase 3","detail":"Milky Way · Local Group"},
     {"title":"11 representative natural satellites","detail":"Moon through Triton"},
     {"title":"NASA / JPL / USGS mission imagery","detail":"Cassini, Voyager, Galileo, LROC"},
     {"title":"Regional Mode","detail":"Taiwan · Japan"}

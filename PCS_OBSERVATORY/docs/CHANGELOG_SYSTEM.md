@@ -6,7 +6,7 @@ The PCS Updates panel is a project-status presentation layer. It does not change
 
 `data/releases.json` is the single source of release and roadmap content. Its top-level fields identify the current semantic version, release status, active phase, update time, repository, release records, roadmap, and compact latest-additions list.
 
-Allowed release states are `stable`, `preview`, and `archived`. Allowed roadmap states are `completed`, `in-progress`, `planned`, `blocked`, and `deferred`. There should be one active `in-progress` milestone unless a future release explicitly documents parallel milestones.
+Allowed release states are `stable`, `preview`, and `archived`. Allowed roadmap states are `completed`, `in-progress`, `planned`, `blocked`, and `deferred`. An active development cycle should have one `in-progress` milestone unless a future release explicitly documents parallel milestones. A frozen release awaiting human instruction may have no `in-progress` milestone.
 
 ## Update workflow
 
@@ -29,7 +29,7 @@ Commit URLs are derived as `/commit/{hash}` and diff URLs as `/compare/{previous
 
 ## Phase 3 completion workflow
 
-Only after Phase 3 implementation, tests, commit, deployment, and production verification are complete may its roadmap status change from `in-progress` to `completed`. At that time add a release entry with the verified Phase 3 commit and compare base, update `currentVersion`, and select the next genuinely active milestone. Phase 4 must not be marked active merely because Phase 3 finishes.
+Only after Phase 3 implementation, tests, commit, deployment, and production verification are complete may its roadmap status change from `in-progress` to `completed`. At that time add the verified Phase 3 commits and compare bases to the current release record. Keep `currentPhase` on the completed Phase 3 milestone while the release is frozen and awaiting human instruction. Phase 4 must not be marked active merely because Phase 3 finishes.
 
 ## Known limitations
 

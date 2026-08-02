@@ -43,7 +43,7 @@
     const c = copy();
     const active = registry.roadmap.find(item => item.id === registry.currentPhase);
     const next = registry.roadmap.find(item => item.id === "deep-space-phase-4");
-    return `${metadata(release)}<div class="pcs-release-grid"><section><h3>${c.latestUpdate}</h3><ul class="pcs-release-checklist">${registry.latestAdditions.map(item => `<li><strong>${escapeHtml(item.title)}</strong><span>${escapeHtml(item.detail)}</span></li>`).join("")}</ul></section><section><h3>${c.currentDevelopment}</h3><p><span class="pcs-roadmap-symbol">▶</span> <strong>${escapeHtml(active.title)}</strong><br>${escapeHtml(active.detail)} · ${c.inProgress}</p><h3>${c.next}</h3><p><span class="pcs-roadmap-symbol">○</span> <strong>${escapeHtml(next.title)}</strong><br>${escapeHtml(next.detail)} · ${c.planned}</p></section></div>`;
+    return `${metadata(release)}<div class="pcs-release-grid"><section><h3>${c.latestUpdate}</h3><ul class="pcs-release-checklist">${registry.latestAdditions.map(item => `<li><strong>${escapeHtml(item.title)}</strong><span>${escapeHtml(item.detail)}</span></li>`).join("")}</ul></section><section><h3>${c.milestone}</h3><p><span class="pcs-roadmap-symbol">✔</span> <strong>${escapeHtml(active.title)}</strong><br>${escapeHtml(active.detail)} · ${escapeHtml(statusText(active.status))}</p><h3>${c.next}</h3><p><span class="pcs-roadmap-symbol">○</span> <strong>${escapeHtml(next.title)}</strong><br>${escapeHtml(next.detail)} · ${c.planned}</p></section></div>`;
   }
   function renderChangelog(release) {
     const c = copy();
@@ -52,7 +52,7 @@
   function renderRoadmap() {
     const c = copy();
     const symbols = {completed:"✔","in-progress":"▶",planned:"○",blocked:"!",deferred:"◇"};
-    return `<h3>${c.currentProgress}</h3><p class="pcs-release-notice">Phase 1、2 completed · Phase 3 in progress · Phase 4 planned. No numeric percentage is asserted.</p><ol class="pcs-roadmap">${registry.roadmap.map(item => `<li data-status="${escapeHtml(item.status)}"><span class="pcs-roadmap-symbol">${symbols[item.status]}</span><div><strong>${escapeHtml(item.title)}</strong><span>${escapeHtml(item.detail)}</span></div><span class="pcs-release-status" data-status="${escapeHtml(item.status)}">${escapeHtml(statusText(item.status))}</span></li>`).join("")}</ol>`;
+    return `<h3>${c.currentProgress}</h3><p class="pcs-release-notice">Phase 1、2、3 completed · Phase 4 planned. No numeric percentage is asserted.</p><ol class="pcs-roadmap">${registry.roadmap.map(item => `<li data-status="${escapeHtml(item.status)}"><span class="pcs-roadmap-symbol">${symbols[item.status]}</span><div><strong>${escapeHtml(item.title)}</strong><span>${escapeHtml(item.detail)}</span></div><span class="pcs-release-status" data-status="${escapeHtml(item.status)}">${escapeHtml(statusText(item.status))}</span></li>`).join("")}</ol>`;
   }
   function renderNotes(release) {
     const c = copy();
@@ -66,7 +66,7 @@
     panel.querySelector("#pcs-update-phase").textContent = release.version;
     panel.querySelector("#pcs-update-status").textContent = statusText(registry.currentStatus);
     panel.querySelector("#pcs-update-title").textContent = c.latestUpdate;
-    panel.querySelector("#pcs-update-summary").textContent = `${release.date} · ${localize(release.title)} · ${c.currentDevelopment}: Deep Space Phase 3 (${c.inProgress})`;
+    panel.querySelector("#pcs-update-summary").textContent = `${release.date} · ${localize(release.title)} · Deep Space Phase 3 (${c.completed})`;
     toggle.textContent = expanded ? c.collapse : c.expand;
     toggle.setAttribute("aria-label", toggle.textContent);
     tabs.forEach(tab => { const key = tab.dataset.releaseTab; tab.textContent = c[key === "notes" ? "releaseNotes" : key]; tab.setAttribute("aria-selected", String(key === activeTab)); tab.tabIndex = key === activeTab ? 0 : -1; });

@@ -311,3 +311,34 @@ implementation file was changed.
 The confirmed language blocker is fixed in the local release candidate. Final
 closure remains pending deployment of the fix commit and production verification.
 Release metadata therefore remains unchanged at this checkpoint.
+
+### Production fix verification and release-finalization decision
+
+GitHub Pages built fix commit
+`21a1eaaed6fb6b9d4f415286fcdf4b4fcc71fce5`. Production verification at
+`?v=2.1.0-language-fix` repeated the exact four-language Phase 3 acceptance:
+
+- all Local Group, Milky Way / Galactic Center, Nearby Stars, navigator,
+  information-heading, placeholder, tooltip, and ARIA assertions passed;
+- the Korean → English switch left no stale Korean title;
+- desktop zoom and 390 × 844 mobile checks passed;
+- Viewer count remained 1 and total page canvas count remained 2;
+- final scale cleanup returned to Solar;
+- Console exceptions were 0;
+- required Network failures were 0.
+
+The release registry, Changelog, Release Center, and changelog-system policy were
+then synchronized locally. Release Center acceptance showed Phase 1、2、3
+completed, Phase 4 planned / not started, Titania deferred, v2.1.0 Stable, and
+the completed Phase 3 milestone. Its desktop, mobile, four-language, Phase 1/2
+regression, Console, and required-resource checks passed. Script cache-busters for
+the language fix and release finalization were updated to prevent stale deployed
+assets.
+
+No classified untracked evidence was deleted or committed. Titania hashes remained
+unchanged. No scientific catalog, coordinate, Phase 4 implementation, secret,
+environment file, or local production path was introduced.
+
+**Resumed Release Audit decision: passed.** The release-finalization commit may be
+created and deployed. Final status becomes frozen only after GitHub Pages serves
+that commit and the production Release Center verification passes.
