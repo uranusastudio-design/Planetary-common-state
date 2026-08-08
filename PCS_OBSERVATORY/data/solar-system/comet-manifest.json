@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "datasetId": "pcs-ss02e-sbdb-priority-comets",
+  "promotionStatus": "validated-promoted",
+  "generatedAt": "2026-08-08T17:10:46.526Z",
+  "lastSuccessfulSynchronization": "2026-08-08T17:10:46.526Z",
+  "source": "NASA/JPL SBDB and Horizons APIs",
+  "sourceUrl": "https://ssd-api.jpl.nasa.gov/doc/sbdb.html",
+  "selection": {
+    "type": "curated priority periodic/scientifically important comet subset",
+    "designations": [
+      "1P",
+      "2P",
+      "8P",
+      "21P",
+      "55P",
+      "67P",
+      "96P",
+      "109P",
+      "C/1861 G1"
+    ],
+    "deterministic": true,
+    "completeCatalog": false
+  },
+  "recordCount": 9,
+  "rawFile": "raw/sbdb/priority-comets.json.gz",
+  "rawSha256": "e93ed90a445e340bd6484810136c91d0334f939e334035552695e1a049229cb9",
+  "normalizedFile": "normalized/comets-sbdb.js",
+  "normalizedSha256": "d7fce0ced8bb9d39cee090f1ccb3b88d63be17acaba58e8bb16979864dbb38db",
+  "fallbackPolicy": "Retain last validated catalog; do not fabricate a missing orbit solution.",
+  "validatedAt": "2026-08-08T17:14:33.988Z",
+  "validation": {
+    "comparisonCount": 18,
+    "failures": 0,
+    "evidence": "../../test-results/solar-system-ss02e/authoritative-position-comparison.json",
+    "tolerancePolicy": "Per-comet withheld-epoch cubic-Hermite ceilings for each deployed object cadence (one or three days); not observational uncertainty and not a universal small-body tolerance."
+  }
+}

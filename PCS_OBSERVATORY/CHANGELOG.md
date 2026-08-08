@@ -59,9 +59,18 @@ Stable baseline: v2.1.0 — Stable / Frozen
 - Explicitly reports representative Kuiper Belt population as unavailable; no synthetic points, random density, or scientifically exact solid ring are generated.
 - Passed 16 direct-Horizons comparisons, 128 repository Node tests, Sedna provenance card, four-language terminology, adaptive LOD, and ten lifecycle cycles with Viewer 1, Cesium canvas 1, total canvas 2, required Console 0, and required Network 0.
 
+### Solar System SS-02E
+
+- Added a deterministic nine-object priority comet subset sourced from JPL SBDB, including 1P/Halley, with raw snapshots, solution provenance, formal sigmas, non-gravitational parameters, and explicit incomplete-catalog status.
+- Added promoted 2025–2028 closest-apparition Horizons vectors and shared Display Epoch interpolation; 21P uses one-day cadence after the three-day candidate failed its validation gate.
+- Added one batched comet point collection and relevant Unified Object Card fields without drawing convenient but unrelated full-period orbit ellipses or fabricating next-perihelion dates.
+- Added nine IAU/IMO meteor-shower event relationships with activity window, typical peak, radiant, parent body, Earth-stream intersection meaning, source, and confidence; uncertain or qualified parent attributions remain explicit.
+- Added compact four-language Comets and Meteor Showers controls using the existing language state.
+- Passed 18 direct-Horizons comparisons, 134 repository Node tests, Halley and uncertain-parent Object Cards, four-language terminology, and ten lifecycle cycles with Viewer 1, Cesium canvas 1, total canvas 2, required Console 0, and required Network 0.
+
 ### Current Boundary
 
-- Solar System SS-02A–D are frozen; SS-02E is the active next sub-stage.
+- Solar System SS-02A–E are frozen; SS-02F is the active next sub-stage.
 - Deep Space Phase 4A remains not started.
 
 ## [v2.1.0] — 2026-08-01

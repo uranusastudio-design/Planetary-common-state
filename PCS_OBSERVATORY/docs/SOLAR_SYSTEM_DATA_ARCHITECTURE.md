@@ -1,6 +1,6 @@
 # Solar System Data Architecture
 
-Status: **SS-01 baseline frozen; SS-02A–D validated and frozen**
+Status: **SS-01 baseline frozen; SS-02A–E validated and frozen**
 
 Audit date: 2026-08-08
 
@@ -63,6 +63,26 @@ Known trans-Neptunian objects use the same separated source architecture:
 The TNO layer is explicitly a known catalog, not an exact solid ring and not a representative population. No synthetic population exists. Stable far/medium/near LOD renders the first 256/1,024/7,155 records from the deterministic normalized ordering. SS-02C dwarf objects and SS-02D TNO points remain unique by SPK-ID.
 
 TNO positions use each SBDB JDTDB solution epoch and J2000 ecliptic heliocentric osculating elements. The runtime discloses two-body propagation and preserves source uncertainty fields; direct-Horizons model differences remain separate from observational/orbit uncertainty. Sixteen object/epoch comparisons and browser lifecycle evidence are stored under `test-results/solar-system-ss02d/`.
+
+## SS-02E current architecture delta
+
+Priority comets follow the promoted-source path:
+
+`JPL SBDB lookup → full orbit/provenance/non-grav normalization → Horizons closest-apparition vectors → raw gzip + hashes → withheld-epoch validation → promoted comet manifest → one batched point primitive`
+
+- `sync-comets.mjs` owns the nine-object bounded selection, SBDB lookup, Horizons CAP/NOFRAG vector retrieval, raw snapshot, checksums, normalized cache, last-success timestamp, and keep-last-validated policy.
+- `data/solar-system/comet-manifest.json` separates candidate and promoted state and states that the catalog is a subset.
+- `small-body-catalog.js` merges the comet vector cache into its solution lookup; positions share the Solar System Display Epoch and cubic-Hermite interpolation contract.
+- `comet-catalog.js` owns one point collection and no independent listener or animation loop.
+- `validate-comets.mjs` independently requests direct Horizons vectors at two withheld epochs per comet and records per-object tolerances.
+
+The deployed position coverage is 2025–2028. Eight records use three-day vectors; 21P uses one-day vectors because its three-day candidate failed validation. Eighteen comparisons passed with object-specific ceilings between 0.5 and 2 km. Horizons vector covariance is unavailable; this measured interpolation difference remains separate from SBDB element sigmas and comet non-gravitational model uncertainty.
+
+The meteor-shower registry is a separate observational/event layer:
+
+`IAU MDC identifiers + IMO annual activity/radiant calendar + NASA/IMO parent references → normalized relationships → event-only Unified Object Cards`
+
+It contains no spatial body primitive or ephemeris state. Records carry parent type/ID, activity window, typical peak, radiant, entry speed, annual Earth-stream intersection meaning, source, and confidence. Uncertain/qualified parent relationships remain explicitly uncertain/qualified.
 
 ## SS-02A architecture delta
 
@@ -211,7 +231,8 @@ The separate Cloudflare current-observation adapter does preserve cached/stored 
 - [x] Solid-body point/intermediate/sphere LOD — SS-02B validated and frozen.
 - [x] Five dwarf planets and catalog-derived adaptive Main Belt — SS-02C validated and frozen.
 - [x] Known-catalog Kuiper Belt / TNO layer — SS-02D validated and frozen.
-- [ ] Comets and meteor-shower relationships — SS-02E, not started.
+- [x] Priority comets and meteor-shower relationships — SS-02E validated and frozen.
+- [ ] Continuous synchronization/provenance promotion pipeline — SS-02F, not started.
 - [ ] Any later Solar System checkpoint — not started.
 
 SS-02A browser evidence passed with one Viewer, one Cesium canvas, unchanged total canvas count, eight coherent planet states, same-solution orbit metadata, honest out-of-range unavailability, four runtime languages, restored Earth ownership, zero required Console errors, and zero required Network failures. SS-02A is frozen as the contract consumed by SS-02B.

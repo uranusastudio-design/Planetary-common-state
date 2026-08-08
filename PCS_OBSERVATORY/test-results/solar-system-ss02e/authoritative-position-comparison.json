@@ -1,0 +1,480 @@
+{
+  "schemaVersion": 1,
+  "stage": "SS-02E",
+  "generatedAt": "2026-08-08T17:14:33.988Z",
+  "datasetId": "pcs-ss02e-sbdb-priority-comets",
+  "method": "Independent direct Horizons comet vectors versus promoted cached-vector cubic-Hermite state.",
+  "comparisonCount": 18,
+  "pass": true,
+  "failures": 0,
+  "comparisons": [
+    {
+      "epochUtc": "2025-04-17T06:17:00Z",
+      "jdTdb": 2460782.7626063153,
+      "object": "Halley",
+      "designation": "1P",
+      "spkid": "1000036",
+      "objectClass": "priority comet",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "referenceCommand": "DES=1P;CAP;NOFRAG",
+      "pcsPositionAu": [
+        -19.62766689865566,
+        27.37684498347702,
+        -9.914369977043036
+      ],
+      "referencePositionAu": [
+        -19.62766689865611,
+        27.37684498347668,
+        -9.914369977043078
+      ],
+      "difference": 0.00008442982314174526,
+      "units": "km",
+      "tolerance": 0.5,
+      "toleranceBasis": "Object-specific cubic-Hermite ceiling for the deployed 3 d 1P cache, selected after withheld-epoch measurement; not observational uncertainty.",
+      "positionMode": "Cached Horizons vectors · cubic Hermite state",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-08-08T12:41:00Z",
+      "jdTdb": 2461261.0292729526,
+      "object": "Halley",
+      "designation": "1P",
+      "spkid": "1000036",
+      "objectClass": "priority comet",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "referenceCommand": "DES=1P;CAP;NOFRAG",
+      "pcsPositionAu": [
+        -19.38491336702817,
+        27.4617215970104,
+        -9.860927526215233
+      ],
+      "referencePositionAu": [
+        -19.38491336702778,
+        27.46172159701037,
+        -9.860927526215274
+      ],
+      "difference": 0.00005840763861509908,
+      "units": "km",
+      "tolerance": 0.5,
+      "toleranceBasis": "Object-specific cubic-Hermite ceiling for the deployed 3 d 1P cache, selected after withheld-epoch measurement; not observational uncertainty.",
+      "positionMode": "Cached Horizons vectors · cubic Hermite state",
+      "pass": true
+    },
+    {
+      "epochUtc": "2025-04-17T06:17:00Z",
+      "jdTdb": 2460782.7626063153,
+      "object": "Encke",
+      "designation": "2P",
+      "spkid": "1000025",
+      "objectClass": "priority comet",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "referenceCommand": "DES=2P;CAP;NOFRAG",
+      "pcsPositionAu": [
+        3.7828372342501444,
+        -1.4995804391082361,
+        0.06208849541493531
+      ],
+      "referencePositionAu": [
+        3.782837234226855,
+        -1.499580439096921,
+        0.06208849541499036
+      ],
+      "difference": 0.003873489863074206,
+      "units": "km",
+      "tolerance": 2,
+      "toleranceBasis": "Object-specific cubic-Hermite ceiling for the deployed 3 d 2P cache, selected after withheld-epoch measurement; not observational uncertainty.",
+      "positionMode": "Cached Horizons vectors · cubic Hermite state",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-08-08T12:41:00Z",
+      "jdTdb": 2461261.0292729526,
+      "object": "Encke",
+      "designation": "2P",
+      "spkid": "1000025",
+      "objectClass": "priority comet",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "referenceCommand": "DES=2P;CAP;NOFRAG",
+      "pcsPositionAu": [
+        2.600002207879861,
+        0.3034672419921982,
+        0.28332860316540015
+      ],
+      "referencePositionAu": [
+        2.600002207703788,
+        0.3034672418830862,
+        0.2833286031301716
+      ],
+      "difference": 0.03143270070992306,
+      "units": "km",
+      "tolerance": 2,
+      "toleranceBasis": "Object-specific cubic-Hermite ceiling for the deployed 3 d 2P cache, selected after withheld-epoch measurement; not observational uncertainty.",
+      "positionMode": "Cached Horizons vectors · cubic Hermite state",
+      "pass": true
+    },
+    {
+      "epochUtc": "2025-04-17T06:17:00Z",
+      "jdTdb": 2460782.7626063153,
+      "object": "Tuttle",
+      "designation": "8P",
+      "spkid": "1000099",
+      "objectClass": "priority comet",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "referenceCommand": "DES=8P;CAP;NOFRAG",
+      "pcsPositionAu": [
+        1.0183693739035156,
+        -8.623384623613155,
+        1.412497107971865
+      ],
+      "referencePositionAu": [
+        1.018369373902541,
+        -8.623384623611223,
+        1.412497107970783
+      ],
+      "difference": 0.0003619924315101974,
+      "units": "km",
+      "tolerance": 0.5,
+      "toleranceBasis": "Object-specific cubic-Hermite ceiling for the deployed 3 d 8P cache, selected after withheld-epoch measurement; not observational uncertainty.",
+      "positionMode": "Cached Horizons vectors · cubic Hermite state",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-08-08T12:41:00Z",
+      "jdTdb": 2461261.0292729526,
+      "object": "Tuttle",
+      "designation": "8P",
+      "spkid": "1000099",
+      "objectClass": "priority comet",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "referenceCommand": "DES=8P;CAP;NOFRAG",
+      "pcsPositionAu": [
+        1.838917709568267,
+        -9.331959089957978,
+        2.5805603045696466
+      ],
+      "referencePositionAu": [
+        1.838917709568613,
+        -9.331959089957861,
+        2.580560304569533
+      ],
+      "difference": 0.00005722936779114638,
+      "units": "km",
+      "tolerance": 0.5,
+      "toleranceBasis": "Object-specific cubic-Hermite ceiling for the deployed 3 d 8P cache, selected after withheld-epoch measurement; not observational uncertainty.",
+      "positionMode": "Cached Horizons vectors · cubic Hermite state",
+      "pass": true
+    },
+    {
+      "epochUtc": "2025-04-17T06:17:00Z",
+      "jdTdb": 2460782.7626063153,
+      "object": "Giacobini-Zinner",
+      "designation": "21P",
+      "spkid": "1000032",
+      "objectClass": "priority comet",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "referenceCommand": "DES=21P;CAP;NOFRAG",
+      "pcsPositionAu": [
+        0.8692542421088925,
+        0.573888212896993,
+        -0.20262908670989466
+      ],
+      "referencePositionAu": [
+        0.8692542422013846,
+        0.5738882131604686,
+        -0.2026290868536761
+      ],
+      "difference": 0.0469859433871104,
+      "units": "km",
+      "tolerance": 1,
+      "toleranceBasis": "Object-specific cubic-Hermite ceiling for the deployed 1 d 21P cache, selected after withheld-epoch measurement; not observational uncertainty.",
+      "positionMode": "Cached Horizons vectors · cubic Hermite state",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-08-08T12:41:00Z",
+      "jdTdb": 2461261.0292729526,
+      "object": "Giacobini-Zinner",
+      "designation": "21P",
+      "spkid": "1000032",
+      "objectClass": "priority comet",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "referenceCommand": "DES=21P;CAP;NOFRAG",
+      "pcsPositionAu": [
+        -4.0309319547384925,
+        1.2813636523387886,
+        -1.4399502369004058
+      ],
+      "referencePositionAu": [
+        -4.030931954738028,
+        1.281363652338566,
+        -1.439950236900198
+      ],
+      "difference": 0.00008308709660220993,
+      "units": "km",
+      "tolerance": 1,
+      "toleranceBasis": "Object-specific cubic-Hermite ceiling for the deployed 1 d 21P cache, selected after withheld-epoch measurement; not observational uncertainty.",
+      "positionMode": "Cached Horizons vectors · cubic Hermite state",
+      "pass": true
+    },
+    {
+      "epochUtc": "2025-04-17T06:17:00Z",
+      "jdTdb": 2460782.7626063153,
+      "object": "Tempel-Tuttle",
+      "designation": "55P",
+      "spkid": "1000095",
+      "objectClass": "priority comet",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "referenceCommand": "DES=55P;CAP;NOFRAG",
+      "pcsPositionAu": [
+        -9.647291413283869,
+        -10.23954036562813,
+        0.6716249652392524
+      ],
+      "referencePositionAu": [
+        -9.647291413284487,
+        -10.23954036563003,
+        0.6716249652390642
+      ],
+      "difference": 0.000300072130585485,
+      "units": "km",
+      "tolerance": 0.5,
+      "toleranceBasis": "Object-specific cubic-Hermite ceiling for the deployed 3 d 55P cache, selected after withheld-epoch measurement; not observational uncertainty.",
+      "positionMode": "Cached Horizons vectors · cubic Hermite state",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-08-08T12:41:00Z",
+      "jdTdb": 2461261.0292729526,
+      "object": "Tempel-Tuttle",
+      "designation": "55P",
+      "spkid": "1000095",
+      "objectClass": "priority comet",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "referenceCommand": "DES=55P;CAP;NOFRAG",
+      "pcsPositionAu": [
+        -8.997485903321621,
+        -8.444681445701514,
+        0.8242522095480709
+      ],
+      "referencePositionAu": [
+        -8.997485903321184,
+        -8.444681445701649,
+        0.824252209548011
+      ],
+      "difference": 0.00006900364822491057,
+      "units": "km",
+      "tolerance": 0.5,
+      "toleranceBasis": "Object-specific cubic-Hermite ceiling for the deployed 3 d 55P cache, selected after withheld-epoch measurement; not observational uncertainty.",
+      "positionMode": "Cached Horizons vectors · cubic Hermite state",
+      "pass": true
+    },
+    {
+      "epochUtc": "2025-04-17T06:17:00Z",
+      "jdTdb": 2460782.7626063153,
+      "object": "Churyumov-Gerasimenko",
+      "designation": "67P",
+      "spkid": "1000012",
+      "objectClass": "priority comet",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "referenceCommand": "DES=67P;CAP;NOFRAG",
+      "pcsPositionAu": [
+        -2.6497898703728096,
+        -5.025666739695481,
+        -0.16770955183651237
+      ],
+      "referencePositionAu": [
+        -2.649789870374347,
+        -5.025666739692044,
+        -0.1677095518362563
+      ],
+      "difference": 0.0005646002071340114,
+      "units": "km",
+      "tolerance": 1,
+      "toleranceBasis": "Object-specific cubic-Hermite ceiling for the deployed 3 d 67P cache, selected after withheld-epoch measurement; not observational uncertainty.",
+      "positionMode": "Cached Horizons vectors · cubic Hermite state",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-08-08T12:41:00Z",
+      "jdTdb": 2461261.0292729526,
+      "object": "Churyumov-Gerasimenko",
+      "designation": "67P",
+      "spkid": "1000012",
+      "objectClass": "priority comet",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "referenceCommand": "DES=67P;CAP;NOFRAG",
+      "pcsPositionAu": [
+        -0.3389730495434513,
+        -4.704209600285779,
+        -0.24268950945375672
+      ],
+      "referencePositionAu": [
+        -0.3389730495468484,
+        -4.704209600281293,
+        -0.2426895094533923
+      ],
+      "difference": 0.000843592723888537,
+      "units": "km",
+      "tolerance": 1,
+      "toleranceBasis": "Object-specific cubic-Hermite ceiling for the deployed 3 d 67P cache, selected after withheld-epoch measurement; not observational uncertainty.",
+      "positionMode": "Cached Horizons vectors · cubic Hermite state",
+      "pass": true
+    },
+    {
+      "epochUtc": "2025-04-17T06:17:00Z",
+      "jdTdb": 2460782.7626063153,
+      "object": "Machholz 1",
+      "designation": "96P",
+      "spkid": "1000061",
+      "objectClass": "priority comet",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "referenceCommand": "DES=96P;CAP;NOFRAG",
+      "pcsPositionAu": [
+        1.0777140959250875,
+        -5.644059947534802,
+        -1.0789686143166741
+      ],
+      "referencePositionAu": [
+        1.077714095923702,
+        -5.644059947529307,
+        -1.07896861431544
+      ],
+      "difference": 0.0008676626961735938,
+      "units": "km",
+      "tolerance": 0.5,
+      "toleranceBasis": "Object-specific cubic-Hermite ceiling for the deployed 3 d 96P cache, selected after withheld-epoch measurement; not observational uncertainty.",
+      "positionMode": "Cached Horizons vectors · cubic Hermite state",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-08-08T12:41:00Z",
+      "jdTdb": 2461261.0292729526,
+      "object": "Machholz 1",
+      "designation": "96P",
+      "spkid": "1000061",
+      "objectClass": "priority comet",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "referenceCommand": "DES=96P;CAP;NOFRAG",
+      "pcsPositionAu": [
+        1.3324817826740905,
+        -5.132796086429741,
+        -1.5347376733269278
+      ],
+      "referencePositionAu": [
+        1.332481782673617,
+        -5.132796086427522,
+        -1.534737673325831
+      ],
+      "difference": 0.0003769541371253457,
+      "units": "km",
+      "tolerance": 0.5,
+      "toleranceBasis": "Object-specific cubic-Hermite ceiling for the deployed 3 d 96P cache, selected after withheld-epoch measurement; not observational uncertainty.",
+      "positionMode": "Cached Horizons vectors · cubic Hermite state",
+      "pass": true
+    },
+    {
+      "epochUtc": "2025-04-17T06:17:00Z",
+      "jdTdb": 2460782.7626063153,
+      "object": "Swift-Tuttle",
+      "designation": "109P",
+      "spkid": "1000140",
+      "objectClass": "priority comet",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "referenceCommand": "DES=109P;CAP;NOFRAG",
+      "pcsPositionAu": [
+        -32.6504281751752,
+        15.471067445768647,
+        -21.830774280626713
+      ],
+      "referencePositionAu": [
+        -32.65042817517475,
+        15.47106744576796,
+        -21.83077428062652
+      ],
+      "difference": 0.00012603352230815525,
+      "units": "km",
+      "tolerance": 0.5,
+      "toleranceBasis": "Object-specific cubic-Hermite ceiling for the deployed 3 d 109P cache, selected after withheld-epoch measurement; not observational uncertainty.",
+      "positionMode": "Cached Horizons vectors · cubic Hermite state",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-08-08T12:41:00Z",
+      "jdTdb": 2461261.0292729526,
+      "object": "Swift-Tuttle",
+      "designation": "109P",
+      "spkid": "1000140",
+      "objectClass": "priority comet",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "referenceCommand": "DES=109P;CAP;NOFRAG",
+      "pcsPositionAu": [
+        -33.269095221064006,
+        15.899525384551195,
+        -22.000384586925026
+      ],
+      "referencePositionAu": [
+        -33.26909522106357,
+        15.89952538455113,
+        -22.00038458692504
+      ],
+      "difference": 0.00006561606171981955,
+      "units": "km",
+      "tolerance": 0.5,
+      "toleranceBasis": "Object-specific cubic-Hermite ceiling for the deployed 3 d 109P cache, selected after withheld-epoch measurement; not observational uncertainty.",
+      "positionMode": "Cached Horizons vectors · cubic Hermite state",
+      "pass": true
+    },
+    {
+      "epochUtc": "2025-04-17T06:17:00Z",
+      "jdTdb": 2460782.7626063153,
+      "object": "C/1861 G1 (Thatcher)",
+      "designation": "1861 G1",
+      "spkid": "1000829",
+      "objectClass": "priority comet",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "referenceCommand": "DES=1861 G1;CAP;NOFRAG",
+      "pcsPositionAu": [
+        72.83540597702107,
+        57.303256453275274,
+        55.6992985414812
+      ],
+      "referencePositionAu": [
+        72.83540597702078,
+        57.30325645327496,
+        55.699298541481
+      ],
+      "difference": 0.00006986465024607281,
+      "units": "km",
+      "tolerance": 0.5,
+      "toleranceBasis": "Object-specific cubic-Hermite ceiling for the deployed 3 d 1861 G1 cache, selected after withheld-epoch measurement; not observational uncertainty.",
+      "positionMode": "Cached Horizons vectors · cubic Hermite state",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-08-08T12:41:00Z",
+      "jdTdb": 2461261.0292729526,
+      "object": "C/1861 G1 (Thatcher)",
+      "designation": "1861 G1",
+      "spkid": "1000829",
+      "objectClass": "priority comet",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "referenceCommand": "DES=1861 G1;CAP;NOFRAG",
+      "pcsPositionAu": [
+        72.90810937572465,
+        57.390715363634556,
+        55.88514082606293
+      ],
+      "referencePositionAu": [
+        72.90810937572503,
+        57.39071536363451,
+        55.88514082606288
+      ],
+      "difference": 0.00005823024448688875,
+      "units": "km",
+      "tolerance": 0.5,
+      "toleranceBasis": "Object-specific cubic-Hermite ceiling for the deployed 3 d 1861 G1 cache, selected after withheld-epoch measurement; not observational uncertainty.",
+      "positionMode": "Cached Horizons vectors · cubic Hermite state",
+      "pass": true
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # Solar System SS-02
 
-Status: **In Development — SS-02A–D validated / frozen; SS-02E–G not started**
+Status: **In Development — SS-02A–E validated / frozen; SS-02F–G not started**
 
 Release: **v2.2.0**
 
@@ -248,6 +248,42 @@ Validation result:
 
 Evidence: `test-results/solar-system-ss02d/authoritative-position-comparison.json` and `test-results/solar-system-ss02d/report.json`.
 
+## SS-02E implementation
+
+### Priority comet catalog
+
+SS-02E deploys a deliberately bounded, deterministic subset of nine periodic or scientifically important comets: 1P/Halley, 2P/Encke, 8P/Tuttle, 21P/Giacobini–Zinner, 55P/Tempel–Tuttle, 67P/Churyumov–Gerasimenko, 96P/Machholz 1, 109P/Swift–Tuttle, and C/1861 G1 (Thatcher). The UI and manifest say this is a priority subset, not the complete comet catalog.
+
+`sync-comets.mjs` retrieves each current JPL SBDB solution with full-precision elements, formal sigmas, orbit ID, solution date, observation arc/count, physical properties where supplied, aliases, and cometary non-gravitational model parameters. It separately requests Horizons VECTORS using closest-apparition/non-fragment selection and stores 2025–2028 heliocentric vectors. Most use three-day cadence; 21P uses one-day cadence after the first three-day candidate failed its withheld-epoch ceiling. Runtime positions use cubic-Hermite interpolation at the same Solar System Display Epoch.
+
+No comet orbit line is drawn: the deployed position cache is not silently converted into a convenient full-period ellipse. Object Cards expose eccentricity, inclination, perihelion, meaningful aphelion, period, source perihelion passage, solution epoch, source, quality fields, and missing values. The deployed SBDB solutions do not directly provide a future calendar perihelion for these records; PCS reports `Unavailable` and does not manufacture one by adding nominal periods to historical passages. Non-gravitational parameters are preserved and disclosed even though the out-of-coverage two-body fallback does not apply them.
+
+One batched `PointPrimitiveCollection` renders the nine comet positions. There is no Entity per comet, no extra animation loop, and no comet camera listener.
+
+### Meteor-shower relationship layer
+
+Meteor showers are not rendered as orbiting bodies. Nine annual events use IAU MDC identifiers, International Meteor Organization 2026 activity/radiant values, and NASA/IMO parent-body references: April Lyrids, Eta Aquariids, Southern Delta Aquariids, Perseids, Draconids, Orionids, Leonids, Geminids, and Ursids.
+
+Each relationship card records activity window, typical peak, radiant, entry speed, parent comet/asteroid, annual Earth–meteoroid-stream intersection, sources, and confidence/status. Southern Delta Aquariids → 96P/Machholz is explicitly `proposed / uncertain`. Geminids → (3200) Phaethon is qualified because stream origin remains under study. Activity windows are calendar guidance, not exact real-time predictions.
+
+Primary references:
+
+- NASA/JPL SBDB API and Horizons API;
+- IAU Meteor Data Center / Meteor Shower Nomenclature Working Group;
+- International Meteor Organization 2026 Meteor Shower Calendar;
+- NASA meteor-shower and parent-body references recorded per relationship.
+
+### SS-02E validation result
+
+- 18/18 independent direct-Horizons comet comparisons passed at two withheld epochs;
+- object-specific 0.5–2 km interpolation ceilings were used; they measure PCS cache interpolation, not observational/orbit uncertainty;
+- 134 repository Node tests passed;
+- Halley cached-vector state/Object Card, the uncertain Southern Delta Aquariids parent disclosure, all nine event cards, and four-language terminology passed;
+- ten open/close cycles removed the temporary DataSource and all three small-body point collections;
+- Viewer 1, Cesium canvas 1, total canvas 2, required Console 0, required Network 0, Earth ownership restored.
+
+Evidence: `test-results/solar-system-ss02e/authoritative-position-comparison.json` and `test-results/solar-system-ss02e/report.json`.
+
 ## Freeze boundary
 
-SS-02A–D are frozen as the base for SS-02E. Changing their public meaning requires an explicit SS-02 architecture revision, migration notes, and rerun of the affected regression gates.
+SS-02A–E are frozen as the base for SS-02F. Changing their public meaning requires an explicit SS-02 architecture revision, migration notes, and rerun of the affected regression gates.
