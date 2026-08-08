@@ -43,3 +43,22 @@ The three modules are functionally complete. The release-finalization decision i
 ## Exact continuation point
 
 On production, use a physical Mac trackpad to verify pinch-center anchoring and a real touch device at approximately 390 × 844 to verify two-finger pinch-center anchoring. Confirm selection is unchanged, the camera stops after input, there is no surface penetration or scale jump, Viewer / canvas counts remain stable, and Console / required Network failures remain zero. If both pass, update Foundation metadata to completed, freeze Foundation, run the final pre-commit review, and create `release: complete v2.2.0 foundation`.
+
+## v2.2.0 Earth → Deep Space marker ownership correction
+
+Human review identified an Earth-owned blue point inside the 100 pc star field. The exact reproduced object is a Cesium `PointGraphics` entity with ID `global:visitor-locations:TW|Taiwan|Taipei|25.033|121.5654`, owned by `app.js` in the `visitorDataSource` CustomDataSource. Its creation path is `refreshVisitorLocations → renderVisitorLocations → upsertGeographicEntity`. It is not a Deep Space star, selection ring, or direct scene primitive.
+
+Root cause: opening Deep Space hid the globe and imagery but did not suspend pre-existing Earth-owned DataSources or the shared geographic-marker renderer. `activeCelestialTargetId` remained `earth`, so visitor visibility logic could keep the source visible. A late visitor-location response could also call the render path after Deep Space had opened.
+
+The v2.2.0 correction establishes an explicit Earth render-ownership contract:
+
+- Deep Space deactivates Earth geographic rendering before changing the camera or enabling target layers.
+- Existing non-Deep-Space DataSource visibility is saved and disabled at the transition boundary, then restored on close.
+- Existing and newly upserted geographic entities respect the suspended owner state.
+- Visitor, Earth-layer, and replay paths require an active Earth render context.
+- Async visitor and Earth-layer completions compare a render-context generation before mutating the scene.
+- Returning to Earth restores the saved camera and source visibility; geographic horizon/occlusion rules are recalculated.
+
+The reusable rule is: **no primitive or DataSource owned exclusively by another scale context may remain rendered after that context is deactivated**. This is transition-driven and adds no per-frame walk through Earth markers.
+
+Local automated evidence covers the exact object identity, 10/25/50/100 pc, Milky Way, Local Group, Earth restoration, 30 complete transition cycles, and a delayed visitor-response race. Production verification must be recorded before this bug is marked fixed. This correction does not close the still-open Foundation physical-gesture audit.

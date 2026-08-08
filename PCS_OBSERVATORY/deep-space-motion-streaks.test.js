@@ -5,6 +5,11 @@ const Motion=window.PCSDeepSpaceMotionStreaks;
 
 test("motion streak modes are bounded and reduced motion defaults off",()=>{
   assert.deepEqual(Object.keys(Motion.MODES),["off","subtle","standard","cinematic"]);
+  assert.deepEqual([Motion.MODES.subtle.maxLength,Motion.MODES.standard.maxLength,Motion.MODES.cinematic.maxLength],[6,10,18]);
+  assert.deepEqual([Motion.MODES.subtle.desktopCap,Motion.MODES.standard.desktopCap,Motion.MODES.cinematic.desktopCap],[48,84,140]);
+  assert.deepEqual([Motion.CONTEXTS.nearby.density,Motion.CONTEXTS["milky-way"].density,Motion.CONTEXTS["local-group"].density],[1,.5,.25]);
+  assert.ok(Math.max(...Object.values(Motion.MODES).map(mode=>mode.maxLength))<=20);
+  assert.ok(Motion.SETTLE_MS>=80&&Motion.SETTLE_MS<=180);
   assert.equal(Motion.defaultMode(null,true),"off");
   assert.equal(Motion.defaultMode(null,false),"subtle");
   assert.equal(Motion.defaultMode("standard",true),"standard");
@@ -20,11 +25,12 @@ test("screen velocity reverses consistently and length is capped by context",()=
   assert.ok(right.dx>0&&left.dx<0);assert.equal(right.speed,left.speed);
   assert.ok(Motion.streakLength(1000,"standard","nearby")<=Motion.MODES.standard.maxLength);
   assert.ok(Motion.streakLength(30,"standard","local-group")<Motion.streakLength(30,"standard","nearby"));
+  assert.equal(Motion.streakLength(Motion.MOTION_DEAD_ZONE*.9,"cinematic","nearby"),0);
 });
 test("thickness follows rendered prominence, not an invented physical diameter",()=>{
   assert.ok(Motion.streakWidth(8,false,"standard")>Motion.streakWidth(2,false,"standard"));
   assert.ok(Motion.streakWidth(8,true,"standard")>Motion.streakWidth(8,false,"standard"));
-  assert.ok(Motion.streakWidth(1e9,true,"cinematic")<=3.2);
+  assert.ok(Motion.streakWidth(1e9,true,"cinematic")<=2.4);
 });
 test("camera motion includes position, orientation, up and frustum changes",()=>{
   const base={position:[1,0,0],direction:[0,0,-1],up:[0,1,0],fov:1};
@@ -40,6 +46,11 @@ test("implementation reuses postRender and a batched collection without another 
   const source=fs.readFileSync(`${__dirname}/deep-space-motion-streaks.js`,"utf8");
   assert.match(source,/scene\.postRender\.addEventListener/);
   assert.match(source,/new Cesium\.PolylineCollection/);
+  assert.match(source,/Cesium\.Material\.fromType\("PolylineGlow"/);
+  assert.match(source,/cameraChanged&&this\.inputActive\(now\)/);
+  assert.match(source,/this\.inputFrames=Math\.max\(this\.inputFrames,6\)/);
+  assert.match(source,/MOTION_DEAD_ZONE/);
+  assert.match(source,/inputAbort\?\.abort\(\)/);
   assert.doesNotMatch(source,/requestAnimationFrame|new Cesium\.Viewer|createElement\(["']canvas/);
   assert.match(source,/removePostRender\?\.\(\)/);
 });

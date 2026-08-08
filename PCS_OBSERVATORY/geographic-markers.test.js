@@ -115,6 +115,26 @@ test("one camera-settled visibility update hides rear-side Cesium markers before
   markers.removeLayer("visibility");
 });
 
+test("cross-scale rendering suspension hides existing and late geographic markers until Earth restores", () => {
+  const collection = new EntityCollection();
+  const scene = {
+    camera: { positionWC: new Cartesian3(500000, 500000, 500000) },
+    globe: { ellipsoid: { geodeticSurfaceNormal: (position, result) => Cartesian3.normalize(position, result) } },
+  };
+  const existing = markers.upsertCesiumEntity({ collection, layerId: "visitor-locations", markerId: "existing", longitude: 10, latitude: 10, CesiumApi: Cesium });
+  markers.setRenderingEnabled(false, scene, Cesium);
+  assert.equal(existing.show, false);
+  assert.equal(markers.isRenderingEnabled(), false);
+  const late = markers.upsertCesiumEntity({ collection, layerId: "visitor-locations", markerId: "late-response", longitude: 20, latitude: 20, CesiumApi: Cesium });
+  assert.equal(late.show, false, "late Earth async marker must not render in Deep Space");
+  markers.updateCesiumVisibility(scene, Cesium);
+  assert.equal(late.show, false, "camera visibility updates must respect owner suspension");
+  markers.setRenderingEnabled(true, scene, Cesium);
+  assert.equal(existing.show, true);
+  assert.equal(late.show, true);
+  markers.removeLayer("visitor-locations");
+});
+
 test("source audit routes geographic renderers through the shared pipeline", async () => {
   const app = await readFile(new URL("./app.js", import.meta.url), "utf8");
   const html = await readFile(new URL("./index.html", import.meta.url), "utf8");

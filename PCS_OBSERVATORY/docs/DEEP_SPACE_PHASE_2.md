@@ -50,11 +50,23 @@ The marker colour is a deterministic perceptual ramp ordered by measured BP-RP, 
 
 ## Proper-motion analysis
 
-The optional layer is named **Proper motion analysis** and uses bounded **linear astrometric propagation** for landmark vectors and **reference epoch comparison**. RA and Dec are advanced from the record reference epoch using catalog proper motion and clamped to ±100 years. This is not a prediction or a Galactic-orbit integration. A missing radial velocity remains null; no zero is substituted, and the information panel displays `Unavailable` and `3D velocity status: Incomplete`. Phase 1 planetary UTC time remains separate from the Gaia reference epoch display.
+The optional layer is named **Proper motion analysis** and uses bounded **linear astrometric propagation** only for the optional landmark comparison vectors. The main Nearby Stars point field currently remains at each record's catalog reference epoch; it is therefore labelled **Catalog epoch position**, not **Proper-motion propagated**. RA and Dec comparison values are advanced from the record reference epoch using catalog proper motion and clamped to ±100 years. This is not a prediction or a Galactic-orbit integration. A missing radial velocity remains null; no zero is substituted, and the information panel displays `Unavailable` and `3D velocity status: Incomplete`.
+
+## Catalog release, reference epoch, and display epoch
+
+These are separate metadata concepts:
+
+- **Catalog release** is when a source catalog was published. Gaia EDR3 / GCNS v1 was released in 2020; Gaia DR3 was released in 2022. Hipparcos supplement records retain their own source identity and are not relabelled as Gaia.
+- **Reference epoch** is the epoch to which the astrometric parameters refer. Gaia EDR3/DR3 astrometry uses J2016.0; Hipparcos supplement records may use J1991.25. It is not a catalog release date.
+- **Display epoch** is the current selected PCS Deep Space UTC time state. It updates independently and does not mutate the catalog epoch.
+- **Position mode** states whether the rendered point has actually been propagated. The current main point layer is `Catalog epoch position`; only the optional comparison vector uses bounded propagation.
+- **3D velocity** is `Complete` only when RA, Dec, parallax, both proper-motion components, and radial velocity are all finite. Missing radial velocity remains null. If the five tangential astrometric components exist, the card may state `Incomplete · Tangential propagation available`.
+
+The Object Card reports the record's real source, so a Gaia DR3 landmark shows catalog release 2022 while a GCNS point shows EDR3/GCNS release 2020. The next-catalog note is informational only: `Gaia DR4 — expected 2026 (not before mid-2026)`. DR4 is not integrated and no placeholder records exist.
 
 ## Search and information panel
 
-Search uses only the loaded local landmark index and current deployed tier. It matches common names, Gaia source IDs, HIP/HD/GJ identifiers, and imported aliases. Selection shows name, aliases, object type, system membership, source identifier, distance and method, RA/Dec, parallax and uncertainty, proper motion and uncertainty, radial velocity, G magnitude, BP-RP, reference epoch, astrometric quality, status, catalog/build date, notes, and visualization notice. Nulls are shown as `Unavailable`, never hidden or converted to zero.
+Search uses only the loaded local landmark index and current deployed tier. It matches common names, Gaia source IDs, HIP/HD/GJ identifiers, and imported aliases. Selection shows a compact Astrometry group containing source, catalog release, reference epoch, display epoch, position mode, 3D velocity completeness, and next-catalog status, followed by the existing scientific fields. Nulls are shown as `Unavailable`, never hidden or converted to zero.
 
 ## Offline, reduced, and errors
 

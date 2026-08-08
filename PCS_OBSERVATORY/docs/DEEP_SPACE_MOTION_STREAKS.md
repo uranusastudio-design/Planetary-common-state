@@ -1,10 +1,10 @@
 # Deep Space Camera-Motion Star Streaks
 
-Status: **Functionally completed and deployed for v2.2.0 — production acceptance passed**
+Status: **Correction candidate for v2.2.0 — automated local regression passed; awaiting human visual acceptance**
 
 ## Purpose
 
-Motion Streaks is an interactive navigation visualization for Nearby Stars, Milky Way tracers, and eligible distant Local Group point markers. While the existing Cesium camera moves, a bounded subset of visible point objects temporarily receives a directional light streak. After camera motion stops, the streak contracts back to the unchanged point rendering over approximately 190 ms.
+Motion Streaks is an interactive navigation visualization for Nearby Stars, Milky Way tracers, and eligible distant Local Group point markers. During active user navigation, a small deterministic subset of visible point objects receives a short tapered motion halo. After movement stops, it contracts back to the unchanged point rendering over approximately 120 ms. The star core remains dominant at every frame.
 
 The scientific status is:
 
@@ -29,13 +29,13 @@ Each rendered frame compares:
 - camera up vector;
 - camera frustum field of view or width.
 
-This camera-derived signal covers drag, rotation, mouse wheel, pointer-anchored zoom, trackpad-delivered wheel input, mobile pinch, keyboard-driven camera changes, focus flights, reset, and scale transitions. Focus flights use reduced intensity. Reset-style jumps suppress the effect during the jump.
+Camera displacement determines direction and length, but activation also requires a recent pointer, wheel, trackpad, or touch navigation signal. A normalized 0.65 px/frame dead zone rejects small numerical camera jitter. Automated focus, reset, and scale-transition flights do not activate the micro-trail field.
 
 The explicit motion state is:
 
 `idle → starting → moving → settling → idle`
 
-The starting ramp is approximately 72 ms. The settling target is 190 ms, within the required 120–300 ms interval. Idle hides the entire trail collection and accumulates no glow.
+The starting ramp is approximately 45 ms. The settling target is 120 ms. Idle hides the entire trail collection and accumulates no glow.
 
 ## Screen-space direction and length
 
@@ -57,6 +57,8 @@ clamp(
 ```
 
 Nearby Stars uses the strongest response. Milky Way is shorter. Local Group is deliberately shortest so distant galaxy markers do not resemble nearby moving stars. Every mode has a hard maximum.
+
+The rejected implementation allowed 22 px in Subtle, 38 px in Standard, and 58 px in Cinematic. The correction caps these modes at 6 px, 10 px, and 18 px respectively; 18 px is also the absolute maximum. At ordinary input speeds the intended range is roughly 3–8 px. No mode may recreate long astronomical trails.
 
 ## Thickness, brightness, and identity
 
@@ -98,11 +100,11 @@ No per-frame random sampling is used. Current caps are:
 | Mode | Desktop cap | Mobile cap |
 | --- | ---: | ---: |
 | Off | 0 | 0 |
-| Subtle | 180 | 60 |
-| Standard | 360 | 120 |
-| Cinematic | 600 | 200 |
+| Subtle | 48 | 18 |
+| Standard | 84 | 30 |
+| Cinematic | 140 | 48 |
 
-Reduced catalog or low-memory mode uses 55% of the relevant cap. The caps passed the local browser acceptance described below; no universal frame-rate claim is made.
+Milky Way uses 50% and Local Group uses 25% of the context cap. Reduced catalog or low-memory mode applies an additional deterministic reduction. Dim background stars normally remain points. The caps passed the local browser acceptance described below; no universal frame-rate claim is made.
 
 ## Controls, language, and persistence
 
@@ -134,9 +136,9 @@ Automated unit coverage verifies:
 - use of one batched collection and `postRender`;
 - absence of another Viewer, canvas, or independent animation loop.
 
-Local browser acceptance passed in Headless Chrome with SwiftShader WebGL for:
+The correction's local browser acceptance passed in Headless Chrome with SwiftShader WebGL for:
 
-- all eight required scale contexts;
+- all eight required scale contexts and the explicit long-line / barcode regression;
 - mouse wheel in/out, drag/rotation, pointer-anchored zoom, control-modified trackpad path, synthetic mobile pinch, and keyboard object focus;
 - 100 start/stop cycles, 50 zoom-in/out pairs, 30 pan pairs, 30 scale changes, 30 selected-object changes, and 20 Deep Space open/close cycles;
 - 100/100 returns to zero visible trails and 100/100 returns to `idle` after the measured settling window;
@@ -144,33 +146,11 @@ Local browser acceptance passed in Headless Chrome with SwiftShader WebGL for:
 - preserved Proxima Centauri Object Card identity and an Earth solid-body return with zero trail candidates;
 - zero required Console exceptions and zero required Network failures.
 
-### Measured local performance
+Human acceptance remains open. Automated screenshots demonstrate bounded geometry and no rain/barcode field, but they are not a substitute for the requested human visual review.
 
-These are observations from one headless SwiftShader run, not native-GPU targets or universal performance claims.
+### Superseded evidence
 
-| Context | Viewport | Visible catalog points | Streak cap in run | Average FPS | Lowest observed FPS | Average frame time | Maximum frame time | Observed heap delta |
-| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 10 pc | 1280 × 720 | 312 | 312 | 13.28 | 2.87 | 74.62 ms | 348.10 ms | -1,777,044 B |
-| 50 pc | 1280 × 720 | 8,000 | 360 | 15.23 | 11.85 | 66.68 ms | 84.40 ms | +17,580 B |
-| 100 pc | 1280 × 720 | 10,000 | 360 | 16.13 | 14.58 | 63.36 ms | 68.60 ms | +8,440 B |
-| Mobile 100 pc | 390 × 844 | 5,000 | 120 | 23.08 | 12.00 | 43.96 ms | 83.30 ms | +37,804 B |
-
-The heap values are before/after observations after requested garbage collection. They neither prove a memory leak nor prove the absence of one. The retained evidence is `test-results/motion-streaks/acceptance-report.json`.
-
-### Production acceptance
-
-GitHub Pages deployed feature commit `94e75f0` successfully. The same complete acceptance matrix passed at the production URL, including 100/100 returns to zero visible trails and `idle`, all input simulations, all eight scale contexts, Object Card identity, solid-body return, lifecycle counts, zero required Console exceptions, and zero required Network failures.
-
-Production Headless Chrome + SwiftShader observations were:
-
-| Context | Viewport | Visible catalog points | Streak cap in run | Average FPS | Lowest observed FPS | Average frame time | Maximum frame time | Observed heap delta |
-| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 10 pc | 1280 × 720 | 312 | 312 | 4.01 | 1.46 | 214.21 ms | 683.40 ms | -136,980 B |
-| 50 pc | 1280 × 720 | 8,000 | 360 | 16.58 | 12.00 | 62.20 ms | 83.30 ms | -44,328 B |
-| 100 pc | 1280 × 720 | 10,000 | 360 | 15.62 | 11.99 | 65.35 ms | 83.40 ms | -76,728 B |
-| Mobile 100 pc | 390 × 844 | 5,000 | 120 | 24.89 | 14.99 | 40.63 ms | 66.70 ms | +492 B |
-
-The production report is retained at `test-results/motion-streaks-production-94e75f0/acceptance-report.json`. The slow 10 pc cold sample is reported as observed and is not generalized to native-GPU performance.
+The earlier deployment at commit `94e75f0` and its performance tables describe the human-rejected long-line implementation. Those results remain historical evidence only and do not establish acceptance of the correction. Fresh local and production reports for the micro-trail implementation must be used for current performance and release decisions.
 
 ## Known limitations
 

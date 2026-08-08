@@ -23,6 +23,21 @@ test("Deep Space preserves the single existing Cesium Viewer and adds no animati
   assert.doesNotMatch(manager, /requestAnimationFrame|setInterval|setTimeout/);
   assert.match(manager, /viewer\.clock\.onTick\.addEventListener/);
   assert.match(manager, /tickRemover\(\)/);
+  assert.match(manager, /PCSEarthRenderOwnership\?\.deactivateForDeepSpace/);
+  assert.match(manager, /saved\.dataSources=Array\.from\(\{length:viewer\.dataSources\.length\}/);
+  assert.match(manager, /PCSEarthRenderOwnership\?\.restoreAfterDeepSpace/);
+  assert.match(manager, /viewer\.camera\.setView\(\{destination:saved\.camera\.position/);
+});
+
+test("Earth-owned marker lifecycle has a mode contract and async generation guards", () => {
+  const geographic = read("geographic-markers.js");
+  assert.match(app, /earthRenderContextActive/);
+  assert.match(app, /earthRenderContextGeneration/);
+  assert.match(app, /requestGeneration !== earthRenderContextGeneration/);
+  assert.match(app, /activeCelestialTargetId !== "earth" \|\| !earthRenderContextActive/);
+  assert.match(app, /window\.PCSEarthRenderOwnership/);
+  assert.match(geographic, /renderingEnabled && isPositionVisible/);
+  assert.match(geographic, /if \(!renderingEnabled\) entity\.show = false/);
 });
 
 test("the Phase 1 registry contains the Sun, eight planets, and exactly eleven satellites", () => {

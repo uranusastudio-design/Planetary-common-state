@@ -1,0 +1,372 @@
+{
+  "generatedAt": "2026-08-08T11:20:50.371Z",
+  "status": "PASS",
+  "identity": {
+    "objectId": "global:visitor-locations:TW|Taiwan|Taipei|25.033|121.5654",
+    "collectionId": "visitorDataSource",
+    "ownerModule": "app.js visitor network",
+    "creationPath": "refreshVisitorLocations -> renderVisitorLocations -> upsertGeographicEntity",
+    "graphicsType": "PointGraphics",
+    "color": null,
+    "sourceShow": true,
+    "entityShow": true,
+    "selected": false,
+    "sceneParent": "CustomDataSource.entities -> Viewer.dataSourceDisplay",
+    "marker": {
+      "layerId": "visitor-locations",
+      "markerId": "TW|Taiwan|Taipei|25.033|121.5654",
+      "canonicalRegionId": "global",
+      "longitude": 121.5654,
+      "latitude": 25.033,
+      "observedAltitudeMeters": 0,
+      "visualOffsetMeters": 0,
+      "renderedHeight": 0,
+      "markerImplementationType": "visitor-point",
+      "rendererType": "cesium-native",
+      "renderingEnabled": true,
+      "entityShow": true,
+      "frontFacing": true,
+      "insideCanvas": true
+    }
+  },
+  "rootCause": "Deep Space hid globe/imagery but did not deactivate Earth-owned DataSources or geographic markers; activeCelestialTargetId remained earth.",
+  "fix": "Explicit Earth render ownership suspension, saved DataSource visibility, geographic rendering gate, and async generation guards.",
+  "cycles": 30,
+  "scaleResults": {
+    "10pc": {
+      "label": "10pc cycle 30",
+      "earthOwner": {
+        "owner": "earth",
+        "active": false,
+        "generation": 59,
+        "activeCelestialTargetId": "earth",
+        "geographicRenderingEnabled": false,
+        "visitorDataSource": {
+          "id": "visitorDataSource",
+          "show": false,
+          "entities": 1
+        },
+        "visitorHeatDataSource": {
+          "id": "visitorHeatDataSource",
+          "show": false
+        },
+        "visitorNetworkDataSource": {
+          "id": "visitorNetworkDataSource",
+          "show": false
+        }
+      },
+      "geographic": [
+        {
+          "layerId": "visitor-locations",
+          "markerId": "TW|Taiwan|Taipei|25.033|121.5654",
+          "canonicalRegionId": "global",
+          "longitude": 121.5654,
+          "latitude": 25.033,
+          "observedAltitudeMeters": 0,
+          "visualOffsetMeters": 40000,
+          "renderedHeight": 40000,
+          "markerImplementationType": "visitor-point",
+          "rendererType": "cesium-native",
+          "renderingEnabled": false,
+          "entityShow": false,
+          "frontFacing": true,
+          "insideCanvas": true
+        }
+      ],
+      "visibleEarthEntities": 0,
+      "viewer": 1,
+      "cesiumCanvas": 1,
+      "totalCanvas": 2
+    },
+    "25pc": {
+      "label": "25pc cycle 30",
+      "earthOwner": {
+        "owner": "earth",
+        "active": false,
+        "generation": 59,
+        "activeCelestialTargetId": "earth",
+        "geographicRenderingEnabled": false,
+        "visitorDataSource": {
+          "id": "visitorDataSource",
+          "show": false,
+          "entities": 1
+        },
+        "visitorHeatDataSource": {
+          "id": "visitorHeatDataSource",
+          "show": false
+        },
+        "visitorNetworkDataSource": {
+          "id": "visitorNetworkDataSource",
+          "show": false
+        }
+      },
+      "geographic": [
+        {
+          "layerId": "visitor-locations",
+          "markerId": "TW|Taiwan|Taipei|25.033|121.5654",
+          "canonicalRegionId": "global",
+          "longitude": 121.5654,
+          "latitude": 25.033,
+          "observedAltitudeMeters": 0,
+          "visualOffsetMeters": 40000,
+          "renderedHeight": 40000,
+          "markerImplementationType": "visitor-point",
+          "rendererType": "cesium-native",
+          "renderingEnabled": false,
+          "entityShow": false,
+          "frontFacing": false,
+          "insideCanvas": true
+        }
+      ],
+      "visibleEarthEntities": 0,
+      "viewer": 1,
+      "cesiumCanvas": 1,
+      "totalCanvas": 2
+    },
+    "50pc": {
+      "label": "50pc cycle 30",
+      "earthOwner": {
+        "owner": "earth",
+        "active": false,
+        "generation": 59,
+        "activeCelestialTargetId": "earth",
+        "geographicRenderingEnabled": false,
+        "visitorDataSource": {
+          "id": "visitorDataSource",
+          "show": false,
+          "entities": 1
+        },
+        "visitorHeatDataSource": {
+          "id": "visitorHeatDataSource",
+          "show": false
+        },
+        "visitorNetworkDataSource": {
+          "id": "visitorNetworkDataSource",
+          "show": false
+        }
+      },
+      "geographic": [
+        {
+          "layerId": "visitor-locations",
+          "markerId": "TW|Taiwan|Taipei|25.033|121.5654",
+          "canonicalRegionId": "global",
+          "longitude": 121.5654,
+          "latitude": 25.033,
+          "observedAltitudeMeters": 0,
+          "visualOffsetMeters": 40000,
+          "renderedHeight": 40000,
+          "markerImplementationType": "visitor-point",
+          "rendererType": "cesium-native",
+          "renderingEnabled": false,
+          "entityShow": false,
+          "frontFacing": false,
+          "insideCanvas": true
+        }
+      ],
+      "visibleEarthEntities": 0,
+      "viewer": 1,
+      "cesiumCanvas": 1,
+      "totalCanvas": 2
+    },
+    "100pc": {
+      "label": "100pc cycle 30",
+      "earthOwner": {
+        "owner": "earth",
+        "active": false,
+        "generation": 59,
+        "activeCelestialTargetId": "earth",
+        "geographicRenderingEnabled": false,
+        "visitorDataSource": {
+          "id": "visitorDataSource",
+          "show": false,
+          "entities": 1
+        },
+        "visitorHeatDataSource": {
+          "id": "visitorHeatDataSource",
+          "show": false
+        },
+        "visitorNetworkDataSource": {
+          "id": "visitorNetworkDataSource",
+          "show": false
+        }
+      },
+      "geographic": [
+        {
+          "layerId": "visitor-locations",
+          "markerId": "TW|Taiwan|Taipei|25.033|121.5654",
+          "canonicalRegionId": "global",
+          "longitude": 121.5654,
+          "latitude": 25.033,
+          "observedAltitudeMeters": 0,
+          "visualOffsetMeters": 40000,
+          "renderedHeight": 40000,
+          "markerImplementationType": "visitor-point",
+          "rendererType": "cesium-native",
+          "renderingEnabled": false,
+          "entityShow": false,
+          "frontFacing": false,
+          "insideCanvas": true
+        }
+      ],
+      "visibleEarthEntities": 0,
+      "viewer": 1,
+      "cesiumCanvas": 1,
+      "totalCanvas": 2
+    },
+    "milkyWay": {
+      "label": "Milky Way cycle 30",
+      "earthOwner": {
+        "owner": "earth",
+        "active": false,
+        "generation": 59,
+        "activeCelestialTargetId": "earth",
+        "geographicRenderingEnabled": false,
+        "visitorDataSource": {
+          "id": "visitorDataSource",
+          "show": false,
+          "entities": 1
+        },
+        "visitorHeatDataSource": {
+          "id": "visitorHeatDataSource",
+          "show": false
+        },
+        "visitorNetworkDataSource": {
+          "id": "visitorNetworkDataSource",
+          "show": false
+        }
+      },
+      "geographic": [
+        {
+          "layerId": "visitor-locations",
+          "markerId": "TW|Taiwan|Taipei|25.033|121.5654",
+          "canonicalRegionId": "global",
+          "longitude": 121.5654,
+          "latitude": 25.033,
+          "observedAltitudeMeters": 0,
+          "visualOffsetMeters": 40000,
+          "renderedHeight": 40000,
+          "markerImplementationType": "visitor-point",
+          "rendererType": "cesium-native",
+          "renderingEnabled": false,
+          "entityShow": false,
+          "frontFacing": false,
+          "insideCanvas": false
+        }
+      ],
+      "visibleEarthEntities": 0,
+      "viewer": 1,
+      "cesiumCanvas": 1,
+      "totalCanvas": 2
+    },
+    "localGroup": {
+      "label": "Local Group cycle 30",
+      "earthOwner": {
+        "owner": "earth",
+        "active": false,
+        "generation": 59,
+        "activeCelestialTargetId": "earth",
+        "geographicRenderingEnabled": false,
+        "visitorDataSource": {
+          "id": "visitorDataSource",
+          "show": false,
+          "entities": 1
+        },
+        "visitorHeatDataSource": {
+          "id": "visitorHeatDataSource",
+          "show": false
+        },
+        "visitorNetworkDataSource": {
+          "id": "visitorNetworkDataSource",
+          "show": false
+        }
+      },
+      "geographic": [
+        {
+          "layerId": "visitor-locations",
+          "markerId": "TW|Taiwan|Taipei|25.033|121.5654",
+          "canonicalRegionId": "global",
+          "longitude": 121.5654,
+          "latitude": 25.033,
+          "observedAltitudeMeters": 0,
+          "visualOffsetMeters": 40000,
+          "renderedHeight": 40000,
+          "markerImplementationType": "visitor-point",
+          "rendererType": "cesium-native",
+          "renderingEnabled": false,
+          "entityShow": false,
+          "frontFacing": false,
+          "insideCanvas": false
+        }
+      ],
+      "visibleEarthEntities": 0,
+      "viewer": 1,
+      "cesiumCanvas": 1,
+      "totalCanvas": 2
+    }
+  },
+  "asyncRace": {
+    "owner": {
+      "owner": "earth",
+      "active": false,
+      "generation": 61,
+      "activeCelestialTargetId": "earth",
+      "geographicRenderingEnabled": false,
+      "visitorDataSource": {
+        "id": "visitorDataSource",
+        "show": false,
+        "entities": 1
+      },
+      "visitorHeatDataSource": {
+        "id": "visitorHeatDataSource",
+        "show": false
+      },
+      "visitorNetworkDataSource": {
+        "id": "visitorNetworkDataSource",
+        "show": false
+      }
+    },
+    "ids": [
+      "global:visitor-locations:TW|Taiwan|Taipei|25.033|121.5654"
+    ],
+    "visible": 0
+  },
+  "finalState": {
+    "viewer": 1,
+    "cesiumCanvas": 1,
+    "totalCanvas": 2,
+    "owner": {
+      "owner": "earth",
+      "active": true,
+      "generation": 62,
+      "activeCelestialTargetId": "earth",
+      "geographicRenderingEnabled": true,
+      "visitorDataSource": {
+        "id": "visitorDataSource",
+        "show": true,
+        "entities": 1
+      },
+      "visitorHeatDataSource": {
+        "id": "visitorHeatDataSource",
+        "show": false
+      },
+      "visitorNetworkDataSource": {
+        "id": "visitorNetworkDataSource",
+        "show": false
+      }
+    }
+  },
+  "console": {
+    "exceptions": 0,
+    "items": [],
+    "expectedLocalResourceErrors": 48
+  },
+  "network": {
+    "requiredFailures": 0,
+    "items": []
+  },
+  "invariants": {
+    "viewer": 1,
+    "cesiumCanvas": 1,
+    "totalCanvas": 2
+  }
+}

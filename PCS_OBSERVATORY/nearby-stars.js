@@ -6,11 +6,20 @@
     Object.freeze([ 0.4941094279,-0.4448296300, 0.7469822445]),
     Object.freeze([-0.8676661490,-0.1980763734, 0.4559837762])]);
   const CONFIG=Object.freeze([
-    {id:"10pc",radiusPc:10,maxObjects:1200,mobileMaxObjects:303,magnitudeLimit:20,qualityFilters:["GCNS probability >= 0.5"],loadingMode:"full",pointSizeMode:"photometric",labelPolicy:"landmarks",dataSource:"Gaia EDR3 GCNS",release:"EDR3",dataStatus:"catalog astrometry"},
-    {id:"25pc",radiusPc:25,maxObjects:5000,mobileMaxObjects:2500,magnitudeLimit:18,qualityFilters:["GCNS probability >= 0.5"],loadingMode:"bounded",pointSizeMode:"photometric",labelPolicy:"landmarks",dataSource:"Gaia EDR3 GCNS",release:"EDR3",dataStatus:"catalog astrometry"},
-    {id:"50pc",radiusPc:50,maxObjects:8000,mobileMaxObjects:4000,magnitudeLimit:16.5,qualityFilters:["GCNS probability >= 0.5"],loadingMode:"bounded",pointSizeMode:"photometric",labelPolicy:"selected",dataSource:"Gaia EDR3 GCNS",release:"EDR3",dataStatus:"catalog astrometry"},
-    {id:"100pc",radiusPc:100,maxObjects:10000,mobileMaxObjects:5000,magnitudeLimit:15,qualityFilters:["GCNS probability >= 0.5"],loadingMode:"LOD capped",pointSizeMode:"photometric",labelPolicy:"selected",dataSource:"Gaia EDR3 GCNS",release:"EDR3",dataStatus:"catalog astrometry"}
+    {id:"10pc",radiusPc:10,maxObjects:1200,mobileMaxObjects:303,magnitudeLimit:20,qualityFilters:["GCNS probability >= 0.5"],loadingMode:"full",pointSizeMode:"photometric",labelPolicy:"landmarks",dataSource:"Gaia EDR3 GCNS",release:"Gaia EDR3 / GCNS v1 · 2020",dataStatus:"catalog astrometry"},
+    {id:"25pc",radiusPc:25,maxObjects:5000,mobileMaxObjects:2500,magnitudeLimit:18,qualityFilters:["GCNS probability >= 0.5"],loadingMode:"bounded",pointSizeMode:"photometric",labelPolicy:"landmarks",dataSource:"Gaia EDR3 GCNS",release:"Gaia EDR3 / GCNS v1 · 2020",dataStatus:"catalog astrometry"},
+    {id:"50pc",radiusPc:50,maxObjects:8000,mobileMaxObjects:4000,magnitudeLimit:16.5,qualityFilters:["GCNS probability >= 0.5"],loadingMode:"bounded",pointSizeMode:"photometric",labelPolicy:"selected",dataSource:"Gaia EDR3 GCNS",release:"Gaia EDR3 / GCNS v1 · 2020",dataStatus:"catalog astrometry"},
+    {id:"100pc",radiusPc:100,maxObjects:10000,mobileMaxObjects:5000,magnitudeLimit:15,qualityFilters:["GCNS probability >= 0.5"],loadingMode:"LOD capped",pointSizeMode:"photometric",labelPolicy:"selected",dataSource:"Gaia EDR3 GCNS",release:"Gaia EDR3 / GCNS v1 · 2020",dataStatus:"catalog astrometry"}
   ]);
+  function catalogMetadata(record={}){
+    const source=String(record.sourceCatalog||record.release||"Gaia EDR3 / GCNS v1");
+    const gaiaDr3=/Gaia DR3/i.test(source),gaiaEdr3=/EDR3|GCNS/i.test(source),hipparcos=/Hipparcos/i.test(source);
+    const catalogRelease=gaiaDr3?"2022":gaiaEdr3?"2020":hipparcos?"2007":"Unavailable";
+    const complete3d=[record.ra,record.dec,record.parallax,record.pmra,record.pmdec,record.radial_velocity].every(Number.isFinite);
+    const tangential=[record.ra,record.dec,record.parallax,record.pmra,record.pmdec].every(Number.isFinite);
+    const reference=Number(record.referenceEpoch),referenceEpoch=Number.isFinite(reference)?`J${Number.isInteger(reference)?reference.toFixed(1):reference}`:"Unavailable";
+    return {source:gaiaDr3?"Gaia DR3":gaiaEdr3?"Gaia EDR3 / GCNS":hipparcos?"Hipparcos new reduction":source,catalogRelease,referenceEpoch,positionMode:"catalog-epoch",complete3d,tangential,nextCatalog:"Gaia DR4",nextCatalogExpected:"2026 (not before mid-2026)"};
+  }
   const multiply=(m,v)=>m.map(row=>row[0]*v[0]+row[1]*v[1]+row[2]*v[2]);
   function icrsToCartesian(ra,dec,distancePc){const a=ra*DEG,d=dec*DEG,c=Math.cos(d);return [distancePc*c*Math.cos(a),distancePc*c*Math.sin(a),distancePc*Math.sin(d)];}
   function icrsToGalactic(ra,dec,distancePc){return multiply(ICRS_TO_GALACTIC,icrsToCartesian(ra,dec,distancePc));}
@@ -59,5 +68,5 @@
     motionStreakCandidates(){return this.pointRecords.map(([point,record])=>({id:String(record.id||record.source_id),kind:"nearby",record,position:point.position,screenPosition:(scene,result)=>point.computeScreenSpacePosition(scene,result),color:point.color,prominence:point.pixelSize,distance:record.distancePc,landmark:Boolean(record.primaryName),eligible:true}));}
     debug(){return {records:this.records.length,points:this.points?.length||0,labels:this.labels?.length||0,guides:this.guides?.length||0,motion:this.motion?.length||0,lod:this.lod.level,visible:this.visible};}
   }
-  global.PCSNearbyStars=Object.freeze({CONFIG,PC_TO_LY,ICRS_TO_GALACTIC,icrsToCartesian,icrsToGalactic,propagate,colorFor,galacticCartesian,scenePosition,sceneRadius,mergeRecords,NearbyStarsCatalog,NearbyStarsLayer,NearbyStarsLODController,NearbyStarsSelectionController,NearbyStarsLabelController});
+  global.PCSNearbyStars=Object.freeze({CONFIG,PC_TO_LY,ICRS_TO_GALACTIC,catalogMetadata,icrsToCartesian,icrsToGalactic,propagate,colorFor,galacticCartesian,scenePosition,sceneRadius,mergeRecords,NearbyStarsCatalog,NearbyStarsLayer,NearbyStarsLODController,NearbyStarsSelectionController,NearbyStarsLabelController});
 })(window);

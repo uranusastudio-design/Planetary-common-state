@@ -272,6 +272,8 @@ let activeSolarObservationPayload = null;
 let visitorDataSource = null;
 let visitorHeatDataSource = null;
 let visitorNetworkDataSource = null;
+let earthRenderContextActive = true;
+let earthRenderContextGeneration = 0;
 let visitorLocationByEntityId = new Map();
 let visitorSessionId = null;
 let visitorAnalyticsRange = "24h";
@@ -2608,7 +2610,7 @@ function clearUserLocation() {
 }
 
 function showUserLocation(position) {
-  if (!cesiumViewer || activeCelestialTargetId !== "earth") return;
+  if (!cesiumViewer || activeCelestialTargetId !== "earth" || !earthRenderContextActive) return;
   clearUserLocation();
   lastUserPosition = position;
   const { latitude, longitude, accuracy } = position.coords;
@@ -3439,12 +3441,30 @@ async function refreshVisitorStats() {
 }
 
 function updateVisitorLayerVisibility() {
-  const isEarth = activeCelestialTargetId === "earth";
+  const isEarth = activeCelestialTargetId === "earth" && earthRenderContextActive;
   const heatEnabled = readStorageValue(OBSERVATION_HEAT_STORAGE_KEY, "false") === "true";
   const networkEnabled = readStorageValue(NETWORK_CONNECTIONS_STORAGE_KEY, "false") === "true";
   if (visitorDataSource) visitorDataSource.show = isEarth;
   if (visitorHeatDataSource) visitorHeatDataSource.show = isEarth && heatEnabled;
   if (visitorNetworkDataSource) visitorNetworkDataSource.show = isEarth && networkEnabled;
+}
+
+function deactivateEarthRenderingForDeepSpace() {
+  earthRenderContextGeneration += 1;
+  earthRenderContextActive = false;
+  geographicMarkers.setRenderingEnabled(false, cesiumViewer?.scene, window.Cesium);
+  earthLayerRuntime?.setRenderVisibility?.(false);
+  updateVisitorLayerVisibility();
+  return earthRenderContextGeneration;
+}
+
+function restoreEarthRenderingAfterDeepSpace() {
+  earthRenderContextGeneration += 1;
+  earthRenderContextActive = activeCelestialTargetId === "earth";
+  earthLayerRuntime?.setRenderVisibility?.(earthRenderContextActive);
+  geographicMarkers.setRenderingEnabled(earthRenderContextActive, cesiumViewer?.scene, window.Cesium);
+  updateVisitorLayerVisibility();
+  return earthRenderContextActive;
 }
 
 function ensureVisitorDataSources() {
@@ -3513,10 +3533,12 @@ function renderRecentVisitorRegions(locations = []) {
 }
 
 async function refreshVisitorLocations() {
+  const requestGeneration = earthRenderContextGeneration;
   try {
     const response = await fetch(visitorApiUrl("/api/visitors/locations"), { cache: "no-store" });
     if (!response.ok) throw new Error("visitor_locations_unavailable");
     const payload = await response.json();
+    if (!earthRenderContextActive || requestGeneration !== earthRenderContextGeneration || activeCelestialTargetId !== "earth") return;
     const locations = Array.isArray(payload.locations) ? payload.locations : [];
     renderVisitorLocations(locations);
     renderRecentVisitorRegions(locations);
@@ -4117,6 +4139,16 @@ class CesiumLayerRuntimeController {
     return activeEarthLayers.size;
   }
 
+  setRenderVisibility(visible) {
+    const enabled = Boolean(visible);
+    activeEarthLayers.forEach((entry) => {
+      (entry.entities || []).forEach((entity) => { entity.show = enabled; });
+      (entry.dataSources || []).forEach((source) => { source.show = enabled; });
+    });
+    this.replayScope.dataSources.forEach((source) => { source.show = enabled; });
+    return enabled;
+  }
+
   synchronizeControl(layerId, active) {
     const control = earthLayerControl(layerId);
     const opacity = earthLayerOpacityControl(layerId);
@@ -4279,7 +4311,7 @@ class CesiumLayerRuntimeController {
     const config = this.registry.get(layerId);
     const viewer = this.viewerProvider();
     if (!config) return this.activationFailure(layerId, "Layer is not registered.");
-    if (!viewer || viewer.isDestroyed() || !window.Cesium || activeCelestialTargetId !== "earth") return this.activationFailure(layerId, "Earth Cesium globe is not available.");
+    if (!viewer || viewer.isDestroyed() || !window.Cesium || activeCelestialTargetId !== "earth" || !earthRenderContextActive) return this.activationFailure(layerId, "Earth Cesium globe is not available.");
     if (activeEarthLayers.has(layerId)) {
       this.synchronizeControl(layerId, true);
       return { ok: true, duplicatePrevented: true, resource: activeEarthLayers.get(layerId) };
@@ -4287,10 +4319,11 @@ class CesiumLayerRuntimeController {
     const cameraBefore = this.captureCameraState(viewer);
     const requestedRegionId = activeRegionId;
     const generation = (this.operationGeneration.get(layerId) || 0) + 1;
+    const earthGeneration = earthRenderContextGeneration;
     this.operationGeneration.set(layerId, generation);
     try {
       const entry = await this.createEntry(config, viewer);
-      if (this.operationGeneration.get(layerId) !== generation || activeRegionId !== requestedRegionId) {
+      if (this.operationGeneration.get(layerId) !== generation || activeRegionId !== requestedRegionId || !earthRenderContextActive || earthGeneration !== earthRenderContextGeneration) {
         if (entry.layer) viewer.imageryLayers.remove(entry.layer, true);
         (entry.entities || []).forEach((entity) => viewer.entities.remove(entity));
         (entry.dataSources || []).forEach((source) => viewer.dataSources.remove(source, true));
@@ -4408,7 +4441,7 @@ class CesiumLayerRuntimeController {
 
   async applyReplayFrame(frame, generation) {
     const viewer = this.viewerProvider();
-    if (!viewer || viewer.isDestroyed() || !window.Cesium || activeCelestialTargetId !== "earth") return { ok: false, error: "Shared Earth Viewer is unavailable." };
+    if (!viewer || viewer.isDestroyed() || !window.Cesium || activeCelestialTargetId !== "earth" || !earthRenderContextActive) return { ok: false, error: "Shared Earth Viewer is unavailable." };
     this.clearReplayFrame();
     this.replayScope.generation = generation;
     const dataSource = new Cesium.CustomDataSource(`pcs-history-frame-${generation}`);
@@ -5215,6 +5248,22 @@ async function loadPcsEvidencePanels() {
     updateText(selectors.pcsApiStatus, t("pcs_api_unavailable"));
   }
 }
+
+window.PCSEarthRenderOwnership = Object.freeze({
+  deactivateForDeepSpace: deactivateEarthRenderingForDeepSpace,
+  restoreAfterDeepSpace: restoreEarthRenderingAfterDeepSpace,
+  isActive: () => earthRenderContextActive,
+  debug: () => ({
+    owner: "earth",
+    active: earthRenderContextActive,
+    generation: earthRenderContextGeneration,
+    activeCelestialTargetId,
+    geographicRenderingEnabled: geographicMarkers.isRenderingEnabled(),
+    visitorDataSource: visitorDataSource ? { id: visitorDataSource.name, show: visitorDataSource.show, entities: visitorDataSource.entities.values.length } : null,
+    visitorHeatDataSource: visitorHeatDataSource ? { id: visitorHeatDataSource.name, show: visitorHeatDataSource.show } : null,
+    visitorNetworkDataSource: visitorNetworkDataSource ? { id: visitorNetworkDataSource.name, show: visitorNetworkDataSource.show } : null,
+  }),
+});
 
 async function initializeApp() {
   // The versioned local release center owns the PCS Updates panel.

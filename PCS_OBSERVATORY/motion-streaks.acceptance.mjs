@@ -30,7 +30,7 @@ async function delay(ms){await new Promise(resolve=>setTimeout(resolve,ms));}
 await Promise.all([send("Runtime.enable"),send("Log.enable"),send("Network.enable"),send("Performance.enable"),send("HeapProfiler.enable"),send("Page.enable")]);
 await send("Page.navigate",{url:baseUrl});
 await waitFor("window.PCSDeepSpaceManager && typeof cesiumViewer !== 'undefined' && document.querySelector('.cesium-viewer')",90000);
-await evaluate("PCSI18n.setLanguage('en',{persist:false});PCSDeepSpaceManager.open();document.querySelector('[data-ds-motion-streaks]').value='standard';document.querySelector('[data-ds-motion-streaks]').dispatchEvent(new Event('change',{bubbles:true}))");
+await evaluate("PCSI18n.setLanguage('en',{persist:false});PCSDeepSpaceManager.open();document.querySelector('[data-ds-motion-streaks]').value='subtle';document.querySelector('[data-ds-motion-streaks]').dispatchEvent(new Event('change',{bubbles:true}))");
 await delay(900);
 const initial=await evaluate("({viewer:document.querySelectorAll('.cesium-viewer').length,cesiumCanvas:document.querySelectorAll('.cesium-widget canvas').length,canvas:document.querySelectorAll('canvas').length,heap:performance.memory?.usedJSHeapSize??null,debug:PCSDeepSpaceManager.debug()})");
 assert(initial.viewer===1&&initial.cesiumCanvas===1&&initial.debug.motionStreaks?.listenerActive,"single Viewer/canvas or motion listener baseline failed");
@@ -39,15 +39,21 @@ async function waitMotionSample(){
   for(let attempt=0;attempt<50;attempt++){await delay(20);const debug=await evaluate("PCSDeepSpaceManager.debug().motionStreaks");if(debug?.visible>0)return debug;}
   return evaluate("PCSDeepSpaceManager.debug().motionStreaks");
 }
+function assertMicro(debug,label,maxLength=6,maxTrails=48){
+  assert(Math.max(debug.visible||0,debug.inputPeakVisible||0)>0,label+" did not render micro-trails");
+  assert(Math.max(debug.maxRenderedLength||0,debug.inputPeakLength||0)<=maxLength+.01,label+" exceeded micro-trail length cap");
+  assert(debug.streaks<=maxTrails&&debug.visible<=maxTrails,label+" exceeded density cap");
+}
+async function capture(name){const result=await send("Page.captureScreenshot",{format:"png",fromSurface:true});fs.writeFileSync(path.join(outputDir,name+".png"),Buffer.from(result.data,"base64"));}
 async function cameraPan(direction){
-  return run(async direction=>{cesiumViewer.scene.requestRender();await new Promise(resolve=>setTimeout(resolve,80));const amount=Math.max(300,Cesium.Cartesian3.magnitude(cesiumViewer.camera.positionWC)*.001),samples=[];for(let step=0;step<8;step++){if(direction==="left")cesiumViewer.camera.moveLeft(amount);else cesiumViewer.camera.moveRight(amount);cesiumViewer.scene.requestRender();await new Promise(resolve=>setTimeout(resolve,80));samples.push(PCSDeepSpaceManager.debug().motionStreaks);}return samples.sort((a,b)=>b.visible-a.visible)[0];},direction);
+  return run(async direction=>{const canvas=cesiumViewer.scene.canvas,sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms)),amount=Math.max(300,Cesium.Cartesian3.magnitude(cesiumViewer.camera.positionWC)*.001),samples=[];canvas.dispatchEvent(new CustomEvent("pcs:deep-space-navigation",{detail:{kind:"acceptance-pan",durationMs:800}}));for(let step=0;step<8;step++){if(direction==="left")cesiumViewer.camera.moveLeft(amount);else cesiumViewer.camera.moveRight(amount);cesiumViewer.scene.requestRender();await sleep(65);samples.push(PCSDeepSpaceManager.debug().motionStreaks);}return samples.sort((a,b)=>b.visible-a.visible)[0];},direction);
 }
 async function wheelMotion(deltaY,modifiers=0){
   const box=await evaluate("(()=>{const r=cesiumViewer.scene.canvas.getBoundingClientRect();return {x:r.left+r.width*.5,y:r.top+r.height*.5}})()"),samples=[];
-  for(let step=0;step<4;step++){await send("Input.dispatchMouseEvent",{type:"mouseWheel",x:box.x,y:box.y,deltaX:0,deltaY,modifiers});await delay(90);samples.push(await evaluate("PCSDeepSpaceManager.debug().motionStreaks"));}
+  for(let step=0;step<6;step++){await send("Input.dispatchMouseEvent",{type:"mouseWheel",x:box.x,y:box.y,deltaX:0,deltaY,modifiers});for(let sample=0;sample<5;sample++){await delay(35);samples.push(await evaluate("PCSDeepSpaceManager.debug().motionStreaks"));}}
   return samples.sort((a,b)=>b.visible-a.visible)[0];
 }
-async function assertSettled(label,waitMs=330){
+async function assertSettled(label,waitMs=180){
   await delay(waitMs);
   await evaluate("new Promise(resolve=>{const remove=cesiumViewer.scene.postRender.addEventListener(()=>{remove();resolve(true);});cesiumViewer.scene.requestRender();})");
   const debug=await evaluate("PCSDeepSpaceManager.debug().motionStreaks");
@@ -65,21 +71,23 @@ for(const tier of ["10pc","25pc","50pc","100pc"]){
   await waitFor("PCSDeepSpaceManager.debug().nearby?.points>0");
   await waitUntilMotionIdle(tier+" entry");
   scales[tier]={debug:await wheelMotion(-100)};
-  assert(scales[tier].debug.streaks>0&&scales[tier].debug.visible>0,tier+" did not render streaks");
+  assertMicro(scales[tier].debug,tier);
+  if(["10pc","50pc","100pc"].includes(tier))await capture(`micro-${tier}-wheel`);
   scales[tier].settled=await assertSettled(tier);
+  if(tier==="10pc")await capture("micro-10pc-stationary");
 }
 assert(await evaluate("PCSDeepSpaceManager.enterMilkyWay()"),"Milky Way load failed");
 await waitFor("PCSDeepSpaceManager.debug().milkyWay?.points>0");
 await waitUntilMotionIdle("Milky Way entry");
-scales["milky-way"]={debug:await wheelMotion(-100)};assert(scales["milky-way"].debug.visible>0,"Milky Way streaks missing");await assertSettled("Milky Way");
+scales["milky-way"]={debug:await wheelMotion(-100)};assertMicro(scales["milky-way"].debug,"Milky Way",6,24);await capture("micro-milky-way");await assertSettled("Milky Way");
 await evaluate("PCSDeepSpaceManager.searchPhase3('Sagittarius A*');document.querySelector('[data-object-card-focus]').click()");
-scales["galactic-center"]={debug:await waitMotionSample()};assert(scales["galactic-center"].debug.visible>0,"Galactic Center focus streaks missing");await waitUntilMotionIdle("Galactic Center focus");
+await delay(220);scales["galactic-center"]={debug:await evaluate("PCSDeepSpaceManager.debug().motionStreaks")};assert(scales["galactic-center"].debug.visible===0,"automated Galactic Center focus created user micro-trails");await waitUntilMotionIdle("Galactic Center focus");
 assert(await evaluate("PCSDeepSpaceManager.enterLocalGroup()"),"Local Group load failed");
 await waitFor("PCSDeepSpaceManager.debug().localGroup?.points>0");
 await waitUntilMotionIdle("Local Group entry");
 await evaluate("PCSDeepSpaceManager.searchPhase3('LMC');document.querySelector('[data-object-card-focus]').click()");
-scales["magellanic-system"]={debug:await waitMotionSample()};assert(scales["magellanic-system"].debug.visible>0,"Magellanic focus streaks missing");await waitUntilMotionIdle("Magellanic focus");
-scales["local-group"]={debug:await wheelMotion(100)};assert(scales["local-group"].debug.visible>0&&scales["local-group"].debug.streaks<=360,"Local Group bounded streaks missing");await assertSettled("Local Group");
+await delay(220);scales["magellanic-system"]={debug:await evaluate("PCSDeepSpaceManager.debug().motionStreaks")};assert(scales["magellanic-system"].debug.visible===0,"automated Magellanic focus created user micro-trails");await waitUntilMotionIdle("Magellanic focus");
+scales["local-group"]={debug:await wheelMotion(100)};assertMicro(scales["local-group"].debug,"Local Group",3,12);await capture("micro-local-group");await assertSettled("Local Group");
 
 await evaluate("PCSDeepSpaceManager.enterNearby('10pc')");
 await waitFor("PCSDeepSpaceManager.debug().nearby?.points>0");
@@ -87,29 +95,46 @@ await waitUntilMotionIdle("10pc direction entry");
 const panLeft=await cameraPan("left");await assertSettled("pan left");
 const panRight=await cameraPan("right");await assertSettled("pan right");
 assert(panLeft.meanDx*panRight.meanDx<0,"left/right screen displacement did not reverse");
+assertMicro(panLeft,"pan left");assertMicro(panRight,"pan right");
 
 const canvasBox=await evaluate("(()=>{const r=cesiumViewer.scene.canvas.getBoundingClientRect();return {x:r.left+r.width*.5,y:r.top+r.height*.5,w:r.width,h:r.height}})()");
+async function dragMotion(dx,dy,label){
+  const start={x:canvasBox.x-canvasBox.w*.12,y:canvasBox.y-canvasBox.h*.08},samples=[];
+  await send("Input.dispatchMouseEvent",{type:"mousePressed",x:start.x,y:start.y,button:"left",buttons:1,clickCount:1});
+  for(let step=1;step<=7;step++){await send("Input.dispatchMouseEvent",{type:"mouseMoved",x:start.x+dx*step/7,y:start.y+dy*step/7,button:"left",buttons:1});await delay(55);samples.push(await evaluate("PCSDeepSpaceManager.debug().motionStreaks"));}
+  await send("Input.dispatchMouseEvent",{type:"mouseReleased",x:start.x+dx,y:start.y+dy,button:"left",buttons:0,clickCount:1});
+  const sample=samples.sort((a,b)=>b.visible-a.visible)[0];assertMicro(sample,label);await capture(`micro-${label.replace(/\s+/g,"-")}`);await assertSettled(label);return sample;
+}
+const horizontalDrag=await dragMotion(96,0,"horizontal-drag");
+const verticalDrag=await dragMotion(0,96,"vertical-drag");
+const diagonalDrag=await dragMotion(84,64,"diagonal-drag");
+const rotation=await dragMotion(-108,18,"rotation");
 await send("Input.dispatchMouseEvent",{type:"mouseWheel",x:canvasBox.x,y:canvasBox.y,deltaX:0,deltaY:-180});
-const wheelIn=await waitMotionSample();assert(wheelIn.visible>0,"wheel zoom-in streaks missing");await assertSettled("wheel in");
+const wheelIn=await waitMotionSample();assertMicro(wheelIn,"wheel zoom-in");await capture("micro-wheel-in");await assertSettled("wheel in");
 await send("Input.dispatchMouseEvent",{type:"mouseWheel",x:canvasBox.x,y:canvasBox.y,deltaX:0,deltaY:180});
-const wheelOut=await waitMotionSample();assert(wheelOut.visible>0,"wheel zoom-out streaks missing");await assertSettled("wheel out");
+const wheelOut=await waitMotionSample();assertMicro(wheelOut,"wheel zoom-out");await assertSettled("wheel out");
 await send("Input.dispatchMouseEvent",{type:"mouseWheel",x:canvasBox.x,y:canvasBox.y,deltaX:0,deltaY:-120,modifiers:2});
-const trackpadPath=await waitMotionSample();assert(trackpadPath.visible>0&&await evaluate("PCSDeepSpaceManager.debug().lastPointerZoom?.inputType")==="trackpad-pinch","control-modified trackpad path failed");await assertSettled("trackpad path");
+const trackpadPath=await waitMotionSample();assertMicro(trackpadPath,"trackpad path");assert(await evaluate("PCSDeepSpaceManager.debug().lastPointerZoom?.inputType")==="trackpad-pinch","control-modified trackpad path failed");await assertSettled("trackpad path");
 await send("Emulation.setDeviceMetricsOverride",{width:390,height:844,deviceScaleFactor:2,mobile:true,screenWidth:390,screenHeight:844});
-await run(async()=>{const canvas=cesiumViewer.scene.canvas,rect=canvas.getBoundingClientRect(),sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms)),pair=distance=>[new Touch({identifier:1,target:canvas,clientX:rect.left+rect.width*.5-distance*.5,clientY:rect.top+rect.height*.5}),new Touch({identifier:2,target:canvas,clientX:rect.left+rect.width*.5+distance*.5,clientY:rect.top+rect.height*.5})],dispatch=(type,touches,changed=touches)=>canvas.dispatchEvent(new TouchEvent(type,{touches,targetTouches:touches,changedTouches:changed,bubbles:true,cancelable:true}));let touches=pair(70);dispatch("touchstart",touches);for(const distance of [90,106,122,138,154]){touches=pair(distance);dispatch("touchmove",touches);await sleep(45);}dispatch("touchend",[],touches);});
-const mobilePinch=await waitMotionSample();assert(mobilePinch.visible>0&&await evaluate("PCSDeepSpaceManager.debug().lastPointerZoom?.inputType")==="mobile-pinch","mobile pinch simulation failed");await assertSettled("mobile pinch");
+await evaluate("PCSDeepSpaceManager.enterNearby('10pc')");await waitFor("PCSDeepSpaceManager.debug().nearby?.points>0");await waitUntilMotionIdle("mobile 10pc entry");
+const mobilePinch=await run(async()=>{const canvas=cesiumViewer.scene.canvas,rect=canvas.getBoundingClientRect(),sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms)),samples=[],pair=distance=>[new Touch({identifier:1,target:canvas,clientX:rect.left+rect.width*.5-distance*.5,clientY:rect.top+rect.height*.5}),new Touch({identifier:2,target:canvas,clientX:rect.left+rect.width*.5+distance*.5,clientY:rect.top+rect.height*.5})],dispatch=(type,touches,changed=touches)=>canvas.dispatchEvent(new TouchEvent(type,{touches,targetTouches:touches,changedTouches:changed,bubbles:true,cancelable:true}));let touches=pair(70);dispatch("touchstart",touches);for(const distance of [90,106,122,138,154]){touches=pair(distance);dispatch("touchmove",touches);await sleep(45);samples.push(PCSDeepSpaceManager.debug().motionStreaks);}dispatch("touchend",[],touches);return samples.sort((a,b)=>Math.max(b.visible||0,b.inputPeakVisible||0)-Math.max(a.visible||0,a.inputPeakVisible||0))[0];});
+assertMicro(mobilePinch,"mobile pinch",6,18);assert(await evaluate("PCSDeepSpaceManager.debug().lastPointerZoom?.inputType")==="mobile-pinch","mobile pinch simulation failed");await assertSettled("mobile pinch");
 await send("Emulation.setDeviceMetricsOverride",{width:1280,height:720,deviceScaleFactor:1,mobile:false,screenWidth:1280,screenHeight:720});
+await evaluate("PCSDeepSpaceManager.enterNearby('10pc')");await waitFor("PCSDeepSpaceManager.debug().nearby?.points>0");await waitUntilMotionIdle("desktop 10pc re-entry");
 await send("Input.dispatchMouseEvent",{type:"mousePressed",x:canvasBox.x-80,y:canvasBox.y,button:"left",buttons:1,clickCount:1});
 for(let step=0;step<6;step++)await send("Input.dispatchMouseEvent",{type:"mouseMoved",x:canvasBox.x-80+step*28,y:canvasBox.y+step*3,button:"left",buttons:1});
 await send("Input.dispatchMouseEvent",{type:"mouseReleased",x:canvasBox.x+60,y:canvasBox.y+15,button:"left",buttons:0,clickCount:1});
 const drag=await waitMotionSample();assert(drag.visible>0,"drag/rotate streaks missing");await waitUntilMotionIdle("drag inertia");
+
+const jitter=await run(async()=>{const before=PCSDeepSpaceManager.debug().motionStreaks,amount=Math.max(.00001,Cesium.Cartesian3.magnitude(cesiumViewer.camera.positionWC)*1e-11);cesiumViewer.camera.moveLeft(amount);await new Promise(resolve=>{const remove=cesiumViewer.scene.postRender.addEventListener(()=>{remove();resolve();});cesiumViewer.scene.requestRender();});return {before,after:PCSDeepSpaceManager.debug().motionStreaks};});
+assert(jitter.after.visible===0&&!jitter.after.inputActive,"camera jitter activated trails without user input");
 
 await evaluate("PCSDeepSpaceManager.searchNearby('Proxima Centauri')");
 const previousFocus=await evaluate("PCSDeepSpaceManager.debug().lastObjectFocus");
 await evaluate("document.querySelector('[data-object-card-focus]').focus()");
 await send("Input.dispatchKeyEvent",{type:"keyDown",key:"Enter",code:"Enter",windowsVirtualKeyCode:13,nativeVirtualKeyCode:13,text:"\r"});
 await send("Input.dispatchKeyEvent",{type:"keyUp",key:"Enter",code:"Enter",windowsVirtualKeyCode:13,nativeVirtualKeyCode:13});
-const keyboardFocus=await waitMotionSample(),keyboardFocusId=await evaluate("PCSDeepSpaceManager.debug().lastObjectFocus");assert(keyboardFocus.visible>0&&keyboardFocusId&&keyboardFocusId!==previousFocus,"keyboard object focus failed");await waitUntilMotionIdle("keyboard object focus");
+await delay(220);const keyboardFocus=await evaluate("PCSDeepSpaceManager.debug().motionStreaks"),keyboardFocusId=await evaluate("PCSDeepSpaceManager.debug().lastObjectFocus");assert(keyboardFocus.visible===0&&keyboardFocusId&&keyboardFocusId!==previousFocus,"keyboard object focus or automated-trail suppression failed");await waitUntilMotionIdle("keyboard object focus");
 const cardBefore=await evaluate("({id:PCSDeepSpaceManager.debug().objectCardId,selected:PCSDeepSpaceManager.debug().nearbySelected,text:document.querySelector('[data-ds-info]').textContent})");
 await send("Input.dispatchMouseEvent",{type:"mouseWheel",x:canvasBox.x,y:canvasBox.y,deltaX:0,deltaY:-120});
 await waitMotionSample();
@@ -135,13 +160,13 @@ async function samplePerformance(tier,mobile=false){
   await send("HeapProfiler.collectGarbage");
   const before=(await metrics()).JSHeapUsedSize;
   const sample=await run(async()=>new Promise(resolve=>{
-    const frames=[],started=performance.now();let previous=started,index=0;
-    function frame(now){frames.push(now-previous);previous=now;const amount=Math.max(100,Cesium.Cartesian3.magnitude(cesiumViewer.camera.positionWC)*.00018);if(index++%2)cesiumViewer.camera.moveLeft(amount);else cesiumViewer.camera.moveRight(amount);if(now-started<1600)requestAnimationFrame(frame);else{const debug=PCSDeepSpaceManager.debug();resolve({elapsed:now-started,frames,objects:debug.nearby.points,streaks:debug.motionStreaks.streaks,visible:debug.motionStreaks.visible});}}
+    const canvas=cesiumViewer.scene.canvas,frames=[],started=performance.now(),samples=[];let previous=started,index=0;const removeSample=cesiumViewer.scene.postRender.addEventListener(()=>samples.push(PCSDeepSpaceManager.debug().motionStreaks));canvas.dispatchEvent(new CustomEvent("pcs:deep-space-navigation",{detail:{kind:"acceptance-performance",durationMs:1800}}));
+    function frame(now){frames.push(now-previous);previous=now;const amount=Math.max(100,Cesium.Cartesian3.magnitude(cesiumViewer.camera.positionWC)*.00018);if(index++%2)cesiumViewer.camera.moveLeft(amount);else cesiumViewer.camera.moveRight(amount);cesiumViewer.scene.requestRender();if(now-started<1600)requestAnimationFrame(frame);else setTimeout(()=>{removeSample();const debug=PCSDeepSpaceManager.debug(),peak=samples.sort((a,b)=>b.visible-a.visible)[0]||debug.motionStreaks;resolve({elapsed:now-started,frames,objects:debug.nearby.points,streaks:debug.motionStreaks.streaks,trailPercentage:debug.motionStreaks.trailPercentage,visible:peak.visible,maxRenderedLength:Math.max(0,...samples.map(item=>item.maxRenderedLength||0))});},50);}
     requestAnimationFrame(frame);
   }));
   await send("HeapProfiler.collectGarbage");
   const after=(await metrics()).JSHeapUsedSize,intervals=sample.frames.slice(1),averageFrameMs=intervals.reduce((sum,value)=>sum+value,0)/Math.max(1,intervals.length),maxFrameMs=Math.max(...intervals);
-  return {viewport:mobile?[390,844]:[1280,720],objects:sample.objects,streaks:sample.streaks,visible:sample.visible,averageFps:sample.frames.length/(sample.elapsed/1000),lowestObservedFps:maxFrameMs?1000/maxFrameMs:null,averageFrameMs,maxFrameMs,heapBefore:before,heapAfter:after,heapDeltaBytes:after-before};
+  return {viewport:mobile?[390,844]:[1280,720],objects:sample.objects,streaks:sample.streaks,trailPercentage:sample.trailPercentage,peakVisible:sample.visible,maxRenderedLength:sample.maxRenderedLength,averageFps:sample.frames.length/(sample.elapsed/1000),lowestObservedFps:maxFrameMs?1000/maxFrameMs:null,averageFrameMs,maxFrameMs,heapBefore:before,heapAfter:after,heapDeltaBytes:after-before};
 }
 const performanceResults={};
 for(const tier of ["10pc","50pc","100pc"])performanceResults[tier]=await samplePerformance(tier,false);
@@ -154,14 +179,14 @@ await waitUntilMotionIdle("stability entry");
 const stability=await run(async()=>{
   const canvas=cesiumViewer.scene.canvas,rect=canvas.getBoundingClientRect(),sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms)),baseline=PCSDeepSpaceManager.debug(),states=[];
   const nextRender=()=>new Promise(resolve=>{const remove=cesiumViewer.scene.postRender.addEventListener(()=>{remove();resolve();});cesiumViewer.scene.requestRender();});
-  for(let index=0;index<100;index++){const amount=Math.max(100,Cesium.Cartesian3.magnitude(cesiumViewer.camera.positionWC)*.0005);if(index%2)cesiumViewer.camera.moveLeft(amount);else cesiumViewer.camera.moveRight(amount);await nextRender();await sleep(280);await nextRender();states.push(PCSDeepSpaceManager.debug().motionStreaks);}
+  for(let index=0;index<100;index++){const amount=Math.max(100,Cesium.Cartesian3.magnitude(cesiumViewer.camera.positionWC)*.0005);canvas.dispatchEvent(new CustomEvent("pcs:deep-space-navigation",{detail:{kind:"acceptance-cycle",durationMs:80}}));if(index%2)cesiumViewer.camera.moveLeft(amount);else cesiumViewer.camera.moveRight(amount);await nextRender();await sleep(180);await nextRender();states.push(PCSDeepSpaceManager.debug().motionStreaks);}
   for(let index=0;index<50;index++){for(const deltaY of [-90,90]){canvas.dispatchEvent(new WheelEvent("wheel",{deltaY,clientX:rect.left+rect.width*.5,clientY:rect.top+rect.height*.5,bubbles:true,cancelable:true}));await sleep(3);}}
-  for(let index=0;index<30;index++){const amount=Math.max(100,Cesium.Cartesian3.magnitude(cesiumViewer.camera.positionWC)*.0004);cesiumViewer.camera.moveLeft(amount);cesiumViewer.camera.moveRight(amount);cesiumViewer.scene.requestRender();await sleep(4);}
-  const names=["Proxima Centauri","Barnard's Star","Sirius A","Vega","TRAPPIST-1"];for(let index=0;index<30;index++)PCSDeepSpaceManager.searchNearby(names[index%names.length]);await sleep(350);
+  for(let index=0;index<30;index++){const amount=Math.max(100,Cesium.Cartesian3.magnitude(cesiumViewer.camera.positionWC)*.0004);canvas.dispatchEvent(new CustomEvent("pcs:deep-space-navigation",{detail:{kind:"acceptance-pan-cycle",durationMs:80}}));cesiumViewer.camera.moveLeft(amount);cesiumViewer.scene.requestRender();await sleep(4);}
+  const names=["Proxima Centauri","Barnard's Star","Sirius A","Vega","TRAPPIST-1"];for(let index=0;index<30;index++)PCSDeepSpaceManager.searchNearby(names[index%names.length]);await sleep(250);
   const after=PCSDeepSpaceManager.debug();
   return {startStopCycles:states.length,noVisibleTrailReturns:states.filter(state=>state.visible===0).length,idleStateReturns:states.filter(state=>state.state==="idle").length,zoomPairs:50,panPairs:30,selections:30,baseline,after};
 });
-assert(stability.startStopCycles===100&&stability.noVisibleTrailReturns===100&&stability.after.motionStreaks.visible===0&&stability.after.motionStreaks.streaks===stability.baseline.motionStreaks.streaks,`movement stability failed: ${JSON.stringify({noVisibleTrailReturns:stability.noVisibleTrailReturns,idleStateReturns:stability.idleStateReturns,baseline:stability.baseline.motionStreaks,after:stability.after.motionStreaks})}`);
+assert(stability.startStopCycles===100&&stability.noVisibleTrailReturns===100&&stability.idleStateReturns===100&&stability.after.motionStreaks.visible===0&&stability.after.motionStreaks.streaks===stability.baseline.motionStreaks.streaks,`movement stability failed: ${JSON.stringify({noVisibleTrailReturns:stability.noVisibleTrailReturns,idleStateReturns:stability.idleStateReturns,baseline:stability.baseline.motionStreaks,after:stability.after.motionStreaks})}`);
 
 const scaleChanges=[];
 for(let index=0;index<30;index++){
@@ -189,8 +214,10 @@ assert(finalState.viewer===1&&finalState.cesiumCanvas===1&&finalState.canvas===i
 
 const requiredConsoleErrors=[...new Set(consoleErrors)].filter(value=>/Uncaught|TypeError|ReferenceError|RangeError|motion-streak|deep-space/i.test(value));
 const requiredNetworkFailures=networkFailures.filter(item=>/motion-streak|deep-space-motion|nearby-stars|phase-3|Cesium/i.test(item.url));
-assert(requiredConsoleErrors.length===0&&requiredNetworkFailures.length===0,"required console or network failure");
-const report={generatedAt:new Date().toISOString(),url:baseUrl,browser:"Headless Chrome CDP with SwiftShader WebGL",physicalGestureEvidence:false,initial,scales,directions:{panLeft,panRight,wheelIn,wheelOut,trackpadPath,mobilePinch,drag,keyboardFocus},objectCard:{before:cardBefore,after:cardAfter},languages,performance:performanceResults,stability,scaleChanges,lifecycleCycles:lifecycle.length,solidBody,finalState,consoleErrors:[...new Set(consoleErrors)],requiredConsoleErrors,networkFailures,requiredNetworkFailures,notes:["Trackpad path is control-modified browser input, not physical Mac trackpad evidence.","Mobile pinch and 390 x 844 performance use browser emulation; they are not real-device gesture evidence.","Heap deltas are observations and do not prove either a leak or zero leakage."]};
+assert(requiredConsoleErrors.length===0&&requiredNetworkFailures.length===0,`required console or network failure: ${JSON.stringify({requiredConsoleErrors,requiredNetworkFailures})}`);
+const longLineBarcodeRegression=Object.values(scales).every(item=>(item.debug?.maxRenderedLength||0)<=6.01&&(item.debug?.streaks||0)<=48)&&Object.values(performanceResults).every(item=>item.maxRenderedLength<=6.01&&item.streaks<=48)&&[panLeft,panRight,horizontalDrag,verticalDrag,diagonalDrag,rotation,wheelIn,wheelOut,trackpadPath,mobilePinch,drag].every(item=>(item.maxRenderedLength||0)<=6.01&&(item.streaks||0)<=48);
+assert(longLineBarcodeRegression,"long-line / barcode streak regression failed");
+const report={generatedAt:new Date().toISOString(),url:baseUrl,browser:"Headless Chrome CDP with SwiftShader WebGL",physicalGestureEvidence:false,visualRegression:{"Long-line / barcode streak regression":"PASS",oldMaximumPx:58,newMaximumPx:{subtle:6,standard:10,cinematic:18},activationThresholdPxPerFrameAt60Fps:.65,settlingMs:120,defaultMode:"subtle",screenshots:fs.readdirSync(outputDir).filter(name=>name.endsWith(".png")).sort()},initial,scales,directions:{panLeft,panRight,horizontalDrag,verticalDrag,diagonalDrag,rotation,wheelIn,wheelOut,trackpadPath,mobilePinch,drag,jitter,keyboardFocus},objectCard:{before:cardBefore,after:cardAfter},languages,performance:performanceResults,stability,scaleChanges,lifecycleCycles:lifecycle.length,solidBody,finalState,consoleErrors:[...new Set(consoleErrors)],requiredConsoleErrors,networkFailures,requiredNetworkFailures,notes:["Micro-trails require active user input and per-object screen displacement above the dead zone.","Original point primitives remain visible; trails never replace star cores.","Trackpad path is control-modified browser input, not physical Mac trackpad evidence.","Mobile pinch and 390 x 844 performance use browser emulation; they are not real-device gesture evidence.","Heap deltas are observations and do not prove either a leak or zero leakage."]};
 fs.writeFileSync(path.join(outputDir,"acceptance-report.json"),JSON.stringify(report,null,2)+"\n");
-console.log(JSON.stringify({scales:Object.keys(scales),performance:performanceResults,stability:{startStopCycles:stability.startStopCycles,noVisibleTrailReturns:stability.noVisibleTrailReturns,idleStateReturns:stability.idleStateReturns,zoomPairs:stability.zoomPairs,panPairs:stability.panPairs,selections:stability.selections,scaleChanges:scaleChanges.length,lifecycleCycles:lifecycle.length},solidBody,finalState,requiredConsoleErrors,requiredNetworkFailures,outputDir},null,2));
+console.log(JSON.stringify({visualRegression:report.visualRegression,scales:Object.keys(scales),performance:performanceResults,stability:{startStopCycles:stability.startStopCycles,noVisibleTrailReturns:stability.noVisibleTrailReturns,idleStateReturns:stability.idleStateReturns,zoomPairs:stability.zoomPairs,panPairs:stability.panPairs,selections:stability.selections,scaleChanges:scaleChanges.length,lifecycleCycles:lifecycle.length},solidBody,finalState,requiredConsoleErrors,requiredNetworkFailures,outputDir},null,2));
 socket.close();

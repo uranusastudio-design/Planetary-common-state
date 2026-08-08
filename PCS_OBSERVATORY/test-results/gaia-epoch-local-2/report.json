@@ -1,0 +1,339 @@
+{
+  "generatedAt": "2026-08-08T11:09:51.653Z",
+  "status": "PASS",
+  "sourceContract": {
+    "gcns": {
+      "source": "Gaia EDR3 / GCNS",
+      "release": 2020,
+      "referenceEpoch": "J2016.0"
+    },
+    "gaiaDr3": {
+      "source": "Gaia DR3",
+      "release": 2022,
+      "referenceEpoch": "J2016.0"
+    },
+    "positionMode": "Catalog epoch position",
+    "displayEpochSource": "PCSDeepSpaceManager epoch",
+    "nextCatalog": "Gaia DR4 — expected 2026 (not before mid-2026)"
+  },
+  "scales": {
+    "10pc": {
+      "points": 312,
+      "epoch": "Display Epoch: 2026-08-08T11:09:42.187Z",
+      "viewer": 1,
+      "canvas": 1
+    },
+    "25pc": {
+      "points": 4910,
+      "epoch": "Display Epoch: 2026-08-08T11:09:42.187Z",
+      "viewer": 1,
+      "canvas": 1
+    },
+    "50pc": {
+      "points": 8000,
+      "epoch": "Display Epoch: 2026-08-08T11:09:42.187Z",
+      "viewer": 1,
+      "canvas": 1
+    },
+    "100pc": {
+      "points": 10000,
+      "epoch": "Display Epoch: 2026-08-08T11:09:42.187Z",
+      "viewer": 1,
+      "canvas": 1
+    }
+  },
+  "stars": {
+    "Proxima Centauri": {
+      "Source": "Gaia DR3",
+      "Catalog Release": "2022",
+      "Reference Epoch": "J2016.0",
+      "Display Epoch": "2026-08-08T11:09:42.187Z",
+      "Position Mode": "Catalog epoch position",
+      "3D Velocity": "Complete",
+      "Next Catalog": "Gaia DR4 — Expected 2026 (not before mid-2026)",
+      "Official name": "Proxima Centauri",
+      "Localized name": "Proxima Centauri",
+      "Aliases": "GJ 551, Gaia DR3 5853498713190525696, HIP 70890",
+      "Object type": "PM*",
+      "Parent system / structure": "Unavailable",
+      "Catalog ID": "Gaia DR3 5853498713190525696",
+      "Coordinates": "RA 217.39232147200883°; Dec -62.67607511676666°",
+      "Coordinate frame": "heliocentric ICRS Cartesian",
+      "Distance": "1.3019705311704333 pc",
+      "Uncertainty": "Parallax ± 0.049872905 mas",
+      "Redshift": "Unavailable",
+      "Velocity": "Radial -21.942726 km/s",
+      "Physical size": "Unavailable",
+      "Orbital data": "Unavailable",
+      "Epoch": "J2016.0",
+      "Data sources": "Gaia DR3; name/type cross-checked with SIMBAD",
+      "Data status": "Catalog observation",
+      "Visualization status": "Representative visualization",
+      "Research references": "Unavailable",
+      "Known limitations": "Displayed position remains at the catalog reference epoch; the selected UTC display epoch does not alter this star point."
+    },
+    "Barnard's Star": {
+      "Source": "Gaia DR3",
+      "Catalog Release": "2022",
+      "Reference Epoch": "J2016.0",
+      "Display Epoch": "2026-08-08T11:09:42.187Z",
+      "Position Mode": "Catalog epoch position",
+      "3D Velocity": "Complete",
+      "Next Catalog": "Gaia DR4 — Expected 2026 (not before mid-2026)",
+      "Official name": "Barnard's Star",
+      "Localized name": "Barnard's Star",
+      "Aliases": "GJ 699, Gaia DR3 4472832130942575872, HIP 87937",
+      "Object type": "BY*",
+      "Parent system / structure": "Unavailable",
+      "Catalog ID": "Gaia DR3 4472832130942575872",
+      "Coordinates": "RA 269.44850252543836°; Dec 4.739420051112412°",
+      "Coordinate frame": "heliocentric ICRS Cartesian",
+      "Distance": "1.828233981355542 pc",
+      "Uncertainty": "Parallax ± 0.040116355 mas",
+      "Redshift": "Unavailable",
+      "Velocity": "Radial -110.46822 km/s",
+      "Physical size": "Unavailable",
+      "Orbital data": "Unavailable",
+      "Epoch": "J2016.0",
+      "Data sources": "Gaia DR3; name/type cross-checked with SIMBAD",
+      "Data status": "Catalog observation",
+      "Visualization status": "Representative visualization",
+      "Research references": "Unavailable",
+      "Known limitations": "Displayed position remains at the catalog reference epoch; the selected UTC display epoch does not alter this star point."
+    },
+    "Sirius A": {
+      "Source": "Hipparcos new reduction",
+      "Catalog Release": "2007",
+      "Reference Epoch": "J1991.25",
+      "Display Epoch": "2026-08-08T11:09:42.187Z",
+      "Position Mode": "Catalog epoch position",
+      "3D Velocity": "Incomplete · Tangential propagation available",
+      "Next Catalog": "Gaia DR4 — Expected 2026 (not before mid-2026)",
+      "Official name": "Sirius A",
+      "Localized name": "Sirius A",
+      "Aliases": "GJ 244, HD 48915, HD 48915A, HIP 32349",
+      "Object type": "SB*",
+      "Parent system / structure": "sirius",
+      "Catalog ID": "Hipparcos new reduction HIP 32349",
+      "Coordinates": "RA 101.2885410520664°; Dec -16.713143062644765°",
+      "Coordinate frame": "heliocentric ICRS Cartesian",
+      "Distance": "2.6370612589330453 pc",
+      "Uncertainty": "Parallax ± 1.58 mas",
+      "Redshift": "Unavailable",
+      "Velocity": "Unavailable",
+      "Physical size": "Unavailable",
+      "Orbital data": "Unavailable",
+      "Epoch": "J1991.25",
+      "Data sources": "Hipparcos new reduction; name/type cross-checked with SIMBAD",
+      "Data status": "Catalog observation",
+      "Visualization status": "Representative visualization",
+      "Research references": "Unavailable",
+      "Known limitations": "radial velocity unavailable in deployed record; 3D velocity incomplete; component separation/orbit not visualized; Displayed position remains at the catalog reference epoch; the selected UTC display epoch does not alter this star point.; Radial velocity unavailable; 3D velocity is incomplete."
+    },
+    "Vega": {
+      "Source": "Hipparcos new reduction",
+      "Catalog Release": "2007",
+      "Reference Epoch": "J1991.25",
+      "Display Epoch": "2026-08-08T11:09:42.187Z",
+      "Position Mode": "Catalog epoch position",
+      "3D Velocity": "Incomplete · Tangential propagation available",
+      "Next Catalog": "Gaia DR4 — Expected 2026 (not before mid-2026)",
+      "Official name": "Vega",
+      "Localized name": "Vega",
+      "Aliases": "GJ 721, GJ 721.0, Gaia DR3 (I/350/gaiaedr3), HD 172167, HIP 91262",
+      "Object type": "dS*",
+      "Parent system / structure": "Unavailable",
+      "Catalog ID": "Hipparcos new reduction HIP 91262",
+      "Coordinates": "RA 279.2341082481229°; Dec 38.78299326196128°",
+      "Coordinate frame": "heliocentric ICRS Cartesian",
+      "Distance": "7.678722260615834 pc",
+      "Uncertainty": "Parallax ± 0.36 mas",
+      "Redshift": "Unavailable",
+      "Velocity": "Unavailable",
+      "Physical size": "Unavailable",
+      "Orbital data": "Unavailable",
+      "Epoch": "J1991.25",
+      "Data sources": "Hipparcos new reduction; name/type cross-checked with SIMBAD",
+      "Data status": "Catalog observation",
+      "Visualization status": "Representative visualization",
+      "Research references": "Unavailable",
+      "Known limitations": "radial velocity unavailable in deployed record; 3D velocity incomplete; component separation/orbit not visualized; Displayed position remains at the catalog reference epoch; the selected UTC display epoch does not alter this star point.; Radial velocity unavailable; 3D velocity is incomplete."
+    },
+    "Tau Ceti": {
+      "Source": "Gaia DR3",
+      "Catalog Release": "2022",
+      "Reference Epoch": "J2016.0",
+      "Display Epoch": "2026-08-08T11:09:42.187Z",
+      "Position Mode": "Catalog epoch position",
+      "3D Velocity": "Incomplete · Tangential propagation available",
+      "Next Catalog": "Gaia DR4 — Expected 2026 (not before mid-2026)",
+      "Official name": "Tau Ceti",
+      "Localized name": "Tau Ceti",
+      "Aliases": "GJ 71, GJ 71.0, Gaia DR3 2452378776434477184, HD 10700, HIP 8102",
+      "Object type": "PM*",
+      "Parent system / structure": "Unavailable",
+      "Catalog ID": "Gaia DR3 2452378776434477184",
+      "Coordinates": "RA 26.009055057160104°; Dec -15.933680200693857°",
+      "Coordinate frame": "heliocentric ICRS Cartesian",
+      "Distance": "3.6521709611425766 pc",
+      "Uncertainty": "Parallax ± 0.17013045 mas",
+      "Redshift": "Unavailable",
+      "Velocity": "Unavailable",
+      "Physical size": "Unavailable",
+      "Orbital data": "Unavailable",
+      "Epoch": "J2016.0",
+      "Data sources": "Gaia DR3; name/type cross-checked with SIMBAD",
+      "Data status": "Catalog observation",
+      "Visualization status": "Representative visualization",
+      "Research references": "Unavailable",
+      "Known limitations": "radial velocity unavailable; 3D velocity incomplete; Displayed position remains at the catalog reference epoch; the selected UTC display epoch does not alter this star point.; Radial velocity unavailable; 3D velocity is incomplete."
+    }
+  },
+  "epochChange": {
+    "before": {
+      "id": "proxima-centauri",
+      "sourceCatalog": "Gaia DR3; name/type cross-checked with SIMBAD",
+      "referenceEpoch": 2016,
+      "radialVelocityAvailable": true,
+      "position": {
+        "x": 5654619.915085403,
+        "y": -5870788.619628634,
+        "z": -272929.3819175598
+      },
+      "metadata": {
+        "source": "Gaia DR3",
+        "catalogRelease": "2022",
+        "referenceEpoch": "J2016.0",
+        "positionMode": "catalog-epoch",
+        "complete3d": true,
+        "tangential": true,
+        "nextCatalog": "Gaia DR4",
+        "nextCatalogExpected": "2026 (not before mid-2026)"
+      }
+    },
+    "after": {
+      "id": "proxima-centauri",
+      "sourceCatalog": "Gaia DR3; name/type cross-checked with SIMBAD",
+      "referenceEpoch": 2016,
+      "radialVelocityAvailable": true,
+      "position": {
+        "x": 5654619.915085403,
+        "y": -5870788.619628634,
+        "z": -272929.3819175598
+      },
+      "metadata": {
+        "source": "Gaia DR3",
+        "catalogRelease": "2022",
+        "referenceEpoch": "J2016.0",
+        "positionMode": "catalog-epoch",
+        "complete3d": true,
+        "tangential": true,
+        "nextCatalog": "Gaia DR4",
+        "nextCatalogExpected": "2026 (not before mid-2026)"
+      },
+      "header": "Display Epoch: 2035-01-01T12:34:56 UTC"
+    },
+    "rows": {
+      "Source": "Gaia DR3",
+      "Catalog Release": "2022",
+      "Reference Epoch": "J2016.0",
+      "Display Epoch": "2035-01-01T12:34:56 UTC",
+      "Position Mode": "Catalog epoch position",
+      "3D Velocity": "Complete",
+      "Next Catalog": "Gaia DR4 — Expected 2026 (not before mid-2026)",
+      "Official name": "Proxima Centauri",
+      "Localized name": "Proxima Centauri",
+      "Aliases": "GJ 551, Gaia DR3 5853498713190525696, HIP 70890",
+      "Object type": "PM*",
+      "Parent system / structure": "Unavailable",
+      "Catalog ID": "Gaia DR3 5853498713190525696",
+      "Coordinates": "RA 217.39232147200883°; Dec -62.67607511676666°",
+      "Coordinate frame": "heliocentric ICRS Cartesian",
+      "Distance": "1.3019705311704333 pc",
+      "Uncertainty": "Parallax ± 0.049872905 mas",
+      "Redshift": "Unavailable",
+      "Velocity": "Radial -21.942726 km/s",
+      "Physical size": "Unavailable",
+      "Orbital data": "Unavailable",
+      "Epoch": "J2016.0",
+      "Data sources": "Gaia DR3; name/type cross-checked with SIMBAD",
+      "Data status": "Catalog observation",
+      "Visualization status": "Representative visualization",
+      "Research references": "Unavailable",
+      "Known limitations": "Displayed position remains at the catalog reference epoch; the selected UTC display epoch does not alter this star point."
+    }
+  },
+  "languages": {
+    "en": {
+      "label": "Catalog Release",
+      "value": "2022",
+      "displayEpoch": "Display Epoch"
+    },
+    "zh-TW": {
+      "label": "星表發布",
+      "value": "2022",
+      "displayEpoch": "顯示曆元"
+    },
+    "ja": {
+      "label": "カタログ公開",
+      "value": "2022",
+      "displayEpoch": "表示元期"
+    },
+    "ko": {
+      "label": "카탈로그 공개",
+      "value": "2022",
+      "displayEpoch": "표시 역기점"
+    }
+  },
+  "desktop": {
+    "1": {
+      "overflow": false,
+      "cardWidth": 315.625,
+      "viewport": 756
+    },
+    "0.67": {
+      "overflow": false,
+      "cardWidth": 210.796875,
+      "viewport": 756
+    },
+    "0.5": {
+      "overflow": false,
+      "cardWidth": 156.8125,
+      "viewport": 756
+    },
+    "0.33": {
+      "overflow": false,
+      "cardWidth": 102.8125,
+      "viewport": 756
+    }
+  },
+  "mobile": {
+    "overflow": false,
+    "card": {
+      "x": 18.578125,
+      "y": 1292.390625,
+      "width": 352.84375,
+      "height": 666.578125,
+      "top": 1292.390625,
+      "right": 371.421875,
+      "bottom": 1958.96875,
+      "left": 18.578125
+    },
+    "viewer": 1,
+    "canvas": 1
+  },
+  "finalState": {
+    "viewer": 1,
+    "canvas": 1,
+    "totalCanvas": 2,
+    "active": false
+  },
+  "console": {
+    "required": 0,
+    "items": []
+  },
+  "network": {
+    "required": 0,
+    "items": []
+  }
+}

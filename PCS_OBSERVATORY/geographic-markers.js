@@ -3,6 +3,7 @@
 
   const markerRegistry = new Map();
   let debugEnabled = false;
+  let renderingEnabled = true;
   // Hide geographic symbols before their pixel footprint intersects the limb.
   // The anchor can still be mathematically front-facing while the billboard's
   // lower pixels are already behind the ellipsoid in wide orbital views.
@@ -190,6 +191,7 @@
       entity,
       rendererType: "cesium-native",
     });
+    if (!renderingEnabled) entity.show = false;
     return entity;
   }
 
@@ -255,8 +257,8 @@
         const visibility = canvasVisibility(marker.cartesianPosition, scene, CesiumApi);
         marker.frontFacing = visibility.frontFacing;
         marker.insideCanvas = visibility.insideCanvas;
-        marker.element.style.display = visibility.visible ? "" : "none";
-        if (visibility.visible) {
+        marker.element.style.display = renderingEnabled && visibility.visible ? "" : "none";
+        if (renderingEnabled && visibility.visible) {
           marker.element.style.transform = `translate3d(${visibility.canvasPosition.x}px, ${visibility.canvasPosition.y}px, 0)`;
         }
       });
@@ -299,6 +301,8 @@
         renderedHeight: record.renderedHeight,
         markerImplementationType: record.type,
         rendererType: record.rendererType,
+        renderingEnabled,
+        entityShow: record.entity?.show ?? null,
         frontFacing: visibility.frontFacing,
         insideCanvas: visibility.insideCanvas,
       };
@@ -333,13 +337,25 @@
     let updated = 0;
     markerRegistry.forEach((record) => {
       if (record.rendererType !== "cesium-native" || !record.entity) return;
-      const visible = isPositionVisible(record.cartesianPosition, scene, CesiumApi);
+      const visible = renderingEnabled && isPositionVisible(record.cartesianPosition, scene, CesiumApi);
       if (record.entity.show !== visible) {
         record.entity.show = visible;
         updated += 1;
       }
     });
     return updated;
+  }
+
+  function setRenderingEnabled(enabled, scene, CesiumApi = global.Cesium) {
+    renderingEnabled = Boolean(enabled);
+    markerRegistry.forEach((record) => {
+      if (record.rendererType === "cesium-native" && record.entity) {
+        record.entity.show = renderingEnabled && (!scene || isPositionVisible(record.cartesianPosition, scene, CesiumApi));
+      } else if (record.rendererType === "html-overlay" && record.element && !renderingEnabled) {
+        record.element.style.display = "none";
+      }
+    });
+    return renderingEnabled;
   }
 
   function updateVisualOffsetsForCamera(cameraHeight, CesiumApi = global.Cesium) {
@@ -371,6 +387,8 @@
     reconcileLayer,
     removeLayer,
     removeMarker,
+    isRenderingEnabled: () => renderingEnabled,
+    setRenderingEnabled,
     setDebugEnabled,
     upsertCesiumEntity,
     updateCesiumVisibility,

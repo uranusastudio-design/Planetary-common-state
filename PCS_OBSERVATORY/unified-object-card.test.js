@@ -8,7 +8,7 @@ const window={};vm.runInNewContext(source,{window,Object,Number,String,Math});co
 
 test("the unified model preserves the complete reusable Phase 4 contract",()=>{
   const model=cards.normalize({id:"test",canonicalName:"Test",aliases:[],catalogIds:[],dataSources:[],references:[],knownLimitations:[]});
-  for(const key of ["id","canonicalName","localizedName","aliases","objectType","parentStructure","catalogIds","coordinates","coordinateFrame","distance","distanceUncertainty","redshift","velocity","physicalSize","orbitalData","epoch","dataSources","dataStatus","visualizationStatus","references","knownLimitations"])assert.ok(Object.hasOwn(model,key),key);
+  for(const key of ["id","canonicalName","localizedName","aliases","objectType","parentStructure","catalogIds","coordinates","coordinateFrame","distance","distanceUncertainty","redshift","velocity","physicalSize","orbitalData","epoch","astrometry","dataSources","dataStatus","visualizationStatus","references","knownLimitations"])assert.ok(Object.hasOwn(model,key),key);
   assert.equal(model.redshift,null);
   assert.equal(model.dataStatus,"Unavailable");
 });
@@ -39,6 +39,12 @@ test("solar, nearby, Phase 3 and reconstruction adapters do not fabricate missin
 test("all four languages expose exact card labels",()=>{
   const expected={en:["Official name","Focus","Close object card","Unavailable"],"zh-TW":["正式名稱","聚焦","關閉天體字卡","無資料"],ja:["正式名称","フォーカス","天体カードを閉じる","利用不可"],ko:["공식 명칭","초점 맞추기","천체 카드 닫기","사용 불가"]};
   for(const [language,values] of Object.entries(expected))assert.deepEqual([cards.COPY[language].name,cards.COPY[language].focus,cards.COPY[language].close,cards.COPY[language].unavailable],values);
+});
+
+test("all four languages expose exact astrometry metadata labels",()=>{
+  const expected={en:["Source","Catalog Release","Reference Epoch","Display Epoch","Position Mode","Proper-motion propagated","3D Velocity","Complete","Incomplete","Tangential propagation available","Next Catalog","Expected"],"zh-TW":["來源","星表發布","參考曆元","顯示曆元","位置模式","已傳播自行","三維速度","完整","不完整","可進行切向傳播","下一版星表","預計"],ja:["ソース","カタログ公開","基準元期","表示元期","位置モード","固有運動を伝播","3次元速度","完全","不完全","接線方向の伝播が利用可能","次期カタログ","予定"],ko:["출처","카탈로그 공개","기준 역기점","표시 역기점","위치 모드","고유 운동 전파","3D 속도","완전","불완전","접선 방향 전파 가능","다음 카탈로그","예정"]};
+  const keys=["source","catalogRelease","referenceEpoch","displayEpoch","positionMode","properMotionPropagated","velocity3d","complete","incomplete","tangential","nextCatalog","expected"];
+  for(const [language,values] of Object.entries(expected))assert.deepEqual(keys.map(key=>cards.COPY[language][key]),values);
 });
 
 test("the card reuses selection, language, focus, Escape, and safe links",()=>{

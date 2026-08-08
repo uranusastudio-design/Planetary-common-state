@@ -1,0 +1,1618 @@
+{
+  "generatedAt": "2026-08-08T11:47:16.768Z",
+  "url": "http://127.0.0.1:18765/PCS_OBSERVATORY/?v=2.2.0-motion-streaks",
+  "browser": "Headless Chrome CDP with SwiftShader WebGL",
+  "physicalGestureEvidence": false,
+  "visualRegression": {
+    "Long-line / barcode streak regression": "PASS",
+    "oldMaximumPx": 58,
+    "newMaximumPx": {
+      "subtle": 6,
+      "standard": 10,
+      "cinematic": 18
+    },
+    "activationThresholdPxPerFrameAt60Fps": 0.65,
+    "settlingMs": 120,
+    "defaultMode": "subtle",
+    "screenshots": [
+      "micro-100pc-wheel.png",
+      "micro-10pc-stationary.png",
+      "micro-10pc-wheel.png",
+      "micro-50pc-wheel.png",
+      "micro-diagonal-drag.png",
+      "micro-horizontal-drag.png",
+      "micro-local-group.png",
+      "micro-milky-way.png",
+      "micro-rotation.png",
+      "micro-vertical-drag.png",
+      "micro-wheel-in.png"
+    ]
+  },
+  "initial": {
+    "viewer": 1,
+    "cesiumCanvas": 1,
+    "canvas": 2,
+    "heap": 62283258,
+    "debug": {
+      "initialized": true,
+      "viewerCount": 1,
+      "canvasCount": 2,
+      "active": true,
+      "scaleContext": "solar",
+      "mode": "exhibition",
+      "epoch": "2026-08-08T11:44:11.475Z",
+      "tickListenerActive": true,
+      "pointerNavigationActive": true,
+      "nativeZoomEnabled": false,
+      "lastPointerZoom": null,
+      "lastObjectFocus": null,
+      "objectCardId": "sun",
+      "selected": "sun",
+      "nearbyActive": false,
+      "nearbyTier": "10pc",
+      "nearbySelected": null,
+      "nearbySelectedMetadata": null,
+      "phase3Selected": null,
+      "motionStreaks": {
+        "mode": "subtle",
+        "state": "idle",
+        "context": "nearby",
+        "candidates": 0,
+        "streaks": 0,
+        "trailPercentage": 0,
+        "trackedScreens": 0,
+        "visible": 0,
+        "inputPeakVisible": 0,
+        "meanDx": 0,
+        "meanDy": 0,
+        "directionCoherence": 0,
+        "maxVelocity": 0,
+        "maxRenderedLength": 0,
+        "inputPeakLength": 0,
+        "deadZone": 0.65,
+        "inputActive": false,
+        "inputFrames": 0,
+        "inputRemainingMs": -5250.599999964237,
+        "inputKind": "none",
+        "mobile": false,
+        "reduced": false,
+        "listenerActive": true,
+        "inputListenersActive": true,
+        "independentAnimationLoop": false
+      },
+      "nearby": {
+        "records": 0,
+        "points": 0,
+        "labels": 0,
+        "guides": 0,
+        "motion": 0,
+        "lod": "far",
+        "visible": false
+      },
+      "milkyWay": {
+        "records": 0,
+        "points": 0,
+        "lines": 0,
+        "labels": 0,
+        "visible": false,
+        "mode": "exhibition",
+        "reconstruction": true
+      },
+      "localGroup": {
+        "records": 0,
+        "points": 0,
+        "labels": 0,
+        "uncertainties": 0,
+        "boundary": 0,
+        "lod": "far",
+        "mode": "exhibition",
+        "visible": false
+      }
+    }
+  },
+  "scales": {
+    "10pc": {
+      "debug": {
+        "mode": "subtle",
+        "state": "settling",
+        "context": "nearby",
+        "candidates": 312,
+        "streaks": 48,
+        "trailPercentage": 15.384615384615385,
+        "trackedScreens": 48,
+        "visible": 47,
+        "inputPeakVisible": 47,
+        "meanDx": 9.787691705511394,
+        "meanDy": -57.261290373698294,
+        "directionCoherence": 0.7441525204270651,
+        "maxVelocity": 118.93929023267613,
+        "maxRenderedLength": 6,
+        "inputPeakLength": 6,
+        "deadZone": 0.65,
+        "inputActive": true,
+        "inputFrames": 2,
+        "inputRemainingMs": 126.40000003576279,
+        "inputKind": "mouse-wheel",
+        "mobile": false,
+        "reduced": false,
+        "listenerActive": true,
+        "inputListenersActive": true,
+        "independentAnimationLoop": false
+      },
+      "settled": {
+        "mode": "subtle",
+        "state": "idle",
+        "context": "nearby",
+        "candidates": 312,
+        "streaks": 48,
+        "trailPercentage": 15.384615384615385,
+        "trackedScreens": 47,
+        "visible": 0,
+        "inputPeakVisible": 46,
+        "meanDx": 0,
+        "meanDy": 0,
+        "directionCoherence": 0,
+        "maxVelocity": 0,
+        "maxRenderedLength": 0,
+        "inputPeakLength": 6,
+        "deadZone": 0.65,
+        "inputActive": false,
+        "inputFrames": 0,
+        "inputRemainingMs": -1014.2999999523163,
+        "inputKind": "mouse-wheel",
+        "mobile": false,
+        "reduced": false,
+        "listenerActive": true,
+        "inputListenersActive": true,
+        "independentAnimationLoop": false
+      }
+    },
+    "25pc": {
+      "debug": {
+        "mode": "subtle",
+        "state": "settling",
+        "context": "nearby",
+        "candidates": 4910,
+        "streaks": 48,
+        "trailPercentage": 0.9775967413441956,
+        "trackedScreens": 48,
+        "visible": 47,
+        "inputPeakVisible": 47,
+        "meanDx": 1.7892742636909666,
+        "meanDy": -37.360435845513024,
+        "directionCoherence": 0.6943391720108986,
+        "maxVelocity": 31.818973462335848,
+        "maxRenderedLength": 6,
+        "inputPeakLength": 6,
+        "deadZone": 0.65,
+        "inputActive": true,
+        "inputFrames": 2,
+        "inputRemainingMs": 142.4000000357628,
+        "inputKind": "mouse-wheel",
+        "mobile": false,
+        "reduced": false,
+        "listenerActive": true,
+        "inputListenersActive": true,
+        "independentAnimationLoop": false
+      },
+      "settled": {
+        "mode": "subtle",
+        "state": "idle",
+        "context": "nearby",
+        "candidates": 4910,
+        "streaks": 48,
+        "trailPercentage": 0.9775967413441956,
+        "trackedScreens": 48,
+        "visible": 0,
+        "inputPeakVisible": 47,
+        "meanDx": 0,
+        "meanDy": 0,
+        "directionCoherence": 0,
+        "maxVelocity": 0,
+        "maxRenderedLength": 0,
+        "inputPeakLength": 6,
+        "deadZone": 0.65,
+        "inputActive": false,
+        "inputFrames": 0,
+        "inputRemainingMs": -227.89999997615814,
+        "inputKind": "mouse-wheel",
+        "mobile": false,
+        "reduced": false,
+        "listenerActive": true,
+        "inputListenersActive": true,
+        "independentAnimationLoop": false
+      }
+    },
+    "50pc": {
+      "debug": {
+        "mode": "subtle",
+        "state": "settling",
+        "context": "nearby",
+        "candidates": 8000,
+        "streaks": 48,
+        "trailPercentage": 0.6,
+        "trackedScreens": 48,
+        "visible": 46,
+        "inputPeakVisible": 47,
+        "meanDx": 10.956245740768049,
+        "meanDy": -70.29343320542694,
+        "directionCoherence": 0.7616915141403885,
+        "maxVelocity": 89.72601105325894,
+        "maxRenderedLength": 6,
+        "inputPeakLength": 6,
+        "deadZone": 0.65,
+        "inputActive": true,
+        "inputFrames": 2,
+        "inputRemainingMs": 143.69999998807907,
+        "inputKind": "mouse-wheel",
+        "mobile": false,
+        "reduced": false,
+        "listenerActive": true,
+        "inputListenersActive": true,
+        "independentAnimationLoop": false
+      },
+      "settled": {
+        "mode": "subtle",
+        "state": "idle",
+        "context": "nearby",
+        "candidates": 8000,
+        "streaks": 48,
+        "trailPercentage": 0.6,
+        "trackedScreens": 46,
+        "visible": 0,
+        "inputPeakVisible": 44,
+        "meanDx": 0,
+        "meanDy": 0,
+        "directionCoherence": 0,
+        "maxVelocity": 0,
+        "maxRenderedLength": 0,
+        "inputPeakLength": 6,
+        "deadZone": 0.65,
+        "inputActive": false,
+        "inputFrames": 0,
+        "inputRemainingMs": -1052.300000011921,
+        "inputKind": "mouse-wheel",
+        "mobile": false,
+        "reduced": false,
+        "listenerActive": true,
+        "inputListenersActive": true,
+        "independentAnimationLoop": false
+      }
+    },
+    "100pc": {
+      "debug": {
+        "mode": "subtle",
+        "state": "settling",
+        "context": "nearby",
+        "candidates": 10000,
+        "streaks": 48,
+        "trailPercentage": 0.48,
+        "trackedScreens": 48,
+        "visible": 47,
+        "inputPeakVisible": 47,
+        "meanDx": 7.1166667737200795,
+        "meanDy": -44.048101327383016,
+        "directionCoherence": 0.7645739036647892,
+        "maxVelocity": 29.50990899467067,
+        "maxRenderedLength": 6,
+        "inputPeakLength": 6,
+        "deadZone": 0.65,
+        "inputActive": true,
+        "inputFrames": 2,
+        "inputRemainingMs": 142.80000001192093,
+        "inputKind": "mouse-wheel",
+        "mobile": false,
+        "reduced": false,
+        "listenerActive": true,
+        "inputListenersActive": true,
+        "independentAnimationLoop": false
+      },
+      "settled": {
+        "mode": "subtle",
+        "state": "idle",
+        "context": "nearby",
+        "candidates": 10000,
+        "streaks": 48,
+        "trailPercentage": 0.48,
+        "trackedScreens": 48,
+        "visible": 0,
+        "inputPeakVisible": 46,
+        "meanDx": 0,
+        "meanDy": 0,
+        "directionCoherence": 0,
+        "maxVelocity": 0,
+        "maxRenderedLength": 0,
+        "inputPeakLength": 6,
+        "deadZone": 0.65,
+        "inputActive": false,
+        "inputFrames": 0,
+        "inputRemainingMs": -1092,
+        "inputKind": "mouse-wheel",
+        "mobile": false,
+        "reduced": false,
+        "listenerActive": true,
+        "inputListenersActive": true,
+        "independentAnimationLoop": false
+      }
+    },
+    "milky-way": {
+      "debug": {
+        "mode": "subtle",
+        "state": "settling",
+        "context": "milky-way",
+        "candidates": 201,
+        "streaks": 24,
+        "trailPercentage": 11.940298507462686,
+        "trackedScreens": 24,
+        "visible": 23,
+        "inputPeakVisible": 23,
+        "meanDx": 10.547383074953004,
+        "meanDy": 7.329192893598679,
+        "directionCoherence": 0.5002103512630164,
+        "maxVelocity": 19.51572301321874,
+        "maxRenderedLength": 4.2326456768654666,
+        "inputPeakLength": 4.32,
+        "deadZone": 0.65,
+        "inputActive": true,
+        "inputFrames": 3,
+        "inputRemainingMs": 184.69999998807907,
+        "inputKind": "mouse-wheel",
+        "mobile": false,
+        "reduced": false,
+        "listenerActive": true,
+        "inputListenersActive": true,
+        "independentAnimationLoop": false
+      }
+    },
+    "galactic-center": {
+      "debug": {
+        "mode": "subtle",
+        "state": "idle",
+        "context": "milky-way",
+        "candidates": 201,
+        "streaks": 24,
+        "trailPercentage": 11.940298507462686,
+        "trackedScreens": 24,
+        "visible": 0,
+        "inputPeakVisible": 23,
+        "meanDx": 0,
+        "meanDy": 0,
+        "directionCoherence": 0,
+        "maxVelocity": 0,
+        "maxRenderedLength": 0,
+        "inputPeakLength": 4.32,
+        "deadZone": 0.65,
+        "inputActive": false,
+        "inputFrames": 0,
+        "inputRemainingMs": -1161.699999988079,
+        "inputKind": "mouse-wheel",
+        "mobile": false,
+        "reduced": false,
+        "listenerActive": true,
+        "inputListenersActive": true,
+        "independentAnimationLoop": false
+      }
+    },
+    "magellanic-system": {
+      "debug": {
+        "mode": "subtle",
+        "state": "idle",
+        "context": "local-group",
+        "candidates": 102,
+        "streaks": 12,
+        "trailPercentage": 11.76470588235294,
+        "trackedScreens": 12,
+        "visible": 0,
+        "inputPeakVisible": 23,
+        "meanDx": 0,
+        "meanDy": 0,
+        "directionCoherence": 0,
+        "maxVelocity": 0,
+        "maxRenderedLength": 0,
+        "inputPeakLength": 4.32,
+        "deadZone": 0.65,
+        "inputActive": false,
+        "inputFrames": 0,
+        "inputRemainingMs": -3799.800000011921,
+        "inputKind": "mouse-wheel",
+        "mobile": false,
+        "reduced": false,
+        "listenerActive": true,
+        "inputListenersActive": true,
+        "independentAnimationLoop": false
+      }
+    },
+    "local-group": {
+      "debug": {
+        "mode": "subtle",
+        "state": "settling",
+        "context": "local-group",
+        "candidates": 102,
+        "streaks": 12,
+        "trailPercentage": 11.76470588235294,
+        "trackedScreens": 12,
+        "visible": 11,
+        "inputPeakVisible": 11,
+        "meanDx": -66.87395188940553,
+        "meanDy": 266.26588060012233,
+        "directionCoherence": 0.26851681919166176,
+        "maxVelocity": 193.8863739591782,
+        "maxRenderedLength": 2.88,
+        "inputPeakLength": 2.88,
+        "deadZone": 0.65,
+        "inputActive": true,
+        "inputFrames": 2,
+        "inputRemainingMs": 143.4000000357628,
+        "inputKind": "mouse-wheel",
+        "mobile": false,
+        "reduced": false,
+        "listenerActive": true,
+        "inputListenersActive": true,
+        "independentAnimationLoop": false
+      }
+    }
+  },
+  "directions": {
+    "panLeft": {
+      "mode": "subtle",
+      "state": "moving",
+      "context": "nearby",
+      "candidates": 312,
+      "streaks": 48,
+      "trailPercentage": 15.384615384615385,
+      "trackedScreens": 48,
+      "visible": 2,
+      "inputPeakVisible": 2,
+      "meanDx": 4.752363685624118,
+      "meanDy": 5.684341886080801e-13,
+      "directionCoherence": 1,
+      "maxVelocity": 0.8008044201251939,
+      "maxRenderedLength": 0.8,
+      "inputPeakLength": 0.8,
+      "deadZone": 0.65,
+      "inputActive": true,
+      "inputFrames": 2,
+      "inputRemainingMs": 460.4000000357628,
+      "inputKind": "acceptance-pan",
+      "mobile": false,
+      "reduced": false,
+      "listenerActive": true,
+      "inputListenersActive": true,
+      "independentAnimationLoop": false
+    },
+    "panRight": {
+      "mode": "subtle",
+      "state": "starting",
+      "context": "nearby",
+      "candidates": 312,
+      "streaks": 48,
+      "trailPercentage": 15.384615384615385,
+      "trackedScreens": 48,
+      "visible": 2,
+      "inputPeakVisible": 2,
+      "meanDx": -4.752515758829418,
+      "meanDy": 4.547473508864641e-13,
+      "directionCoherence": 1,
+      "maxVelocity": 0.8092121969544602,
+      "maxRenderedLength": 0.8,
+      "inputPeakLength": 0.8,
+      "deadZone": 0.65,
+      "inputActive": true,
+      "inputFrames": 5,
+      "inputRemainingMs": 661.7000000476837,
+      "inputKind": "acceptance-pan",
+      "mobile": false,
+      "reduced": false,
+      "listenerActive": true,
+      "inputListenersActive": true,
+      "independentAnimationLoop": false
+    },
+    "horizontalDrag": {
+      "mode": "subtle",
+      "state": "starting",
+      "context": "nearby",
+      "candidates": 312,
+      "streaks": 48,
+      "trailPercentage": 15.384615384615385,
+      "trackedScreens": 48,
+      "visible": 47,
+      "inputPeakVisible": 47,
+      "meanDx": -3.5044812853567366,
+      "meanDy": 6.138604861133421,
+      "directionCoherence": 0.15276367815074834,
+      "maxVelocity": 59.55674923193337,
+      "maxRenderedLength": 6,
+      "inputPeakLength": 6,
+      "deadZone": 0.65,
+      "inputActive": true,
+      "inputFrames": 5,
+      "inputRemainingMs": 121,
+      "inputKind": "pointer-drag",
+      "mobile": false,
+      "reduced": false,
+      "listenerActive": true,
+      "inputListenersActive": true,
+      "independentAnimationLoop": false
+    },
+    "verticalDrag": {
+      "mode": "subtle",
+      "state": "starting",
+      "context": "nearby",
+      "candidates": 312,
+      "streaks": 48,
+      "trailPercentage": 15.384615384615385,
+      "trackedScreens": 48,
+      "visible": 47,
+      "inputPeakVisible": 47,
+      "meanDx": -1.8212830202769776,
+      "meanDy": 19.74063811497765,
+      "directionCoherence": 0.5036219085678469,
+      "maxVelocity": 33.2508687327215,
+      "maxRenderedLength": 6,
+      "inputPeakLength": 6,
+      "deadZone": 0.65,
+      "inputActive": true,
+      "inputFrames": 5,
+      "inputRemainingMs": 119.79999995231628,
+      "inputKind": "pointer-drag",
+      "mobile": false,
+      "reduced": false,
+      "listenerActive": true,
+      "inputListenersActive": true,
+      "independentAnimationLoop": false
+    },
+    "diagonalDrag": {
+      "mode": "subtle",
+      "state": "starting",
+      "context": "nearby",
+      "candidates": 312,
+      "streaks": 48,
+      "trailPercentage": 15.384615384615385,
+      "trackedScreens": 48,
+      "visible": 47,
+      "inputPeakVisible": 47,
+      "meanDx": -2.9010913959129074,
+      "meanDy": 2.6565207265260558,
+      "directionCoherence": 0.1365641663820736,
+      "maxVelocity": 21.5938030050182,
+      "maxRenderedLength": 6,
+      "inputPeakLength": 6,
+      "deadZone": 0.65,
+      "inputActive": true,
+      "inputFrames": 5,
+      "inputRemainingMs": 118.69999998807907,
+      "inputKind": "pointer-drag",
+      "mobile": false,
+      "reduced": false,
+      "listenerActive": true,
+      "inputListenersActive": true,
+      "independentAnimationLoop": false
+    },
+    "rotation": {
+      "mode": "subtle",
+      "state": "starting",
+      "context": "nearby",
+      "candidates": 312,
+      "streaks": 48,
+      "trailPercentage": 15.384615384615385,
+      "trackedScreens": 48,
+      "visible": 47,
+      "inputPeakVisible": 47,
+      "meanDx": 5.771684822119944,
+      "meanDy": 5.7832738545799005,
+      "directionCoherence": 0.1785349096378197,
+      "maxVelocity": 34.10229866857541,
+      "maxRenderedLength": 6,
+      "inputPeakLength": 6,
+      "deadZone": 0.65,
+      "inputActive": true,
+      "inputFrames": 5,
+      "inputRemainingMs": 121.80000001192093,
+      "inputKind": "pointer-drag",
+      "mobile": false,
+      "reduced": false,
+      "listenerActive": true,
+      "inputListenersActive": true,
+      "independentAnimationLoop": false
+    },
+    "wheelIn": {
+      "mode": "subtle",
+      "state": "settling",
+      "context": "nearby",
+      "candidates": 312,
+      "streaks": 48,
+      "trailPercentage": 15.384615384615385,
+      "trackedScreens": 48,
+      "visible": 47,
+      "inputPeakVisible": 47,
+      "meanDx": -3.102950098533938,
+      "meanDy": -28.462938941658717,
+      "directionCoherence": 0.06327939270750307,
+      "maxVelocity": 107.05024685573439,
+      "maxRenderedLength": 6,
+      "inputPeakLength": 6,
+      "deadZone": 0.65,
+      "inputActive": true,
+      "inputFrames": 3,
+      "inputRemainingMs": 175.30000001192093,
+      "inputKind": "mouse-wheel",
+      "mobile": false,
+      "reduced": false,
+      "listenerActive": true,
+      "inputListenersActive": true,
+      "independentAnimationLoop": false
+    },
+    "wheelOut": {
+      "mode": "subtle",
+      "state": "settling",
+      "context": "nearby",
+      "candidates": 312,
+      "streaks": 48,
+      "trailPercentage": 15.384615384615385,
+      "trackedScreens": 48,
+      "visible": 47,
+      "inputPeakVisible": 47,
+      "meanDx": 3.119319351044523,
+      "meanDy": 28.33633287673393,
+      "directionCoherence": 0.06327939270749243,
+      "maxVelocity": 101.09512230159406,
+      "maxRenderedLength": 6,
+      "inputPeakLength": 6,
+      "deadZone": 0.65,
+      "inputActive": true,
+      "inputFrames": 3,
+      "inputRemainingMs": 192.10000002384186,
+      "inputKind": "mouse-wheel",
+      "mobile": false,
+      "reduced": false,
+      "listenerActive": true,
+      "inputListenersActive": true,
+      "independentAnimationLoop": false
+    },
+    "trackpadPath": {
+      "mode": "subtle",
+      "state": "settling",
+      "context": "nearby",
+      "candidates": 312,
+      "streaks": 48,
+      "trailPercentage": 15.384615384615385,
+      "trackedScreens": 48,
+      "visible": 47,
+      "inputPeakVisible": 47,
+      "meanDx": 0.14654209830010245,
+      "meanDy": -18.412132304174296,
+      "directionCoherence": 0.0632793927074941,
+      "maxVelocity": 50.07352048142308,
+      "maxRenderedLength": 6,
+      "inputPeakLength": 6,
+      "deadZone": 0.65,
+      "inputActive": true,
+      "inputFrames": 3,
+      "inputRemainingMs": 168.80000001192093,
+      "inputKind": "trackpad-pinch",
+      "mobile": false,
+      "reduced": false,
+      "listenerActive": true,
+      "inputListenersActive": true,
+      "independentAnimationLoop": false
+    },
+    "mobilePinch": {
+      "mode": "subtle",
+      "state": "settling",
+      "context": "nearby",
+      "candidates": 303,
+      "streaks": 18,
+      "trailPercentage": 5.9405940594059405,
+      "trackedScreens": 18,
+      "visible": 18,
+      "inputPeakVisible": 18,
+      "meanDx": -12.609056326008535,
+      "meanDy": -83.58287564858762,
+      "directionCoherence": 0.9227611900807955,
+      "maxVelocity": 21.54356191827988,
+      "maxRenderedLength": 6,
+      "inputPeakLength": 6,
+      "deadZone": 0.65,
+      "inputActive": true,
+      "inputFrames": 2,
+      "inputRemainingMs": 131.5999999642372,
+      "inputKind": "mobile-pinch",
+      "mobile": true,
+      "reduced": false,
+      "listenerActive": true,
+      "inputListenersActive": true,
+      "independentAnimationLoop": false
+    },
+    "drag": {
+      "mode": "subtle",
+      "state": "moving",
+      "context": "nearby",
+      "candidates": 312,
+      "streaks": 48,
+      "trailPercentage": 15.384615384615385,
+      "trackedScreens": 48,
+      "visible": 47,
+      "inputPeakVisible": 47,
+      "meanDx": 0.43022451889371593,
+      "meanDy": 7.408537440891003,
+      "directionCoherence": 0.10778096278207765,
+      "maxVelocity": 86.49942093194932,
+      "maxRenderedLength": 6,
+      "inputPeakLength": 6,
+      "deadZone": 0.65,
+      "inputActive": true,
+      "inputFrames": 6,
+      "inputRemainingMs": 152.60000002384186,
+      "inputKind": "pointer-release",
+      "mobile": false,
+      "reduced": false,
+      "listenerActive": true,
+      "inputListenersActive": true,
+      "independentAnimationLoop": false
+    },
+    "jitter": {
+      "before": {
+        "mode": "subtle",
+        "state": "idle",
+        "context": "nearby",
+        "candidates": 312,
+        "streaks": 48,
+        "trailPercentage": 15.384615384615385,
+        "trackedScreens": 48,
+        "visible": 0,
+        "inputPeakVisible": 47,
+        "meanDx": 0,
+        "meanDy": 0,
+        "directionCoherence": 0,
+        "maxVelocity": 0,
+        "maxRenderedLength": 0,
+        "inputPeakLength": 6,
+        "deadZone": 0.65,
+        "inputActive": false,
+        "inputFrames": 0,
+        "inputRemainingMs": -1050.800000011921,
+        "inputKind": "pointer-release",
+        "mobile": false,
+        "reduced": false,
+        "listenerActive": true,
+        "inputListenersActive": true,
+        "independentAnimationLoop": false
+      },
+      "after": {
+        "mode": "subtle",
+        "state": "idle",
+        "context": "nearby",
+        "candidates": 312,
+        "streaks": 48,
+        "trailPercentage": 15.384615384615385,
+        "trackedScreens": 48,
+        "visible": 0,
+        "inputPeakVisible": 47,
+        "meanDx": 0,
+        "meanDy": 0,
+        "directionCoherence": 0,
+        "maxVelocity": 0,
+        "maxRenderedLength": 0,
+        "inputPeakLength": 6,
+        "deadZone": 0.65,
+        "inputActive": false,
+        "inputFrames": 0,
+        "inputRemainingMs": -1055.300000011921,
+        "inputKind": "pointer-release",
+        "mobile": false,
+        "reduced": false,
+        "listenerActive": true,
+        "inputListenersActive": true,
+        "independentAnimationLoop": false
+      }
+    },
+    "keyboardFocus": {
+      "mode": "subtle",
+      "state": "idle",
+      "context": "nearby",
+      "candidates": 312,
+      "streaks": 48,
+      "trailPercentage": 15.384615384615385,
+      "trackedScreens": 48,
+      "visible": 0,
+      "inputPeakVisible": 47,
+      "meanDx": 0,
+      "meanDy": 0,
+      "directionCoherence": 0,
+      "maxVelocity": 0,
+      "maxRenderedLength": 0,
+      "inputPeakLength": 6,
+      "deadZone": 0.65,
+      "inputActive": false,
+      "inputFrames": 0,
+      "inputRemainingMs": -1291.1000000238419,
+      "inputKind": "pointer-release",
+      "mobile": false,
+      "reduced": false,
+      "listenerActive": true,
+      "inputListenersActive": true,
+      "independentAnimationLoop": false
+    }
+  },
+  "objectCard": {
+    "before": {
+      "id": "proxima-centauri",
+      "selected": "Proxima Centauri",
+      "text": "ASTROMETRYSourceGaia DR3Catalog Release2022Reference EpochJ2016.0Display Epoch2026-08-08T11:44:25.578ZPosition ModeCatalog epoch position3D VelocityCompleteNext CatalogGaia DR4 — Expected 2026 (not before mid-2026)Official nameProxima CentauriLocalized nameProxima CentauriAliasesGJ 551, Gaia DR3 5853498713190525696, HIP 70890Object typePM*Parent system / structureUnavailableCatalog IDGaia DR3 5853498713190525696CoordinatesRA 217.39232147200883°; Dec -62.67607511676666°Coordinate frameheliocentric ICRS CartesianDistance1.3019705311704333 pcUncertaintyParallax ± 0.049872905 masRedshiftUnavailableVelocityRadial -21.942726 km/sPhysical sizeUnavailableOrbital dataUnavailableEpochJ2016.0Data sourcesGaia DR3; name/type cross-checked with SIMBADData statusCatalog observationVisualization statusRepresentative visualizationResearch referencesUnavailableKnown limitationsDisplayed position remains at the catalog reference epoch; the selected UTC display epoch does not alter this star point."
+    },
+    "after": {
+      "id": "proxima-centauri",
+      "selected": "Proxima Centauri",
+      "text": "ASTROMETRYSourceGaia DR3Catalog Release2022Reference EpochJ2016.0Display Epoch2026-08-08T11:44:25.578ZPosition ModeCatalog epoch position3D VelocityCompleteNext CatalogGaia DR4 — Expected 2026 (not before mid-2026)Official nameProxima CentauriLocalized nameProxima CentauriAliasesGJ 551, Gaia DR3 5853498713190525696, HIP 70890Object typePM*Parent system / structureUnavailableCatalog IDGaia DR3 5853498713190525696CoordinatesRA 217.39232147200883°; Dec -62.67607511676666°Coordinate frameheliocentric ICRS CartesianDistance1.3019705311704333 pcUncertaintyParallax ± 0.049872905 masRedshiftUnavailableVelocityRadial -21.942726 km/sPhysical sizeUnavailableOrbital dataUnavailableEpochJ2016.0Data sourcesGaia DR3; name/type cross-checked with SIMBADData statusCatalog observationVisualization statusRepresentative visualizationResearch referencesUnavailableKnown limitationsDisplayed position remains at the catalog reference epoch; the selected UTC display epoch does not alter this star point."
+    }
+  },
+  "languages": {
+    "en": {
+      "title": "Motion Streaks",
+      "options": [
+        "Off",
+        "Subtle",
+        "Standard",
+        "Cinematic"
+      ],
+      "help": "The streak effect visualizes apparent screen motion during navigation. Brightness and rendered prominence influence visual thickness; it does not represent physical stellar velocity."
+    },
+    "zh-TW": {
+      "title": "移動光軌",
+      "options": [
+        "關閉",
+        "微弱",
+        "標準",
+        "電影感"
+      ],
+      "help": "此光軌呈現導航期間的螢幕表觀位移。亮度與既有渲染顯著度只影響視覺粗細；不代表恆星的物理速度。"
+    },
+    "ja": {
+      "title": "移動光跡",
+      "options": [
+        "オフ",
+        "控えめ",
+        "標準",
+        "シネマティック"
+      ],
+      "help": "この光跡はナビゲーション中の画面上の見かけの動きを表します。明るさと既存の表示上の強調度は太さだけに影響し、恒星の物理速度を表すものではありません。"
+    },
+    "ko": {
+      "title": "이동 광궤적",
+      "options": [
+        "끄기",
+        "은은함",
+        "표준",
+        "시네마틱"
+      ],
+      "help": "이 광궤적은 탐색 중 화면에서 보이는 겉보기 움직임을 나타냅니다. 밝기와 기존 렌더링 강조도는 시각적 두께에만 영향을 주며 항성의 물리적 속도를 나타내지 않습니다."
+    }
+  },
+  "performance": {
+    "10pc": {
+      "viewport": [
+        1280,
+        720
+      ],
+      "objects": 312,
+      "streaks": 48,
+      "trailPercentage": 15.384615384615385,
+      "peakVisible": 0,
+      "maxRenderedLength": 0,
+      "averageFps": 1.5085990143729315,
+      "lowestObservedFps": 1.0710078183570773,
+      "averageFrameMs": 508.5,
+      "maxFrameMs": 933.6999999999971,
+      "heapBefore": 41465328,
+      "heapAfter": 41391100,
+      "heapDeltaBytes": -74228
+    },
+    "50pc": {
+      "viewport": [
+        1280,
+        720
+      ],
+      "objects": 8000,
+      "streaks": 48,
+      "trailPercentage": 0.6,
+      "peakVisible": 44,
+      "maxRenderedLength": 6,
+      "averageFps": 8.20633059794713,
+      "lowestObservedFps": 2.505637684790743,
+      "averageFrameMs": 129.4846153846156,
+      "maxFrameMs": 399.1000000000058,
+      "heapBefore": 54229652,
+      "heapAfter": 54265448,
+      "heapDeltaBytes": 35796
+    },
+    "100pc": {
+      "viewport": [
+        1280,
+        720
+      ],
+      "objects": 10000,
+      "streaks": 48,
+      "trailPercentage": 0.48,
+      "peakVisible": 0,
+      "maxRenderedLength": 0,
+      "averageFps": 9.242713660662865,
+      "lowestObservedFps": 7.479431563200546,
+      "averageFrameMs": 114.31428571428634,
+      "maxFrameMs": 133.70000000001164,
+      "heapBefore": 57827908,
+      "heapAfter": 57829824,
+      "heapDeltaBytes": 1916
+    },
+    "mobile100pc": {
+      "viewport": [
+        390,
+        844
+      ],
+      "objects": 5000,
+      "streaks": 18,
+      "trailPercentage": 0.36,
+      "peakVisible": 0,
+      "maxRenderedLength": 0,
+      "averageFps": 10.685029087099275,
+      "lowestObservedFps": 6.666666666666667,
+      "averageFrameMs": 98.07058823529394,
+      "maxFrameMs": 150,
+      "heapBefore": 49359056,
+      "heapAfter": 49374148,
+      "heapDeltaBytes": 15092
+    }
+  },
+  "stability": {
+    "startStopCycles": 100,
+    "noVisibleTrailReturns": 100,
+    "idleStateReturns": 100,
+    "zoomPairs": 50,
+    "panPairs": 30,
+    "selections": 30,
+    "baseline": {
+      "initialized": true,
+      "viewerCount": 1,
+      "canvasCount": 2,
+      "active": true,
+      "scaleContext": "nearby",
+      "mode": "exhibition",
+      "epoch": "2026-08-08T11:44:25.578Z",
+      "tickListenerActive": true,
+      "pointerNavigationActive": true,
+      "nativeZoomEnabled": false,
+      "lastPointerZoom": {
+        "inputType": "mouse-wheel",
+        "anchorSource": "selected-object",
+        "scale": 0.835270211411272
+      },
+      "lastObjectFocus": "proxima-centauri",
+      "objectCardId": "sun",
+      "selected": "sun",
+      "nearbyActive": true,
+      "nearbyTier": "10pc",
+      "nearbySelected": "Sun",
+      "nearbySelectedMetadata": {
+        "id": "sun",
+        "sourceCatalog": "IAU/NASA",
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "metadata": {
+          "source": "IAU/NASA",
+          "catalogRelease": "Unavailable",
+          "referenceEpoch": "Unavailable",
+          "positionMode": "catalog-epoch",
+          "complete3d": false,
+          "tangential": false,
+          "nextCatalog": "Gaia DR4",
+          "nextCatalogExpected": "2026 (not before mid-2026)"
+        }
+      },
+      "phase3Selected": null,
+      "motionStreaks": {
+        "mode": "subtle",
+        "state": "idle",
+        "context": "nearby",
+        "candidates": 312,
+        "streaks": 48,
+        "trailPercentage": 15.384615384615385,
+        "trackedScreens": 48,
+        "visible": 0,
+        "inputPeakVisible": 0,
+        "meanDx": 0,
+        "meanDy": 0,
+        "directionCoherence": 0,
+        "maxVelocity": 0,
+        "maxRenderedLength": 0,
+        "inputPeakLength": 0,
+        "deadZone": 0.65,
+        "inputActive": false,
+        "inputFrames": 0,
+        "inputRemainingMs": -1254.5999999642372,
+        "inputKind": "acceptance-performance",
+        "mobile": false,
+        "reduced": false,
+        "listenerActive": true,
+        "inputListenersActive": true,
+        "independentAnimationLoop": false
+      },
+      "nearby": {
+        "records": 312,
+        "points": 312,
+        "labels": 21,
+        "guides": 6,
+        "motion": 21,
+        "lod": "near",
+        "visible": true
+      },
+      "milkyWay": {
+        "records": 0,
+        "points": 0,
+        "lines": 0,
+        "labels": 0,
+        "visible": false,
+        "mode": "exhibition",
+        "reconstruction": true
+      },
+      "localGroup": {
+        "records": 0,
+        "points": 0,
+        "labels": 0,
+        "uncertainties": 0,
+        "boundary": 0,
+        "lod": "far",
+        "mode": "exhibition",
+        "visible": false
+      }
+    },
+    "after": {
+      "initialized": true,
+      "viewerCount": 1,
+      "canvasCount": 2,
+      "active": true,
+      "scaleContext": "nearby",
+      "mode": "exhibition",
+      "epoch": "2026-08-08T11:44:25.578Z",
+      "tickListenerActive": true,
+      "pointerNavigationActive": true,
+      "nativeZoomEnabled": false,
+      "lastPointerZoom": {
+        "inputType": "mouse-wheel",
+        "anchorSource": "picked-scene",
+        "scale": 1.1445367843513146
+      },
+      "lastObjectFocus": "proxima-centauri",
+      "objectCardId": "trappist-1",
+      "selected": "sun",
+      "nearbyActive": true,
+      "nearbyTier": "10pc",
+      "nearbySelected": "TRAPPIST-1",
+      "nearbySelectedMetadata": {
+        "id": "trappist-1",
+        "sourceCatalog": "Gaia DR3; name/type cross-checked with SIMBAD",
+        "referenceEpoch": 2016,
+        "radialVelocityAvailable": false,
+        "position": null,
+        "metadata": {
+          "source": "Gaia DR3",
+          "catalogRelease": "2022",
+          "referenceEpoch": "J2016.0",
+          "positionMode": "catalog-epoch",
+          "complete3d": false,
+          "tangential": true,
+          "nextCatalog": "Gaia DR4",
+          "nextCatalogExpected": "2026 (not before mid-2026)"
+        }
+      },
+      "phase3Selected": null,
+      "motionStreaks": {
+        "mode": "subtle",
+        "state": "settling",
+        "context": "nearby",
+        "candidates": 312,
+        "streaks": 48,
+        "trailPercentage": 15.384615384615385,
+        "trackedScreens": 48,
+        "visible": 0,
+        "inputPeakVisible": 48,
+        "meanDx": 0,
+        "meanDy": 0,
+        "directionCoherence": 0,
+        "maxVelocity": 0,
+        "maxRenderedLength": 0,
+        "inputPeakLength": 6,
+        "deadZone": 0.65,
+        "inputActive": true,
+        "inputFrames": 4,
+        "inputRemainingMs": -208.80000001192093,
+        "inputKind": "acceptance-pan-cycle",
+        "mobile": false,
+        "reduced": false,
+        "listenerActive": true,
+        "inputListenersActive": true,
+        "independentAnimationLoop": false
+      },
+      "nearby": {
+        "records": 312,
+        "points": 312,
+        "labels": 21,
+        "guides": 6,
+        "motion": 21,
+        "lod": "near",
+        "visible": true
+      },
+      "milkyWay": {
+        "records": 0,
+        "points": 0,
+        "lines": 0,
+        "labels": 0,
+        "visible": false,
+        "mode": "exhibition",
+        "reconstruction": true
+      },
+      "localGroup": {
+        "records": 0,
+        "points": 0,
+        "labels": 0,
+        "uncertainties": 0,
+        "boundary": 0,
+        "lod": "far",
+        "mode": "exhibition",
+        "visible": false
+      }
+    }
+  },
+  "scaleChanges": [
+    "nearby",
+    "milky-way",
+    "local-group",
+    "nearby",
+    "milky-way",
+    "local-group",
+    "nearby",
+    "milky-way",
+    "local-group",
+    "nearby",
+    "milky-way",
+    "local-group",
+    "nearby",
+    "milky-way",
+    "local-group",
+    "nearby",
+    "milky-way",
+    "local-group",
+    "nearby",
+    "milky-way",
+    "local-group",
+    "nearby",
+    "milky-way",
+    "local-group",
+    "nearby",
+    "milky-way",
+    "local-group",
+    "nearby",
+    "milky-way",
+    "local-group"
+  ],
+  "lifecycleCycles": 20,
+  "solidBody": {
+    "context": "solar",
+    "motion": {
+      "mode": "subtle",
+      "state": "idle",
+      "context": "nearby",
+      "candidates": 0,
+      "streaks": 0,
+      "trailPercentage": 0,
+      "trackedScreens": 0,
+      "visible": 0,
+      "inputPeakVisible": 0,
+      "meanDx": 0,
+      "meanDy": 0,
+      "directionCoherence": 0,
+      "maxVelocity": 0,
+      "maxRenderedLength": 0,
+      "inputPeakLength": 0,
+      "deadZone": 0.65,
+      "inputActive": false,
+      "inputFrames": 0,
+      "inputRemainingMs": -185537.59999996424,
+      "inputKind": "none",
+      "mobile": false,
+      "reduced": false,
+      "listenerActive": true,
+      "inputListenersActive": true,
+      "independentAnimationLoop": false
+    },
+    "earth": true,
+    "card": "earth"
+  },
+  "finalState": {
+    "viewer": 1,
+    "cesiumCanvas": 1,
+    "canvas": 2,
+    "active": false,
+    "motion": null,
+    "heap": 106619624
+  },
+  "consoleErrors": [
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED"
+  ],
+  "requiredConsoleErrors": [],
+  "networkFailures": [
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/regional/observation?region=global"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/health/openweather"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/history/status"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/layers"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/register"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/register"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/domain-readiness"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/events?limit=20"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/evidence-ledger"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/mass-gatherings"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/daily-brief"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/system-status"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/domain-readiness"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/events?limit=20"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/evidence-ledger"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/mass-gatherings"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/daily-brief"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/system-status"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/stats"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/locations"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/analytics?range=24h"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/events?limit=20"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/domain-readiness"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/evidence-ledger"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/mass-gatherings"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/daily-brief"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/system-status"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/evidence-explorer"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/domain-readiness"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/events?limit=20"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/evidence-ledger"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/mass-gatherings"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/daily-brief"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/system-status"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/domain-readiness"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/events?limit=20"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/evidence-ledger"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/mass-gatherings"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/daily-brief"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/system-status"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/ping"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/ping"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/stats"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/ping"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/ping"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/stats"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/locations"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/domain-readiness"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/events?limit=20"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/evidence-ledger"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/mass-gatherings"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/daily-brief"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/system-status"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/domain-readiness"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/events?limit=20"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/evidence-ledger"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/mass-gatherings"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/daily-brief"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/system-status"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/domain-readiness"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/events?limit=20"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/evidence-ledger"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/daily-brief"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/mass-gatherings"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/system-status"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/domain-readiness"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/events?limit=20"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/evidence-ledger"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/daily-brief"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/mass-gatherings"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/system-status"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/domain-readiness"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/events?limit=20"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/evidence-ledger"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/mass-gatherings"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/daily-brief"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/system-status"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/ping"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/ping"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/stats"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/ping"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/ping"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/locations"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/stats"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/ping"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/ping"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/stats"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/ping"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/ping"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/stats"
+    },
+    {
+      "error": "net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/locations"
+    }
+  ],
+  "requiredNetworkFailures": [],
+  "notes": [
+    "Micro-trails require active user input and per-object screen displacement above the dead zone.",
+    "Original point primitives remain visible; trails never replace star cores.",
+    "Trackpad path is control-modified browser input, not physical Mac trackpad evidence.",
+    "Mobile pinch and 390 x 844 performance use browser emulation; they are not real-device gesture evidence.",
+    "Heap deltas are observations and do not prove either a leak or zero leakage."
+  ]
+}
