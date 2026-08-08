@@ -1,0 +1,660 @@
+{
+  "schemaVersion": 1,
+  "stage": "SS-02C",
+  "generatedAt": "2026-08-08T16:15:47.262Z",
+  "datasetId": "pcs-ss02c-sbdb-small-bodies",
+  "method": "Independent direct Horizons vectors versus cached dwarf ephemeris or SBDB two-body propagated catalog state.",
+  "comparisonCount": 27,
+  "pass": true,
+  "failures": 0,
+  "comparisons": [
+    {
+      "epochUtc": "2025-03-17T05:37:00Z",
+      "jdTdb": 2460751.734828537,
+      "object": "Ceres",
+      "spkid": "20000001",
+      "objectClass": "dwarf planet",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "pcsPositionAu": [
+        2.589331023150323,
+        -1.3919811985188488,
+        -0.5210749171593384
+      ],
+      "referencePositionAu": [
+        2.589331023160044,
+        -1.39198119852217,
+        -0.5210749171612586
+      ],
+      "difference": 0.0015634030237028202,
+      "units": "km",
+      "tolerance": 10,
+      "toleranceBasis": "Object-specific ceiling for 2 d Horizons-vector cubic-Hermite interpolation inside the validated leap-second horizon.",
+      "positionMode": "Cached Horizons vectors · cubic Hermite state",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-08-08T12:41:00Z",
+      "jdTdb": 2461261.0292729526,
+      "object": "Ceres",
+      "spkid": "20000001",
+      "objectClass": "dwarf planet",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "pcsPositionAu": [
+        0.8332990423320683,
+        2.584213755246481,
+        -0.07169980683541514
+      ],
+      "referencePositionAu": [
+        0.8332990423437947,
+        2.584213755258482,
+        -0.0716998068371771
+      ],
+      "difference": 0.0025239004297444643,
+      "units": "km",
+      "tolerance": 10,
+      "toleranceBasis": "Object-specific ceiling for 2 d Horizons-vector cubic-Hermite interpolation inside the validated leap-second horizon.",
+      "positionMode": "Cached Horizons vectors · cubic Hermite state",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-11-21T18:23:00Z",
+      "jdTdb": 2461366.2667729496,
+      "object": "Ceres",
+      "spkid": "20000001",
+      "objectClass": "dwarf planet",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "pcsPositionAu": [
+        -0.2648924514373339,
+        2.618523434829879,
+        0.13169048642994877
+      ],
+      "referencePositionAu": [
+        -0.2648924514425766,
+        2.618523434834262,
+        0.1316904864310495
+      ],
+      "difference": 0.0010354675356335063,
+      "units": "km",
+      "tolerance": 10,
+      "toleranceBasis": "Object-specific ceiling for 2 d Horizons-vector cubic-Hermite interpolation inside the validated leap-second horizon.",
+      "positionMode": "Cached Horizons vectors · cubic Hermite state",
+      "pass": true
+    },
+    {
+      "epochUtc": "2025-03-17T05:37:00Z",
+      "jdTdb": 2460751.734828537,
+      "object": "Pluto",
+      "spkid": "20134340",
+      "objectClass": "dwarf planet",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "pcsPositionAu": [
+        18.43613635624783,
+        -29.93679582937495,
+        -2.127540752462235
+      ],
+      "referencePositionAu": [
+        18.43613635286728,
+        -29.93679584104412,
+        -2.127540765280234
+      ],
+      "difference": 2.6419962896638527,
+      "units": "km",
+      "tolerance": 30,
+      "toleranceBasis": "Object-specific ceiling for 1 d Horizons-vector cubic-Hermite interpolation inside the validated leap-second horizon.",
+      "positionMode": "Cached Horizons vectors · cubic Hermite state",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-08-08T12:41:00Z",
+      "jdTdb": 2461261.0292729526,
+      "object": "Pluto",
+      "spkid": "20134340",
+      "objectClass": "dwarf planet",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "pcsPositionAu": [
+        19.820755596732276,
+        -29.4263846209891,
+        -2.583622622826842
+      ],
+      "referencePositionAu": [
+        19.82075562162699,
+        -29.42638460055465,
+        -2.583622633461296
+      ],
+      "difference": 5.074004350391396,
+      "units": "km",
+      "tolerance": 30,
+      "toleranceBasis": "Object-specific ceiling for 1 d Horizons-vector cubic-Hermite interpolation inside the validated leap-second horizon.",
+      "positionMode": "Cached Horizons vectors · cubic Hermite state",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-11-21T18:23:00Z",
+      "jdTdb": 2461366.2667729496,
+      "object": "Pluto",
+      "spkid": "20134340",
+      "objectClass": "dwarf planet",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "pcsPositionAu": [
+        20.102778146078844,
+        -29.314883744999822,
+        -2.6773309405451737
+      ],
+      "referencePositionAu": [
+        20.1027781341742,
+        -29.31488375782216,
+        -2.67733094035033
+      ],
+      "difference": 2.6176242180872946,
+      "units": "km",
+      "tolerance": 30,
+      "toleranceBasis": "Object-specific ceiling for 1 d Horizons-vector cubic-Hermite interpolation inside the validated leap-second horizon.",
+      "positionMode": "Cached Horizons vectors · cubic Hermite state",
+      "pass": true
+    },
+    {
+      "epochUtc": "2025-03-17T05:37:00Z",
+      "jdTdb": 2460751.734828537,
+      "object": "Eris",
+      "spkid": "20136199",
+      "objectClass": "dwarf planet",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "pcsPositionAu": [
+        85.35152345086816,
+        39.21404936948968,
+        -17.77108403031174
+      ],
+      "referencePositionAu": [
+        85.35152344958665,
+        39.21404936998292,
+        -17.771084030172
+      ],
+      "difference": 0.20648137003210995,
+      "units": "km",
+      "tolerance": 80,
+      "toleranceBasis": "Object-specific ceiling for 20 d Horizons-vector cubic-Hermite interpolation inside the validated leap-second horizon.",
+      "positionMode": "Cached Horizons vectors · cubic Hermite state",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-08-08T12:41:00Z",
+      "jdTdb": 2461261.0292729526,
+      "object": "Eris",
+      "spkid": "20136199",
+      "objectClass": "dwarf planet",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "pcsPositionAu": [
+        85.10847036158826,
+        39.6511880956991,
+        -17.29376587684346
+      ],
+      "referencePositionAu": [
+        85.10847036223869,
+        39.65118809658136,
+        -17.29376587681039
+      ],
+      "difference": 0.16404931338268697,
+      "units": "km",
+      "tolerance": 80,
+      "toleranceBasis": "Object-specific ceiling for 20 d Horizons-vector cubic-Hermite interpolation inside the validated leap-second horizon.",
+      "positionMode": "Cached Horizons vectors · cubic Hermite state",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-11-21T18:23:00Z",
+      "jdTdb": 2461366.2667729496,
+      "object": "Eris",
+      "spkid": "20136199",
+      "objectClass": "dwarf planet",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "pcsPositionAu": [
+        85.05741825856433,
+        39.74079254570055,
+        -17.194944732749978
+      ],
+      "referencePositionAu": [
+        85.05741825702664,
+        39.7407925461753,
+        -17.19494473259856
+      ],
+      "difference": 0.2418119224127794,
+      "units": "km",
+      "tolerance": 80,
+      "toleranceBasis": "Object-specific ceiling for 20 d Horizons-vector cubic-Hermite interpolation inside the validated leap-second horizon.",
+      "positionMode": "Cached Horizons vectors · cubic Hermite state",
+      "pass": true
+    },
+    {
+      "epochUtc": "2025-03-17T05:37:00Z",
+      "jdTdb": 2460751.734828537,
+      "object": "Haumea",
+      "spkid": "20136108",
+      "objectClass": "dwarf planet",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "pcsPositionAu": [
+        -37.41940000269463,
+        -23.09800361831597,
+        23.58692850452929
+      ],
+      "referencePositionAu": [
+        -37.41940000283409,
+        -23.09800361834561,
+        23.58692850453778
+      ],
+      "difference": 0.02136645147584571,
+      "units": "km",
+      "tolerance": 50,
+      "toleranceBasis": "Object-specific ceiling for 10 d Horizons-vector cubic-Hermite interpolation inside the validated leap-second horizon.",
+      "positionMode": "Cached Horizons vectors · cubic Hermite state",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-08-08T12:41:00Z",
+      "jdTdb": 2461261.0292729526,
+      "object": "Haumea",
+      "spkid": "20136108",
+      "objectClass": "dwarf planet",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "pcsPositionAu": [
+        -36.71731097776755,
+        -23.991399538616275,
+        23.519403012039387
+      ],
+      "referencePositionAu": [
+        -36.7173109775992,
+        -23.99139953858626,
+        23.5194030120289
+      ],
+      "difference": 0.025630848583142078,
+      "units": "km",
+      "tolerance": 50,
+      "toleranceBasis": "Object-specific ceiling for 10 d Horizons-vector cubic-Hermite interpolation inside the validated leap-second horizon.",
+      "positionMode": "Cached Horizons vectors · cubic Hermite state",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-11-21T18:23:00Z",
+      "jdTdb": 2461366.2667729496,
+      "object": "Haumea",
+      "spkid": "20136108",
+      "objectClass": "dwarf planet",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "pcsPositionAu": [
+        -36.569265959006415,
+        -24.174451211999816,
+        23.5036240659943
+      ],
+      "referencePositionAu": [
+        -36.56926595900658,
+        -24.17445121200009,
+        23.50362406599436
+      ],
+      "difference": 0.000048519058872356386,
+      "units": "km",
+      "tolerance": 50,
+      "toleranceBasis": "Object-specific ceiling for 10 d Horizons-vector cubic-Hermite interpolation inside the validated leap-second horizon.",
+      "positionMode": "Cached Horizons vectors · cubic Hermite state",
+      "pass": true
+    },
+    {
+      "epochUtc": "2025-03-17T05:37:00Z",
+      "jdTdb": 2460751.734828537,
+      "object": "Makemake",
+      "spkid": "20136472",
+      "objectClass": "dwarf planet",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "pcsPositionAu": [
+        -46.035580533256116,
+        -8.42986610639203,
+        24.233847301896095
+      ],
+      "referencePositionAu": [
+        -46.03558053339577,
+        -8.429866106421738,
+        24.23384730190457
+      ],
+      "difference": 0.021397482424145797,
+      "units": "km",
+      "tolerance": 50,
+      "toleranceBasis": "Object-specific ceiling for 10 d Horizons-vector cubic-Hermite interpolation inside the validated leap-second horizon.",
+      "positionMode": "Cached Horizons vectors · cubic Hermite state",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-08-08T12:41:00Z",
+      "jdTdb": 2461261.0292729526,
+      "object": "Makemake",
+      "spkid": "20136472",
+      "objectClass": "dwarf planet",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "pcsPositionAu": [
+        -45.94163512403106,
+        -9.520573848656973,
+        24.069945064296142
+      ],
+      "referencePositionAu": [
+        -45.94163512386267,
+        -9.520573848626944,
+        24.06994506428567
+      ],
+      "difference": 0.02563636004943588,
+      "units": "km",
+      "tolerance": 50,
+      "toleranceBasis": "Object-specific ceiling for 10 d Horizons-vector cubic-Hermite interpolation inside the validated leap-second horizon.",
+      "positionMode": "Cached Horizons vectors · cubic Hermite state",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-11-21T18:23:00Z",
+      "jdTdb": 2461366.2667729496,
+      "object": "Makemake",
+      "spkid": "20136472",
+      "objectClass": "dwarf planet",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "pcsPositionAu": [
+        -45.91911024331443,
+        -9.745635595064753,
+        24.03450046668698
+      ],
+      "referencePositionAu": [
+        -45.91911024331533,
+        -9.745635595065286,
+        24.03450046668692
+      ],
+      "difference": 0.00015700847108376438,
+      "units": "km",
+      "tolerance": 50,
+      "toleranceBasis": "Object-specific ceiling for 10 d Horizons-vector cubic-Hermite interpolation inside the validated leap-second horizon.",
+      "positionMode": "Cached Horizons vectors · cubic Hermite state",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-06-15T00:00:00Z",
+      "jdTdb": 2461206.5008007474,
+      "object": "Vesta",
+      "spkid": "20000004",
+      "objectClass": "main-belt catalog subset",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "pcsPositionAu": [
+        2.2892235125844174,
+        -0.4798200527355458,
+        -0.2645112422652043
+      ],
+      "referencePositionAu": [
+        2.289223576584668,
+        -0.4798201168655651,
+        -0.2645112405946772
+      ],
+      "difference": 13.55614442408001,
+      "units": "km",
+      "tolerance": 17663,
+      "toleranceBasis": "Object-specific representative-visualization ceiling of a×AU×5e-5 for short-window two-body propagation; this bounds PCS model error and is not SBDB observational uncertainty.",
+      "positionMode": "SBDB osculating elements · two-body propagated",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-08-08T12:41:00Z",
+      "jdTdb": 2461261.0292729526,
+      "object": "Vesta",
+      "spkid": "20000004",
+      "objectClass": "main-belt catalog subset",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "pcsPositionAu": [
+        2.387296027750158,
+        0.11510100800772216,
+        -0.29411476295834266
+      ],
+      "referencePositionAu": [
+        2.387301390210494,
+        0.1150956143739196,
+        -0.2941144818012832
+      ],
+      "difference": 1138.5795144765855,
+      "units": "km",
+      "tolerance": 17663,
+      "toleranceBasis": "Object-specific representative-visualization ceiling of a×AU×5e-5 for short-window two-body propagation; this bounds PCS model error and is not SBDB observational uncertainty.",
+      "positionMode": "SBDB osculating elements · two-body propagated",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-06-15T00:00:00Z",
+      "jdTdb": 2461206.5008007474,
+      "object": "Pallas",
+      "spkid": "20000002",
+      "objectClass": "main-belt catalog subset",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "pcsPositionAu": [
+        3.042065816815912,
+        -0.23560331290553682,
+        -0.09982327512062539
+      ],
+      "referencePositionAu": [
+        3.042065893192429,
+        -0.2356033952767437,
+        -0.09982327487449359
+      ],
+      "difference": 16.804608332374144,
+      "units": "km",
+      "tolerance": 20716,
+      "toleranceBasis": "Object-specific representative-visualization ceiling of a×AU×5e-5 for short-window two-body propagation; this bounds PCS model error and is not SBDB observational uncertainty.",
+      "positionMode": "SBDB osculating elements · two-body propagated",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-08-08T12:41:00Z",
+      "jdTdb": 2461261.0292729526,
+      "object": "Pallas",
+      "spkid": "20000002",
+      "objectClass": "main-belt catalog subset",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "pcsPositionAu": [
+        2.910736605099141,
+        0.1816848915692756,
+        -0.37768040298891936
+      ],
+      "referencePositionAu": [
+        2.910743101914303,
+        0.1816783224403446,
+        -0.3776804227649566
+      ],
+      "difference": 1382.161705033696,
+      "units": "km",
+      "tolerance": 20716,
+      "toleranceBasis": "Object-specific representative-visualization ceiling of a×AU×5e-5 for short-window two-body propagation; this bounds PCS model error and is not SBDB observational uncertainty.",
+      "positionMode": "SBDB osculating elements · two-body propagated",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-06-15T00:00:00Z",
+      "jdTdb": 2461206.5008007474,
+      "object": "Hygiea",
+      "spkid": "20000010",
+      "objectClass": "main-belt catalog subset",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "pcsPositionAu": [
+        -1.5099653291466981,
+        2.9112005519798334,
+        -0.054202010010299256
+      ],
+      "referencePositionAu": [
+        -1.509966012427474,
+        2.911201342094193,
+        -0.05420195413791853
+      ],
+      "difference": 156.49074543512444,
+      "units": "km",
+      "tolerance": 23569,
+      "toleranceBasis": "Object-specific representative-visualization ceiling of a×AU×5e-5 for short-window two-body propagation; this bounds PCS model error and is not SBDB observational uncertainty.",
+      "positionMode": "SBDB osculating elements · two-body propagated",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-08-08T12:41:00Z",
+      "jdTdb": 2461261.0292729526,
+      "object": "Hygiea",
+      "spkid": "20000010",
+      "objectClass": "main-belt catalog subset",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "pcsPositionAu": [
+        -1.91292644694437,
+        2.5987921565644236,
+        -0.08521796275796811
+      ],
+      "referencePositionAu": [
+        -1.91299489419572,
+        2.598875193529389,
+        -0.0852114910610519
+      ],
+      "difference": 16127.487680581466,
+      "units": "km",
+      "tolerance": 23569,
+      "toleranceBasis": "Object-specific representative-visualization ceiling of a×AU×5e-5 for short-window two-body propagation; this bounds PCS model error and is not SBDB observational uncertainty.",
+      "positionMode": "SBDB osculating elements · two-body propagated",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-06-15T00:00:00Z",
+      "jdTdb": 2461206.5008007474,
+      "object": "Gallia",
+      "spkid": "20000148",
+      "objectClass": "main-belt catalog subset",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "pcsPositionAu": [
+        -1.8137018818531032,
+        -2.3298693096435352,
+        1.393274780016501
+      ],
+      "referencePositionAu": [
+        -1.81370176150772,
+        -2.329869350068104,
+        1.393274752836072
+      ],
+      "difference": 19.422351371092233,
+      "units": "km",
+      "tolerance": 20723,
+      "toleranceBasis": "Object-specific representative-visualization ceiling of a×AU×5e-5 for short-window two-body propagation; this bounds PCS model error and is not SBDB observational uncertainty.",
+      "positionMode": "SBDB osculating elements · two-body propagated",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-08-08T12:41:00Z",
+      "jdTdb": 2461261.0292729526,
+      "object": "Gallia",
+      "spkid": "20000148",
+      "objectClass": "main-belt catalog subset",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "pcsPositionAu": [
+        -1.4035680940554578,
+        -2.564248896027477,
+        1.372645119898361
+      ],
+      "referencePositionAu": [
+        -1.403558044024486,
+        -2.564251097712695,
+        1.372642532637219
+      ],
+      "difference": 1587.0385421210185,
+      "units": "km",
+      "tolerance": 20723,
+      "toleranceBasis": "Object-specific representative-visualization ceiling of a×AU×5e-5 for short-window two-body propagation; this bounds PCS model error and is not SBDB observational uncertainty.",
+      "positionMode": "SBDB osculating elements · two-body propagated",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-06-15T00:00:00Z",
+      "jdTdb": 2461206.5008007474,
+      "object": "Holmia",
+      "spkid": "20000378",
+      "objectClass": "main-belt catalog subset",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "pcsPositionAu": [
+        0.3076374340873296,
+        -2.846543442036938,
+        0.2437923772336117
+      ],
+      "referencePositionAu": [
+        0.3076375434165281,
+        -2.846543492962821,
+        0.2437923721298692
+      ],
+      "difference": 18.05886566972662,
+      "units": "km",
+      "tolerance": 20772,
+      "toleranceBasis": "Object-specific representative-visualization ceiling of a×AU×5e-5 for short-window two-body propagation; this bounds PCS model error and is not SBDB observational uncertainty.",
+      "positionMode": "SBDB osculating elements · two-body propagated",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-08-08T12:41:00Z",
+      "jdTdb": 2461261.0292729526,
+      "object": "Holmia",
+      "spkid": "20000378",
+      "objectClass": "main-belt catalog subset",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "pcsPositionAu": [
+        0.8249603122509825,
+        -2.6645654876798055,
+        0.2804980846352706
+      ],
+      "referencePositionAu": [
+        0.824968725117293,
+        -2.664569777732582,
+        0.280497504715397
+      ],
+      "difference": 1415.3980955590584,
+      "units": "km",
+      "tolerance": 20772,
+      "toleranceBasis": "Object-specific representative-visualization ceiling of a×AU×5e-5 for short-window two-body propagation; this bounds PCS model error and is not SBDB observational uncertainty.",
+      "positionMode": "SBDB osculating elements · two-body propagated",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-06-15T00:00:00Z",
+      "jdTdb": 2461206.5008007474,
+      "object": "Mackwell",
+      "spkid": "20005292",
+      "objectClass": "main-belt catalog subset",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "pcsPositionAu": [
+        1.6044817756744492,
+        -1.4958089882844225,
+        -0.4102402397484388
+      ],
+      "referencePositionAu": [
+        1.604481856971415,
+        -1.495809034671543,
+        -0.4102402378690771
+      ],
+      "difference": 14.005184223636025,
+      "units": "km",
+      "tolerance": 19202,
+      "toleranceBasis": "Object-specific representative-visualization ceiling of a×AU×5e-5 for short-window two-body propagation; this bounds PCS model error and is not SBDB observational uncertainty.",
+      "positionMode": "SBDB osculating elements · two-body propagated",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-08-08T12:41:00Z",
+      "jdTdb": 2461261.0292729526,
+      "object": "Mackwell",
+      "spkid": "20005292",
+      "objectClass": "main-belt catalog subset",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "pcsPositionAu": [
+        1.9207894094635007,
+        -0.9110842637211569,
+        -0.5101463405077925
+      ],
+      "referencePositionAu": [
+        1.920795647490589,
+        -0.9110889063101529,
+        -0.5101457305605457
+      ],
+      "difference": 1166.8504471746783,
+      "units": "km",
+      "tolerance": 19202,
+      "toleranceBasis": "Object-specific representative-visualization ceiling of a×AU×5e-5 for short-window two-body propagation; this bounds PCS model error and is not SBDB observational uncertainty.",
+      "positionMode": "SBDB osculating elements · two-body propagated",
+      "pass": true
+    }
+  ]
+}

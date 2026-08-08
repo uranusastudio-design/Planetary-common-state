@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "datasetId": "pcs-ss02c-sbdb-small-bodies",
+  "promotionStatus": "validated-promoted",
+  "generatedAt": "2026-08-08T16:14:21.422Z",
+  "lastSuccessfulSynchronization": "2026-08-08T16:14:21.422Z",
+  "source": "NASA/JPL SBDB and Horizons APIs",
+  "sourceUrls": [
+    "https://ssd-api.jpl.nasa.gov/doc/sbdb.html",
+    "https://ssd-api.jpl.nasa.gov/doc/sbdb_query.html",
+    "https://ssd-api.jpl.nasa.gov/doc/horizons.html"
+  ],
+  "catalogEpochPolicy": "Each object retains its own osculating-element solution epoch (JDTDB)",
+  "referenceFrame": "J2000 ecliptic heliocentric",
+  "positionMode": "Dwarf planets: cached Horizons vectors; belt: two-body propagation from catalog osculating elements",
+  "normalizedFile": "normalized/small-bodies-sbdb.js",
+  "normalizedSha256": "ae53a3b82cc66903fb4039a1c71998c8f0d80b94bb0b987da9281b390e49a22a",
+  "dwarfPlanetCount": 5,
+  "mainBeltRecordCount": 5365,
+  "mainBeltUpstreamMatchCount": 5366,
+  "raw": [
+    {
+      "role": "dwarf-planet",
+      "object": "Ceres",
+      "url": "https://ssd-api.jpl.nasa.gov/sbdb.api?sstr=Ceres&phys-par=true&full-prec=true",
+      "file": "raw/sbdb/dwarf-ceres.json.gz",
+      "sha256": "a9657b770169efc9ad98c78dafc08c5717e4513ad071456df731d1fb5cf4a8fa"
+    },
+    {
+      "role": "dwarf-planet-ephemeris",
+      "object": "Ceres",
+      "url": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&OBJ_DATA=%27NO%27&MAKE_EPHEM=%27YES%27&EPHEM_TYPE=%27VECTORS%27&TIME_TYPE=%27TDB%27&REF_SYSTEM=%27ICRF%27&REF_PLANE=%27ECLIPTIC%27&OUT_UNITS=%27AU-D%27&VEC_TABLE=%272%27&VEC_CORR=%27NONE%27&CSV_FORMAT=%27YES%27&CAL_TYPE=%27GREGORIAN%27&TIME_DIGITS=%27FRACSEC%27&COMMAND=%27DES%3D20000001%3B%27&CENTER=%27500%4010%27&START_TIME=%272025-01-01%27&STOP_TIME=%272028-01-01%27&STEP_SIZE=%272+d%27",
+      "file": "raw/sbdb/dwarf-ceres-horizons.json.gz",
+      "sha256": "3d2746b6927960059ab751568ac4d64899d96d33afeb64cdd8be804fe6c44500",
+      "samples": 548
+    },
+    {
+      "role": "dwarf-planet",
+      "object": "Pluto",
+      "url": "https://ssd-api.jpl.nasa.gov/sbdb.api?sstr=Pluto&phys-par=true&full-prec=true",
+      "file": "raw/sbdb/dwarf-pluto.json.gz",
+      "sha256": "3fa775e91918ce7fa8c3da6378dd7379959854f737042fd24c681c1e5d931d3d"
+    },
+    {
+      "role": "dwarf-planet-ephemeris",
+      "object": "Pluto",
+      "url": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&OBJ_DATA=%27NO%27&MAKE_EPHEM=%27YES%27&EPHEM_TYPE=%27VECTORS%27&TIME_TYPE=%27TDB%27&REF_SYSTEM=%27ICRF%27&REF_PLANE=%27ECLIPTIC%27&OUT_UNITS=%27AU-D%27&VEC_TABLE=%272%27&VEC_CORR=%27NONE%27&CSV_FORMAT=%27YES%27&CAL_TYPE=%27GREGORIAN%27&TIME_DIGITS=%27FRACSEC%27&COMMAND=%27DES%3D20134340%3B%27&CENTER=%27500%4010%27&START_TIME=%272025-01-01%27&STOP_TIME=%272028-01-01%27&STEP_SIZE=%271+d%27",
+      "file": "raw/sbdb/dwarf-pluto-horizons.json.gz",
+      "sha256": "6151be725d779065b3361f261cfa1ffc9237f53b6695b5ba075b35448f7c46a1",
+      "samples": 1096
+    },
+    {
+      "role": "dwarf-planet",
+      "object": "Eris",
+      "url": "https://ssd-api.jpl.nasa.gov/sbdb.api?sstr=Eris&phys-par=true&full-prec=true",
+      "file": "raw/sbdb/dwarf-eris.json.gz",
+      "sha256": "699334b4cf70b5f6e3b25c1f96362aaabb934b079307c60ba38b2de6d2b57c16"
+    },
+    {
+      "role": "dwarf-planet-ephemeris",
+      "object": "Eris",
+      "url": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&OBJ_DATA=%27NO%27&MAKE_EPHEM=%27YES%27&EPHEM_TYPE=%27VECTORS%27&TIME_TYPE=%27TDB%27&REF_SYSTEM=%27ICRF%27&REF_PLANE=%27ECLIPTIC%27&OUT_UNITS=%27AU-D%27&VEC_TABLE=%272%27&VEC_CORR=%27NONE%27&CSV_FORMAT=%27YES%27&CAL_TYPE=%27GREGORIAN%27&TIME_DIGITS=%27FRACSEC%27&COMMAND=%27DES%3D20136199%3B%27&CENTER=%27500%4010%27&START_TIME=%272025-01-01%27&STOP_TIME=%272028-01-01%27&STEP_SIZE=%2720+d%27",
+      "file": "raw/sbdb/dwarf-eris-horizons.json.gz",
+      "sha256": "c76ccca3252ab359e351365037d05898c1a4cd2bff918c5e56fb0862e1fefcc7",
+      "samples": 55
+    },
+    {
+      "role": "dwarf-planet",
+      "object": "Haumea",
+      "url": "https://ssd-api.jpl.nasa.gov/sbdb.api?sstr=Haumea&phys-par=true&full-prec=true",
+      "file": "raw/sbdb/dwarf-haumea.json.gz",
+      "sha256": "d8f5c47be8f90c587a6b90c2006ac558796cfef0fa3a7891a617a8ae1f63f0b3"
+    },
+    {
+      "role": "dwarf-planet-ephemeris",
+      "object": "Haumea",
+      "url": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&OBJ_DATA=%27NO%27&MAKE_EPHEM=%27YES%27&EPHEM_TYPE=%27VECTORS%27&TIME_TYPE=%27TDB%27&REF_SYSTEM=%27ICRF%27&REF_PLANE=%27ECLIPTIC%27&OUT_UNITS=%27AU-D%27&VEC_TABLE=%272%27&VEC_CORR=%27NONE%27&CSV_FORMAT=%27YES%27&CAL_TYPE=%27GREGORIAN%27&TIME_DIGITS=%27FRACSEC%27&COMMAND=%27DES%3D20136108%3B%27&CENTER=%27500%4010%27&START_TIME=%272025-01-01%27&STOP_TIME=%272028-01-01%27&STEP_SIZE=%2710+d%27",
+      "file": "raw/sbdb/dwarf-haumea-horizons.json.gz",
+      "sha256": "8b300a54fc9af5215d8b5b440a12705d320c2f9ee8cf394689f350626cf7626c",
+      "samples": 110
+    },
+    {
+      "role": "dwarf-planet",
+      "object": "Makemake",
+      "url": "https://ssd-api.jpl.nasa.gov/sbdb.api?sstr=Makemake&phys-par=true&full-prec=true",
+      "file": "raw/sbdb/dwarf-makemake.json.gz",
+      "sha256": "c93b889417828e3f487b4317c19fc1b15459c48388ac39b22fe9f23049cd8763"
+    },
+    {
+      "role": "dwarf-planet-ephemeris",
+      "object": "Makemake",
+      "url": "https://ssd.jpl.nasa.gov/api/horizons.api?format=json&OBJ_DATA=%27NO%27&MAKE_EPHEM=%27YES%27&EPHEM_TYPE=%27VECTORS%27&TIME_TYPE=%27TDB%27&REF_SYSTEM=%27ICRF%27&REF_PLANE=%27ECLIPTIC%27&OUT_UNITS=%27AU-D%27&VEC_TABLE=%272%27&VEC_CORR=%27NONE%27&CSV_FORMAT=%27YES%27&CAL_TYPE=%27GREGORIAN%27&TIME_DIGITS=%27FRACSEC%27&COMMAND=%27DES%3D20136472%3B%27&CENTER=%27500%4010%27&START_TIME=%272025-01-01%27&STOP_TIME=%272028-01-01%27&STEP_SIZE=%2710+d%27",
+      "file": "raw/sbdb/dwarf-makemake-horizons.json.gz",
+      "sha256": "6bdbbe55983822a13d828417386e07e399bae4b29c2e6d53aa3432a8f57e17b3",
+      "samples": 110
+    },
+    {
+      "role": "main-belt-catalog-subset",
+      "url": "https://ssd-api.jpl.nasa.gov/sbdb_query.api?fields=spkid%2Cfull_name%2Cpdes%2Cname%2CH%2Cdiameter%2Ce%2Ca%2Cq%2Ci%2Com%2Cw%2Cma%2Ctp%2Cepoch%2Cper%2Cad%2Cn%2Cclass%2Ccondition_code%2Cdata_arc%2Cn_obs_used%2Csigma_e%2Csigma_a%2Csigma_q%2Csigma_i%2Csigma_om%2Csigma_w%2Csigma_ma%2Csigma_tp%2Csigma_per&sb-class=MBA&sb-cdata=%7B%22AND%22%3A%5B%22H%7CLT%7C13%22%5D%7D&sort=H%2Cpdes&full-prec=true",
+      "file": "raw/sbdb/main-belt-h-lt-13.json.gz",
+      "sha256": "5090c1a9391f7daa0f10b1fbb99b7f83208c88d3b93ce381739f8a95ab1167bb",
+      "upstreamMatchCount": 5366,
+      "normalizedUniqueCount": 5365,
+      "selection": {
+        "orbitClass": "MBA",
+        "absoluteMagnitude": "H < 13",
+        "sort": "H,pdes",
+        "deterministic": true
+      }
+    }
+  ],
+  "fallbackPolicy": "Retain last validated promoted catalog; never fabricate missing elements or physical properties.",
+  "validatedAt": "2026-08-08T16:15:47.262Z",
+  "validation": {
+    "comparisonCount": 27,
+    "failures": 0,
+    "evidence": "../../test-results/solar-system-ss02c/authoritative-position-comparison.json",
+    "tolerancePolicy": "Dwarf interpolation: per object/cadence. Belt two-body visualization: per object a×AU×5e-5. This is PCS model difference, not observational uncertainty; no universal tolerance."
+  }
+}

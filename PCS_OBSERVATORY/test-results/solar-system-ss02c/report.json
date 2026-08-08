@@ -1,0 +1,286 @@
+{
+  "generatedAt": "2026-08-08T16:18:13.575Z",
+  "stage": "SS-02C",
+  "status": "PASS",
+  "initial": {
+    "debug": {
+      "initialized": true,
+      "viewerCount": 1,
+      "canvasCount": 2,
+      "active": true,
+      "scaleContext": "solar",
+      "mode": "exhibition",
+      "epoch": "2026-08-08T12:41:00.000Z",
+      "solarTime": {
+        "displayEpoch": "2026-08-08T12:41:00.000Z",
+        "displayTimeScale": "UTC",
+        "ephemerisTimeScale": "TDB",
+        "revision": 1,
+        "reason": "api"
+      },
+      "solarSolution": {
+        "id": "pcs-ss02b-horizons-de441-2025-2028:hermite",
+        "displayEpoch": "2026-08-08T12:41:00.000Z",
+        "displayTimeScale": "UTC",
+        "ephemerisTimeScale": "TDB",
+        "source": "NASA/JPL Horizons API",
+        "catalogEphemeris": "JPL DE441 / satellite source reported per target",
+        "referenceSystem": "ICRF",
+        "referencePlane": "Earth mean ecliptic at J2000.0 (IAU76/80)",
+        "referenceFrame": "ICRF; Earth mean ecliptic at J2000.0 (IAU76/80); heliocentric origin",
+        "positionMode": "Cached ephemeris · cubic Hermite state",
+        "orbitMode": "Cached ephemeris states from the same promoted solution",
+        "lastDataUpdate": "2026-08-08T13:41:44.532Z",
+        "qualityStatus": "Validated local cache · validated",
+        "uncertainty": "No covariance supplied by Horizons VECTORS; interpolation error is validated per object class",
+        "validity": {
+          "start": "2025-01-01T00:00:00.000Z",
+          "end": "2028-01-01T00:00:00.000Z"
+        },
+        "coverage": {
+          "start": "2025-01-01T00:00:00.000Z",
+          "end": "2028-01-01T00:00:00.000Z"
+        },
+        "bodyIds": [
+          "mercury",
+          "venus",
+          "earth",
+          "mars",
+          "jupiter",
+          "saturn",
+          "uranus",
+          "neptune"
+        ],
+        "coherent": true,
+        "authoritative": true,
+        "stale": false,
+        "notice": "Every eligible major planet is resolved from the same promoted Horizons dataset and requested Display Epoch."
+      },
+      "orbitCacheEntries": 8,
+      "tickListenerActive": true,
+      "pointerNavigationActive": true,
+      "nativeZoomEnabled": false,
+      "lastPointerZoom": null,
+      "lastObjectFocus": null,
+      "objectCardId": "sun",
+      "selected": "sun",
+      "smallBodySelected": null,
+      "mainBelt": {
+        "datasetId": "pcs-ss02c-sbdb-small-bodies",
+        "catalogRecords": 5365,
+        "pointCount": 5365,
+        "visibleCount": 256,
+        "lod": "far",
+        "deterministic": true,
+        "selection": {
+          "orbitClass": "MBA",
+          "absoluteMagnitude": "H < 13",
+          "sort": "H,pdes",
+          "deterministic": true
+        },
+        "upstreamMatchCount": 5366
+      },
+      "nearbyActive": false,
+      "nearbyTier": "10pc",
+      "nearbySelected": null,
+      "nearbySelectedMetadata": null,
+      "phase3Selected": null,
+      "nearby": {
+        "records": 0,
+        "points": 0,
+        "labels": 0,
+        "guides": 0,
+        "motion": 0,
+        "lod": "far",
+        "visible": false
+      },
+      "milkyWay": {
+        "records": 0,
+        "points": 0,
+        "lines": 0,
+        "labels": 0,
+        "visible": false,
+        "mode": "exhibition",
+        "reconstruction": true
+      },
+      "localGroup": {
+        "records": 0,
+        "points": 0,
+        "labels": 0,
+        "uncertainties": 0,
+        "boundary": 0,
+        "lod": "far",
+        "mode": "exhibition",
+        "visible": false
+      }
+    },
+    "dwarfs": [
+      {
+        "id": "deep-space-small-20000001",
+        "point": true,
+        "sphere": true,
+        "diameter": 939.4,
+        "notice": "Display radius visually adjusted"
+      },
+      {
+        "id": "deep-space-small-20134340",
+        "point": true,
+        "sphere": false,
+        "diameter": null,
+        "notice": "Point marker; physical diameter unavailable in deployed SBDB record"
+      },
+      {
+        "id": "deep-space-small-20136199",
+        "point": true,
+        "sphere": false,
+        "diameter": null,
+        "notice": "Point marker; physical diameter unavailable in deployed SBDB record"
+      },
+      {
+        "id": "deep-space-small-20136108",
+        "point": true,
+        "sphere": false,
+        "diameter": null,
+        "notice": "Point marker; physical diameter unavailable in deployed SBDB record"
+      },
+      {
+        "id": "deep-space-small-20136472",
+        "point": true,
+        "sphere": false,
+        "diameter": null,
+        "notice": "Point marker; physical diameter unavailable in deployed SBDB record"
+      }
+    ],
+    "viewer": 1,
+    "cesiumCanvas": 1,
+    "totalCanvas": 2,
+    "primitives": 2
+  },
+  "nearLod": {
+    "datasetId": "pcs-ss02c-sbdb-small-bodies",
+    "catalogRecords": 5365,
+    "pointCount": 5365,
+    "visibleCount": 5365,
+    "lod": "near",
+    "deterministic": true,
+    "selection": {
+      "orbitClass": "MBA",
+      "absoluteMagnitude": "H < 13",
+      "sort": "H,pdes",
+      "deterministic": true
+    },
+    "upstreamMatchCount": 5366
+  },
+  "cards": {
+    "Ceres": {
+      "id": "sbdb:20000001",
+      "title": "Ceres",
+      "text": "CeresFocus×Official nameCeresLocalized nameCeresAliases1 Ceres (A801 AA), 1Object typedwarf planetParent system / structureMain Asteroid BeltCatalog IDJPL SBDB SPK-ID 20000001, 1Coordinates0.83329904, 2.5842138, -0.071699807 AUCoordinate frameICRF; Earth mean ecliptic at J2000.0; heliocentric originDistance2.71619014 AUUncertaintye ±4.7755e-12; aAu ±1.0134e-11; qAu ±1.9113e-11; iDeg ±4.6124e-9; omDeg ±6.1807e-8; wDeg ±6.6076e-8; maDeg ±6.1728e-9; tpDays ±2.8446e-8; periodDays ±9.2333e-9RedshiftUnavailableVelocityUnavailablePhysical sizeEffective diameter 939.4 kmOrbital dataa 2.765552595034094 AU; e 0.07969229514816586; i 10.58802780183462°; q 2.545159361382861 AU; Q 2.985945828685327 AU; period 1679.853119758983 dEpochSolution epoch 2461200.5 JDTDB; Display Epoch 2026-08-08T12:41:00.000ZData sourcesNASA/JPL SBDB; JPL#48Data statusephemeris-derivedVisualization statusCatalog-derived body; display scale recorded separatelyResearch referenceshttps://ssd-api.jpl.nasa.gov/doc/sbdb.htmlhttps://ssd-api.jpl.nasa.gov/doc/sbdb_query.htmlKnown limitationsAuthoritative cached vectors; Horizons query supplies no covariance. Interpolation is validated against withheld epochs.; Orbit condition code 0.; Data arc 9520 days; observations used 1075."
+    },
+    "Pluto": {
+      "id": "sbdb:20134340",
+      "title": "Pluto",
+      "text": "PlutoFocus×Official namePlutoLocalized namePlutoAliases134340 Pluto (1930 BM), 134340Object typedwarf planetParent system / structureSolar System small bodiesCatalog IDJPL SBDB SPK-ID 20134340, 134340Coordinates19.820756, -29.426385, -2.5836226 AUCoordinate frameICRF; Earth mean ecliptic at J2000.0; heliocentric originDistance35.57315800 AUUncertaintyUnavailableRedshiftUnavailableVelocityUnavailablePhysical sizeUnavailableOrbital dataa 39.58862938517124 AU; e 0.2518378778576892; i 17.14771140999114°; q 29.61871297351516 AU; Q 49.55854579682732 AU; period 90981.71647718345 dEpochSolution epoch 2457588.5 JDTDB; Display Epoch 2026-08-08T12:41:00.000ZData sourcesNASA/JPL SBDB; plu060_mergedData statusephemeris-derivedVisualization statusCatalog-derived point; display marker is not physical sizeResearch referenceshttps://ssd-api.jpl.nasa.gov/doc/sbdb.htmlhttps://ssd-api.jpl.nasa.gov/doc/sbdb_query.htmlKnown limitationsAuthoritative cached vectors; Horizons query supplies no covariance. Interpolation is validated against withheld epochs.; Physical diameter not provided by the deployed SBDB record; no value is invented.; Orbit condition code not provided.; Data arc 31524 days; observations used 7212."
+    },
+    "Eris": {
+      "id": "sbdb:20136199",
+      "title": "Eris",
+      "text": "ErisFocus×Official nameErisLocalized nameErisAliases136199 Eris (2003 UB313), 136199Object typedwarf planetParent system / structureSolar System small bodiesCatalog IDJPL SBDB SPK-ID 20136199, 136199Coordinates85.108470, 39.651188, -17.293766 AUCoordinate frameICRF; Earth mean ecliptic at J2000.0; heliocentric originDistance95.47116205 AUUncertaintye ±0.0000034663; aAu ±0.0002545; qAu ±0.00015516; iDeg ±0.000031852; omDeg ±0.000014831; wDeg ±0.0021022; maDeg ±0.0048207; tpDays ±2.3016; periodDays ±1.1493RedshiftUnavailableVelocityUnavailablePhysical sizeUnavailableOrbital dataa 67.93394687853566 AU; e 0.4382385347971672; i 43.9258279471791°; q 38.16267353549761 AU; Q 97.70522022157373 AU; period 204516.6629430732 dEpochSolution epoch 2461200.5 JDTDB; Display Epoch 2026-08-08T12:41:00.000ZData sourcesNASA/JPL SBDB; JPL#103Data statusephemeris-derivedVisualization statusCatalog-derived point; display marker is not physical sizeResearch referenceshttps://ssd-api.jpl.nasa.gov/doc/sbdb.htmlhttps://ssd-api.jpl.nasa.gov/doc/sbdb_query.htmlKnown limitationsAuthoritative cached vectors; Horizons query supplies no covariance. Interpolation is validated against withheld epochs.; Physical diameter not provided by the deployed SBDB record; no value is invented.; Orbit condition code 3.; Data arc 26089 days; observations used 4064."
+    },
+    "Haumea": {
+      "id": "sbdb:20136108",
+      "title": "Haumea",
+      "text": "HaumeaFocus×Official nameHaumeaLocalized nameHaumeaAliases136108 Haumea (2003 EL61), 136108Object typedwarf planetParent system / structureSolar System small bodiesCatalog IDJPL SBDB SPK-ID 20136108, 136108Coordinates-36.717311, -23.991400, 23.519403 AUCoordinate frameICRF; Earth mean ecliptic at J2000.0; heliocentric originDistance49.76856935 AUUncertaintye ±0.0000011561; aAu ±0.000040486; qAu ±0.000064457; iDeg ±0.0000011546; omDeg ±0.000018066; wDeg ±0.0006965; maDeg ±0.0010214; tpDays ±0.27214; periodDays ±0.14556RedshiftUnavailableVelocityUnavailablePhysical sizeUnavailableOrbital dataa 43.06029023650952 AU; e 0.1944430148898797; i 28.20847393040364°; q 34.68751758088936 AU; Q 51.43306289212968 AU; period 103208.1173403618 dEpochSolution epoch 2461200.5 JDTDB; Display Epoch 2026-08-08T12:41:00.000ZData sourcesNASA/JPL SBDB; JPL#132Data statusephemeris-derivedVisualization statusCatalog-derived point; display marker is not physical sizeResearch referenceshttps://ssd-api.jpl.nasa.gov/doc/sbdb.htmlhttps://ssd-api.jpl.nasa.gov/doc/sbdb_query.htmlKnown limitationsAuthoritative cached vectors; Horizons query supplies no covariance. Interpolation is validated against withheld epochs.; Physical diameter not provided by the deployed SBDB record; no value is invented.; Orbit condition code 1.; Data arc 25956 days; observations used 6692."
+    },
+    "Makemake": {
+      "id": "sbdb:20136472",
+      "title": "Makemake",
+      "text": "MakemakeFocus×Official nameMakemakeLocalized nameMakemakeAliases136472 Makemake (2005 FY9), 136472Object typedwarf planetParent system / structureSolar System small bodiesCatalog IDJPL SBDB SPK-ID 20136472, 136472Coordinates-45.941635, -9.5205738, 24.069945 AUCoordinate frameICRF; Earth mean ecliptic at J2000.0; heliocentric originDistance52.73174964 AUUncertaintye ±0.000001185; aAu ±0.000053653; qAu ±0.000090359; iDeg ±0.0000014175; omDeg ±0.000014106; wDeg ±0.00097128; maDeg ±0.001332; tpDays ±0.4032; periodDays ±0.19844RedshiftUnavailableVelocityUnavailablePhysical sizeUnavailableOrbital dataa 45.57093317300052 AU; e 0.1588889953992523; i 29.02785603743067°; q 38.33021338173601 AU; Q 52.81165296426503 AU; period 112364.8068762869 dEpochSolution epoch 2461200.5 JDTDB; Display Epoch 2026-08-08T12:41:00.000ZData sourcesNASA/JPL SBDB; JPL#130Data statusephemeris-derivedVisualization statusCatalog-derived point; display marker is not physical sizeResearch referenceshttps://ssd-api.jpl.nasa.gov/doc/sbdb.htmlhttps://ssd-api.jpl.nasa.gov/doc/sbdb_query.htmlKnown limitationsAuthoritative cached vectors; Horizons query supplies no covariance. Interpolation is validated against withheld epochs.; Physical diameter not provided by the deployed SBDB record; no value is invented.; Orbit condition code 1.; Data arc 25999 days; observations used 6348."
+    }
+  },
+  "languages": {
+    "en": [
+      "Scale",
+      "Time",
+      "Objects",
+      "Orbits",
+      "Orbits",
+      "Labels",
+      "Dwarf Planets",
+      "Main Belt catalog subset"
+    ],
+    "zh-TW": [
+      "尺度",
+      "時間",
+      "天體",
+      "軌道",
+      "軌道",
+      "標籤",
+      "矮行星",
+      "主小行星帶星表子集"
+    ],
+    "ja": [
+      "スケール",
+      "時間",
+      "天体",
+      "軌道",
+      "軌道",
+      "ラベル",
+      "準惑星",
+      "メインベルト・カタログ部分集合"
+    ],
+    "ko": [
+      "축척",
+      "시간",
+      "천체",
+      "궤도",
+      "궤도",
+      "레이블",
+      "왜행성",
+      "주 소행성대 카탈로그 부분집합"
+    ]
+  },
+  "lifecycle": {
+    "cycles": 10,
+    "before": {
+      "dataSources": 4,
+      "primitives": 2
+    },
+    "finalState": {
+      "viewer": 1,
+      "cesiumCanvas": 1,
+      "totalCanvas": 2,
+      "dataSources": 3,
+      "primitives": 1,
+      "active": false,
+      "earthOwner": {
+        "owner": "earth",
+        "active": true,
+        "generation": 22,
+        "activeCelestialTargetId": "earth",
+        "geographicRenderingEnabled": true,
+        "visitorDataSource": {
+          "id": "visitorDataSource",
+          "show": true,
+          "entities": 0
+        },
+        "visitorHeatDataSource": {
+          "id": "visitorHeatDataSource",
+          "show": false
+        },
+        "visitorNetworkDataSource": {
+          "id": "visitorNetworkDataSource",
+          "show": false
+        }
+      }
+    }
+  },
+  "console": {
+    "required": 0,
+    "items": []
+  },
+  "network": {
+    "required": 0,
+    "items": []
+  }
+}

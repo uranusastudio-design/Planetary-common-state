@@ -1,6 +1,6 @@
 # Solar System Data Architecture
 
-Status: **SS-01 baseline frozen; SS-02A time/frame and SS-02B major-body ephemeris/LOD validated and frozen**
+Status: **SS-01 baseline frozen; SS-02A–C validated and frozen**
 
 Audit date: 2026-08-08
 
@@ -29,6 +29,24 @@ The browser dataset retains position and velocity in AU/AU-day and source time i
 SS-02B's promotion gate passed 46 object/epoch comparisons against independent direct Horizons output. Evidence and class/object-specific tolerances are in `test-results/solar-system-ss02b/authoritative-position-comparison.json`. The browser lifecycle evidence is `test-results/solar-system-ss02b/report.json`.
 
 Titania's parent-relative ephemeris is included. No Titania surface image, projection, texture, or coverage change was made.
+
+## SS-02C current architecture delta
+
+Small bodies now use a separate source boundary:
+
+`JPL SBDB lookup/query → gzip raw + SHA-256 → normalized unique catalog → direct-Horizons/model validation → promoted small-body manifest → dwarf entities + batched belt primitive`
+
+- `scripts/solar-system/sbdb-adapter.mjs`: strict SBDB lookup/query URL and normalization contract.
+- `scripts/solar-system/sync-small-bodies.mjs`: dwarf lookup, Main Belt `MBA / H<13` query, raw/cache/checksum generation, and dwarf Horizons vectors.
+- `data/solar-system/small-body-manifest.json`: candidate/promotion state, last successful synchronization, selection, counts, source URLs, hashes, and keep-last-validated fallback policy.
+- `small-body-catalog.js`: dwarf cached-vector interpolation, belt element propagation, deterministic LOD, one batched point collection, and listener lifecycle.
+- `unified-object-card.js`: dwarf planet and asteroid provenance without invented physical properties.
+
+The normalized registry contains five named dwarf planets plus 5,365 belt points. Ceres belongs scientifically to both categories but has one SPK-ID and one rendered object; it is excluded from the batched belt point list. No catalog duplication is permitted.
+
+The belt selection is a catalog subset, not a complete belt and not a representative solid ring. Far/medium/near LOD shows the first 256/1,024/5,365 records in the stable `H,pdes` ordering. Sampling does not change per frame.
+
+Dwarf positions use cached Horizons vectors inside validated coverage. Belt points use two-body propagation from each SBDB JDTDB element epoch and carry explicit model-status text. Direct-Horizons evidence separates the resulting PCS model difference from the formal sigmas stored on the catalog record.
 
 ## SS-02A architecture delta
 
@@ -175,7 +193,8 @@ The separate Cloudflare current-observation adapter does preserve cached/stored 
 - [x] Titania texture, Gaia data, the then-existing Motion Streak rendering, Phase 4A–4F, and SITE were not modified by SS-01. Motion Streak was subsequently rejected by human visual review and removed before SS-02.
 - [x] Planet and major-satellite authoritative multi-epoch ephemeris validation — SS-02B validated and frozen.
 - [x] Solid-body point/intermediate/sphere LOD — SS-02B validated and frozen.
-- [ ] Dwarf planets and asteroid belt — SS-02C, not started.
+- [x] Five dwarf planets and catalog-derived adaptive Main Belt — SS-02C validated and frozen.
+- [ ] Kuiper Belt / TNO — SS-02D, not started.
 - [ ] Any later Solar System checkpoint — not started.
 
 SS-02A browser evidence passed with one Viewer, one Cesium canvas, unchanged total canvas count, eight coherent planet states, same-solution orbit metadata, honest out-of-range unavailability, four runtime languages, restored Earth ownership, zero required Console errors, and zero required Network failures. SS-02A is frozen as the contract consumed by SS-02B.

@@ -42,9 +42,18 @@ Stable baseline: v2.1.0 — Stable / Frozen
 - Passed 46 independent withheld-epoch Horizons comparisons, 117 repository Node tests, four-language browser checks, and ten resource-lifecycle cycles with Viewer 1, Cesium canvas 1, total canvas 2, zero primitive growth, zero required Console exceptions, and zero required Network failures.
 - Titania orbital positioning was updated; the deferred Titania surface-image/projection issue was not modified.
 
+### Solar System SS-02C
+
+- Added JPL SBDB source adapters, compressed raw snapshots, checksums, normalization, promotion manifest, and validation for dwarf planets and the Main Belt.
+- Added Ceres, Pluto, Eris, Haumea, and Makemake with Unified Object Cards; unavailable SBDB diameters remain unavailable and are not replaced with invented sphere sizes.
+- Added authoritative cached Horizons states for the five named dwarf planets at the shared Display Epoch.
+- Added a non-decorative Main Belt catalog subset: 5,366 SBDB `MBA / H<13` matches, represented as 5,365 unique batched points plus Ceres once as the named dwarf object.
+- Added deterministic adaptive LOD (256 / 1,024 / 5,365), stable `H,pdes` ordering, one batched point collection, and complete camera-listener cleanup.
+- Passed 27 direct-Horizons comparisons, 123 repository Node tests, five dwarf Object Cards, four-language terminology, adaptive LOD, and ten lifecycle cycles with Viewer 1, Cesium canvas 1, total canvas 2, required Console 0, and required Network 0.
+
 ### Current Boundary
 
-- Solar System SS-02A and SS-02B are frozen; SS-02C is the active next sub-stage.
+- Solar System SS-02A–C are frozen; SS-02D is the active next sub-stage.
 - Deep Space Phase 4A remains not started.
 
 ## [v2.1.0] — 2026-08-01

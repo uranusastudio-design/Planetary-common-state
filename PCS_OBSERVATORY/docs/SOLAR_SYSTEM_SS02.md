@@ -1,6 +1,6 @@
 # Solar System SS-02
 
-Status: **In Development — SS-02A and SS-02B validated / frozen; SS-02C–G not started**
+Status: **In Development — SS-02A–C validated / frozen; SS-02D–G not started**
 
 Release: **v2.2.0**
 
@@ -172,6 +172,52 @@ Known limits after SS-02B:
 - small bodies, dwarf planets, belts, TNOs, comets, and meteor showers belong to SS-02C–E;
 - continuous keep-last-validated synchronization policy is completed in SS-02F.
 
+## SS-02C implementation
+
+### Dwarf planets
+
+Ceres, Pluto, Eris, Haumea, and Makemake are sourced from the official NASA/JPL SBDB lookup API. Each record retains SPK-ID, designation, orbit class/solution, individual JDTDB osculating-element epoch, elements, formal element sigmas where supplied, condition code, observation arc, observation count, absolute magnitude, and physical diameter only when SBDB supplies it.
+
+Their displayed 2025–2028 positions use a separate official Horizons vector cache and cubic-Hermite interpolation at the one Solar System Display Epoch. This prevents Pluto's older SBDB element epoch from masquerading as a current precision position. Physical diameter is unavailable in the deployed SBDB record for Pluto, Eris, Haumea, and Makemake; PCS renders coloured selectable points and Object Cards say `Unavailable`. It does not invent sphere sizes. Ceres has a sourced diameter and may resolve to a sphere.
+
+### Main Asteroid Belt
+
+The Main Belt is not a ring. The official SBDB Query API returns the deterministic selection:
+
+- orbit class `MBA`;
+- absolute magnitude `H < 13`;
+- sorted by `H,pdes`;
+- full-precision output fields;
+- 5,366 matching catalog records at synchronization time.
+
+Ceres is represented once in the dwarf registry and excluded from the belt point collection, leaving 5,365 unique batched points. The UI identifies this as a `Main Belt catalog subset`, not the complete SBDB and not a density claim about unseen objects.
+
+Every point retains its own SBDB solution epoch and is positioned by disclosed two-body propagation from its osculating elements. This is `catalog-derived propagated position`, not a numerical planetary ephemeris. The visual model difference is validated and reported separately from SBDB formal element uncertainty.
+
+Adaptive LOD is deterministic: far 256, medium 1,024, near 5,365. One Cesium `PointPrimitiveCollection` is reused; there is no DOM node or Entity per belt object, no random sampling, and one camera `moveEnd` listener is removed on disposal.
+
+### SS-02C pipeline and validation
+
+`sbdb-adapter.mjs` owns official query/lookup normalization. `sync-small-bodies.mjs` writes compressed raw responses, query URLs, checksums, normalized catalog, last successful synchronization, and promotion manifest. The first candidate failed because Pluto's 10-day vector interval caused about 6,700 km interpolation error; it was regenerated at one-day cadence. The validation also respects the frozen UTC→TDB leap-second horizon rather than claiming future authoritative conversion.
+
+The promoted candidate passed 27 direct Horizons comparisons:
+
+- five dwarf planets × three withheld epochs;
+- Vesta, Pallas, Hygiea and three deterministic belt samples × two epochs.
+
+Dwarf tolerances are object/cadence-specific. Belt tolerances are object-specific `a × AU × 5×10⁻⁵` representative-visualization ceilings. That ceiling measures PCS two-body model error; it is not observational/orbital uncertainty and is shown in every evidence row.
+
+Validation result:
+
+- 27/27 authoritative comparisons passed;
+- 123 repository Node tests passed;
+- five dwarf Object Cards and all four runtime languages passed;
+- LOD 256 → 5,365 passed without catalog duplication;
+- ten open/close cycles removed the temporary DataSource, batched belt primitive, and camera listener;
+- Viewer 1, Cesium canvas 1, total canvas 2, required Console 0, required Network 0, Earth ownership restored.
+
+Evidence: `test-results/solar-system-ss02c/authoritative-position-comparison.json` and `test-results/solar-system-ss02c/report.json`.
+
 ## Freeze boundary
 
-SS-02A and SS-02B are frozen as the base for SS-02C. Changing their public meaning requires an explicit SS-02 architecture revision, migration notes, and rerun of both regression gates.
+SS-02A–C are frozen as the base for SS-02D. Changing their public meaning requires an explicit SS-02 architecture revision, migration notes, and rerun of the affected regression gates.
