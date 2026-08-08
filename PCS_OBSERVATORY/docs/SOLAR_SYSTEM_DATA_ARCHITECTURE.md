@@ -1,10 +1,34 @@
 # Solar System Data Architecture
 
-Status: **SS-01 baseline frozen; SS-02A time / ephemeris / reference-frame architecture validated and frozen**
+Status: **SS-01 baseline frozen; SS-02A time/frame and SS-02B major-body ephemeris/LOD validated and frozen**
 
 Audit date: 2026-08-08
 
 This document records the current Solar System implementation before scientific completion work begins. It is an evidence-based baseline, not a claim that the Solar System layer is complete. SS-01 changes no orbit, catalog, texture, or rendering data.
+
+## SS-02B current architecture delta
+
+The SS-01 inventory below remains as a frozen historical baseline. The current runtime has superseded its single-epoch/mean-orbit behaviour for 2025–2028:
+
+`official Horizons API → gzip raw response + SHA-256 → normalized compact vectors → independent withheld-epoch validation → promoted manifest → cubic-Hermite runtime → solution-bound entities/orbits`
+
+- `solar-system-core.js`: UTC Display Epoch, NAIF `naif0012.tls` UTC→JDTDB conversion, leap-second quality boundary.
+- `scripts/solar-system/horizons-adapter.mjs`: fixed official vector-query and normalization contract.
+- `scripts/solar-system/sync-major-bodies.mjs`: deterministic raw/cache/normalization producer for eight planets and eleven major satellites.
+- `scripts/solar-system/validate-major-bodies.mjs`: independent Horizons comparison and promotion gate.
+- `data/solar-system/raw/horizons-de441/`: compressed source responses; no browser dependency.
+- `data/solar-system/normalized/major-bodies-horizons-de441.js`: deployed vector dataset.
+- `data/solar-system/ephemeris-manifest.json`: source queries, hashes, times, coverage, counts, promotion and validation state.
+- `deep-space-ephemeris.js`: coherent solution selection, binary bracket lookup, cubic Hermite interpolation, explicit fallback/unavailability.
+- `deep-space.js`: one-Viewer consumer with overlapping point/intermediate/sphere LOD and separate physical/display radii.
+
+The promoted data cover 2025-01-01 through 2028-01-01. Eight planet states are Sun-centred. Moon states are parent-centred with the exact Horizons center recorded. The UI never substitutes the former representative satellite mean orbit outside coverage. Planet fallback remains the published JPL 1800–2050 approximate-element model and is labelled as such.
+
+The browser dataset retains position and velocity in AU/AU-day and source time in TDB. UTC is converted through NAIF DELTET; dates before 1972 are unsupported by this converter, and dates beyond the declared leap-second validation horizon cannot promote an authoritative state without an LSK refresh.
+
+SS-02B's promotion gate passed 46 object/epoch comparisons against independent direct Horizons output. Evidence and class/object-specific tolerances are in `test-results/solar-system-ss02b/authoritative-position-comparison.json`. The browser lifecycle evidence is `test-results/solar-system-ss02b/report.json`.
+
+Titania's parent-relative ephemeris is included. No Titania surface image, projection, texture, or coverage change was made.
 
 ## SS-02A architecture delta
 
@@ -38,7 +62,7 @@ PCS has two related but separate Solar System paths inside one shared Cesium Vie
 
 There is one `Cesium.Viewer`, one Cesium canvas, and no Solar System-specific permanent animation loop. Deep Space uses the existing Cesium clock listener.
 
-## Current source inventory
+## SS-01 historical source inventory (superseded where noted above)
 
 | Use | Current source | Runtime behavior | Provenance completeness |
 | --- | --- | --- | --- |
@@ -52,7 +76,7 @@ There is one `Cesium.Viewer`, one Cesium canvas, and no Solar System-specific pe
 
 NASA/JPL SBDB and MPC are not currently integrated. The browser does not fetch a Solar System catalog or ephemeris dataset for the overview.
 
-## Current position and orbit algorithms
+## SS-01 historical position and orbit algorithms
 
 ### Planets
 
@@ -68,7 +92,7 @@ Orbit polylines sample `getBodyState` around the selected epoch. Near 2026-08-01
 
 This is a representative mean-orbit model, not an authoritative satellite ephemeris. It does not use longitude of ascending node, argument of periapsis, mean anomaly, solution epoch, frame orientation, or eccentric anomaly; the registry's satellite eccentricity does not affect the rendered state. Parent-centered coordinates are added in the scene axes without a documented physical frame transform.
 
-## Current frame and time contracts
+## SS-01 historical frame and time contracts
 
 - Planet overview frame: Sun-centered ecliptic coordinates, J2000 reference.
 - Bundled Horizons sample: geometric vector, DE441, AU and AU/day, source epoch stated as TDB.
@@ -78,7 +102,7 @@ This is a representative mean-orbit model, not an authoritative satellite epheme
 - Exhibition mode: logarithmic distance and enlarged display radius.
 - Scientific mode: AU-to-kilometre position mapping and physical mean radius for ellipsoids.
 
-## Current object hierarchy
+## SS-01 historical object hierarchy
 
 Implemented overview bodies:
 
@@ -105,7 +129,7 @@ Not implemented:
 
 Titania's orbit metadata is present. Its deferred texture issue is untouched.
 
-## Current rendering and LOD
+## SS-01 historical rendering and LOD
 
 - Sun, planets, and displayed satellites are Cesium Entity ellipsoids, not catalog point primitives.
 - Orbit paths are Entity polylines.
@@ -116,7 +140,7 @@ Titania's orbit metadata is present. Its deferred texture issue is untouched.
 
 The known “label/position without an obvious body” concern is therefore a visibility/LOD and scale problem, not evidence that authoritative solid-body LOD has been completed.
 
-## Current update and fallback behavior
+## SS-01 historical update and fallback behavior
 
 There is no continuous source → raw snapshot → validation → normalized registry pipeline for the Deep Space Solar System overview. The Horizons vector file is manually bundled and contains a single epoch. There is no scheduled JPL/SBDB/MPC retrieval, raw snapshot directory, validation manifest, checksum registry, last-success record, dataset-age indicator, or automatic keep-last-known-valid promotion process.
 
@@ -149,7 +173,9 @@ The separate Cloudflare current-observation adapter does preserve cached/stored 
 - [x] Existing tests confirm the registry contains the Sun, eight planets, and exactly eleven satellites; cached/fallback states and parent-relative orbit sampling remain operational.
 - [x] Viewer/canvas architecture remains unchanged.
 - [x] Titania texture, Gaia data, the then-existing Motion Streak rendering, Phase 4A–4F, and SITE were not modified by SS-01. Motion Streak was subsequently rejected by human visual review and removed before SS-02.
-- [ ] Planet authoritative multi-epoch ephemeris validation — SS-02B, not started.
+- [x] Planet and major-satellite authoritative multi-epoch ephemeris validation — SS-02B validated and frozen.
+- [x] Solid-body point/intermediate/sphere LOD — SS-02B validated and frozen.
+- [ ] Dwarf planets and asteroid belt — SS-02C, not started.
 - [ ] Any later Solar System checkpoint — not started.
 
 SS-02A browser evidence passed with one Viewer, one Cesium canvas, unchanged total canvas count, eight coherent planet states, same-solution orbit metadata, honest out-of-range unavailability, four runtime languages, restored Earth ownership, zero required Console errors, and zero required Network failures. SS-02A is frozen as the contract consumed by SS-02B.

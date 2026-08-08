@@ -32,9 +32,19 @@ Stable baseline: v2.1.0 — Stable / Frozen
 - Added compact four-language source, ephemeris, frame, position-mode, update, and quality display.
 - SS-02A browser acceptance passed with Viewer 1, Cesium canvas 1, total canvas 2, restored Earth ownership, and zero required Console or Network failures.
 
+### Solar System SS-02B
+
+- Added NAIF `naif0012.tls` UTC→TDB conversion with explicit pre-1972 and future leap-second quality boundaries.
+- Added a reproducible official Horizons synchronization pipeline with gzip raw responses, SHA-256 provenance, normalized vectors, manifest promotion state, and keep-last-validated-ready structure.
+- Promoted a 2025–2028 multi-epoch dataset for the Sun-centred eight planets and parent-centred Moon, Phobos, Deimos, Io, Europa, Ganymede, Callisto, Enceladus, Titan, Titania, and Triton.
+- Replaced the eleven representative satellite mean-orbit positions with cached Horizons vectors and cubic-Hermite interpolation; outside promoted coverage they become unavailable.
+- Added overlapping coloured point → intermediate marker → solid-sphere LOD with physical and display radii stored separately and visual scaling disclosed.
+- Passed 46 independent withheld-epoch Horizons comparisons, 117 repository Node tests, four-language browser checks, and ten resource-lifecycle cycles with Viewer 1, Cesium canvas 1, total canvas 2, zero primitive growth, zero required Console exceptions, and zero required Network failures.
+- Titania orbital positioning was updated; the deferred Titania surface-image/projection issue was not modified.
+
 ### Current Boundary
 
-- Solar System SS-02 is the next authorized v2.2.0 workstream.
+- Solar System SS-02A and SS-02B are frozen; SS-02C is the active next sub-stage.
 - Deep Space Phase 4A remains not started.
 
 ## [v2.1.0] — 2026-08-01

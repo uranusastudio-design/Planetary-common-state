@@ -1,0 +1,315 @@
+{
+  "generatedAt": "2026-08-08T15:52:39.760Z",
+  "stage": "SS-02B",
+  "status": "PASS",
+  "normal": {
+    "solution": {
+      "id": "pcs-ss02b-horizons-de441-2025-2028:hermite",
+      "displayEpoch": "2026-08-08T12:41:00.000Z",
+      "displayTimeScale": "UTC",
+      "ephemerisTimeScale": "TDB",
+      "source": "NASA/JPL Horizons API",
+      "catalogEphemeris": "JPL DE441 / satellite source reported per target",
+      "referenceSystem": "ICRF",
+      "referencePlane": "Earth mean ecliptic at J2000.0 (IAU76/80)",
+      "referenceFrame": "ICRF; Earth mean ecliptic at J2000.0 (IAU76/80); heliocentric origin",
+      "positionMode": "Cached ephemeris · cubic Hermite state",
+      "orbitMode": "Cached ephemeris states from the same promoted solution",
+      "lastDataUpdate": "2026-08-08T13:41:44.532Z",
+      "qualityStatus": "Validated local cache · validated",
+      "uncertainty": "No covariance supplied by Horizons VECTORS; interpolation error is validated per object class",
+      "validity": {
+        "start": "2025-01-01T00:00:00.000Z",
+        "end": "2028-01-01T00:00:00.000Z"
+      },
+      "coverage": {
+        "start": "2025-01-01T00:00:00.000Z",
+        "end": "2028-01-01T00:00:00.000Z"
+      },
+      "bodyIds": [
+        "mercury",
+        "venus",
+        "earth",
+        "mars",
+        "jupiter",
+        "saturn",
+        "uranus",
+        "neptune"
+      ],
+      "coherent": true,
+      "authoritative": true,
+      "stale": false,
+      "notice": "Every eligible major planet is resolved from the same promoted Horizons dataset and requested Display Epoch."
+    },
+    "bodies": [
+      {
+        "id": "deep-space-mercury",
+        "point": true,
+        "sphere": true,
+        "physicalRadiusKm": 2439.7,
+        "displayRadius": 12539.717738111372,
+        "lod": "point → scaled intermediate marker → overlapping solid sphere",
+        "source": "NASA/JPL Horizons API"
+      },
+      {
+        "id": "deep-space-venus",
+        "point": true,
+        "sphere": true,
+        "physicalRadiusKm": 6051.8,
+        "displayRadius": 13995.625932479612,
+        "lod": "point → scaled intermediate marker → overlapping solid sphere",
+        "source": "NASA/JPL Horizons API"
+      },
+      {
+        "id": "deep-space-earth",
+        "point": true,
+        "sphere": true,
+        "physicalRadiusKm": 6371.0084,
+        "displayRadius": 14078.090470423898,
+        "lod": "point → scaled intermediate marker → overlapping solid sphere",
+        "source": "NASA/JPL Horizons API"
+      },
+      {
+        "id": "deep-space-mars",
+        "point": true,
+        "sphere": true,
+        "physicalRadiusKm": 3389.5,
+        "displayRadius": 13066.23566838748,
+        "lod": "point → scaled intermediate marker → overlapping solid sphere",
+        "source": "NASA/JPL Horizons API"
+      },
+      {
+        "id": "deep-space-jupiter",
+        "point": true,
+        "sphere": true,
+        "physicalRadiusKm": 69911,
+        "displayRadius": 17925.04823428356,
+        "lod": "point → scaled intermediate marker → overlapping solid sphere",
+        "source": "NASA/JPL Horizons API"
+      },
+      {
+        "id": "deep-space-saturn",
+        "point": true,
+        "sphere": true,
+        "physicalRadiusKm": 58232,
+        "displayRadius": 17631.374236028732,
+        "lod": "point → scaled intermediate marker → overlapping solid sphere",
+        "source": "NASA/JPL Horizons API"
+      },
+      {
+        "id": "deep-space-uranus",
+        "point": true,
+        "sphere": true,
+        "physicalRadiusKm": 25362,
+        "displayRadius": 16296.112400084075,
+        "lod": "point → scaled intermediate marker → overlapping solid sphere",
+        "source": "NASA/JPL Horizons API"
+      },
+      {
+        "id": "deep-space-neptune",
+        "point": true,
+        "sphere": true,
+        "physicalRadiusKm": 24622,
+        "displayRadius": 16248.548800812026,
+        "lod": "point → scaled intermediate marker → overlapping solid sphere",
+        "source": "NASA/JPL Horizons API"
+      }
+    ],
+    "viewer": 1,
+    "cesiumCanvas": 1,
+    "totalCanvas": 2
+  },
+  "moonChecks": {
+    "moon": {
+      "status": "ephemeris-derived",
+      "source": "NASA/JPL Horizons API · DE441",
+      "position": [
+        0.000506519222347729,
+        0.0023818729768812995,
+        0.0002126135847092366
+      ],
+      "parent": "earth"
+    },
+    "phobos": {
+      "status": "ephemeris-derived",
+      "source": "NASA/JPL Horizons API · mar099",
+      "position": [
+        0.000049874727645357404,
+        0.00002990558971653433,
+        -0.000021721211696721104
+      ],
+      "parent": "mars"
+    },
+    "deimos": {
+      "status": "ephemeris-derived",
+      "source": "NASA/JPL Horizons API · mar099",
+      "position": [
+        0.00013394164737606624,
+        0.000059882050377941544,
+        -0.00005532063603555423
+      ],
+      "parent": "mars"
+    },
+    "io": {
+      "status": "ephemeris-derived",
+      "source": "NASA/JPL Horizons API · jup365_merged",
+      "position": [
+        0.002810320940802303,
+        0.00011928248901455403,
+        0.000044400502824092
+      ],
+      "parent": "jupiter"
+    },
+    "europa": {
+      "status": "ephemeris-derived",
+      "source": "NASA/JPL Horizons API · jup365_merged",
+      "position": [
+        -0.0037772483491555773,
+        -0.002347483221039647,
+        -0.0001480820502813116
+      ],
+      "parent": "jupiter"
+    },
+    "ganymede": {
+      "status": "ephemeris-derived",
+      "source": "NASA/JPL Horizons API · jup365_merged",
+      "position": [
+        -0.004869892347220709,
+        -0.005250631373833794,
+        -0.0002717588981078143
+      ],
+      "parent": "jupiter"
+    },
+    "callisto": {
+      "status": "ephemeris-derived",
+      "source": "NASA/JPL Horizons API · jup365_merged",
+      "position": [
+        -0.010353261109486242,
+        0.007265560316847312,
+        0.00008811390846213405
+      ],
+      "parent": "jupiter"
+    },
+    "titan": {
+      "status": "ephemeris-derived",
+      "source": "NASA/JPL Horizons API · sat441l",
+      "position": [
+        -0.0023041750975849717,
+        -0.006881685835461505,
+        0.0037777452496211995
+      ],
+      "parent": "saturn"
+    },
+    "enceladus": {
+      "status": "ephemeris-derived",
+      "source": "NASA/JPL Horizons API · sat441l",
+      "position": [
+        -0.0001943860690464845,
+        -0.0013902698608303573,
+        0.0007470726951210939
+      ],
+      "parent": "saturn"
+    },
+    "titania": {
+      "status": "ephemeris-derived",
+      "source": "NASA/JPL Horizons API · ura184_merged",
+      "position": [
+        -0.0009639049358859609,
+        -0.00017188040285508435,
+        -0.0027449226630886004
+      ],
+      "parent": "uranus"
+    },
+    "triton": {
+      "status": "ephemeris-derived",
+      "source": "NASA/JPL Horizons API · nep098_merged",
+      "position": [
+        0.0016941851781196848,
+        0.0016572900390627034,
+        0.00007872338501729071
+      ],
+      "parent": "neptune"
+    }
+  },
+  "languages": {
+    "en": [
+      "DISPLAY EPOCH",
+      "SOURCE",
+      "CATALOG / EPHEMERIS",
+      "REFERENCE FRAME",
+      "POSITION MODE",
+      "LAST DATA UPDATE",
+      "UNCERTAINTY / QUALITY STATUS"
+    ],
+    "zh-TW": [
+      "顯示曆元",
+      "來源",
+      "星表／星曆",
+      "參考框架",
+      "位置模式",
+      "最後資料更新",
+      "不確定性／品質狀態"
+    ],
+    "ja": [
+      "表示元期",
+      "ソース",
+      "カタログ／暦",
+      "基準座標系",
+      "位置モード",
+      "最終データ更新",
+      "不確かさ／品質状態"
+    ],
+    "ko": [
+      "표시 역기점",
+      "출처",
+      "카탈로그／천체력",
+      "기준 좌표계",
+      "위치 모드",
+      "마지막 데이터 업데이트",
+      "불확도／품질 상태"
+    ]
+  },
+  "lifecycle": {
+    "cycles": 10,
+    "before": {
+      "dataSources": 4,
+      "primitives": 1
+    },
+    "finalState": {
+      "viewer": 1,
+      "cesiumCanvas": 1,
+      "totalCanvas": 2,
+      "dataSources": 3,
+      "primitives": 1,
+      "active": false,
+      "earthOwner": {
+        "owner": "earth",
+        "active": true,
+        "generation": 22,
+        "activeCelestialTargetId": "earth",
+        "geographicRenderingEnabled": true,
+        "visitorDataSource": {
+          "id": "visitorDataSource",
+          "show": true,
+          "entities": 0
+        },
+        "visitorHeatDataSource": {
+          "id": "visitorHeatDataSource",
+          "show": false
+        },
+        "visitorNetworkDataSource": {
+          "id": "visitorNetworkDataSource",
+          "show": false
+        }
+      }
+    }
+  },
+  "console": {
+    "required": 0,
+    "items": []
+  },
+  "network": {
+    "required": 0,
+    "items": []
+  }
+}

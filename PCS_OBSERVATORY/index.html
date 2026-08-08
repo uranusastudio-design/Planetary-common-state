@@ -241,11 +241,11 @@
               <button type="button" class="framework-button" data-solar-target="mercury">Mercury <small>JPL data + NASA/USGS imagery</small></button>
               <button type="button" class="framework-button" data-solar-target="venus">Venus <small>JPL data + NASA/USGS imagery</small></button>
               <div class="celestial-system is-expanded" data-celestial-system="earth">
-                <button type="button" class="framework-button is-active" data-solar-target="earth" aria-expanded="true">Earth <small>1 representative moon</small></button>
-                <div class="satellite-submenu" data-satellite-submenu="earth"><button type="button" class="satellite-button" data-solar-target="moon">Moon <small>Existing live data</small></button></div>
+                <button type="button" class="framework-button is-active" data-solar-target="earth" aria-expanded="true">Earth <small>1 ephemeris moon</small></button>
+                <div class="satellite-submenu" data-satellite-submenu="earth"><button type="button" class="satellite-button" data-solar-target="moon">Moon <small>Cached JPL ephemeris</small></button></div>
               </div>
               <div class="celestial-system" data-celestial-system="mars">
-                <button type="button" class="framework-button" data-solar-target="mars" aria-expanded="false">Mars <small>2 representative moons</small></button>
+                <button type="button" class="framework-button" data-solar-target="mars" aria-expanded="false">Mars <small>2 ephemeris moons</small></button>
                 <div class="satellite-submenu" data-satellite-submenu="mars" hidden><button type="button" class="satellite-button" data-solar-target="phobos">Phobos</button><button type="button" class="satellite-button" data-solar-target="deimos">Deimos</button></div>
               </div>
               <div class="celestial-system" data-celestial-system="jupiter">
@@ -253,15 +253,15 @@
                 <div class="satellite-submenu" data-satellite-submenu="jupiter" hidden><button type="button" class="satellite-button" data-solar-target="io">Io</button><button type="button" class="satellite-button" data-solar-target="europa">Europa</button><button type="button" class="satellite-button" data-solar-target="ganymede">Ganymede</button><button type="button" class="satellite-button" data-solar-target="callisto">Callisto</button></div>
               </div>
               <div class="celestial-system" data-celestial-system="saturn">
-                <button type="button" class="framework-button" data-solar-target="saturn" aria-expanded="false">Saturn <small>2 representative moons</small></button>
+                <button type="button" class="framework-button" data-solar-target="saturn" aria-expanded="false">Saturn <small>2 ephemeris moons</small></button>
                 <div class="satellite-submenu" data-satellite-submenu="saturn" hidden><button type="button" class="satellite-button" data-solar-target="titan">Titan</button><button type="button" class="satellite-button" data-solar-target="enceladus">Enceladus</button></div>
               </div>
               <div class="celestial-system" data-celestial-system="uranus">
-                <button type="button" class="framework-button" data-solar-target="uranus" aria-expanded="false">Uranus <small>1 representative moon</small></button>
+                <button type="button" class="framework-button" data-solar-target="uranus" aria-expanded="false">Uranus <small>1 ephemeris moon</small></button>
                 <div class="satellite-submenu" data-satellite-submenu="uranus" hidden><button type="button" class="satellite-button" data-solar-target="titania">Titania</button></div>
               </div>
               <div class="celestial-system" data-celestial-system="neptune">
-                <button type="button" class="framework-button" data-solar-target="neptune" aria-expanded="false">Neptune <small>1 representative moon</small></button>
+                <button type="button" class="framework-button" data-solar-target="neptune" aria-expanded="false">Neptune <small>1 ephemeris moon</small></button>
                 <div class="satellite-submenu" data-satellite-submenu="neptune" hidden><button type="button" class="satellite-button" data-solar-target="triton">Triton</button></div>
               </div>
               <button type="button" class="framework-button" data-solar-target="deep-space">Deep Space <small>Preview</small></button>
@@ -771,9 +771,10 @@
     <script src="./mission-imagery-registry.js?v=20260717-mission-moon-textures"></script>
     <script src="./celestial-bodies.js?v=20260717-mission-moon-textures"></script>
     <script src="./deep-space-registry.js?v=phase-1"></script>
-    <script src="./solar-system-core.js?v=ss-02a"></script>
+    <script src="./solar-system-core.js?v=ss-02b"></script>
+    <script src="./data/solar-system/normalized/major-bodies-horizons-de441.js?v=ss-02b"></script>
     <script src="./deep-space-ephemeris-cache.js?v=phase-1"></script>
-    <script src="./deep-space-ephemeris.js?v=ss-02a"></script>
+    <script src="./deep-space-ephemeris.js?v=ss-02b"></script>
     <script src="./pointer-anchored-navigation.js?v=2.2.0-foundation"></script>
     <script src="./unified-object-card.js?v=2.2.0-foundation"></script>
     <script src="./nearby-stars.js?v=2.2.0-motion-removed"></script>

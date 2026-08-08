@@ -13,7 +13,7 @@ const html = read("index.html");
 function loadDataRuntime() {
   const window = {};
   const context = vm.createContext({ window, console, Date, Math, Object, RangeError, Number });
-  ["deep-space-registry.js", "solar-system-core.js", "deep-space-ephemeris-cache.js", "deep-space-ephemeris.js"].forEach((name) => vm.runInContext(read(name), context));
+  ["deep-space-registry.js", "solar-system-core.js", "data/solar-system/normalized/major-bodies-horizons-de441.js", "deep-space-ephemeris-cache.js", "deep-space-ephemeris.js"].forEach((name) => vm.runInContext(read(name), context));
   return window;
 }
 
@@ -63,19 +63,19 @@ test("fallback positions solve non-circular inclined Keplerian orbits", () => {
   assert.match(state.notice, /not mission-navigation precision/i);
 });
 
-test("the legacy cache remains explicit evidence but is not mixed into a coherent solution", () => {
+test("the legacy single-epoch cache remains evidence while the promoted multi-epoch dataset owns current state", () => {
   const runtime = loadDataRuntime();
   const cached = runtime.PCSDeepSpaceEphemeris.getCachedEphemeris("earth", "2026-08-01T00:00:00Z");
   const coherent = runtime.PCSDeepSpaceEphemeris.getBodyState("earth", "2026-08-01T00:00:00Z");
   const fallback = runtime.PCSDeepSpaceEphemeris.getBodyState("earth", "2026-09-01T00:00:00Z");
   assert.equal(cached.dataStatus, "ephemeris-derived");
   assert.match(cached.source, /JPL Horizons/);
-  assert.equal(coherent.dataStatus, "approximate");
-  assert.equal(coherent.solutionId, "jpl-approximate-elements-1800-2050");
-  assert.equal(fallback.dataStatus, "approximate");
+  assert.equal(coherent.dataStatus, "ephemeris-derived");
+  assert.match(coherent.solutionId, /pcs-ss02b-horizons-de441/);
+  assert.equal(fallback.dataStatus, "ephemeris-derived");
 });
 
-test("all planet and representative-satellite orbits expose the precision contract", () => {
+test("all planet and satellite orbits expose an explicit precision contract", () => {
   const { PCSDeepSpaceRegistry: registry } = loadDataRuntime();
   for (const id of [...registry.PLANET_IDS, ...registry.SATELLITE_IDS]) {
     const body = registry.BODY_REGISTRY[id];
@@ -86,8 +86,8 @@ test("all planet and representative-satellite orbits expose the precision contra
     assert.ok(body.orbit.coordinateFrame);
     assert.ok(body.orbit.validTimeRange);
     assert.ok(body.orbit.sampleIntervalDays > 0);
-    assert.equal(body.orbit.precisionStatus, "Orbital-element approximation");
-    assert.equal(body.orbit.renderStatus, body.type === "planet" ? "available" : "available when the parent planetary system is focused");
+    assert.ok(body.orbit.precisionStatus);
+    assert.match(body.orbit.renderStatus, /available/);
     assert.ok(body.orbit.fallbackStatus);
     assert.ok(body.orbit.periapsisKm > 0);
     assert.ok(body.orbit.apoapsisKm >= body.orbit.periapsisKm);
@@ -105,16 +105,21 @@ test("orbit sampling follows the active epoch and keeps satellites parent-relati
   assert.equal(moon[0].relativeTo, "earth");
   assert.ok(planet.every(sample => sample.positionAu.every(Number.isFinite)));
   assert.ok(moon.every(sample => sample.positionAu.every(Number.isFinite)));
-  assert.equal(moon[0].dataStatus, "approximate");
-  assert.match(moon[0].notice, /not a navigation ephemeris/i);
+  assert.equal(moon[0].dataStatus, "ephemeris-derived");
+  assert.match(moon[0].notice, /authoritative vectors/i);
 });
 
 test("solar rendering creates solution-bound planet and focused-satellite orbit entities without another renderer", () => {
   for (const token of ["function addOrbit(entry,parentPosition)","satelliteOrbitPoints",'id:`deep-space-orbit-${entry.id}`',"solutionId:solarSolution?.id","positionMode:solarSolution?.positionMode","fallbackStatus:solarSolution?.qualityStatus"]) assert.ok(manager.includes(token), token);
-  assert.match(manager, /if\(showOrbits\)addOrbit\(satellite,parentPosition\)/);
+  assert.match(manager, /if\(showOrbits&&satelliteEntity\)addOrbit\(satellite,parentPosition\)/);
   assert.match(manager, /entry\.id===selected\?3:1/);
   assert.doesNotMatch(manager, /else\{renderAll\(\);resetView\(\);\}/);
   assert.doesNotMatch(manager, /new Cesium\.Viewer|requestAnimationFrame|setInterval/);
+});
+
+test("solid-body LOD overlaps point, intermediate marker, and colored sphere without a visibility gap", () => {
+  for (const token of ["function solidBodyLod(entry)","scaleByDistance:new Cesium.NearFarScalar","distanceDisplayCondition:new Cesium.DistanceDisplayCondition(lod.overlapStart","distanceDisplayCondition:new Cesium.DistanceDisplayCondition(0,lod.transitionDistance)","physicalRadiusKm:lod.physicalRadiusKm","displayRadiusScale:lod.displayRadiusScale","visualScaleNotice:lod.notice"]) assert.ok(manager.includes(token),token);
+  assert.doesNotMatch(manager,/material:Cesium\.Color\.WHITE[,}]/);
 });
 
 test("Phase 2 Gaia and Phase 3 catalog layers share one manager while Phase 4 remains unavailable", () => {

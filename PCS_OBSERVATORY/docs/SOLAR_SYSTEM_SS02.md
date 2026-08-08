@@ -1,6 +1,6 @@
 # Solar System SS-02
 
-Status: **In Development — SS-02A validated / frozen; SS-02B–G not started**
+Status: **In Development — SS-02A and SS-02B validated / frozen; SS-02C–G not started**
 
 Release: **v2.2.0**
 
@@ -119,6 +119,59 @@ SS-02F will make promotion and keep-last-valid synchronization continuous. SS-02
 
 Machine-readable evidence: `test-results/solar-system-ss02a/report.json`.
 
+## SS-02B implementation
+
+### UTC→TDB and promoted Horizons vectors
+
+`solar-system-core.js` now converts the one UTC Display Epoch to JDTDB with the official NAIF `naif0012.tls` DELTET constants and leap-second table. Dates before 1972 are rejected by this converter. Dates beyond the locally validated leap-second horizon are labelled `future-leap-second-unverified` and cannot select the promoted authoritative solution until the LSK is refreshed. PCS does not treat JavaScript UTC as TDB.
+
+The reproducible `scripts/solar-system/sync-major-bodies.mjs` adapter fetched geometric position and velocity vectors from the official Horizons API for 2025-01-01 through 2028-01-01. It preserves:
+
+- gzip raw responses and SHA-256 hashes under `data/solar-system/raw/horizons-de441/`;
+- one normalized, deterministic runtime dataset under `data/solar-system/normalized/`;
+- exact target, center, interval, time scale, frame, source solution, retrieval time, sample count, checksum, and promotion state in `ephemeris-manifest.json`.
+
+All eight planets are Sun-centred. The eleven exposed major satellites are parent-centred: Moon, Phobos, Deimos, Io, Europa, Ganymede, Callisto, Enceladus, Titan, Titania, and Triton. Target-specific Horizons solutions are retained instead of being relabelled universally as DE441. Titania orbital positioning was updated; its deferred surface-image/projection issue was not modified.
+
+The runtime uses cubic Hermite interpolation of the same authoritative position and velocity vectors. A planet body and its orbit samples share the promoted solution. Satellite mean-orbit positioning is disabled; outside promoted coverage a satellite position is `Unavailable`, not silently representative.
+
+### Validation and tolerances
+
+`scripts/solar-system/validate-major-bodies.mjs` makes independent direct Horizons VECTORS queries at epochs withheld from the cache grid. It compares the PCS interpolated state with the reference state in kilometres. Tolerances are declared per object and tied to that object's sampling cadence; there is no universal tolerance.
+
+The first candidate failed its gate because outer-planet and fast-moon sampling was too sparse. PCS shortened the intervals and reran synchronization rather than relaxing the tolerance. The promoted candidate passed 46 comparisons: three epochs for every planet and two for every major satellite. Evidence records epoch, JDTDB, object, source solution, both positions, difference, unit, tolerance, basis, and pass/fail.
+
+Machine-readable evidence: `test-results/solar-system-ss02b/authoritative-position-comparison.json`.
+
+### Solid-body LOD
+
+Every named Sun/planet/moon entity has an overlapping LOD contract:
+
+1. distant coloured point;
+2. distance-scaled intermediate point marker;
+3. coloured solid ellipsoid before the point disappears.
+
+The point and sphere distance ranges overlap, so selection never produces a label-only gap. Physical mean radius, display radius, their scale ratio, and whether the display radius is enlarged or compressed are stored separately on the entity. Scientific mode uses physical radii; exhibition mode explicitly uses adjusted display radii. No white placeholder material is used.
+
+### SS-02B validation result
+
+- 46/46 authoritative withheld-epoch comparisons passed.
+- 117 repository Node tests passed.
+- Browser acceptance confirmed one coherent authoritative eight-planet solution and all eleven parent-relative satellite states at `2026-08-08T12:41:00Z`.
+- Traditional Chinese, English, Japanese, and Korean provenance labels passed.
+- Ten open/close lifecycle cycles: Viewer 1, Cesium canvas 1, total canvas 2, primitive growth 0, temporary DataSource removed, Earth ownership restored.
+- Required Console exceptions 0; required Network failures 0.
+
+Machine-readable browser evidence: `test-results/solar-system-ss02b/report.json`.
+
+Known limits after SS-02B:
+
+- authoritative cache coverage is 2025–2028, not an all-history ephemeris;
+- Horizons VECTORS supplies no covariance in this query mode; PCS reports measured interpolation difference separately from orbital-solution uncertainty;
+- planet fallback remains the explicitly approximate JPL 1800–2050 model when the promoted cache is ineligible;
+- small bodies, dwarf planets, belts, TNOs, comets, and meteor showers belong to SS-02C–E;
+- continuous keep-last-validated synchronization policy is completed in SS-02F.
+
 ## Freeze boundary
 
-SS-02A is frozen as the base for SS-02B. Changing its public meaning requires an explicit SS-02 architecture revision, migration notes, and rerun of SS-02A validation.
+SS-02A and SS-02B are frozen as the base for SS-02C. Changing their public meaning requires an explicit SS-02 architecture revision, migration notes, and rerun of both regression gates.

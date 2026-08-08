@@ -1,0 +1,1070 @@
+{
+  "schemaVersion": 1,
+  "stage": "SS-02B",
+  "generatedAt": "2026-08-08T13:44:04.672Z",
+  "datasetId": "pcs-ss02b-horizons-de441-2025-2028",
+  "method": "Withheld-epoch direct Horizons vectors versus PCS cubic-Hermite states. UTC converted to JDTDB with NAIF naif0012.tls.",
+  "comparisonCount": 46,
+  "pass": true,
+  "failures": 0,
+  "comparisons": [
+    {
+      "epochUtc": "2025-03-17T05:37:00Z",
+      "jdTdb": 2460751.734828537,
+      "object": "mercury",
+      "objectClass": "planet",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "DE441",
+      "pcsPositionAu": [
+        -0.3036516550698467,
+        0.1690889359832253,
+        0.041669505953733824
+      ],
+      "referencePositionAu": [
+        -0.3036516588583772,
+        0.1690889344469568,
+        0.0416695061756763
+      ],
+      "difference": 0.6124812089177458,
+      "units": "km",
+      "tolerance": 10,
+      "toleranceBasis": "Object-specific ceiling for 12 h cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-08-08T12:41:00Z",
+      "jdTdb": 2461261.0292729526,
+      "object": "mercury",
+      "objectClass": "planet",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "DE441",
+      "pcsPositionAu": [
+        0.2391756831430396,
+        0.20957185790055177,
+        -0.004809351210349981
+      ],
+      "referencePositionAu": [
+        0.2391756834735247,
+        0.2095718579939712,
+        -0.004809351233026357
+      ],
+      "difference": 0.05148901408196849,
+      "units": "km",
+      "tolerance": 10,
+      "toleranceBasis": "Object-specific ceiling for 12 h cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2027-10-21T18:23:00Z",
+      "jdTdb": 2461700.2667729445,
+      "object": "mercury",
+      "objectClass": "planet",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "DE441",
+      "pcsPositionAu": [
+        0.2534263945606607,
+        0.19561811407232368,
+        -0.007255354097517936
+      ],
+      "referencePositionAu": [
+        0.2534264011548155,
+        0.1956181149844117,
+        -0.007255354627746014
+      ],
+      "difference": 0.9990172724172502,
+      "units": "km",
+      "tolerance": 10,
+      "toleranceBasis": "Object-specific ceiling for 12 h cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2025-03-17T05:37:00Z",
+      "jdTdb": 2460751.734828537,
+      "object": "venus",
+      "objectClass": "planet",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "DE441",
+      "pcsPositionAu": [
+        -0.7128800055597877,
+        0.08890751717415621,
+        0.04235395489671348
+      ],
+      "referencePositionAu": [
+        -0.7128800225777568,
+        0.08890751893350066,
+        0.04235395590311404
+      ],
+      "difference": 2.5638448160045657,
+      "units": "km",
+      "tolerance": 10,
+      "toleranceBasis": "Object-specific ceiling for 2 d cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-08-08T12:41:00Z",
+      "jdTdb": 2461261.0292729526,
+      "object": "venus",
+      "objectClass": "planet",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "DE441",
+      "pcsPositionAu": [
+        -0.014780512732322044,
+        -0.7267133522907995,
+        -0.009131402001549261
+      ],
+      "referencePositionAu": [
+        -0.01478051254349016,
+        -0.7267133630149164,
+        -0.009131402159783409
+      ],
+      "difference": 1.6047283429176782,
+      "units": "km",
+      "tolerance": 10,
+      "toleranceBasis": "Object-specific ceiling for 2 d cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2027-10-21T18:23:00Z",
+      "jdTdb": 2461700.2667729445,
+      "object": "venus",
+      "objectClass": "planet",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "DE441",
+      "pcsPositionAu": [
+        -0.21573126565185075,
+        -0.6930176958250299,
+        0.002922504774763554
+      ],
+      "referencePositionAu": [
+        -0.2157312665051178,
+        -0.6930176987495997,
+        0.002922504783798553
+      ],
+      "difference": 0.4557521875147296,
+      "units": "km",
+      "tolerance": 10,
+      "toleranceBasis": "Object-specific ceiling for 2 d cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2025-03-17T05:37:00Z",
+      "jdTdb": 2460751.734828537,
+      "object": "earth",
+      "objectClass": "planet",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "DE441",
+      "pcsPositionAu": [
+        -0.9931784277916664,
+        0.060234409992472045,
+        0.0000039508261085634325
+      ],
+      "referencePositionAu": [
+        -0.9931784293399176,
+        0.06023441094711386,
+        0.000003950933199662435
+      ],
+      "difference": 0.2725758290387207,
+      "units": "km",
+      "tolerance": 10,
+      "toleranceBasis": "Object-specific ceiling for 2 d cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-08-08T12:41:00Z",
+      "jdTdb": 2461261.0292729526,
+      "object": "earth",
+      "objectClass": "planet",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "DE441",
+      "pcsPositionAu": [
+        0.7248058558348747,
+        -0.7090678059003537,
+        0.000035679049030335986
+      ],
+      "referencePositionAu": [
+        0.7248058564193136,
+        -0.7090678105142832,
+        0.00003567876166626486
+      ],
+      "difference": 0.6970762056373107,
+      "units": "km",
+      "tolerance": 10,
+      "toleranceBasis": "Object-specific ceiling for 2 d cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2027-10-21T18:23:00Z",
+      "jdTdb": 2461700.2667729445,
+      "object": "earth",
+      "objectClass": "planet",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "DE441",
+      "pcsPositionAu": [
+        0.8810633340562775,
+        0.4633818976301703,
+        -0.000035700518675980035
+      ],
+      "referencePositionAu": [
+        0.8810633346498217,
+        0.4633818971131081,
+        -0.00003570055996038861
+      ],
+      "difference": 0.11792188442867484,
+      "units": "km",
+      "tolerance": 10,
+      "toleranceBasis": "Object-specific ceiling for 2 d cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2025-03-17T05:37:00Z",
+      "jdTdb": 2460751.734828537,
+      "object": "mars",
+      "objectClass": "planet",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "mar099",
+      "pcsPositionAu": [
+        -1.3216155309172677,
+        1.0053196083757387,
+        0.0534772182977169
+      ],
+      "referencePositionAu": [
+        -1.321615531003006,
+        1.005319608412022,
+        0.05347721830283141
+      ],
+      "difference": 0.013948495959288798,
+      "units": "km",
+      "tolerance": 20,
+      "toleranceBasis": "Object-specific ceiling for 3 d cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-08-08T12:41:00Z",
+      "jdTdb": 2461261.0292729526,
+      "object": "mars",
+      "objectClass": "planet",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "mar099",
+      "pcsPositionAu": [
+        0.8018175713062138,
+        1.255070274750255,
+        0.006640816224711367
+      ],
+      "referencePositionAu": [
+        0.8018175713575628,
+        1.255070275560804,
+        0.006640816242866406
+      ],
+      "difference": 0.12152986180225672,
+      "units": "km",
+      "tolerance": 20,
+      "toleranceBasis": "Object-specific ceiling for 3 d cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2027-10-21T18:23:00Z",
+      "jdTdb": 2461700.2667729445,
+      "object": "mars",
+      "objectClass": "planet",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "mar099",
+      "pcsPositionAu": [
+        -0.06640965645435706,
+        -1.4591695081008977,
+        -0.02895637196498109
+      ],
+      "referencePositionAu": [
+        -0.06640965735872124,
+        -1.459169509762744,
+        -0.02895637197894801
+      ],
+      "difference": 0.2830446465232438,
+      "units": "km",
+      "tolerance": 20,
+      "toleranceBasis": "Object-specific ceiling for 3 d cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2025-03-17T05:37:00Z",
+      "jdTdb": 2460751.734828537,
+      "object": "jupiter",
+      "objectClass": "planet",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "jup365_merged",
+      "pcsPositionAu": [
+        0.4880672082988748,
+        5.084381470304028,
+        -0.032039910179931116
+      ],
+      "referencePositionAu": [
+        0.4880672084342347,
+        5.084381445988803,
+        -0.03203991103714118
+      ],
+      "difference": 3.6398220028102792,
+      "units": "km",
+      "tolerance": 20,
+      "toleranceBasis": "Object-specific ceiling for 1 d cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-08-08T12:41:00Z",
+      "jdTdb": 2461261.0292729526,
+      "object": "jupiter",
+      "objectClass": "planet",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "jup365_merged",
+      "pcsPositionAu": [
+        -3.171949620898218,
+        4.2322938583413,
+        0.05338707658250923
+      ],
+      "referencePositionAu": [
+        -3.171949662048473,
+        4.232293862339459,
+        0.05338707614903397
+      ],
+      "difference": 6.185318725157019,
+      "units": "km",
+      "tolerance": 20,
+      "toleranceBasis": "Object-specific ceiling for 1 d cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2027-10-21T18:23:00Z",
+      "jdTdb": 2461700.2667729445,
+      "object": "jupiter",
+      "objectClass": "planet",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "jup365_merged",
+      "pcsPositionAu": [
+        -5.12240586650506,
+        1.7368995280166983,
+        0.1073934719057834
+      ],
+      "referencePositionAu": [
+        -5.122405878646042,
+        1.736899507195837,
+        0.1073934709785918
+      ],
+      "difference": 3.6082912785139163,
+      "units": "km",
+      "tolerance": 20,
+      "toleranceBasis": "Object-specific ceiling for 1 d cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2025-03-17T05:37:00Z",
+      "jdTdb": 2460751.734828537,
+      "object": "saturn",
+      "objectClass": "planet",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "sat441l",
+      "pcsPositionAu": [
+        9.505499723874411,
+        -1.3511456286105894,
+        -0.3548450685260454
+      ],
+      "referencePositionAu": [
+        9.505499722908427,
+        -1.351145628315895,
+        -0.3548450685905792
+      ],
+      "difference": 0.15139243515856537,
+      "units": "km",
+      "tolerance": 20,
+      "toleranceBasis": "Object-specific ceiling for 3 d cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-08-08T12:41:00Z",
+      "jdTdb": 2461261.0292729526,
+      "object": "saturn",
+      "objectClass": "planet",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "sat441l",
+      "pcsPositionAu": [
+        9.326946624187139,
+        1.4735912069694541,
+        -0.39693291939637027
+      ],
+      "referencePositionAu": [
+        9.326946628026903,
+        1.47359120707034,
+        -0.3969329198009064
+      ],
+      "difference": 0.5777967793144534,
+      "units": "km",
+      "tolerance": 20,
+      "toleranceBasis": "Object-specific ceiling for 3 d cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2027-10-21T18:23:00Z",
+      "jdTdb": 2461700.2667729445,
+      "object": "saturn",
+      "objectClass": "planet",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "sat441l",
+      "pcsPositionAu": [
+        8.496748190372585,
+        3.8093390421780136,
+        -0.40456526117266484
+      ],
+      "referencePositionAu": [
+        8.496748207041138,
+        3.809339040872338,
+        -0.4045652621487115
+      ],
+      "difference": 2.5054767635867976,
+      "units": "km",
+      "tolerance": 20,
+      "toleranceBasis": "Object-specific ceiling for 3 d cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2025-03-17T05:37:00Z",
+      "jdTdb": 2460751.734828537,
+      "object": "uranus",
+      "objectClass": "planet",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "ura184_merged",
+      "pcsPositionAu": [
+        10.85608611472301,
+        16.247131833195912,
+        -0.08042329460622029
+      ],
+      "referencePositionAu": [
+        10.85608613782657,
+        16.24713182367338,
+        -0.08042332672832021
+      ],
+      "difference": 6.088251740320392,
+      "units": "km",
+      "tolerance": 20,
+      "toleranceBasis": "Object-specific ceiling for 4 d cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-08-08T12:41:00Z",
+      "jdTdb": 2461261.0292729526,
+      "object": "uranus",
+      "objectClass": "planet",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "ura184_merged",
+      "pcsPositionAu": [
+        9.118890884180452,
+        17.180849894549784,
+        -0.05442948730748932
+      ],
+      "referencePositionAu": [
+        9.118890886649211,
+        17.18084989507803,
+        -0.05442947902091384
+      ],
+      "difference": 1.2959109281240302,
+      "units": "km",
+      "tolerance": 20,
+      "toleranceBasis": "Object-specific ceiling for 4 d cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2027-10-21T18:23:00Z",
+      "jdTdb": 2461700.2667729445,
+      "object": "uranus",
+      "objectClass": "planet",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "ura184_merged",
+      "pcsPositionAu": [
+        7.544539388303508,
+        17.840798072951202,
+        -0.031557816198722485
+      ],
+      "referencePositionAu": [
+        7.544539388385136,
+        17.84079807287919,
+        -0.03155781653560021
+      ],
+      "difference": 0.0529618053577086,
+      "units": "km",
+      "tolerance": 20,
+      "toleranceBasis": "Object-specific ceiling for 4 d cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2025-03-17T05:37:00Z",
+      "jdTdb": 2460751.734828537,
+      "object": "neptune",
+      "objectClass": "planet",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "nep098_merged",
+      "pcsPositionAu": [
+        29.88193829071719,
+        -0.3964121065651356,
+        -0.6804408176218475
+      ],
+      "referencePositionAu": [
+        29.88193820302153,
+        -0.3964120995781252,
+        -0.6804407385030486
+      ],
+      "difference": 17.70010973510877,
+      "units": "km",
+      "tolerance": 20,
+      "toleranceBasis": "Object-specific ceiling for 4 d cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-08-08T12:41:00Z",
+      "jdTdb": 2461261.0292729526,
+      "object": "neptune",
+      "objectClass": "planet",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "nep098_merged",
+      "pcsPositionAu": [
+        29.84625577874642,
+        1.2115861426388357,
+        -0.7127449176171267
+      ],
+      "referencePositionAu": [
+        29.84625573511001,
+        1.211586153091878,
+        -0.7127448715568478
+      ],
+      "difference": 9.619680287987155,
+      "units": "km",
+      "tolerance": 20,
+      "toleranceBasis": "Object-specific ceiling for 4 d cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2027-10-21T18:23:00Z",
+      "jdTdb": 2461700.2667729445,
+      "object": "neptune",
+      "objectClass": "planet",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "nep098_merged",
+      "pcsPositionAu": [
+        29.74736713516279,
+        2.594065268476771,
+        -0.7389704454229477
+      ],
+      "referencePositionAu": [
+        29.74736714534581,
+        2.594065278352697,
+        -0.7389704452212169
+      ],
+      "difference": 2.1223318694366053,
+      "units": "km",
+      "tolerance": 20,
+      "toleranceBasis": "Object-specific ceiling for 4 d cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2025-11-13T04:17:00Z",
+      "jdTdb": 2460992.679272948,
+      "object": "moon",
+      "objectClass": "moon",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "DE441",
+      "pcsPositionAu": [
+        -0.0022957327177816626,
+        0.0012212370361401538,
+        0.00005506686779729729
+      ],
+      "referencePositionAu": [
+        -0.002295733600727097,
+        0.001221237133557556,
+        0.0000550668564878853
+      ],
+      "difference": 0.13289905488026527,
+      "units": "km",
+      "tolerance": 5,
+      "toleranceBasis": "Object-specific ceiling for 12 h cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2027-02-19T16:43:00Z",
+      "jdTdb": 2461456.1973285326,
+      "object": "moon",
+      "objectClass": "moon",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "DE441",
+      "pcsPositionAu": [
+        -0.0016390967814818118,
+        0.0017720608961307967,
+        0.000028706238979473105
+      ],
+      "referencePositionAu": [
+        -0.001639098035380744,
+        0.001772062134666206,
+        0.00002870625208628891
+      ],
+      "difference": 0.2636661635287094,
+      "units": "km",
+      "tolerance": 5,
+      "toleranceBasis": "Object-specific ceiling for 12 h cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2025-11-13T04:17:00Z",
+      "jdTdb": 2460992.679272948,
+      "object": "phobos",
+      "objectClass": "moon",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "mar099",
+      "pcsPositionAu": [
+        -0.000041886896097139964,
+        -0.000041323614388352426,
+        0.00001862260971638873
+      ],
+      "referencePositionAu": [
+        -0.00004189021827882491,
+        -0.00004132667080515044,
+        0.00001862410338235257
+      ],
+      "difference": 0.7113313910409934,
+      "units": "km",
+      "tolerance": 5,
+      "toleranceBasis": "Object-specific ceiling for 30 m cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2027-02-19T16:43:00Z",
+      "jdTdb": 2461456.1973285326,
+      "object": "phobos",
+      "objectClass": "moon",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "mar099",
+      "pcsPositionAu": [
+        0.00005242812687240796,
+        0.000022068572277479568,
+        -0.000024516269486385586
+      ],
+      "referencePositionAu": [
+        0.00005243245370233201,
+        0.00002207014552041332,
+        -0.00002451830380061757
+      ],
+      "difference": 0.7529839809226818,
+      "units": "km",
+      "tolerance": 5,
+      "toleranceBasis": "Object-specific ceiling for 30 m cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2025-11-13T04:17:00Z",
+      "jdTdb": 2460992.679272948,
+      "object": "deimos",
+      "objectClass": "moon",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "mar099",
+      "pcsPositionAu": [
+        -0.00014325223760430073,
+        0.0000015682375999175702,
+        0.00006368312045959117
+      ],
+      "referencePositionAu": [
+        -0.0001432527297725568,
+        0.00000156822439691087,
+        0.00006368333796061935
+      ],
+      "difference": 0.08052071293848392,
+      "units": "km",
+      "tolerance": 5,
+      "toleranceBasis": "Object-specific ceiling for 1 h cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2027-02-19T16:43:00Z",
+      "jdTdb": 2461456.1973285326,
+      "object": "deimos",
+      "objectClass": "moon",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "mar099",
+      "pcsPositionAu": [
+        -0.00008111676836062079,
+        -0.0001313757871466443,
+        0.000027443429654081174
+      ],
+      "referencePositionAu": [
+        -0.0000811170162954391,
+        -0.0001313761597708428,
+        0.00002744351538791063
+      ],
+      "difference": 0.06817310660833126,
+      "units": "km",
+      "tolerance": 5,
+      "toleranceBasis": "Object-specific ceiling for 1 h cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2025-11-13T04:17:00Z",
+      "jdTdb": 2460992.679272948,
+      "object": "io",
+      "objectClass": "moon",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "jup365_merged",
+      "pcsPositionAu": [
+        -0.0012548441475444473,
+        0.002534294524797781,
+        0.00007296315978224219
+      ],
+      "referencePositionAu": [
+        -0.001254845250789022,
+        0.002534296701868343,
+        0.00007296322210522206
+      ],
+      "difference": 0.3652354418543729,
+      "units": "km",
+      "tolerance": 5,
+      "toleranceBasis": "Object-specific ceiling for 1 h cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2027-02-19T16:43:00Z",
+      "jdTdb": 2461456.1973285326,
+      "object": "io",
+      "objectClass": "moon",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "jup365_merged",
+      "pcsPositionAu": [
+        -0.001296530022965137,
+        0.0025149445079918793,
+        0.0000724717205113816
+      ],
+      "referencePositionAu": [
+        -0.001296530909039883,
+        0.002514946367401956,
+        0.00007247177514493141
+      ],
+      "difference": 0.30824128912305077,
+      "units": "km",
+      "tolerance": 5,
+      "toleranceBasis": "Object-specific ceiling for 1 h cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2025-11-13T04:17:00Z",
+      "jdTdb": 2460992.679272948,
+      "object": "europa",
+      "objectClass": "moon",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "jup365_merged",
+      "pcsPositionAu": [
+        0.0044317562700914815,
+        0.0005949417806714626,
+        0.00011237041393616561
+      ],
+      "referencePositionAu": [
+        0.004431763256711951,
+        0.0005949430816989446,
+        0.000112370602522342
+      ],
+      "difference": 1.063525161598556,
+      "units": "km",
+      "tolerance": 5,
+      "toleranceBasis": "Object-specific ceiling for 4 h cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2027-02-19T16:43:00Z",
+      "jdTdb": 2461456.1973285326,
+      "object": "europa",
+      "objectClass": "moon",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "jup365_merged",
+      "pcsPositionAu": [
+        -0.00425385485638129,
+        -0.0014409773830641004,
+        -0.00012658832568094894
+      ],
+      "referencePositionAu": [
+        -0.004253882924500621,
+        -0.001440991098335828,
+        -0.0001265892857707126
+      ],
+      "difference": 4.675621017275416,
+      "units": "km",
+      "tolerance": 5,
+      "toleranceBasis": "Object-specific ceiling for 4 h cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2025-11-13T04:17:00Z",
+      "jdTdb": 2460992.679272948,
+      "object": "ganymede",
+      "objectClass": "moon",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "jup365_merged",
+      "pcsPositionAu": [
+        0.005070482194177053,
+        0.005040523302192327,
+        0.0002658060216174653
+      ],
+      "referencePositionAu": [
+        0.005070502866943417,
+        0.005040543005520736,
+        0.0002658070726266317
+      ],
+      "difference": 4.275173807459894,
+      "units": "km",
+      "tolerance": 5,
+      "toleranceBasis": "Object-specific ceiling for 6 h cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2027-02-19T16:43:00Z",
+      "jdTdb": 2461456.1973285326,
+      "object": "ganymede",
+      "objectClass": "moon",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "jup365_merged",
+      "pcsPositionAu": [
+        0.006035668645253159,
+        -0.00381234592219813,
+        -0.00005716181771195812
+      ],
+      "referencePositionAu": [
+        0.006035684528594017,
+        -0.003812357083028502,
+        -0.0000571620114844046
+      ],
+      "difference": 2.9042113927235538,
+      "units": "km",
+      "tolerance": 5,
+      "toleranceBasis": "Object-specific ceiling for 6 h cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2025-11-13T04:17:00Z",
+      "jdTdb": 2460992.679272948,
+      "object": "callisto",
+      "objectClass": "moon",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "jup365_merged",
+      "pcsPositionAu": [
+        -0.005636489255496906,
+        0.01127739638721058,
+        0.00027693717702014685
+      ],
+      "referencePositionAu": [
+        -0.005636490072819602,
+        0.01127739799518597,
+        0.0002769372169469832
+      ],
+      "difference": 0.2699068727627523,
+      "units": "km",
+      "tolerance": 5,
+      "toleranceBasis": "Object-specific ceiling for 6 h cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2027-02-19T16:43:00Z",
+      "jdTdb": 2461456.1973285326,
+      "object": "callisto",
+      "objectClass": "moon",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "jup365_merged",
+      "pcsPositionAu": [
+        0.01027950138891146,
+        0.007107356247062449,
+        0.0003607602566360901
+      ],
+      "referencePositionAu": [
+        0.01027950234770035,
+        0.007107357012495986,
+        0.0003607602938761266
+      ],
+      "difference": 0.18361890652363078,
+      "units": "km",
+      "tolerance": 5,
+      "toleranceBasis": "Object-specific ceiling for 6 h cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2025-11-13T04:17:00Z",
+      "jdTdb": 2460992.679272948,
+      "object": "enceladus",
+      "objectClass": "moon",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "sat441l",
+      "pcsPositionAu": [
+        0.00121371535405029,
+        -0.0009507873856435676,
+        0.0003805678850863232
+      ],
+      "referencePositionAu": [
+        0.00121371854188581,
+        -0.0009507896248640305,
+        0.0003805687494334094
+      ],
+      "difference": 0.5969592291976055,
+      "units": "km",
+      "tolerance": 5,
+      "toleranceBasis": "Object-specific ceiling for 1 h cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2027-02-19T16:43:00Z",
+      "jdTdb": 2461456.1973285326,
+      "object": "enceladus",
+      "objectClass": "moon",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "sat441l",
+      "pcsPositionAu": [
+        0.0007785431341815822,
+        0.0011893759454376675,
+        -0.0006984335913012606
+      ],
+      "referencePositionAu": [
+        0.0007785449286065389,
+        0.001189378491730643,
+        -0.0006984350988936272
+      ],
+      "difference": 0.5177124670444209,
+      "units": "km",
+      "tolerance": 5,
+      "toleranceBasis": "Object-specific ceiling for 1 h cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2025-11-13T04:17:00Z",
+      "jdTdb": 2460992.679272948,
+      "object": "titan",
+      "objectClass": "moon",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "sat441l",
+      "pcsPositionAu": [
+        0.0057692656514357205,
+        -0.005094498851547158,
+        0.0020530639375660594
+      ],
+      "referencePositionAu": [
+        0.005769266691855247,
+        -0.005094499977053136,
+        0.002053064414416095
+      ],
+      "difference": 0.24013242447213984,
+      "units": "km",
+      "tolerance": 5,
+      "toleranceBasis": "Object-specific ceiling for 6 h cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2027-02-19T16:43:00Z",
+      "jdTdb": 2461456.1973285326,
+      "object": "titan",
+      "objectClass": "moon",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "sat441l",
+      "pcsPositionAu": [
+        0.007550941492239467,
+        -0.002388524121667724,
+        0.00048049286284110895
+      ],
+      "referencePositionAu": [
+        0.007550942536523649,
+        -0.002388524493680791,
+        0.0004804929507990486
+      ],
+      "difference": 0.16636061955708548,
+      "units": "km",
+      "tolerance": 5,
+      "toleranceBasis": "Object-specific ceiling for 6 h cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2025-11-13T04:17:00Z",
+      "jdTdb": 2460992.679272948,
+      "object": "titania",
+      "objectClass": "moon",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "ura184_merged",
+      "pcsPositionAu": [
+        -0.0028284135951383957,
+        0.0005600669045072814,
+        -0.0004272093973460532
+      ],
+      "referencePositionAu": [
+        -0.002828418743341645,
+        0.0005600679048708472,
+        -0.0004272103118147039
+      ],
+      "difference": 0.7964028763187478,
+      "units": "km",
+      "tolerance": 5,
+      "toleranceBasis": "Object-specific ceiling for 6 h cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2027-02-19T16:43:00Z",
+      "jdTdb": 2461456.1973285326,
+      "object": "titania",
+      "objectClass": "moon",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "ura184_merged",
+      "pcsPositionAu": [
+        -0.0004830312271165584,
+        0.0005017769589694273,
+        0.002837846573180204
+      ],
+      "referencePositionAu": [
+        -0.0004830319328488179,
+        0.0005017775843008581,
+        0.002837849946828779
+      ],
+      "difference": 0.5240326531145579,
+      "units": "km",
+      "tolerance": 5,
+      "toleranceBasis": "Object-specific ceiling for 6 h cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2025-11-13T04:17:00Z",
+      "jdTdb": 2460992.679272948,
+      "object": "triton",
+      "objectClass": "moon",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "nep098_merged",
+      "pcsPositionAu": [
+        0.00004122398774808444,
+        -0.001742209462808929,
+        -0.0016087043895446809
+      ],
+      "referencePositionAu": [
+        0.00004122516337748452,
+        -0.00174222431369961,
+        -0.001608718785711042
+      ],
+      "difference": 3.0991706172852997,
+      "units": "km",
+      "tolerance": 5,
+      "toleranceBasis": "Object-specific ceiling for 6 h cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    },
+    {
+      "epochUtc": "2027-02-19T16:43:00Z",
+      "jdTdb": 2461456.1973285326,
+      "object": "triton",
+      "objectClass": "moon",
+      "referenceSource": "NASA/JPL Horizons API direct VECTORS query",
+      "catalogEphemeris": "nep098_merged",
+      "pcsPositionAu": [
+        0.0014798951096012902,
+        -0.0005783161058286311,
+        -0.0017607254921061474
+      ],
+      "referencePositionAu": [
+        0.001479904268995265,
+        -0.0005783188252120972,
+        -0.001760735615115541
+      ],
+      "difference": 2.082394104332274,
+      "units": "km",
+      "tolerance": 5,
+      "toleranceBasis": "Object-specific ceiling for 6 h cubic-Hermite interpolation; cache vector numeric precision is materially finer.",
+      "pass": true
+    }
+  ]
+}

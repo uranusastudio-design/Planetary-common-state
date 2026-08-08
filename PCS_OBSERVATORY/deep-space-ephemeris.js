@@ -6,6 +6,8 @@
   const J2000_MS = Date.parse("2000-01-01T12:00:00Z");
   const registry = global.PCSDeepSpaceRegistry?.BODY_REGISTRY || {};
   const cache = global.PCSDeepSpaceEphemerisCache || {};
+  const majorDataset = global.PCSSolarSystemMajorBodyDataset || null;
+  const majorRecords = new Map((majorDataset?.records || []).map(record=>[record.objectId,record]));
   const Core = global.PCSSolarSystemCore;
   const planetIds = global.PCSDeepSpaceRegistry?.PLANET_IDS || [];
   if (!Core) return;
@@ -59,7 +61,16 @@
   }
 
   function interpolationBracket(bodyId, epoch) {
-    const date = validEpoch(epoch),samples=cache[bodyId];
+    const date = validEpoch(epoch),record=majorRecords.get(bodyId);
+    if(record?.samples?.length>=2){
+      const jd=Core.utcToJdTdb(date),samples=record.samples;
+      if(jd<samples[0][0]||jd>samples.at(-1)[0])return null;
+      let low=0,high=samples.length-1;
+      while(high-low>1){const mid=(low+high)>>1;if(samples[mid][0]<=jd)low=mid;else high=mid;}
+      const before=samples[low],after=samples[high],span=after[0]-before[0];
+      return {before,after,fraction:span===0?0:(jd-before[0])/span,spanDays:span,jdTdb:jd,record,format:"compact-hermite"};
+    }
+    const samples=cache[bodyId];
     if (!Array.isArray(samples) || samples.length < 2) return null;
     const ordered=[...samples].sort((a,b)=>Date.parse(a.epoch)-Date.parse(b.epoch)),time=date.getTime();
     if(time<Date.parse(ordered[0].epoch)||time>Date.parse(ordered.at(-1).epoch))return null;
@@ -70,17 +81,25 @@
   function interpolatedState(bodyId, epoch) {
     const date=validEpoch(epoch),bracket=interpolationBracket(bodyId,date);
     if(!bracket)return null;
+    if(bracket.format==="compact-hermite"){
+      const t=bracket.fraction,h=bracket.spanDays,t2=t*t,t3=t2*t;
+      const h00=2*t3-3*t2+1,h10=t3-2*t2+t,h01=-2*t3+3*t2,h11=t3-t2;
+      const dh00=(6*t2-6*t)/h,dh10=3*t2-4*t+1,dh01=(-6*t2+6*t)/h,dh11=3*t2-2*t;
+      const positionAu=[0,1,2].map(index=>h00*bracket.before[index+1]+h10*h*bracket.before[index+4]+h01*bracket.after[index+1]+h11*h*bracket.after[index+4]);
+      const velocityAuPerDay=[0,1,2].map(index=>dh00*bracket.before[index+1]+dh10*bracket.before[index+4]+dh01*bracket.after[index+1]+dh11*bracket.after[index+4]);
+      return Object.freeze({bodyId,epoch:date.toISOString(),jdTdb:bracket.jdTdb,sourceEpochTdb:`Hermite bracket ${bracket.before[0]}–${bracket.after[0]} JDTDB`,coordinateFrame:`${majorDataset.referenceSystem}; ${majorDataset.referencePlane}; ${bracket.record.centerName||bracket.record.center} origin`,positionAu:Object.freeze(positionAu),velocityAuPerDay:Object.freeze(velocityAuPerDay),heliocentricDistanceAu:Math.hypot(...positionAu),dataStatus:"ephemeris-derived",source:`${majorDataset.source} · ${bracket.record.catalogEphemeris}`,notice:`Cached authoritative vectors; ${majorDataset.interpolation}.`,solutionId:majorDataset.datasetId});
+    }
     const blend=(a,b)=>a+(b-a)*bracket.fraction,positionAu=bracket.before.positionAu.map((value,index)=>blend(value,bracket.after.positionAu[index])),velocityAuPerDay=bracket.before.velocityAuPerDay?.map((value,index)=>blend(value,bracket.after.velocityAuPerDay[index]));
     return Object.freeze({bodyId,epoch:date.toISOString(),sourceEpochTdb:`Interpolated between ${bracket.before.sourceEpochTdb||bracket.before.epoch} and ${bracket.after.sourceEpochTdb||bracket.after.epoch}`,coordinateFrame:cache.manifest?.referenceFrame||bracket.before.coordinateFrame,positionAu:Object.freeze(positionAu),velocityAuPerDay:velocityAuPerDay?Object.freeze(velocityAuPerDay):undefined,heliocentricDistanceAu:Math.hypot(...positionAu),dataStatus:"ephemeris-derived",source:`${cache.manifest?.source||"NASA/JPL Horizons"} ${cache.manifest?.ephemeris||""}`.trim(),notice:"Cached authoritative vectors; deterministic linear state interpolation."});
   }
 
   function authoritativeCoverage(bodyIds, epoch) {
-    return bodyIds.length>0&&bodyIds.every(bodyId=>Boolean(interpolationBracket(bodyId,epoch)));
+    return Core.timeConversionQuality(epoch).status==="validated"&&bodyIds.length>0&&bodyIds.every(bodyId=>Boolean(interpolationBracket(bodyId,epoch)));
   }
 
   function createDisplaySolution(epoch, bodyIds=planetIds) {
     const date=validEpoch(epoch),ids=[...bodyIds],manifest=cache.manifest||{};
-    if(authoritativeCoverage(ids,date))return Core.createSolution({id:`${manifest.datasetId}:interpolated`,displayEpoch:date,bodyIds:ids,source:manifest.source,catalogEphemeris:manifest.ephemeris,referenceSystem:manifest.referenceSystem,referencePlane:manifest.referencePlane,referenceFrame:manifest.referenceFrame,ephemerisTimeScale:manifest.ephemerisTimeScale,positionMode:"Cached ephemeris · interpolated state",orbitMode:"Cached ephemeris samples from the same solution",lastDataUpdate:manifest.lastDataUpdate,qualityStatus:manifest.qualityStatus,uncertainty:manifest.uncertainty,coverage:manifest.coverage,validity:manifest.coverage,coherent:true,authoritative:true,stale:false,notice:"Every eligible major planet is resolved from the same promoted ephemeris dataset and requested Display Epoch."});
+    if(authoritativeCoverage(ids,date)&&majorDataset)return Core.createSolution({id:`${majorDataset.datasetId}:hermite`,displayEpoch:date,bodyIds:ids,source:majorDataset.source,catalogEphemeris:majorDataset.catalogEphemeris,referenceSystem:majorDataset.referenceSystem,referencePlane:majorDataset.referencePlane,referenceFrame:`${majorDataset.referenceSystem}; ${majorDataset.referencePlane}; heliocentric origin`,ephemerisTimeScale:majorDataset.timeScale,positionMode:"Cached ephemeris · cubic Hermite state",orbitMode:"Cached ephemeris states from the same promoted solution",lastDataUpdate:majorDataset.generatedAt,qualityStatus:`Validated local cache · ${Core.timeConversionQuality(date).status}`,uncertainty:"No covariance supplied by Horizons VECTORS; interpolation error is validated per object class",coverage:majorDataset.coverage,validity:majorDataset.coverage,coherent:true,authoritative:true,stale:false,notice:"Every eligible major planet is resolved from the same promoted Horizons dataset and requested Display Epoch."});
     const range=global.PCSDeepSpaceRegistry?.PLANET_VALID_RANGE;
     if(Core.within(date,range))return Core.createSolution({id:"jpl-approximate-elements-1800-2050",displayEpoch:date,bodyIds:ids,source:global.PCSDeepSpaceRegistry.SOURCES.JPL_ELEMENTS,catalogEphemeris:"JPL approximate positions of the major planets (1800–2050)",referenceFrame:Core.REFERENCE_FRAME,positionMode:"Approximate elements · propagated",orbitMode:"Approximate elements · same model as body positions",lastDataUpdate:"Not provided",qualityStatus:"Model-limited fallback; not mission-navigation precision",uncertainty:"JPL supplies no formal covariance with the approximate-element table",validity:range,coherent:true,authoritative:false,stale:false,notice:manifest.promotionStatus==="not-promoted"?"The legacy single-epoch Horizons snapshot is retained for provenance but is not mixed into this coherent fallback solution.":null});
     return Core.createSolution({id:"solar-system-position-unavailable",displayEpoch:date,bodyIds:ids,source:"Unavailable",catalogEphemeris:"Unavailable",referenceFrame:Core.REFERENCE_FRAME,positionMode:"Unavailable",orbitMode:"Unavailable",lastDataUpdate:manifest.lastDataUpdate||"Not provided",qualityStatus:"Requested epoch is outside validated local coverage",uncertainty:"Unavailable",validity:range,coherent:true,authoritative:false,stale:Boolean(manifest.datasetId),notice:"PCS does not silently extrapolate the 1800–2050 approximate-element model outside its published validity interval."});
@@ -104,12 +123,9 @@
     const date = validEpoch(epoch);
     const body = registry[bodyId];
     if (!body?.meanOrbitalRadiusKm) return null;
-    const period = Math.abs(body.orbitalPeriodDays);
-    const direction = body.rotationPeriodDays < 0 || body.inclinationDeg > 90 ? -1 : 1;
-    const phase = direction * 2 * Math.PI * ((date.getTime()-J2000_MS)/DAY_MS % period) / period;
-    const inc = radians(body.inclinationDeg || 0);
-    const radiusAu = body.meanOrbitalRadiusKm / AU_KM;
-    return Object.freeze({ bodyId,epoch:date.toISOString(),positionAu:Object.freeze([radiusAu*Math.cos(phase),radiusAu*Math.sin(phase)*Math.cos(inc),radiusAu*Math.sin(phase)*Math.sin(inc)]),dataStatus:"approximate",source:body.orbitalDataSource,notice:body.uncertainty });
+    if(Core.timeConversionQuality(date).status!=="validated")return null;
+    const state=interpolatedState(bodyId,date);
+    return state?Object.freeze({...state,positionMode:"Cached parent-relative ephemeris · cubic Hermite state",relativeTo:body.parentBodyId}):null;
   }
 
   function sampleOrbit(bodyId, centerEpoch, options={}) {
