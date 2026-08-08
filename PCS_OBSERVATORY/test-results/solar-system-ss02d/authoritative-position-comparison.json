@@ -1,0 +1,396 @@
+{
+  "schemaVersion": 1,
+  "stage": "SS-02D",
+  "generatedAt": "2026-08-08T16:36:19.524Z",
+  "datasetId": "pcs-ss02d-sbdb-tno",
+  "method": "Independent direct Horizons vectors versus SBDB two-body propagated known-catalog TNO state.",
+  "comparisonCount": 16,
+  "pass": true,
+  "failures": 0,
+  "comparisons": [
+    {
+      "epochUtc": "2026-06-15T00:00:00Z",
+      "jdTdb": 2461206.5008007474,
+      "object": "Sedna",
+      "spkid": "20090377",
+      "objectClass": "known-catalog trans-Neptunian object",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "pcsPositionAu": [
+        38.987583675768185,
+        71.16840587028278,
+        -17.01811307582203
+      ],
+      "referencePositionAu": [
+        38.98758378809887,
+        71.16840572670064,
+        -17.01811307760644
+      ],
+      "difference": 27.27329509038965,
+      "units": "km",
+      "tolerance": 4066964,
+      "toleranceBasis": "Object-specific representative-visualization ceiling of a×AU×5e-5 for short-window two-body propagation; this bounds PCS model difference and is not SBDB observational uncertainty.",
+      "positionMode": "SBDB osculating elements · two-body propagated",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-08-08T12:41:00Z",
+      "jdTdb": 2461261.0292729526,
+      "object": "Sedna",
+      "spkid": "20090377",
+      "objectClass": "known-catalog trans-Neptunian object",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "pcsPositionAu": [
+        38.85177712845322,
+        71.20071010686354,
+        -17.007014847309833
+      ],
+      "referencePositionAu": [
+        38.85178759400649,
+        71.20069699466754,
+        -17.00701500975318
+      ],
+      "difference": 2509.8754702277156,
+      "units": "km",
+      "tolerance": 4066964,
+      "toleranceBasis": "Object-specific representative-visualization ceiling of a×AU×5e-5 for short-window two-body propagation; this bounds PCS model difference and is not SBDB observational uncertainty.",
+      "positionMode": "SBDB osculating elements · two-body propagated",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-06-15T00:00:00Z",
+      "jdTdb": 2461206.5008007474,
+      "object": "Gonggong",
+      "spkid": "20225088",
+      "objectClass": "known-catalog trans-Neptunian object",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "pcsPositionAu": [
+        81.73933207150364,
+        -37.16417174452571,
+        -1.207935305740925
+      ],
+      "referencePositionAu": [
+        81.73933218390967,
+        -37.16417188690837,
+        -1.207935307740124
+      ],
+      "difference": 27.139516884661756,
+      "units": "km",
+      "tolerance": 500155,
+      "toleranceBasis": "Object-specific representative-visualization ceiling of a×AU×5e-5 for short-window two-body propagation; this bounds PCS model difference and is not SBDB observational uncertainty.",
+      "positionMode": "SBDB osculating elements · two-body propagated",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-08-08T12:41:00Z",
+      "jdTdb": 2461261.0292729526,
+      "object": "Gonggong",
+      "spkid": "20225088",
+      "objectClass": "known-catalog trans-Neptunian object",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "pcsPositionAu": [
+        81.79468488529753,
+        -37.11980537847194,
+        -1.1704940258184564
+      ],
+      "referencePositionAu": [
+        81.79469532514298,
+        -37.11981834915792,
+        -1.1704942122943
+      ],
+      "difference": 2490.99026226079,
+      "units": "km",
+      "tolerance": 500155,
+      "toleranceBasis": "Object-specific representative-visualization ceiling of a×AU×5e-5 for short-window two-body propagation; this bounds PCS model difference and is not SBDB observational uncertainty.",
+      "positionMode": "SBDB osculating elements · two-body propagated",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-06-15T00:00:00Z",
+      "jdTdb": 2461206.5008007474,
+      "object": "Orcus",
+      "spkid": "20090482",
+      "objectClass": "known-catalog trans-Neptunian object",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "pcsPositionAu": [
+        -43.92591605370605,
+        9.932526152300849,
+        -16.570163903821648
+      ],
+      "referencePositionAu": [
+        -43.9259159373097,
+        9.932526008647443,
+        -16.57016390466605
+      ],
+      "difference": 27.659478238039966,
+      "units": "km",
+      "tolerance": 294535,
+      "toleranceBasis": "Object-specific representative-visualization ceiling of a×AU×5e-5 for short-window two-body propagation; this bounds PCS model difference and is not SBDB observational uncertainty.",
+      "positionMode": "SBDB osculating elements · two-body propagated",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-08-08T12:41:00Z",
+      "jdTdb": 2461261.0292729526,
+      "object": "Orcus",
+      "spkid": "20090482",
+      "objectClass": "known-catalog trans-Neptunian object",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "pcsPositionAu": [
+        -43.94610984559874,
+        9.814713949352951,
+        -16.576504459517892
+      ],
+      "referencePositionAu": [
+        -43.94609902618463,
+        9.814700896331257,
+        -16.57650453232471
+      ],
+      "difference": 2536.318837977249,
+      "units": "km",
+      "tolerance": 294535,
+      "toleranceBasis": "Object-specific representative-visualization ceiling of a×AU×5e-5 for short-window two-body propagation; this bounds PCS model difference and is not SBDB observational uncertainty.",
+      "positionMode": "SBDB osculating elements · two-body propagated",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-06-15T00:00:00Z",
+      "jdTdb": 2461206.5008007474,
+      "object": "Quaoar",
+      "spkid": "20050000",
+      "objectClass": "known-catalog trans-Neptunian object",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "pcsPositionAu": [
+        8.226748667111877,
+        -41.389276296929154,
+        5.919481449596081
+      ],
+      "referencePositionAu": [
+        8.226748779607952,
+        -41.38927643807214,
+        5.919481447340911
+      ],
+      "difference": 27.003055652789048,
+      "units": "km",
+      "tolerance": 322804,
+      "toleranceBasis": "Object-specific representative-visualization ceiling of a×AU×5e-5 for short-window two-body propagation; this bounds PCS model difference and is not SBDB observational uncertainty.",
+      "positionMode": "SBDB osculating elements · two-body propagated",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-08-08T12:41:00Z",
+      "jdTdb": 2461261.0292729526,
+      "object": "Quaoar",
+      "spkid": "20050000",
+      "objectClass": "known-catalog trans-Neptunian object",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "pcsPositionAu": [
+        8.367549670494208,
+        -41.356362074335244,
+        5.917981173340095
+      ],
+      "referencePositionAu": [
+        8.36756014403444,
+        -41.35637476594071,
+        5.917980942747413
+      ],
+      "difference": 2461.896788705414,
+      "units": "km",
+      "tolerance": 322804,
+      "toleranceBasis": "Object-specific representative-visualization ceiling of a×AU×5e-5 for short-window two-body propagation; this bounds PCS model difference and is not SBDB observational uncertainty.",
+      "positionMode": "SBDB osculating elements · two-body propagated",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-06-15T00:00:00Z",
+      "jdTdb": 2461206.5008007474,
+      "object": "Varda",
+      "spkid": "20174567",
+      "objectClass": "known-catalog trans-Neptunian object",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "pcsPositionAu": [
+        -0.29805658428394644,
+        -42.48514881201624,
+        16.695529342823907
+      ],
+      "referencePositionAu": [
+        -0.2980564721448411,
+        -42.48514895128,
+        16.69552934030456
+      ],
+      "difference": 26.75081051926821,
+      "units": "km",
+      "tolerance": 340738,
+      "toleranceBasis": "Object-specific representative-visualization ceiling of a×AU×5e-5 for short-window two-body propagation; this bounds PCS model difference and is not SBDB observational uncertainty.",
+      "positionMode": "SBDB osculating elements · two-body propagated",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-08-08T12:41:00Z",
+      "jdTdb": 2461261.0292729526,
+      "object": "Varda",
+      "spkid": "20174567",
+      "objectClass": "known-catalog trans-Neptunian object",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "pcsPositionAu": [
+        -0.1606996270176273,
+        -42.46611460491146,
+        16.691894208698795
+      ],
+      "referencePositionAu": [
+        -0.1606890994471831,
+        -42.46612734498785,
+        16.69189392284057
+      ],
+      "difference": 2472.762755871046,
+      "units": "km",
+      "tolerance": 340738,
+      "toleranceBasis": "Object-specific representative-visualization ceiling of a×AU×5e-5 for short-window two-body propagation; this bounds PCS model difference and is not SBDB observational uncertainty.",
+      "positionMode": "SBDB osculating elements · two-body propagated",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-06-15T00:00:00Z",
+      "jdTdb": 2461206.5008007474,
+      "object": "(2026 BS14)",
+      "spkid": "54638254",
+      "objectClass": "known-catalog trans-Neptunian object",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "pcsPositionAu": [
+        -46.68487436812862,
+        11.66648327072606,
+        -14.979489153197274
+      ],
+      "referencePositionAu": [
+        -46.68492140181277,
+        11.6664195406264,
+        -14.97940177344108
+      ],
+      "difference": 17642.983830327357,
+      "units": "km",
+      "tolerance": 330574,
+      "toleranceBasis": "Object-specific representative-visualization ceiling of a×AU×5e-5 for short-window two-body propagation; this bounds PCS model difference and is not SBDB observational uncertainty.",
+      "positionMode": "SBDB osculating elements · two-body propagated",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-08-08T12:41:00Z",
+      "jdTdb": 2461261.0292729526,
+      "object": "(2026 BS14)",
+      "spkid": "54638254",
+      "objectClass": "known-catalog trans-Neptunian object",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "pcsPositionAu": [
+        -46.73370788812704,
+        11.600377695658427,
+        -14.888649133473912
+      ],
+      "referencePositionAu": [
+        -46.73374398371493,
+        11.60030090498632,
+        -14.88856165677444
+      ],
+      "difference": 18231.231552951296,
+      "units": "km",
+      "tolerance": 330574,
+      "toleranceBasis": "Object-specific representative-visualization ceiling of a×AU×5e-5 for short-window two-body propagation; this bounds PCS model difference and is not SBDB observational uncertainty.",
+      "positionMode": "SBDB osculating elements · two-body propagated",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-06-15T00:00:00Z",
+      "jdTdb": 2461206.5008007474,
+      "object": "(2015 GN55)",
+      "spkid": "50831073",
+      "objectClass": "known-catalog trans-Neptunian object",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "pcsPositionAu": [
+        -62.46800398156983,
+        -31.43254116954863,
+        3.1631783872638364
+      ],
+      "referencePositionAu": [
+        -62.46800386847712,
+        -31.43254131310786,
+        3.163178385447845
+      ],
+      "difference": 27.341036006053915,
+      "units": "km",
+      "tolerance": 413016,
+      "toleranceBasis": "Object-specific representative-visualization ceiling of a×AU×5e-5 for short-window two-body propagation; this bounds PCS model difference and is not SBDB observational uncertainty.",
+      "positionMode": "SBDB osculating elements · two-body propagated",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-08-08T12:41:00Z",
+      "jdTdb": 2461261.0292729526,
+      "object": "(2015 GN55)",
+      "spkid": "50831073",
+      "objectClass": "known-catalog trans-Neptunian object",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "pcsPositionAu": [
+        -62.399179124414395,
+        -31.49849408305164,
+        3.174242712927145
+      ],
+      "referencePositionAu": [
+        -62.399168485102,
+        -31.49850702907457,
+        3.174242519443919
+      ],
+      "difference": 2506.967141456158,
+      "units": "km",
+      "tolerance": 413016,
+      "toleranceBasis": "Object-specific representative-visualization ceiling of a×AU×5e-5 for short-window two-body propagation; this bounds PCS model difference and is not SBDB observational uncertainty.",
+      "positionMode": "SBDB osculating elements · two-body propagated",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-06-15T00:00:00Z",
+      "jdTdb": 2461206.5008007474,
+      "object": "(2026 GR23)",
+      "spkid": "54643538",
+      "objectClass": "known-catalog trans-Neptunian object",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "pcsPositionAu": [
+        -31.4140639018052,
+        -29.39726078995133,
+        5.531039354784501
+      ],
+      "referencePositionAu": [
+        -31.41407561247841,
+        -29.39724245819981,
+        5.531027334664507
+      ],
+      "difference": 3717.9698948718965,
+      "units": "km",
+      "tolerance": 346035,
+      "toleranceBasis": "Object-specific representative-visualization ceiling of a×AU×5e-5 for short-window two-body propagation; this bounds PCS model difference and is not SBDB observational uncertainty.",
+      "positionMode": "SBDB osculating elements · two-body propagated",
+      "pass": true
+    },
+    {
+      "epochUtc": "2026-08-08T12:41:00Z",
+      "jdTdb": 2461261.0292729526,
+      "object": "(2026 GR23)",
+      "spkid": "54643538",
+      "objectClass": "known-catalog trans-Neptunian object",
+      "referenceSource": "NASA/JPL Horizons direct VECTORS query",
+      "pcsPositionAu": [
+        -31.344311325322085,
+        -29.505415942868737,
+        5.601538326900089
+      ],
+      "referencePositionAu": [
+        -31.34431249768064,
+        -29.50541024512591,
+        5.601526058115239
+      ],
+      "difference": 2031.238211616753,
+      "units": "km",
+      "tolerance": 346035,
+      "toleranceBasis": "Object-specific representative-visualization ceiling of a×AU×5e-5 for short-window two-body propagation; this bounds PCS model difference and is not SBDB observational uncertainty.",
+      "positionMode": "SBDB osculating elements · two-body propagated",
+      "pass": true
+    }
+  ]
+}

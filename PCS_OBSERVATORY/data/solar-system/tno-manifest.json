@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "datasetId": "pcs-ss02d-sbdb-tno",
+  "promotionStatus": "validated-promoted",
+  "generatedAt": "2026-08-08T16:28:42.689Z",
+  "lastSuccessfulSynchronization": "2026-08-08T16:28:42.689Z",
+  "source": "NASA/JPL SBDB Query API",
+  "sourceUrl": "https://ssd-api.jpl.nasa.gov/doc/sbdb_query.html",
+  "selection": {
+    "orbitClass": "TNO",
+    "sort": "H,pdes",
+    "deterministic": true,
+    "normalizedSort": "defined H ascending, then pdes; undefined H last"
+  },
+  "upstreamCount": 7160,
+  "recordCount": 7155,
+  "excludedNamedDwarfSpkids": [
+    "20134340",
+    "20136199",
+    "20136108",
+    "20136472"
+  ],
+  "excludedInvalidSpkids": [
+    "50137782"
+  ],
+  "rawFile": "raw/sbdb/tno-all.json.gz",
+  "rawSha256": "9c7aeb66b60b6e2e61a181bfd6bb436dd809a01db6bb9f570153349adf3edc7e",
+  "normalizedFile": "normalized/tno-sbdb.js",
+  "normalizedSha256": "53daca18fa41a2f8be3ca1ef0d78622ff482f83f88ee01bfc33f966df8e82591",
+  "fallbackPolicy": "Retain last validated catalog; no synthetic replacement population.",
+  "validatedAt": "2026-08-08T16:36:19.524Z",
+  "validation": {
+    "comparisonCount": 16,
+    "failures": 0,
+    "evidence": "../../test-results/solar-system-ss02d/authoritative-position-comparison.json",
+    "tolerancePolicy": "Per object a×AU×5e-5 short-window two-body visualization model ceiling. This is PCS model difference, not observational uncertainty; no universal tolerance."
+  }
+}

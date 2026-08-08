@@ -10,6 +10,8 @@ export function buildMainBeltQuery({absoluteMagnitudeLimit=13}={}){
   return Object.freeze({url:url.toString(),selection:Object.freeze({orbitClass:"MBA",absoluteMagnitude:`H < ${Number(absoluteMagnitudeLimit)}`,sort:"H,pdes",deterministic:true})});
 }
 
+export function buildOrbitClassQuery(orbitClass){const value=String(orbitClass||"").trim();if(!value)throw new TypeError("SBDB orbit class is required");const url=new URL(SBDB_QUERY_ENDPOINT);url.searchParams.set("fields",ORBIT_FIELDS.join(","));url.searchParams.set("sb-class",value);url.searchParams.set("sort","H,pdes");url.searchParams.set("full-prec","true");return Object.freeze({url:url.toString(),selection:Object.freeze({orbitClass:value,sort:"H,pdes",deterministic:true})});}
+
 export function buildLookupQuery(name){const value=String(name||"").trim();if(!value)throw new TypeError("SBDB lookup name is required");const url=new URL(SBDB_LOOKUP_ENDPOINT);url.searchParams.set("sstr",value);url.searchParams.set("phys-par","true");url.searchParams.set("full-prec","true");return url.toString();}
 
 const finiteOrNull=value=>value==null||value===""?null:(Number.isFinite(Number(value))?Number(value):null);

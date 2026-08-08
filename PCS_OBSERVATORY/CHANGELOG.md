@@ -51,9 +51,17 @@ Stable baseline: v2.1.0 — Stable / Frozen
 - Added deterministic adaptive LOD (256 / 1,024 / 5,365), stable `H,pdes` ordering, one batched point collection, and complete camera-listener cleanup.
 - Passed 27 direct-Horizons comparisons, 123 repository Node tests, five dwarf Object Cards, four-language terminology, adaptive LOD, and ten lifecycle cycles with Viewer 1, Cesium canvas 1, total canvas 2, required Console 0, and required Network 0.
 
+### Solar System SS-02D
+
+- Added an official JPL SBDB known-catalog TNO pipeline with compressed raw snapshot, checksums, normalized deterministic ordering, promotion manifest, and keep-last-validated fallback policy.
+- Added 7,155 unique known TNO points from 7,160 synchronized upstream records; four named dwarf planets remain owned once by SS-02C and one incomplete element record is explicitly excluded.
+- Added deterministic adaptive LOD (256 / 1,024 / 7,155), one batched point collection, one removable camera listener, selection, Unified Object Cards, and four-language TNO/Kuiper Belt terminology.
+- Explicitly reports representative Kuiper Belt population as unavailable; no synthetic points, random density, or scientifically exact solid ring are generated.
+- Passed 16 direct-Horizons comparisons, 128 repository Node tests, Sedna provenance card, four-language terminology, adaptive LOD, and ten lifecycle cycles with Viewer 1, Cesium canvas 1, total canvas 2, required Console 0, and required Network 0.
+
 ### Current Boundary
 
-- Solar System SS-02A–C are frozen; SS-02D is the active next sub-stage.
+- Solar System SS-02A–D are frozen; SS-02E is the active next sub-stage.
 - Deep Space Phase 4A remains not started.
 
 ## [v2.1.0] — 2026-08-01

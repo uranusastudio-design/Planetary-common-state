@@ -1,6 +1,6 @@
 # Solar System SS-02
 
-Status: **In Development — SS-02A–C validated / frozen; SS-02D–G not started**
+Status: **In Development — SS-02A–D validated / frozen; SS-02E–G not started**
 
 Release: **v2.2.0**
 
@@ -218,6 +218,36 @@ Validation result:
 
 Evidence: `test-results/solar-system-ss02c/authoritative-position-comparison.json` and `test-results/solar-system-ss02c/report.json`.
 
+## SS-02D implementation
+
+### Known-catalog TNO layer
+
+The Kuiper Belt is not rendered as a solid ring or asserted exact density model. `sync-tno.mjs` queries the official NASA/JPL SBDB Query API for orbit class `TNO`, requests full-precision orbital fields, and normalizes records into a stable ordering: defined absolute magnitude ascending, then primary designation; records without `H` follow. The synchronized snapshot contained 7,160 upstream rows.
+
+Four named dwarf-planet SPK-IDs already owned by the SS-02C dwarf registry are excluded from the TNO primitive, and one record lacking the complete propagated-element contract is retained in the manifest exclusion list. The deployed known-catalog layer therefore contains 7,155 unique TNO points. Across the dwarf/TNO registries there are 7,160 unique SPK-IDs and no catalog duplication.
+
+Every rendered record keeps its SBDB solution epoch in JDTDB, J2000 ecliptic heliocentric osculating elements, formal element sigmas where supplied, orbit condition code, data arc, observation count, and source provenance. Displayed positions use the disclosed two-body propagation shared with SS-02C. They are labelled `catalog-derived propagated position`, not numerical ephemerides. A representative population is explicitly `Unavailable`; PCS generates no synthetic belt or random points.
+
+### Adaptive rendering and lifecycle
+
+The layer uses one Cesium `PointPrimitiveCollection`. Stable LOD limits are 256 far, 1,024 medium, and 7,155 near. Ordering and membership do not change per frame. One camera `moveEnd` listener updates LOD and is removed by `dispose`; the primitive collection is removed on every Deep Space close. The existing single Viewer, Cesium clock, selection path, Unified Object Card, language state, and Solar System Display Epoch are reused.
+
+### SS-02D pipeline and validation
+
+`buildOrbitClassQuery` extends the existing SBDB adapter without a second source system. `sync-tno.mjs` writes the compressed raw response, normalized browser dataset, query/selection metadata, checksums, exclusion lists, last successful synchronization, and candidate manifest. `validate-tno.mjs` independently queries Horizons VECTORS for five important named TNOs plus deterministic catalog samples at two epochs and promotes only a passing candidate.
+
+The 16 direct-Horizons comparisons passed. Each row records PCS and reference position, difference in kilometres, and an object-specific `a × AU × 5×10⁻⁵` short-window two-body visualization ceiling. This ceiling measures PCS propagation-model difference; it is not SBDB observational uncertainty and is not reused as a universal tolerance for other object classes.
+
+Validation result:
+
+- 16/16 authoritative comparisons passed;
+- 128 repository Node tests passed;
+- 7,155 known-catalog TNOs, deterministic LOD 256 → 7,155, Sedna Object Card, and four-language terminology passed;
+- ten open/close cycles removed the temporary DataSource, both small-body primitive collections, and their camera listeners;
+- Viewer 1, Cesium canvas 1, total canvas 2, required Console 0, required Network 0, Earth ownership restored.
+
+Evidence: `test-results/solar-system-ss02d/authoritative-position-comparison.json` and `test-results/solar-system-ss02d/report.json`.
+
 ## Freeze boundary
 
-SS-02A–C are frozen as the base for SS-02D. Changing their public meaning requires an explicit SS-02 architecture revision, migration notes, and rerun of the affected regression gates.
+SS-02A–D are frozen as the base for SS-02E. Changing their public meaning requires an explicit SS-02 architecture revision, migration notes, and rerun of the affected regression gates.

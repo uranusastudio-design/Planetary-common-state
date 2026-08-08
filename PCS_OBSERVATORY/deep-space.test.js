@@ -122,13 +122,13 @@ test("solid-body LOD overlaps point, intermediate marker, and colored sphere wit
   assert.doesNotMatch(manager,/material:Cesium\.Color\.WHITE[,}]/);
 });
 
-test("Phase 2/3 catalogs and SS-02C small bodies share one manager while Phase 4 remains unavailable", () => {
+test("Phase 2/3 catalogs and SS-02C/D small bodies share one manager while Phase 4 remains unavailable", () => {
   assert.match(manager, /PCSNearbyStars/);
   assert.match(manager, /PCSMilkyWay/);
   assert.match(manager, /PCSLocalGroup/);
   assert.match(manager, /scaleContext="solar"/);
   assert.match(manager, /phase4:"Cosmic Web \/ Observable Universe — Available in Phase 4"/);
-  assert.match(manager, /smallBodyProvider=Object\.freeze\(\{status:"catalog-derived",getObjects:\(\)=>Promise\.resolve\(SmallBodies\.dataset\.mainBelt\.records\)/);
+  assert.match(manager, /smallBodyProvider=Object\.freeze\(\{status:"catalog-derived",getObjects:\(\)=>Promise\.resolve\(\[\.\.\.SmallBodies\.dataset\.mainBelt\.records,\.\.\.TNO\.dataset\.records\]\)/);
   assert.doesNotMatch(manager, /Math\.random|cosmicWebLayer|observableUniverseLayer/);
   assert.doesNotMatch(manager, /new Cesium\.Viewer|requestAnimationFrame|new Worker/);
 });

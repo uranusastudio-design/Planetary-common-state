@@ -1,6 +1,6 @@
 # Solar System Data Architecture
 
-Status: **SS-01 baseline frozen; SS-02A–C validated and frozen**
+Status: **SS-01 baseline frozen; SS-02A–D validated and frozen**
 
 Audit date: 2026-08-08
 
@@ -47,6 +47,22 @@ The normalized registry contains five named dwarf planets plus 5,365 belt points
 The belt selection is a catalog subset, not a complete belt and not a representative solid ring. Far/medium/near LOD shows the first 256/1,024/5,365 records in the stable `H,pdes` ordering. Sampling does not change per frame.
 
 Dwarf positions use cached Horizons vectors inside validated coverage. Belt points use two-body propagation from each SBDB JDTDB element epoch and carry explicit model-status text. Direct-Horizons evidence separates the resulting PCS model difference from the formal sigmas stored on the catalog record.
+
+## SS-02D current architecture delta
+
+Known trans-Neptunian objects use the same separated source architecture:
+
+`JPL SBDB TNO query → gzip raw + SHA-256 → normalized unique catalog → direct-Horizons model validation → promoted TNO manifest → one batched adaptive primitive`
+
+- `buildOrbitClassQuery("TNO")` fixes the official SBDB query and stable sort contract.
+- `sync-tno.mjs` records source selection, raw response, hashes, exclusions, last successful synchronization, normalized output, and keep-last-validated fallback policy.
+- `validate-tno.mjs` performs independent Horizons comparisons and owns the promotion gate.
+- `tno-catalog.js` reuses SS-02C two-body state propagation and owns one point collection plus one removable camera listener.
+- `data/solar-system/tno-manifest.json` exposes 7,160 upstream rows, 7,155 rendered unique rows, four named-dwarf exclusions, one invalid-element exclusion, and validation evidence.
+
+The TNO layer is explicitly a known catalog, not an exact solid ring and not a representative population. No synthetic population exists. Stable far/medium/near LOD renders the first 256/1,024/7,155 records from the deterministic normalized ordering. SS-02C dwarf objects and SS-02D TNO points remain unique by SPK-ID.
+
+TNO positions use each SBDB JDTDB solution epoch and J2000 ecliptic heliocentric osculating elements. The runtime discloses two-body propagation and preserves source uncertainty fields; direct-Horizons model differences remain separate from observational/orbit uncertainty. Sixteen object/epoch comparisons and browser lifecycle evidence are stored under `test-results/solar-system-ss02d/`.
 
 ## SS-02A architecture delta
 
@@ -194,7 +210,8 @@ The separate Cloudflare current-observation adapter does preserve cached/stored 
 - [x] Planet and major-satellite authoritative multi-epoch ephemeris validation — SS-02B validated and frozen.
 - [x] Solid-body point/intermediate/sphere LOD — SS-02B validated and frozen.
 - [x] Five dwarf planets and catalog-derived adaptive Main Belt — SS-02C validated and frozen.
-- [ ] Kuiper Belt / TNO — SS-02D, not started.
+- [x] Known-catalog Kuiper Belt / TNO layer — SS-02D validated and frozen.
+- [ ] Comets and meteor-shower relationships — SS-02E, not started.
 - [ ] Any later Solar System checkpoint — not started.
 
 SS-02A browser evidence passed with one Viewer, one Cesium canvas, unchanged total canvas count, eight coherent planet states, same-solution orbit metadata, honest out-of-range unavailability, four runtime languages, restored Earth ownership, zero required Console errors, and zero required Network failures. SS-02A is frozen as the contract consumed by SS-02B.
