@@ -6,22 +6,22 @@
   "currentStatus": "preview",
   "plannedVersion": "v2.2.0",
   "currentPhase": "v2.2.0-foundation",
-  "updatedAt": "2026-08-08T17:50:00+08:00",
+  "updatedAt": "2026-08-08T21:00:00+08:00",
   "releases": [
     {
       "version": "v2.2.0",
       "date": "2026-08-02",
       "status": "preview",
       "title": {"en":"Foundation development cycle","zh-TW":"Foundation 開發週期","ja":"Foundation 開発サイクル","ko":"Foundation 개발 주기"},
-      "summary": {"en":"In-development foundation for orbit precision, pointer-anchored navigation, unified object cards, and a corrected camera micro-motion glow awaiting human visual acceptance. Deep Space Phase 4 has not started.","zh-TW":"開發中的軌道精度、游標錨定導航與統一天體字卡基礎，以及等待人類視覺驗收的相機微移動光暈修正；Deep Space Phase 4 尚未開始。","ja":"軌道精度、ポインター基準ナビゲーション、統一天体カード、および人による視覚確認待ちのカメラ微動グロー修正を含む開発中基盤です。Deep Space Phase 4 は未開始です。","ko":"궤도 정밀도, 포인터 기준 탐색, 통합 천체 카드와 사람의 시각 검수를 기다리는 카메라 미세 이동 광원 보정을 포함한 개발 중 기반입니다. Deep Space Phase 4는 시작되지 않았습니다."},
+      "summary": {"en":"In-development foundation for orbit precision, pointer-anchored navigation, unified object cards, and Solar System SS-02. The human-rejected camera-motion streak visualization has been removed. Deep Space Phase 4 has not started.","zh-TW":"開發中的軌道精度、游標錨定導航、統一天體字卡與 Solar System SS-02。經人工否決的相機移動光軌視覺化已移除；Deep Space Phase 4 尚未開始。","ja":"軌道精度、ポインター基準ナビゲーション、統一天体カード、Solar System SS-02 を含む開発中基盤です。人の判断で不採用となったカメラ移動光跡は削除済みです。Deep Space Phase 4 は未開始です。","ko":"궤도 정밀도, 포인터 기준 탐색, 통합 천체 카드 및 Solar System SS-02를 포함한 개발 중 기반입니다. 사람의 검토에서 제외된 카메라 이동 광궤적 시각화는 제거되었습니다. Deep Space Phase 4는 시작되지 않았습니다."},
       "added": ["v2.2.0 Foundation development cycle started"],
-      "changed": ["Orbit Precision — traceable orbit contracts and rendering for eight planets and eleven representative satellites","Pointer-Anchored Navigation — bounded wheel, trackpad, and mobile-pinch anchor behavior","Unified Object Cards — one evidence-aware model for Solar System, Gaia, Milky Way, and Local Group selections","Motion Streaks — corrected to an input-gated, depth-aware micro-motion glow with strict 6 / 10 / 18 px preset caps","Nearby Stars astrometry — catalog release, reference epoch, display epoch, position mode, and 3D velocity completeness are now distinct"],
-      "fixed": ["Earth-owned visitor and regional markers are suspended before entering Deep Space and guarded against late asynchronous refresh"],
+      "changed": ["Orbit Precision — traceable orbit contracts and rendering for eight planets and eleven representative satellites","Pointer-Anchored Navigation — bounded wheel, trackpad, and mobile-pinch anchor behavior","Unified Object Cards — one evidence-aware model for Solar System, Gaia, Milky Way, and Local Group selections","Nearby Stars astrometry — catalog release, reference epoch, display epoch, position mode, and 3D velocity completeness are now distinct"],
+      "fixed": ["Earth-owned visitor and regional markers are suspended before entering Deep Space and guarded against late asynchronous refresh","Human-rejected Motion Streak / micro-glow visualization removed; normal point-star rendering restored"],
       "knownIssues": ["Foundation Release Audit remains open pending physical Mac trackpad and real-device pinch evidence","Titania lower-hemisphere imagery coverage / projection issue remains deferred","Deep Space Phase 4A–4F have not started"],
-      "assets": ["Foundation metadata","Orbit Precision","Orbit precision tests","Pointer-Anchored Navigation","Pointer navigation tests","Unified Object Cards","Object card tests","Motion Streaks","Motion Streak tests","Motion Streak browser acceptance evidence"],
+      "assets": ["Foundation metadata","Orbit Precision","Orbit precision tests","Pointer-Anchored Navigation","Pointer navigation tests","Unified Object Cards","Object card tests"],
       "commits": [],
       "deploymentUrl": "https://uranusastudio-design.github.io/Planetary-common-state/PCS_OBSERVATORY/",
-      "documentation": [{"label":"v2.2.0 Foundation","path":"docs/V2.2.0_FOUNDATION.md"},{"label":"Deep Space Motion Streaks","path":"docs/DEEP_SPACE_MOTION_STREAKS.md"}],
+      "documentation": [{"label":"v2.2.0 Foundation","path":"docs/V2.2.0_FOUNDATION.md"}],
       "dataSources": ["JPL Horizons DE441 cache","JPL approximate planetary elements","Existing versioned PCS scientific catalogs"]
     },
     {
@@ -61,14 +61,12 @@
     {"id":"deep-space-phase-3","title":"Deep Space Phase 3 — Milky Way / Local Group","status":"completed","detail":"Milky Way + Local Group"},
     {"id":"v2.2.0-foundation","title":"v2.2.0 Foundation","status":"in-progress","detail":"Orbit Precision → Pointer-Anchored Navigation → Unified Object Cards"},
     {"id":"deep-space-phase-4","title":"Deep Space Phase 4 — Cosmic Web / Observable Universe","status":"planned","detail":"Planning only / Not started"},
-    {"id":"deep-space-motion-streaks","title":"Deep Space Motion Streaks","status":"in-progress","detail":"Micro-motion glow correction; automated regression passed, human visual acceptance remains open"},
     {"id":"titania-texture","title":"Titania texture repair","status":"deferred","detail":"Known imagery coverage / projection issue"},
     {"id":"comets-asteroids","title":"Comets and asteroids","status":"planned","detail":"Outside the current phase"},
     {"id":"orbital-uncertainty","title":"Orbital uncertainty bands","status":"planned","detail":"Method not yet implemented"},
     {"id":"civilization-variables","title":"Civilization-variable analysis","status":"planned","detail":"Not started; no prediction claims"}
   ],
   "latestAdditions": [
-    {"title":"Motion Streaks","detail":"Camera-motion visualization for eligible Deep Space points"},
     {"title":"v2.2.0 Foundation","detail":"In development — Phase 4 not started"},
     {"title":"Deep Space Phase 1","detail":"Solar System foundation"},
     {"title":"Deep Space Phase 2","detail":"Nearby Stars — 10 / 25 / 50 / 100 pc"},

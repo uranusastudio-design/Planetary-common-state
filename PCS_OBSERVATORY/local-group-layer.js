@@ -29,7 +29,6 @@
     hide(){for(const item of [this.points,this.labels,this.uncertainties,this.boundary])if(item)item.show=false;this.visible=false;}
     unload(){for(const key of ["points","labels","uncertainties","boundary"]){if(this[key]){this.viewer.scene.primitives.remove(this[key]);this[key]=null;}}this.records=[];this.pointRecords=[];this.visible=false;}
     dispose(){this.unload();this.viewer=null;}
-    motionStreakCandidates(){if(this.lod!=="far")return [];return this.pointRecords.map(([point,record,landmark])=>({id:String(record.id||record.sourceId),kind:"phase3",record,position:point.position,screenPosition:(scene,result)=>point.computeScreenSpacePosition(scene,result),color:point.color,prominence:point.pixelSize,distance:record.distanceKpc,landmark,eligible:true}));}
     debug(){return {records:this.records.length,points:this.points?.length||0,labels:this.labels?.length||0,uncertainties:this.uncertainties?.length||0,boundary:this.boundary?.length||0,lod:this.lod,mode:this.mode,visible:this.visible};}
   }
   global.PCSLocalGroup=Object.freeze({LANDMARK_NAMES,MILKY_WAY,isLandmark,distanceInterval,visualMarkerPixels,LocalGroupCatalog,LocalGroupLayer});

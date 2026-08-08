@@ -125,7 +125,7 @@ The separate Cloudflare current-observation adapter does preserve cached/stored 
 - [x] Current sources, algorithms, epoch handling, frames, bodies, rendering types, update behavior, and gaps audited.
 - [x] Existing tests confirm the registry contains the Sun, eight planets, and exactly eleven satellites; cached/fallback states and parent-relative orbit sampling remain operational.
 - [x] Viewer/canvas architecture remains unchanged.
-- [x] Titania texture, Gaia data, Motion Streak rendering, Phase 4A–4F, and SITE were not modified by SS-01.
+- [x] Titania texture, Gaia data, the then-existing Motion Streak rendering, Phase 4A–4F, and SITE were not modified by SS-01. Motion Streak was subsequently rejected by human visual review and removed before SS-02.
 - [ ] Planet ephemeris validation — SS-02, not started.
 - [ ] Any later Solar System checkpoint — not started.
 

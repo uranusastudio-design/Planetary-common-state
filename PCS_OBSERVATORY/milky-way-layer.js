@@ -51,7 +51,6 @@
     hide(){for(const collection of [this.points,this.lines,this.labels])if(collection)collection.show=false;this.visible=false;}
     unload(){for(const key of ["points","lines","labels"]){if(this[key]){this.viewer.scene.primitives.remove(this[key]);this[key]=null;}}this.records=[];this.pointRecords=[];this.visible=false;}
     dispose(){this.unload();this.viewer=null;}
-    motionStreakCandidates(){return this.pointRecords.map(([point,record,landmark])=>({id:String(record.id||record.sourceId),kind:"phase3",record,position:point.position,screenPosition:(scene,result)=>point.computeScreenSpacePosition(scene,result),color:point.color,prominence:point.pixelSize,distance:record.distanceKpc,landmark,eligible:true}));}
     debug(){return {records:this.records.length,points:this.points?.length||0,lines:this.lines?.length||0,labels:this.labels?.length||0,visible:this.visible,mode:this.mode,reconstruction:this.reconstruction};}
   }
   global.PCSMilkyWay=Object.freeze({ARM_COLORS,armGroups,splitArmSegments,ring,MilkyWayCatalog,MilkyWayLayer});

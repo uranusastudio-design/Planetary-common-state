@@ -65,7 +65,6 @@
     setQuality(value){const colors={"high-confidence astrometry":"#8fb8c4","catalog astrometry":"#8292aa","limited astrometry":"#b3a277","incomplete 6D state":"#a493ad","supplemental Hipparcos":"#c5c5c5","representative only":"#777f82"};for(const [point,record] of this.pointRecords){point.outlineWidth=value?1.25:0;point.outlineColor=Cesium.Color.fromCssColorString(colors[record.dataStatus]||"#788386").withAlpha(.82);}this.viewer.scene.requestRender();}
     setMotion(value){if(this.motion)this.motion.show=value;this.viewer.scene.requestRender();}
     setGuides(value){if(this.guides)this.guides.show=value;this.viewer.scene.requestRender();}
-    motionStreakCandidates(){return this.pointRecords.map(([point,record])=>({id:String(record.id||record.source_id),kind:"nearby",record,position:point.position,screenPosition:(scene,result)=>point.computeScreenSpacePosition(scene,result),color:point.color,prominence:point.pixelSize,distance:record.distancePc,landmark:Boolean(record.primaryName),eligible:true}));}
     debug(){return {records:this.records.length,points:this.points?.length||0,labels:this.labels?.length||0,guides:this.guides?.length||0,motion:this.motion?.length||0,lod:this.lod.level,visible:this.visible};}
   }
   global.PCSNearbyStars=Object.freeze({CONFIG,PC_TO_LY,ICRS_TO_GALACTIC,catalogMetadata,icrsToCartesian,icrsToGalactic,propagate,colorFor,galacticCartesian,scenePosition,sceneRadius,mergeRecords,NearbyStarsCatalog,NearbyStarsLayer,NearbyStarsLODController,NearbyStarsSelectionController,NearbyStarsLabelController});

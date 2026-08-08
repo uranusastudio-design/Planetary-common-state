@@ -1,0 +1,116 @@
+{
+  "generatedAt": "2026-08-08T13:03:29.686Z",
+  "status": "PASS",
+  "decision": "Human-rejected camera-motion streak visualization removed",
+  "rendering": "Normal catalog point primitives",
+  "initial": {
+    "viewer": 1,
+    "cesiumCanvas": 1,
+    "totalCanvas": 2,
+    "primitiveCount": 1,
+    "moduleAbsent": true,
+    "controlAbsent": true
+  },
+  "solar": {
+    "debug": {
+      "initialized": true,
+      "viewerCount": 1,
+      "canvasCount": 2,
+      "active": true,
+      "scaleContext": "solar",
+      "mode": "exhibition",
+      "epoch": "2026-08-08T13:03:21.177Z",
+      "tickListenerActive": true,
+      "pointerNavigationActive": true,
+      "nativeZoomEnabled": false,
+      "lastPointerZoom": null,
+      "lastObjectFocus": null,
+      "objectCardId": "sun",
+      "selected": "sun",
+      "nearbyActive": false,
+      "nearbyTier": "10pc",
+      "nearbySelected": null,
+      "nearbySelectedMetadata": null,
+      "phase3Selected": null,
+      "nearby": {
+        "records": 0,
+        "points": 0,
+        "labels": 0,
+        "guides": 0,
+        "motion": 0,
+        "lod": "far",
+        "visible": false
+      },
+      "milkyWay": {
+        "records": 0,
+        "points": 0,
+        "lines": 0,
+        "labels": 0,
+        "visible": false,
+        "mode": "exhibition",
+        "reconstruction": true
+      },
+      "localGroup": {
+        "records": 0,
+        "points": 0,
+        "labels": 0,
+        "uncertainties": 0,
+        "boundary": 0,
+        "lod": "far",
+        "mode": "exhibition",
+        "visible": false
+      }
+    },
+    "primitiveCount": 1,
+    "trailCollections": 0
+  },
+  "scales": {
+    "10pc": {
+      "points": 21,
+      "primitiveCount": 5
+    },
+    "25pc": {
+      "points": 22,
+      "primitiveCount": 5
+    },
+    "50pc": {
+      "points": 22,
+      "primitiveCount": 5
+    },
+    "100pc": {
+      "points": 22,
+      "primitiveCount": 5
+    },
+    "milkyWay": {
+      "points": 52,
+      "primitiveCount": 4
+    },
+    "localGroup": {
+      "points": 5,
+      "primitiveCount": 5
+    }
+  },
+  "lifecycleCycles": 20,
+  "finalState": {
+    "viewer": 1,
+    "cesiumCanvas": 1,
+    "totalCanvas": 2,
+    "primitiveCount": 1,
+    "active": false
+  },
+  "console": {
+    "required": 0,
+    "items": []
+  },
+  "network": {
+    "required": 0,
+    "items": []
+  },
+  "invariants": {
+    "viewer": 1,
+    "cesiumCanvas": 1,
+    "totalCanvas": 2,
+    "orphanPrimitiveGrowth": 0,
+    "independentAnimationLoopPresent": false
+  }
+}
