@@ -34,7 +34,7 @@ test("registry schema, version, date, statuses and ordering are valid", () => {
     assert.ok(["stable", "preview", "archived"].includes(release.status));
   }
   assert.deepEqual(registry.roadmap.slice(0, 5).map(item => item.id), ["deep-space-phase-1", "deep-space-phase-2", "deep-space-phase-3", "v2.2.0-foundation", "deep-space-phase-4"]);
-  assert.deepEqual(registry.roadmap.filter(item => item.status === "in-progress").map(item=>item.id), ["v2.2.0-foundation"]);
+  assert.deepEqual(registry.roadmap.filter(item => item.status === "in-progress").map(item=>item.id), ["v2.2.0-foundation", "solar-system-ss02"]);
   assert.ok(registry.roadmap.every(item => validRoadmapStatuses.has(item.status)));
 });
 

@@ -5,6 +5,26 @@
   const epoch = "2026-08-01T00:00:00.000Z";
   const sample = (positionAu, velocityAuPerDay) => Object.freeze([{ epoch, sourceEpochTdb:"2026-Aug-01 00:00:00.0000 TDB", coordinateFrame:"Heliocentric ecliptic frame; J2000 reference", positionAu:Object.freeze(positionAu), velocityAuPerDay:Object.freeze(velocityAuPerDay), heliocentricDistanceAu:Math.hypot(...positionAu) }]);
   global.PCSDeepSpaceEphemerisCache = Object.freeze({
+    manifest:Object.freeze({
+      datasetId:"pcs-horizons-de441-legacy-2026-08-01",
+      source:"NASA/JPL Horizons",
+      ephemeris:"DE441",
+      sourceUrl:"https://ssd.jpl.nasa.gov/api/horizons.api",
+      queryMode:"VECTORS",
+      center:"500@10",
+      referenceSystem:"ICRF",
+      referencePlane:"Earth mean ecliptic at J2000.0 (IAU76/80)",
+      referenceFrame:"ICRF; Earth mean ecliptic at J2000.0 (IAU76/80); heliocentric origin",
+      outputUnits:"AU-D",
+      vectorCorrection:"NONE",
+      ephemerisTimeScale:"TDB",
+      coverage:Object.freeze({start:epoch,end:epoch}),
+      sampleCountPerBody:1,
+      lastDataUpdate:"2026-08-01",
+      promotionStatus:"not-promoted",
+      qualityStatus:"Legacy single-epoch snapshot; insufficient for coherent interpolation or orbit rendering",
+      uncertainty:"No formal covariance supplied for major-planet vectors"
+    }),
     mercury:sample([.3526006261607103,.005708002497932161,-.03187284942001208],[-.005889484909563799,.02938781974201591,.002941850281808375]),
     venus:sample([-.1645937419271417,-.7072482140890558,-.0002198836356424883],[.01956312701417751,-.004667145366660487,-.001192896797914102]),
     earth:sample([.6307189330803126,-.7952013625186592,.00004366682930385191],[.01319753175635243,.01062044060527175,-.000001353470088421704]),

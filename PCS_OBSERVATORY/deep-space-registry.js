@@ -56,5 +56,6 @@
     SATELLITE_IDS:Object.freeze(satellites.map((item) => item[0])),
     SOURCES:Object.freeze({ JPL_ELEMENTS, JPL_HORIZONS, NASA_SSE }),
     FRAME:frame,
+    PLANET_VALID_RANGE,
   });
 })(window);

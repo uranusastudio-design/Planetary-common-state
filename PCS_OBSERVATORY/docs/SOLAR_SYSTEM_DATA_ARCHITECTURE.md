@@ -1,10 +1,33 @@
 # Solar System Data Architecture
 
-Status: **SS-01 audit only — implementation checkpoints SS-02 through SS-11 have not started**
+Status: **SS-01 baseline frozen; SS-02A time / ephemeris / reference-frame architecture validated and frozen**
 
 Audit date: 2026-08-08
 
 This document records the current Solar System implementation before scientific completion work begins. It is an evidence-based baseline, not a claim that the Solar System layer is complete. SS-01 changes no orbit, catalog, texture, or rendering data.
+
+## SS-02A architecture delta
+
+SS-02A introduces one `SolarSystemTimeState` as the mutable source of the Deep Space Solar System Display Epoch. Its public display time scale is UTC. Ephemeris datasets retain their source time scale explicitly; the Horizons vector contract uses TDB. PCS does not relabel JavaScript UTC as TDB or claim a runtime TDB conversion that is not performed.
+
+Before evaluating a planet, `deep-space-ephemeris.js` now resolves one coherent solution for all eight eligible major planets at the requested Display Epoch. Body states and orbit samples receive the same `solutionId`, source, reference frame, position mode, validity, and quality contract. A planet can no longer independently select the one cached Horizons vector while its orbit uses approximate elements.
+
+The legacy 2026-08-01 DE441 sample remains provenance evidence but is marked `not-promoted`: one sample per body cannot support interpolation or a continuous orbit. Until SS-02B deploys a validated multi-epoch dataset, all eight planets use the JPL 1800–2050 approximate-element model together. Outside that published validity interval, position and orbit mode become `Unavailable`; PCS does not silently extrapolate.
+
+The fixed vector adapter contract is:
+
+- authoritative endpoint: `https://ssd.jpl.nasa.gov/api/horizons.api`;
+- `EPHEM_TYPE=VECTORS`;
+- heliocentric center `500@10`;
+- `TIME_TYPE=TDB`;
+- `REF_SYSTEM=ICRF`;
+- `REF_PLANE=ECLIPTIC` (Earth mean ecliptic at J2000.0, IAU76/80);
+- `OUT_UNITS=AU-D`;
+- `VEC_TABLE=2`;
+- `VEC_CORR=NONE` (geometric state);
+- CSV normalization with position and velocity retained.
+
+Source, catalog/ephemeris, reference frame, position mode, last data update, and uncertainty/quality are displayed in the existing compact control column in Traditional Chinese, English, Japanese, and Korean. The runtime reuses the existing language state.
 
 ## Current rendering roots
 
@@ -126,7 +149,9 @@ The separate Cloudflare current-observation adapter does preserve cached/stored 
 - [x] Existing tests confirm the registry contains the Sun, eight planets, and exactly eleven satellites; cached/fallback states and parent-relative orbit sampling remain operational.
 - [x] Viewer/canvas architecture remains unchanged.
 - [x] Titania texture, Gaia data, the then-existing Motion Streak rendering, Phase 4A–4F, and SITE were not modified by SS-01. Motion Streak was subsequently rejected by human visual review and removed before SS-02.
-- [ ] Planet ephemeris validation — SS-02, not started.
+- [ ] Planet authoritative multi-epoch ephemeris validation — SS-02B, not started.
 - [ ] Any later Solar System checkpoint — not started.
+
+SS-02A browser evidence passed with one Viewer, one Cesium canvas, unchanged total canvas count, eight coherent planet states, same-solution orbit metadata, honest out-of-range unavailability, four runtime languages, restored Earth ownership, zero required Console errors, and zero required Network failures. SS-02A is frozen as the contract consumed by SS-02B.
 
 This SS-01 audit baseline is frozen as a record of the pre-completion implementation. Freezing the audit does not freeze or approve the current scientific behavior.

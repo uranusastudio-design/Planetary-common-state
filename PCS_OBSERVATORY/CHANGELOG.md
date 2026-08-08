@@ -22,6 +22,16 @@ Stable baseline: v2.1.0 — Stable / Frozen
 - Browser acceptance passed at 10 / 25 / 50 / 100 pc, Milky Way, and Local Group.
 - Twenty Deep Space open/close cycles ended with Viewer 1, Cesium canvas 1, total canvas 2, zero primitive growth, zero required Console errors, and zero required Network failures.
 
+### Solar System SS-02A
+
+- Added one authoritative Solar System Display Epoch state with explicit UTC display and TDB ephemeris time-scale contracts.
+- Added coherent all-planet solution selection so body positions and orbit lines cannot mix unrelated models.
+- Marked the single-epoch 2026-08-01 DE441 cache as non-promoted evidence rather than continuous ephemeris.
+- Enforced the JPL approximate-element 1800–2050 validity interval; out-of-range positions and orbits become unavailable rather than extrapolated.
+- Added a traceable NASA/JPL Horizons vector adapter boundary and normalized manifest.
+- Added compact four-language source, ephemeris, frame, position-mode, update, and quality display.
+- SS-02A browser acceptance passed with Viewer 1, Cesium canvas 1, total canvas 2, restored Earth ownership, and zero required Console or Network failures.
+
 ### Current Boundary
 
 - Solar System SS-02 is the next authorized v2.2.0 workstream.

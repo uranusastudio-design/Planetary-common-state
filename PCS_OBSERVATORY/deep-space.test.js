@@ -13,7 +13,7 @@ const html = read("index.html");
 function loadDataRuntime() {
   const window = {};
   const context = vm.createContext({ window, console, Date, Math, Object, RangeError, Number });
-  ["deep-space-registry.js", "deep-space-ephemeris-cache.js", "deep-space-ephemeris.js"].forEach((name) => vm.runInContext(read(name), context));
+  ["deep-space-registry.js", "solar-system-core.js", "deep-space-ephemeris-cache.js", "deep-space-ephemeris.js"].forEach((name) => vm.runInContext(read(name), context));
   return window;
 }
 
@@ -63,12 +63,15 @@ test("fallback positions solve non-circular inclined Keplerian orbits", () => {
   assert.match(state.notice, /not mission-navigation precision/i);
 });
 
-test("the cache is an explicit JPL vector and out-of-window epochs fall back honestly", () => {
+test("the legacy cache remains explicit evidence but is not mixed into a coherent solution", () => {
   const runtime = loadDataRuntime();
-  const cached = runtime.PCSDeepSpaceEphemeris.getBodyState("earth", "2026-08-01T00:00:00Z");
+  const cached = runtime.PCSDeepSpaceEphemeris.getCachedEphemeris("earth", "2026-08-01T00:00:00Z");
+  const coherent = runtime.PCSDeepSpaceEphemeris.getBodyState("earth", "2026-08-01T00:00:00Z");
   const fallback = runtime.PCSDeepSpaceEphemeris.getBodyState("earth", "2026-09-01T00:00:00Z");
   assert.equal(cached.dataStatus, "ephemeris-derived");
   assert.match(cached.source, /JPL Horizons/);
+  assert.equal(coherent.dataStatus, "approximate");
+  assert.equal(coherent.solutionId, "jpl-approximate-elements-1800-2050");
   assert.equal(fallback.dataStatus, "approximate");
 });
 
@@ -106,8 +109,8 @@ test("orbit sampling follows the active epoch and keeps satellites parent-relati
   assert.match(moon[0].notice, /not a navigation ephemeris/i);
 });
 
-test("solar rendering creates planet and focused-satellite orbit entities without another renderer", () => {
-  for (const token of ["function addOrbit(entry,parentPosition)","satelliteOrbitPoints",'id:`deep-space-orbit-${entry.id}`',"precisionStatus:entry.orbit.precisionStatus","fallbackStatus:entry.orbit.fallbackStatus"]) assert.ok(manager.includes(token), token);
+test("solar rendering creates solution-bound planet and focused-satellite orbit entities without another renderer", () => {
+  for (const token of ["function addOrbit(entry,parentPosition)","satelliteOrbitPoints",'id:`deep-space-orbit-${entry.id}`',"solutionId:solarSolution?.id","positionMode:solarSolution?.positionMode","fallbackStatus:solarSolution?.qualityStatus"]) assert.ok(manager.includes(token), token);
   assert.match(manager, /if\(showOrbits\)addOrbit\(satellite,parentPosition\)/);
   assert.match(manager, /entry\.id===selected\?3:1/);
   assert.doesNotMatch(manager, /else\{renderAll\(\);resetView\(\);\}/);

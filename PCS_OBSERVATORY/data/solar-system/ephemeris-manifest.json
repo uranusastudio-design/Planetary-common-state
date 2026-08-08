@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "displayTimeScale": "UTC",
+  "runtimeSelectionPolicy": "one coherent solution for all eligible major planets at the requested Display Epoch",
+  "currentPromotedDataset": null,
+  "legacyDatasets": [
+    {
+      "datasetId": "pcs-horizons-de441-legacy-2026-08-01",
+      "source": "NASA/JPL Horizons",
+      "sourceUrl": "https://ssd.jpl.nasa.gov/api/horizons.api",
+      "catalogEphemeris": "DE441",
+      "ephemerisType": "VECTORS",
+      "center": "500@10",
+      "timeScale": "TDB",
+      "referenceSystem": "ICRF",
+      "referencePlane": "Earth mean ecliptic at J2000.0 (IAU76/80)",
+      "outputUnits": "AU-D",
+      "vectorCorrection": "NONE",
+      "coverage": {
+        "start": "2026-08-01T00:00:00.000Z",
+        "end": "2026-08-01T00:00:00.000Z"
+      },
+      "sampleCountPerBody": 1,
+      "promotionStatus": "not-promoted",
+      "qualityStatus": "Insufficient for coherent interpolation or orbit rendering"
+    }
+  ],
+  "fallbacks": [
+    {
+      "id": "jpl-approximate-elements-1800-2050",
+      "source": "https://ssd.jpl.nasa.gov/planets/approx_pos.html",
+      "timeScale": "UTC input evaluated as Julian centuries from J2000",
+      "referenceFrame": "ICRF; Earth mean ecliptic at J2000.0 (IAU76/80); heliocentric origin",
+      "validity": {
+        "start": "1800-01-01T00:00:00.000Z",
+        "end": "2050-12-31T23:59:59.999Z"
+      },
+      "positionMode": "Approximate elements · propagated",
+      "qualityStatus": "Model-limited fallback; not mission-navigation precision",
+      "uncertainty": "No formal covariance is supplied with the approximate-element table"
+    }
+  ],
+  "failurePolicy": "Do not extrapolate a fallback outside its validity; retain last promoted dataset and expose unavailable/stale status"
+}

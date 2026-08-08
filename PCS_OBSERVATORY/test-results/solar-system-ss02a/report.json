@@ -1,0 +1,286 @@
+{
+  "generatedAt": "2026-08-08T13:28:20.373Z",
+  "status": "PASS",
+  "stage": "SS-02A",
+  "normal": {
+    "solution": {
+      "id": "jpl-approximate-elements-1800-2050",
+      "displayEpoch": "2026-08-08T12:00:00.000Z",
+      "displayTimeScale": "UTC",
+      "ephemerisTimeScale": "TDB",
+      "source": "https://ssd.jpl.nasa.gov/planets/approx_pos.html",
+      "catalogEphemeris": "JPL approximate positions of the major planets (1800–2050)",
+      "referenceSystem": "ICRF",
+      "referencePlane": "Earth mean ecliptic at J2000.0 (IAU76/80)",
+      "referenceFrame": "ICRF; Earth mean ecliptic at J2000.0 (IAU76/80); heliocentric origin",
+      "positionMode": "Approximate elements · propagated",
+      "orbitMode": "Approximate elements · same model as body positions",
+      "lastDataUpdate": "Not provided",
+      "qualityStatus": "Model-limited fallback; not mission-navigation precision",
+      "uncertainty": "JPL supplies no formal covariance with the approximate-element table",
+      "validity": {
+        "start": "1800-01-01T00:00:00.000Z",
+        "end": "2050-12-31T23:59:59.999Z"
+      },
+      "coverage": null,
+      "bodyIds": [
+        "mercury",
+        "venus",
+        "earth",
+        "mars",
+        "jupiter",
+        "saturn",
+        "uranus",
+        "neptune"
+      ],
+      "coherent": true,
+      "authoritative": false,
+      "stale": false,
+      "notice": "The legacy single-epoch Horizons snapshot is retained for provenance but is not mixed into this coherent fallback solution."
+    },
+    "metadata": {
+      "DISPLAY EPOCH": "2026-08-08T12:00:00 UTC",
+      "SOURCE": "https://ssd.jpl.nasa.gov/planets/approx_pos.html",
+      "CATALOG / EPHEMERIS": "JPL approximate positions of the major planets (1800–2050)",
+      "REFERENCE FRAME": "ICRF; Earth mean ecliptic at J2000.0 (IAU76/80); heliocentric origin",
+      "POSITION MODE": "Approximate elements · propagated",
+      "LAST DATA UPDATE": "Not provided",
+      "UNCERTAINTY / QUALITY STATUS": "Model-limited fallback; not mission-navigation precision; JPL supplies no formal covariance with the approximate-element table"
+    },
+    "planetEntities": [
+      {
+        "id": "deep-space-mercury",
+        "show": true,
+        "position": "(328720.08623490727, 286255.70784183644, -6755.176065602166)"
+      },
+      {
+        "id": "deep-space-venus",
+        "show": true,
+        "position": "(-13080.272272542914, -617582.10867647, -7730.766642095926)"
+      },
+      {
+        "id": "deep-space-earth",
+        "show": true,
+        "position": "(515353.33639918966, -504648.95007606066, 30.468341167880208)"
+      },
+      {
+        "id": "deep-space-mars",
+        "show": true,
+        "position": "(465448.5554658733, 727774.4436786964, 3838.376853941635)"
+      },
+      {
+        "id": "deep-space-jupiter",
+        "show": true,
+        "position": "(-892397.8480972189, 1190065.1530290074, 15020.778298893198)"
+      },
+      {
+        "id": "deep-space-saturn",
+        "show": true,
+        "position": "(1805296.3272895871, 287581.67880087526, -76842.89519241251)"
+      },
+      {
+        "id": "deep-space-uranus",
+        "show": true,
+        "position": "(1069539.7776911824, 2015169.8653366684, -6383.59924015469)"
+      },
+      {
+        "id": "deep-space-neptune",
+        "show": true,
+        "position": "(2556148.1919446066, 103348.36263481884, -61033.98652438888)"
+      }
+    ],
+    "orbitEntities": [
+      {
+        "id": "deep-space-orbit-mercury",
+        "solutionId": "jpl-approximate-elements-1800-2050",
+        "positionMode": "Approximate elements · propagated"
+      },
+      {
+        "id": "deep-space-orbit-venus",
+        "solutionId": "jpl-approximate-elements-1800-2050",
+        "positionMode": "Approximate elements · propagated"
+      },
+      {
+        "id": "deep-space-orbit-earth",
+        "solutionId": "jpl-approximate-elements-1800-2050",
+        "positionMode": "Approximate elements · propagated"
+      },
+      {
+        "id": "deep-space-orbit-mars",
+        "solutionId": "jpl-approximate-elements-1800-2050",
+        "positionMode": "Approximate elements · propagated"
+      },
+      {
+        "id": "deep-space-orbit-jupiter",
+        "solutionId": "jpl-approximate-elements-1800-2050",
+        "positionMode": "Approximate elements · propagated"
+      },
+      {
+        "id": "deep-space-orbit-saturn",
+        "solutionId": "jpl-approximate-elements-1800-2050",
+        "positionMode": "Approximate elements · propagated"
+      }
+    ],
+    "viewer": 1,
+    "cesiumCanvas": 1,
+    "totalCanvas": 2
+  },
+  "legacyEpoch": {
+    "id": "jpl-approximate-elements-1800-2050",
+    "displayEpoch": "2026-08-01T00:00:00.000Z",
+    "displayTimeScale": "UTC",
+    "ephemerisTimeScale": "TDB",
+    "source": "https://ssd.jpl.nasa.gov/planets/approx_pos.html",
+    "catalogEphemeris": "JPL approximate positions of the major planets (1800–2050)",
+    "referenceSystem": "ICRF",
+    "referencePlane": "Earth mean ecliptic at J2000.0 (IAU76/80)",
+    "referenceFrame": "ICRF; Earth mean ecliptic at J2000.0 (IAU76/80); heliocentric origin",
+    "positionMode": "Approximate elements · propagated",
+    "orbitMode": "Approximate elements · same model as body positions",
+    "lastDataUpdate": "Not provided",
+    "qualityStatus": "Model-limited fallback; not mission-navigation precision",
+    "uncertainty": "JPL supplies no formal covariance with the approximate-element table",
+    "validity": {
+      "start": "1800-01-01T00:00:00.000Z",
+      "end": "2050-12-31T23:59:59.999Z"
+    },
+    "coverage": null,
+    "bodyIds": [
+      "mercury",
+      "venus",
+      "earth",
+      "mars",
+      "jupiter",
+      "saturn",
+      "uranus",
+      "neptune"
+    ],
+    "coherent": true,
+    "authoritative": false,
+    "stale": false,
+    "notice": "The legacy single-epoch Horizons snapshot is retained for provenance but is not mixed into this coherent fallback solution."
+  },
+  "unavailable": {
+    "solution": {
+      "id": "solar-system-position-unavailable",
+      "displayEpoch": "2100-01-01T00:00:00.000Z",
+      "displayTimeScale": "UTC",
+      "ephemerisTimeScale": "TDB",
+      "source": "Unavailable",
+      "catalogEphemeris": "Unavailable",
+      "referenceSystem": "ICRF",
+      "referencePlane": "Earth mean ecliptic at J2000.0 (IAU76/80)",
+      "referenceFrame": "ICRF; Earth mean ecliptic at J2000.0 (IAU76/80); heliocentric origin",
+      "positionMode": "Unavailable",
+      "orbitMode": "Unavailable",
+      "lastDataUpdate": "2026-08-01",
+      "qualityStatus": "Requested epoch is outside validated local coverage",
+      "uncertainty": "Unavailable",
+      "validity": {
+        "start": "1800-01-01T00:00:00.000Z",
+        "end": "2050-12-31T23:59:59.999Z"
+      },
+      "coverage": null,
+      "bodyIds": [
+        "mercury",
+        "venus",
+        "earth",
+        "mars",
+        "jupiter",
+        "saturn",
+        "uranus",
+        "neptune"
+      ],
+      "coherent": true,
+      "authoritative": false,
+      "stale": true,
+      "notice": "PCS does not silently extrapolate the 1800–2050 approximate-element model outside its published validity interval."
+    },
+    "metadata": {
+      "DISPLAY EPOCH": "2100-01-01T00:00:00 UTC",
+      "SOURCE": "Unavailable",
+      "CATALOG / EPHEMERIS": "Unavailable",
+      "REFERENCE FRAME": "ICRF; Earth mean ecliptic at J2000.0 (IAU76/80); heliocentric origin",
+      "POSITION MODE": "Unavailable",
+      "LAST DATA UPDATE": "2026-08-01",
+      "UNCERTAINTY / QUALITY STATUS": "Requested epoch is outside validated local coverage; Unavailable"
+    },
+    "planetEntities": [],
+    "orbitEntities": [],
+    "viewer": 1,
+    "cesiumCanvas": 1,
+    "totalCanvas": 2
+  },
+  "languages": {
+    "en": [
+      "DISPLAY EPOCH",
+      "SOURCE",
+      "CATALOG / EPHEMERIS",
+      "REFERENCE FRAME",
+      "POSITION MODE",
+      "LAST DATA UPDATE",
+      "UNCERTAINTY / QUALITY STATUS"
+    ],
+    "zh-TW": [
+      "顯示曆元",
+      "來源",
+      "星表／星曆",
+      "參考框架",
+      "位置模式",
+      "最後資料更新",
+      "不確定性／品質狀態"
+    ],
+    "ja": [
+      "表示元期",
+      "ソース",
+      "カタログ／暦",
+      "基準座標系",
+      "位置モード",
+      "最終データ更新",
+      "不確かさ／品質状態"
+    ],
+    "ko": [
+      "표시 역기점",
+      "출처",
+      "카탈로그／천체력",
+      "기준 좌표계",
+      "위치 모드",
+      "마지막 데이터 업데이트",
+      "불확도／품질 상태"
+    ]
+  },
+  "finalState": {
+    "viewer": 1,
+    "cesiumCanvas": 1,
+    "totalCanvas": 2,
+    "active": false,
+    "earthOwner": {
+      "owner": "earth",
+      "active": true,
+      "generation": 2,
+      "activeCelestialTargetId": "earth",
+      "geographicRenderingEnabled": true,
+      "visitorDataSource": {
+        "id": "visitorDataSource",
+        "show": true,
+        "entities": 0
+      },
+      "visitorHeatDataSource": {
+        "id": "visitorHeatDataSource",
+        "show": false
+      },
+      "visitorNetworkDataSource": {
+        "id": "visitorNetworkDataSource",
+        "show": false
+      }
+    }
+  },
+  "console": {
+    "required": 0,
+    "items": []
+  },
+  "network": {
+    "required": 0,
+    "items": []
+  }
+}
