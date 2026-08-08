@@ -1,6 +1,6 @@
 # Deep Space Camera-Motion Star Streaks
 
-Status: **Functionally completed for v2.2.0 — production deployment verification pending**
+Status: **Functionally completed and deployed for v2.2.0 — production acceptance passed**
 
 ## Purpose
 
@@ -156,6 +156,21 @@ These are observations from one headless SwiftShader run, not native-GPU targets
 | Mobile 100 pc | 390 × 844 | 5,000 | 120 | 23.08 | 12.00 | 43.96 ms | 83.30 ms | +37,804 B |
 
 The heap values are before/after observations after requested garbage collection. They neither prove a memory leak nor prove the absence of one. The retained evidence is `test-results/motion-streaks/acceptance-report.json`.
+
+### Production acceptance
+
+GitHub Pages deployed feature commit `94e75f0` successfully. The same complete acceptance matrix passed at the production URL, including 100/100 returns to zero visible trails and `idle`, all input simulations, all eight scale contexts, Object Card identity, solid-body return, lifecycle counts, zero required Console exceptions, and zero required Network failures.
+
+Production Headless Chrome + SwiftShader observations were:
+
+| Context | Viewport | Visible catalog points | Streak cap in run | Average FPS | Lowest observed FPS | Average frame time | Maximum frame time | Observed heap delta |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 10 pc | 1280 × 720 | 312 | 312 | 4.01 | 1.46 | 214.21 ms | 683.40 ms | -136,980 B |
+| 50 pc | 1280 × 720 | 8,000 | 360 | 16.58 | 12.00 | 62.20 ms | 83.30 ms | -44,328 B |
+| 100 pc | 1280 × 720 | 10,000 | 360 | 15.62 | 11.99 | 65.35 ms | 83.40 ms | -76,728 B |
+| Mobile 100 pc | 390 × 844 | 5,000 | 120 | 24.89 | 14.99 | 40.63 ms | 66.70 ms | +492 B |
+
+The production report is retained at `test-results/motion-streaks-production-94e75f0/acceptance-report.json`. The slow 10 pc cold sample is reported as observed and is not generalized to native-GPU performance.
 
 ## Known limitations
 
