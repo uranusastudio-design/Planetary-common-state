@@ -2,7 +2,7 @@
 
 Status at 2026-08-09:
 
-- Phase 4A — Nearby Galaxy Groups: locally validated; production deployment evidence is recorded after the matching commit.
+- Phase 4A — Nearby Galaxy Groups: completed, deployed, and production-verified.
 - Phase 4B — Virgo Cluster: active next phase.
 - Phase 4C — Laniakea: not yet completed.
 - Phase 4D — Cosmic Web: not yet completed.
@@ -68,8 +68,17 @@ Selection and search support named group aliases and member galaxies. Group sele
 - Viewer 1; Cesium canvas 1; required Console exceptions 0; required catalog Network failures 0.
 - Four runtime languages and 390×844 mobile layout validated without Viewer recreation.
 
-Local evidence: `test-results/deep-space-phase-4a-local/acceptance-report.json` and its screenshots. Production evidence is stored separately after deployment.
+Local evidence: `test-results/deep-space-phase-4a-local/acceptance-report.json` and its screenshots.
+
+### Production verification
+
+- Runtime commit: `7cc2814c29a745d6139f695d6d111357a5f61823`.
+- GitHub Pages run: `31306723208`; build and deploy jobs passed.
+- Production `deep-space.js` SHA-256 matched the committed file.
+- The production WebGL acceptance repeated the 77-group overview, M81 group/member search and visible selected marker, four-language switching, 390×844 mobile layout, ten lifecycle cycles, Viewer 1, Cesium canvas 1, primitive/DataSource growth 0, required Console 0, and required Network failures 0.
+
+Production evidence: `test-results/deep-space-phase-4a-production-7cc2814/acceptance-report.json` and its screenshots.
 
 ## Phase advancement
 
-After Phase 4A production verification, the active roadmap advances to Phase 4B. Virgo must use actual catalog coordinates and explicit certain/possible membership; no random galaxy scatter is permitted.
+Phase 4A is frozen at the deployed source, coordinate, identity, rendering, and lifecycle contract. The active roadmap is Phase 4B. Virgo must use actual catalog coordinates and explicit certain/possible membership; no random galaxy scatter is permitted.

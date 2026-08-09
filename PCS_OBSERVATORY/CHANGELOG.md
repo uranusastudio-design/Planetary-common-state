@@ -106,7 +106,7 @@ Stable baseline: v2.1.0 — Stable / Frozen
 ### Current Boundary
 
 - Solar System SS-02 is accepted under the latest human-approved production state.
-- Deep Space Phase 4A is implemented and locally validated; the release record is finalized by its matching production deployment verification.
+- Deep Space Phase 4A is implemented, deployed, production-verified, and frozen at commit `7cc2814`; Phase 4B is active.
 - v2.2.0 remains Preview; Foundation physical gesture evidence is still open, and Deep Space Phase 4B is the next active phase.
 
 ## [v2.1.0] — 2026-08-01
