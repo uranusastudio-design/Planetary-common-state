@@ -313,6 +313,8 @@ The prior SS-02G completion/freeze claim was revoked after human production-equi
 
 Corrective local result: 154/154 Node tests and 107/107 authoritative position comparisons passed. Real-WebGL screenshots visibly contain the Sun, all eight planets, required focused moon systems, selected dwarf/small bodies, both catalog belts, and a selected comet with a source-derived orbit. Drag and wheel-zoom captures contain no streak renderer, primitive, control, setting, listener, tail, or streak-like skybox. Ten open/close cycles preserve the single Viewer/canvas contract without primitive, DataSource, or listener growth. Human visual confirmation remains open.
 
+Deployment result: corrective runtime commit `f826bce` was published by GitHub Pages build `1140557011`. A cache-busted production real-WebGL rerun passed the same visible-body, no-streak, selected-moon, lifecycle, Console, and Network gates. SS-02G remains reopened only for the human's post-deployment visual confirmation.
+
 Full decision, evidence, limitations, and open boundaries: `docs/SOLAR_SYSTEM_SS02_RELEASE_AUDIT.md`.
 
 ## Reopened boundary

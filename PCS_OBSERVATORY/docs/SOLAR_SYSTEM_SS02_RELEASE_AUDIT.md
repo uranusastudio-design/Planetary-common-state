@@ -8,7 +8,7 @@ Release boundary: **v2.2.0 preview**
 
 Stable baseline: **v2.1.0 Stable / Frozen — unchanged**
 
-Production deployment: **Not performed by this audit**
+Production deployment: **GitHub Pages build 1140557011 — runtime commit `f826bce` — built and production-verified**
 
 Deep Space Phase 4A: **Not started**
 
@@ -26,7 +26,7 @@ The previous PASS/Frozen decision is revoked because human production-equivalent
 | SS-02D | `5522077` | 7,155 known-catalog TNOs; no synthetic ring; deterministic LOD; 16 comparisons |
 | SS-02E | `9520c03` | Nine priority comets and nine meteor-shower relationships; 18 comparisons |
 | SS-02F | `748f871` | Isolated periodic synchronization; validation gates; provenance status; rollback-capable keep-last-valid promotion |
-| SS-02G | Reopened; corrective deployment commit | Human-visible body rendering, no-streak drag/zoom evidence, and full corrective re-audit |
+| SS-02G | `f826bce` corrective runtime deployment | Human-visible body rendering, no-streak drag/zoom evidence, and full corrective re-audit |
 
 SS-02A–F scientific-data results remain validated. SS-02G and the aggregate SS-02 release boundary are not frozen.
 
@@ -48,6 +48,7 @@ Machine-readable corrective evidence: `test-results/solar-system-ss02g-reopen/bo
 - Stationary, dragging, and wheel-zoom screenshots retain clean round point-star rendering. Active streak renderers, primitives, controls, settings, and streak-specific listeners are all zero.
 - Ten open/close cycles preserve Viewer 1, Cesium canvas 1, primitive/DataSource counts, Cesium listener counts, and Earth ownership; streak-specific persistent listeners remain zero.
 - Required Console errors 0; required Network failures 0.
+- Production verification against GitHub Pages commit `f826bce` passed the same real-WebGL contract: Sun 24 px, every planet 20 px and on-screen, all eleven required selected moons visible, streak primitive counts `[0,0,0,0]` across stationary/drag/after-drag/wheel, ten lifecycle cycles with primitives `1→1` and DataSources `3→3`, Console 0, Network 0.
 
 ## Performance evidence and interpretation
 
@@ -76,7 +77,7 @@ These measurements are reproducible regression evidence for this audit environme
 
 - v2.2.0 remains Preview; this audit does not declare the full Foundation release Stable/Frozen.
 - Foundation physical Mac trackpad and real-device pinch evidence remains Open.
-- Commit, push, and GitHub Pages deployment were explicitly authorized on 2026-08-09; production URL verification is required after the Pages build.
+- Commit `f826bce`, push, GitHub Pages build `1140557011`, and production URL verification completed after explicit authorization on 2026-08-09.
 - SITE, showcase video, Titania imagery repair, and Deep Space Phase 4A–4F remain outside this audit.
 
 ## Final checkpoint
@@ -85,6 +86,7 @@ These measurements are reproducible regression evidence for this audit environme
 - [x] Sun and all eight planets have a non-zero visible representation in the local overview capture.
 - [x] SS-02G corrective local re-audit passed.
 - [x] Commit, push, and GitHub Pages deployment explicitly authorized.
+- [x] GitHub Pages build and production real-WebGL verification passed.
 - [ ] Post-deployment human visual confirmation received.
 - [ ] SS-02A–G frozen after human confirmation.
 - [x] v2.1.0 Stable/Frozen boundary preserved.
