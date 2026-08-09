@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "stage": "SS-02F",
+  "generatedAt": "2026-08-09T03:04:34.077Z",
+  "datasetId": "pcs-ss02e-iau-imo-meteor-showers",
+  "sourceSnapshotYear": 2026,
+  "pass": true,
+  "failures": 0,
+  "checks": [
+    {
+      "name": "event classification",
+      "pass": true,
+      "detail": "observational/event relationship layer"
+    },
+    {
+      "name": "unique IAU codes",
+      "pass": true,
+      "detail": "9 records"
+    },
+    {
+      "name": "authoritative HTTPS sources",
+      "pass": true,
+      "detail": "3 registry sources"
+    },
+    {
+      "name": "event fields complete",
+      "pass": true,
+      "detail": "activity, peak, radiant, parent, confidence"
+    },
+    {
+      "name": "comet parents resolve",
+      "pass": true,
+      "detail": "all deployed comet parents resolve by SPK-ID"
+    },
+    {
+      "name": "uncertainty preserved",
+      "pass": true,
+      "detail": "uncertain and qualified relationships present"
+    },
+    {
+      "name": "no body-state fields",
+      "pass": true,
+      "detail": "event records contain no fabricated orbit/body state"
+    }
+  ]
+}

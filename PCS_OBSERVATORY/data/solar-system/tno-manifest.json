@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "datasetId": "pcs-ss02d-sbdb-tno",
   "promotionStatus": "validated-promoted",
-  "generatedAt": "2026-08-08T16:28:42.689Z",
-  "lastSuccessfulSynchronization": "2026-08-08T16:28:42.689Z",
+  "generatedAt": "2026-08-09T03:03:44.088Z",
+  "lastSuccessfulSynchronization": "2026-08-09T03:03:44.088Z",
   "source": "NASA/JPL SBDB Query API",
   "sourceUrl": "https://ssd-api.jpl.nasa.gov/doc/sbdb_query.html",
   "selection": {
@@ -26,9 +26,9 @@
   "rawFile": "raw/sbdb/tno-all.json.gz",
   "rawSha256": "9c7aeb66b60b6e2e61a181bfd6bb436dd809a01db6bb9f570153349adf3edc7e",
   "normalizedFile": "normalized/tno-sbdb.js",
-  "normalizedSha256": "53daca18fa41a2f8be3ca1ef0d78622ff482f83f88ee01bfc33f966df8e82591",
+  "normalizedSha256": "490fc78db9d0fc8bb8e9ec0d8bd4ec98e7172b565b6a6d6d840e37785c6db7b3",
   "fallbackPolicy": "Retain last validated catalog; no synthetic replacement population.",
-  "validatedAt": "2026-08-08T16:36:19.524Z",
+  "validatedAt": "2026-08-09T03:04:00.637Z",
   "validation": {
     "comparisonCount": 16,
     "failures": 0,

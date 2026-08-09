@@ -232,7 +232,7 @@ The separate Cloudflare current-observation adapter does preserve cached/stored 
 - [x] Five dwarf planets and catalog-derived adaptive Main Belt — SS-02C validated and frozen.
 - [x] Known-catalog Kuiper Belt / TNO layer — SS-02D validated and frozen.
 - [x] Priority comets and meteor-shower relationships — SS-02E validated and frozen.
-- [ ] Continuous synchronization/provenance promotion pipeline — SS-02F, not started.
+- [x] Periodic synchronization/provenance promotion pipeline with isolated candidate validation and rollback-capable keep-last-validated publication — SS-02F validated and frozen.
 - [ ] Any later Solar System checkpoint — not started.
 
 SS-02A browser evidence passed with one Viewer, one Cesium canvas, unchanged total canvas count, eight coherent planet states, same-solution orbit metadata, honest out-of-range unavailability, four runtime languages, restored Earth ownership, zero required Console errors, and zero required Network failures. SS-02A is frozen as the contract consumed by SS-02B.

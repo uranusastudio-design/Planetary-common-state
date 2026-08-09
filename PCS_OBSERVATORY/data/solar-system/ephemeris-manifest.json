@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "datasetId": "pcs-ss02b-horizons-de441-2025-2028",
   "promotionStatus": "validated-promoted",
-  "generatedAt": "2026-08-08T13:41:44.532Z",
-  "lastSuccessfulSynchronization": "2026-08-08T13:41:44.532Z",
+  "generatedAt": "2026-08-09T02:59:51.822Z",
+  "lastSuccessfulSynchronization": "2026-08-09T02:59:51.822Z",
   "source": "NASA/JPL Horizons API",
   "sourceUrl": "https://ssd.jpl.nasa.gov/api/horizons.api",
   "catalogEphemeris": "JPL DE441 / satellite source reported per target",
@@ -17,7 +17,7 @@
     "end": "2028-01-01T00:00:00.000Z"
   },
   "normalizedFile": "normalized/major-bodies-horizons-de441.js",
-  "normalizedSha256": "e972f20505a765de7dd1717dd7202387520dc726133d9a5e7e1a04c43986d0a1",
+  "normalizedSha256": "6fca19c37b024a2a6728c702d6f038f6692b52cc8e97a0d51dcdfe0d30079dc5",
   "objects": [
     {
       "objectId": "mercury",
@@ -29,7 +29,7 @@
       "step": "12 h",
       "sampleCount": 2191,
       "rawFile": "raw/horizons-de441/mercury.json.gz",
-      "rawSha256": "85acb5631269b40a857d1c4c1773323764391160d78d8eb3b4e70472303d232f",
+      "rawSha256": "cc27a92910034dceec0303ab13b133794fb46c6765f824e7c80a460adeed9c57",
       "catalogEphemeris": "DE441"
     },
     {
@@ -42,7 +42,7 @@
       "step": "2 d",
       "sampleCount": 548,
       "rawFile": "raw/horizons-de441/venus.json.gz",
-      "rawSha256": "eb270e7a1a5506cf13eb532141a7356bd18f999e25466e9199f71d62302782e0",
+      "rawSha256": "202f651e74ea391f61a0a2fcb8c1947d31973e840feb81e482a878ff609bb7da",
       "catalogEphemeris": "DE441"
     },
     {
@@ -55,7 +55,7 @@
       "step": "2 d",
       "sampleCount": 548,
       "rawFile": "raw/horizons-de441/earth.json.gz",
-      "rawSha256": "d17be9bbceb90941dfccd7ef2d78ca1d3c72e9c455703ba13ff1895a17967817",
+      "rawSha256": "6f2fbc2342b0754be97277db1523ccf8a8ee7c6ce3973c8f9b2ddabfa262ebb5",
       "catalogEphemeris": "DE441"
     },
     {
@@ -68,7 +68,7 @@
       "step": "3 d",
       "sampleCount": 366,
       "rawFile": "raw/horizons-de441/mars.json.gz",
-      "rawSha256": "548022d8f953558e0c63c6acb58aa5498167aacd8299d0953635c9b8ccbd32db",
+      "rawSha256": "86efe891cdd5e120890b3913f3e31f4cbc5073683e9c327a25b8d8809ca47372",
       "catalogEphemeris": "mar099"
     },
     {
@@ -81,7 +81,7 @@
       "step": "1 d",
       "sampleCount": 1096,
       "rawFile": "raw/horizons-de441/jupiter.json.gz",
-      "rawSha256": "7a1890e87684be8930b9d31c1a156702caa672b9654bf7c4bc53607db0e17028",
+      "rawSha256": "653dd79b533909642b089a6bb8464160f86a10e169f46b95631fb08068e4ddde",
       "catalogEphemeris": "jup365_merged"
     },
     {
@@ -94,7 +94,7 @@
       "step": "3 d",
       "sampleCount": 366,
       "rawFile": "raw/horizons-de441/saturn.json.gz",
-      "rawSha256": "40f8e80ae8ce4bd655ddd4020c1ff5ca5dcce4d9f249065cb361868d7b43c5f0",
+      "rawSha256": "74efc04d6f8a4aba7057ced23d5a7201a5738d3ad1f0dab5313d859a91d121c3",
       "catalogEphemeris": "sat441l"
     },
     {
@@ -107,7 +107,7 @@
       "step": "4 d",
       "sampleCount": 274,
       "rawFile": "raw/horizons-de441/uranus.json.gz",
-      "rawSha256": "c317b3bb6777572bbaf6d3e2014356384314223d8d56c5a22e7b5946c1aa7438",
+      "rawSha256": "5c0312636db946ef2f670ce6470087bfbc2ebd59d5e2b277c25c35287428ba1d",
       "catalogEphemeris": "ura184_merged"
     },
     {
@@ -120,7 +120,7 @@
       "step": "4 d",
       "sampleCount": 274,
       "rawFile": "raw/horizons-de441/neptune.json.gz",
-      "rawSha256": "fbbdb6f380b619f767f61d641a591c35c61d093a6a4a19b5f438b374b9a3f8a0",
+      "rawSha256": "1ea7c7b0403acdb67f75c729ec57142cc65c24e1226840f67be8cd46865de0a7",
       "catalogEphemeris": "nep098_merged"
     },
     {
@@ -133,7 +133,7 @@
       "step": "12 h",
       "sampleCount": 2191,
       "rawFile": "raw/horizons-de441/moon.json.gz",
-      "rawSha256": "a0b20f9901492549551501aaf10b09e5b9f4f9037039abcb6a0dc323a0ef5826",
+      "rawSha256": "12fd8e6138e0474f8e8d79f68416a8f4d65607aad174daa3990345e1881ca7cb",
       "catalogEphemeris": "DE441"
     },
     {
@@ -146,7 +146,7 @@
       "step": "30 m",
       "sampleCount": 52561,
       "rawFile": "raw/horizons-de441/phobos.json.gz",
-      "rawSha256": "15251e0f9462a19229a4b6270bd148c513aae658294e4b54adf2654f758381a5",
+      "rawSha256": "594f7bda3b2d9e51c1e00a714460740e65c55e1a0167414cf511075d19593249",
       "catalogEphemeris": "mar099"
     },
     {
@@ -159,7 +159,7 @@
       "step": "1 h",
       "sampleCount": 26281,
       "rawFile": "raw/horizons-de441/deimos.json.gz",
-      "rawSha256": "c7b9b24a07193b8f8adeec77233c61f19749610dfb053119325db4d4950ba690",
+      "rawSha256": "1a5d1ed7b26c73848794b990d370a5aa7a4523c2d1a84ddd006ab96bd7b8775b",
       "catalogEphemeris": "mar099"
     },
     {
@@ -172,7 +172,7 @@
       "step": "1 h",
       "sampleCount": 26281,
       "rawFile": "raw/horizons-de441/io.json.gz",
-      "rawSha256": "cbfd20ab98f334670196c369cffccdb79e5c6e945d6948346bdb1d26ad25cffd",
+      "rawSha256": "c1c296185086376d016d9fe09b9b9e53d126f86ce542d154d87c7e93640d410e",
       "catalogEphemeris": "jup365_merged"
     },
     {
@@ -185,7 +185,7 @@
       "step": "4 h",
       "sampleCount": 6571,
       "rawFile": "raw/horizons-de441/europa.json.gz",
-      "rawSha256": "88b67e3d2170363b7d27e46a9f13a5a51dea90741a996bc8c104cc13696a6abe",
+      "rawSha256": "b50e6573974da0b1bfcb32c9f22cda6d635044b5e596d36926523ab4391bc255",
       "catalogEphemeris": "jup365_merged"
     },
     {
@@ -198,7 +198,7 @@
       "step": "6 h",
       "sampleCount": 4381,
       "rawFile": "raw/horizons-de441/ganymede.json.gz",
-      "rawSha256": "ac4186c15196461e6a01bf386de321eeef87425a9fb5f014bfd5244117ecd532",
+      "rawSha256": "74d4d1ffd17aeb3131d20a014614ff8aeb4143ce280d6b5eaa3d9d6b29828913",
       "catalogEphemeris": "jup365_merged"
     },
     {
@@ -211,7 +211,7 @@
       "step": "6 h",
       "sampleCount": 4381,
       "rawFile": "raw/horizons-de441/callisto.json.gz",
-      "rawSha256": "b9168297c9b3fc25d49547d02430e320a7278def680eefc930d076022cad6105",
+      "rawSha256": "29cd6360f646f99ec71a8b1656938365b915282b6df12a0f00dccd14ff418cbf",
       "catalogEphemeris": "jup365_merged"
     },
     {
@@ -224,7 +224,7 @@
       "step": "1 h",
       "sampleCount": 26281,
       "rawFile": "raw/horizons-de441/enceladus.json.gz",
-      "rawSha256": "2a84227cf5a7425d35f3c71bc879f0d13a1011d1b9d8628b85e74addbb3ff18e",
+      "rawSha256": "150bdb4f6ed60e4bcf5c8410bcd840f2cc859201719dceaf8e6a27649ecc97f9",
       "catalogEphemeris": "sat441l"
     },
     {
@@ -237,7 +237,7 @@
       "step": "6 h",
       "sampleCount": 4381,
       "rawFile": "raw/horizons-de441/titan.json.gz",
-      "rawSha256": "5773ce54a2b44d63a6a6d0dc62eef47683a795f2f7f8fa5f5cac80502eb138bf",
+      "rawSha256": "c0513c368d6ea9bb879ed29367e4cf88c15555af31b37fe3892ff5ada840a953",
       "catalogEphemeris": "sat441l"
     },
     {
@@ -250,7 +250,7 @@
       "step": "6 h",
       "sampleCount": 4381,
       "rawFile": "raw/horizons-de441/titania.json.gz",
-      "rawSha256": "a84fefbe7dcd27a1a885cf97143015fc3e72af047f6be2081a8d59a7e73a4271",
+      "rawSha256": "037dae7f1006289892d17cdb4379eca6e8db90696e100575dd2a51ff856ccb05",
       "catalogEphemeris": "ura184_merged"
     },
     {
@@ -263,12 +263,12 @@
       "step": "6 h",
       "sampleCount": 4381,
       "rawFile": "raw/horizons-de441/triton.json.gz",
-      "rawSha256": "fb69677e493c47181aed1fbec131f4d384a2f69cee987a46c59093b120732072",
+      "rawSha256": "74ea64cb7afc37f56b88fc59f0542dc7d399d50a9c74ae21234d54040fc4b7a3",
       "catalogEphemeris": "nep098_merged"
     }
   ],
   "fallbackPolicy": "Retain the last validated promoted dataset. Never fabricate a missing vector.",
-  "validatedAt": "2026-08-08T13:44:04.672Z",
+  "validatedAt": "2026-08-09T03:03:09.953Z",
   "validation": {
     "method": "Withheld-epoch direct Horizons vectors versus PCS cubic-Hermite states. UTC converted to JDTDB with NAIF naif0012.tls.",
     "comparisonCount": 46,

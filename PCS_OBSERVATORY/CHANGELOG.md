@@ -68,9 +68,17 @@ Stable baseline: v2.1.0 — Stable / Frozen
 - Added compact four-language Comets and Meteor Showers controls using the existing language state.
 - Passed 18 direct-Horizons comparisons, 134 repository Node tests, Halley and uncertain-parent Object Cards, four-language terminology, and ten lifecycle cycles with Viewer 1, Cesium canvas 1, total canvas 2, required Console 0, and required Network 0.
 
+### Solar System SS-02F
+
+- Added one periodic orchestrator for the existing Horizons/SBDB adapters, isolated candidate ingestion, validation gates, compressed raw evidence, normalized datasets, and manifests.
+- Added rollback-capable set promotion: every artifact is staged before deployed files are exchanged, and any exchange failure restores the complete last validated set.
+- Added machine-readable validated/stale synchronization status, last-success timestamp, bounded failure disclosure, and an explicit keep-last-validated fallback policy.
+- Added four-language runtime sync status and Object Card last-update display without claiming real-time catalog updates.
+- Passed 46 + 27 + 16 + 18 independent position comparisons, seven meteor-relationship checks, 144 repository Node tests, and ten browser lifecycle cycles with Viewer 1, Cesium canvas 1, total canvas 2, required Console 0, and required Network 0.
+
 ### Current Boundary
 
-- Solar System SS-02A–E are frozen; SS-02F is the active next sub-stage.
+- Solar System SS-02A–F are frozen; SS-02G Release Audit is the active final sub-stage.
 - Deep Space Phase 4A remains not started.
 
 ## [v2.1.0] — 2026-08-01

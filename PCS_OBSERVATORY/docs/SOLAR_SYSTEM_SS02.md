@@ -1,6 +1,6 @@
 # Solar System SS-02
 
-Status: **In Development — SS-02A–E validated / frozen; SS-02F–G not started**
+Status: **In Development — SS-02A–F validated / frozen; SS-02G active**
 
 Release: **v2.2.0**
 
@@ -95,7 +95,7 @@ Labels use the existing four-language runtime state. Values are dataset facts an
 - Machine tests: `solar-system-ss02a.test.js` and adapter tests.
 - Browser evidence: `test-results/solar-system-ss02a/report.json` after acceptance.
 
-SS-02F will make promotion and keep-last-valid synchronization continuous. SS-02A establishes the non-fabricating contract first.
+SS-02F provides the periodic promotion and keep-last-valid synchronization path. SS-02A established the non-fabricating contract first.
 
 ## Known limitations after SS-02A
 
@@ -284,6 +284,29 @@ Primary references:
 
 Evidence: `test-results/solar-system-ss02e/authoritative-position-comparison.json` and `test-results/solar-system-ss02e/report.json`.
 
+## SS-02F implementation
+
+### Isolated synchronization and promotion
+
+`sync-solar-system.mjs` orchestrates the existing authoritative adapters as one bounded periodic job: major bodies → dwarf planets/Main Belt → TNOs → priority comets → meteor-shower relationship validation. It builds in a temporary candidate tree and does not mutate deployed scientific artifacts during ingestion or validation. Every manifest must be `validated-promoted` with zero failures before publication.
+
+Promotion first stages the complete candidate file set, then exchanges raw snapshots, normalized browser datasets, manifests, machine-readable comparisons, and sync-status artifacts as one rollback-capable transaction. A missing candidate, failed validation, upstream/API error, or file exchange error retains or restores the complete last validated deployed set. Failures are disclosed as `stale` with `failedAt` and a bounded error message; no replacement values are fabricated.
+
+### Runtime status and update policy
+
+`data/solar-system/sync-status.json` and its browser module record four promoted datasets, source, record counts, validation-comparison counts, last successful synchronization, periodic update policy, and keep-last-validated fallback. The UI and Unified Object Cards expose this timestamp in the existing four-language state. `Periodic catalog synchronization` is deliberately not described as real-time.
+
+The successful SS-02F full run synchronized 19 major bodies, five named dwarf planets, 5,365 Main Belt points, 7,155 known-catalog TNO points, nine priority comets, and nine meteor-shower relationships. It passed 46 + 27 + 16 + 18 independent position comparisons and seven event-relationship checks before promoting 47 artifacts including 32 compressed raw snapshots.
+
+### SS-02F validation result
+
+- 144 repository Node tests passed, including candidate isolation, completion-time semantics, stale-state retention, exact-file atomic replacement, set-promotion rollback, and non-real-time status disclosure;
+- browser acceptance exposed the validated four-dataset status, last-success timestamp, and all four runtime languages;
+- ten open/close cycles preserved Viewer 1, Cesium canvas 1, total canvas 2, Earth ownership, and complete DataSource/primitive cleanup;
+- required Console errors 0 and required Network failures 0.
+
+Evidence: `test-results/solar-system-ss02f/meteor-shower-validation.json` and `test-results/solar-system-ss02f/report.json`.
+
 ## Freeze boundary
 
-SS-02A–E are frozen as the base for SS-02F. Changing their public meaning requires an explicit SS-02 architecture revision, migration notes, and rerun of the affected regression gates.
+SS-02A–F are frozen as the base for the SS-02G Release Audit. Changing their public meaning requires an explicit SS-02 architecture revision, migration notes, and rerun of the affected regression gates.
