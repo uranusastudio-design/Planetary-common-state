@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "pcs-source-contract-v1",
+  "adapter": "phase4c-cf2-laniakea-context",
+  "sourceFrame": "Supergalactic",
+  "sourceEpoch": "J2000 where applicable",
+  "distanceConvention": "CF2 weighted measured group distances",
+  "redshiftConvention": "No redshift-distance conversion",
+  "cosmologyAssumption": "CF2 H0=74.4 km/s/Mpc; adjusted velocities Ωm=0.27 flat topology",
+  "transformVersion": "source-published-supergalactic-v1",
+  "sourceChecksums": {
+    "readme": "fc11ce364da65f506748c693f9405b7b54fac5e62c0b4306cfd576db5d7eb42d",
+    "groups": "426199ce456ed56277194bed4d10fcde8249e7e710b3b614f445a6109cd8ceb5"
+  },
+  "qualityStatus": "validated",
+  "knownLimitations": [
+    "The 80 Mpc radius is a PCS sampling window, not a physical or reconstructed Laniakea boundary.",
+    "Displayed vectors are source radial peculiar velocities along the observer line of sight, not the full Wiener-filter 3D flow field.",
+    "PCS does not deploy a Laniakea basin surface because the publication geometry is not available here as a validated machine-readable boundary.",
+    "Newer Cosmicflows-4 work may revise basin relationships; this layer identifies its 2014/CF2 reconstruction context."
+  ]
+}

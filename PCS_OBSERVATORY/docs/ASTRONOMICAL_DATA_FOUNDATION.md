@@ -92,3 +92,9 @@ The class affects marker shape/line grammar and is exposed in the legend and Obj
 ## Phase 4B registered source
 
 `vizier-j-apjs-215-22` is validated for the EVCC 725-square-degree footprint and its published M/P infall-model membership classification. It contains 1,589 catalog galaxies. The source adopts 16.5 Mpc for Virgo, but its table 2 does not supply individual galaxy distances; PCS keeps those distances unavailable and classifies the common-shell 3D placement as representative visualization. Catalog coordinates and membership remain observation records, coordinate transforms and velocity summaries are derived measurements, and pixel markers are representative.
+
+## Phase 4C registered sources
+
+`vizier-j-aj-146-86` is validated for the Cosmicflows-2 group-distance observer context. The source contains 5,224 group aggregates; the deployed deterministic sample contains 2,387 positive measured group distances at or below 80 Mpc. This radius is a PCS sampling window, not a supercluster edge. PCS preserves source-published Supergalactic coordinates, distance uncertainties and named-frame velocities. The radial peculiar-velocity convention uses H0 = 74.4 km/s/Mpc; it is not silently converted to the Planck18 contract.
+
+`tully-2014-laniakea` records the scientific interpretation of Laniakea as an observation-based velocity-field reconstruction. No machine boundary geometry is ingested, no rigid shell is rendered, and no publication figure is redistributed. A Laniakea information target therefore has no invented point coordinate or distance. Catalog points, radial peculiar-velocity arrows and reconstruction statements remain separately classified.

@@ -4,7 +4,7 @@ Status at 2026-08-09:
 
 - Phase 4A — Nearby Galaxy Groups: completed, deployed, and production-verified.
 - Phase 4B — Virgo Cluster: completed, deployed, and production-verified.
-- Phase 4C — Laniakea: active next phase.
+- Phase 4C — Laniakea: local implementation and validation passed; production deployment verification pending.
 - Phase 4D — Cosmic Web: not yet completed.
 - Phase 4E — Observable Universe: not yet completed.
 - Phase 4F — CMB Full Sky: not yet completed.
@@ -136,3 +136,35 @@ Local evidence: `test-results/deep-space-phase-4b-local/acceptance-report.json` 
 Production evidence: `test-results/deep-space-phase-4b-production-86c8a7f/acceptance-report.json` and screenshots.
 
 Phase 4B is frozen at this deployed source, identity, M/P membership, coordinate, representative-shell, LOD and lifecycle contract. The active roadmap is Phase 4C Laniakea, which must remain an observation-based reconstruction rather than a rigid observed shell.
+
+## Phase 4C — Laniakea
+
+### Source and scientific boundary
+
+Phase 4C uses the Cosmicflows-2 group-distance table from Tully et al. (2013), VizieR `J/AJ/146/86`, DOI `10.1088/0004-6256/146/4/86`, as its observation context. The source contains 5,224 group aggregates. PCS deploys the deterministic 2,387 rows with a published positive measured group distance at or below 80 Mpc. The 80 Mpc radius is a PCS observer-centered sampling window and is not a Laniakea boundary.
+
+The interpretation target is Tully et al. (2014), *The Laniakea supercluster of galaxies*, DOI `10.1038/nature13674`. It is classified as `Observation-based Reconstruction`. PCS does not deploy a solid shell or rigid edge because no validated machine-readable basin geometry is present in the source snapshot.
+
+### Visual classes and coordinate contract
+
+- Cosmicflows-2 group locations and measured-distance metadata: `Catalog Observation`.
+- Source radial peculiar velocities displayed along the observer line of sight: `Derived Measurement`.
+- Laniakea basin interpretation: `Observation-based Reconstruction` information target.
+- Pixel sizes and overview camera scale: `Representative Visualization`.
+
+The runtime uses source-published Supergalactic coordinates and weighted measured group distances. It does not convert redshift to distance. The source peculiar velocity uses H0 = 74.4 km/s/Mpc; adjusted velocities use Ωm = 0.27 with flat topology. Displayed arrows are not the full three-dimensional Wiener-filter flow field.
+
+### Runtime and local validation
+
+The existing Viewer, Deep Space state machine, selection store, search, language state and Unified Object Card are reused. One `PointPrimitiveCollection` batches 2,387 catalog points. One `PolylineCollection` displays a deterministic 600-vector subset ranked by absolute peculiar velocity. Both collections have explicit unload/dispose paths; the derived vector layer can be independently disabled.
+
+- Node suite: 183/183 passing after the Phase 4C source-registry assertion.
+- Raw snapshot and schema: 5,224 source rows; checksums and 2,387-row deployment sample pass.
+- Every deployed row has a positive measured distance, fractional distance error, finite peculiar velocity and finite Supergalactic Cartesian coordinate.
+- Real WebGL: 2,387 catalog points and 600 vectors; 866 points on screen in the overview camera.
+- Selected UGC00763 / CF2 Group 334: on-screen 12 px marker; measured distance 11.32 Mpc and peculiar velocity −3 km/s retained in its Object Card.
+- The Laniakea card explicitly states `Observation-based Reconstruction` and that no rigid boundary is deployed.
+- Ten Virgo ↔ Laniakea cycles: primitive, DataSource and listener growth 0.
+- Viewer 1; Cesium canvas 1; four languages; 390×844 mobile; required Console 0; required Network failures 0.
+
+Local evidence: `test-results/deep-space-phase-4c-local/acceptance-report.json` and screenshots. Production deployment verification remains required before Phase 4C is frozen.
