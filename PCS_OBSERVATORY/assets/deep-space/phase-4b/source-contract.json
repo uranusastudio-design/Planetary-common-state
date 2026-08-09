@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "pcs-source-contract-v1",
+  "adapter": "phase4b-evcc-2014",
+  "sourceFrame": "ICRS/J2000",
+  "sourceEpoch": "J2000",
+  "distanceConvention": "EVCC cluster reference distance 16.5 Mpc; individual distances unavailable and remain null",
+  "redshiftConvention": "Derived z≈v_helio/c from published heliocentric velocity; not used as distance",
+  "cosmologyAssumption": "None",
+  "transformVersion": "pcs-supergalactic-astropy-v1",
+  "sourceChecksums": {
+    "readme": "4d560f8d8eb40669eba87c3034603364a78f5ce6e6be7bd4805bd959d7d207ed",
+    "catalog": "0edf63832d5e0381f6b8436e517583e1c98f182fcbbb69b31479406e2d6d16ea"
+  },
+  "qualityStatus": "validated",
+  "knownLimitations": [
+    "EVCC membership is an infall-model classification, not a numeric membership probability.",
+    "Individual galaxy distances are not present in EVCC table 2 and remain unavailable.",
+    "The 3D display uses real catalog sky directions on a clearly labeled common 16.5 Mpc reference shell.",
+    "Coverage is the EVCC 725 square-degree footprint, not the full sky."
+  ]
+}

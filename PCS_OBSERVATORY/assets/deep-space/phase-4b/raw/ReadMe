@@ -1,0 +1,184 @@
+J/ApJS/215/22       The Extended Virgo Cluster Catalog (EVCC)       (Kim+, 2014)
+================================================================================
+The Extended Virgo Cluster Catalog.
+    Kim S., Rey S.-C., Jerjen H., Lisker T., Sung E.-C., Lee Y., Chung J.,
+    Pak M., Yi W., Lee W.
+   <Astrophys. J. Suppl. Ser., 215, 22 (2014)>
+   =2014ApJS..215...22K
+================================================================================
+ADC_Keywords: Clusters, galaxy ; Galaxies, spectra ; Photometry, SDSS ;
+              Radial velocities ; Morphology
+Keywords: catalogs; galaxies: clusters: general; surveys
+
+Abstract:
+    We present a new catalog of galaxies in the wider region of the Virgo
+    cluster, based on the Sloan Digital Sky Survey (SDSS) Data Release 7.
+    The Extended Virgo Cluster Catalog (EVCC) covers an area of 725deg^2^
+    or 60.1Mpc^2^. It is 5.2 times larger than the footprint of the
+    classical Virgo Cluster Catalog (VCC) and reaches out to 3.5 times the
+    virial radius of the Virgo cluster. We selected 1324 spectroscopically
+    targeted galaxies with radial velocities less than 3000km/s. In
+    addition, 265 galaxies that have been overlooked in the SDSS
+    spectroscopic survey but have available redshifts in the NASA
+    Extragalactic Database are also included. Our selection process
+    secured a total of 1589 galaxies, 676 of which are not included in the
+    VCC. The certain and possible cluster members are defined by means of
+    redshift comparison with a cluster infall model. We employed two
+    independent and complementary galaxy classification schemes: the
+    traditional morphological classification based on the visual
+    inspection of optical images and a characterization of galaxies from
+    their spectroscopic features. SDSS u, g, r, i, and z passband
+    photometry of all EVCC galaxies was performed using Source Extractor.
+    We compare the EVCC galaxies with the VCC in terms of morphology,
+    spatial distribution, and luminosity function. The EVCC defines a
+    comprehensive galaxy sample covering a wider range in galaxy density
+    that is significantly different from the inner region of the Virgo
+    cluster. It will be the foundation for forthcoming galaxy evolution
+    studies in the extended Virgo cluster region, complementing ongoing
+    and planned Virgo cluster surveys at various wavelengths.
+
+Description:
+    The construction of the EVCC is based on the SDSS Data Release 7 (DR7;
+    Abazajian et al. 2009, II/294). The SDSS-DR7 images have pixel scale
+    of 0.396" and the average seeing of 1.4" correspond to a physical size
+    of 32pc and 112pc, respectively, at a Virgo cluster distance of
+    16.5Mpc. We took advantage of the SDSS spectroscopic data for the
+    determination of galaxy membership and classification of spectroscopic
+    morphology. The SDSS spectroscopic data were searched in the window of
+    175{deg}<RA<200{deg} and -4{deg}<DE<25{deg}, which defines the nominal
+    area of the EVCC (figure 1).
+
+File Summary:
+--------------------------------------------------------------------------------
+ FileName    Lrecl  Records   Explanations
+--------------------------------------------------------------------------------
+ReadMe          80        .   This file
+table2.dat     186     1589   The Extended Virgo Cluster Catalog (EVCC)
+table3.dat     134     1183   Galaxies in the VCC which are not in common
+                               with the EVCC
+--------------------------------------------------------------------------------
+
+See also:
+ VII/266 : Atlas of Virgo galaxies (McDonald+ 2011)
+ II/294  : The SDSS Photometric Catalog, Release 7 (Adelman-McCarthy+, 2009)
+ VII/48  : CATALOGUE OF UV PHOTOMETRY OF VIRGO CLUSTER GALAXIES (Cornett+, 1982)
+ J/A+A/552/A8 : 454 VCC gal. revised coordinates (di Serego Alighieri+, 2013)
+ J/A+A/526/A114   : Kinematic profiles of Virgo early-type gal. (Toloba+, 2011)
+ J/MNRAS/412/2498 : Gal. groups & clouds in the local universe (Makarov+, 2011)
+ J/ApJ/714/25     : AMUSE-Virgo survey. II. (Gallo+, 2010)
+ J/AJ/139/315     : HI-selected galaxies in SDSS. Optical data (West+, 2010)
+ J/MNRAS/388/1537 : Galaxy pairs from SDSS-DR2 (McIntosh+, 2008)
+ J/AJ/135/1837    : Spectroscopy in A2199 and Virgo clusters (Rines+, 2008)
+ J/ApJ/681/197    : ACS Virgo Cluster Survey. XV (Peng+, 2008)
+ J/ApJ/660/1186   : VCC galaxies classification with SDSS (Lisker+, 2007)
+ J/ApJ/655/144    : ACS Virgo Cluster Survey. XIII. (Mei+, 2007)
+ J/MNRAS/370/1223 : Dynamical properties of nearby galaxy groups (Brough+, 2006)
+ J/A+A/430/411    : B-band photometry of ellipticals in Virgo (Gavazzi+, 2005)
+ J/A+A/417/499    : Spectrophotometry of Virgo cluster galaxies (Gavazzi+, 2004)
+ J/A+A/402/37     : UV-radio SED of galaxies in Virgo cluster (Boselli+, 2003)
+ J/A+A/401/471    : A1367, Coma and Virgo r' photometry (Cortese+, 2003)
+ J/ApJ/543/178    : Nearby Optical Galaxy (NOG) sample (Giuricin+, 2000)
+ J/A+AS/127/367   : Virgo Photometry Catalogue (VPC) (Young+ 1998)
+ J/A+AS/118/441   : Virgo + Fornax clusters galaxies UBVRI (Schroeder+ 1996)
+ J/A+AS/110/279   : Spirals in Virgo. III. (Sperandio+, 1995)
+ J/AJ/108/1598    : Virgo cluster ellipticals. III. (Ferrarese+, 1994)
+ J/AJ/90/1681     : The Virgo Cluster Catalog (VCC) (Binggeli+, 1985)
+ http://sites.google.com/site/extendedvcc/ : EVCC home page
+
+Byte-by-byte Description of file: table2.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units    Label  Explanations
+--------------------------------------------------------------------------------
+   1-  4 I4     ---      EVCC   [1/2264] EVCC identifier (1)
+   6-  9 I4     ---      VCC    [1/2095]? VCC identifier
+  11- 15 A5     ---      NGC    ? NGC designation
+  17- 24 F8.4   deg      RAdeg  SExtractor Right Ascension (J2000)
+  26- 32 F7.4   deg      DEdeg  SExtractor Declination (J2000)
+  34- 41 F8.4   deg      RAFdeg ? SDSS fiber location Right Ascension (J2000)
+  43- 49 F7.4   deg      DEFdeg ? SDSS fiber location Declination (J2000)
+  51- 57 F7.4   arcsec   Offset [0/86.5]? Offset between photometric center
+                                 and SDSS fiber location
+  59- 64 F6.1   km/s     cz     [-745/2983]? SDSS heliocentric radial velocity
+  66- 72 F7.1   km/s     cz2    [-731/98610]? NED heliocentric radial velocity
+      74 A1     ---      MmI    [MP] Membership of galaxy from Virgo cluster
+                                 infall model (M=Member; P=Possible)
+      76 A1     ---      MmV    Membership of galaxy from VCC: M=Member,
+                                 P=Possible, B=background
+  78- 85 A8     ---      MTyp1  Primary morphology
+  87- 88 A2     ---      MTyp2  Secondary (SED) morphology (2)
+  90- 92 I3     ---      TT1    [100/411] Numerical primary morphology (3)
+  94-112 A19    ---      MTypV  Morphology from the VCC
+ 114-118 F5.2   mag      umag   SDSS u-band SExtractor AUTO magnitude
+ 120-124 F5.3   mag    e_umag   Error in umag
+ 126-130 F5.2   mag      gmag   SDSS g-band SExtractor AUTO magnitude
+ 132-136 F5.3   mag    e_gmag   Error in gmag
+ 138-142 F5.2   mag      rmag   SDSS r-band SExtractor AUTO magnitude
+ 144-148 F5.3   mag    e_rmag   Error in rmag
+ 150-154 F5.2   mag      imag   SDSS i-band SExtractor AUTO magnitude
+ 156-160 F5.3   mag    e_imag   Error in imag
+ 162-166 F5.2   mag      zmag   [7.6/19.7] SDSS z-band SExtractor AUTO magnitude
+ 168-172 F5.3   mag    e_zmag   [0.03/2] Error in zmag
+ 174-179 F6.2   arcsec   Rad    [4.9/477] Kron r-band radius
+ 181-186 F6.2   arcsec   R50    [0.8/102] SExtractor Half-light r-band radius
+--------------------------------------------------------------------------------
+Note (1): Galaxies with numbers larger than 2000 have radial velocities from
+          NED. ID is marked with the right ascension. The catalog of the
+          EVCC will be updated at http://sites.google.com/site/extendedvcc/
+Note (2): The secondary morphological classification relies on the spectral
+          energy distribution (SED) shape and presence of H{alpha}
+          emission/absorption lines (see section 3.2):
+   RA = red absoption galaxy. Overall SED shape of a typical early-type red
+        galaxy with an H{alpha} absorption line.
+   RE = red emission galaxy. Overall SED shape of a typical early-type red
+        galaxy, but it has H{alpha} in emission.
+   BA = blue absorption galaxy. Overall SED shape of a typical blue galaxy,
+        and has an H{alpha} absorption line.
+   BE = blue emission galaxy. Overall SED shape of a typical blue galaxy with
+        an H{alpha} emission line. In many cases, many emission lines (e.g.,
+        H{alpha}, H{beta}, and [OIII]5007) are prominent compared to the
+        continuum.
+Note (3): Primary morphology with numerical code defined in table1 as:
+   --------------------------------------------------------------------------
+   Type                  Code        Subclass
+   --------------------------------------------------------------------------
+   Elliptical            100
+   Disk galaxy           2[0/1][0-7] [1=bar][subtype:0=0,1=a,2=b,3=c,4=d,5=m,
+                                        6=S or 7=edge-on]
+   Irregular             3[0/1]0     [number of prominent HII regions: none
+                                        to low =0, high=1]
+   Early-type dwarf gal. 4[0/1][0/1] [subtype:dE=0, dS0=1] [nucleus=1]
+   --------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: table3.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label  Explanations
+--------------------------------------------------------------------------------
+   1-  4 I4     ---     VCC    [2/2096] VCC identifier
+   6- 10 A5     ---     NGC    NGC designation
+  12- 19 F8.4   deg     RAdeg  SExtractor Right Ascension (J2000)
+  21- 27 F7.4   deg     DEdeg  SExtractor Declination (J2000)
+  29- 37 F9.1   km/s    cz     ? SDSS heliocentric radial velocity
+  39- 46 F8.1   km/s    cz2    [3010/108279]? NED heliocentric radial velocity
+      48 A1     ---     MmV    Membership of galaxy from VCC: M=Member,
+                                 P=Possible, B=background
+  50- 61 A12    ---     MTypV  Morphology from the VCC
+  63- 67 F5.2   mag     umag   SDSS u-band SExtractor AUTO magnitude
+  69- 73 F5.3   mag   e_umag   Error in umag
+  75- 79 F5.2   mag     gmag   SDSS g-band SExtractor AUTO magnitude
+  81- 85 F5.3   mag   e_gmag   Error in gmag
+  87- 91 F5.2   mag     rmag   SDSS r-band SExtractor AUTO magnitude
+  93- 97 F5.3   mag   e_rmag   Error in rmag
+  99-103 F5.2   mag     imag   SDSS i-band SExtractor AUTO magnitude
+ 105-109 F5.3   mag   e_imag   Error in imag
+ 111-115 F5.2   mag     zmag   [10.8/21.3] SDSS z-band SExtractor AUTO magnitude
+ 117-121 F5.3   mag   e_zmag   [0.02/0.7] Error in zmag
+ 123-128 F6.2   arcsec  Rad    [2.4/277.5] Kron r-band radius
+ 130-134 F5.2   arcsec  R50    [0.6/36.2] SExtractor Half-light r-band radius
+--------------------------------------------------------------------------------
+
+History:
+    From electronic version of the journal
+
+================================================================================
+(End)                 Greg Schwarz [AAS], Emmanuelle Perret [CDS]    06-Feb-2015

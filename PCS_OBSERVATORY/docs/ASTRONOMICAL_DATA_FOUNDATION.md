@@ -63,6 +63,8 @@ Production objects use a canonical PCS identity plus source aliases. Phase 4A ex
 
 PGC is the source catalog's stable cross-catalog anchor in Phase 4A. Multiple names such as Messier, NGC and PGC are aliases on one PCS object, not duplicate objects. Later SDSS, DESI, NED or SIMBAD identifiers must be cross-matched into the same identity before production promotion.
 
+Phase 4B uses NGC → VCC → EVCC identity priority. A repeated catalog designation is not automatically proof of one physical object: the EVCC snapshot contains two distinct positions sharing `NGC 4257`. PCS retains both as EVCC-qualified canonical IDs and records the cross-match as ambiguous rather than silently merging or discarding a record.
+
 ## Scientific visual classes
 
 Each rendered element has one class:
@@ -86,3 +88,7 @@ The class affects marker shape/line grammar and is exposed in the legend and Obj
 ## Phase 4A registered source
 
 `vizier-j-apj-843-16` is validated for the documented 2–12 Mpc multi-member-group deployment scope. VizieR permits scientific-context use with explicit citation of authors, publication, publisher and service. Commercial use requires separate source-specific review.
+
+## Phase 4B registered source
+
+`vizier-j-apjs-215-22` is validated for the EVCC 725-square-degree footprint and its published M/P infall-model membership classification. It contains 1,589 catalog galaxies. The source adopts 16.5 Mpc for Virgo, but its table 2 does not supply individual galaxy distances; PCS keeps those distances unavailable and classifies the common-shell 3D placement as representative visualization. Catalog coordinates and membership remain observation records, coordinate transforms and velocity summaries are derived measurements, and pixel markers are representative.

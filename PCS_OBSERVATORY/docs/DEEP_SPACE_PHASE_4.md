@@ -3,7 +3,7 @@
 Status at 2026-08-09:
 
 - Phase 4A — Nearby Galaxy Groups: completed, deployed, and production-verified.
-- Phase 4B — Virgo Cluster: active next phase.
+- Phase 4B — Virgo Cluster: local implementation and validation passed; production deployment pending.
 - Phase 4C — Laniakea: not yet completed.
 - Phase 4D — Cosmic Web: not yet completed.
 - Phase 4E — Observable Universe: not yet completed.
@@ -81,4 +81,46 @@ Production evidence: `test-results/deep-space-phase-4a-production-7cc2814/accept
 
 ## Phase advancement
 
-Phase 4A is frozen at the deployed source, coordinate, identity, rendering, and lifecycle contract. The active roadmap is Phase 4B. Virgo must use actual catalog coordinates and explicit certain/possible membership; no random galaxy scatter is permitted.
+Phase 4A is frozen at the deployed source, coordinate, identity, rendering, and lifecycle contract.
+
+## Phase 4B — Virgo Cluster
+
+### Source and membership
+
+Phase 4B uses Kim et al. (2014), *The Extended Virgo Cluster Catalog*, VizieR `J/ApJS/215/22`, DOI `10.1088/0067-0049/215/2/22`. The frozen snapshot contains 1,589 galaxies over the published 725-square-degree EVCC footprint:
+
+- 1,028 source-classified `M` members.
+- 561 source-classified `P` possible members.
+- 1,589 preferred heliocentric velocity samples, using SDSS DR7 first and NED where identified by EVCC.
+- Major catalog cross-matches: M84/NGC 4374, M86/NGC 4406, M49/NGC 4472, M87/NGC 4486, and M60/NGC 4649.
+
+Membership is the source Virgo infall-model classification, not a PCS probability. Foreground/background certainty beyond the published M/P field is not invented.
+
+### Distance and visualization contract
+
+EVCC table 2 publishes sky coordinates and velocities but no individual galaxy distances. PCS therefore leaves every individual `distanceMpc` null. The catalog-adopted Virgo distance of 16.5 Mpc is used only for the cluster reference marker and a common observer-centered navigation shell. Every galaxy Object Card states that the radial placement is `Representative Visualization`, not an individual measured 3D coordinate.
+
+Catalog RA/Dec and membership are `Catalog Observation`; ICRS→Galactic→Supergalactic transforms and the velocity distribution are `Derived Measurement`; the common navigation shell and marker pixel sizes are `Representative Visualization`. No random galaxy scatter, rigid cluster boundary, synthetic filler, redshift distance, or zero-filled value is used.
+
+### Runtime and LOD
+
+The existing Viewer, Deep Space manager, search, selected-object store, language state and Unified Object Card are reused. Batched collections implement deterministic LOD:
+
+- FAR: Virgo cluster reference marker.
+- MID: M84, M86, M49, M87 and M60 major-member markers and labels.
+- NEAR: all 1,589 EVCC catalog points, with member and possible-member style distinction.
+
+Selected objects remain visible across LOD. The one camera-change listener is removed by `unload()`; no animation loop, DOM-per-object rendering, second Viewer or second canvas is created.
+
+### Local validation evidence
+
+- Node suite: 178/178 passing after Phase 4B integration.
+- Raw snapshot hashes match the source contract; normalized counts are 1,589 / 1,028 / 561.
+- Major-member RA/Dec values match the EVCC fixed-width source rows.
+- One ambiguous shared NGC designation is retained as two qualified PCS identities and explicitly flagged.
+- Real WebGL: 1,589 catalog primitives created; Virgo overview, major-member, selected M87 and cluster-card screenshots inspected.
+- M87 selected representation: on-screen, 13 px.
+- Ten Nearby Galaxy Groups ↔ Virgo cycles: primitive, DataSource and listener growth 0.
+- Viewer 1; Cesium canvas 1; four languages; 390×844 mobile; required Console 0; required Network failures 0.
+
+Local evidence: `test-results/deep-space-phase-4b-local/acceptance-report.json` and screenshots. Production verification is intentionally not claimed until commit, push, Pages deployment and production WebGL acceptance complete.
