@@ -28,7 +28,7 @@
   "normalizedFile": "normalized/comets-sbdb.js",
   "normalizedSha256": "86f3e35c12db275b67a193e40e1dd8a9279aa1079b3c04e03adcad6080d8389f",
   "fallbackPolicy": "Retain last validated catalog; do not fabricate a missing orbit solution.",
-  "validatedAt": "2026-08-09T03:04:34.008Z",
+  "validatedAt": "2026-08-09T04:26:08.062Z",
   "validation": {
     "comparisonCount": 18,
     "failures": 0,

@@ -110,7 +110,7 @@
     }
   ],
   "fallbackPolicy": "Retain last validated promoted catalog; never fabricate missing elements or physical properties.",
-  "validatedAt": "2026-08-09T03:03:44.027Z",
+  "validatedAt": "2026-08-09T04:26:12.056Z",
   "validation": {
     "comparisonCount": 27,
     "failures": 0,

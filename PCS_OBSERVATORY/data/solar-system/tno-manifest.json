@@ -28,7 +28,7 @@
   "normalizedFile": "normalized/tno-sbdb.js",
   "normalizedSha256": "490fc78db9d0fc8bb8e9ec0d8bd4ec98e7172b565b6a6d6d840e37785c6db7b3",
   "fallbackPolicy": "Retain last validated catalog; no synthetic replacement population.",
-  "validatedAt": "2026-08-09T03:04:00.637Z",
+  "validatedAt": "2026-08-09T04:27:10.887Z",
   "validation": {
     "comparisonCount": 16,
     "failures": 0,

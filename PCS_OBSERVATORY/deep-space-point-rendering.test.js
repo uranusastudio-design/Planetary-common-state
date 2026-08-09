@@ -20,6 +20,10 @@ test("human-rejected camera-motion trail runtime is fully absent", () => {
     assert.doesNotMatch(source, /motionStreak|motion-streak|data-ds-motion-streak|pcs:deep-space-navigation/i);
   }
   assert.doesNotMatch(runtime, /postRender\.addEventListener|requestAnimationFrame/);
+  assert.doesNotMatch(layers[1], /pointRecords/);
+  assert.doesNotMatch(layers[2], /pointRecords/);
+  assert.match(runtime, /viewer\.scene\.skyBox\.show=false/);
+  assert.match(runtime, /viewer\.scene\.skyBox\.show=saved\.skyBox/);
 });
 
 test("normal catalog point rendering and selection identities remain intact", () => {

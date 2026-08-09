@@ -1,6 +1,6 @@
 # Solar System SS-02
 
-Status: **Complete — SS-02A–G validated / frozen**
+Status: **SS-02G reopened — corrective local re-audit passed; SS-02 not frozen pending human visual confirmation**
 
 Release: **v2.2.0**
 
@@ -309,12 +309,12 @@ Evidence: `test-results/solar-system-ss02f/meteor-shower-validation.json` and `t
 
 ## SS-02G Release Audit
 
-SS-02G reran the complete repository suite and one combined real-browser cross-scale audit over Solar System, Nearby Stars/Gaia, Milky Way, Local Group, mobile layout, Earth ownership, Pointer-Anchored Navigation, Unified Object Cards, deterministic catalog ownership, resource lifecycle, Console, Network, and performance evidence.
+The prior SS-02G completion/freeze claim was revoked after human production-equivalent visual inspection found that the Solar System camera framed the body entities off-screen and that the remaining Cesium skybox still presented streak-like star imagery. The corrective audit now independently validates mathematical ephemerides and visible rendered bodies.
 
-Result: 150/150 Node tests and the final browser audit passed. The single Cesium Viewer/canvas contract held; ten cross-scale cycles produced no DataSource or primitive growth; 12,534 small-body SPK-IDs were unique; required Console and Network failures were zero. Headless SwiftShader performance values are preserved as environment-specific regression evidence rather than universal hardware guarantees.
+Corrective local result: 154/154 Node tests and 107/107 authoritative position comparisons passed. Real-WebGL screenshots visibly contain the Sun, all eight planets, required focused moon systems, selected dwarf/small bodies, both catalog belts, and a selected comet with a source-derived orbit. Drag and wheel-zoom captures contain no streak renderer, primitive, control, setting, listener, tail, or streak-like skybox. Ten open/close cycles preserve the single Viewer/canvas contract without primitive, DataSource, or listener growth. Human visual confirmation remains open.
 
 Full decision, evidence, limitations, and open boundaries: `docs/SOLAR_SYSTEM_SS02_RELEASE_AUDIT.md`.
 
-## Freeze boundary
+## Reopened boundary
 
-SS-02A–G are complete and frozen. Changing their public meaning requires an explicit SS-02 architecture revision, migration notes, and rerun of the affected regression gates. v2.2.0 remains Preview because the separate Foundation physical-gesture audit is still open. Deep Space Phase 4A remains not started.
+SS-02A–F scientific-data validation remains intact, but SS-02G is reopened and aggregate SS-02 is not frozen. Commit, push, and GitHub Pages deployment of the corrective work were authorized explicitly on 2026-08-09; post-deployment human visual confirmation is still required before refreezing SS-02G. v2.2.0 remains Preview, the separate Foundation physical-gesture audit remains open, Titania imagery remains deferred, and Deep Space Phase 4A remains not started.

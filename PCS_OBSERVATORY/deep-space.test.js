@@ -118,8 +118,15 @@ test("solar rendering creates solution-bound planet and focused-satellite orbit 
 });
 
 test("solid-body LOD overlaps point, intermediate marker, and colored sphere without a visibility gap", () => {
-  for (const token of ["function solidBodyLod(entry)","scaleByDistance:new Cesium.NearFarScalar","distanceDisplayCondition:new Cesium.DistanceDisplayCondition(lod.overlapStart","distanceDisplayCondition:new Cesium.DistanceDisplayCondition(0,lod.transitionDistance)","physicalRadiusKm:lod.physicalRadiusKm","displayRadiusScale:lod.displayRadiusScale","visualScaleNotice:lod.notice"]) assert.ok(manager.includes(token),token);
+  for (const token of ["function solidBodyLod(entry)","sphereFar:transitionDistance*.45","discNear:transitionDistance*.35","discFar:transitionDistance*4.4","pointNear:transitionDistance*3.6","billboard:{image:bodyDiscImage(entry)","distanceDisplayCondition:new Cesium.DistanceDisplayCondition(lod.pointNear","distanceDisplayCondition:new Cesium.DistanceDisplayCondition(lod.discNear,lod.discFar)","distanceDisplayCondition:new Cesium.DistanceDisplayCondition(0,lod.sphereFar)","physicalRadius:lod.physicalRadius","displayRadius:lod.displayRadius","displayScaleMode:lod.displayScaleMode"]) assert.ok(manager.includes(token),token);
+  assert.ok(.35 <= .45 && 3.6 <= 4.4, "sphere/disc and disc/point distance bands must overlap");
   assert.doesNotMatch(manager,/material:Cesium\.Color\.WHITE[,}]/);
+});
+
+test("Solar System overview camera frames the rendered registry instead of aiming away from it", () => {
+  assert.match(manager,/function solarOverviewCenter\(\)/);
+  assert.match(manager,/direction=Cesium\.Cartesian3\.normalize\(Cesium\.Cartesian3\.subtract\(target,destination/);
+  assert.doesNotMatch(manager,/destination:new Cesium\.Cartesian3\(0,0,height\)[\s\S]{0,160}pitch:kind/);
 });
 
 test("Phase 2/3 catalogs and SS-02C–E small bodies share one manager while Phase 4 remains unavailable", () => {

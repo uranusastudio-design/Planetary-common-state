@@ -268,7 +268,7 @@
     }
   ],
   "fallbackPolicy": "Retain the last validated promoted dataset. Never fabricate a missing vector.",
-  "validatedAt": "2026-08-09T03:03:09.953Z",
+  "validatedAt": "2026-08-09T04:26:52.969Z",
   "validation": {
     "method": "Withheld-epoch direct Horizons vectors versus PCS cubic-Hermite states. UTC converted to JDTDB with NAIF naif0012.tls.",
     "comparisonCount": 46,
