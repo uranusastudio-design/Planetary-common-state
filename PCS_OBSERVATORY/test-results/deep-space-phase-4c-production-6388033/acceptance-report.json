@@ -1,0 +1,3437 @@
+{
+  "generatedAt": "2026-08-09T11:15:52.703Z",
+  "url": "https://uranusastudio-design.github.io/Planetary-common-state/PCS_OBSERVATORY/?v=6388033",
+  "initial": {
+    "initialized": true,
+    "viewerCount": 1,
+    "canvasCount": 2,
+    "active": true,
+    "scaleContext": "solar",
+    "mode": "exhibition",
+    "epoch": "2026-08-09T17:33:15.801Z",
+    "playbackDaysPerSecond": 1,
+    "playbackRange": {
+      "start": "1800-01-01T00:00:00.000Z",
+      "end": "2050-12-31T23:59:59.999Z"
+    },
+    "paused": false,
+    "solarTime": {
+      "displayEpoch": "2026-08-09T17:33:15.801Z",
+      "displayTimeScale": "UTC",
+      "ephemerisTimeScale": "TDB",
+      "revision": 2,
+      "reason": "playback"
+    },
+    "solarSolution": {
+      "id": "pcs-ss02b-horizons-de441-2025-2028:hermite",
+      "displayEpoch": "2026-08-09T17:33:15.801Z",
+      "displayTimeScale": "UTC",
+      "ephemerisTimeScale": "TDB",
+      "source": "NASA/JPL Horizons API",
+      "catalogEphemeris": "JPL DE441 / satellite source reported per target",
+      "referenceSystem": "ICRF",
+      "referencePlane": "Earth mean ecliptic at J2000.0 (IAU76/80)",
+      "referenceFrame": "ICRF; Earth mean ecliptic at J2000.0 (IAU76/80); heliocentric origin",
+      "positionMode": "Cached ephemeris · cubic Hermite state",
+      "orbitMode": "Cached ephemeris states from the same promoted solution",
+      "lastDataUpdate": "2026-08-09T02:59:51.822Z",
+      "qualityStatus": "Validated local cache · validated",
+      "uncertainty": "No covariance supplied by Horizons VECTORS; interpolation error is validated per object class",
+      "validity": {
+        "start": "2025-01-01T00:00:00.000Z",
+        "end": "2028-01-01T00:00:00.000Z"
+      },
+      "coverage": {
+        "start": "2025-01-01T00:00:00.000Z",
+        "end": "2028-01-01T00:00:00.000Z"
+      },
+      "bodyIds": [
+        "mercury",
+        "venus",
+        "earth",
+        "mars",
+        "jupiter",
+        "saturn",
+        "uranus",
+        "neptune"
+      ],
+      "coherent": true,
+      "authoritative": true,
+      "stale": false,
+      "notice": "Every eligible major planet is resolved from the same promoted Horizons dataset and requested Display Epoch."
+    },
+    "solarSyncStatus": {
+      "schemaVersion": 1,
+      "pipelineId": "pcs-solar-system-ss02f",
+      "generatedAt": "2026-08-09T03:04:34.082Z",
+      "state": "validated",
+      "lastSuccessfulSynchronization": "2026-08-09T03:04:34.082Z",
+      "failedAt": null,
+      "lastError": null,
+      "updatePolicy": "Periodic catalog synchronization",
+      "fallbackPolicy": "Retain last validated deployed artifacts when ingestion or validation fails",
+      "datasets": [
+        {
+          "file": "data/solar-system/ephemeris-manifest.json",
+          "datasetId": "pcs-ss02b-horizons-de441-2025-2028",
+          "lastSuccessfulSynchronization": "2026-08-09T02:59:51.822Z",
+          "validatedAt": "2026-08-09T03:03:09.953Z",
+          "source": "NASA/JPL Horizons API",
+          "recordCount": 19,
+          "validationComparisons": 46
+        },
+        {
+          "file": "data/solar-system/small-body-manifest.json",
+          "datasetId": "pcs-ss02c-sbdb-small-bodies",
+          "lastSuccessfulSynchronization": "2026-08-09T03:03:09.996Z",
+          "validatedAt": "2026-08-09T03:03:44.027Z",
+          "source": "NASA/JPL SBDB and Horizons APIs",
+          "recordCount": 5365,
+          "validationComparisons": 27
+        },
+        {
+          "file": "data/solar-system/tno-manifest.json",
+          "datasetId": "pcs-ss02d-sbdb-tno",
+          "lastSuccessfulSynchronization": "2026-08-09T03:03:44.088Z",
+          "validatedAt": "2026-08-09T03:04:00.637Z",
+          "source": "NASA/JPL SBDB Query API",
+          "recordCount": 7155,
+          "validationComparisons": 16
+        },
+        {
+          "file": "data/solar-system/comet-manifest.json",
+          "datasetId": "pcs-ss02e-sbdb-priority-comets",
+          "lastSuccessfulSynchronization": "2026-08-09T03:04:00.677Z",
+          "validatedAt": "2026-08-09T03:04:34.008Z",
+          "source": "NASA/JPL SBDB and Horizons APIs",
+          "recordCount": 9,
+          "validationComparisons": 18
+        }
+      ]
+    },
+    "orbitCacheEntries": 8,
+    "tickListenerActive": true,
+    "pointerNavigationActive": true,
+    "nativeZoomEnabled": false,
+    "lastPointerZoom": null,
+    "lastObjectFocus": null,
+    "objectCardId": "sun",
+    "selected": "sun",
+    "smallBodySelected": null,
+    "meteorSelected": null,
+    "mainBelt": {
+      "datasetId": "pcs-ss02c-sbdb-small-bodies",
+      "catalogRecords": 5365,
+      "pointCount": 5365,
+      "visibleCount": 256,
+      "lod": "far",
+      "deterministic": true,
+      "epochUpdatePending": false,
+      "epochUpdateCursor": 0,
+      "completedEpochUpdates": 0,
+      "selection": {
+        "orbitClass": "MBA",
+        "absoluteMagnitude": "H < 13",
+        "sort": "H,pdes",
+        "deterministic": true
+      },
+      "upstreamMatchCount": 5366
+    },
+    "tno": {
+      "datasetId": "pcs-ss02d-sbdb-tno",
+      "knownCatalogRecords": 7155,
+      "pointCount": 7155,
+      "visibleCount": 256,
+      "lod": "far",
+      "deterministic": true,
+      "epochUpdatePending": false,
+      "epochUpdateCursor": 0,
+      "completedEpochUpdates": 0,
+      "selection": {
+        "orbitClass": "TNO",
+        "sort": "H,pdes",
+        "deterministic": true,
+        "normalizedSort": "defined H ascending, then pdes; undefined H last"
+      },
+      "representativePopulation": {
+        "status": "unavailable",
+        "notice": "No synthetic Kuiper Belt population or solid ring is generated."
+      }
+    },
+    "comets": {
+      "datasetId": "pcs-ss02e-sbdb-priority-comets",
+      "catalogRecords": 9,
+      "pointCount": 9,
+      "deterministic": true,
+      "selection": {
+        "type": "curated priority periodic/scientifically important comet subset",
+        "designations": [
+          "1P",
+          "2P",
+          "8P",
+          "21P",
+          "55P",
+          "67P",
+          "96P",
+          "109P",
+          "C/1861 G1"
+        ],
+        "deterministic": true,
+        "completeCatalog": false
+      },
+      "positionMode": "Cached Horizons vectors · cubic Hermite state; SBDB element fallback is disclosed two-body propagation"
+    },
+    "meteorShowers": {
+      "datasetId": "pcs-ss02e-iau-imo-meteor-showers",
+      "records": 9,
+      "classification": "observational/event relationship layer"
+    },
+    "nearbyActive": false,
+    "nearbyTier": "10pc",
+    "nearbySelected": null,
+    "nearbySelectedMetadata": null,
+    "phase3Selected": null,
+    "phase4Selected": null,
+    "nearby": {
+      "records": 0,
+      "points": 0,
+      "labels": 0,
+      "guides": 0,
+      "motion": 0,
+      "lod": "far",
+      "visible": false
+    },
+    "milkyWay": {
+      "records": 0,
+      "points": 0,
+      "lines": 0,
+      "labels": 0,
+      "visible": false,
+      "mode": "exhibition",
+      "reconstruction": true
+    },
+    "localGroup": {
+      "records": 0,
+      "points": 0,
+      "labels": 0,
+      "uncertainties": 0,
+      "boundary": 0,
+      "lod": "far",
+      "mode": "exhibition",
+      "visible": false
+    },
+    "galaxyGroups": {
+      "groups": 0,
+      "groupPoints": 0,
+      "memberPoints": 0,
+      "labels": 0,
+      "selectedGroupId": null,
+      "mode": "exhibition",
+      "visible": false
+    },
+    "virgo": {
+      "clusterPoints": 0,
+      "majorPoints": 0,
+      "catalogPoints": 0,
+      "labels": 0,
+      "lod": "far",
+      "selectedId": null,
+      "cameraListenerActive": false,
+      "catalogVisible": true
+    },
+    "laniakea": {
+      "points": 0,
+      "vectors": 0,
+      "selectedId": null,
+      "catalogVisible": true,
+      "vectorsVisible": true
+    }
+  },
+  "overviewDebug": {
+    "initialized": true,
+    "viewerCount": 1,
+    "canvasCount": 2,
+    "active": true,
+    "scaleContext": "laniakea",
+    "mode": "exhibition",
+    "epoch": "2026-08-13T10:14:46.938Z",
+    "playbackDaysPerSecond": 1,
+    "playbackRange": {
+      "start": "1800-01-01T00:00:00.000Z",
+      "end": "2050-12-31T23:59:59.999Z"
+    },
+    "paused": false,
+    "solarTime": {
+      "displayEpoch": "2026-08-13T10:14:46.938Z",
+      "displayTimeScale": "UTC",
+      "ephemerisTimeScale": "TDB",
+      "revision": 168,
+      "reason": "playback"
+    },
+    "solarSolution": {
+      "id": "pcs-ss02b-horizons-de441-2025-2028:hermite",
+      "displayEpoch": "2026-08-10T04:50:03.799Z",
+      "displayTimeScale": "UTC",
+      "ephemerisTimeScale": "TDB",
+      "source": "NASA/JPL Horizons API",
+      "catalogEphemeris": "JPL DE441 / satellite source reported per target",
+      "referenceSystem": "ICRF",
+      "referencePlane": "Earth mean ecliptic at J2000.0 (IAU76/80)",
+      "referenceFrame": "ICRF; Earth mean ecliptic at J2000.0 (IAU76/80); heliocentric origin",
+      "positionMode": "Cached ephemeris · cubic Hermite state",
+      "orbitMode": "Cached ephemeris states from the same promoted solution",
+      "lastDataUpdate": "2026-08-09T02:59:51.822Z",
+      "qualityStatus": "Validated local cache · validated",
+      "uncertainty": "No covariance supplied by Horizons VECTORS; interpolation error is validated per object class",
+      "validity": {
+        "start": "2025-01-01T00:00:00.000Z",
+        "end": "2028-01-01T00:00:00.000Z"
+      },
+      "coverage": {
+        "start": "2025-01-01T00:00:00.000Z",
+        "end": "2028-01-01T00:00:00.000Z"
+      },
+      "bodyIds": [
+        "mercury",
+        "venus",
+        "earth",
+        "mars",
+        "jupiter",
+        "saturn",
+        "uranus",
+        "neptune"
+      ],
+      "coherent": true,
+      "authoritative": true,
+      "stale": false,
+      "notice": "Every eligible major planet is resolved from the same promoted Horizons dataset and requested Display Epoch."
+    },
+    "solarSyncStatus": {
+      "schemaVersion": 1,
+      "pipelineId": "pcs-solar-system-ss02f",
+      "generatedAt": "2026-08-09T03:04:34.082Z",
+      "state": "validated",
+      "lastSuccessfulSynchronization": "2026-08-09T03:04:34.082Z",
+      "failedAt": null,
+      "lastError": null,
+      "updatePolicy": "Periodic catalog synchronization",
+      "fallbackPolicy": "Retain last validated deployed artifacts when ingestion or validation fails",
+      "datasets": [
+        {
+          "file": "data/solar-system/ephemeris-manifest.json",
+          "datasetId": "pcs-ss02b-horizons-de441-2025-2028",
+          "lastSuccessfulSynchronization": "2026-08-09T02:59:51.822Z",
+          "validatedAt": "2026-08-09T03:03:09.953Z",
+          "source": "NASA/JPL Horizons API",
+          "recordCount": 19,
+          "validationComparisons": 46
+        },
+        {
+          "file": "data/solar-system/small-body-manifest.json",
+          "datasetId": "pcs-ss02c-sbdb-small-bodies",
+          "lastSuccessfulSynchronization": "2026-08-09T03:03:09.996Z",
+          "validatedAt": "2026-08-09T03:03:44.027Z",
+          "source": "NASA/JPL SBDB and Horizons APIs",
+          "recordCount": 5365,
+          "validationComparisons": 27
+        },
+        {
+          "file": "data/solar-system/tno-manifest.json",
+          "datasetId": "pcs-ss02d-sbdb-tno",
+          "lastSuccessfulSynchronization": "2026-08-09T03:03:44.088Z",
+          "validatedAt": "2026-08-09T03:04:00.637Z",
+          "source": "NASA/JPL SBDB Query API",
+          "recordCount": 7155,
+          "validationComparisons": 16
+        },
+        {
+          "file": "data/solar-system/comet-manifest.json",
+          "datasetId": "pcs-ss02e-sbdb-priority-comets",
+          "lastSuccessfulSynchronization": "2026-08-09T03:04:00.677Z",
+          "validatedAt": "2026-08-09T03:04:34.008Z",
+          "source": "NASA/JPL SBDB and Horizons APIs",
+          "recordCount": 9,
+          "validationComparisons": 18
+        }
+      ]
+    },
+    "orbitCacheEntries": 8,
+    "tickListenerActive": true,
+    "pointerNavigationActive": true,
+    "nativeZoomEnabled": false,
+    "lastPointerZoom": null,
+    "lastObjectFocus": null,
+    "objectCardId": "pcs:reconstructed-structure:laniakea-context",
+    "selected": "sun",
+    "smallBodySelected": null,
+    "meteorSelected": null,
+    "mainBelt": {
+      "datasetId": "pcs-ss02c-sbdb-small-bodies",
+      "catalogRecords": 0,
+      "pointCount": 0,
+      "visibleCount": 0,
+      "lod": "far",
+      "deterministic": true,
+      "epochUpdatePending": false,
+      "epochUpdateCursor": 0,
+      "completedEpochUpdates": 0,
+      "selection": {
+        "orbitClass": "MBA",
+        "absoluteMagnitude": "H < 13",
+        "sort": "H,pdes",
+        "deterministic": true
+      },
+      "upstreamMatchCount": 5366
+    },
+    "tno": {
+      "datasetId": "pcs-ss02d-sbdb-tno",
+      "knownCatalogRecords": 0,
+      "pointCount": 0,
+      "visibleCount": 0,
+      "lod": "far",
+      "deterministic": true,
+      "epochUpdatePending": false,
+      "epochUpdateCursor": 0,
+      "completedEpochUpdates": 0,
+      "selection": {
+        "orbitClass": "TNO",
+        "sort": "H,pdes",
+        "deterministic": true,
+        "normalizedSort": "defined H ascending, then pdes; undefined H last"
+      },
+      "representativePopulation": {
+        "status": "unavailable",
+        "notice": "No synthetic Kuiper Belt population or solid ring is generated."
+      }
+    },
+    "comets": {
+      "datasetId": "pcs-ss02e-sbdb-priority-comets",
+      "catalogRecords": 0,
+      "pointCount": 0,
+      "deterministic": true,
+      "selection": {
+        "type": "curated priority periodic/scientifically important comet subset",
+        "designations": [
+          "1P",
+          "2P",
+          "8P",
+          "21P",
+          "55P",
+          "67P",
+          "96P",
+          "109P",
+          "C/1861 G1"
+        ],
+        "deterministic": true,
+        "completeCatalog": false
+      },
+      "positionMode": "Cached Horizons vectors · cubic Hermite state; SBDB element fallback is disclosed two-body propagation"
+    },
+    "meteorShowers": {
+      "datasetId": "pcs-ss02e-iau-imo-meteor-showers",
+      "records": 9,
+      "classification": "observational/event relationship layer"
+    },
+    "nearbyActive": false,
+    "nearbyTier": "10pc",
+    "nearbySelected": null,
+    "nearbySelectedMetadata": null,
+    "phase3Selected": null,
+    "phase4Selected": "Laniakea Reconstruction Context",
+    "nearby": {
+      "records": 0,
+      "points": 0,
+      "labels": 0,
+      "guides": 0,
+      "motion": 0,
+      "lod": "far",
+      "visible": false
+    },
+    "milkyWay": {
+      "records": 0,
+      "points": 0,
+      "lines": 0,
+      "labels": 0,
+      "visible": false,
+      "mode": "exhibition",
+      "reconstruction": true
+    },
+    "localGroup": {
+      "records": 0,
+      "points": 0,
+      "labels": 0,
+      "uncertainties": 0,
+      "boundary": 0,
+      "lod": "far",
+      "mode": "exhibition",
+      "visible": false
+    },
+    "galaxyGroups": {
+      "groups": 0,
+      "groupPoints": 0,
+      "memberPoints": 0,
+      "labels": 0,
+      "selectedGroupId": null,
+      "mode": "exhibition",
+      "visible": false
+    },
+    "virgo": {
+      "clusterPoints": 0,
+      "majorPoints": 0,
+      "catalogPoints": 0,
+      "labels": 0,
+      "lod": "far",
+      "selectedId": null,
+      "cameraListenerActive": false,
+      "catalogVisible": true
+    },
+    "laniakea": {
+      "points": 2387,
+      "vectors": 600,
+      "selectedId": "pcs:reconstructed-structure:laniakea-context",
+      "catalogVisible": true,
+      "vectorsVisible": true
+    }
+  },
+  "overview": {
+    "onScreen": 866,
+    "total": 2387
+  },
+  "structureCard": {
+    "id": "pcs:reconstructed-structure:laniakea-context",
+    "text": "正式名稱Laniakea Reconstruction Context當地語言名稱Laniakea Reconstruction Context別名Laniakea, Laniakea Supercluster物件類型Reconstructed Structure所屬系統／結構Local large-scale velocity fieldCatalog IDTully et al. 2014 Laniakea座標無資料座標框架Supergalactic距離無資料距離類型Not a point distance; deployed context samples measured CF2 group distances within 80 Mpc of the observer不確定性無資料紅移無資料速度無資料實體尺寸無資料質量無資料成員數2387成員資格無資料巡天／星表Cosmicflows-2 peculiar-velocity context資料版本VizieR J/AJ/146/86觀測狀態無資料重建狀態Observation-based Reconstruction物理半徑無資料顯示半徑無資料顯示比例模式無資料軌道資料無資料事件／關係無資料曆元Cosmicflows-2 reconstruction context最後更新PCS source snapshot retrieved 2026-08-09資料來源Tully et al. 2014 / Cosmicflows-2資料狀態Information target plus Cosmicflows-2 observational context視覺化狀態No rigid Laniakea boundary deployed; CF2 catalog points and radial peculiar-velocity vectors only研究文件https://doi.org/10.1038/nature13674已知限制No rigid Laniakea basin boundary is deployed; this is an information target over a CF2 observational context.; The 80 Mpc radius is a PCS observer-centered sampling window, not a Laniakea boundary.; Newer Cosmicflows-4 work may revise basin relationships.",
+    "title": "Laniakea Reconstruction Context"
+  },
+  "selected": {
+    "id": "pcs:galaxy-group:cf2:334",
+    "canonicalName": "UGC00763",
+    "aliases": [
+      "CF2 Group 334",
+      "UGC00763"
+    ],
+    "objectType": "Galaxy Group",
+    "parentStructure": "pcs:reconstructed-structure:laniakea-context",
+    "catalogIds": [
+      "CF2 group 334",
+      "PGC 4367"
+    ],
+    "sourceFrame": "Supergalactic spherical",
+    "sourceEpoch": "J2000 where source angular coordinates apply",
+    "distanceConvention": "Cosmicflows-2 weighted group distance",
+    "redshiftConvention": "Source velocities retained by named frame; no redshift-distance conversion",
+    "cosmologyAssumption": "CF2 adjusted velocity fields use Ωm=0.27 flat topology; source peculiar velocity uses H0=74.4 km/s/Mpc",
+    "transformVersion": "source-published-supergalactic-v1",
+    "measuredGalaxyCount": 1,
+    "distanceMpc": 11.32,
+    "distanceModulus": 30.27,
+    "fractionalDistanceError": 0.2,
+    "positionGalaxyCount": 1,
+    "galacticLongitudeDeg": 134.2168,
+    "galacticLatitudeDeg": -61.4184,
+    "supergalacticLongitudeDeg": 298.6121,
+    "supergalacticLatitudeDeg": -4.0433,
+    "meanMorphologyType": 9,
+    "apparentBMag": 11.83,
+    "apparentKMag": 9.84,
+    "heliocentricVelocityKmS": 1155,
+    "galacticVelocityKmS": 1231,
+    "localSheetVelocityKmS": 1279,
+    "cmbVelocityKmS": 836,
+    "adjustedCmbVelocityKmS": 838,
+    "velocityDispersionKmS": 0,
+    "peculiarVelocityKmS": -3,
+    "adjustedPeculiarVelocityKmS": -2,
+    "groupNumber": 334,
+    "twoMppGroup": 0,
+    "brightestPgc": 4367,
+    "groupName": "UGC00763",
+    "supergalacticCartesianMpc": [
+      5.40739829,
+      -9.91288843,
+      -0.79817705
+    ],
+    "observationStatus": "Catalog Observation",
+    "reconstructionStatus": null,
+    "dataStatus": "Catalog Observation plus source-derived peculiar velocity",
+    "visualizationStatus": "Catalog point; radial peculiar-velocity vector is Derived Measurement",
+    "sourceId": "vizier-j-aj-146-86",
+    "sourceCatalog": "Cosmicflows-2",
+    "sourceDoi": "10.1088/0004-6256/146/4/86"
+  },
+  "selectedPoint": {
+    "id": "pcs:galaxy-group:cf2:334",
+    "name": "UGC00763",
+    "x": 719.0000000000027,
+    "y": 498.9999999999981,
+    "onScreen": true,
+    "pixelSize": 12
+  },
+  "groupCard": {
+    "id": "pcs:galaxy-group:cf2:334",
+    "text": "正式名稱UGC00763當地語言名稱UGC00763別名CF2 Group 334, UGC00763物件類型Galaxy Group所屬系統／結構pcs:reconstructed-structure:laniakea-contextCatalog IDCF2 group 334, PGC 4367座標Galactic 134.2168°, -61.4184°; Supergalactic 298.6121°, -4.0433°座標框架Supergalactic spherical距離11.32 Mpc距離類型Cosmicflows-2 weighted group distance不確定性fractional ±0.2紅移無資料速度Peculiar -3 km/s; CMB 836 km/s實體尺寸無資料質量無資料成員數無資料成員資格無資料巡天／星表Cosmicflows-2 peculiar-velocity context資料版本VizieR J/AJ/146/86觀測狀態Catalog Observation重建狀態無資料物理半徑無資料顯示半徑無資料顯示比例模式無資料軌道資料無資料事件／關係無資料曆元J2000 where source angular coordinates apply最後更新PCS source snapshot retrieved 2026-08-09資料來源Cosmicflows-2資料狀態Catalog Observation plus source-derived peculiar velocity視覺化狀態Catalog point; radial peculiar-velocity vector is Derived Measurement研究文件https://doi.org/10.1088/0004-6256/146/4/86已知限制The displayed arrow is the source radial peculiar velocity along the observer line of sight, not a full 3D flow vector.; The 80 Mpc radius is a PCS observer-centered sampling window, not a Laniakea boundary.; Newer Cosmicflows-4 work may revise basin relationships."
+  },
+  "cycles": [
+    {
+      "primitive": 6,
+      "dataSources": 4,
+      "listeners": {
+        "changed": 5,
+        "moveStart": 0,
+        "moveEnd": 3,
+        "postRender": 2,
+        "preRender": 0
+      },
+      "debug": {
+        "initialized": true,
+        "viewerCount": 1,
+        "canvasCount": 2,
+        "active": true,
+        "scaleContext": "laniakea",
+        "mode": "exhibition",
+        "epoch": "2026-08-16T10:44:09.448Z",
+        "playbackDaysPerSecond": 1,
+        "playbackRange": {
+          "start": "1800-01-01T00:00:00.000Z",
+          "end": "2050-12-31T23:59:59.999Z"
+        },
+        "paused": false,
+        "solarTime": {
+          "displayEpoch": "2026-08-16T10:44:09.448Z",
+          "displayTimeScale": "UTC",
+          "ephemerisTimeScale": "TDB",
+          "revision": 292,
+          "reason": "playback"
+        },
+        "solarSolution": {
+          "id": "pcs-ss02b-horizons-de441-2025-2028:hermite",
+          "displayEpoch": "2026-08-10T04:50:03.799Z",
+          "displayTimeScale": "UTC",
+          "ephemerisTimeScale": "TDB",
+          "source": "NASA/JPL Horizons API",
+          "catalogEphemeris": "JPL DE441 / satellite source reported per target",
+          "referenceSystem": "ICRF",
+          "referencePlane": "Earth mean ecliptic at J2000.0 (IAU76/80)",
+          "referenceFrame": "ICRF; Earth mean ecliptic at J2000.0 (IAU76/80); heliocentric origin",
+          "positionMode": "Cached ephemeris · cubic Hermite state",
+          "orbitMode": "Cached ephemeris states from the same promoted solution",
+          "lastDataUpdate": "2026-08-09T02:59:51.822Z",
+          "qualityStatus": "Validated local cache · validated",
+          "uncertainty": "No covariance supplied by Horizons VECTORS; interpolation error is validated per object class",
+          "validity": {
+            "start": "2025-01-01T00:00:00.000Z",
+            "end": "2028-01-01T00:00:00.000Z"
+          },
+          "coverage": {
+            "start": "2025-01-01T00:00:00.000Z",
+            "end": "2028-01-01T00:00:00.000Z"
+          },
+          "bodyIds": [
+            "mercury",
+            "venus",
+            "earth",
+            "mars",
+            "jupiter",
+            "saturn",
+            "uranus",
+            "neptune"
+          ],
+          "coherent": true,
+          "authoritative": true,
+          "stale": false,
+          "notice": "Every eligible major planet is resolved from the same promoted Horizons dataset and requested Display Epoch."
+        },
+        "solarSyncStatus": {
+          "schemaVersion": 1,
+          "pipelineId": "pcs-solar-system-ss02f",
+          "generatedAt": "2026-08-09T03:04:34.082Z",
+          "state": "validated",
+          "lastSuccessfulSynchronization": "2026-08-09T03:04:34.082Z",
+          "failedAt": null,
+          "lastError": null,
+          "updatePolicy": "Periodic catalog synchronization",
+          "fallbackPolicy": "Retain last validated deployed artifacts when ingestion or validation fails",
+          "datasets": [
+            {
+              "file": "data/solar-system/ephemeris-manifest.json",
+              "datasetId": "pcs-ss02b-horizons-de441-2025-2028",
+              "lastSuccessfulSynchronization": "2026-08-09T02:59:51.822Z",
+              "validatedAt": "2026-08-09T03:03:09.953Z",
+              "source": "NASA/JPL Horizons API",
+              "recordCount": 19,
+              "validationComparisons": 46
+            },
+            {
+              "file": "data/solar-system/small-body-manifest.json",
+              "datasetId": "pcs-ss02c-sbdb-small-bodies",
+              "lastSuccessfulSynchronization": "2026-08-09T03:03:09.996Z",
+              "validatedAt": "2026-08-09T03:03:44.027Z",
+              "source": "NASA/JPL SBDB and Horizons APIs",
+              "recordCount": 5365,
+              "validationComparisons": 27
+            },
+            {
+              "file": "data/solar-system/tno-manifest.json",
+              "datasetId": "pcs-ss02d-sbdb-tno",
+              "lastSuccessfulSynchronization": "2026-08-09T03:03:44.088Z",
+              "validatedAt": "2026-08-09T03:04:00.637Z",
+              "source": "NASA/JPL SBDB Query API",
+              "recordCount": 7155,
+              "validationComparisons": 16
+            },
+            {
+              "file": "data/solar-system/comet-manifest.json",
+              "datasetId": "pcs-ss02e-sbdb-priority-comets",
+              "lastSuccessfulSynchronization": "2026-08-09T03:04:00.677Z",
+              "validatedAt": "2026-08-09T03:04:34.008Z",
+              "source": "NASA/JPL SBDB and Horizons APIs",
+              "recordCount": 9,
+              "validationComparisons": 18
+            }
+          ]
+        },
+        "orbitCacheEntries": 8,
+        "tickListenerActive": true,
+        "pointerNavigationActive": true,
+        "nativeZoomEnabled": false,
+        "lastPointerZoom": null,
+        "lastObjectFocus": "pcs:galaxy-group:cf2:334",
+        "objectCardId": "pcs:reconstructed-structure:laniakea-context",
+        "selected": "sun",
+        "smallBodySelected": null,
+        "meteorSelected": null,
+        "mainBelt": {
+          "datasetId": "pcs-ss02c-sbdb-small-bodies",
+          "catalogRecords": 0,
+          "pointCount": 0,
+          "visibleCount": 0,
+          "lod": "far",
+          "deterministic": true,
+          "epochUpdatePending": false,
+          "epochUpdateCursor": 0,
+          "completedEpochUpdates": 0,
+          "selection": {
+            "orbitClass": "MBA",
+            "absoluteMagnitude": "H < 13",
+            "sort": "H,pdes",
+            "deterministic": true
+          },
+          "upstreamMatchCount": 5366
+        },
+        "tno": {
+          "datasetId": "pcs-ss02d-sbdb-tno",
+          "knownCatalogRecords": 0,
+          "pointCount": 0,
+          "visibleCount": 0,
+          "lod": "far",
+          "deterministic": true,
+          "epochUpdatePending": false,
+          "epochUpdateCursor": 0,
+          "completedEpochUpdates": 0,
+          "selection": {
+            "orbitClass": "TNO",
+            "sort": "H,pdes",
+            "deterministic": true,
+            "normalizedSort": "defined H ascending, then pdes; undefined H last"
+          },
+          "representativePopulation": {
+            "status": "unavailable",
+            "notice": "No synthetic Kuiper Belt population or solid ring is generated."
+          }
+        },
+        "comets": {
+          "datasetId": "pcs-ss02e-sbdb-priority-comets",
+          "catalogRecords": 0,
+          "pointCount": 0,
+          "deterministic": true,
+          "selection": {
+            "type": "curated priority periodic/scientifically important comet subset",
+            "designations": [
+              "1P",
+              "2P",
+              "8P",
+              "21P",
+              "55P",
+              "67P",
+              "96P",
+              "109P",
+              "C/1861 G1"
+            ],
+            "deterministic": true,
+            "completeCatalog": false
+          },
+          "positionMode": "Cached Horizons vectors · cubic Hermite state; SBDB element fallback is disclosed two-body propagation"
+        },
+        "meteorShowers": {
+          "datasetId": "pcs-ss02e-iau-imo-meteor-showers",
+          "records": 9,
+          "classification": "observational/event relationship layer"
+        },
+        "nearbyActive": false,
+        "nearbyTier": "10pc",
+        "nearbySelected": null,
+        "nearbySelectedMetadata": null,
+        "phase3Selected": null,
+        "phase4Selected": "Laniakea Reconstruction Context",
+        "nearby": {
+          "records": 0,
+          "points": 0,
+          "labels": 0,
+          "guides": 0,
+          "motion": 0,
+          "lod": "far",
+          "visible": false
+        },
+        "milkyWay": {
+          "records": 0,
+          "points": 0,
+          "lines": 0,
+          "labels": 0,
+          "visible": false,
+          "mode": "exhibition",
+          "reconstruction": true
+        },
+        "localGroup": {
+          "records": 0,
+          "points": 0,
+          "labels": 0,
+          "uncertainties": 0,
+          "boundary": 0,
+          "lod": "far",
+          "mode": "exhibition",
+          "visible": false
+        },
+        "galaxyGroups": {
+          "groups": 0,
+          "groupPoints": 0,
+          "memberPoints": 0,
+          "labels": 0,
+          "selectedGroupId": null,
+          "mode": "exhibition",
+          "visible": false
+        },
+        "virgo": {
+          "clusterPoints": 0,
+          "majorPoints": 0,
+          "catalogPoints": 0,
+          "labels": 0,
+          "lod": "far",
+          "selectedId": null,
+          "cameraListenerActive": false,
+          "catalogVisible": true
+        },
+        "laniakea": {
+          "points": 2387,
+          "vectors": 600,
+          "selectedId": "pcs:reconstructed-structure:laniakea-context",
+          "catalogVisible": true,
+          "vectorsVisible": true
+        }
+      }
+    },
+    {
+      "primitive": 6,
+      "dataSources": 4,
+      "listeners": {
+        "changed": 5,
+        "moveStart": 0,
+        "moveEnd": 3,
+        "postRender": 2,
+        "preRender": 0
+      },
+      "debug": {
+        "initialized": true,
+        "viewerCount": 1,
+        "canvasCount": 2,
+        "active": true,
+        "scaleContext": "laniakea",
+        "mode": "exhibition",
+        "epoch": "2026-08-16T15:57:04.167Z",
+        "playbackDaysPerSecond": 1,
+        "playbackRange": {
+          "start": "1800-01-01T00:00:00.000Z",
+          "end": "2050-12-31T23:59:59.999Z"
+        },
+        "paused": false,
+        "solarTime": {
+          "displayEpoch": "2026-08-16T15:57:04.167Z",
+          "displayTimeScale": "UTC",
+          "ephemerisTimeScale": "TDB",
+          "revision": 297,
+          "reason": "playback"
+        },
+        "solarSolution": {
+          "id": "pcs-ss02b-horizons-de441-2025-2028:hermite",
+          "displayEpoch": "2026-08-10T04:50:03.799Z",
+          "displayTimeScale": "UTC",
+          "ephemerisTimeScale": "TDB",
+          "source": "NASA/JPL Horizons API",
+          "catalogEphemeris": "JPL DE441 / satellite source reported per target",
+          "referenceSystem": "ICRF",
+          "referencePlane": "Earth mean ecliptic at J2000.0 (IAU76/80)",
+          "referenceFrame": "ICRF; Earth mean ecliptic at J2000.0 (IAU76/80); heliocentric origin",
+          "positionMode": "Cached ephemeris · cubic Hermite state",
+          "orbitMode": "Cached ephemeris states from the same promoted solution",
+          "lastDataUpdate": "2026-08-09T02:59:51.822Z",
+          "qualityStatus": "Validated local cache · validated",
+          "uncertainty": "No covariance supplied by Horizons VECTORS; interpolation error is validated per object class",
+          "validity": {
+            "start": "2025-01-01T00:00:00.000Z",
+            "end": "2028-01-01T00:00:00.000Z"
+          },
+          "coverage": {
+            "start": "2025-01-01T00:00:00.000Z",
+            "end": "2028-01-01T00:00:00.000Z"
+          },
+          "bodyIds": [
+            "mercury",
+            "venus",
+            "earth",
+            "mars",
+            "jupiter",
+            "saturn",
+            "uranus",
+            "neptune"
+          ],
+          "coherent": true,
+          "authoritative": true,
+          "stale": false,
+          "notice": "Every eligible major planet is resolved from the same promoted Horizons dataset and requested Display Epoch."
+        },
+        "solarSyncStatus": {
+          "schemaVersion": 1,
+          "pipelineId": "pcs-solar-system-ss02f",
+          "generatedAt": "2026-08-09T03:04:34.082Z",
+          "state": "validated",
+          "lastSuccessfulSynchronization": "2026-08-09T03:04:34.082Z",
+          "failedAt": null,
+          "lastError": null,
+          "updatePolicy": "Periodic catalog synchronization",
+          "fallbackPolicy": "Retain last validated deployed artifacts when ingestion or validation fails",
+          "datasets": [
+            {
+              "file": "data/solar-system/ephemeris-manifest.json",
+              "datasetId": "pcs-ss02b-horizons-de441-2025-2028",
+              "lastSuccessfulSynchronization": "2026-08-09T02:59:51.822Z",
+              "validatedAt": "2026-08-09T03:03:09.953Z",
+              "source": "NASA/JPL Horizons API",
+              "recordCount": 19,
+              "validationComparisons": 46
+            },
+            {
+              "file": "data/solar-system/small-body-manifest.json",
+              "datasetId": "pcs-ss02c-sbdb-small-bodies",
+              "lastSuccessfulSynchronization": "2026-08-09T03:03:09.996Z",
+              "validatedAt": "2026-08-09T03:03:44.027Z",
+              "source": "NASA/JPL SBDB and Horizons APIs",
+              "recordCount": 5365,
+              "validationComparisons": 27
+            },
+            {
+              "file": "data/solar-system/tno-manifest.json",
+              "datasetId": "pcs-ss02d-sbdb-tno",
+              "lastSuccessfulSynchronization": "2026-08-09T03:03:44.088Z",
+              "validatedAt": "2026-08-09T03:04:00.637Z",
+              "source": "NASA/JPL SBDB Query API",
+              "recordCount": 7155,
+              "validationComparisons": 16
+            },
+            {
+              "file": "data/solar-system/comet-manifest.json",
+              "datasetId": "pcs-ss02e-sbdb-priority-comets",
+              "lastSuccessfulSynchronization": "2026-08-09T03:04:00.677Z",
+              "validatedAt": "2026-08-09T03:04:34.008Z",
+              "source": "NASA/JPL SBDB and Horizons APIs",
+              "recordCount": 9,
+              "validationComparisons": 18
+            }
+          ]
+        },
+        "orbitCacheEntries": 8,
+        "tickListenerActive": true,
+        "pointerNavigationActive": true,
+        "nativeZoomEnabled": false,
+        "lastPointerZoom": null,
+        "lastObjectFocus": "pcs:galaxy-group:cf2:334",
+        "objectCardId": "pcs:reconstructed-structure:laniakea-context",
+        "selected": "sun",
+        "smallBodySelected": null,
+        "meteorSelected": null,
+        "mainBelt": {
+          "datasetId": "pcs-ss02c-sbdb-small-bodies",
+          "catalogRecords": 0,
+          "pointCount": 0,
+          "visibleCount": 0,
+          "lod": "far",
+          "deterministic": true,
+          "epochUpdatePending": false,
+          "epochUpdateCursor": 0,
+          "completedEpochUpdates": 0,
+          "selection": {
+            "orbitClass": "MBA",
+            "absoluteMagnitude": "H < 13",
+            "sort": "H,pdes",
+            "deterministic": true
+          },
+          "upstreamMatchCount": 5366
+        },
+        "tno": {
+          "datasetId": "pcs-ss02d-sbdb-tno",
+          "knownCatalogRecords": 0,
+          "pointCount": 0,
+          "visibleCount": 0,
+          "lod": "far",
+          "deterministic": true,
+          "epochUpdatePending": false,
+          "epochUpdateCursor": 0,
+          "completedEpochUpdates": 0,
+          "selection": {
+            "orbitClass": "TNO",
+            "sort": "H,pdes",
+            "deterministic": true,
+            "normalizedSort": "defined H ascending, then pdes; undefined H last"
+          },
+          "representativePopulation": {
+            "status": "unavailable",
+            "notice": "No synthetic Kuiper Belt population or solid ring is generated."
+          }
+        },
+        "comets": {
+          "datasetId": "pcs-ss02e-sbdb-priority-comets",
+          "catalogRecords": 0,
+          "pointCount": 0,
+          "deterministic": true,
+          "selection": {
+            "type": "curated priority periodic/scientifically important comet subset",
+            "designations": [
+              "1P",
+              "2P",
+              "8P",
+              "21P",
+              "55P",
+              "67P",
+              "96P",
+              "109P",
+              "C/1861 G1"
+            ],
+            "deterministic": true,
+            "completeCatalog": false
+          },
+          "positionMode": "Cached Horizons vectors · cubic Hermite state; SBDB element fallback is disclosed two-body propagation"
+        },
+        "meteorShowers": {
+          "datasetId": "pcs-ss02e-iau-imo-meteor-showers",
+          "records": 9,
+          "classification": "observational/event relationship layer"
+        },
+        "nearbyActive": false,
+        "nearbyTier": "10pc",
+        "nearbySelected": null,
+        "nearbySelectedMetadata": null,
+        "phase3Selected": null,
+        "phase4Selected": "Laniakea Reconstruction Context",
+        "nearby": {
+          "records": 0,
+          "points": 0,
+          "labels": 0,
+          "guides": 0,
+          "motion": 0,
+          "lod": "far",
+          "visible": false
+        },
+        "milkyWay": {
+          "records": 0,
+          "points": 0,
+          "lines": 0,
+          "labels": 0,
+          "visible": false,
+          "mode": "exhibition",
+          "reconstruction": true
+        },
+        "localGroup": {
+          "records": 0,
+          "points": 0,
+          "labels": 0,
+          "uncertainties": 0,
+          "boundary": 0,
+          "lod": "far",
+          "mode": "exhibition",
+          "visible": false
+        },
+        "galaxyGroups": {
+          "groups": 0,
+          "groupPoints": 0,
+          "memberPoints": 0,
+          "labels": 0,
+          "selectedGroupId": null,
+          "mode": "exhibition",
+          "visible": false
+        },
+        "virgo": {
+          "clusterPoints": 0,
+          "majorPoints": 0,
+          "catalogPoints": 0,
+          "labels": 0,
+          "lod": "far",
+          "selectedId": null,
+          "cameraListenerActive": false,
+          "catalogVisible": true
+        },
+        "laniakea": {
+          "points": 2387,
+          "vectors": 600,
+          "selectedId": "pcs:reconstructed-structure:laniakea-context",
+          "catalogVisible": true,
+          "vectorsVisible": true
+        }
+      }
+    },
+    {
+      "primitive": 6,
+      "dataSources": 4,
+      "listeners": {
+        "changed": 5,
+        "moveStart": 0,
+        "moveEnd": 3,
+        "postRender": 2,
+        "preRender": 0
+      },
+      "debug": {
+        "initialized": true,
+        "viewerCount": 1,
+        "canvasCount": 2,
+        "active": true,
+        "scaleContext": "laniakea",
+        "mode": "exhibition",
+        "epoch": "2026-08-16T18:03:04.165Z",
+        "playbackDaysPerSecond": 1,
+        "playbackRange": {
+          "start": "1800-01-01T00:00:00.000Z",
+          "end": "2050-12-31T23:59:59.999Z"
+        },
+        "paused": false,
+        "solarTime": {
+          "displayEpoch": "2026-08-16T18:03:04.165Z",
+          "displayTimeScale": "UTC",
+          "ephemerisTimeScale": "TDB",
+          "revision": 301,
+          "reason": "playback"
+        },
+        "solarSolution": {
+          "id": "pcs-ss02b-horizons-de441-2025-2028:hermite",
+          "displayEpoch": "2026-08-10T04:50:03.799Z",
+          "displayTimeScale": "UTC",
+          "ephemerisTimeScale": "TDB",
+          "source": "NASA/JPL Horizons API",
+          "catalogEphemeris": "JPL DE441 / satellite source reported per target",
+          "referenceSystem": "ICRF",
+          "referencePlane": "Earth mean ecliptic at J2000.0 (IAU76/80)",
+          "referenceFrame": "ICRF; Earth mean ecliptic at J2000.0 (IAU76/80); heliocentric origin",
+          "positionMode": "Cached ephemeris · cubic Hermite state",
+          "orbitMode": "Cached ephemeris states from the same promoted solution",
+          "lastDataUpdate": "2026-08-09T02:59:51.822Z",
+          "qualityStatus": "Validated local cache · validated",
+          "uncertainty": "No covariance supplied by Horizons VECTORS; interpolation error is validated per object class",
+          "validity": {
+            "start": "2025-01-01T00:00:00.000Z",
+            "end": "2028-01-01T00:00:00.000Z"
+          },
+          "coverage": {
+            "start": "2025-01-01T00:00:00.000Z",
+            "end": "2028-01-01T00:00:00.000Z"
+          },
+          "bodyIds": [
+            "mercury",
+            "venus",
+            "earth",
+            "mars",
+            "jupiter",
+            "saturn",
+            "uranus",
+            "neptune"
+          ],
+          "coherent": true,
+          "authoritative": true,
+          "stale": false,
+          "notice": "Every eligible major planet is resolved from the same promoted Horizons dataset and requested Display Epoch."
+        },
+        "solarSyncStatus": {
+          "schemaVersion": 1,
+          "pipelineId": "pcs-solar-system-ss02f",
+          "generatedAt": "2026-08-09T03:04:34.082Z",
+          "state": "validated",
+          "lastSuccessfulSynchronization": "2026-08-09T03:04:34.082Z",
+          "failedAt": null,
+          "lastError": null,
+          "updatePolicy": "Periodic catalog synchronization",
+          "fallbackPolicy": "Retain last validated deployed artifacts when ingestion or validation fails",
+          "datasets": [
+            {
+              "file": "data/solar-system/ephemeris-manifest.json",
+              "datasetId": "pcs-ss02b-horizons-de441-2025-2028",
+              "lastSuccessfulSynchronization": "2026-08-09T02:59:51.822Z",
+              "validatedAt": "2026-08-09T03:03:09.953Z",
+              "source": "NASA/JPL Horizons API",
+              "recordCount": 19,
+              "validationComparisons": 46
+            },
+            {
+              "file": "data/solar-system/small-body-manifest.json",
+              "datasetId": "pcs-ss02c-sbdb-small-bodies",
+              "lastSuccessfulSynchronization": "2026-08-09T03:03:09.996Z",
+              "validatedAt": "2026-08-09T03:03:44.027Z",
+              "source": "NASA/JPL SBDB and Horizons APIs",
+              "recordCount": 5365,
+              "validationComparisons": 27
+            },
+            {
+              "file": "data/solar-system/tno-manifest.json",
+              "datasetId": "pcs-ss02d-sbdb-tno",
+              "lastSuccessfulSynchronization": "2026-08-09T03:03:44.088Z",
+              "validatedAt": "2026-08-09T03:04:00.637Z",
+              "source": "NASA/JPL SBDB Query API",
+              "recordCount": 7155,
+              "validationComparisons": 16
+            },
+            {
+              "file": "data/solar-system/comet-manifest.json",
+              "datasetId": "pcs-ss02e-sbdb-priority-comets",
+              "lastSuccessfulSynchronization": "2026-08-09T03:04:00.677Z",
+              "validatedAt": "2026-08-09T03:04:34.008Z",
+              "source": "NASA/JPL SBDB and Horizons APIs",
+              "recordCount": 9,
+              "validationComparisons": 18
+            }
+          ]
+        },
+        "orbitCacheEntries": 8,
+        "tickListenerActive": true,
+        "pointerNavigationActive": true,
+        "nativeZoomEnabled": false,
+        "lastPointerZoom": null,
+        "lastObjectFocus": "pcs:galaxy-group:cf2:334",
+        "objectCardId": "pcs:reconstructed-structure:laniakea-context",
+        "selected": "sun",
+        "smallBodySelected": null,
+        "meteorSelected": null,
+        "mainBelt": {
+          "datasetId": "pcs-ss02c-sbdb-small-bodies",
+          "catalogRecords": 0,
+          "pointCount": 0,
+          "visibleCount": 0,
+          "lod": "far",
+          "deterministic": true,
+          "epochUpdatePending": false,
+          "epochUpdateCursor": 0,
+          "completedEpochUpdates": 0,
+          "selection": {
+            "orbitClass": "MBA",
+            "absoluteMagnitude": "H < 13",
+            "sort": "H,pdes",
+            "deterministic": true
+          },
+          "upstreamMatchCount": 5366
+        },
+        "tno": {
+          "datasetId": "pcs-ss02d-sbdb-tno",
+          "knownCatalogRecords": 0,
+          "pointCount": 0,
+          "visibleCount": 0,
+          "lod": "far",
+          "deterministic": true,
+          "epochUpdatePending": false,
+          "epochUpdateCursor": 0,
+          "completedEpochUpdates": 0,
+          "selection": {
+            "orbitClass": "TNO",
+            "sort": "H,pdes",
+            "deterministic": true,
+            "normalizedSort": "defined H ascending, then pdes; undefined H last"
+          },
+          "representativePopulation": {
+            "status": "unavailable",
+            "notice": "No synthetic Kuiper Belt population or solid ring is generated."
+          }
+        },
+        "comets": {
+          "datasetId": "pcs-ss02e-sbdb-priority-comets",
+          "catalogRecords": 0,
+          "pointCount": 0,
+          "deterministic": true,
+          "selection": {
+            "type": "curated priority periodic/scientifically important comet subset",
+            "designations": [
+              "1P",
+              "2P",
+              "8P",
+              "21P",
+              "55P",
+              "67P",
+              "96P",
+              "109P",
+              "C/1861 G1"
+            ],
+            "deterministic": true,
+            "completeCatalog": false
+          },
+          "positionMode": "Cached Horizons vectors · cubic Hermite state; SBDB element fallback is disclosed two-body propagation"
+        },
+        "meteorShowers": {
+          "datasetId": "pcs-ss02e-iau-imo-meteor-showers",
+          "records": 9,
+          "classification": "observational/event relationship layer"
+        },
+        "nearbyActive": false,
+        "nearbyTier": "10pc",
+        "nearbySelected": null,
+        "nearbySelectedMetadata": null,
+        "phase3Selected": null,
+        "phase4Selected": "Laniakea Reconstruction Context",
+        "nearby": {
+          "records": 0,
+          "points": 0,
+          "labels": 0,
+          "guides": 0,
+          "motion": 0,
+          "lod": "far",
+          "visible": false
+        },
+        "milkyWay": {
+          "records": 0,
+          "points": 0,
+          "lines": 0,
+          "labels": 0,
+          "visible": false,
+          "mode": "exhibition",
+          "reconstruction": true
+        },
+        "localGroup": {
+          "records": 0,
+          "points": 0,
+          "labels": 0,
+          "uncertainties": 0,
+          "boundary": 0,
+          "lod": "far",
+          "mode": "exhibition",
+          "visible": false
+        },
+        "galaxyGroups": {
+          "groups": 0,
+          "groupPoints": 0,
+          "memberPoints": 0,
+          "labels": 0,
+          "selectedGroupId": null,
+          "mode": "exhibition",
+          "visible": false
+        },
+        "virgo": {
+          "clusterPoints": 0,
+          "majorPoints": 0,
+          "catalogPoints": 0,
+          "labels": 0,
+          "lod": "far",
+          "selectedId": null,
+          "cameraListenerActive": false,
+          "catalogVisible": true
+        },
+        "laniakea": {
+          "points": 2387,
+          "vectors": 600,
+          "selectedId": "pcs:reconstructed-structure:laniakea-context",
+          "catalogVisible": true,
+          "vectorsVisible": true
+        }
+      }
+    },
+    {
+      "primitive": 6,
+      "dataSources": 4,
+      "listeners": {
+        "changed": 5,
+        "moveStart": 0,
+        "moveEnd": 3,
+        "postRender": 2,
+        "preRender": 0
+      },
+      "debug": {
+        "initialized": true,
+        "viewerCount": 1,
+        "canvasCount": 2,
+        "active": true,
+        "scaleContext": "laniakea",
+        "mode": "exhibition",
+        "epoch": "2026-08-16T19:55:40.643Z",
+        "playbackDaysPerSecond": 1,
+        "playbackRange": {
+          "start": "1800-01-01T00:00:00.000Z",
+          "end": "2050-12-31T23:59:59.999Z"
+        },
+        "paused": false,
+        "solarTime": {
+          "displayEpoch": "2026-08-16T19:55:40.643Z",
+          "displayTimeScale": "UTC",
+          "ephemerisTimeScale": "TDB",
+          "revision": 305,
+          "reason": "playback"
+        },
+        "solarSolution": {
+          "id": "pcs-ss02b-horizons-de441-2025-2028:hermite",
+          "displayEpoch": "2026-08-10T04:50:03.799Z",
+          "displayTimeScale": "UTC",
+          "ephemerisTimeScale": "TDB",
+          "source": "NASA/JPL Horizons API",
+          "catalogEphemeris": "JPL DE441 / satellite source reported per target",
+          "referenceSystem": "ICRF",
+          "referencePlane": "Earth mean ecliptic at J2000.0 (IAU76/80)",
+          "referenceFrame": "ICRF; Earth mean ecliptic at J2000.0 (IAU76/80); heliocentric origin",
+          "positionMode": "Cached ephemeris · cubic Hermite state",
+          "orbitMode": "Cached ephemeris states from the same promoted solution",
+          "lastDataUpdate": "2026-08-09T02:59:51.822Z",
+          "qualityStatus": "Validated local cache · validated",
+          "uncertainty": "No covariance supplied by Horizons VECTORS; interpolation error is validated per object class",
+          "validity": {
+            "start": "2025-01-01T00:00:00.000Z",
+            "end": "2028-01-01T00:00:00.000Z"
+          },
+          "coverage": {
+            "start": "2025-01-01T00:00:00.000Z",
+            "end": "2028-01-01T00:00:00.000Z"
+          },
+          "bodyIds": [
+            "mercury",
+            "venus",
+            "earth",
+            "mars",
+            "jupiter",
+            "saturn",
+            "uranus",
+            "neptune"
+          ],
+          "coherent": true,
+          "authoritative": true,
+          "stale": false,
+          "notice": "Every eligible major planet is resolved from the same promoted Horizons dataset and requested Display Epoch."
+        },
+        "solarSyncStatus": {
+          "schemaVersion": 1,
+          "pipelineId": "pcs-solar-system-ss02f",
+          "generatedAt": "2026-08-09T03:04:34.082Z",
+          "state": "validated",
+          "lastSuccessfulSynchronization": "2026-08-09T03:04:34.082Z",
+          "failedAt": null,
+          "lastError": null,
+          "updatePolicy": "Periodic catalog synchronization",
+          "fallbackPolicy": "Retain last validated deployed artifacts when ingestion or validation fails",
+          "datasets": [
+            {
+              "file": "data/solar-system/ephemeris-manifest.json",
+              "datasetId": "pcs-ss02b-horizons-de441-2025-2028",
+              "lastSuccessfulSynchronization": "2026-08-09T02:59:51.822Z",
+              "validatedAt": "2026-08-09T03:03:09.953Z",
+              "source": "NASA/JPL Horizons API",
+              "recordCount": 19,
+              "validationComparisons": 46
+            },
+            {
+              "file": "data/solar-system/small-body-manifest.json",
+              "datasetId": "pcs-ss02c-sbdb-small-bodies",
+              "lastSuccessfulSynchronization": "2026-08-09T03:03:09.996Z",
+              "validatedAt": "2026-08-09T03:03:44.027Z",
+              "source": "NASA/JPL SBDB and Horizons APIs",
+              "recordCount": 5365,
+              "validationComparisons": 27
+            },
+            {
+              "file": "data/solar-system/tno-manifest.json",
+              "datasetId": "pcs-ss02d-sbdb-tno",
+              "lastSuccessfulSynchronization": "2026-08-09T03:03:44.088Z",
+              "validatedAt": "2026-08-09T03:04:00.637Z",
+              "source": "NASA/JPL SBDB Query API",
+              "recordCount": 7155,
+              "validationComparisons": 16
+            },
+            {
+              "file": "data/solar-system/comet-manifest.json",
+              "datasetId": "pcs-ss02e-sbdb-priority-comets",
+              "lastSuccessfulSynchronization": "2026-08-09T03:04:00.677Z",
+              "validatedAt": "2026-08-09T03:04:34.008Z",
+              "source": "NASA/JPL SBDB and Horizons APIs",
+              "recordCount": 9,
+              "validationComparisons": 18
+            }
+          ]
+        },
+        "orbitCacheEntries": 8,
+        "tickListenerActive": true,
+        "pointerNavigationActive": true,
+        "nativeZoomEnabled": false,
+        "lastPointerZoom": null,
+        "lastObjectFocus": "pcs:galaxy-group:cf2:334",
+        "objectCardId": "pcs:reconstructed-structure:laniakea-context",
+        "selected": "sun",
+        "smallBodySelected": null,
+        "meteorSelected": null,
+        "mainBelt": {
+          "datasetId": "pcs-ss02c-sbdb-small-bodies",
+          "catalogRecords": 0,
+          "pointCount": 0,
+          "visibleCount": 0,
+          "lod": "far",
+          "deterministic": true,
+          "epochUpdatePending": false,
+          "epochUpdateCursor": 0,
+          "completedEpochUpdates": 0,
+          "selection": {
+            "orbitClass": "MBA",
+            "absoluteMagnitude": "H < 13",
+            "sort": "H,pdes",
+            "deterministic": true
+          },
+          "upstreamMatchCount": 5366
+        },
+        "tno": {
+          "datasetId": "pcs-ss02d-sbdb-tno",
+          "knownCatalogRecords": 0,
+          "pointCount": 0,
+          "visibleCount": 0,
+          "lod": "far",
+          "deterministic": true,
+          "epochUpdatePending": false,
+          "epochUpdateCursor": 0,
+          "completedEpochUpdates": 0,
+          "selection": {
+            "orbitClass": "TNO",
+            "sort": "H,pdes",
+            "deterministic": true,
+            "normalizedSort": "defined H ascending, then pdes; undefined H last"
+          },
+          "representativePopulation": {
+            "status": "unavailable",
+            "notice": "No synthetic Kuiper Belt population or solid ring is generated."
+          }
+        },
+        "comets": {
+          "datasetId": "pcs-ss02e-sbdb-priority-comets",
+          "catalogRecords": 0,
+          "pointCount": 0,
+          "deterministic": true,
+          "selection": {
+            "type": "curated priority periodic/scientifically important comet subset",
+            "designations": [
+              "1P",
+              "2P",
+              "8P",
+              "21P",
+              "55P",
+              "67P",
+              "96P",
+              "109P",
+              "C/1861 G1"
+            ],
+            "deterministic": true,
+            "completeCatalog": false
+          },
+          "positionMode": "Cached Horizons vectors · cubic Hermite state; SBDB element fallback is disclosed two-body propagation"
+        },
+        "meteorShowers": {
+          "datasetId": "pcs-ss02e-iau-imo-meteor-showers",
+          "records": 9,
+          "classification": "observational/event relationship layer"
+        },
+        "nearbyActive": false,
+        "nearbyTier": "10pc",
+        "nearbySelected": null,
+        "nearbySelectedMetadata": null,
+        "phase3Selected": null,
+        "phase4Selected": "Laniakea Reconstruction Context",
+        "nearby": {
+          "records": 0,
+          "points": 0,
+          "labels": 0,
+          "guides": 0,
+          "motion": 0,
+          "lod": "far",
+          "visible": false
+        },
+        "milkyWay": {
+          "records": 0,
+          "points": 0,
+          "lines": 0,
+          "labels": 0,
+          "visible": false,
+          "mode": "exhibition",
+          "reconstruction": true
+        },
+        "localGroup": {
+          "records": 0,
+          "points": 0,
+          "labels": 0,
+          "uncertainties": 0,
+          "boundary": 0,
+          "lod": "far",
+          "mode": "exhibition",
+          "visible": false
+        },
+        "galaxyGroups": {
+          "groups": 0,
+          "groupPoints": 0,
+          "memberPoints": 0,
+          "labels": 0,
+          "selectedGroupId": null,
+          "mode": "exhibition",
+          "visible": false
+        },
+        "virgo": {
+          "clusterPoints": 0,
+          "majorPoints": 0,
+          "catalogPoints": 0,
+          "labels": 0,
+          "lod": "far",
+          "selectedId": null,
+          "cameraListenerActive": false,
+          "catalogVisible": true
+        },
+        "laniakea": {
+          "points": 2387,
+          "vectors": 600,
+          "selectedId": "pcs:reconstructed-structure:laniakea-context",
+          "catalogVisible": true,
+          "vectorsVisible": true
+        }
+      }
+    },
+    {
+      "primitive": 6,
+      "dataSources": 4,
+      "listeners": {
+        "changed": 5,
+        "moveStart": 0,
+        "moveEnd": 3,
+        "postRender": 2,
+        "preRender": 0
+      },
+      "debug": {
+        "initialized": true,
+        "viewerCount": 1,
+        "canvasCount": 2,
+        "active": true,
+        "scaleContext": "laniakea",
+        "mode": "exhibition",
+        "epoch": "2026-08-16T21:17:19.523Z",
+        "playbackDaysPerSecond": 1,
+        "playbackRange": {
+          "start": "1800-01-01T00:00:00.000Z",
+          "end": "2050-12-31T23:59:59.999Z"
+        },
+        "paused": false,
+        "solarTime": {
+          "displayEpoch": "2026-08-16T21:17:19.523Z",
+          "displayTimeScale": "UTC",
+          "ephemerisTimeScale": "TDB",
+          "revision": 308,
+          "reason": "playback"
+        },
+        "solarSolution": {
+          "id": "pcs-ss02b-horizons-de441-2025-2028:hermite",
+          "displayEpoch": "2026-08-10T04:50:03.799Z",
+          "displayTimeScale": "UTC",
+          "ephemerisTimeScale": "TDB",
+          "source": "NASA/JPL Horizons API",
+          "catalogEphemeris": "JPL DE441 / satellite source reported per target",
+          "referenceSystem": "ICRF",
+          "referencePlane": "Earth mean ecliptic at J2000.0 (IAU76/80)",
+          "referenceFrame": "ICRF; Earth mean ecliptic at J2000.0 (IAU76/80); heliocentric origin",
+          "positionMode": "Cached ephemeris · cubic Hermite state",
+          "orbitMode": "Cached ephemeris states from the same promoted solution",
+          "lastDataUpdate": "2026-08-09T02:59:51.822Z",
+          "qualityStatus": "Validated local cache · validated",
+          "uncertainty": "No covariance supplied by Horizons VECTORS; interpolation error is validated per object class",
+          "validity": {
+            "start": "2025-01-01T00:00:00.000Z",
+            "end": "2028-01-01T00:00:00.000Z"
+          },
+          "coverage": {
+            "start": "2025-01-01T00:00:00.000Z",
+            "end": "2028-01-01T00:00:00.000Z"
+          },
+          "bodyIds": [
+            "mercury",
+            "venus",
+            "earth",
+            "mars",
+            "jupiter",
+            "saturn",
+            "uranus",
+            "neptune"
+          ],
+          "coherent": true,
+          "authoritative": true,
+          "stale": false,
+          "notice": "Every eligible major planet is resolved from the same promoted Horizons dataset and requested Display Epoch."
+        },
+        "solarSyncStatus": {
+          "schemaVersion": 1,
+          "pipelineId": "pcs-solar-system-ss02f",
+          "generatedAt": "2026-08-09T03:04:34.082Z",
+          "state": "validated",
+          "lastSuccessfulSynchronization": "2026-08-09T03:04:34.082Z",
+          "failedAt": null,
+          "lastError": null,
+          "updatePolicy": "Periodic catalog synchronization",
+          "fallbackPolicy": "Retain last validated deployed artifacts when ingestion or validation fails",
+          "datasets": [
+            {
+              "file": "data/solar-system/ephemeris-manifest.json",
+              "datasetId": "pcs-ss02b-horizons-de441-2025-2028",
+              "lastSuccessfulSynchronization": "2026-08-09T02:59:51.822Z",
+              "validatedAt": "2026-08-09T03:03:09.953Z",
+              "source": "NASA/JPL Horizons API",
+              "recordCount": 19,
+              "validationComparisons": 46
+            },
+            {
+              "file": "data/solar-system/small-body-manifest.json",
+              "datasetId": "pcs-ss02c-sbdb-small-bodies",
+              "lastSuccessfulSynchronization": "2026-08-09T03:03:09.996Z",
+              "validatedAt": "2026-08-09T03:03:44.027Z",
+              "source": "NASA/JPL SBDB and Horizons APIs",
+              "recordCount": 5365,
+              "validationComparisons": 27
+            },
+            {
+              "file": "data/solar-system/tno-manifest.json",
+              "datasetId": "pcs-ss02d-sbdb-tno",
+              "lastSuccessfulSynchronization": "2026-08-09T03:03:44.088Z",
+              "validatedAt": "2026-08-09T03:04:00.637Z",
+              "source": "NASA/JPL SBDB Query API",
+              "recordCount": 7155,
+              "validationComparisons": 16
+            },
+            {
+              "file": "data/solar-system/comet-manifest.json",
+              "datasetId": "pcs-ss02e-sbdb-priority-comets",
+              "lastSuccessfulSynchronization": "2026-08-09T03:04:00.677Z",
+              "validatedAt": "2026-08-09T03:04:34.008Z",
+              "source": "NASA/JPL SBDB and Horizons APIs",
+              "recordCount": 9,
+              "validationComparisons": 18
+            }
+          ]
+        },
+        "orbitCacheEntries": 8,
+        "tickListenerActive": true,
+        "pointerNavigationActive": true,
+        "nativeZoomEnabled": false,
+        "lastPointerZoom": null,
+        "lastObjectFocus": "pcs:galaxy-group:cf2:334",
+        "objectCardId": "pcs:reconstructed-structure:laniakea-context",
+        "selected": "sun",
+        "smallBodySelected": null,
+        "meteorSelected": null,
+        "mainBelt": {
+          "datasetId": "pcs-ss02c-sbdb-small-bodies",
+          "catalogRecords": 0,
+          "pointCount": 0,
+          "visibleCount": 0,
+          "lod": "far",
+          "deterministic": true,
+          "epochUpdatePending": false,
+          "epochUpdateCursor": 0,
+          "completedEpochUpdates": 0,
+          "selection": {
+            "orbitClass": "MBA",
+            "absoluteMagnitude": "H < 13",
+            "sort": "H,pdes",
+            "deterministic": true
+          },
+          "upstreamMatchCount": 5366
+        },
+        "tno": {
+          "datasetId": "pcs-ss02d-sbdb-tno",
+          "knownCatalogRecords": 0,
+          "pointCount": 0,
+          "visibleCount": 0,
+          "lod": "far",
+          "deterministic": true,
+          "epochUpdatePending": false,
+          "epochUpdateCursor": 0,
+          "completedEpochUpdates": 0,
+          "selection": {
+            "orbitClass": "TNO",
+            "sort": "H,pdes",
+            "deterministic": true,
+            "normalizedSort": "defined H ascending, then pdes; undefined H last"
+          },
+          "representativePopulation": {
+            "status": "unavailable",
+            "notice": "No synthetic Kuiper Belt population or solid ring is generated."
+          }
+        },
+        "comets": {
+          "datasetId": "pcs-ss02e-sbdb-priority-comets",
+          "catalogRecords": 0,
+          "pointCount": 0,
+          "deterministic": true,
+          "selection": {
+            "type": "curated priority periodic/scientifically important comet subset",
+            "designations": [
+              "1P",
+              "2P",
+              "8P",
+              "21P",
+              "55P",
+              "67P",
+              "96P",
+              "109P",
+              "C/1861 G1"
+            ],
+            "deterministic": true,
+            "completeCatalog": false
+          },
+          "positionMode": "Cached Horizons vectors · cubic Hermite state; SBDB element fallback is disclosed two-body propagation"
+        },
+        "meteorShowers": {
+          "datasetId": "pcs-ss02e-iau-imo-meteor-showers",
+          "records": 9,
+          "classification": "observational/event relationship layer"
+        },
+        "nearbyActive": false,
+        "nearbyTier": "10pc",
+        "nearbySelected": null,
+        "nearbySelectedMetadata": null,
+        "phase3Selected": null,
+        "phase4Selected": "Laniakea Reconstruction Context",
+        "nearby": {
+          "records": 0,
+          "points": 0,
+          "labels": 0,
+          "guides": 0,
+          "motion": 0,
+          "lod": "far",
+          "visible": false
+        },
+        "milkyWay": {
+          "records": 0,
+          "points": 0,
+          "lines": 0,
+          "labels": 0,
+          "visible": false,
+          "mode": "exhibition",
+          "reconstruction": true
+        },
+        "localGroup": {
+          "records": 0,
+          "points": 0,
+          "labels": 0,
+          "uncertainties": 0,
+          "boundary": 0,
+          "lod": "far",
+          "mode": "exhibition",
+          "visible": false
+        },
+        "galaxyGroups": {
+          "groups": 0,
+          "groupPoints": 0,
+          "memberPoints": 0,
+          "labels": 0,
+          "selectedGroupId": null,
+          "mode": "exhibition",
+          "visible": false
+        },
+        "virgo": {
+          "clusterPoints": 0,
+          "majorPoints": 0,
+          "catalogPoints": 0,
+          "labels": 0,
+          "lod": "far",
+          "selectedId": null,
+          "cameraListenerActive": false,
+          "catalogVisible": true
+        },
+        "laniakea": {
+          "points": 2387,
+          "vectors": 600,
+          "selectedId": "pcs:reconstructed-structure:laniakea-context",
+          "catalogVisible": true,
+          "vectorsVisible": true
+        }
+      }
+    },
+    {
+      "primitive": 6,
+      "dataSources": 4,
+      "listeners": {
+        "changed": 5,
+        "moveStart": 0,
+        "moveEnd": 3,
+        "postRender": 2,
+        "preRender": 0
+      },
+      "debug": {
+        "initialized": true,
+        "viewerCount": 1,
+        "canvasCount": 2,
+        "active": true,
+        "scaleContext": "laniakea",
+        "mode": "exhibition",
+        "epoch": "2026-08-17T00:04:21.920Z",
+        "playbackDaysPerSecond": 1,
+        "playbackRange": {
+          "start": "1800-01-01T00:00:00.000Z",
+          "end": "2050-12-31T23:59:59.999Z"
+        },
+        "paused": false,
+        "solarTime": {
+          "displayEpoch": "2026-08-17T00:04:21.920Z",
+          "displayTimeScale": "UTC",
+          "ephemerisTimeScale": "TDB",
+          "revision": 313,
+          "reason": "playback"
+        },
+        "solarSolution": {
+          "id": "pcs-ss02b-horizons-de441-2025-2028:hermite",
+          "displayEpoch": "2026-08-10T04:50:03.799Z",
+          "displayTimeScale": "UTC",
+          "ephemerisTimeScale": "TDB",
+          "source": "NASA/JPL Horizons API",
+          "catalogEphemeris": "JPL DE441 / satellite source reported per target",
+          "referenceSystem": "ICRF",
+          "referencePlane": "Earth mean ecliptic at J2000.0 (IAU76/80)",
+          "referenceFrame": "ICRF; Earth mean ecliptic at J2000.0 (IAU76/80); heliocentric origin",
+          "positionMode": "Cached ephemeris · cubic Hermite state",
+          "orbitMode": "Cached ephemeris states from the same promoted solution",
+          "lastDataUpdate": "2026-08-09T02:59:51.822Z",
+          "qualityStatus": "Validated local cache · validated",
+          "uncertainty": "No covariance supplied by Horizons VECTORS; interpolation error is validated per object class",
+          "validity": {
+            "start": "2025-01-01T00:00:00.000Z",
+            "end": "2028-01-01T00:00:00.000Z"
+          },
+          "coverage": {
+            "start": "2025-01-01T00:00:00.000Z",
+            "end": "2028-01-01T00:00:00.000Z"
+          },
+          "bodyIds": [
+            "mercury",
+            "venus",
+            "earth",
+            "mars",
+            "jupiter",
+            "saturn",
+            "uranus",
+            "neptune"
+          ],
+          "coherent": true,
+          "authoritative": true,
+          "stale": false,
+          "notice": "Every eligible major planet is resolved from the same promoted Horizons dataset and requested Display Epoch."
+        },
+        "solarSyncStatus": {
+          "schemaVersion": 1,
+          "pipelineId": "pcs-solar-system-ss02f",
+          "generatedAt": "2026-08-09T03:04:34.082Z",
+          "state": "validated",
+          "lastSuccessfulSynchronization": "2026-08-09T03:04:34.082Z",
+          "failedAt": null,
+          "lastError": null,
+          "updatePolicy": "Periodic catalog synchronization",
+          "fallbackPolicy": "Retain last validated deployed artifacts when ingestion or validation fails",
+          "datasets": [
+            {
+              "file": "data/solar-system/ephemeris-manifest.json",
+              "datasetId": "pcs-ss02b-horizons-de441-2025-2028",
+              "lastSuccessfulSynchronization": "2026-08-09T02:59:51.822Z",
+              "validatedAt": "2026-08-09T03:03:09.953Z",
+              "source": "NASA/JPL Horizons API",
+              "recordCount": 19,
+              "validationComparisons": 46
+            },
+            {
+              "file": "data/solar-system/small-body-manifest.json",
+              "datasetId": "pcs-ss02c-sbdb-small-bodies",
+              "lastSuccessfulSynchronization": "2026-08-09T03:03:09.996Z",
+              "validatedAt": "2026-08-09T03:03:44.027Z",
+              "source": "NASA/JPL SBDB and Horizons APIs",
+              "recordCount": 5365,
+              "validationComparisons": 27
+            },
+            {
+              "file": "data/solar-system/tno-manifest.json",
+              "datasetId": "pcs-ss02d-sbdb-tno",
+              "lastSuccessfulSynchronization": "2026-08-09T03:03:44.088Z",
+              "validatedAt": "2026-08-09T03:04:00.637Z",
+              "source": "NASA/JPL SBDB Query API",
+              "recordCount": 7155,
+              "validationComparisons": 16
+            },
+            {
+              "file": "data/solar-system/comet-manifest.json",
+              "datasetId": "pcs-ss02e-sbdb-priority-comets",
+              "lastSuccessfulSynchronization": "2026-08-09T03:04:00.677Z",
+              "validatedAt": "2026-08-09T03:04:34.008Z",
+              "source": "NASA/JPL SBDB and Horizons APIs",
+              "recordCount": 9,
+              "validationComparisons": 18
+            }
+          ]
+        },
+        "orbitCacheEntries": 8,
+        "tickListenerActive": true,
+        "pointerNavigationActive": true,
+        "nativeZoomEnabled": false,
+        "lastPointerZoom": null,
+        "lastObjectFocus": "pcs:galaxy-group:cf2:334",
+        "objectCardId": "pcs:reconstructed-structure:laniakea-context",
+        "selected": "sun",
+        "smallBodySelected": null,
+        "meteorSelected": null,
+        "mainBelt": {
+          "datasetId": "pcs-ss02c-sbdb-small-bodies",
+          "catalogRecords": 0,
+          "pointCount": 0,
+          "visibleCount": 0,
+          "lod": "far",
+          "deterministic": true,
+          "epochUpdatePending": false,
+          "epochUpdateCursor": 0,
+          "completedEpochUpdates": 0,
+          "selection": {
+            "orbitClass": "MBA",
+            "absoluteMagnitude": "H < 13",
+            "sort": "H,pdes",
+            "deterministic": true
+          },
+          "upstreamMatchCount": 5366
+        },
+        "tno": {
+          "datasetId": "pcs-ss02d-sbdb-tno",
+          "knownCatalogRecords": 0,
+          "pointCount": 0,
+          "visibleCount": 0,
+          "lod": "far",
+          "deterministic": true,
+          "epochUpdatePending": false,
+          "epochUpdateCursor": 0,
+          "completedEpochUpdates": 0,
+          "selection": {
+            "orbitClass": "TNO",
+            "sort": "H,pdes",
+            "deterministic": true,
+            "normalizedSort": "defined H ascending, then pdes; undefined H last"
+          },
+          "representativePopulation": {
+            "status": "unavailable",
+            "notice": "No synthetic Kuiper Belt population or solid ring is generated."
+          }
+        },
+        "comets": {
+          "datasetId": "pcs-ss02e-sbdb-priority-comets",
+          "catalogRecords": 0,
+          "pointCount": 0,
+          "deterministic": true,
+          "selection": {
+            "type": "curated priority periodic/scientifically important comet subset",
+            "designations": [
+              "1P",
+              "2P",
+              "8P",
+              "21P",
+              "55P",
+              "67P",
+              "96P",
+              "109P",
+              "C/1861 G1"
+            ],
+            "deterministic": true,
+            "completeCatalog": false
+          },
+          "positionMode": "Cached Horizons vectors · cubic Hermite state; SBDB element fallback is disclosed two-body propagation"
+        },
+        "meteorShowers": {
+          "datasetId": "pcs-ss02e-iau-imo-meteor-showers",
+          "records": 9,
+          "classification": "observational/event relationship layer"
+        },
+        "nearbyActive": false,
+        "nearbyTier": "10pc",
+        "nearbySelected": null,
+        "nearbySelectedMetadata": null,
+        "phase3Selected": null,
+        "phase4Selected": "Laniakea Reconstruction Context",
+        "nearby": {
+          "records": 0,
+          "points": 0,
+          "labels": 0,
+          "guides": 0,
+          "motion": 0,
+          "lod": "far",
+          "visible": false
+        },
+        "milkyWay": {
+          "records": 0,
+          "points": 0,
+          "lines": 0,
+          "labels": 0,
+          "visible": false,
+          "mode": "exhibition",
+          "reconstruction": true
+        },
+        "localGroup": {
+          "records": 0,
+          "points": 0,
+          "labels": 0,
+          "uncertainties": 0,
+          "boundary": 0,
+          "lod": "far",
+          "mode": "exhibition",
+          "visible": false
+        },
+        "galaxyGroups": {
+          "groups": 0,
+          "groupPoints": 0,
+          "memberPoints": 0,
+          "labels": 0,
+          "selectedGroupId": null,
+          "mode": "exhibition",
+          "visible": false
+        },
+        "virgo": {
+          "clusterPoints": 0,
+          "majorPoints": 0,
+          "catalogPoints": 0,
+          "labels": 0,
+          "lod": "far",
+          "selectedId": null,
+          "cameraListenerActive": false,
+          "catalogVisible": true
+        },
+        "laniakea": {
+          "points": 2387,
+          "vectors": 600,
+          "selectedId": "pcs:reconstructed-structure:laniakea-context",
+          "catalogVisible": true,
+          "vectorsVisible": true
+        }
+      }
+    },
+    {
+      "primitive": 6,
+      "dataSources": 4,
+      "listeners": {
+        "changed": 5,
+        "moveStart": 0,
+        "moveEnd": 3,
+        "postRender": 2,
+        "preRender": 0
+      },
+      "debug": {
+        "initialized": true,
+        "viewerCount": 1,
+        "canvasCount": 2,
+        "active": true,
+        "scaleContext": "laniakea",
+        "mode": "exhibition",
+        "epoch": "2026-08-17T02:52:24.799Z",
+        "playbackDaysPerSecond": 1,
+        "playbackRange": {
+          "start": "1800-01-01T00:00:00.000Z",
+          "end": "2050-12-31T23:59:59.999Z"
+        },
+        "paused": false,
+        "solarTime": {
+          "displayEpoch": "2026-08-17T02:52:24.799Z",
+          "displayTimeScale": "UTC",
+          "ephemerisTimeScale": "TDB",
+          "revision": 317,
+          "reason": "playback"
+        },
+        "solarSolution": {
+          "id": "pcs-ss02b-horizons-de441-2025-2028:hermite",
+          "displayEpoch": "2026-08-10T04:50:03.799Z",
+          "displayTimeScale": "UTC",
+          "ephemerisTimeScale": "TDB",
+          "source": "NASA/JPL Horizons API",
+          "catalogEphemeris": "JPL DE441 / satellite source reported per target",
+          "referenceSystem": "ICRF",
+          "referencePlane": "Earth mean ecliptic at J2000.0 (IAU76/80)",
+          "referenceFrame": "ICRF; Earth mean ecliptic at J2000.0 (IAU76/80); heliocentric origin",
+          "positionMode": "Cached ephemeris · cubic Hermite state",
+          "orbitMode": "Cached ephemeris states from the same promoted solution",
+          "lastDataUpdate": "2026-08-09T02:59:51.822Z",
+          "qualityStatus": "Validated local cache · validated",
+          "uncertainty": "No covariance supplied by Horizons VECTORS; interpolation error is validated per object class",
+          "validity": {
+            "start": "2025-01-01T00:00:00.000Z",
+            "end": "2028-01-01T00:00:00.000Z"
+          },
+          "coverage": {
+            "start": "2025-01-01T00:00:00.000Z",
+            "end": "2028-01-01T00:00:00.000Z"
+          },
+          "bodyIds": [
+            "mercury",
+            "venus",
+            "earth",
+            "mars",
+            "jupiter",
+            "saturn",
+            "uranus",
+            "neptune"
+          ],
+          "coherent": true,
+          "authoritative": true,
+          "stale": false,
+          "notice": "Every eligible major planet is resolved from the same promoted Horizons dataset and requested Display Epoch."
+        },
+        "solarSyncStatus": {
+          "schemaVersion": 1,
+          "pipelineId": "pcs-solar-system-ss02f",
+          "generatedAt": "2026-08-09T03:04:34.082Z",
+          "state": "validated",
+          "lastSuccessfulSynchronization": "2026-08-09T03:04:34.082Z",
+          "failedAt": null,
+          "lastError": null,
+          "updatePolicy": "Periodic catalog synchronization",
+          "fallbackPolicy": "Retain last validated deployed artifacts when ingestion or validation fails",
+          "datasets": [
+            {
+              "file": "data/solar-system/ephemeris-manifest.json",
+              "datasetId": "pcs-ss02b-horizons-de441-2025-2028",
+              "lastSuccessfulSynchronization": "2026-08-09T02:59:51.822Z",
+              "validatedAt": "2026-08-09T03:03:09.953Z",
+              "source": "NASA/JPL Horizons API",
+              "recordCount": 19,
+              "validationComparisons": 46
+            },
+            {
+              "file": "data/solar-system/small-body-manifest.json",
+              "datasetId": "pcs-ss02c-sbdb-small-bodies",
+              "lastSuccessfulSynchronization": "2026-08-09T03:03:09.996Z",
+              "validatedAt": "2026-08-09T03:03:44.027Z",
+              "source": "NASA/JPL SBDB and Horizons APIs",
+              "recordCount": 5365,
+              "validationComparisons": 27
+            },
+            {
+              "file": "data/solar-system/tno-manifest.json",
+              "datasetId": "pcs-ss02d-sbdb-tno",
+              "lastSuccessfulSynchronization": "2026-08-09T03:03:44.088Z",
+              "validatedAt": "2026-08-09T03:04:00.637Z",
+              "source": "NASA/JPL SBDB Query API",
+              "recordCount": 7155,
+              "validationComparisons": 16
+            },
+            {
+              "file": "data/solar-system/comet-manifest.json",
+              "datasetId": "pcs-ss02e-sbdb-priority-comets",
+              "lastSuccessfulSynchronization": "2026-08-09T03:04:00.677Z",
+              "validatedAt": "2026-08-09T03:04:34.008Z",
+              "source": "NASA/JPL SBDB and Horizons APIs",
+              "recordCount": 9,
+              "validationComparisons": 18
+            }
+          ]
+        },
+        "orbitCacheEntries": 8,
+        "tickListenerActive": true,
+        "pointerNavigationActive": true,
+        "nativeZoomEnabled": false,
+        "lastPointerZoom": null,
+        "lastObjectFocus": "pcs:galaxy-group:cf2:334",
+        "objectCardId": "pcs:reconstructed-structure:laniakea-context",
+        "selected": "sun",
+        "smallBodySelected": null,
+        "meteorSelected": null,
+        "mainBelt": {
+          "datasetId": "pcs-ss02c-sbdb-small-bodies",
+          "catalogRecords": 0,
+          "pointCount": 0,
+          "visibleCount": 0,
+          "lod": "far",
+          "deterministic": true,
+          "epochUpdatePending": false,
+          "epochUpdateCursor": 0,
+          "completedEpochUpdates": 0,
+          "selection": {
+            "orbitClass": "MBA",
+            "absoluteMagnitude": "H < 13",
+            "sort": "H,pdes",
+            "deterministic": true
+          },
+          "upstreamMatchCount": 5366
+        },
+        "tno": {
+          "datasetId": "pcs-ss02d-sbdb-tno",
+          "knownCatalogRecords": 0,
+          "pointCount": 0,
+          "visibleCount": 0,
+          "lod": "far",
+          "deterministic": true,
+          "epochUpdatePending": false,
+          "epochUpdateCursor": 0,
+          "completedEpochUpdates": 0,
+          "selection": {
+            "orbitClass": "TNO",
+            "sort": "H,pdes",
+            "deterministic": true,
+            "normalizedSort": "defined H ascending, then pdes; undefined H last"
+          },
+          "representativePopulation": {
+            "status": "unavailable",
+            "notice": "No synthetic Kuiper Belt population or solid ring is generated."
+          }
+        },
+        "comets": {
+          "datasetId": "pcs-ss02e-sbdb-priority-comets",
+          "catalogRecords": 0,
+          "pointCount": 0,
+          "deterministic": true,
+          "selection": {
+            "type": "curated priority periodic/scientifically important comet subset",
+            "designations": [
+              "1P",
+              "2P",
+              "8P",
+              "21P",
+              "55P",
+              "67P",
+              "96P",
+              "109P",
+              "C/1861 G1"
+            ],
+            "deterministic": true,
+            "completeCatalog": false
+          },
+          "positionMode": "Cached Horizons vectors · cubic Hermite state; SBDB element fallback is disclosed two-body propagation"
+        },
+        "meteorShowers": {
+          "datasetId": "pcs-ss02e-iau-imo-meteor-showers",
+          "records": 9,
+          "classification": "observational/event relationship layer"
+        },
+        "nearbyActive": false,
+        "nearbyTier": "10pc",
+        "nearbySelected": null,
+        "nearbySelectedMetadata": null,
+        "phase3Selected": null,
+        "phase4Selected": "Laniakea Reconstruction Context",
+        "nearby": {
+          "records": 0,
+          "points": 0,
+          "labels": 0,
+          "guides": 0,
+          "motion": 0,
+          "lod": "far",
+          "visible": false
+        },
+        "milkyWay": {
+          "records": 0,
+          "points": 0,
+          "lines": 0,
+          "labels": 0,
+          "visible": false,
+          "mode": "exhibition",
+          "reconstruction": true
+        },
+        "localGroup": {
+          "records": 0,
+          "points": 0,
+          "labels": 0,
+          "uncertainties": 0,
+          "boundary": 0,
+          "lod": "far",
+          "mode": "exhibition",
+          "visible": false
+        },
+        "galaxyGroups": {
+          "groups": 0,
+          "groupPoints": 0,
+          "memberPoints": 0,
+          "labels": 0,
+          "selectedGroupId": null,
+          "mode": "exhibition",
+          "visible": false
+        },
+        "virgo": {
+          "clusterPoints": 0,
+          "majorPoints": 0,
+          "catalogPoints": 0,
+          "labels": 0,
+          "lod": "far",
+          "selectedId": null,
+          "cameraListenerActive": false,
+          "catalogVisible": true
+        },
+        "laniakea": {
+          "points": 2387,
+          "vectors": 600,
+          "selectedId": "pcs:reconstructed-structure:laniakea-context",
+          "catalogVisible": true,
+          "vectorsVisible": true
+        }
+      }
+    },
+    {
+      "primitive": 6,
+      "dataSources": 4,
+      "listeners": {
+        "changed": 5,
+        "moveStart": 0,
+        "moveEnd": 3,
+        "postRender": 2,
+        "preRender": 0
+      },
+      "debug": {
+        "initialized": true,
+        "viewerCount": 1,
+        "canvasCount": 2,
+        "active": true,
+        "scaleContext": "laniakea",
+        "mode": "exhibition",
+        "epoch": "2026-08-17T06:29:59.836Z",
+        "playbackDaysPerSecond": 1,
+        "playbackRange": {
+          "start": "1800-01-01T00:00:00.000Z",
+          "end": "2050-12-31T23:59:59.999Z"
+        },
+        "paused": false,
+        "solarTime": {
+          "displayEpoch": "2026-08-17T06:29:59.836Z",
+          "displayTimeScale": "UTC",
+          "ephemerisTimeScale": "TDB",
+          "revision": 323,
+          "reason": "playback"
+        },
+        "solarSolution": {
+          "id": "pcs-ss02b-horizons-de441-2025-2028:hermite",
+          "displayEpoch": "2026-08-10T04:50:03.799Z",
+          "displayTimeScale": "UTC",
+          "ephemerisTimeScale": "TDB",
+          "source": "NASA/JPL Horizons API",
+          "catalogEphemeris": "JPL DE441 / satellite source reported per target",
+          "referenceSystem": "ICRF",
+          "referencePlane": "Earth mean ecliptic at J2000.0 (IAU76/80)",
+          "referenceFrame": "ICRF; Earth mean ecliptic at J2000.0 (IAU76/80); heliocentric origin",
+          "positionMode": "Cached ephemeris · cubic Hermite state",
+          "orbitMode": "Cached ephemeris states from the same promoted solution",
+          "lastDataUpdate": "2026-08-09T02:59:51.822Z",
+          "qualityStatus": "Validated local cache · validated",
+          "uncertainty": "No covariance supplied by Horizons VECTORS; interpolation error is validated per object class",
+          "validity": {
+            "start": "2025-01-01T00:00:00.000Z",
+            "end": "2028-01-01T00:00:00.000Z"
+          },
+          "coverage": {
+            "start": "2025-01-01T00:00:00.000Z",
+            "end": "2028-01-01T00:00:00.000Z"
+          },
+          "bodyIds": [
+            "mercury",
+            "venus",
+            "earth",
+            "mars",
+            "jupiter",
+            "saturn",
+            "uranus",
+            "neptune"
+          ],
+          "coherent": true,
+          "authoritative": true,
+          "stale": false,
+          "notice": "Every eligible major planet is resolved from the same promoted Horizons dataset and requested Display Epoch."
+        },
+        "solarSyncStatus": {
+          "schemaVersion": 1,
+          "pipelineId": "pcs-solar-system-ss02f",
+          "generatedAt": "2026-08-09T03:04:34.082Z",
+          "state": "validated",
+          "lastSuccessfulSynchronization": "2026-08-09T03:04:34.082Z",
+          "failedAt": null,
+          "lastError": null,
+          "updatePolicy": "Periodic catalog synchronization",
+          "fallbackPolicy": "Retain last validated deployed artifacts when ingestion or validation fails",
+          "datasets": [
+            {
+              "file": "data/solar-system/ephemeris-manifest.json",
+              "datasetId": "pcs-ss02b-horizons-de441-2025-2028",
+              "lastSuccessfulSynchronization": "2026-08-09T02:59:51.822Z",
+              "validatedAt": "2026-08-09T03:03:09.953Z",
+              "source": "NASA/JPL Horizons API",
+              "recordCount": 19,
+              "validationComparisons": 46
+            },
+            {
+              "file": "data/solar-system/small-body-manifest.json",
+              "datasetId": "pcs-ss02c-sbdb-small-bodies",
+              "lastSuccessfulSynchronization": "2026-08-09T03:03:09.996Z",
+              "validatedAt": "2026-08-09T03:03:44.027Z",
+              "source": "NASA/JPL SBDB and Horizons APIs",
+              "recordCount": 5365,
+              "validationComparisons": 27
+            },
+            {
+              "file": "data/solar-system/tno-manifest.json",
+              "datasetId": "pcs-ss02d-sbdb-tno",
+              "lastSuccessfulSynchronization": "2026-08-09T03:03:44.088Z",
+              "validatedAt": "2026-08-09T03:04:00.637Z",
+              "source": "NASA/JPL SBDB Query API",
+              "recordCount": 7155,
+              "validationComparisons": 16
+            },
+            {
+              "file": "data/solar-system/comet-manifest.json",
+              "datasetId": "pcs-ss02e-sbdb-priority-comets",
+              "lastSuccessfulSynchronization": "2026-08-09T03:04:00.677Z",
+              "validatedAt": "2026-08-09T03:04:34.008Z",
+              "source": "NASA/JPL SBDB and Horizons APIs",
+              "recordCount": 9,
+              "validationComparisons": 18
+            }
+          ]
+        },
+        "orbitCacheEntries": 8,
+        "tickListenerActive": true,
+        "pointerNavigationActive": true,
+        "nativeZoomEnabled": false,
+        "lastPointerZoom": null,
+        "lastObjectFocus": "pcs:galaxy-group:cf2:334",
+        "objectCardId": "pcs:reconstructed-structure:laniakea-context",
+        "selected": "sun",
+        "smallBodySelected": null,
+        "meteorSelected": null,
+        "mainBelt": {
+          "datasetId": "pcs-ss02c-sbdb-small-bodies",
+          "catalogRecords": 0,
+          "pointCount": 0,
+          "visibleCount": 0,
+          "lod": "far",
+          "deterministic": true,
+          "epochUpdatePending": false,
+          "epochUpdateCursor": 0,
+          "completedEpochUpdates": 0,
+          "selection": {
+            "orbitClass": "MBA",
+            "absoluteMagnitude": "H < 13",
+            "sort": "H,pdes",
+            "deterministic": true
+          },
+          "upstreamMatchCount": 5366
+        },
+        "tno": {
+          "datasetId": "pcs-ss02d-sbdb-tno",
+          "knownCatalogRecords": 0,
+          "pointCount": 0,
+          "visibleCount": 0,
+          "lod": "far",
+          "deterministic": true,
+          "epochUpdatePending": false,
+          "epochUpdateCursor": 0,
+          "completedEpochUpdates": 0,
+          "selection": {
+            "orbitClass": "TNO",
+            "sort": "H,pdes",
+            "deterministic": true,
+            "normalizedSort": "defined H ascending, then pdes; undefined H last"
+          },
+          "representativePopulation": {
+            "status": "unavailable",
+            "notice": "No synthetic Kuiper Belt population or solid ring is generated."
+          }
+        },
+        "comets": {
+          "datasetId": "pcs-ss02e-sbdb-priority-comets",
+          "catalogRecords": 0,
+          "pointCount": 0,
+          "deterministic": true,
+          "selection": {
+            "type": "curated priority periodic/scientifically important comet subset",
+            "designations": [
+              "1P",
+              "2P",
+              "8P",
+              "21P",
+              "55P",
+              "67P",
+              "96P",
+              "109P",
+              "C/1861 G1"
+            ],
+            "deterministic": true,
+            "completeCatalog": false
+          },
+          "positionMode": "Cached Horizons vectors · cubic Hermite state; SBDB element fallback is disclosed two-body propagation"
+        },
+        "meteorShowers": {
+          "datasetId": "pcs-ss02e-iau-imo-meteor-showers",
+          "records": 9,
+          "classification": "observational/event relationship layer"
+        },
+        "nearbyActive": false,
+        "nearbyTier": "10pc",
+        "nearbySelected": null,
+        "nearbySelectedMetadata": null,
+        "phase3Selected": null,
+        "phase4Selected": "Laniakea Reconstruction Context",
+        "nearby": {
+          "records": 0,
+          "points": 0,
+          "labels": 0,
+          "guides": 0,
+          "motion": 0,
+          "lod": "far",
+          "visible": false
+        },
+        "milkyWay": {
+          "records": 0,
+          "points": 0,
+          "lines": 0,
+          "labels": 0,
+          "visible": false,
+          "mode": "exhibition",
+          "reconstruction": true
+        },
+        "localGroup": {
+          "records": 0,
+          "points": 0,
+          "labels": 0,
+          "uncertainties": 0,
+          "boundary": 0,
+          "lod": "far",
+          "mode": "exhibition",
+          "visible": false
+        },
+        "galaxyGroups": {
+          "groups": 0,
+          "groupPoints": 0,
+          "memberPoints": 0,
+          "labels": 0,
+          "selectedGroupId": null,
+          "mode": "exhibition",
+          "visible": false
+        },
+        "virgo": {
+          "clusterPoints": 0,
+          "majorPoints": 0,
+          "catalogPoints": 0,
+          "labels": 0,
+          "lod": "far",
+          "selectedId": null,
+          "cameraListenerActive": false,
+          "catalogVisible": true
+        },
+        "laniakea": {
+          "points": 2387,
+          "vectors": 600,
+          "selectedId": "pcs:reconstructed-structure:laniakea-context",
+          "catalogVisible": true,
+          "vectorsVisible": true
+        }
+      }
+    },
+    {
+      "primitive": 6,
+      "dataSources": 4,
+      "listeners": {
+        "changed": 5,
+        "moveStart": 0,
+        "moveEnd": 3,
+        "postRender": 2,
+        "preRender": 0
+      },
+      "debug": {
+        "initialized": true,
+        "viewerCount": 1,
+        "canvasCount": 2,
+        "active": true,
+        "scaleContext": "laniakea",
+        "mode": "exhibition",
+        "epoch": "2026-08-17T08:25:29.115Z",
+        "playbackDaysPerSecond": 1,
+        "playbackRange": {
+          "start": "1800-01-01T00:00:00.000Z",
+          "end": "2050-12-31T23:59:59.999Z"
+        },
+        "paused": false,
+        "solarTime": {
+          "displayEpoch": "2026-08-17T08:25:29.115Z",
+          "displayTimeScale": "UTC",
+          "ephemerisTimeScale": "TDB",
+          "revision": 327,
+          "reason": "playback"
+        },
+        "solarSolution": {
+          "id": "pcs-ss02b-horizons-de441-2025-2028:hermite",
+          "displayEpoch": "2026-08-10T04:50:03.799Z",
+          "displayTimeScale": "UTC",
+          "ephemerisTimeScale": "TDB",
+          "source": "NASA/JPL Horizons API",
+          "catalogEphemeris": "JPL DE441 / satellite source reported per target",
+          "referenceSystem": "ICRF",
+          "referencePlane": "Earth mean ecliptic at J2000.0 (IAU76/80)",
+          "referenceFrame": "ICRF; Earth mean ecliptic at J2000.0 (IAU76/80); heliocentric origin",
+          "positionMode": "Cached ephemeris · cubic Hermite state",
+          "orbitMode": "Cached ephemeris states from the same promoted solution",
+          "lastDataUpdate": "2026-08-09T02:59:51.822Z",
+          "qualityStatus": "Validated local cache · validated",
+          "uncertainty": "No covariance supplied by Horizons VECTORS; interpolation error is validated per object class",
+          "validity": {
+            "start": "2025-01-01T00:00:00.000Z",
+            "end": "2028-01-01T00:00:00.000Z"
+          },
+          "coverage": {
+            "start": "2025-01-01T00:00:00.000Z",
+            "end": "2028-01-01T00:00:00.000Z"
+          },
+          "bodyIds": [
+            "mercury",
+            "venus",
+            "earth",
+            "mars",
+            "jupiter",
+            "saturn",
+            "uranus",
+            "neptune"
+          ],
+          "coherent": true,
+          "authoritative": true,
+          "stale": false,
+          "notice": "Every eligible major planet is resolved from the same promoted Horizons dataset and requested Display Epoch."
+        },
+        "solarSyncStatus": {
+          "schemaVersion": 1,
+          "pipelineId": "pcs-solar-system-ss02f",
+          "generatedAt": "2026-08-09T03:04:34.082Z",
+          "state": "validated",
+          "lastSuccessfulSynchronization": "2026-08-09T03:04:34.082Z",
+          "failedAt": null,
+          "lastError": null,
+          "updatePolicy": "Periodic catalog synchronization",
+          "fallbackPolicy": "Retain last validated deployed artifacts when ingestion or validation fails",
+          "datasets": [
+            {
+              "file": "data/solar-system/ephemeris-manifest.json",
+              "datasetId": "pcs-ss02b-horizons-de441-2025-2028",
+              "lastSuccessfulSynchronization": "2026-08-09T02:59:51.822Z",
+              "validatedAt": "2026-08-09T03:03:09.953Z",
+              "source": "NASA/JPL Horizons API",
+              "recordCount": 19,
+              "validationComparisons": 46
+            },
+            {
+              "file": "data/solar-system/small-body-manifest.json",
+              "datasetId": "pcs-ss02c-sbdb-small-bodies",
+              "lastSuccessfulSynchronization": "2026-08-09T03:03:09.996Z",
+              "validatedAt": "2026-08-09T03:03:44.027Z",
+              "source": "NASA/JPL SBDB and Horizons APIs",
+              "recordCount": 5365,
+              "validationComparisons": 27
+            },
+            {
+              "file": "data/solar-system/tno-manifest.json",
+              "datasetId": "pcs-ss02d-sbdb-tno",
+              "lastSuccessfulSynchronization": "2026-08-09T03:03:44.088Z",
+              "validatedAt": "2026-08-09T03:04:00.637Z",
+              "source": "NASA/JPL SBDB Query API",
+              "recordCount": 7155,
+              "validationComparisons": 16
+            },
+            {
+              "file": "data/solar-system/comet-manifest.json",
+              "datasetId": "pcs-ss02e-sbdb-priority-comets",
+              "lastSuccessfulSynchronization": "2026-08-09T03:04:00.677Z",
+              "validatedAt": "2026-08-09T03:04:34.008Z",
+              "source": "NASA/JPL SBDB and Horizons APIs",
+              "recordCount": 9,
+              "validationComparisons": 18
+            }
+          ]
+        },
+        "orbitCacheEntries": 8,
+        "tickListenerActive": true,
+        "pointerNavigationActive": true,
+        "nativeZoomEnabled": false,
+        "lastPointerZoom": null,
+        "lastObjectFocus": "pcs:galaxy-group:cf2:334",
+        "objectCardId": "pcs:reconstructed-structure:laniakea-context",
+        "selected": "sun",
+        "smallBodySelected": null,
+        "meteorSelected": null,
+        "mainBelt": {
+          "datasetId": "pcs-ss02c-sbdb-small-bodies",
+          "catalogRecords": 0,
+          "pointCount": 0,
+          "visibleCount": 0,
+          "lod": "far",
+          "deterministic": true,
+          "epochUpdatePending": false,
+          "epochUpdateCursor": 0,
+          "completedEpochUpdates": 0,
+          "selection": {
+            "orbitClass": "MBA",
+            "absoluteMagnitude": "H < 13",
+            "sort": "H,pdes",
+            "deterministic": true
+          },
+          "upstreamMatchCount": 5366
+        },
+        "tno": {
+          "datasetId": "pcs-ss02d-sbdb-tno",
+          "knownCatalogRecords": 0,
+          "pointCount": 0,
+          "visibleCount": 0,
+          "lod": "far",
+          "deterministic": true,
+          "epochUpdatePending": false,
+          "epochUpdateCursor": 0,
+          "completedEpochUpdates": 0,
+          "selection": {
+            "orbitClass": "TNO",
+            "sort": "H,pdes",
+            "deterministic": true,
+            "normalizedSort": "defined H ascending, then pdes; undefined H last"
+          },
+          "representativePopulation": {
+            "status": "unavailable",
+            "notice": "No synthetic Kuiper Belt population or solid ring is generated."
+          }
+        },
+        "comets": {
+          "datasetId": "pcs-ss02e-sbdb-priority-comets",
+          "catalogRecords": 0,
+          "pointCount": 0,
+          "deterministic": true,
+          "selection": {
+            "type": "curated priority periodic/scientifically important comet subset",
+            "designations": [
+              "1P",
+              "2P",
+              "8P",
+              "21P",
+              "55P",
+              "67P",
+              "96P",
+              "109P",
+              "C/1861 G1"
+            ],
+            "deterministic": true,
+            "completeCatalog": false
+          },
+          "positionMode": "Cached Horizons vectors · cubic Hermite state; SBDB element fallback is disclosed two-body propagation"
+        },
+        "meteorShowers": {
+          "datasetId": "pcs-ss02e-iau-imo-meteor-showers",
+          "records": 9,
+          "classification": "observational/event relationship layer"
+        },
+        "nearbyActive": false,
+        "nearbyTier": "10pc",
+        "nearbySelected": null,
+        "nearbySelectedMetadata": null,
+        "phase3Selected": null,
+        "phase4Selected": "Laniakea Reconstruction Context",
+        "nearby": {
+          "records": 0,
+          "points": 0,
+          "labels": 0,
+          "guides": 0,
+          "motion": 0,
+          "lod": "far",
+          "visible": false
+        },
+        "milkyWay": {
+          "records": 0,
+          "points": 0,
+          "lines": 0,
+          "labels": 0,
+          "visible": false,
+          "mode": "exhibition",
+          "reconstruction": true
+        },
+        "localGroup": {
+          "records": 0,
+          "points": 0,
+          "labels": 0,
+          "uncertainties": 0,
+          "boundary": 0,
+          "lod": "far",
+          "mode": "exhibition",
+          "visible": false
+        },
+        "galaxyGroups": {
+          "groups": 0,
+          "groupPoints": 0,
+          "memberPoints": 0,
+          "labels": 0,
+          "selectedGroupId": null,
+          "mode": "exhibition",
+          "visible": false
+        },
+        "virgo": {
+          "clusterPoints": 0,
+          "majorPoints": 0,
+          "catalogPoints": 0,
+          "labels": 0,
+          "lod": "far",
+          "selectedId": null,
+          "cameraListenerActive": false,
+          "catalogVisible": true
+        },
+        "laniakea": {
+          "points": 2387,
+          "vectors": 600,
+          "selectedId": "pcs:reconstructed-structure:laniakea-context",
+          "catalogVisible": true,
+          "vectorsVisible": true
+        }
+      }
+    },
+    {
+      "primitive": 6,
+      "dataSources": 4,
+      "listeners": {
+        "changed": 5,
+        "moveStart": 0,
+        "moveEnd": 3,
+        "postRender": 2,
+        "preRender": 0
+      },
+      "debug": {
+        "initialized": true,
+        "viewerCount": 1,
+        "canvasCount": 2,
+        "active": true,
+        "scaleContext": "laniakea",
+        "mode": "exhibition",
+        "epoch": "2026-08-17T10:02:58.394Z",
+        "playbackDaysPerSecond": 1,
+        "playbackRange": {
+          "start": "1800-01-01T00:00:00.000Z",
+          "end": "2050-12-31T23:59:59.999Z"
+        },
+        "paused": false,
+        "solarTime": {
+          "displayEpoch": "2026-08-17T10:02:58.394Z",
+          "displayTimeScale": "UTC",
+          "ephemerisTimeScale": "TDB",
+          "revision": 331,
+          "reason": "playback"
+        },
+        "solarSolution": {
+          "id": "pcs-ss02b-horizons-de441-2025-2028:hermite",
+          "displayEpoch": "2026-08-10T04:50:03.799Z",
+          "displayTimeScale": "UTC",
+          "ephemerisTimeScale": "TDB",
+          "source": "NASA/JPL Horizons API",
+          "catalogEphemeris": "JPL DE441 / satellite source reported per target",
+          "referenceSystem": "ICRF",
+          "referencePlane": "Earth mean ecliptic at J2000.0 (IAU76/80)",
+          "referenceFrame": "ICRF; Earth mean ecliptic at J2000.0 (IAU76/80); heliocentric origin",
+          "positionMode": "Cached ephemeris · cubic Hermite state",
+          "orbitMode": "Cached ephemeris states from the same promoted solution",
+          "lastDataUpdate": "2026-08-09T02:59:51.822Z",
+          "qualityStatus": "Validated local cache · validated",
+          "uncertainty": "No covariance supplied by Horizons VECTORS; interpolation error is validated per object class",
+          "validity": {
+            "start": "2025-01-01T00:00:00.000Z",
+            "end": "2028-01-01T00:00:00.000Z"
+          },
+          "coverage": {
+            "start": "2025-01-01T00:00:00.000Z",
+            "end": "2028-01-01T00:00:00.000Z"
+          },
+          "bodyIds": [
+            "mercury",
+            "venus",
+            "earth",
+            "mars",
+            "jupiter",
+            "saturn",
+            "uranus",
+            "neptune"
+          ],
+          "coherent": true,
+          "authoritative": true,
+          "stale": false,
+          "notice": "Every eligible major planet is resolved from the same promoted Horizons dataset and requested Display Epoch."
+        },
+        "solarSyncStatus": {
+          "schemaVersion": 1,
+          "pipelineId": "pcs-solar-system-ss02f",
+          "generatedAt": "2026-08-09T03:04:34.082Z",
+          "state": "validated",
+          "lastSuccessfulSynchronization": "2026-08-09T03:04:34.082Z",
+          "failedAt": null,
+          "lastError": null,
+          "updatePolicy": "Periodic catalog synchronization",
+          "fallbackPolicy": "Retain last validated deployed artifacts when ingestion or validation fails",
+          "datasets": [
+            {
+              "file": "data/solar-system/ephemeris-manifest.json",
+              "datasetId": "pcs-ss02b-horizons-de441-2025-2028",
+              "lastSuccessfulSynchronization": "2026-08-09T02:59:51.822Z",
+              "validatedAt": "2026-08-09T03:03:09.953Z",
+              "source": "NASA/JPL Horizons API",
+              "recordCount": 19,
+              "validationComparisons": 46
+            },
+            {
+              "file": "data/solar-system/small-body-manifest.json",
+              "datasetId": "pcs-ss02c-sbdb-small-bodies",
+              "lastSuccessfulSynchronization": "2026-08-09T03:03:09.996Z",
+              "validatedAt": "2026-08-09T03:03:44.027Z",
+              "source": "NASA/JPL SBDB and Horizons APIs",
+              "recordCount": 5365,
+              "validationComparisons": 27
+            },
+            {
+              "file": "data/solar-system/tno-manifest.json",
+              "datasetId": "pcs-ss02d-sbdb-tno",
+              "lastSuccessfulSynchronization": "2026-08-09T03:03:44.088Z",
+              "validatedAt": "2026-08-09T03:04:00.637Z",
+              "source": "NASA/JPL SBDB Query API",
+              "recordCount": 7155,
+              "validationComparisons": 16
+            },
+            {
+              "file": "data/solar-system/comet-manifest.json",
+              "datasetId": "pcs-ss02e-sbdb-priority-comets",
+              "lastSuccessfulSynchronization": "2026-08-09T03:04:00.677Z",
+              "validatedAt": "2026-08-09T03:04:34.008Z",
+              "source": "NASA/JPL SBDB and Horizons APIs",
+              "recordCount": 9,
+              "validationComparisons": 18
+            }
+          ]
+        },
+        "orbitCacheEntries": 8,
+        "tickListenerActive": true,
+        "pointerNavigationActive": true,
+        "nativeZoomEnabled": false,
+        "lastPointerZoom": null,
+        "lastObjectFocus": "pcs:galaxy-group:cf2:334",
+        "objectCardId": "pcs:reconstructed-structure:laniakea-context",
+        "selected": "sun",
+        "smallBodySelected": null,
+        "meteorSelected": null,
+        "mainBelt": {
+          "datasetId": "pcs-ss02c-sbdb-small-bodies",
+          "catalogRecords": 0,
+          "pointCount": 0,
+          "visibleCount": 0,
+          "lod": "far",
+          "deterministic": true,
+          "epochUpdatePending": false,
+          "epochUpdateCursor": 0,
+          "completedEpochUpdates": 0,
+          "selection": {
+            "orbitClass": "MBA",
+            "absoluteMagnitude": "H < 13",
+            "sort": "H,pdes",
+            "deterministic": true
+          },
+          "upstreamMatchCount": 5366
+        },
+        "tno": {
+          "datasetId": "pcs-ss02d-sbdb-tno",
+          "knownCatalogRecords": 0,
+          "pointCount": 0,
+          "visibleCount": 0,
+          "lod": "far",
+          "deterministic": true,
+          "epochUpdatePending": false,
+          "epochUpdateCursor": 0,
+          "completedEpochUpdates": 0,
+          "selection": {
+            "orbitClass": "TNO",
+            "sort": "H,pdes",
+            "deterministic": true,
+            "normalizedSort": "defined H ascending, then pdes; undefined H last"
+          },
+          "representativePopulation": {
+            "status": "unavailable",
+            "notice": "No synthetic Kuiper Belt population or solid ring is generated."
+          }
+        },
+        "comets": {
+          "datasetId": "pcs-ss02e-sbdb-priority-comets",
+          "catalogRecords": 0,
+          "pointCount": 0,
+          "deterministic": true,
+          "selection": {
+            "type": "curated priority periodic/scientifically important comet subset",
+            "designations": [
+              "1P",
+              "2P",
+              "8P",
+              "21P",
+              "55P",
+              "67P",
+              "96P",
+              "109P",
+              "C/1861 G1"
+            ],
+            "deterministic": true,
+            "completeCatalog": false
+          },
+          "positionMode": "Cached Horizons vectors · cubic Hermite state; SBDB element fallback is disclosed two-body propagation"
+        },
+        "meteorShowers": {
+          "datasetId": "pcs-ss02e-iau-imo-meteor-showers",
+          "records": 9,
+          "classification": "observational/event relationship layer"
+        },
+        "nearbyActive": false,
+        "nearbyTier": "10pc",
+        "nearbySelected": null,
+        "nearbySelectedMetadata": null,
+        "phase3Selected": null,
+        "phase4Selected": "Laniakea Reconstruction Context",
+        "nearby": {
+          "records": 0,
+          "points": 0,
+          "labels": 0,
+          "guides": 0,
+          "motion": 0,
+          "lod": "far",
+          "visible": false
+        },
+        "milkyWay": {
+          "records": 0,
+          "points": 0,
+          "lines": 0,
+          "labels": 0,
+          "visible": false,
+          "mode": "exhibition",
+          "reconstruction": true
+        },
+        "localGroup": {
+          "records": 0,
+          "points": 0,
+          "labels": 0,
+          "uncertainties": 0,
+          "boundary": 0,
+          "lod": "far",
+          "mode": "exhibition",
+          "visible": false
+        },
+        "galaxyGroups": {
+          "groups": 0,
+          "groupPoints": 0,
+          "memberPoints": 0,
+          "labels": 0,
+          "selectedGroupId": null,
+          "mode": "exhibition",
+          "visible": false
+        },
+        "virgo": {
+          "clusterPoints": 0,
+          "majorPoints": 0,
+          "catalogPoints": 0,
+          "labels": 0,
+          "lod": "far",
+          "selectedId": null,
+          "cameraListenerActive": false,
+          "catalogVisible": true
+        },
+        "laniakea": {
+          "points": 2387,
+          "vectors": 600,
+          "selectedId": "pcs:reconstructed-structure:laniakea-context",
+          "catalogVisible": true,
+          "vectorsVisible": true
+        }
+      }
+    }
+  ],
+  "languages": {
+    "zh-TW": [
+      "拉尼亞凱亞",
+      "徑向特異速度向量",
+      "返回室女座星系團",
+      1
+    ],
+    "en": [
+      "Laniakea",
+      "Radial peculiar-velocity vectors",
+      "Return to Virgo Cluster",
+      1
+    ],
+    "ja": [
+      "ラニアケア",
+      "視線方向の特異速度ベクトル",
+      "おとめ座銀河団へ戻る",
+      1
+    ],
+    "ko": [
+      "라니아케아",
+      "시선 방향 특이속도 벡터",
+      "처녀자리 은하단으로 돌아가기",
+      1
+    ]
+  },
+  "mobile": {
+    "overflow": false,
+    "viewer": 1,
+    "cesiumCanvas": 1
+  },
+  "primitiveInitial": 4,
+  "primitiveFinal": 4,
+  "dataSourcesInitial": 4,
+  "dataSourcesFinal": 4,
+  "final": {
+    "initialized": true,
+    "viewerCount": 1,
+    "canvasCount": 2,
+    "active": true,
+    "scaleContext": "solar",
+    "mode": "exhibition",
+    "epoch": "2026-08-19T06:12:08.445Z",
+    "playbackDaysPerSecond": 1,
+    "playbackRange": {
+      "start": "1800-01-01T00:00:00.000Z",
+      "end": "2050-12-31T23:59:59.999Z"
+    },
+    "paused": false,
+    "solarTime": {
+      "displayEpoch": "2026-08-19T06:12:08.445Z",
+      "displayTimeScale": "UTC",
+      "ephemerisTimeScale": "TDB",
+      "revision": 399,
+      "reason": "playback"
+    },
+    "solarSolution": {
+      "id": "pcs-ss02b-horizons-de441-2025-2028:hermite",
+      "displayEpoch": "2026-08-19T06:12:08.445Z",
+      "displayTimeScale": "UTC",
+      "ephemerisTimeScale": "TDB",
+      "source": "NASA/JPL Horizons API",
+      "catalogEphemeris": "JPL DE441 / satellite source reported per target",
+      "referenceSystem": "ICRF",
+      "referencePlane": "Earth mean ecliptic at J2000.0 (IAU76/80)",
+      "referenceFrame": "ICRF; Earth mean ecliptic at J2000.0 (IAU76/80); heliocentric origin",
+      "positionMode": "Cached ephemeris · cubic Hermite state",
+      "orbitMode": "Cached ephemeris states from the same promoted solution",
+      "lastDataUpdate": "2026-08-09T02:59:51.822Z",
+      "qualityStatus": "Validated local cache · validated",
+      "uncertainty": "No covariance supplied by Horizons VECTORS; interpolation error is validated per object class",
+      "validity": {
+        "start": "2025-01-01T00:00:00.000Z",
+        "end": "2028-01-01T00:00:00.000Z"
+      },
+      "coverage": {
+        "start": "2025-01-01T00:00:00.000Z",
+        "end": "2028-01-01T00:00:00.000Z"
+      },
+      "bodyIds": [
+        "mercury",
+        "venus",
+        "earth",
+        "mars",
+        "jupiter",
+        "saturn",
+        "uranus",
+        "neptune"
+      ],
+      "coherent": true,
+      "authoritative": true,
+      "stale": false,
+      "notice": "Every eligible major planet is resolved from the same promoted Horizons dataset and requested Display Epoch."
+    },
+    "solarSyncStatus": {
+      "schemaVersion": 1,
+      "pipelineId": "pcs-solar-system-ss02f",
+      "generatedAt": "2026-08-09T03:04:34.082Z",
+      "state": "validated",
+      "lastSuccessfulSynchronization": "2026-08-09T03:04:34.082Z",
+      "failedAt": null,
+      "lastError": null,
+      "updatePolicy": "Periodic catalog synchronization",
+      "fallbackPolicy": "Retain last validated deployed artifacts when ingestion or validation fails",
+      "datasets": [
+        {
+          "file": "data/solar-system/ephemeris-manifest.json",
+          "datasetId": "pcs-ss02b-horizons-de441-2025-2028",
+          "lastSuccessfulSynchronization": "2026-08-09T02:59:51.822Z",
+          "validatedAt": "2026-08-09T03:03:09.953Z",
+          "source": "NASA/JPL Horizons API",
+          "recordCount": 19,
+          "validationComparisons": 46
+        },
+        {
+          "file": "data/solar-system/small-body-manifest.json",
+          "datasetId": "pcs-ss02c-sbdb-small-bodies",
+          "lastSuccessfulSynchronization": "2026-08-09T03:03:09.996Z",
+          "validatedAt": "2026-08-09T03:03:44.027Z",
+          "source": "NASA/JPL SBDB and Horizons APIs",
+          "recordCount": 5365,
+          "validationComparisons": 27
+        },
+        {
+          "file": "data/solar-system/tno-manifest.json",
+          "datasetId": "pcs-ss02d-sbdb-tno",
+          "lastSuccessfulSynchronization": "2026-08-09T03:03:44.088Z",
+          "validatedAt": "2026-08-09T03:04:00.637Z",
+          "source": "NASA/JPL SBDB Query API",
+          "recordCount": 7155,
+          "validationComparisons": 16
+        },
+        {
+          "file": "data/solar-system/comet-manifest.json",
+          "datasetId": "pcs-ss02e-sbdb-priority-comets",
+          "lastSuccessfulSynchronization": "2026-08-09T03:04:00.677Z",
+          "validatedAt": "2026-08-09T03:04:34.008Z",
+          "source": "NASA/JPL SBDB and Horizons APIs",
+          "recordCount": 9,
+          "validationComparisons": 18
+        }
+      ]
+    },
+    "orbitCacheEntries": 8,
+    "tickListenerActive": true,
+    "pointerNavigationActive": true,
+    "nativeZoomEnabled": false,
+    "lastPointerZoom": null,
+    "lastObjectFocus": "pcs:galaxy-group:cf2:334",
+    "objectCardId": "sun",
+    "selected": "sun",
+    "smallBodySelected": null,
+    "meteorSelected": null,
+    "mainBelt": {
+      "datasetId": "pcs-ss02c-sbdb-small-bodies",
+      "catalogRecords": 5365,
+      "pointCount": 5365,
+      "visibleCount": 256,
+      "lod": "far",
+      "deterministic": true,
+      "epochUpdatePending": false,
+      "epochUpdateCursor": 0,
+      "completedEpochUpdates": 0,
+      "selection": {
+        "orbitClass": "MBA",
+        "absoluteMagnitude": "H < 13",
+        "sort": "H,pdes",
+        "deterministic": true
+      },
+      "upstreamMatchCount": 5366
+    },
+    "tno": {
+      "datasetId": "pcs-ss02d-sbdb-tno",
+      "knownCatalogRecords": 7155,
+      "pointCount": 7155,
+      "visibleCount": 256,
+      "lod": "far",
+      "deterministic": true,
+      "epochUpdatePending": false,
+      "epochUpdateCursor": 0,
+      "completedEpochUpdates": 0,
+      "selection": {
+        "orbitClass": "TNO",
+        "sort": "H,pdes",
+        "deterministic": true,
+        "normalizedSort": "defined H ascending, then pdes; undefined H last"
+      },
+      "representativePopulation": {
+        "status": "unavailable",
+        "notice": "No synthetic Kuiper Belt population or solid ring is generated."
+      }
+    },
+    "comets": {
+      "datasetId": "pcs-ss02e-sbdb-priority-comets",
+      "catalogRecords": 9,
+      "pointCount": 9,
+      "deterministic": true,
+      "selection": {
+        "type": "curated priority periodic/scientifically important comet subset",
+        "designations": [
+          "1P",
+          "2P",
+          "8P",
+          "21P",
+          "55P",
+          "67P",
+          "96P",
+          "109P",
+          "C/1861 G1"
+        ],
+        "deterministic": true,
+        "completeCatalog": false
+      },
+      "positionMode": "Cached Horizons vectors · cubic Hermite state; SBDB element fallback is disclosed two-body propagation"
+    },
+    "meteorShowers": {
+      "datasetId": "pcs-ss02e-iau-imo-meteor-showers",
+      "records": 9,
+      "classification": "observational/event relationship layer"
+    },
+    "nearbyActive": false,
+    "nearbyTier": "10pc",
+    "nearbySelected": null,
+    "nearbySelectedMetadata": null,
+    "phase3Selected": null,
+    "phase4Selected": null,
+    "nearby": {
+      "records": 0,
+      "points": 0,
+      "labels": 0,
+      "guides": 0,
+      "motion": 0,
+      "lod": "far",
+      "visible": false
+    },
+    "milkyWay": {
+      "records": 0,
+      "points": 0,
+      "lines": 0,
+      "labels": 0,
+      "visible": false,
+      "mode": "exhibition",
+      "reconstruction": true
+    },
+    "localGroup": {
+      "records": 0,
+      "points": 0,
+      "labels": 0,
+      "uncertainties": 0,
+      "boundary": 0,
+      "lod": "far",
+      "mode": "exhibition",
+      "visible": false
+    },
+    "galaxyGroups": {
+      "groups": 0,
+      "groupPoints": 0,
+      "memberPoints": 0,
+      "labels": 0,
+      "selectedGroupId": null,
+      "mode": "exhibition",
+      "visible": false
+    },
+    "virgo": {
+      "clusterPoints": 0,
+      "majorPoints": 0,
+      "catalogPoints": 0,
+      "labels": 0,
+      "lod": "far",
+      "selectedId": null,
+      "cameraListenerActive": false,
+      "catalogVisible": true
+    },
+    "laniakea": {
+      "points": 0,
+      "vectors": 0,
+      "selectedId": null,
+      "catalogVisible": true,
+      "vectorsVisible": true
+    }
+  },
+  "consoleErrors": [],
+  "networkFailures": [],
+  "requiredErrors": [],
+  "requiredFailures": [],
+  "screenshots": [
+    "01-virgo-to-laniakea-transition.png",
+    "02-laniakea-cf2-context.png",
+    "03-cf2-group-focus-object-card.png",
+    "04-catalog-observations-without-vectors.png",
+    "05-mobile-laniakea.png"
+  ]
+}

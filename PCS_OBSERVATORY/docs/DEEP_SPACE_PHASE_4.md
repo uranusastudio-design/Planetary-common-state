@@ -4,8 +4,8 @@ Status at 2026-08-09:
 
 - Phase 4A — Nearby Galaxy Groups: completed, deployed, and production-verified.
 - Phase 4B — Virgo Cluster: completed, deployed, and production-verified.
-- Phase 4C — Laniakea: local implementation and validation passed; production deployment verification pending.
-- Phase 4D — Cosmic Web: not yet completed.
+- Phase 4C — Laniakea: completed, deployed, and production-verified.
+- Phase 4D — Cosmic Web: active next phase.
 - Phase 4E — Observable Universe: not yet completed.
 - Phase 4F — CMB Full Sky: not yet completed.
 
@@ -167,4 +167,17 @@ The existing Viewer, Deep Space state machine, selection store, search, language
 - Ten Virgo ↔ Laniakea cycles: primitive, DataSource and listener growth 0.
 - Viewer 1; Cesium canvas 1; four languages; 390×844 mobile; required Console 0; required Network failures 0.
 
-Local evidence: `test-results/deep-space-phase-4c-local/acceptance-report.json` and screenshots. Production deployment verification remains required before Phase 4C is frozen.
+Local evidence: `test-results/deep-space-phase-4c-local/acceptance-report.json` and screenshots.
+
+### Production verification
+
+- Runtime commit: `6388033e33d20fb6c03faad9bdabb3a802cf0806`.
+- GitHub Pages run: `31310295320`; build, deploy and status-report jobs passed.
+- Production `deep-space.js` and `laniakea-layer.js` SHA-256 values matched the committed files.
+- The production catalog endpoint returned 5,224 source rows, 2,387 deployed context rows and the explicit “not a Laniakea boundary” sampling statement.
+- Production WebGL repeated the 2,387-point/600-vector overview, reconstruction card, selected measured-distance group, vector-layer switch, four languages, mobile layout and ten lifecycle cycles.
+- Viewer 1; Cesium canvas 1; primitive/DataSource/listener growth 0; required Console 0; required Network failures 0.
+
+Production evidence: `test-results/deep-space-phase-4c-production-6388033/acceptance-report.json` and screenshots.
+
+Phase 4C is frozen at this deployed Cosmicflows-2 snapshot, source-published Supergalactic coordinate contract, measured-distance/uncertainty fields, radial peculiar-velocity interpretation, no-rigid-boundary rule and lifecycle contract. The active roadmap is Phase 4D Cosmic Web.
