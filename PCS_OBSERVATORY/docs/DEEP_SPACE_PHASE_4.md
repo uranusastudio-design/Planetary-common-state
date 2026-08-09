@@ -3,8 +3,8 @@
 Status at 2026-08-09:
 
 - Phase 4A — Nearby Galaxy Groups: completed, deployed, and production-verified.
-- Phase 4B — Virgo Cluster: local implementation and validation passed; production deployment pending.
-- Phase 4C — Laniakea: not yet completed.
+- Phase 4B — Virgo Cluster: completed, deployed, and production-verified.
+- Phase 4C — Laniakea: active next phase.
 - Phase 4D — Cosmic Web: not yet completed.
 - Phase 4E — Observable Universe: not yet completed.
 - Phase 4F — CMB Full Sky: not yet completed.
@@ -123,4 +123,16 @@ Selected objects remain visible across LOD. The one camera-change listener is re
 - Ten Nearby Galaxy Groups ↔ Virgo cycles: primitive, DataSource and listener growth 0.
 - Viewer 1; Cesium canvas 1; four languages; 390×844 mobile; required Console 0; required Network failures 0.
 
-Local evidence: `test-results/deep-space-phase-4b-local/acceptance-report.json` and screenshots. Production verification is intentionally not claimed until commit, push, Pages deployment and production WebGL acceptance complete.
+Local evidence: `test-results/deep-space-phase-4b-local/acceptance-report.json` and screenshots.
+
+### Production verification
+
+- Runtime commit: `86c8a7f4084875ca61fdcc4a0ac86044a869aa44`.
+- GitHub Pages run: `31308276438`; build, deploy and status-report jobs passed.
+- Production catalog endpoint returned 1,589 galaxies, 1,028 members and 561 possible members.
+- Production WebGL repeated the Virgo overview, five major-member searches, M87 selected visibility and Object Card checks, cluster summary, four languages, mobile layout and ten lifecycle cycles.
+- Viewer 1; Cesium canvas 1; primitive/DataSource/listener growth 0; required Console 0; required Network failures 0.
+
+Production evidence: `test-results/deep-space-phase-4b-production-86c8a7f/acceptance-report.json` and screenshots.
+
+Phase 4B is frozen at this deployed source, identity, M/P membership, coordinate, representative-shell, LOD and lifecycle contract. The active roadmap is Phase 4C Laniakea, which must remain an observation-based reconstruction rather than a rigid observed shell.
