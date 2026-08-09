@@ -76,9 +76,18 @@ Stable baseline: v2.1.0 — Stable / Frozen
 - Added four-language runtime sync status and Object Card last-update display without claiming real-time catalog updates.
 - Passed 46 + 27 + 16 + 18 independent position comparisons, seven meteor-relationship checks, 144 repository Node tests, and ten browser lifecycle cycles with Viewer 1, Cesium canvas 1, total canvas 2, required Console 0, and required Network 0.
 
+### Solar System SS-02G
+
+- Completed and froze the Solar System SS-02 Release Audit without starting Deep Space Phase 4A or closing the separate Foundation hardware-gesture audit.
+- Passed 150 repository Node tests and 107 authoritative position comparisons across major bodies, dwarf/Main Belt, TNO, and comet classes.
+- Confirmed 12,534 unique small-body SPK-IDs, Gaia DR3/J2016.0 metadata, Milky Way 201 points, Local Group 102 points, Unified Object Cards, Pointer-Anchored Navigation, Earth ownership, mobile layout, and ten cross-scale lifecycle cycles.
+- Final browser audit held Viewer 1, Cesium canvas 1, total canvas 2, required Console 0, required Network 0, and no DataSource/primitive growth.
+- Recorded headless SwiftShader performance as environment-specific evidence; it is not presented as a physical-device guarantee.
+
 ### Current Boundary
 
-- Solar System SS-02A–F are frozen; SS-02G Release Audit is the active final sub-stage.
+- Solar System SS-02A–G are complete, audited, and frozen locally.
+- v2.2.0 remains Preview; Foundation physical gesture evidence is still open, and Deep Space Phase 4A remains not started.
 - Deep Space Phase 4A remains not started.
 
 ## [v2.1.0] — 2026-08-01

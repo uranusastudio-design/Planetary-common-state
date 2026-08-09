@@ -1,6 +1,6 @@
 # Solar System SS-02
 
-Status: **In Development — SS-02A–F validated / frozen; SS-02G active**
+Status: **Complete — SS-02A–G validated / frozen**
 
 Release: **v2.2.0**
 
@@ -307,6 +307,14 @@ The successful SS-02F full run synchronized 19 major bodies, five named dwarf pl
 
 Evidence: `test-results/solar-system-ss02f/meteor-shower-validation.json` and `test-results/solar-system-ss02f/report.json`.
 
+## SS-02G Release Audit
+
+SS-02G reran the complete repository suite and one combined real-browser cross-scale audit over Solar System, Nearby Stars/Gaia, Milky Way, Local Group, mobile layout, Earth ownership, Pointer-Anchored Navigation, Unified Object Cards, deterministic catalog ownership, resource lifecycle, Console, Network, and performance evidence.
+
+Result: 150/150 Node tests and the final browser audit passed. The single Cesium Viewer/canvas contract held; ten cross-scale cycles produced no DataSource or primitive growth; 12,534 small-body SPK-IDs were unique; required Console and Network failures were zero. Headless SwiftShader performance values are preserved as environment-specific regression evidence rather than universal hardware guarantees.
+
+Full decision, evidence, limitations, and open boundaries: `docs/SOLAR_SYSTEM_SS02_RELEASE_AUDIT.md`.
+
 ## Freeze boundary
 
-SS-02A–F are frozen as the base for the SS-02G Release Audit. Changing their public meaning requires an explicit SS-02 architecture revision, migration notes, and rerun of the affected regression gates.
+SS-02A–G are complete and frozen. Changing their public meaning requires an explicit SS-02 architecture revision, migration notes, and rerun of the affected regression gates. v2.2.0 remains Preview because the separate Foundation physical-gesture audit is still open. Deep Space Phase 4A remains not started.
