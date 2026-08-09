@@ -94,10 +94,20 @@ Stable baseline: v2.1.0 — Stable / Frozen
 - Added a traceable Deep Space selection bridge into Scientific Analysis. Comet coordinates, orbit elements, epoch, uncertainty, sources, status, and limitations are available without claiming AI inference.
 - Added real-WebGL acceptance for 30 days/second stable identities and visibility, scientific-scale focus, comet analysis context, frame pacing, Console, and Network state.
 
+### Deep Space Phase 4A — Nearby Galaxy Groups
+
+- Locked the shared Phase 4 coordinate contract for ICRS, Galactic, Galactocentric, Supergalactic, observer-centered sky and explicitly typed cosmological distances.
+- Added the shared astronomical source registry and checksum-locked Kourkchi & Tully 2017 / VizieR `J/ApJ/843/16` source snapshots.
+- Deployed 77 multi-member galaxy groups from 2–12 Mpc and 456 unique PGC member identities; 228 galaxies with published individual distances receive 3D catalog points and 228 missing-distance records remain searchable without invented coordinates.
+- Added catalog group and member navigation, M81/IC 342/Centaurus A/M83/M94/M101 aliases, camera focus, distinct group/member markers, Unified Object Cards and four-language UI through the existing Deep Space state machine.
+- Separated catalog observations, source-published derived measurements and representative marker sizing in the UI and documentation.
+- Passed 171 Node tests and real-WebGL acceptance with 77 group points, 42 on-screen overview points, 33 measured-distance M81 members, ten lifecycle cycles, Viewer 1, Cesium canvas 1, primitive/DataSource growth 0, required Console 0 and required catalog Network failures 0.
+
 ### Current Boundary
 
-- SS-02G remains reopened pending human production visual confirmation; Solar System SS-02 is not refrozen by this correction.
-- v2.2.0 remains Preview; Foundation physical gesture evidence is still open, and Deep Space Phase 4A remains not started.
+- Solar System SS-02 is accepted under the latest human-approved production state.
+- Deep Space Phase 4A is implemented and locally validated; the release record is finalized by its matching production deployment verification.
+- v2.2.0 remains Preview; Foundation physical gesture evidence is still open, and Deep Space Phase 4B is the next active phase.
 
 ## [v2.1.0] — 2026-08-01
 

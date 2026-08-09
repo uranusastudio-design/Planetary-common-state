@@ -34,7 +34,7 @@ test("registry schema, version, date, statuses and ordering are valid", () => {
     assert.ok(["stable", "preview", "archived"].includes(release.status));
   }
   assert.deepEqual(registry.roadmap.slice(0, 5).map(item => item.id), ["deep-space-phase-1", "deep-space-phase-2", "deep-space-phase-3", "v2.2.0-foundation", "deep-space-phase-4"]);
-  assert.deepEqual(registry.roadmap.filter(item => item.status === "in-progress").map(item=>item.id), ["v2.2.0-foundation", "solar-system-ss02"]);
+  assert.deepEqual(registry.roadmap.filter(item => item.status === "in-progress").map(item=>item.id), ["v2.2.0-foundation", "deep-space-phase-4"]);
   assert.ok(registry.roadmap.every(item => validRoadmapStatuses.has(item.status)));
 });
 
@@ -59,10 +59,10 @@ test("honest milestone boundaries and known issues are preserved", () => {
   const titania = registry.roadmap.find(item => item.id === "titania-texture");
   assert.equal(phase3.status, "completed");
   assert.equal(foundation.status, "in-progress");
-  assert.equal(phase4.status, "planned");
+  assert.equal(phase4.status, "in-progress");
   assert.equal(titania.status, "deferred");
   assert.ok(registry.releases[0].knownIssues.some(issue => issue.includes("Titania")));
-  assert.doesNotMatch(JSON.stringify(registry), /48%|Gaia DR4|Phase 4 (?:active|in-progress)/i);
+  assert.doesNotMatch(JSON.stringify(registry), /48%|Gaia DR4/i);
 });
 
 test("tabs, session-only persistence, keyboard and focus behavior are accessible", () => {

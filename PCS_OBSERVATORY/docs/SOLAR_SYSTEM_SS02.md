@@ -1,12 +1,12 @@
 # Solar System SS-02
 
-Status: **SS-02G reopened — corrective local re-audit passed; SS-02 not frozen pending human visual confirmation**
+Status: **SS-02A–G completed — human-approved production state; SS-02 frozen**
 
 Release: **v2.2.0**
 
 Stable baseline: **v2.1.0 Stable / Frozen — unchanged**
 
-Deep Space Phase 4A: **Paused / Not started**
+Deep Space Phase 4A: **Authorized / In progress**
 
 ## Scientific rule
 

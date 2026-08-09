@@ -1,6 +1,6 @@
 # Solar System SS-02 Release Audit
 
-Status: **SS-02G REOPENED — corrective re-audit passed; deployment authorized; awaiting post-deployment human visual confirmation**
+Status: **SS-02G PASSED — post-deployment human visual confirmation received; Solar System SS-02 frozen**
 
 Audit date: **2026-08-09**
 
@@ -8,13 +8,13 @@ Release boundary: **v2.2.0 preview**
 
 Stable baseline: **v2.1.0 Stable / Frozen — unchanged**
 
-Production deployment: **GitHub Pages build 1140557011 — runtime commit `f826bce` — built and production-verified**
+Production deployment: **runtime correction `f826bce`; playback/focus follow-up `94668b1` — built and production-verified**
 
-Deep Space Phase 4A: **Not started**
+Deep Space Phase 4A: **Authorized / In progress after Solar System acceptance**
 
 ## Decision
 
-The previous PASS/Frozen decision is revoked because human production-equivalent visual inspection found that the camera did not frame the rendered Solar System bodies and that the remaining Cesium skybox imagery still looked like camera-motion micro-streaks. SS-02G is reopened and SS-02 is not frozen. The corrective audit now separates ephemeris validation from visible-body rendering validation and includes inspected screenshots, drag/zoom regression evidence, and lifecycle checks. Explicit human authorization to commit, push, and deploy this correction was received on 2026-08-09; post-deployment human visual confirmation is still required before refreezing SS-02G. This audit does not publish v2.2.0, close the separate Foundation hardware-gesture audit, repair Titania imagery, modify SITE, or authorize Deep Space Phase 4A.
+The previous PASS/Frozen decision was revoked because human production-equivalent visual inspection found that the camera did not frame the rendered Solar System bodies and that the remaining Cesium skybox imagery still looked like camera-motion micro-streaks. The corrective audit separates ephemeris validation from visible-body rendering validation and includes inspected screenshots, drag/zoom regression evidence, and lifecycle checks. Explicit authorization to commit, push, and deploy was received on 2026-08-09. After the additional playback/focus correction in `94668b1`, Alvin confirmed the production state as acceptable on 2026-08-09. SS-02G therefore returns to PASS and the aggregate Solar System SS-02 boundary is frozen. This audit does not publish v2.2.0, close the separate Foundation hardware-gesture audit, repair Titania imagery, or modify SITE.
 
 ## Stage ledger
 
@@ -26,9 +26,9 @@ The previous PASS/Frozen decision is revoked because human production-equivalent
 | SS-02D | `5522077` | 7,155 known-catalog TNOs; no synthetic ring; deterministic LOD; 16 comparisons |
 | SS-02E | `9520c03` | Nine priority comets and nine meteor-shower relationships; 18 comparisons |
 | SS-02F | `748f871` | Isolated periodic synchronization; validation gates; provenance status; rollback-capable keep-last-valid promotion |
-| SS-02G | `f826bce` corrective runtime deployment | Human-visible body rendering, no-streak drag/zoom evidence, and full corrective re-audit |
+| SS-02G | `f826bce`; follow-up `94668b1` | Human-visible body rendering, no-streak drag/zoom evidence, stable playback/focus, production verification, and human acceptance |
 
-SS-02A–F scientific-data results remain validated. SS-02G and the aggregate SS-02 release boundary are not frozen.
+SS-02A–G results remain validated and the aggregate SS-02 release boundary is frozen after human production confirmation.
 
 ## Machine validation
 
@@ -78,7 +78,7 @@ These measurements are reproducible regression evidence for this audit environme
 - v2.2.0 remains Preview; this audit does not declare the full Foundation release Stable/Frozen.
 - Foundation physical Mac trackpad and real-device pinch evidence remains Open.
 - Commit `f826bce`, push, GitHub Pages build `1140557011`, and production URL verification completed after explicit authorization on 2026-08-09.
-- SITE, showcase video, Titania imagery repair, and Deep Space Phase 4A–4F remain outside this audit.
+- SITE, Titania imagery repair, and the implementation details of Deep Space Phase 4A–4F remain outside this Solar System audit.
 
 ## Final checkpoint
 
@@ -87,9 +87,9 @@ These measurements are reproducible regression evidence for this audit environme
 - [x] SS-02G corrective local re-audit passed.
 - [x] Commit, push, and GitHub Pages deployment explicitly authorized.
 - [x] GitHub Pages build and production real-WebGL verification passed.
-- [ ] Post-deployment human visual confirmation received.
-- [ ] SS-02A–G frozen after human confirmation.
+- [x] Post-deployment human visual confirmation received on 2026-08-09.
+- [x] SS-02A–G frozen after human confirmation.
 - [x] v2.1.0 Stable/Frozen boundary preserved.
 - [x] Foundation hardware audit remains Open.
-- [x] Phase 4A remains Not started.
+- [x] Phase 4A authorization begins only after Solar System human acceptance.
 - [x] Initial no-push/no-deploy boundary honored until separate explicit authorization was received.

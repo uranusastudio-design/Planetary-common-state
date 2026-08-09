@@ -35,7 +35,7 @@ test("Deep Space uses only its clean primitive field and restores Earth skybox o
 });
 
 test("closing Deep Space clears selected catalog state before a lifecycle reopen", () => {
-  assert.match(manager, /setScaleControls\("solar"\);selected="sun";smallBodySelected=null;meteorSelected=null;nearbySelected=null;phase3Selected=null;focusParent=null;closeObjectCard\(\)/);
+  assert.match(manager, /setScaleControls\("solar"\);selected="sun";smallBodySelected=null;meteorSelected=null;nearbySelected=null;phase3Selected=null;phase4Selected=null;focusParent=null;closeObjectCard\(\)/);
   assert.match(manager, /if\(!active\|\|dataSource!==openedDataSource\)viewer\.dataSources\.remove\(added,true\)/);
 });
 

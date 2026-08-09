@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "pcs-astronomical-source-registry-v1",
+  "updatedAt": "2026-08-09",
+  "sources": [
+    {
+      "sourceId": "vizier-j-apj-843-16",
+      "agency": "Centre de Données astronomiques de Strasbourg",
+      "mission": null,
+      "survey": "Galaxy groups within 3500 km/s",
+      "catalog": "VizieR J/ApJ/843/16",
+      "release": "Electronic table published 2018-02-02",
+      "releaseDate": "2018-02-02",
+      "referenceEpoch": "J2000 where equatorial coordinates apply",
+      "coordinateFrame": "ICRS/J2000, Galactic, Supergalactic",
+      "skyCoverage": "All sky; source selection V_LS < 3500 km/s",
+      "redshiftRange": "Not used as distance; source velocity selection V_LS < 3500 km/s",
+      "distanceType": "CF3-based measured distances and weighted group distance-modulus aggregates",
+      "objectCount": 15004,
+      "DOI": "10.3847/1538-4357/aa76db",
+      "citation": "Kourkchi, E. & Tully, R. B. 2017, ApJ, 843, 16",
+      "license": "VizieR data are free for scientific-context use; original authors, publication, publisher and VizieR service must be cited. Commercial use requires source-specific review.",
+      "retrievedAt": "2026-08-09",
+      "checksum": "table2.dat.gz sha256:1e5bca96f6339905d07dccac4ed8cfe6148a9b193c1231794d57a51dbd502bab; table3.dat.gz sha256:dcddfa96bded7e3dc4c4354703bf1570ef92ae91820fd4d24dc3a56fd7071a3a",
+      "updatePolicy": "Staging ingest only; checksum, schema, coordinate, duplicate, uncertainty and scientific review required before production",
+      "qualityStatus": "validated for PCS Phase 4A deployment scope"
+    }
+  ]
+}

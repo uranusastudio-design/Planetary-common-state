@@ -8,7 +8,7 @@ const window={};vm.runInNewContext(source,{window,Object,Number,String,Math});co
 
 test("the unified model preserves the complete reusable Phase 4 contract",()=>{
   const model=cards.normalize({id:"test",canonicalName:"Test",aliases:[],catalogIds:[],dataSources:[],references:[],knownLimitations:[]});
-  for(const key of ["id","canonicalName","localizedName","aliases","objectType","parentStructure","catalogIds","coordinates","coordinateFrame","distance","distanceUncertainty","redshift","velocity","physicalSize","orbitalData","epoch","astrometry","dataSources","dataStatus","visualizationStatus","references","knownLimitations"])assert.ok(Object.hasOwn(model,key),key);
+  for(const key of ["id","canonicalName","localizedName","aliases","objectType","parentStructure","catalogIds","coordinates","coordinateFrame","distance","distanceType","distanceUncertainty","redshift","velocity","physicalSize","mass","memberCount","membership","survey","release","observationStatus","reconstructionStatus","orbitalData","epoch","astrometry","dataSources","dataStatus","visualizationStatus","references","knownLimitations"])assert.ok(Object.hasOwn(model,key),key);
   assert.equal(model.redshift,null);
   assert.equal(model.dataStatus,"Unavailable");
 });
@@ -27,6 +27,7 @@ test("solar, nearby, Phase 3 and reconstruction adapters do not fabricate missin
   const proxima=cards.nearby({id:"p",source_id:"5853498713190525696",primaryName:"Proxima Centauri",aliases:[],objectType:"star",distancePc:1.3,radial_velocity:null,sourceCatalog:"Gaia"});
   const m31=cards.phase3({id:"m31",canonicalName:"Andromeda",aliases:["M31"],objectType:"galaxy",sourceId:"M31",distanceKpc:780,dataStatus:"catalog-observation",visualizationStatus:"representative marker",sourceCatalog:"McConnachie 2012"},"local-group");
   const arm=cards.reconstruction("Per");
+  const group=cards.phase4({id:"g",canonicalName:"M81 Group",aliases:[],objectType:"Galaxy Group",parentStructure:"Nearby Universe",catalogIds:["PGC 28630"],distanceMpc:3.65,distanceConvention:"CF3 aggregate",distanceUncertaintyPercent:3,galacticLongitudeDeg:142,galacticLatitudeDeg:41,supergalacticLongitudeDeg:40,supergalacticLatitudeDeg:1,memberCount:41,membershipConfidence:"Catalog assignment",sourceEpoch:"J2000",sourceFrame:"Supergalactic",sourceCatalog:"Kourkchi & Tully 2017",sourceDoi:"10.3847/1538-4357/aa76db",dataStatus:"Catalog Observation",supergalacticCartesianMpc:[1,2,3]});
   assert.equal(earth.localizedName,"地球");
   assert.equal(earth.dataStatus,"JPL ephemeris");
   assert.equal(proxima.velocity,null);
@@ -34,6 +35,8 @@ test("solar, nearby, Phase 3 and reconstruction adapters do not fabricate missin
   assert.equal(m31.dataStatus,"Catalog observation");
   assert.equal(arm.dataStatus,"Observation-based reconstruction");
   assert.equal(arm.redshift,null);
+  assert.equal(group.distanceType,"CF3 aggregate");
+  assert.equal(group.memberCount,41);
 });
 
 test("all four languages expose exact card labels",()=>{
@@ -53,6 +56,7 @@ test("the card reuses selection, language, focus, Escape, and safe links",()=>{
   assert.match(manager,/ObjectCard\.nearby/);
   assert.match(manager,/ObjectCard\.phase3/);
   assert.match(manager,/ObjectCard\.reconstruction/);
+  assert.match(manager,/ObjectCard\.phase4/);
   assert.match(manager,/function focusSelectedObject\(\)/);
   assert.match(manager,/data-object-card-focus/);
   assert.match(manager,/event\.key==="Escape"[\s\S]*closeObjectCard/);

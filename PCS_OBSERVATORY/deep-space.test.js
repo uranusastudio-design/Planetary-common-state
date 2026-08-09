@@ -129,12 +129,15 @@ test("Solar System overview camera frames the rendered registry instead of aimin
   assert.doesNotMatch(manager,/destination:new Cesium\.Cartesian3\(0,0,height\)[\s\S]{0,160}pitch:kind/);
 });
 
-test("Phase 2/3 catalogs and SS-02C–E small bodies share one manager while Phase 4 remains unavailable", () => {
+test("Phase 2/3 catalogs, Phase 4A galaxy groups, and SS-02C–E small bodies share one manager", () => {
   assert.match(manager, /PCSNearbyStars/);
   assert.match(manager, /PCSMilkyWay/);
   assert.match(manager, /PCSLocalGroup/);
   assert.match(manager, /scaleContext="solar"/);
-  assert.match(manager, /phase4:"Cosmic Web \/ Observable Universe — Available in Phase 4"/);
+  assert.match(manager, /PCSGalaxyGroups/);
+  assert.match(manager, /PCSPhase4Coordinates/);
+  assert.match(manager, /function enterGalaxyGroups\(/);
+  assert.match(manager, /function searchPhase4\(/);
   assert.match(manager, /smallBodyProvider=Object\.freeze\(\{status:"catalog-derived",getObjects:\(\)=>Promise\.resolve\(\[\.\.\.SmallBodies\.dataset\.mainBelt\.records,\.\.\.TNO\.dataset\.records,\.\.\.Comets\.dataset\.records\]\)/);
   assert.doesNotMatch(manager, /Math\.random|cosmicWebLayer|observableUniverseLayer/);
   assert.doesNotMatch(manager, /new Cesium\.Viewer|requestAnimationFrame|new Worker/);
@@ -176,4 +179,15 @@ test("Phase 3 scales use the existing Deep Space state machine and cleanup path"
   assert.match(manager, /function clearScaleLayers\(\)\{nearbyLayer\?\.unload\(\);milkyWayLayer\?\.unload\(\);localGroupLayer\?\.unload\(\)/);
   assert.match(manager, /function close\(\)[\s\S]*milkyWayLayer\?\.dispose\(\)[\s\S]*localGroupLayer\?\.dispose\(\)/);
   assert.doesNotMatch(manager, /new Cesium\.Viewer|createElement\(["']canvas|requestAnimationFrame/);
+});
+
+test("Phase 4A uses the same state, selection card, language store, and cleanup path",()=>{
+  assert.ok(manager.includes('setScaleControls("galaxy-groups")'));
+  assert.match(manager,/galaxyGroupsLayer\?\.unload\(\)/);
+  assert.match(manager,/galaxyGroupsLayer\?\.dispose\(\)/);
+  assert.match(manager,/ObjectCard\.phase4/);
+  assert.match(manager,/phase4=picked\?\.id\?\.phase4Object/);
+  assert.match(manager,/data-ds-return-local-group/);
+  const phase4Copy=manager.match(/const PHASE4_COPY=Object\.freeze\(\{([\s\S]*?)\n  \}\);/)?.[1]||"";
+  for(const key of ["nearbyGroups","search","searchLabel","catalogObservation","derivedMeasurement","reconstruction","representative","notice","returnLocal"])assert.equal((phase4Copy.match(new RegExp(`${key}:`,"g"))||[]).length,4,`${key} must exist in four Phase 4 dictionaries`);
 });
