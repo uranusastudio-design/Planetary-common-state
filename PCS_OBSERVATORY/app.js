@@ -287,6 +287,7 @@ let activeRegionalObservation = null;
 let regionalObservationGeneration = 0;
 let regionalObservationAbortController = null;
 let translations = {};
+let selectedScientificAnalysisContext = null;
 const activeEarthLayers = new Map();
 const earthLayerCapabilityMatrix = new Map();
 let earthLayerRuntime = null;
@@ -404,6 +405,7 @@ const selectors = {
   historyEvents: document.querySelector("#history-events"),
   historySources: document.querySelector("#history-sources"),
   aiCopilotMessage: document.querySelector("#ai-copilot-message"),
+  scientificAnalysisContext: document.querySelector("#scientific-analysis-context"),
   solarSystemControls: document.querySelectorAll("[data-solar-target]"),
   solarSystemStatus: document.querySelector("#solar-system-status"),
   observatoryModeControls: document.querySelectorAll("[data-observatory-mode]"),
@@ -652,7 +654,7 @@ function translateUI() {
     if (key && translations[key]) element.setAttribute("aria-label", translations[key]);
   });
   updateRegionContext(activeRegionId);
-  updateText(selectors.aiCopilotMessage, t("ai_copilot_inactive"));
+  renderScientificAnalysisContext();
   if (pcsSystemMode !== "LIVE" && historyCurrentFrame) renderHistoryPanel(historyCurrentFrame, pcsSystemMode === "ARCHIVED");
 }
 
@@ -2708,8 +2710,56 @@ function initializePlaceholderSelectors() {
   });
 
   selectors.aiModeSelector?.addEventListener("change", () => {
-    updateText(selectors.aiCopilotMessage, "AI mode selected. AI Copilot is not active yet.");
+    renderScientificAnalysisContext();
   });
+
+  window.addEventListener("pcs:analysis-context", (event) => {
+    const model = event.detail?.model;
+    if (!model?.id) return;
+    selectedScientificAnalysisContext = model;
+    if (event.detail?.activate && selectors.aiModeSelector) selectors.aiModeSelector.value = "scientific_analysis";
+    renderScientificAnalysisContext();
+  });
+}
+
+function renderScientificAnalysisContext() {
+  const container = selectors.scientificAnalysisContext;
+  if (!container) return;
+  const scientificMode = selectors.aiModeSelector?.value === "scientific_analysis";
+  container.replaceChildren();
+  container.hidden = !scientificMode || !selectedScientificAnalysisContext;
+  if (!selectedScientificAnalysisContext) {
+    updateText(selectors.aiCopilotMessage, t("analysis_context_empty") || t("ai_copilot_inactive"));
+    return;
+  }
+  if (!scientificMode) {
+    updateText(selectors.aiCopilotMessage, t("analysis_context_ready") || "Selected object context is ready. Choose Scientific Analysis to inspect it.");
+    return;
+  }
+  updateText(selectors.aiCopilotMessage, t("analysis_context_disclaimer") || "Validated selection context loaded. Deterministic data only; AI inference remains inactive.");
+  const model = selectedScientificAnalysisContext;
+  const title = document.createElement("h3");
+  title.textContent = `${t("analysis_selected_object") || "Selected object"}: ${model.localizedName || model.canonicalName}`;
+  const list = document.createElement("dl");
+  const fields = [
+    [t("analysis_object_type") || "Object type", model.objectType],
+    [t("analysis_coordinates") || "Coordinates", model.coordinates],
+    [t("analysis_frame") || "Reference frame", model.coordinateFrame],
+    [t("analysis_orbit") || "Orbital data", model.orbitalData],
+    [t("analysis_epoch") || "Epoch", model.epoch],
+    [t("analysis_uncertainty") || "Uncertainty", model.distanceUncertainty],
+    [t("analysis_sources") || "Sources", model.dataSources?.join("; ")],
+    [t("analysis_status") || "Data status", model.dataStatus],
+    [t("analysis_limitations") || "Known limitations", model.knownLimitations?.join("; ")],
+  ];
+  for (const [label, value] of fields) {
+    const term = document.createElement("dt");
+    const detail = document.createElement("dd");
+    term.textContent = label;
+    detail.textContent = value || t("not_reported") || "Not provided";
+    list.append(term, detail);
+  }
+  container.append(title, list);
 }
 
 function formatAstronomyValue(value, unit, digits = 1) {

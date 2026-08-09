@@ -1682,6 +1682,12 @@ body[data-pcs-system-mode="ARCHIVED"] [data-live-context] { display: none !impor
 .dataset-readiness-item dd,
 .pcs-event-card dd { margin: 0; overflow-wrap: anywhere; }
 .pcs-analysis-panel { min-width: 0; }
+.scientific-analysis-context{display:grid;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid rgba(117,211,255,.18)}
+.scientific-analysis-context[hidden]{display:none}
+.scientific-analysis-context h3{margin:0;color:var(--cyan);font-size:.82rem}
+.scientific-analysis-context dl{display:grid;grid-template-columns:minmax(92px,.55fr) minmax(0,1fr);gap:6px;margin:0;font-size:.72rem}
+.scientific-analysis-context dt{color:var(--muted)}
+.scientific-analysis-context dd{margin:0;overflow-wrap:anywhere}
 .pcs-card-list { display: grid; gap: 9px; margin-top: 12px; }
 .pcs-event-card,
 .pcs-ledger-entry { border: 1px solid rgba(117, 211, 255, 0.17); border-radius: 8px; padding: 10px; background: rgba(6, 25, 40, 0.55); }

@@ -96,7 +96,7 @@ assert(evidence.inner.every(item => item.onScreen && item.visiblePixels >= 8), "
 evidence.innerScreenshot = await screenshot("02-inner-solar-system.png");
 
 async function focusSystem(bodyId, moonIds, screenshotName) {
-  await evaluate(`document.querySelector('[data-body=${JSON.stringify(bodyId)}]').click();document.querySelector('[data-object-card-focus]').click()`);
+  await evaluate(`document.querySelector('[data-body=${JSON.stringify(bodyId)}]').click()`);
   await pause(1300);
   const rows = await inspectBodies([bodyId, ...moonIds]);
   assert(rows.every(item => item.created && item.entityShow && item.parentShow && item.onScreen && item.visiblePixels >= 6), `${bodyId} focus does not visibly render its supported moons: ${JSON.stringify(rows)}`);
@@ -111,7 +111,7 @@ evidence.neptune = await focusSystem("neptune", ["triton"], "06-neptune-triton.p
 
 evidence.selectedMoons = [];
 for (const moonId of ["moon","phobos","deimos","io","europa","ganymede","callisto","titan","enceladus","titania","triton"]) {
-  await evaluate(`document.querySelector('[data-body=${JSON.stringify(moonId)}]').click();document.querySelector('[data-object-card-focus]').click()`);
+  await evaluate(`document.querySelector('[data-body=${JSON.stringify(moonId)}]').click()`);
   await pause(1800);
   const row = (await inspectBodies([moonId]))[0];
   assert(row.created && row.entityShow && row.parentShow && row.onScreen && row.visiblePixels >= 6, `${moonId} selected-focus body is not visibly rendered: ${JSON.stringify(row)}`);

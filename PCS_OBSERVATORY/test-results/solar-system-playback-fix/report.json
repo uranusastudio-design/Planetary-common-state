@@ -1,0 +1,101 @@
+{
+  "generatedAt": "2026-08-09T06:27:34.130Z",
+  "status": "PASS",
+  "url": "http://127.0.0.1:18765/PCS_OBSERVATORY/?v=playback-final-5",
+  "evidence": {
+    "control": {
+      "type": "number",
+      "min": 0.01,
+      "max": 30,
+      "value": 30,
+      "debug": 30,
+      "unit": "天／秒"
+    },
+    "playback30": {
+      "elapsedDays": 42.602999849537035,
+      "removeAll": 0,
+      "stableEntities": true,
+      "visibleBodies": true,
+      "framePacing": {
+        "samples": 31,
+        "p95Ms": 133.59999999999945,
+        "maxMs": 150.10000000000036
+      },
+      "mainBelt": {
+        "datasetId": "pcs-ss02c-sbdb-small-bodies",
+        "catalogRecords": 5365,
+        "pointCount": 5365,
+        "visibleCount": 256,
+        "lod": "far",
+        "deterministic": true,
+        "epochUpdatePending": true,
+        "epochUpdateCursor": 4224,
+        "completedEpochUpdates": 0,
+        "selection": {
+          "orbitClass": "MBA",
+          "absoluteMagnitude": "H < 13",
+          "sort": "H,pdes",
+          "deterministic": true
+        },
+        "upstreamMatchCount": 5366
+      },
+      "tno": {
+        "datasetId": "pcs-ss02d-sbdb-tno",
+        "knownCatalogRecords": 7155,
+        "pointCount": 7155,
+        "visibleCount": 256,
+        "lod": "far",
+        "deterministic": true,
+        "epochUpdatePending": true,
+        "epochUpdateCursor": 4224,
+        "completedEpochUpdates": 0,
+        "selection": {
+          "orbitClass": "TNO",
+          "sort": "H,pdes",
+          "deterministic": true,
+          "normalizedSort": "defined H ascending, then pdes; undefined H last"
+        },
+        "representativePopulation": {
+          "status": "unavailable",
+          "notice": "No synthetic Kuiper Belt population or solid ring is generated."
+        }
+      },
+      "epoch": "2026-09-20T14:28:19.187Z"
+    },
+    "playbackScreenshot": "/Users/alvin/.openclaw/workspace/projects/Planetary-common-state/PCS_OBSERVATORY/test-results/solar-system-playback-fix/01-30-days-per-second-stable-bodies.png",
+    "scientificEarth": {
+      "mode": "scientific",
+      "entityShow": true,
+      "onScreen": true,
+      "window": {
+        "x": 719.0000518589792,
+        "y": 448.9965921479158
+      },
+      "objectCard": "earth"
+    },
+    "scientificScreenshot": "/Users/alvin/.openclaw/workspace/projects/Planetary-common-state/PCS_OBSERVATORY/test-results/solar-system-playback-fix/02-scientific-scale-earth-visible.png",
+    "cometAnalysis": {
+      "selected": "1000036",
+      "analysisMode": "scientific_analysis",
+      "contextVisible": true,
+      "contextText": "所選天體: Halley天體類型comet座標-19.361508, 27.467146, -9.8553517 AU參考框架ICRF; Earth mean ecliptic at J2000.0; heliocentric origin軌道資料a 17.92863504856923 AU; e 0.9679359956953211; i 162.1905300439129°; q 0.5748638313743413 AU; Q 35.28240626576412 AU; period 27728.04608790421 d; source perihelion passage 1986-Feb-08.47361615 TDB曆元Solution epoch 2439875.5 JDTDB; Display Epoch 2026-09-20T14:28:19.187Z不確定性e ±7.5527e-9; aAu ±9.9587e-9; qAu ±1.3552e-7; iDeg ±0.000015093; omDeg ±0.000019861; wDeg ±0.000020534; maDeg ±1.2457e-7; tpDays ±0.000012976; periodDays ±0.000023103資料來源NASA/JPL SBDB; JPL#75資料狀態ephemeris-derived已知限制Authoritative cached vectors; Horizons query supplies no covariance. Interpolation is validated against withheld epochs.; SBDB solution includes non-gravitational parameters A1, A2, S0; PCS two-body display propagation does not apply them.; Next perihelion is not directly supplied by the deployed source solution; PCS does not extrapolate a calendar date.; Orbit condition code 0.; Data arc 57852 days; observations used 8518.",
+      "cardText": "Halley帶入科學分析聚焦×所選天體資料已連結至科學分析。正式名稱Halley當地語言名稱Halley別名1P/1982 U1, 1986 III, 1982i, 1P/1909 R1, 1910 II, 1909c, 1P/1835 P1, 1835 III, 1P/1758 Y1, 1759 I, 1P/1682 Q1, 1682, 1P/1607 S1, 1607, 1P/1531 P1, 1531, 1P/1456 K1, 1456, 1P/1378 S1, 1378, 1P/1301 R1, 1301, 1P/1222 R1, 1222, 1P/1145 G1, 1145, 1P/1066 G1, 1066, 1P/989 N1, 989, 1P/912 J1, 912, 1P/837 F1, 837, 1P/760 K1, 760, 1P/684 R1, 684, 1P/607 H1, 607, 1P/530 Q1, 530, 1P/451 L1, 451, 1P/374 E1, 374, 1P/295 J1, 295, 1P/218 H1, 218, 1P/141 F1, 141, 1P/66 B1, 66, 1P/-11 Q1, -11, 1P/-86 Q1, -86, 1P/-163 U1, -163, 1P/-239 K1, -239, 1P/Halley, 1P物件類型comet所屬系統／結構Solar System small bodiesCatalog IDJPL SBDB SPK-ID 1000036, 1P座標-19.361508, 27.467146, -9.8553517 AU座標框架ICRF; Earth mean ecliptic at J2000.0; heliocentric origin距離35.02056652 AU不確定性e ±7.5527e-9; aAu ±9.9587e-9; qAu ±1.3552e-7; iDeg ±0.000015093; omDeg ±0.000019861; wDeg ±0.000020534; maDeg ±1.2457e-7; tpDays ±0.000012976; periodDays ±0.000023103紅移無資料速度無資料實體尺寸Effective diameter 11 km物理半徑無資料顯示半徑無資料顯示比例模式無資料軌道資料a 17.92863504856923 AU; e 0.9679359956953211; i 162.1905300439129°; q 0.5748638313743413 AU; Q 35.28240626576412 AU; period 27728.04608790421 d; source perihelion passage 1986-Feb-08.47361615 TDB事件／關係無資料曆元Solution epoch 2439875.5 JDTDB; Display Epoch 2026-09-20T14:28:19.187Z最後更新2026-08-09T03:04:34.082Z資料來源NASA/JPL SBDB; JPL#75資料狀態ephemeris-derived視覺化狀態Catalog-derived body; display scale recorded separately研究文件https://ssd-api.jpl.nasa.gov/doc/sbdb.htmlhttps://ssd-api.jpl.nasa.gov/doc/sbdb_query.html已知限制Authoritative cached vectors; Horizons query supplies no covariance. Interpolation is validated against withheld epochs.; SBDB solution includes non-gravitational parameters A1, A2, S0; PCS two-body display propagation does not apply them.; Next perihelion is not directly supplied by the deployed source solution; PCS does not extrapolate a calendar date.; Orbit condition code 0.; Data arc 57852 days; observations used 8518.",
+      "status": "所選天體資料已連結至科學分析。"
+    },
+    "cometScreenshot": "/Users/alvin/.openclaw/workspace/projects/Planetary-common-state/PCS_OBSERVATORY/test-results/solar-system-playback-fix/03-comet-analysis-context-linked.png",
+    "playbackBoundary": {
+      "epoch": "2050-12-31T23:59:59.999Z",
+      "paused": true,
+      "boundaryVisible": true,
+      "visibleBodies": true
+    }
+  },
+  "console": {
+    "required": 0,
+    "items": []
+  },
+  "network": {
+    "required": 0,
+    "items": []
+  }
+}

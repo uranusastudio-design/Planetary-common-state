@@ -84,11 +84,20 @@ Stable baseline: v2.1.0 — Stable / Frozen
 - Final browser audit held Viewer 1, Cesium canvas 1, total canvas 2, required Console 0, required Network 0, and no DataSource/primitive growth.
 - Recorded headless SwiftShader performance as environment-specific evidence; it is not presented as a physical-device guarantee.
 
+### Solar System Playback and Analysis Correction
+
+- Replaced fixed playback presets with a user-editable `0.01–30 days / second` control and an explicit 1800–2050 major-planet playback boundary.
+- Removed daily playback-time Solar Entity teardown/recreation. Major bodies now retain stable Entity identity while positions update in place.
+- Changed Main Belt and TNO epoch propagation from one blocking 12,520-object loop to bounded per-frame chunks; comet and major-body updates remain current without adding a renderer or animation loop.
+- Throttled metadata/Object Card DOM refresh to four updates per second while Cesium body positions continue to update on the existing Viewer clock.
+- Scientific/Exhibition scale changes now reframe the current Solar target, and body or catalog-point selection automatically focuses the selected object.
+- Added a traceable Deep Space selection bridge into Scientific Analysis. Comet coordinates, orbit elements, epoch, uncertainty, sources, status, and limitations are available without claiming AI inference.
+- Added real-WebGL acceptance for 30 days/second stable identities and visibility, scientific-scale focus, comet analysis context, frame pacing, Console, and Network state.
+
 ### Current Boundary
 
-- Solar System SS-02A–G are complete, audited, and frozen locally.
+- SS-02G remains reopened pending human production visual confirmation; Solar System SS-02 is not refrozen by this correction.
 - v2.2.0 remains Preview; Foundation physical gesture evidence is still open, and Deep Space Phase 4A remains not started.
-- Deep Space Phase 4A remains not started.
 
 ## [v2.1.0] — 2026-08-01
 
