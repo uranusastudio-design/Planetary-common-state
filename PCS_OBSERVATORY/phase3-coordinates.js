@@ -9,13 +9,16 @@
     Object.freeze([-0.8676661490, -0.1980763734, 0.4559837762])
   ]);
   const FRAME = Object.freeze({
-    id: "pcs-galactocentric-reid2019-v1",
+    id: "pcs-galactocentric-gravity2019-v2",
     handedness: "right-handed",
-    galcenDistanceKpc: 8.15,
+    galcenDistanceKpc: 8.178,
+    galcenDistanceStatisticalUncertaintyKpc: 0.013,
+    galcenDistanceSystematicUncertaintyKpc: 0.022,
     zSunKpc: 0.0208,
-    sun: Object.freeze([-8.15, 0, 0.0208]),
-    axes: Object.freeze({x: "Sun projection toward Galactic center", y: "Galactic longitude l=90 deg", z: "North Galactic Pole"}),
-    source: "Reid et al. 2019 for R0; Bennett & Bovy 2019 / documented Astropy parameter for z_sun"
+    zSunUncertaintyKpc: 0.0003,
+    sun: Object.freeze([-8.178, 0, 0.0208]),
+    axes: Object.freeze({x: "positive from the Sun toward Galactic longitude l=0 deg; Sun is at negative x", y: "Galactic longitude l=90 deg", z: "IAU North Galactic Pole"}),
+    source: "GRAVITY Collaboration 2019 for R0; Bennett & Bovy 2019 for z_sun; Gaia DR3/IAU Galactic rotation matrix"
   });
 
   const multiply = (matrix, vector) => matrix.map(row => row.reduce((sum, value, index) => sum + value * vector[index], 0));
@@ -28,6 +31,11 @@
   }
   function galacticToGalactocentric(longitudeDeg, latitudeDeg, distanceKpc, frame = FRAME) {
     const [hx, hy, hz] = sphericalToCartesian(longitudeDeg, latitudeDeg, distanceKpc);
+    return [hx - frame.galcenDistanceKpc, hy, hz + frame.zSunKpc];
+  }
+  function heliocentricGalacticToGalactocentric(cartesianKpc, frame = FRAME) {
+    const [hx, hy, hz] = Array.from(cartesianKpc || [], Number);
+    if (![hx, hy, hz].every(Number.isFinite)) throw new RangeError("finite heliocentric Galactic Cartesian coordinates are required");
     return [hx - frame.galcenDistanceKpc, hy, hz + frame.zSunKpc];
   }
   function icrsToGalactocentric(raDeg, decDeg, distanceKpc, frame = FRAME) {
@@ -45,6 +53,12 @@
     const base = domain === "local-group" ? 4.5e7 : 2.2e7;
     return base * Math.log10(1 + Math.max(0, radiusKpc));
   }
+  function inverseSceneRadiusKpc(sceneRadius, mode, domain = "milky-way") {
+    const radius = Math.max(0, Number(sceneRadius) || 0);
+    if (mode === "scientific") return radius / 1e6;
+    const base = domain === "local-group" ? 4.5e7 : 2.2e7;
+    return Math.max(0, 10 ** (radius / base) - 1);
+  }
   function scenePosition(cartesianKpc, mode, domain = "milky-way") {
     const radius = Math.hypot(...cartesianKpc);
     if (!radius) return [0, 0, 0];
@@ -52,5 +66,5 @@
     return cartesianKpc.map(value => value / radius * mapped);
   }
 
-  global.PCSPhase3Coordinates = Object.freeze({DEG, KPC_TO_LY, ICRS_TO_GALACTIC, FRAME, sphericalToCartesian, icrsToHeliocentricGalactic, galacticToGalactocentric, icrsToGalactocentric, distanceModulusToKpc, logarithmicSpiral, sceneRadiusKpc, scenePosition});
+  global.PCSPhase3Coordinates = Object.freeze({DEG, KPC_TO_LY, ICRS_TO_GALACTIC, FRAME, sphericalToCartesian, icrsToHeliocentricGalactic, galacticToGalactocentric, heliocentricGalacticToGalactocentric, icrsToGalactocentric, distanceModulusToKpc, logarithmicSpiral, sceneRadiusKpc, inverseSceneRadiusKpc, scenePosition});
 })(typeof window === "undefined" ? globalThis : window);

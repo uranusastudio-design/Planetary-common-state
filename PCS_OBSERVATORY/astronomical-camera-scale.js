@@ -8,6 +8,10 @@
     COMET_ORBIT:"COMET ORBIT",
     HELIOSPHERE:"HELIOSPHERE",
     INTERSTELLAR:"INTERSTELLAR",
+    SOLAR_NEIGHBORHOOD:"SOLAR NEIGHBORHOOD",
+    LOCAL_ARM:"LOCAL ARM",
+    GALACTIC_DISK:"GALACTIC DISK",
+    MILKY_WAY:"MILKY WAY",
     GALACTIC:"GALACTIC"
   });
   const PARSEC_AU=206264.80624709636;
@@ -17,9 +21,20 @@
     if(!Number.isFinite(number)||number<=0)throw new RangeError(`${name} must be a finite positive number`);
     return number;
   }
-  function classify({distanceAu=0,context="solar",intent=null}={}){
+  function classify({distanceAu=0,distanceKpc=null,context="solar",intent=null}={}){
     if(intent==="comet-orbit")return SCALE_NAMES.COMET_ORBIT;
-    if(["milky-way","local-group","galaxy-groups","virgo","laniakea","cosmic-web","observable-universe","cmb"].includes(context))return SCALE_NAMES.GALACTIC;
+    if(context==="milky-way"){
+      if(intent==="solar-neighborhood")return SCALE_NAMES.SOLAR_NEIGHBORHOOD;
+      if(intent==="local-arm")return SCALE_NAMES.LOCAL_ARM;
+      if(intent==="galactic-disk")return SCALE_NAMES.GALACTIC_DISK;
+      if(intent==="whole-milky-way"||intent==="magellanic-system")return SCALE_NAMES.MILKY_WAY;
+      const kpc=Math.max(0,Number(distanceKpc)||0);
+      if(kpc&&kpc<=.25)return SCALE_NAMES.SOLAR_NEIGHBORHOOD;
+      if(kpc&&kpc<=3)return SCALE_NAMES.LOCAL_ARM;
+      if(kpc&&kpc<=24)return SCALE_NAMES.GALACTIC_DISK;
+      return SCALE_NAMES.MILKY_WAY;
+    }
+    if(["local-group","galaxy-groups","virgo","laniakea","cosmic-web","observable-universe","cmb"].includes(context))return SCALE_NAMES.GALACTIC;
     if(context==="nearby")return SCALE_NAMES.INTERSTELLAR;
     const au=Math.max(0,Number(distanceAu)||0);
     if(au<.02)return SCALE_NAMES.PLANETARY;

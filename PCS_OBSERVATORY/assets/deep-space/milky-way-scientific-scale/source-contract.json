@@ -1,0 +1,307 @@
+{
+  "schemaVersion": 1,
+  "id": "pcs-milky-way-scientific-scale-v1",
+  "modelVersion": "2026.08-reid2019-gravity2019",
+  "retrievalDate": "2026-08-11",
+  "seed": 4172019,
+  "coordinateFrame": {
+    "id": "pcs-galactocentric-gravity2019-v2",
+    "handedness": "right-handed",
+    "origin": "Adopted Galactic Center / Sagittarius A* reference",
+    "axes": {
+      "x": "positive from the Sun toward Galactic longitude l=0 degrees; the Sun is on negative x",
+      "y": "positive toward heliocentric Galactic longitude l=90 degrees",
+      "z": "positive toward the IAU Galactic North Pole"
+    },
+    "icrsToGalacticMatrix": [
+      [-0.0548755604, -0.8734370902, -0.4838350155],
+      [0.4941094279, -0.4448296300, 0.7469822445],
+      [-0.8676661490, -0.1980763734, 0.4559837762]
+    ],
+    "galactocentricDistanceKpc": 8.178,
+    "galactocentricDistanceUncertaintyKpc": {
+      "statistical": 0.013,
+      "systematic": 0.022
+    },
+    "sunHeightKpc": 0.0208,
+    "sunHeightUncertaintyKpc": 0.0003,
+    "sunPositionKpc": [-8.178, 0, 0.0208],
+    "supportedCoordinates": [
+      "ICRS equatorial right ascension and declination",
+      "IAU Galactic longitude l and latitude b",
+      "heliocentric distance and heliocentric Galactic Cartesian position",
+      "PCS Galactocentric Cartesian position"
+    ],
+    "transformChain": "source ICRS/Galactic coordinates and source distance -> IAU ICRS-to-Galactic rotation -> heliocentric Galactic Cartesian -> translation by adopted R0 and z_sun; no source coordinate is moved for visual appearance",
+    "referenceEpoch": "static structural frame; source astrometric epochs remain attached to records",
+    "sources": [
+      {
+        "title": "A geometric distance measurement to the Galactic center black hole with 0.3% uncertainty",
+        "authors": "GRAVITY Collaboration",
+        "year": 2019,
+        "doi": "10.1051/0004-6361/201935656",
+        "appliesTo": ["galactocentricDistanceKpc"]
+      },
+      {
+        "title": "Vertical waves in the solar neighbourhood in Gaia DR2",
+        "authors": "Bennett and Bovy",
+        "year": 2019,
+        "doi": "10.1093/mnras/sty2813",
+        "appliesTo": ["sunHeightKpc"]
+      },
+      {
+        "title": "Gaia DR3 Documentation, astrometric transformations",
+        "authors": "ESA Gaia DPAC",
+        "year": 2022,
+        "url": "https://gea.esac.esa.int/archive/documentation/GDR3/",
+        "appliesTo": ["ICRS", "Galactic coordinates", "J2016.0 catalog metadata"]
+      }
+    ]
+  },
+  "anchors": {
+    "milkyWay": {
+      "id": "milky-way:galaxy",
+      "canonicalName": "Milky Way",
+      "aliases": ["The Galaxy", "MW"],
+      "objectType": "galaxy",
+      "galactocentricCartesianKpc": [0, 0, 0],
+      "dataStatus": "observation-derived",
+      "visualizationStatus": "model-derived structure"
+    },
+    "sun": {
+      "id": "milky-way:sun",
+      "canonicalName": "Sun",
+      "aliases": ["Solar System", "Sol"],
+      "objectType": "star",
+      "galactocentricCartesianKpc": [-8.178, 0, 0.0208],
+      "dataStatus": "adopted-reference measurement",
+      "visualizationStatus": "visibility-enhanced reference marker"
+    },
+    "galacticCenter": {
+      "id": "milky-way:galactic-center",
+      "canonicalName": "Galactic Center",
+      "aliases": ["Galactic Centre", "GC"],
+      "objectType": "galactic structure anchor",
+      "galactocentricCartesianKpc": [0, 0, 0],
+      "dataStatus": "adopted-reference definition",
+      "visualizationStatus": "visibility-enhanced reference marker"
+    },
+    "sagittariusAStar": {
+      "id": "milky-way:sgr-a-star",
+      "canonicalName": "Sagittarius A*",
+      "aliases": ["Sgr A*", "Sagittarius A-star"],
+      "objectType": "supermassive black hole / compact radio source",
+      "raDeg": 266.4168035958333,
+      "decDeg": -29.007845166666666,
+      "galacticLongitudeDeg": 359.944206295905,
+      "galacticLatitudeDeg": -0.046157931589098616,
+      "referenceEpoch": "2020.0 position expressed on J2000 axes",
+      "distanceKpc": 8.178,
+      "massSolar": 4297000,
+      "massUncertaintySolar": 40000,
+      "galactocentricCartesianKpc": [0, 0, 0],
+      "dataStatus": "catalog observation",
+      "visualizationStatus": "visibility-enhanced representative marker",
+      "sources": [
+        {
+          "title": "A Milliarcsecond-accurate Position for Sagittarius A*",
+          "doi": "10.3847/1538-4357/ac98b9"
+        },
+        {
+          "title": "Mass distribution in the Galactic Center based on interferometric astrometry of multiple stellar orbits",
+          "doi": "10.1051/0004-6361/202142465"
+        }
+      ]
+    },
+    "northGalacticPole": {
+      "id": "milky-way:north-galactic-pole",
+      "canonicalName": "North Galactic Pole",
+      "objectType": "reference direction",
+      "raDeg": 192.85948,
+      "decDeg": 27.12825,
+      "galacticLongitudeDeg": 0,
+      "galacticLatitudeDeg": 90,
+      "dataStatus": "coordinate-system definition",
+      "visualizationStatus": "reference direction"
+    }
+  },
+  "components": {
+    "stellarDisk": {
+      "id": "milky-way:stellar-disk",
+      "canonicalName": "Galactic Disk",
+      "objectType": "galactic structure",
+      "displayedRadialExtentKpc": 18,
+      "boundaryMeaning": "adopted stellar-structure display extent; not a sharp physical edge",
+      "thin": {
+        "radialScaleKpc": 2.6,
+        "radialScaleUncertaintyKpc": 0.5,
+        "verticalScaleKpc": 0.3,
+        "verticalScaleUncertaintyKpc": 0.05
+      },
+      "thick": {
+        "radialScaleKpc": 2.0,
+        "radialScaleUncertaintyKpc": 0.2,
+        "verticalScaleKpc": 0.9,
+        "verticalScaleUncertaintyKpc": 0.2
+      },
+      "source": {
+        "title": "The Galaxy in Context: Structural, Kinematic, and Integrated Properties",
+        "authors": "Bland-Hawthorn and Gerhard",
+        "year": 2016,
+        "doi": "10.1146/annurev-astro-081915-023441"
+      },
+      "dataStatus": "model-derived",
+      "visualizationStatus": "representative density visualization"
+    },
+    "bar": {
+      "id": "milky-way:galactic-bar",
+      "canonicalName": "Galactic Bar",
+      "objectType": "galactic structure",
+      "halfLengthKpc": 5.0,
+      "halfLengthUncertaintyKpc": 0.2,
+      "angleDeg": 30.5,
+      "angleRangeDeg": [28, 33],
+      "representativeAxisRatios": [1, 0.32, 0.12],
+      "source": {
+        "title": "The structure of the Milky Way's bar outside the bulge",
+        "authors": "Wegg, Gerhard and Portail",
+        "year": 2015,
+        "doi": "10.1093/mnras/stv745"
+      },
+      "dataStatus": "observation-derived",
+      "visualizationStatus": "representative density visualization"
+    },
+    "bulge": {
+      "id": "milky-way:galactic-bulge",
+      "canonicalName": "Galactic Bulge",
+      "objectType": "galactic structure",
+      "representativeSemiAxesKpc": [2.1, 0.85, 0.65],
+      "angleDeg": 30.5,
+      "source": {
+        "title": "The structure of the Milky Way's bar outside the bulge",
+        "authors": "Wegg, Gerhard and Portail",
+        "year": 2015,
+        "doi": "10.1093/mnras/stv745"
+      },
+      "dataStatus": "observation-derived",
+      "visualizationStatus": "representative density visualization",
+      "notice": "Semi-axis values are display-model parameters; the cited work constrains the box/peanut bulge and long bar, not a sharp ellipsoid."
+    },
+    "stellarHalo": {
+      "id": "milky-way:stellar-halo",
+      "canonicalName": "Stellar Halo",
+      "objectType": "galactic structure",
+      "displayedExtentKpc": 40,
+      "innerSlope": 2.3,
+      "outerSlope": 4.6,
+      "breakRadiusKpc": 27,
+      "flattening": 0.6,
+      "source": {
+        "title": "The Milky Way stellar halo out to 40 kpc: squashed, broken but smooth",
+        "authors": "Deason, Belokurov and Evans",
+        "year": 2011,
+        "doi": "10.1111/j.1365-2966.2011.19243.x"
+      },
+      "dataStatus": "observation-derived tracer model",
+      "visualizationStatus": "representative density visualization",
+      "notice": "Stellar halo only; this is not a dark-matter-halo boundary."
+    }
+  },
+  "spiralArmModel": {
+    "id": "reid2019-table2-kinked-arms",
+    "equation": "ln(R/R_kink) = -(beta-beta_kink) tan(pitch)",
+    "nativeFrameAssumptionR0Kpc": 8.15,
+    "source": {
+      "title": "Trigonometric Parallaxes of High-mass Star-forming Regions: Our View of the Milky Way",
+      "authors": "Reid et al.",
+      "year": 2019,
+      "doi": "10.3847/1538-4357/ab4a11",
+      "catalogDoi": "10.26093/cds/vizier.18850131",
+      "table": "Table 2"
+    },
+    "dataStatus": "observation-based reconstruction",
+    "visualizationStatus": "model-derived density band",
+    "arms": [
+      {"id":"norma","canonicalName":"Norma Arm","aliases":["Norma"],"catalogCodes":["Nor"],"betaRangeDeg":[5,54],"betaKinkDeg":18,"betaKinkUncertaintyDeg":4,"radiusKinkKpc":4.46,"radiusKinkUncertaintyKpc":0.19,"pitchBeforeDeg":-1.0,"pitchBeforeUncertaintyDeg":3.3,"pitchAfterDeg":19.5,"pitchAfterUncertaintyDeg":5.1,"widthKpc":0.14,"widthUncertaintyKpc":0.10},
+      {"id":"scutum-centaurus","canonicalName":"Scutum–Centaurus Arm","aliases":["Scutum Arm","Centaurus Arm","Scutum-Centaurus","Sct-Cen"],"catalogCodes":["ScN","ScF","CtN","OSC"],"betaRangeDeg":[0,104],"betaKinkDeg":23,"radiusKinkKpc":4.91,"radiusKinkUncertaintyKpc":0.09,"pitchBeforeDeg":14.1,"pitchBeforeUncertaintyDeg":1.7,"pitchAfterDeg":12.1,"pitchAfterUncertaintyDeg":2.4,"widthKpc":0.23,"widthUncertaintyKpc":0.05},
+      {"id":"sagittarius-carina","canonicalName":"Sagittarius–Carina Arm","aliases":["Sagittarius Arm","Carina Arm","Sagittarius-Carina","Sgr-Car"],"catalogCodes":["SgN","SgF"],"betaRangeDeg":[2,97],"betaKinkDeg":24,"betaKinkUncertaintyDeg":2,"radiusKinkKpc":6.04,"radiusKinkUncertaintyKpc":0.09,"pitchBeforeDeg":17.1,"pitchBeforeUncertaintyDeg":1.6,"pitchAfterDeg":1.0,"pitchAfterUncertaintyDeg":2.1,"widthKpc":0.27,"widthUncertaintyKpc":0.04},
+      {"id":"local","canonicalName":"Local Arm","aliases":["Orion Spur","Orion–Cygnus Arm","Orion-Cygnus Arm","Local Spur"],"catalogCodes":["Loc"],"betaRangeDeg":[-8,34],"betaKinkDeg":9,"radiusKinkKpc":8.26,"radiusKinkUncertaintyKpc":0.05,"pitchBeforeDeg":11.4,"pitchBeforeUncertaintyDeg":1.9,"pitchAfterDeg":11.4,"pitchAfterUncertaintyDeg":1.9,"widthKpc":0.31,"widthUncertaintyKpc":0.05,"notice":"Reid et al. describe the Local Arm as an isolated arm segment, not a complete major arm."},
+      {"id":"perseus","canonicalName":"Perseus Arm","aliases":["Perseus"],"catalogCodes":["Per"],"betaRangeDeg":[-23,115],"betaKinkDeg":40,"radiusKinkKpc":8.87,"radiusKinkUncertaintyKpc":0.13,"pitchBeforeDeg":10.3,"pitchBeforeUncertaintyDeg":1.4,"pitchAfterDeg":8.7,"pitchAfterUncertaintyDeg":2.7,"widthKpc":0.35,"widthUncertaintyKpc":0.06},
+      {"id":"outer","canonicalName":"Outer Arm","aliases":["Outer"],"catalogCodes":["Out"],"betaRangeDeg":[-16,71],"betaKinkDeg":18,"radiusKinkKpc":12.24,"radiusKinkUncertaintyKpc":0.36,"pitchBeforeDeg":3.0,"pitchBeforeUncertaintyDeg":4.4,"pitchAfterDeg":9.4,"pitchAfterUncertaintyDeg":4.0,"widthKpc":0.65,"widthUncertaintyKpc":0.16}
+    ],
+    "limitations": [
+      "Arm fits are constrained only over each published beta range and are not extended into unobserved sectors for visual symmetry.",
+      "The model traces massive young star-forming regions and does not uniquely specify the full stellar mass distribution.",
+      "The Reid 2019 fitted arm parameters assume R0 = 8.15 kpc; PCS retains that fit provenance while using the GRAVITY 2019 Sun anchor for the display frame."
+    ]
+  },
+  "lod": {
+    "architecture": [
+      {"level":"A","name":"catalog-neighborhood","classification":"real Gaia/GCNS catalog stars"},
+      {"level":"B","name":"catalog-landmarks","classification":"real HMSFR, Sgr A*, Sun, LMC and SMC records"},
+      {"level":"C","name":"structure-tracers","classification":"deterministic representative density tracers constrained by published models"},
+      {"level":"D","name":"whole-galaxy-density","classification":"deterministic aggregate disk/bar/bulge/halo visualization"}
+    ],
+    "desktopCounts": {"nearbyCatalogMax":1200,"thinDisk":5200,"thickDisk":1200,"bar":900,"bulge":1100,"spiralArms":2600,"stellarHalo":450},
+    "mobileCounts": {"nearbyCatalogMax":350,"thinDisk":1800,"thickDisk":420,"bar":300,"bulge":380,"spiralArms":900,"stellarHalo":160},
+    "transition": "Cesium NearFarScalar alpha/scale cross-fades; no random regeneration and no hard layer swap within the Milky Way view"
+  },
+  "catalogs": [
+    {
+      "id": "reid2019-hmsfr",
+      "source": "CDS/VizieR and Reid et al. 2019",
+      "catalog": "VizieR J/ApJ/885/131/table1",
+      "releaseVersion": "CDS electronic table snapshot retrieved 2026-08-01",
+      "retrievalDate": "2026-08-01",
+      "classification": "catalog observation",
+      "recordCount": 199,
+      "coordinateSystem": "ICRS/J2000 sky position transformed through IAU Galactic coordinates",
+      "referenceEpoch": "J2000 positions; individual VLBI measurement metadata retained",
+      "units": "degrees, mas, mas/yr, km/s, kpc",
+      "transformApplied": "heliocentric Galactic Cartesian from source direction and inverse parallax, then translated to pcs-galactocentric-gravity2019-v2",
+      "uncertaintyFields": ["parallaxErrorMas", "distanceErrorKpc", "pmEastErrorMasYr", "pmNorthErrorMasYr", "vLsrErrorKmS"],
+      "license": "VizieR scientific-context use with attribution to the original publication and CDS/VizieR; source-specific review required for commercial redistribution.",
+      "citation": "Reid et al. 2019, ApJ 885, 131; DOI 10.3847/1538-4357/ab4a11; catalog DOI 10.26093/cds/vizier.18850131"
+    },
+    {
+      "id": "gaia-edr3-gcns",
+      "source": "ESA Gaia Archive / Gaia Collaboration",
+      "catalog": "Gaia EDR3 Gaia Catalogue of Nearby Stars",
+      "releaseVersion": "GCNS v1 (2020), deployed PCS 10/25/100 pc snapshots",
+      "retrievalDate": "2026-07-31",
+      "classification": "catalog astrometry",
+      "coordinateSystem": "ICRS with PCS-derived heliocentric Galactic Cartesian and adopted Galactocentric translation",
+      "referenceEpoch": "J2016.0",
+      "units": "degrees, mas, mas/yr, km/s where available, pc and kpc",
+      "transformApplied": "existing PCS Gaia astrometric transform; positions are not changed to fit the Milky Way model",
+      "uncertaintyFields": ["ra_error", "dec_error", "parallax_error", "pmra_error", "pmdec_error", "radial_velocity_error where available"],
+      "license": "ESA/Gaia archive data-use and acknowledgement policy applies; Gaia Collaboration and source catalog must be cited.",
+      "citation": "Gaia Collaboration 2021, A&A 649, A6 (GCNS); Gaia EDR3 documentation",
+      "notice": "Only deployed nearby-star records retain Gaia identity; density tracers are never Gaia stars."
+    },
+    {
+      "id": "mcconnachie2012-local-group",
+      "source": "CDS/VizieR and McConnachie 2012",
+      "catalog": "VizieR J/AJ/144/4/catalog",
+      "releaseVersion": "CDS electronic table snapshot retrieved 2026-08-01",
+      "retrievalDate": "2026-08-01",
+      "classification": "catalog observation",
+      "recordCount": 102,
+      "coordinateSystem": "ICRS/J2000 and source Galactic longitude/latitude; Sun-centered distance",
+      "referenceEpoch": "J2000 sky positions",
+      "units": "degrees, distance modulus, kpc, km/s",
+      "transformApplied": "source sky direction and heliocentric distance to heliocentric Galactic Cartesian, then translated to pcs-galactocentric-gravity2019-v2",
+      "uncertaintyFields": ["distanceErrorPlusKpc", "distanceErrorMinusKpc"],
+      "license": "VizieR scientific-context use with attribution to the original publication and CDS/VizieR; source-specific review required for commercial redistribution.",
+      "citation": "McConnachie 2012, AJ 144, 4; catalog DOI 10.26093/cds/vizier.51440004",
+      "notice": "Only validated LMC/SMC rows are reused inside the Milky Way scale layer; missing distances are never invented."
+    }
+  ],
+  "globalLimitations": [
+    "This is an observation-constrained 3D reconstruction, not an external photograph of the Milky Way.",
+    "Displayed stellar-disk and stellar-halo extents are model display boundaries, not sharp physical edges.",
+    "Representative particles encode density context and must not be interpreted as individually catalogued stars.",
+    "Dust extinction, survey selection, incomplete southern VLBI coverage, distance uncertainty and arm-assignment ambiguity remain material limitations.",
+    "No dark-matter halo geometry is rendered."
+  ]
+}
