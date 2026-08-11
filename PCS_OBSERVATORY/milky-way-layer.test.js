@@ -3,11 +3,57 @@ import assert from "node:assert/strict";
 import {readFile} from "node:fs/promises";
 
 const source=await readFile(new URL("./milky-way-layer.js",import.meta.url),"utf8");
+const modelSource=await readFile(new URL("./milky-way-scientific-model.js",import.meta.url),"utf8");
 const index=await readFile(new URL("./index.html",import.meta.url),"utf8");
 const registry=JSON.parse(await readFile(new URL("./assets/deep-space/phase-3/milky-way-hmsfr.json",import.meta.url),"utf8"));
+const localGroup=JSON.parse(await readFile(new URL("./assets/deep-space/phase-3/local-group-galaxies.json",import.meta.url),"utf8"));
+const contract=JSON.parse(await readFile(new URL("./assets/deep-space/milky-way-scientific-scale/source-contract.json",import.meta.url),"utf8"));
 
-test("Milky Way layer uses primitive collections and the existing Viewer",()=>{assert.match(source,/PointPrimitiveCollection/);assert.match(source,/PolylineCollection/);assert.match(source,/LabelCollection/);assert.doesNotMatch(source,/new Cesium\.Viewer|createElement\(["']canvas|requestAnimationFrame/);});
-test("all 199 observed HMSFR tracers remain available to the layer",()=>{assert.equal(registry.records.length,199);assert.ok(registry.records.every(record=>record.dataStatus==="catalog-observation"&&record.visualizationStatus==="observed-tracer"));});
-test("arm reconstruction is derived only from published arm-coded tracers",()=>{assert.match(source,/armGroups\(records\)/);assert.match(source,/record\.spiralArmCode/);assert.doesNotMatch(source,/Math\.random|random/i);});
-test("Sun, Sagittarius A star, disk context and bar are explicit",()=>{for(const token of ["milky-way:sun","milky-way:sgr-a-star","ring(radius)","barAngle=27"])assert.ok(source.includes(token));});
-test("layer lifecycle is complete",()=>{for(const method of ["load(","show()","hide()","unload()","dispose()","setLabels(","setReconstruction("])assert.ok(source.includes(method));});
+test("Milky Way layer reuses the existing Cesium Viewer and one canvas",()=>{
+  assert.match(source,/PointPrimitiveCollection/);
+  assert.match(source,/PolylineCollection/);
+  assert.match(source,/LabelCollection/);
+  assert.doesNotMatch(source,/new Cesium\.Viewer|createElement\(["']canvas|requestAnimationFrame/);
+  assert.ok(index.indexOf("milky-way-scientific-model.js")<index.indexOf("milky-way-layer.js"));
+});
+
+test("all 199 Reid 2019 HMSFR catalog observations remain distinct from model tracers",()=>{
+  assert.equal(registry.records.length,199);
+  assert.ok(registry.records.every(record=>record.dataStatus==="catalog-observation"&&record.visualizationStatus==="observed-tracer"));
+  assert.match(source,/this\.model\.armDensity/);
+  assert.match(source,/pickable:false/);
+  assert.doesNotMatch(modelSource,/Math\.random/);
+});
+
+test("spiral reconstruction is bounded by the published Reid 2019 Table 2 fits",()=>{
+  assert.equal(contract.spiralArmModel.source.table,"Table 2");
+  assert.equal(contract.spiralArmModel.source.doi,"10.3847/1538-4357/ab4a11");
+  assert.deepEqual(contract.spiralArmModel.arms.map(arm=>arm.id),["norma","scutum-centaurus","sagittarius-carina","local","perseus","outer"]);
+  assert.ok(contract.spiralArmModel.arms.every(arm=>arm.betaRangeDeg.length===2&&arm.radiusKinkKpc>0&&arm.widthKpc>0));
+  assert.match(modelSource,/arm\.betaRangeDeg\[0\]\+\(arm\.betaRangeDeg\[1\]-arm\.betaRangeDeg\[0\]\)/);
+});
+
+test("Sun, Galactic Center, Sagittarius A*, disk, bar, bulge and halo are explicit",()=>{
+  assert.deepEqual(contract.coordinateFrame.sunPositionKpc,[-8.178,0,0.0208]);
+  assert.deepEqual(contract.anchors.galacticCenter.galactocentricCartesianKpc,[0,0,0]);
+  assert.deepEqual(contract.anchors.sagittariusAStar.galactocentricCartesianKpc,[0,0,0]);
+  assert.equal(contract.anchors.sagittariusAStar.visualizationStatus,"visibility-enhanced representative marker");
+  for(const key of ["stellarDisk","bar","bulge","stellarHalo"])assert.ok(contract.components[key]);
+  assert.equal(contract.components.stellarHalo.notice.includes("not a dark-matter-halo boundary"),true);
+});
+
+test("LMC and SMC reuse catalog directions/distances and remain outside the displayed stellar disk",()=>{
+  const extent=contract.components.stellarDisk.displayedRadialExtentKpc;
+  for(const name of ["LMC","SMC"]){
+    const record=localGroup.records.find(item=>item.canonicalName===name);
+    assert.equal(record.dataStatus,"catalog-observation");
+    assert.ok(record.distanceKpc>45);
+    const [hx,hy,hz]=record.heliocentricGalacticCartesianKpc;
+    const galactocentric=[hx-contract.coordinateFrame.galactocentricDistanceKpc,hy,hz+contract.coordinateFrame.sunHeightKpc];
+    assert.ok(Math.hypot(...galactocentric)>extent);
+  }
+});
+
+test("layer lifecycle and scientific visibility controls are complete",()=>{
+  for(const method of ["load(","show()","hide()","unload()","dispose()","setLabels(","setReconstruction(","setCatalog(","setDensity(","setHalo(","setPlane(","fitCoordinates("])assert.ok(source.includes(method));
+});

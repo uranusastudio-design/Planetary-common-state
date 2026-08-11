@@ -165,6 +165,26 @@ test("Phase 3 interface vocabulary is complete in all four existing languages", 
   assert.doesNotMatch(manager, /distanceKpc\?\?0/);
 });
 
+test("Milky Way scientific-scale controls and epistemic labels use the existing four-language runtime",()=>{
+  const copy=manager.match(/const MILKY_WAY_COPY=Object\.freeze\(\{([\s\S]*?)\n  \}\);/)?.[1]||"";
+  for(const key of ["milkyWay","galacticCenter","sgr","galacticPlane","local","orion","spiral","disk","bulge","stellarHalo","lmc","smc","representative","observationDerived","modelDerived","catalogStar","distanceUncertainty"]){
+    assert.equal((copy.match(new RegExp(`${key}:`,"g"))||[]).length,4,`${key} must exist in four Milky Way dictionaries`);
+  }
+  for(const token of ["data-ds-fit-milky-way","data-ds-focus-sun","data-ds-focus-galactic-center","data-ds-focus-local-arm","data-ds-fit-magellanic","data-ds-mw-view=\"face-on\"","data-ds-mw-view=\"edge-on\"","data-ds-galactic-plane"])assert.ok(manager.includes(token),token);
+  assert.match(manager,/searchPhase3\(term\)[\s\S]*scaleContext===\"milky-way\"[\s\S]*focusSelectedObject\(\)/);
+});
+
+test("Milky Way navigation extends the shared camera and camera-history systems",()=>{
+  assert.match(manager,/function setMilkyWayCamera\(/);
+  assert.match(manager,/function setMilkyWayCamera\([\s\S]*?viewer\.resize\(\)/);
+  assert.match(manager,/CameraScale\.fitDistance\(/);
+  assert.match(manager,/CameraScale\.clipPlanes\(/);
+  assert.match(manager,/pushCameraHistory\(`milky-way-view:/);
+  assert.match(manager,/\[\"solar\",\"milky-way\"\]\.includes\(scaleContext\)/);
+  assert.match(manager,/else if\(scaleContext===\"milky-way\"\)/);
+  assert.doesNotMatch(manager,/new Cesium\.Viewer|createElement\(["']canvas|requestAnimationFrame/);
+});
+
 test("runtime translation rerenders stable scale contexts instead of caching localized Phase 3 titles", () => {
   assert.match(manager, /function renderScaleTitle\(\)/);
   assert.match(manager, /scaleContext==="milky-way"[\s\S]*p3\(\)\.milkyWay[\s\S]*p3\(\)\.galacticCenter/);
