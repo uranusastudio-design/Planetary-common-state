@@ -15,6 +15,13 @@
     return Object.freeze({bodyId:`sbdb:${record.spkid}`,epoch:date.toISOString(),jdTdb,solutionEpochJdTdb:el.epochJdTdb,positionAu:Object.freeze(positionAu),heliocentricDistanceAu:Math.hypot(...positionAu),dataStatus:"catalog-derived propagated position",source:"NASA/JPL SBDB",catalogEphemeris:`SBDB orbit ${record.orbitId||"catalog solution"}`,coordinateFrame:"J2000 ecliptic heliocentric osculating elements",positionMode:"SBDB osculating elements · two-body propagated",uncertainty:record.uncertainty,conditionCode:record.conditionCode??"Not provided",notice:"Two-body propagation from the object's catalog solution epoch; not a numerical planetary ephemeris."});
   }
   function sampleOrbit(record,centerEpoch,{samples=180,maxSpanDays=730}={}){const period=record?.elements?.periodDays;if(!Number.isFinite(period))return Object.freeze([]);const span=Math.min(period,Math.max(1,maxSpanDays)),center=Core.validDate(centerEpoch),states=[];for(let i=0;i<=samples;i+=1){const date=new Date(center.getTime()+((i/samples)-.5)*span*Core.DAY_MS),state=stateAt(record,date);if(state)states.push(state);}return Object.freeze(states);}
+  function sampleFullOrbit(record,{samples=360}={}){
+    const el=record?.elements,count=Math.max(48,Math.floor(Number(samples)||360));
+    if(!el||![el.e,el.a,el.i,el.om,el.w].every(Number.isFinite)||el.e<0||el.e>=1)return Object.freeze([]);
+    const node=radians(el.om),peri=radians(el.w),inc=radians(el.i),cosN=Math.cos(node),sinN=Math.sin(node),cosW=Math.cos(peri),sinW=Math.sin(peri),cosI=Math.cos(inc),sinI=Math.sin(inc),states=[];
+    for(let index=0;index<=count;index+=1){const eccentric=2*Math.PI*index/count,xPrime=el.a*(Math.cos(eccentric)-el.e),yPrime=el.a*Math.sqrt(1-el.e*el.e)*Math.sin(eccentric),positionAu=[(cosW*cosN-sinW*sinN*cosI)*xPrime+(-sinW*cosN-cosW*sinN*cosI)*yPrime,(cosW*sinN+sinW*cosN*cosI)*xPrime+(-sinW*sinN+cosW*cosN*cosI)*yPrime,sinW*sinI*xPrime+cosW*sinI*yPrime];states.push(Object.freeze({bodyId:`sbdb:${record.spkid}`,positionAu:Object.freeze(positionAu),heliocentricDistanceAu:Math.hypot(...positionAu),orbitFraction:index/count,dataStatus:"catalog-derived osculating orbit",source:"NASA/JPL SBDB",coordinateFrame:"J2000 ecliptic heliocentric osculating elements",positionMode:"Complete source-element orbit path; not time-resolved numerical ephemeris"}));}
+    return Object.freeze(states);
+  }
   class MainBeltLayer{
     constructor(viewer,positionMapper){this.viewer=viewer;this.positionMapper=positionMapper;this.collection=viewer.scene.primitives.add(new Cesium.PointPrimitiveCollection());this.records=[];this.points=[];this.mode="exhibition";this.epoch=new Date();this.lod="far";this.pendingEpoch=null;this.updateTargetEpoch=null;this.updateCursor=0;this.completedEpochUpdates=0;this.moveRemover=viewer.camera.moveEnd.addEventListener(()=>this.updateLod());}
     limit(){return dataset.mainBelt.lod[this.lod]||dataset.mainBelt.lod.far;}
@@ -29,5 +36,5 @@
     dispose(){this.moveRemover?.();this.moveRemover=null;if(this.collection){this.viewer.scene.primitives.remove(this.collection);this.collection=null;}this.records=[];this.points=[];this.pendingEpoch=null;this.updateTargetEpoch=null;this.updateCursor=0;}
     debug(){return Object.freeze({datasetId:dataset.datasetId,catalogRecords:this.records.length,pointCount:this.points.length,visibleCount:this.points.filter(point=>point.show).length,lod:this.lod,deterministic:true,epochUpdatePending:Boolean(this.pendingEpoch||this.updateTargetEpoch),epochUpdateCursor:this.updateCursor,completedEpochUpdates:this.completedEpochUpdates,selection:dataset.mainBelt.selection,upstreamMatchCount:dataset.mainBelt.upstreamClassCount});}
   }
-  global.PCSSmallBodies=Object.freeze({dataset,stateAt,sampleOrbit,MainBeltLayer});
+  global.PCSSmallBodies=Object.freeze({dataset,stateAt,sampleOrbit,sampleFullOrbit,MainBeltLayer});
 })(window);
