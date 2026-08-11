@@ -1,6 +1,6 @@
 # PCS Deep Space — Milky Way Scientific Scale
 
-Status: **local scientific, functional, WebGL, performance, stability, and visual acceptance passed; production deployment pending**
+Status: **scientific, functional, WebGL, performance, stability, visual, deployment, and production acceptance passed; layer frozen pending human visual review**
 
 ## Scope and release boundary
 
@@ -158,7 +158,25 @@ Inspection passed for complete fit, off-center Sun, readable bounded arm segment
 
 - [x] Scientific source, coordinate, model, uncertainty, and provenance audit.
 - [x] Functional, Node, WebGL, performance, stability, and local visual acceptance.
-- [ ] Commit, push, GitHub Pages deployment, production asset verification, and production WebGL/visual acceptance.
-- [ ] Milky Way completed/deployed/frozen.
+- [x] Commit, push, GitHub Pages deployment, production asset verification, and production WebGL/visual acceptance.
+- [x] Milky Way completed/deployed/frozen.
 
-Production deployment must pass before the layer can be marked complete or frozen.
+## Production acceptance
+
+Runtime commit `789cbac09de27a27b306091debeae35021dce1ea` was fast-forwarded to `origin/main`. GitHub Pages run `31513175673` passed build, deploy, and status reporting. Eleven required production assets were downloaded and matched the runtime commit byte-for-byte. Production URL: `https://uranusastudio-design.github.io/Planetary-common-state/PCS_OBSERVATORY/`.
+
+The clean production WebGL acceptance used an isolated headless Chrome profile. Viewer count remained 1, Cesium canvas count remained 1, total canvas count remained 2, primitive count remained 11, DataSource count remained 4, and Milky Way primitive collections remained 7 across the required stability sequence. Console exceptions and required network failures were both zero. The Halley 361-point closed-orbit regression also passed.
+
+| Viewport | Visible points | Avg FPS | Lowest observed FPS | Avg frame time | Visible fraction |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| 1920×1080 | 12,855 | 60.39 | 53.76 | 16.56 ms | 100% |
+| 2560×1440 | 12,855 | 50.77 | 28.33 | 19.70 ms | 100% |
+| 3840×2160 | 12,855 | 23.33 | 19.27 | 42.87 ms | 100% |
+| 5120×2160 | 12,855 | 16.59 | 12.27 | 60.29 ms | 100% |
+| 390×844 | 4,515 | 60.81 | 53.76 | 16.45 ms | 100% |
+
+The production stability-window heap observation was 202,244,796→324,553,634 bytes; the full acceptance process was 177,502,557→373,669,039 bytes. These include repeated scene loading, resize matrices, and screenshot capture and are reported as observations rather than proof of universal leak absence. Collection and listener cardinalities remained unchanged.
+
+All production A–H screenshots were opened and visually inspected. They passed the required checks for complete fit, off-center Sun, readable bounded arm structure, 3D disk thickness, LMC/SMC outside the disk, spatially coherent Local Group transition, mobile card visibility, and absence of clipping, giant fake lines, motion streaks, duplicate galaxies/stars, or panel overlap. Evidence is stored in `test-results/deep-space-milky-way-production-789cbac/`.
+
+The accepted boundary is **Milky Way Scientific Scale only**. Laniakea and Observable Universe were not started by this task.
