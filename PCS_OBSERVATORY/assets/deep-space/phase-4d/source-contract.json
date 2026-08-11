@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "pcs-source-contract-v1",
+  "adapter": "phase4d-sdss-cosmic-web",
+  "sourceFrame": "ICRS/J2000 and published SDSS survey Cartesian",
+  "sourceEpoch": "J2000",
+  "distanceConvention": "Comoving Mpc/h retained by source-specific cosmology",
+  "redshiftConvention": "SDSS CMB-frame redshift where published; BOSS catalog redshift",
+  "cosmologyAssumption": "Tempel: Ωm=0.27, ΩΛ=0.73; Mao voids: flat Ωm=0.3",
+  "transformVersion": "pcs-sdss-survey-to-icrs-v1",
+  "sourceChecksums": {
+    "groupsReadme": "2e56503e111d07a75ca13d5339820b30694bcf6ee937e7b3dd4402a9de822a3e",
+    "groups": "9816fe6be1802fcea5ecfb054daf5d76078a7bd6f134ec4b3f53ba1e644242f8",
+    "filamentsReadme": "1f08b4db4b2bf5ed8cb910263f5fb3cafd3e8af9c16e718905debb511f0a5580",
+    "filamentProperties": "6a017f1374f402692f653421dd4b624078036a4f01992f54734c5e92a6273f28",
+    "filamentPoints": "65808180bc2fd42bd46af92a484db7cde4a343892701699d8e6cb99b687d9e76",
+    "galaxies": "970506dcd23d5a98a0deb6d8c3caee67672bf5d8a3da721d307bfa4d68d2eab1",
+    "voidsReadme": "298a0fb70094d0e99aab06718d88ae66778a1c08ec887aac817a3833d5847896",
+    "voids": "d579cfc1dc0bcb8886dab0645221c3788e8b784ba7bea1d2be5f096545971883"
+  },
+  "qualityStatus": "validated",
+  "knownLimitations": [
+    "The galaxy layer is a deterministic one-in-twelve LOD sample of 576,493 source galaxies.",
+    "The filament layer deploys the 2,306 catalog filaments at least 15 Mpc/h long, not all 15,421 filaments.",
+    "Filaments and voids are observation-based reconstructions, not directly imaged structures.",
+    "Void effective-radius rings are representative volume-equivalent markers, not measured physical boundaries.",
+    "Survey masks, flux limits, redshift limits and source cosmologies remain visible limitations; unobserved regions are not filled.",
+    "Walls are unavailable as a separately validated deployed geometry."
+  ]
+}

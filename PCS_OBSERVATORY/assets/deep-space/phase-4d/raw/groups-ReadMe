@@ -1,0 +1,175 @@
+J/A+A/540/A106      SDSS-DR8 groups and clusters of galaxies   (Tempel+, 2012)
+================================================================================
+Groups and clusters of galaxies in the SDSS DR8. Value-added catalogues.
+    Tempel E., Tago E., Liivamagi L.J.
+   <Astron. Astrophys. 540, A106 (2012)>
+   =2012A&A...540A.106T
+================================================================================
+ADC_Keywords: Clusters, galaxy ; Galaxy catalogs ; Galaxies, photometry
+Keywords: catalogs - galaxies: clusters: general - galaxies: groups: general -
+          galaxies: statistics - large-scale structure of Universe -
+          cosmology: observations
+
+Abstract:
+    We create a new catalogue of groups and clusters for the SDSS Data
+    Release 8 sample. We add environmental parameters to our catalogue,
+    together with other galaxy parameters (e.g., morphology), missing from
+    our previous catalogues.
+
+    We use a modified friends-of-friends (FoF) method with a variable
+    linking length in the transverse and radial directions to eliminate
+    selection effects and to find reliably as many groups as possible to
+    track the supercluster network. We use the groups of galaxies as a
+    basis to determine the luminosity density field.
+
+    We take into account various selection effects caused by a magnitude
+    limited sample. Our final sample contains 576493 galaxies and 77858
+    groups. The group catalogue is available at
+    http://www.aai.ee/~elmo/dr8groups/ and from the Strasbourg
+    Astronomical Data Center (CDS).
+
+Description:
+    Galaxy and group/cluster catalogues based on SDSS DR8 data are
+    presented. The tables are also available at
+    http://www.aai.ee/~elmo/dr8groups
+
+File Summary:
+--------------------------------------------------------------------------------
+ FileName   Lrecl  Records   Explanations
+--------------------------------------------------------------------------------
+ReadMe         80        .   This file
+dr8gal.dat    430   576493   Galaxy parameters
+dr8gr.dat     236    77858   Group/cluster parameters
+--------------------------------------------------------------------------------
+
+See also:
+    II/306 : The SDSS Photometric Catalog, Release 8 (Adelman-McCarthy+, 2011)
+    J/A+A/514/A102 : SDSS DR7 groups of galaxies (Tago+, 2010)
+    J/A+A/479/927  : Group of galaxies in SDSS 5 (Tago+, 2008)
+
+Byte-by-byte Description of file: dr8gal.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units     Label     Explanations
+--------------------------------------------------------------------------------
+   2-  7  I6    ---       ID        Unique identification number for galaxies
+   9- 14  I6    ---       IDcl      [1/388773] Group/cluster ID number (1)
+  18- 20  I3    ---       Ngal      [1/878] Richness of group the galaxy
+                                            belongs to
+  22- 28  F7.5  ---       z         Redshift, corrected to CMB rest frame
+  30- 37  F8.4  Mpc       Dist      Co-moving distance of a galaxy (G1)
+  39- 46  F8.4  Mpc       Dist.c    Co-moving distance of the group centre (G1)
+  48- 57  F10.5 deg       RAdeg     Right ascension of galaxy (J2000)
+  59- 68  F10.5 deg       DEdeg     Declination of galaxy (J2000)
+  70- 79  F10.5 deg       GLON      Galactic longitude of galaxy
+  81- 90  F10.5 deg       GLAT      Galactic latitude of galaxy
+  92-101  F10.5 deg       eta       SDSS survey coordinate eta
+ 103-112  F10.5 deg       lambda    SDSS survey coordinate lambda
+ 114-121  F8.5  mag       umag      Galactic extinction corrected
+                                     Petrosian u-magnitude
+ 123-130  F8.5  mag       gmag      Galactic extinction corrected
+                                     Petrosian g-magnitude
+ 132-139  F8.5  mag       rmag      Galactic extinction corrected
+                                     Petrosian r-magnitude
+ 141-148  F8.5  mag       imag      Galactic extinction corrected
+                                     Petrosian i-magnitude
+ 150-157  F8.5  mag       zmag      Galactic extinction corrected
+                                     Petrosian z-magnitude
+ 159-167  F9.5  mag       uMAG      Absolute u-magnitude (G1)
+ 169-177  F9.5  mag       gMAG      Absolute g-magnitude (G1)
+ 179-187  F9.5  mag       rMAG      Absolute r-magnitude (G1)
+ 189-197  F9.5  mag       iMAG      Absolute i-magnitude (G1)
+ 199-207  F9.5  mag       zMAG      Absolute z-magnitude (G1)
+ 209-217  F9.5  mag       kcoru     K-correction in u-filter
+ 219-227  F9.5  mag       kcorg     K-correction in g-filter
+ 229-237  F9.5  mag       kcorr     K-correction in r-filter
+ 239-247  F9.5  mag       kcori     K-correction in i-filter
+ 249-257  F9.5  mag       kcorz     K-correction in z-filter
+ 259-268  F10.5 10+10Lsun Lr        r-band observed luminosity (G1)
+ 270-275  F6.3  ---       W         Weight factor for the galaxy
+ 279-281  I3    ---       Rank      [1/878] Galaxy rank in its group
+ 283-293  F11.5 ---       Den1      ?=-999 Normalised environmental density at
+                                           1Mpc/h (G1)
+ 295-305  F11.5 ---       Den2      ?=-999 Normalised environmental density at
+                                           2Mpc/h (G1)
+ 307-317  F11.5 ---       Den4      ?=-999 Normalised environmental density at
+                                           4Mpc/h (G1)
+ 319-329  F11.5 ---       Den8      ?=-999 Normalised environmental density at
+                                           8Mpc/h (G1)
+ 331-341  F11.5 ---       Den16     ?=-999 Normalised environmental density at
+                                           16Mpc/h (G1)
+ 343-350  F8.4  Mpc       Edge      Co-moving distance from the survey mask (G1)
+     352  I1    ---       Mph       [0/2] Morphology of galaxy, 1=S, 2=E (2)
+ 354-360  F7.5  ---       prE       Probability of being an early type galaxy
+ 362-381  A20   ---       DR8objid  Approximative SDSS DR8 photometric objID (3)
+ 383-402  A20   ---       DR8spec   Approximative SDSS DR8 spectroscopic ID (3)
+ 404-409  I6    ---       IDDR7     ID number to link to our previous DR7 cat
+ 411-417  F7.5  ---       zobs      Observed redshift (without CMB correction)
+ 419-426  F8.4  Mpc       Distcor   Corrected co-moving distance of galaxy (G1)
+                                     (in Mpc/h)
+     430  I1    ---       fc        [0/5] Number of missing neighbours
+                                          (fibre collision) (G2)
+--------------------------------------------------------------------------------
+Note (1): Groups with IDcl>77858 have only 1 galaxy.
+Note (2): Morphology code is:
+   0 = unclear;
+   1 = spiral;
+   2 = elliptical
+Note (3): IDs do not match the SDSS-DR8 ones (the 8 rightmost bits of the
+     binary reporesentation were all set to zero, i.e. the correct SDSS-DR8
+     ID is a number between DR8objid and DR8objid+255).
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: dr8gr.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units     Label     Explanations
+--------------------------------------------------------------------------------
+   3-  7  I5    ---       IDcl      [1/77858] Group/cluster ID number
+  11- 13  I3    ---       Ngal      [2/878] Group richness
+  15- 21  F7.5  ---       zcl       Redshift to the group centre
+  23- 30  F8.4  Mpc       Dist.c    Co-moving distance to the group centre (G1)
+  32- 41  F10.5 deg       RAdeg     Right ascension of group centre (J2000)
+  43- 52  F10.5 deg       DEdeg     Declination of group centre (J2000)
+  54- 63  F10.5 deg       GLON      Galactic longitude
+  65- 74  F10.5 deg       GLAT      Galactic latitude
+  76- 85  F10.5 deg       eta       SDSS survey coordinate eta
+  87- 96  F10.5 deg       lambda    SDSS survey coordinate lambda
+  98-105  F8.5  Mpc       Size      Max linear size of the group in the sky (G1)
+ 107-114  F8.5  Mpc       Rvir      Virial radius (projected harmonic mean) (G1)
+ 116-123  F8.5  Mpc       sigma     Extent of the group in the sky (G1)
+ 125-134  F10.4 km/s      sigmav    rms radial velocity deviation
+ 136-145  F10.5 10+10Lsun Lrobs     r-band observed luminosity (G1)
+ 147-156  F10.5 10+10Lsun Lrtot     r-band estimated total luminosity (G1)
+ 158-163  F6.3  Mpc       Dlink     Co-moving linking length (G1)
+ 165-175  F11.5 ---       Den1      ?=-999 Environmental density for group at
+                                           a=1Mpc/h (G1)
+ 177-187  F11.5 ---       Den2      ?=-999 Environmental density for group at
+                                           a=2Mpc/h (G1)
+ 189-199  F11.5 ---       Den4      ?=-999 Environmental density for group at
+                                           a=4Mpc/h (G1)
+ 201-211  F11.5 ---       Den8      ?=-999 Environmental density for group at
+                                           a=8Mpc/h (G1)
+ 213-223  F11.5 ---       Den16     ?=-999 Environmental density for group at
+                                           a=16Mpc/h (G1)
+ 225-232  F8.4  Mpc       Edge      Minimum distance from survey mask (G1)
+ 235-236  I2    ---       fc        [0/64] Number of potentially missing fibre
+                                     collision galaxies (G2)
+--------------------------------------------------------------------------------
+
+Global Notes:
+Note (G1): Throughout this study, the cosmology is defined with 
+    H_0_=100h km/s/Mpc, {Omega}_M_=0.27 and {Omega}_{Lambda}_=0.73.
+  * Distances are in Mpc/h 
+  * distance modulus are in mag+5log10(h)
+  * luminosities are in L_{sun}_/h^2^
+Note (G2): if greater than zero, indicates that the galaxy has a missing
+  (with unknown redshift) neighbour due to a fibre collision.
+
+Acknowledgements:
+    Elmo Tempel, elmo (at)aai.ee
+
+History:
+  * 28-Feb-2012: Original version
+  * 12-Jun-2012: warning added for the DR8objid and DR8spec columns
+    of dr8gal (do not exactly match the DR8 objIDs)
+================================================================================
+(End)  Elmo Tempel [Tartu Obs., Estonia], Patricia Vannier [CDS]     28-Feb-2012

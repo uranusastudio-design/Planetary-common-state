@@ -1,0 +1,143 @@
+J/MNRAS/438/3465        Cosmic web filaments in the SDSS         (Tempel+, 2014)
+================================================================================
+Detecting filamentary pattern in the cosmic web: a catalogue of filaments for
+the SDSS.
+    Tempel E., Stoica R.S., Martinez V.J., Liivamagi L.J., Castellan G., Saar E.
+   <Mon. Not. R. Astron. Soc. 438, 3465 (2014)>
+   =2014MNRAS.438.3465T
+================================================================================
+ADC_Keywords: Galaxy catalogs ; Galaxies, photometry ; Clusters, galaxy
+Keywords: methods: data analysis - methods: statistical - catalogues -
+          galaxies: statistics - large-scale structure of Universe
+
+Abstract:
+    The main feature of the spatial large-scale galaxy distribution is its
+    intricate network of galaxy filaments. This network is spanned by the
+    galaxy locations that can be interpreted as a three-dimensional point
+    distribution. The global properties of the point process can be
+    measured by different statistical methods, which, however, do not
+    describe directly the structure elements. The morphology of the large
+    scale structure, on the other hand, is an important property of the
+    galaxy distribution. Here we apply an object point process with
+    interactions (the Bisous model) to trace and extract the filamentary
+    network in the presently largest galaxy redshift survey, the Sloan
+    Digital Sky Survey (SDSS). We search for filaments in the galaxy
+    distribution that have a radius of about 0.5Mpc/h. We divide the
+    detected network into single filaments and present a public catalogue
+    of filaments. We study the filament length distribution and show that
+    the longest filaments reach the length of 60Mpc/h. The filaments
+    contain 35-40% of the total galaxy luminosity and they cover roughly
+    5-8% of the total volume, in good agreement with N-body simulations
+    and previous observational results.
+
+Description:
+    Filament main parameters for 15421 filaments found from SDSS data
+    using Bisous model. For each filament we give points containing
+    position, direction and some additional parameters measured in each
+    point. Tables include also galaxies that filaments contain. The 
+    cosmology assumes Ho=100km/s/Mpc, {Omega}m=0.7, {Omega}_{Lambda}_=0.73.
+    The tables are also available at http://www.aai.ee/~elmo/sdss-filaments
+
+File Summary:
+--------------------------------------------------------------------------------
+ FileName   Lrecl  Records   Explanations
+--------------------------------------------------------------------------------
+ReadMe         80        .   This file
+table1.dat     99    15421   Filament properties
+table2.dat    117   275599   Filament points properties
+table3.dat    147   576493   Galaxies that filament contains
+--------------------------------------------------------------------------------
+
+See also:
+         II/306 : SDSS Photometric Catalog, Release 8 (Adelman-McCarthy+, 2011)
+ J/A+A/540/A106 : SDSS-DR8 groups and clusters of galaxies (Tempel+, 2012)
+
+Byte-by-byte Description of file: table1.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units    Label    Explanations
+--------------------------------------------------------------------------------
+   1-  5  I5    ---      ID       [1/15421] Unique identification number for a
+                                   filament
+   7-  9  I3    ---      Npts     [5/128] Number of points in the filament (1)
+  11- 18  F8.5  Mpc      Len      Filament length in Mpc/h (2)
+  20- 22  I3    ---      Ng.5     [2/234] Number of galaxies closer than
+                                          0.5Mpc/h to filament axis
+  24- 26  I3    ---      Ng1      [2/429] Number of galaxies closer than
+                                          1.0Mpc/h to filament axis
+  28- 36  F9.5 10+10Lsun L0.5     Luminosity of filament up to 0.5Mpc/h (3)
+  38- 46  F9.5 10+10Lsun L1.0     Luminosity of filament up to 1.0Mpc/h (3)
+  48- 56  F9.4  Mpc      xmin     Filament minimum coordinate in x axis (Mpc/h)
+  58- 65  F8.4  Mpc      ymin     Filament minimum coordinate in y axis (Mpc/h)
+  67- 75  F9.4  Mpc      zmin     Filament minimum coordinate in z axis (Mpc/h)
+  77- 83  F7.4  Mpc      xlen     Filament range in x axis (Mpc/h)
+  85- 91  F7.4  Mpc      ylen     Filament range in y axis (Mpc/h)
+  93- 99  F7.4  Mpc      zlen     Filament range in z axis (Mpc/h)
+--------------------------------------------------------------------------------
+Note (1): spacing of filament points is 0.5Mpc/h (Ho=100km/s/Mpc)
+Note (2): measured along the filament from point to point (Ho=100km/s/Mpc)
+Note (3): sum of luminosities of observed galaxies in units of
+     10^10^L_{sun}_/h^2^ (Ho=100km/s/Mpc)
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: table2.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label   Explanations
+--------------------------------------------------------------------------------
+   1-  5  I5    ---     ID      [1/15421] Filament identification number
+   7- 12  I6    ---     IDpt    [1/275599] Unique identification number for
+                                 a filament point, shared for all filaments
+  14- 16  I3    ---     Npts    [5/128] Number of filament points in the
+                                 filament the point belongs to
+  18- 25  F8.5  Mpc     Len     Length of the filament the point belongs
+                                 to (Mpc/h)
+  27- 35  F9.4  Mpc     x       Co-moving coordinate of the point (Mpc/h)
+  37- 45  F9.4  Mpc     y       Co-moving coordinate of the point (Mpc/h)
+  47- 55  F9.4  Mpc     z       Co-moving coordinate of the point (Mpc/h)
+  57- 66  F10.5 Mpc     D       Distance to filament point (Mpc/h)
+  68- 75  F8.5  Mpc     dx      [-1/1] Orientation of filament point (Mpc/h) (1)
+  77- 84  F8.5  Mpc     dy      [-1/1] Orientation of filament point (Mpc/h) (1)
+  86- 93  F8.5  Mpc     dz      [-1/1] Orientation of filament point (Mpc/h) (1)
+  95-101  F7.5  ---     vmap    [0/1] Visit map (level set) value
+ 103-109  F7.5  ---     fden    [0/1] Weighted visit map value
+ 111-117  F7.5  ---     fori    [0/1] Strength of orientation
+--------------------------------------------------------------------------------
+Note (1): unit vector, i.e. dx^2^+dy^2^+dz^2^=1
+--------------------------------------------------------------------------------
+
+Byte-by-byte Description of file: table3.dat
+--------------------------------------------------------------------------------
+   Bytes Format Units     Label   Explanations
+--------------------------------------------------------------------------------
+   1-  6  I6    ---       IDgal   [1/576493] Unique identification number for
+                                   a galaxy (1)
+   8- 10  I3    ---       Ngal    [1/878] Richness of the group the galaxy
+                                   belongs to
+  12- 19  F8.6  ---       z       [0.009/0.2] Redshift (2)
+  21- 30  F10.6 deg       RAdeg   Right ascension (J2000)
+  32- 41  F10.6 deg       DEdeg   Declination (J2000)
+  43- 52  F10.6 Mpc       Dcor    Co-moving distance of the galaxy when the
+                                   finger-of-god effect is suppressed (Mpc/h)
+  54- 61  F8.5  mag       umag    Petrosian u magnitude (3)
+  63- 70  F8.5  mag       gmag    Petrosian g magnitude (3)
+  72- 79  F8.5  mag       rmag    Petrosian r magnitude (3)
+  81- 88  F8.5  mag       imag    Petrosian i magnitude (3)
+  90- 97  F8.5  mag       zmag    ? Petrosian z magnitude (3)
+  99-110  F12.9 10+10Lsun Lr      Absolute luminosity in r-band (4)
+ 112-116  F5.3  ---       w       [1/9] Weight factor for the galaxy
+ 118-125  F8.4  Mpc       Dedg    Co-moving distance of the galaxy from the
+                                   border of the survey mask (Mpc/h)
+ 127-134  F8.5  Mpc       Dfil    Distance from nearest filament axis (Mpc/h)
+ 136-140  I5    ---       ID      [0/15421]?=0 ID of nearest filament
+ 142-147  I6    ---       IDpt    [0/275599]?=0 ID of the nearest filament point
+--------------------------------------------------------------------------------
+Note (1): as used in Tempel et al. (2012, Cat. J/A+A/540/A106).
+Note (2): corrected to the CMB rest frame.
+Note (3): corrected by Galactic extinction.
+Note (4): unit is 10^10^L_{sun}_/h^2^ and M_{sun}_ is taken 4.64mag.
+--------------------------------------------------------------------------------
+
+Acknowledgements:
+    Elmo Tempel, elmo.tempel (at) to.ee
+
+================================================================================
+(End)     Elmo Tempel [Tartu Obs., Estonia], Patricia Vannier [CDS]  14-Jan-2014
