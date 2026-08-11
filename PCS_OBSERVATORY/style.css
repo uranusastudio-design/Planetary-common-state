@@ -361,6 +361,88 @@ select {
   display: none;
 }
 
+.pcs-release-banner__columns {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.pcs-release-banner__info {
+  flex: 0 1 46%;
+  min-width: 0;
+}
+
+.pcs-release-video {
+  flex: 1 1 54%;
+  min-width: 0;
+  align-self: center;
+}
+
+.pcs-release-video__facade {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid rgba(34, 211, 238, 0.35);
+  border-radius: 10px;
+  background: var(--bg);
+  cursor: pointer;
+  padding: 0;
+}
+
+.pcs-release-video__facade img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.82;
+  transition: opacity 0.2s;
+}
+
+.pcs-release-video__facade:hover img,
+.pcs-release-video__facade:focus-visible img {
+  opacity: 1;
+}
+
+.pcs-release-video__play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 68px;
+  height: 48px;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
+  transition: transform 0.2s;
+}
+
+.pcs-release-video__facade:hover .pcs-release-video__play {
+  transform: translate(-50%, -50%) scale(1.12);
+}
+
+.pcs-release-video__facade:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+}
+
+.pcs-release-video__frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid rgba(34, 211, 238, 0.35);
+  border-radius: 10px;
+  background: var(--bg);
+}
+
+.pcs-release-video__frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
 .pcs-release-tabs { display: flex; flex-wrap: wrap; gap: 6px; position: sticky; top: 0; z-index: 1; padding: 4px 0 10px; background: rgba(9, 25, 43, 0.98); }
 .pcs-release-tabs button { min-height: 36px; padding: 7px 11px; border: 1px solid var(--border); border-radius: 7px; color: var(--muted); background: rgba(5, 15, 28, 0.9); cursor: pointer; }
 .pcs-release-tabs button[aria-selected="true"] { color: var(--cyan); border-color: var(--cyan); background: rgba(28, 116, 144, 0.14); }
@@ -421,6 +503,17 @@ select {
   .pcs-release-banner__coverage li:not(:last-child)::after {
     position: static;
     margin-left: 7px;
+  }
+
+  .pcs-release-banner__columns {
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .pcs-release-banner__info,
+  .pcs-release-video {
+    flex: none;
+    width: 100%;
   }
 
   .pcs-release-banner__actions {

@@ -145,14 +145,24 @@
           <button id="pcs-update-toggle" class="pcs-update-banner__toggle" type="button" aria-expanded="false" aria-controls="pcs-update-content">Expand</button>
         </div>
         <div class="pcs-update-banner__summary" aria-live="polite">
-          <span class="pcs-release-banner__eyebrow">PCS Observatory</span>
-          <h2 id="pcs-update-title">PCS Observatory</h2>
-          <p id="pcs-update-summary"></p>
-          <ol class="pcs-release-banner__coverage" data-release-banner-ready hidden aria-label="Scientific coverage"></ol>
-          <p class="pcs-release-banner__next" data-release-banner-ready hidden></p>
-          <div class="pcs-release-banner__actions" data-release-banner-ready hidden>
-            <button id="pcs-release-open" type="button">Open Observatory</button>
-            <button id="pcs-release-notes" type="button">Release Notes</button>
+          <div class="pcs-release-banner__columns">
+            <div class="pcs-release-banner__info">
+              <span class="pcs-release-banner__eyebrow">PCS Observatory</span>
+              <h2 id="pcs-update-title">PCS Observatory</h2>
+              <p id="pcs-update-summary"></p>
+              <ol class="pcs-release-banner__coverage" data-release-banner-ready hidden aria-label="Scientific coverage"></ol>
+              <p class="pcs-release-banner__next" data-release-banner-ready hidden></p>
+              <div class="pcs-release-banner__actions" data-release-banner-ready hidden>
+                <button id="pcs-release-open" type="button">Open Observatory</button>
+                <button id="pcs-release-notes" type="button">Release Notes</button>
+              </div>
+            </div>
+            <div class="pcs-release-video" data-release-banner-ready hidden>
+              <button class="pcs-release-video__facade" type="button" aria-label="Play PCS Deep Space showcase video" data-video-id="2qFRE-HxM8k">
+                <img src="https://i.ytimg.com/vi/2qFRE-HxM8k/maxresdefault.jpg" alt="PCS Deep Space — Solar System to Local Group" loading="lazy" width="1280" height="720">
+                <svg class="pcs-release-video__play" viewBox="0 0 68 48" aria-hidden="true"><path d="M66.5 7.7c-.8-2.9-2.5-5.4-5.4-6.2C55.8.1 34 0 34 0S12.2.1 6.9 1.5c-2.9.8-4.6 3.3-5.4 6.2S0 17.4 0 24s.2 9 1.5 16.3c.8 2.9 2.5 5.4 5.4 6.2C12.2 48 34 48 34 48s21.8 0 27.1-1.5c2.9-.8 4.6-3.3 5.4-6.2C67.8 33 68 24 68 24s0-9.3-1.5-16.3z" fill="rgba(28,116,144,.85)"/><path d="M45 24 27 14v20z" fill="#fff"/></svg>
+              </button>
+            </div>
           </div>
         </div>
         <div id="pcs-update-content" class="pcs-update-banner__content" tabindex="-1">
@@ -164,6 +174,17 @@
           </div>
           <div id="pcs-release-view" class="pcs-release-view" role="tabpanel"></div>
         </div>
+        <script>
+        (function(){
+          var f=document.querySelector('.pcs-release-video__facade');
+          if(!f)return;
+          f.addEventListener('click',function(){
+            var id=f.getAttribute('data-video-id');
+            var w=f.parentElement;
+            w.innerHTML='<div class="pcs-release-video__frame"><iframe src="https://www.youtube.com/embed/'+id+'?autoplay=1" title="PCS Deep Space — Solar System to Local Group" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>';
+          });
+        })();
+        </script>
       </section>
 
       <section class="dashboard-layout" aria-label="PCS planetary monitoring dashboard">
