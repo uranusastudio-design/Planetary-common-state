@@ -1,6 +1,6 @@
 # Deep Space Full-Orbit View
 
-Status: **local implementation and acceptance complete; frozen pending human review**
+Status: **production deployed and verified; frozen pending human review**
 
 ## Scope
 
@@ -80,4 +80,15 @@ Evidence is stored in `test-results/deep-space-full-orbit-local/acceptance-repor
 - WebGL viewport matrix: 5/5 PASS;
 - screenshots: manually inspected at all five viewports.
 
-No push or deployment is part of this task. Human review is the next gate.
+## Production deployment
+
+- implementation commit: `599ecf8a1cff3714e966fa61b8554f535585f6ed`;
+- production-discovered orbit-center zoom fix: `447f19df3f41b6e3b4f44fa8637cce4c41d9972d`;
+- GitHub Pages runtime deployment run: `31492991842`, build／deploy／status PASS;
+- deployed `astronomical-camera-scale.js`, `deep-space.js`, `small-body-catalog.js`, `deep-space.css`, and `index.html` SHA-256 values exactly match the final runtime commit;
+- production Cesium WebGL matrix: 5/5 PASS, console errors 0, required network failures 0;
+- production screenshots were manually inspected at all five viewports.
+
+The first production run exposed a genuine fallback case: when no scene primitive was pickable, COMET ORBIT wheel input could anchor the selected catalog point and be forced outward by its minimum-radius guard. The final runtime anchors that fallback to the fitted orbit center, while still allowing an actual picked scene point to take priority. The acceptance now waits for the fit flight's explicit settled state rather than a fixed delay.
+
+Human review is the next gate. No later phase has been started by this upgrade.
