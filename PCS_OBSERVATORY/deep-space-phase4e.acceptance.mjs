@@ -121,12 +121,14 @@ const lastScatteringCard = await card();
 assert(/No CMB temperature or polarization map is loaded/i.test(lastScatteringCard.text), "last-scattering card reserves CMB map for Phase 4F");
 
 await evaluate(`(()=>{for(const name of ["epochs","horizons","guides"]){const input=document.querySelector('[data-ds-observable-layer="'+name+'"]');if(input.checked)input.click();}const catalog=document.querySelector('[data-ds-observable-layer="catalog"]');if(!catalog.checked)catalog.click();return true;})()`);
-await wait(350);
+await evaluate("PCSDeepSpaceManager.searchPhase4('JADES-GS-z14-0')");
+await wait(1000);
 const catalogOnly = { debug: await evaluate("PCSDeepSpaceManager.debug().observableUniverse"), layers: await layerState() };
 assert(catalogOnly.debug.flags.catalog && !catalogOnly.debug.flags.epochs && !catalogOnly.debug.flags.horizons && !catalogOnly.debug.flags.guides && catalogOnly.layers.catalog.visible === 2 && catalogOnly.layers.visible.epoch === 0 && catalogOnly.layers.visible.horizon === 0, "catalog-observation-only layer state");
 await screenshot("06-catalog-observation-only.png");
 await evaluate(`(()=>{const catalog=document.querySelector('[data-ds-observable-layer="catalog"]');if(catalog.checked)catalog.click();for(const name of ["epochs","horizons","guides"]){const input=document.querySelector('[data-ds-observable-layer="'+name+'"]');if(!input.checked)input.click();}return true;})()`);
-await wait(350);
+await evaluate("PCSDeepSpaceManager.searchPhase4('Last scattering')");
+await wait(1000);
 const modelOnly = { debug: await evaluate("PCSDeepSpaceManager.debug().observableUniverse"), layers: await layerState() };
 assert(!modelOnly.debug.flags.catalog && modelOnly.debug.flags.epochs && modelOnly.debug.flags.horizons && modelOnly.debug.flags.guides && modelOnly.layers.catalog.visible === 0 && modelOnly.layers.visible.epoch === 18 && modelOnly.layers.visible.horizon === 6, "model-derived-only layer state");
 await screenshot("07-model-derived-shells-only.png");

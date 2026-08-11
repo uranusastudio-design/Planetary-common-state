@@ -260,4 +260,15 @@ The implementation reuses the existing Cesium Viewer, canvas, `PCSDeepSpaceManag
 
 Local evidence: `test-results/deep-space-phase-4e-local/acceptance-report.json` and eight inspected screenshots.
 
-Production deployment and production WebGL verification are still pending. Phase 4E is therefore a local release candidate and is not yet completed or frozen; Phase 4F has not started.
+### Production verification
+
+- Runtime commit: `4baf7d894190e5082d08c69400c290844bc6c81a`.
+- GitHub Pages run: `31460095702`; build, deploy and status-report jobs passed.
+- Production `observable-universe-layer.js` SHA-256 was `2badc0968df0aa3cde21e67dddd8d1109ac4820509ac175ca5db8eba044393bc`; production `observable-universe.json` SHA-256 was `bdb8583b16534ff225a0a822bce0896f36fc2c4e247d09f6d9fb6d8503ed433d`. Both matched the committed files.
+- Production real-WebGL repeated the observer-scale overview, JADES catalog focus, model epoch and horizon focus, catalog-only, model-derived-only and 390×844 mobile views.
+- Human inspection confirmed that the sparse catalog point, representative radial shells and inherited incomplete survey are visually distinct. The corrected catalog-only evidence explicitly focused JADES-GS-z14-0 rather than leaving the point outside the camera view.
+- Ten Cosmic Web ↔ Observable Universe cycles retained Viewer 1, Cesium canvas 1, primitive/DataSource growth 0, stable listeners and restored camera sensitivity. Required Console errors and required Network failures remained 0.
+
+Production evidence: `test-results/deep-space-phase-4e-production-4baf7d8/acceptance-report.json` and screenshots.
+
+Phase 4E is frozen at this Planck18 calculation snapshot, sparse JADES landmark set, observer-centered radial-scale interpretation, no-all-sky-fill, no-CMB-map, single-Viewer and nested-lifecycle contract. The active roadmap is Phase 4F CMB Full Sky.

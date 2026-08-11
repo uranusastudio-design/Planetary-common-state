@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-08-11T05:02:04.828Z",
-  "url": "http://127.0.0.1:4173/PCS_OBSERVATORY/?v=phase-4e",
+  "generatedAt": "2026-08-11T05:02:43.937Z",
+  "url": "https://uranusastudio-design.github.io/Planetary-common-state/PCS_OBSERVATORY/?v=4baf7d8",
   "initial": {
     "initialized": true,
     "viewerCount": 1,
@@ -8,7 +8,7 @@
     "active": true,
     "scaleContext": "solar",
     "mode": "exhibition",
-    "epoch": "2026-08-11T09:41:50.903Z",
+    "epoch": "2026-08-11T09:02:54.287Z",
     "playbackDaysPerSecond": 1,
     "playbackRange": {
       "start": "1800-01-01T00:00:00.000Z",
@@ -16,7 +16,7 @@
     },
     "paused": false,
     "solarTime": {
-      "displayEpoch": "2026-08-11T09:41:50.903Z",
+      "displayEpoch": "2026-08-11T09:02:54.287Z",
       "displayTimeScale": "UTC",
       "ephemerisTimeScale": "TDB",
       "revision": 2,
@@ -24,7 +24,7 @@
     },
     "solarSolution": {
       "id": "pcs-ss02b-horizons-de441-2025-2028:hermite",
-      "displayEpoch": "2026-08-11T09:41:50.903Z",
+      "displayEpoch": "2026-08-11T09:02:54.287Z",
       "displayTimeScale": "UTC",
       "ephemerisTimeScale": "TDB",
       "source": "NASA/JPL Horizons API",
@@ -307,7 +307,7 @@
     "active": true,
     "scaleContext": "observable-universe",
     "mode": "exhibition",
-    "epoch": "2026-08-15T15:07:25.897Z",
+    "epoch": "2026-08-15T04:25:07.681Z",
     "playbackDaysPerSecond": 1,
     "playbackRange": {
       "start": "1800-01-01T00:00:00.000Z",
@@ -315,15 +315,15 @@
     },
     "paused": false,
     "solarTime": {
-      "displayEpoch": "2026-08-15T15:07:25.897Z",
+      "displayEpoch": "2026-08-15T04:25:07.681Z",
       "displayTimeScale": "UTC",
       "ephemerisTimeScale": "TDB",
-      "revision": 126,
+      "revision": 125,
       "reason": "playback"
     },
     "solarSolution": {
       "id": "pcs-ss02b-horizons-de441-2025-2028:hermite",
-      "displayEpoch": "2026-08-11T15:25:08.657Z",
+      "displayEpoch": "2026-08-11T13:55:22.125Z",
       "displayTimeScale": "UTC",
       "ephemerisTimeScale": "TDB",
       "source": "NASA/JPL Horizons API",
@@ -554,7 +554,7 @@
       "wallStatus": "Unavailable — no separately validated wall geometry is deployed",
       "voids": 1228,
       "lod": "survey",
-      "lodRange": 601140176.4490751,
+      "lodRange": 604569063.1151592,
       "lodBlend": {
         "galaxies": 0,
         "groups": 0.5,
@@ -592,7 +592,7 @@
         "innerSurvey": 0,
         "epochs": 1,
         "horizons": 1,
-        "catalog": 0.7462347133148015
+        "catalog": 0.742413545239489
       },
       "transformVersion": "pcs-observable-universe-planck18-table-v1",
       "allSkyFill": false,
@@ -779,10 +779,10 @@
       "selectedId": "pcs:jades:jades-gs-z14-0",
       "listenerActive": true,
       "lodBlend": {
-        "innerSurvey": 0.026909562180045588,
-        "epochs": 0.90792895224183,
-        "horizons": 0.9258316559725852,
-        "catalog": 0.9835904020929374
+        "innerSurvey": 0.026195111847093555,
+        "epochs": 0.908911705094701,
+        "horizons": 0.9266233179929535,
+        "catalog": 0.9833611070163246
       },
       "transformVersion": "pcs-observable-universe-planck18-table-v1",
       "allSkyFill": false,
@@ -822,7 +822,7 @@
         "innerSurvey": 0,
         "epochs": 1,
         "horizons": 1,
-        "catalog": 0.786317181048741
+        "catalog": 0.7850578940484279
       },
       "transformVersion": "pcs-observable-universe-planck18-table-v1",
       "allSkyFill": false,
@@ -926,7 +926,7 @@
           "active": true,
           "scaleContext": "cosmic-web",
           "mode": "exhibition",
-          "epoch": "2026-08-26T17:09:15.196Z",
+          "epoch": "2026-08-25T20:18:50.210Z",
           "playbackDaysPerSecond": 1,
           "playbackRange": {
             "start": "1800-01-01T00:00:00.000Z",
@@ -934,15 +934,15 @@
           },
           "paused": false,
           "solarTime": {
-            "displayEpoch": "2026-08-26T17:09:15.196Z",
+            "displayEpoch": "2026-08-25T20:18:50.210Z",
             "displayTimeScale": "UTC",
             "ephemerisTimeScale": "TDB",
-            "revision": 481,
+            "revision": 564,
             "reason": "playback"
           },
           "solarSolution": {
             "id": "pcs-ss02b-horizons-de441-2025-2028:hermite",
-            "displayEpoch": "2026-08-11T15:25:08.657Z",
+            "displayEpoch": "2026-08-11T13:55:22.125Z",
             "displayTimeScale": "UTC",
             "ephemerisTimeScale": "TDB",
             "source": "NASA/JPL Horizons API",
@@ -1177,7 +1177,7 @@
             "wallStatus": "Unavailable — no separately validated wall geometry is deployed",
             "voids": 1228,
             "lod": "survey",
-            "lodRange": 455738726.30151904,
+            "lodRange": 445315228.36993533,
             "lodBlend": {
               "galaxies": 0,
               "groups": 0.5,
@@ -1240,7 +1240,7 @@
           "active": true,
           "scaleContext": "observable-universe",
           "mode": "exhibition",
-          "epoch": "2026-08-27T05:39:55.514Z",
+          "epoch": "2026-08-26T10:42:07.008Z",
           "playbackDaysPerSecond": 1,
           "playbackRange": {
             "start": "1800-01-01T00:00:00.000Z",
@@ -1248,15 +1248,15 @@
           },
           "paused": false,
           "solarTime": {
-            "displayEpoch": "2026-08-27T05:39:55.514Z",
+            "displayEpoch": "2026-08-26T10:42:07.008Z",
             "displayTimeScale": "UTC",
             "ephemerisTimeScale": "TDB",
-            "revision": 486,
+            "revision": 569,
             "reason": "playback"
           },
           "solarSolution": {
             "id": "pcs-ss02b-horizons-de441-2025-2028:hermite",
-            "displayEpoch": "2026-08-11T15:25:08.657Z",
+            "displayEpoch": "2026-08-11T13:55:22.125Z",
             "displayTimeScale": "UTC",
             "ephemerisTimeScale": "TDB",
             "source": "NASA/JPL Horizons API",
@@ -1491,7 +1491,7 @@
             "wallStatus": "Unavailable — no separately validated wall geometry is deployed",
             "voids": 1228,
             "lod": "survey",
-            "lodRange": 452282340.88596284,
+            "lodRange": 448605460.20460236,
             "lodBlend": {
               "galaxies": 0,
               "groups": 0.5,
@@ -1529,7 +1529,7 @@
               "innerSurvey": 0,
               "epochs": 1,
               "horizons": 1,
-              "catalog": 0.9228782874153415
+              "catalog": 0.9267010468891993
             },
             "transformVersion": "pcs-observable-universe-planck18-table-v1",
             "allSkyFill": false,
@@ -1556,7 +1556,7 @@
           "active": true,
           "scaleContext": "cosmic-web",
           "mode": "exhibition",
-          "epoch": "2026-08-27T15:43:51.671Z",
+          "epoch": "2026-08-26T22:27:43.007Z",
           "playbackDaysPerSecond": 1,
           "playbackRange": {
             "start": "1800-01-01T00:00:00.000Z",
@@ -1564,15 +1564,15 @@
           },
           "paused": false,
           "solarTime": {
-            "displayEpoch": "2026-08-27T15:43:51.671Z",
+            "displayEpoch": "2026-08-26T22:27:43.007Z",
             "displayTimeScale": "UTC",
             "ephemerisTimeScale": "TDB",
-            "revision": 491,
+            "revision": 574,
             "reason": "playback"
           },
           "solarSolution": {
             "id": "pcs-ss02b-horizons-de441-2025-2028:hermite",
-            "displayEpoch": "2026-08-11T15:25:08.657Z",
+            "displayEpoch": "2026-08-11T13:55:22.125Z",
             "displayTimeScale": "UTC",
             "ephemerisTimeScale": "TDB",
             "source": "NASA/JPL Horizons API",
@@ -1807,7 +1807,7 @@
             "wallStatus": "Unavailable — no separately validated wall geometry is deployed",
             "voids": 1228,
             "lod": "survey",
-            "lodRange": 427848493.2233155,
+            "lodRange": 425896685.0773561,
             "lodBlend": {
               "galaxies": 0,
               "groups": 0.5,
@@ -1870,7 +1870,7 @@
           "active": true,
           "scaleContext": "observable-universe",
           "mode": "exhibition",
-          "epoch": "2026-08-28T07:56:34.869Z",
+          "epoch": "2026-08-27T19:08:33.885Z",
           "playbackDaysPerSecond": 1,
           "playbackRange": {
             "start": "1800-01-01T00:00:00.000Z",
@@ -1878,15 +1878,15 @@
           },
           "paused": false,
           "solarTime": {
-            "displayEpoch": "2026-08-28T07:56:34.869Z",
+            "displayEpoch": "2026-08-27T19:08:33.885Z",
             "displayTimeScale": "UTC",
             "ephemerisTimeScale": "TDB",
-            "revision": 496,
+            "revision": 579,
             "reason": "playback"
           },
           "solarSolution": {
             "id": "pcs-ss02b-horizons-de441-2025-2028:hermite",
-            "displayEpoch": "2026-08-11T15:25:08.657Z",
+            "displayEpoch": "2026-08-11T13:55:22.125Z",
             "displayTimeScale": "UTC",
             "ephemerisTimeScale": "TDB",
             "source": "NASA/JPL Horizons API",
@@ -2121,7 +2121,7 @@
             "wallStatus": "Unavailable — no separately validated wall geometry is deployed",
             "voids": 1228,
             "lod": "survey",
-            "lodRange": 469971754.6597808,
+            "lodRange": 445075779.47414833,
             "lodBlend": {
               "galaxies": 0,
               "groups": 0.5,
@@ -2157,9 +2157,9 @@
             "listenerActive": true,
             "lodBlend": {
               "innerSurvey": 0,
-              "epochs": 1,
-              "horizons": 1,
-              "catalog": 0.9036657253974798
+              "epochs": 0.9997611206377618,
+              "horizons": 0.9998075694026414,
+              "catalog": 0.9303096510257131
             },
             "transformVersion": "pcs-observable-universe-planck18-table-v1",
             "allSkyFill": false,
@@ -2186,7 +2186,7 @@
           "active": true,
           "scaleContext": "cosmic-web",
           "mode": "exhibition",
-          "epoch": "2026-08-28T18:53:04.628Z",
+          "epoch": "2026-08-28T07:37:04.604Z",
           "playbackDaysPerSecond": 1,
           "playbackRange": {
             "start": "1800-01-01T00:00:00.000Z",
@@ -2194,15 +2194,15 @@
           },
           "paused": false,
           "solarTime": {
-            "displayEpoch": "2026-08-28T18:53:04.628Z",
+            "displayEpoch": "2026-08-28T07:37:04.604Z",
             "displayTimeScale": "UTC",
             "ephemerisTimeScale": "TDB",
-            "revision": 501,
+            "revision": 584,
             "reason": "playback"
           },
           "solarSolution": {
             "id": "pcs-ss02b-horizons-de441-2025-2028:hermite",
-            "displayEpoch": "2026-08-11T15:25:08.657Z",
+            "displayEpoch": "2026-08-11T13:55:22.125Z",
             "displayTimeScale": "UTC",
             "ephemerisTimeScale": "TDB",
             "source": "NASA/JPL Horizons API",
@@ -2437,7 +2437,7 @@
             "wallStatus": "Unavailable — no separately validated wall geometry is deployed",
             "voids": 1228,
             "lod": "survey",
-            "lodRange": 443715873.24840546,
+            "lodRange": 430826524.33061993,
             "lodBlend": {
               "galaxies": 0,
               "groups": 0.5,
@@ -2500,7 +2500,7 @@
           "active": true,
           "scaleContext": "observable-universe",
           "mode": "exhibition",
-          "epoch": "2026-08-29T08:54:10.867Z",
+          "epoch": "2026-08-28T21:48:07.002Z",
           "playbackDaysPerSecond": 1,
           "playbackRange": {
             "start": "1800-01-01T00:00:00.000Z",
@@ -2508,15 +2508,15 @@
           },
           "paused": false,
           "solarTime": {
-            "displayEpoch": "2026-08-29T08:54:10.867Z",
+            "displayEpoch": "2026-08-28T21:48:07.002Z",
             "displayTimeScale": "UTC",
             "ephemerisTimeScale": "TDB",
-            "revision": 506,
+            "revision": 589,
             "reason": "playback"
           },
           "solarSolution": {
             "id": "pcs-ss02b-horizons-de441-2025-2028:hermite",
-            "displayEpoch": "2026-08-11T15:25:08.657Z",
+            "displayEpoch": "2026-08-11T13:55:22.125Z",
             "displayTimeScale": "UTC",
             "ephemerisTimeScale": "TDB",
             "source": "NASA/JPL Horizons API",
@@ -2751,7 +2751,7 @@
             "wallStatus": "Unavailable — no separately validated wall geometry is deployed",
             "voids": 1228,
             "lod": "survey",
-            "lodRange": 436210937.2094077,
+            "lodRange": 435815201.09607476,
             "lodBlend": {
               "galaxies": 0,
               "groups": 0.5,
@@ -2787,9 +2787,9 @@
             "listenerActive": true,
             "lodBlend": {
               "innerSurvey": 0,
-              "epochs": 0.9967584921073668,
-              "horizons": 0.997388785308712,
-              "catalog": 0.9390924384490429
+              "epochs": 0.9965464659227933,
+              "horizons": 0.9972179864378057,
+              "catalog": 0.9394747312592947
             },
             "transformVersion": "pcs-observable-universe-planck18-table-v1",
             "allSkyFill": false,
@@ -2816,7 +2816,7 @@
           "active": true,
           "scaleContext": "cosmic-web",
           "mode": "exhibition",
-          "epoch": "2026-08-29T19:28:55.984Z",
+          "epoch": "2026-08-29T09:49:16.121Z",
           "playbackDaysPerSecond": 1,
           "playbackRange": {
             "start": "1800-01-01T00:00:00.000Z",
@@ -2824,15 +2824,15 @@
           },
           "paused": false,
           "solarTime": {
-            "displayEpoch": "2026-08-29T19:28:55.984Z",
+            "displayEpoch": "2026-08-29T09:49:16.121Z",
             "displayTimeScale": "UTC",
             "ephemerisTimeScale": "TDB",
-            "revision": 511,
+            "revision": 594,
             "reason": "playback"
           },
           "solarSolution": {
             "id": "pcs-ss02b-horizons-de441-2025-2028:hermite",
-            "displayEpoch": "2026-08-11T15:25:08.657Z",
+            "displayEpoch": "2026-08-11T13:55:22.125Z",
             "displayTimeScale": "UTC",
             "ephemerisTimeScale": "TDB",
             "source": "NASA/JPL Horizons API",
@@ -3067,7 +3067,7 @@
             "wallStatus": "Unavailable — no separately validated wall geometry is deployed",
             "voids": 1228,
             "lod": "survey",
-            "lodRange": 421309404.72419035,
+            "lodRange": 420393649.5000511,
             "lodBlend": {
               "galaxies": 0,
               "groups": 0.5,
@@ -3130,7 +3130,7 @@
           "active": true,
           "scaleContext": "observable-universe",
           "mode": "exhibition",
-          "epoch": "2026-08-30T08:57:55.503Z",
+          "epoch": "2026-08-29T23:30:55.959Z",
           "playbackDaysPerSecond": 1,
           "playbackRange": {
             "start": "1800-01-01T00:00:00.000Z",
@@ -3138,15 +3138,15 @@
           },
           "paused": false,
           "solarTime": {
-            "displayEpoch": "2026-08-30T08:57:55.503Z",
+            "displayEpoch": "2026-08-29T23:30:55.959Z",
             "displayTimeScale": "UTC",
             "ephemerisTimeScale": "TDB",
-            "revision": 516,
+            "revision": 599,
             "reason": "playback"
           },
           "solarSolution": {
             "id": "pcs-ss02b-horizons-de441-2025-2028:hermite",
-            "displayEpoch": "2026-08-11T15:25:08.657Z",
+            "displayEpoch": "2026-08-11T13:55:22.125Z",
             "displayTimeScale": "UTC",
             "ephemerisTimeScale": "TDB",
             "source": "NASA/JPL Horizons API",
@@ -3381,7 +3381,7 @@
             "wallStatus": "Unavailable — no separately validated wall geometry is deployed",
             "voids": 1228,
             "lod": "survey",
-            "lodRange": 423550162.4939273,
+            "lodRange": 420851444.8148473,
             "lodBlend": {
               "galaxies": 0,
               "groups": 0.5,
@@ -3417,9 +3417,9 @@
             "listenerActive": true,
             "lodBlend": {
               "innerSurvey": 0,
-              "epochs": 0.9868340659082322,
-              "horizons": 0.989394108648298,
-              "catalog": 0.9508778846155321
+              "epochs": 0.9839104705231737,
+              "horizons": 0.9870389901436676,
+              "catalog": 0.9532654524193532
             },
             "transformVersion": "pcs-observable-universe-planck18-table-v1",
             "allSkyFill": false,
@@ -3446,7 +3446,7 @@
           "active": true,
           "scaleContext": "cosmic-web",
           "mode": "exhibition",
-          "epoch": "2026-08-30T21:18:22.380Z",
+          "epoch": "2026-08-30T15:30:32.916Z",
           "playbackDaysPerSecond": 1,
           "playbackRange": {
             "start": "1800-01-01T00:00:00.000Z",
@@ -3454,15 +3454,15 @@
           },
           "paused": false,
           "solarTime": {
-            "displayEpoch": "2026-08-30T21:18:22.380Z",
+            "displayEpoch": "2026-08-30T15:30:32.916Z",
             "displayTimeScale": "UTC",
             "ephemerisTimeScale": "TDB",
-            "revision": 521,
+            "revision": 604,
             "reason": "playback"
           },
           "solarSolution": {
             "id": "pcs-ss02b-horizons-de441-2025-2028:hermite",
-            "displayEpoch": "2026-08-11T15:25:08.657Z",
+            "displayEpoch": "2026-08-11T13:55:22.125Z",
             "displayTimeScale": "UTC",
             "ephemerisTimeScale": "TDB",
             "source": "NASA/JPL Horizons API",
@@ -3697,7 +3697,7 @@
             "wallStatus": "Unavailable — no separately validated wall geometry is deployed",
             "voids": 1228,
             "lod": "survey",
-            "lodRange": 411989573.4925596,
+            "lodRange": 406138151.03153574,
             "lodBlend": {
               "galaxies": 0,
               "groups": 0.5,
@@ -3760,7 +3760,7 @@
           "active": true,
           "scaleContext": "observable-universe",
           "mode": "exhibition",
-          "epoch": "2026-08-31T14:37:37.258Z",
+          "epoch": "2026-08-31T04:08:59.794Z",
           "playbackDaysPerSecond": 1,
           "playbackRange": {
             "start": "1800-01-01T00:00:00.000Z",
@@ -3768,15 +3768,15 @@
           },
           "paused": false,
           "solarTime": {
-            "displayEpoch": "2026-08-31T14:37:37.258Z",
+            "displayEpoch": "2026-08-31T04:08:59.794Z",
             "displayTimeScale": "UTC",
             "ephemerisTimeScale": "TDB",
-            "revision": 526,
+            "revision": 609,
             "reason": "playback"
           },
           "solarSolution": {
             "id": "pcs-ss02b-horizons-de441-2025-2028:hermite",
-            "displayEpoch": "2026-08-11T15:25:08.657Z",
+            "displayEpoch": "2026-08-11T13:55:22.125Z",
             "displayTimeScale": "UTC",
             "ephemerisTimeScale": "TDB",
             "source": "NASA/JPL Horizons API",
@@ -4011,7 +4011,7 @@
             "wallStatus": "Unavailable — no separately validated wall geometry is deployed",
             "voids": 1228,
             "lod": "survey",
-            "lodRange": 484169838.90915436,
+            "lodRange": 403330579.71417713,
             "lodBlend": {
               "galaxies": 0,
               "groups": 0.5,
@@ -4046,10 +4046,10 @@
             "selectedId": "pcs:observable-universe:context",
             "listenerActive": true,
             "lodBlend": {
-              "innerSurvey": 0,
-              "epochs": 1,
-              "horizons": 1,
-              "catalog": 0.8874097406021794
+              "innerSurvey": 0.0008813318890471544,
+              "epochs": 0.9585920683219828,
+              "horizons": 0.9666436105927083,
+              "catalog": 0.9675941991564126
             },
             "transformVersion": "pcs-observable-universe-planck18-table-v1",
             "allSkyFill": false,
@@ -4076,7 +4076,7 @@
           "active": true,
           "scaleContext": "cosmic-web",
           "mode": "exhibition",
-          "epoch": "2026-09-01T01:05:19.016Z",
+          "epoch": "2026-08-31T15:13:59.312Z",
           "playbackDaysPerSecond": 1,
           "playbackRange": {
             "start": "1800-01-01T00:00:00.000Z",
@@ -4084,15 +4084,15 @@
           },
           "paused": false,
           "solarTime": {
-            "displayEpoch": "2026-09-01T01:05:19.016Z",
+            "displayEpoch": "2026-08-31T15:13:59.312Z",
             "displayTimeScale": "UTC",
             "ephemerisTimeScale": "TDB",
-            "revision": 531,
+            "revision": 614,
             "reason": "playback"
           },
           "solarSolution": {
             "id": "pcs-ss02b-horizons-de441-2025-2028:hermite",
-            "displayEpoch": "2026-08-11T15:25:08.657Z",
+            "displayEpoch": "2026-08-11T13:55:22.125Z",
             "displayTimeScale": "UTC",
             "ephemerisTimeScale": "TDB",
             "source": "NASA/JPL Horizons API",
@@ -4327,7 +4327,7 @@
             "wallStatus": "Unavailable — no separately validated wall geometry is deployed",
             "voids": 1228,
             "lod": "survey",
-            "lodRange": 448907480.5740262,
+            "lodRange": 407043671.67899007,
             "lodBlend": {
               "galaxies": 0,
               "groups": 0.5,
@@ -4390,7 +4390,7 @@
           "active": true,
           "scaleContext": "observable-universe",
           "mode": "exhibition",
-          "epoch": "2026-09-01T12:11:19.013Z",
+          "epoch": "2026-09-01T03:13:33.389Z",
           "playbackDaysPerSecond": 1,
           "playbackRange": {
             "start": "1800-01-01T00:00:00.000Z",
@@ -4398,15 +4398,15 @@
           },
           "paused": false,
           "solarTime": {
-            "displayEpoch": "2026-09-01T12:11:19.013Z",
+            "displayEpoch": "2026-09-01T03:13:33.389Z",
             "displayTimeScale": "UTC",
             "ephemerisTimeScale": "TDB",
-            "revision": 536,
+            "revision": 619,
             "reason": "playback"
           },
           "solarSolution": {
             "id": "pcs-ss02b-horizons-de441-2025-2028:hermite",
-            "displayEpoch": "2026-08-11T15:25:08.657Z",
+            "displayEpoch": "2026-08-11T13:55:22.125Z",
             "displayTimeScale": "UTC",
             "ephemerisTimeScale": "TDB",
             "source": "NASA/JPL Horizons API",
@@ -4641,7 +4641,7 @@
             "wallStatus": "Unavailable — no separately validated wall geometry is deployed",
             "voids": 1228,
             "lod": "survey",
-            "lodRange": 444410464.15000033,
+            "lodRange": 404197769.623392,
             "lodBlend": {
               "galaxies": 0,
               "groups": 0.5,
@@ -4676,10 +4676,10 @@
             "selectedId": "pcs:observable-universe:context",
             "listenerActive": true,
             "lodBlend": {
-              "innerSurvey": 0,
-              "epochs": 0.9996541500880599,
-              "horizons": 0.9997213986820483,
-              "catalog": 0.9309829344519506
+              "innerSurvey": 0.000610832526572791,
+              "epochs": 0.9600898907824732,
+              "horizons": 0.9678501897969922,
+              "catalog": 0.9669353585141194
             },
             "transformVersion": "pcs-observable-universe-planck18-table-v1",
             "allSkyFill": false,
@@ -4706,7 +4706,7 @@
           "active": true,
           "scaleContext": "cosmic-web",
           "mode": "exhibition",
-          "epoch": "2026-09-01T22:39:00.771Z",
+          "epoch": "2026-09-01T14:11:12.267Z",
           "playbackDaysPerSecond": 1,
           "playbackRange": {
             "start": "1800-01-01T00:00:00.000Z",
@@ -4714,15 +4714,15 @@
           },
           "paused": false,
           "solarTime": {
-            "displayEpoch": "2026-09-01T22:39:00.771Z",
+            "displayEpoch": "2026-09-01T14:11:12.267Z",
             "displayTimeScale": "UTC",
             "ephemerisTimeScale": "TDB",
-            "revision": 541,
+            "revision": 624,
             "reason": "playback"
           },
           "solarSolution": {
             "id": "pcs-ss02b-horizons-de441-2025-2028:hermite",
-            "displayEpoch": "2026-08-11T15:25:08.657Z",
+            "displayEpoch": "2026-08-11T13:55:22.125Z",
             "displayTimeScale": "UTC",
             "ephemerisTimeScale": "TDB",
             "source": "NASA/JPL Horizons API",
@@ -4957,7 +4957,7 @@
             "wallStatus": "Unavailable — no separately validated wall geometry is deployed",
             "voids": 1228,
             "lod": "survey",
-            "lodRange": 426519146.9317465,
+            "lodRange": 407916312.97223794,
             "lodBlend": {
               "galaxies": 0,
               "groups": 0.5,
@@ -5020,7 +5020,7 @@
           "active": true,
           "scaleContext": "observable-universe",
           "mode": "exhibition",
-          "epoch": "2026-09-02T09:40:50.211Z",
+          "epoch": "2026-09-02T03:06:55.946Z",
           "playbackDaysPerSecond": 1,
           "playbackRange": {
             "start": "1800-01-01T00:00:00.000Z",
@@ -5028,15 +5028,15 @@
           },
           "paused": false,
           "solarTime": {
-            "displayEpoch": "2026-09-02T09:40:50.211Z",
+            "displayEpoch": "2026-09-02T03:06:55.946Z",
             "displayTimeScale": "UTC",
             "ephemerisTimeScale": "TDB",
-            "revision": 546,
+            "revision": 629,
             "reason": "playback"
           },
           "solarSolution": {
             "id": "pcs-ss02b-horizons-de441-2025-2028:hermite",
-            "displayEpoch": "2026-08-11T15:25:08.657Z",
+            "displayEpoch": "2026-08-11T13:55:22.125Z",
             "displayTimeScale": "UTC",
             "ephemerisTimeScale": "TDB",
             "source": "NASA/JPL Horizons API",
@@ -5271,7 +5271,7 @@
             "wallStatus": "Unavailable — no separately validated wall geometry is deployed",
             "voids": 1228,
             "lod": "survey",
-            "lodRange": 423046584.20130485,
+            "lodRange": 403231370.5812306,
             "lodBlend": {
               "galaxies": 0,
               "groups": 0.5,
@@ -5306,10 +5306,10 @@
             "selectedId": "pcs:observable-universe:context",
             "listenerActive": true,
             "lodBlend": {
-              "innerSurvey": 0,
-              "epochs": 0.9863093662277338,
-              "horizons": 0.9889714339056743,
-              "catalog": 0.9513268588276877
+              "innerSurvey": 0.0009153919675062294,
+              "epochs": 0.9584191710339737,
+              "horizons": 0.9665043322218121,
+              "catalog": 0.967669222628853
             },
             "transformVersion": "pcs-observable-universe-planck18-table-v1",
             "allSkyFill": false,
@@ -5336,7 +5336,7 @@
           "active": true,
           "scaleContext": "cosmic-web",
           "mode": "exhibition",
-          "epoch": "2026-09-02T19:39:00.770Z",
+          "epoch": "2026-09-02T12:53:09.384Z",
           "playbackDaysPerSecond": 1,
           "playbackRange": {
             "start": "1800-01-01T00:00:00.000Z",
@@ -5344,15 +5344,15 @@
           },
           "paused": false,
           "solarTime": {
-            "displayEpoch": "2026-09-02T19:39:00.770Z",
+            "displayEpoch": "2026-09-02T12:53:09.384Z",
             "displayTimeScale": "UTC",
             "ephemerisTimeScale": "TDB",
-            "revision": 551,
+            "revision": 634,
             "reason": "playback"
           },
           "solarSolution": {
             "id": "pcs-ss02b-horizons-de441-2025-2028:hermite",
-            "displayEpoch": "2026-08-11T15:25:08.657Z",
+            "displayEpoch": "2026-08-11T13:55:22.125Z",
             "displayTimeScale": "UTC",
             "ephemerisTimeScale": "TDB",
             "source": "NASA/JPL Horizons API",
@@ -5587,7 +5587,7 @@
             "wallStatus": "Unavailable — no separately validated wall geometry is deployed",
             "voids": 1228,
             "lod": "survey",
-            "lodRange": 417650874.4778789,
+            "lodRange": 406526995.1907852,
             "lodBlend": {
               "galaxies": 0,
               "groups": 0.5,
@@ -5650,7 +5650,7 @@
           "active": true,
           "scaleContext": "observable-universe",
           "mode": "exhibition",
-          "epoch": "2026-09-03T12:14:20.448Z",
+          "epoch": "2026-09-03T00:44:22.342Z",
           "playbackDaysPerSecond": 1,
           "playbackRange": {
             "start": "1800-01-01T00:00:00.000Z",
@@ -5658,15 +5658,15 @@
           },
           "paused": false,
           "solarTime": {
-            "displayEpoch": "2026-09-03T12:14:20.448Z",
+            "displayEpoch": "2026-09-03T00:44:22.342Z",
             "displayTimeScale": "UTC",
             "ephemerisTimeScale": "TDB",
-            "revision": 556,
+            "revision": 639,
             "reason": "playback"
           },
           "solarSolution": {
             "id": "pcs-ss02b-horizons-de441-2025-2028:hermite",
-            "displayEpoch": "2026-08-11T15:25:08.657Z",
+            "displayEpoch": "2026-08-11T13:55:22.125Z",
             "displayTimeScale": "UTC",
             "ephemerisTimeScale": "TDB",
             "source": "NASA/JPL Horizons API",
@@ -5901,7 +5901,7 @@
             "wallStatus": "Unavailable — no separately validated wall geometry is deployed",
             "voids": 1228,
             "lod": "survey",
-            "lodRange": 460565394.1760497,
+            "lodRange": 403054580.64078814,
             "lodBlend": {
               "galaxies": 0,
               "groups": 0.5,
@@ -5936,10 +5936,10 @@
             "selectedId": "pcs:observable-universe:context",
             "listenerActive": true,
             "lodBlend": {
-              "innerSurvey": 0,
-              "epochs": 1,
-              "horizons": 1,
-              "catalog": 0.9140427403786657
+              "innerSurvey": 0.0009776674716373002,
+              "epochs": 0.9581102873583113,
+              "horizons": 0.9662555092608618,
+              "catalog": 0.9678027353240344
             },
             "transformVersion": "pcs-observable-universe-planck18-table-v1",
             "allSkyFill": false,
@@ -5966,7 +5966,7 @@
           "active": true,
           "scaleContext": "cosmic-web",
           "mode": "exhibition",
-          "epoch": "2026-09-03T21:38:57.886Z",
+          "epoch": "2026-09-03T16:56:48.260Z",
           "playbackDaysPerSecond": 1,
           "playbackRange": {
             "start": "1800-01-01T00:00:00.000Z",
@@ -5974,15 +5974,15 @@
           },
           "paused": false,
           "solarTime": {
-            "displayEpoch": "2026-09-03T21:38:57.886Z",
+            "displayEpoch": "2026-09-03T16:56:48.260Z",
             "displayTimeScale": "UTC",
             "ephemerisTimeScale": "TDB",
-            "revision": 561,
+            "revision": 644,
             "reason": "playback"
           },
           "solarSolution": {
             "id": "pcs-ss02b-horizons-de441-2025-2028:hermite",
-            "displayEpoch": "2026-08-11T15:25:08.657Z",
+            "displayEpoch": "2026-08-11T13:55:22.125Z",
             "displayTimeScale": "UTC",
             "ephemerisTimeScale": "TDB",
             "source": "NASA/JPL Horizons API",
@@ -6217,7 +6217,7 @@
             "wallStatus": "Unavailable — no separately validated wall geometry is deployed",
             "voids": 1228,
             "lod": "survey",
-            "lodRange": 440535938.6776456,
+            "lodRange": 401782813.29453194,
             "lodBlend": {
               "galaxies": 0,
               "groups": 0.5,
@@ -6280,7 +6280,7 @@
           "active": true,
           "scaleContext": "observable-universe",
           "mode": "exhibition",
-          "epoch": "2026-09-04T09:22:50.204Z",
+          "epoch": "2026-09-04T04:23:49.698Z",
           "playbackDaysPerSecond": 1,
           "playbackRange": {
             "start": "1800-01-01T00:00:00.000Z",
@@ -6288,15 +6288,15 @@
           },
           "paused": false,
           "solarTime": {
-            "displayEpoch": "2026-09-04T09:22:50.204Z",
+            "displayEpoch": "2026-09-04T04:23:49.698Z",
             "displayTimeScale": "UTC",
             "ephemerisTimeScale": "TDB",
-            "revision": 566,
+            "revision": 649,
             "reason": "playback"
           },
           "solarSolution": {
             "id": "pcs-ss02b-horizons-de441-2025-2028:hermite",
-            "displayEpoch": "2026-08-11T15:25:08.657Z",
+            "displayEpoch": "2026-08-11T13:55:22.125Z",
             "displayTimeScale": "UTC",
             "ephemerisTimeScale": "TDB",
             "source": "NASA/JPL Horizons API",
@@ -6531,7 +6531,7 @@
             "wallStatus": "Unavailable — no separately validated wall geometry is deployed",
             "voids": 1228,
             "lod": "survey",
-            "lodRange": 434312330.6234817,
+            "lodRange": 400971458.0133142,
             "lodBlend": {
               "galaxies": 0,
               "groups": 0.5,
@@ -6566,10 +6566,10 @@
             "selectedId": "pcs:observable-universe:context",
             "listenerActive": true,
             "lodBlend": {
-              "innerSurvey": 0,
-              "epochs": 0.9956820447084779,
-              "horizons": 0.9965216471262739,
-              "catalog": 0.9409186505769215
+              "innerSurvey": 0.0018631372567151638,
+              "epochs": 0.9543957950880001,
+              "horizons": 0.9632632793764444,
+              "catalog": 0.9693585888160181
             },
             "transformVersion": "pcs-observable-universe-planck18-table-v1",
             "allSkyFill": false,
@@ -6596,7 +6596,7 @@
           "active": true,
           "scaleContext": "cosmic-web",
           "mode": "exhibition",
-          "epoch": "2026-09-04T19:18:16.602Z",
+          "epoch": "2026-09-04T13:34:46.337Z",
           "playbackDaysPerSecond": 1,
           "playbackRange": {
             "start": "1800-01-01T00:00:00.000Z",
@@ -6604,15 +6604,15 @@
           },
           "paused": false,
           "solarTime": {
-            "displayEpoch": "2026-09-04T19:18:16.602Z",
+            "displayEpoch": "2026-09-04T13:34:46.337Z",
             "displayTimeScale": "UTC",
             "ephemerisTimeScale": "TDB",
-            "revision": 571,
+            "revision": 654,
             "reason": "playback"
           },
           "solarSolution": {
             "id": "pcs-ss02b-horizons-de441-2025-2028:hermite",
-            "displayEpoch": "2026-08-11T15:25:08.657Z",
+            "displayEpoch": "2026-08-11T13:55:22.125Z",
             "displayTimeScale": "UTC",
             "ephemerisTimeScale": "TDB",
             "source": "NASA/JPL Horizons API",
@@ -6847,7 +6847,7 @@
             "wallStatus": "Unavailable — no separately validated wall geometry is deployed",
             "voids": 1228,
             "lod": "survey",
-            "lodRange": 418858942.35028607,
+            "lodRange": 404966212.54444915,
             "lodBlend": {
               "galaxies": 0,
               "groups": 0.5,
@@ -6910,7 +6910,7 @@
           "active": true,
           "scaleContext": "observable-universe",
           "mode": "exhibition",
-          "epoch": "2026-09-05T06:45:18.039Z",
+          "epoch": "2026-09-05T02:13:13.216Z",
           "playbackDaysPerSecond": 1,
           "playbackRange": {
             "start": "1800-01-01T00:00:00.000Z",
@@ -6918,15 +6918,15 @@
           },
           "paused": false,
           "solarTime": {
-            "displayEpoch": "2026-09-05T06:45:18.039Z",
+            "displayEpoch": "2026-09-05T02:13:13.216Z",
             "displayTimeScale": "UTC",
             "ephemerisTimeScale": "TDB",
-            "revision": 576,
+            "revision": 659,
             "reason": "playback"
           },
           "solarSolution": {
             "id": "pcs-ss02b-horizons-de441-2025-2028:hermite",
-            "displayEpoch": "2026-08-11T15:25:08.657Z",
+            "displayEpoch": "2026-08-11T13:55:22.125Z",
             "displayTimeScale": "UTC",
             "ephemerisTimeScale": "TDB",
             "source": "NASA/JPL Horizons API",
@@ -7161,7 +7161,7 @@
             "wallStatus": "Unavailable — no separately validated wall geometry is deployed",
             "voids": 1228,
             "lod": "survey",
-            "lodRange": 417471156.03123224,
+            "lodRange": 408501092.8581829,
             "lodBlend": {
               "galaxies": 0,
               "groups": 0.5,
@@ -7197,9 +7197,9 @@
             "listenerActive": true,
             "lodBlend": {
               "innerSurvey": 0,
-              "epochs": 0.9798667032527059,
-              "horizons": 0.9837815109535686,
-              "catalog": 0.9561907052757305
+              "epochs": 0.9671590832281435,
+              "horizons": 0.9735448170448933,
+              "catalog": 0.9635858259019999
             },
             "transformVersion": "pcs-observable-universe-planck18-table-v1",
             "allSkyFill": false,
@@ -7232,7 +7232,7 @@
     "active": true,
     "scaleContext": "solar",
     "mode": "exhibition",
-    "epoch": "2026-09-06T10:14:06.011Z",
+    "epoch": "2026-09-06T06:01:27.590Z",
     "playbackDaysPerSecond": 1,
     "playbackRange": {
       "start": "1800-01-01T00:00:00.000Z",
@@ -7240,15 +7240,15 @@
     },
     "paused": false,
     "solarTime": {
-      "displayEpoch": "2026-09-06T10:14:06.011Z",
+      "displayEpoch": "2026-09-06T06:01:27.590Z",
       "displayTimeScale": "UTC",
       "ephemerisTimeScale": "TDB",
-      "revision": 637,
+      "revision": 719,
       "reason": "playback"
     },
     "solarSolution": {
       "id": "pcs-ss02b-horizons-de441-2025-2028:hermite",
-      "displayEpoch": "2026-09-06T10:14:06.011Z",
+      "displayEpoch": "2026-09-06T06:01:27.590Z",
       "displayTimeScale": "UTC",
       "ephemerisTimeScale": "TDB",
       "source": "NASA/JPL Horizons API",
@@ -7354,8 +7354,8 @@
       "visibleCount": 256,
       "lod": "far",
       "deterministic": true,
-      "epochUpdatePending": false,
-      "epochUpdateCursor": 0,
+      "epochUpdatePending": true,
+      "epochUpdateCursor": 2048,
       "completedEpochUpdates": 0,
       "selection": {
         "orbitClass": "MBA",
@@ -7372,8 +7372,8 @@
       "visibleCount": 256,
       "lod": "far",
       "deterministic": true,
-      "epochUpdatePending": false,
-      "epochUpdateCursor": 0,
+      "epochUpdatePending": true,
+      "epochUpdateCursor": 2048,
       "completedEpochUpdates": 0,
       "selection": {
         "orbitClass": "TNO",
@@ -7529,288 +7529,7 @@
     }
   },
   "consoleErrors": [],
-  "networkFailures": [
-    {
-      "requestId": "29212.85",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.87",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.88",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.89",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "DAA7B8E09B15F4BFC57DE14290EE3008",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.94",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.95",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.96",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.97",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.98",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.99",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.100",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.101",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.102",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.103",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.132",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.133",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.134",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.135",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.136",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.137",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.140",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.142",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.143",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.144",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.145",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.146",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.148",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.147",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.149",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.150",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.152",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.151",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.153",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.199",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.200",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.201",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.202",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.203",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.204",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.419",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.417",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.418",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.420",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.421",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.422",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.423",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.424",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.425",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.426",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.427",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.428",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.430",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.432",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.431",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.433",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.434",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.435",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.437",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.438",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.439",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.440",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.441",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.442",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.443",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.444",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.445",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.446",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.447",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    },
-    {
-      "requestId": "29212.448",
-      "error": "net::ERR_CONNECTION_REFUSED"
-    }
-  ],
+  "networkFailures": [],
   "requiredErrors": [],
   "requiredFailures": [],
   "screenshots": [
@@ -7821,7 +7540,6 @@
     "05-particle-horizon-model-measurement.png",
     "06-catalog-observation-only.png",
     "07-model-derived-shells-only.png",
-    "08-mobile-390x844-observable-universe.png",
-    "contact-sheet.png"
+    "08-mobile-390x844-observable-universe.png"
   ]
 }
