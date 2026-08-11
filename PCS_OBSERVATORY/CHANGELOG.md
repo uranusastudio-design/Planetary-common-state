@@ -103,11 +103,20 @@ Stable baseline: v2.1.0 — Stable / Frozen
 - Separated catalog observations, source-published derived measurements and representative marker sizing in the UI and documentation.
 - Passed 171 Node tests and real-WebGL acceptance with 77 group points, 42 on-screen overview points, 33 measured-distance M81 members, ten lifecycle cycles, Viewer 1, Cesium canvas 1, primitive/DataSource growth 0, required Console 0 and required catalog Network failures 0.
 
+### Deep Space Phase 4D — Cosmic Web
+
+- Integrated checksum-locked SDSS DR8 galaxy/group and Bisous filament catalogs plus BOSS DR12 ZOBOV voids into the existing Deep Space Viewer, state, search, Unified Object Card and four-language runtime.
+- Deployed 48,041 catalog-observed galaxies, 2,686 derived groups/clusters, 18,054 derived density cells, 2,306 observation-based reconstructed filament spines and 1,228 reconstructed voids. Survey gaps and incompleteness remain visible; unobserved regions are not filled.
+- Kept wall geometry explicitly unavailable because no independently validated wall catalog is deployed, and visually separated Catalog Observation from Derived Measurement and Observation-based Reconstruction.
+- Added continuous hierarchical LOD from individual galaxies through groups/clusters and density/filament/void context to survey scale, without a background Cosmic Web image or second renderer.
+- Passed 191/191 Node regression and local plus production real-WebGL acceptance on desktop and 390×844 mobile, including search/focus, four languages, nine scale samples and ten lifecycle cycles.
+- Production commit `0c3cdd1` and GitHub Pages run `31456961425` passed with Viewer 1, Cesium canvas 1, primitive/DataSource growth 0, stable listener counts, required Console 0 and required Network failures 0.
+
 ### Current Boundary
 
 - Solar System SS-02 is accepted under the latest human-approved production state.
-- Deep Space Phase 4A is implemented, deployed, production-verified, and frozen at commit `7cc2814`; Phase 4B is active.
-- v2.2.0 remains Preview; Foundation physical gesture evidence is still open, and Deep Space Phase 4B is the next active phase.
+- Deep Space Phase 4A–4D are implemented, deployed, production-verified, and frozen through commit `0c3cdd1`; Phase 4E Observable Universe is active.
+- v2.2.0 remains Preview; Foundation physical gesture evidence is still open, and Phase 4E is the next active Deep Space phase.
 
 ## [v2.1.0] — 2026-08-01
 

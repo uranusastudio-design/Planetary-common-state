@@ -1,12 +1,12 @@
 # Deep Space Phase 4
 
-Status at 2026-08-09:
+Status at 2026-08-11:
 
 - Phase 4A — Nearby Galaxy Groups: completed, deployed, and production-verified.
 - Phase 4B — Virgo Cluster: completed, deployed, and production-verified.
 - Phase 4C — Laniakea: completed, deployed, and production-verified.
-- Phase 4D — Cosmic Web: local release candidate validated; production deployment verification pending.
-- Phase 4E — Observable Universe: not yet completed.
+- Phase 4D — Cosmic Web: completed, deployed, production-verified, and frozen.
+- Phase 4E — Observable Universe: active; not yet completed.
 - Phase 4F — CMB Full Sky: not yet completed.
 
 This document is advanced only when a phase has passed source, schema, coordinate, identity, unit, uncertainty, lifecycle and rendered-output validation. Later phases are not pre-marked complete.
@@ -220,4 +220,16 @@ The deterministic deployed display contains 48,041 galaxy catalog points, 2,686 
 
 Local evidence: `test-results/deep-space-phase-4d-local/acceptance-report.json` and eight inspected screenshots.
 
-Production deployment and production WebGL verification remain required before Phase 4D can be marked completed or frozen.
+### Production verification
+
+- Runtime commit: `0c3cdd1a6bb59f8614a7e7cfcc5da1a3d64da801`.
+- GitHub Pages run: `31456961425`; build, deploy and status-report jobs passed.
+- Production `cosmic-web-layer.js` SHA-256 was `bbdcb69420d28cfe55ce68bbcf21d4545a06e81193a5a252d84f2c71af9661fe`; production `deep-space.js` SHA-256 was `2276724e699f93aa63bbe088dfce9637c33160085806887cbc4e1532af3bf2ee`. Both matched the committed files.
+- The production catalog endpoint repeated 576,493 source galaxies, 48,041 deployed galaxy points, 2,686 groups/clusters, 18,054 density cells, 2,306 filaments / 102,417 spine points, 1,228 voids, the survey-coverage limitations and unavailable wall geometry.
+- Production real-WebGL acceptance repeated the survey, individual-galaxy, group/cluster, filament, catalog-only, reconstruction-only and 390×844 mobile views. Human screenshot inspection confirmed the visual-class distinction and preserved unobserved-sky gaps.
+- Nine scale samples retained the continuous LOD transition. Galaxy, group/cluster, filament and void search/focus and Unified Object Cards passed in all four runtime languages.
+- Ten Laniakea ↔ Cosmic Web cycles retained Viewer 1, Cesium canvas 1, primitive/DataSource growth 0, stable listener counts, required Console 0 and required Network failures 0.
+
+Production evidence: `test-results/deep-space-phase-4d-production-0c3cdd1/acceptance-report.json` and screenshots.
+
+Phase 4D is frozen at this deployed SDSS/BOSS source snapshot, classification, coordinate, survey-coverage, unavailable-wall, continuous-LOD, single-Viewer and lifecycle contract. The active roadmap is Phase 4E Observable Universe; Phase 4F has not started.

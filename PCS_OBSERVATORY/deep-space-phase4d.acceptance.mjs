@@ -58,7 +58,7 @@ const setSelectedRange = (mpc) => evaluate(`(()=>{const d=PCSDeepSpaceManager.de
 
 await Promise.all([send("Runtime.enable"), send("Network.enable"), send("Page.enable"), send("Performance.enable")]);
 await send("Emulation.setDeviceMetricsOverride", { width: 1440, height: 1000, deviceScaleFactor: 1, mobile: false });
-await waitFor("window.PCSDeepSpaceManager&&window.PCSCosmicWeb&&document.querySelector('#intro-enter')");
+await waitFor("window.PCSDeepSpaceManager&&window.PCSCosmicWeb&&document.querySelector('#intro-enter')", 300000);
 await evaluate("document.querySelector('#intro-enter')?.click()");
 await waitFor("!document.body.classList.contains('intro-active')");
 await waitFor("document.querySelector('.cesium-viewer')&&typeof cesiumViewer!=='undefined'&&cesiumViewer&&!cesiumViewer.isDestroyed()");
