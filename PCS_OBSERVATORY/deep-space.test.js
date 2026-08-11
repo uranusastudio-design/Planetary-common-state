@@ -139,7 +139,7 @@ test("Phase 2/3 catalogs, Phase 4A galaxy groups, and SS-02C–E small bodies sh
   assert.match(manager, /function enterGalaxyGroups\(/);
   assert.match(manager, /function searchPhase4\(/);
   assert.match(manager, /smallBodyProvider=Object\.freeze\(\{status:"catalog-derived",getObjects:\(\)=>Promise\.resolve\(\[\.\.\.SmallBodies\.dataset\.mainBelt\.records,\.\.\.TNO\.dataset\.records,\.\.\.Comets\.dataset\.records\]\)/);
-  assert.doesNotMatch(manager, /Math\.random|cosmicWebLayer|observableUniverseLayer/);
+  assert.doesNotMatch(manager, /Math\.random|observableUniverseLayer/);
   assert.doesNotMatch(manager, /new Cesium\.Viewer|requestAnimationFrame|new Worker/);
 });
 

@@ -5,7 +5,7 @@ Status at 2026-08-09:
 - Phase 4A — Nearby Galaxy Groups: completed, deployed, and production-verified.
 - Phase 4B — Virgo Cluster: completed, deployed, and production-verified.
 - Phase 4C — Laniakea: completed, deployed, and production-verified.
-- Phase 4D — Cosmic Web: active next phase.
+- Phase 4D — Cosmic Web: local release candidate validated; production deployment verification pending.
 - Phase 4E — Observable Universe: not yet completed.
 - Phase 4F — CMB Full Sky: not yet completed.
 
@@ -181,3 +181,43 @@ Local evidence: `test-results/deep-space-phase-4c-local/acceptance-report.json` 
 Production evidence: `test-results/deep-space-phase-4c-production-6388033/acceptance-report.json` and screenshots.
 
 Phase 4C is frozen at this deployed Cosmicflows-2 snapshot, source-published Supergalactic coordinate contract, measured-distance/uncertainty fields, radial peculiar-velocity interpretation, no-rigid-boundary rule and lifecycle contract. The active roadmap is Phase 4D Cosmic Web.
+
+## Phase 4D — Cosmic Web
+
+### Sources, coverage, and scientific classes
+
+Phase 4D uses checksum-locked public catalog snapshots rather than random points or procedurally generated structure:
+
+- Tempel, Tago & Liivamägi (2012), SDSS DR8 groups and clusters, VizieR `J/A+A/540/A106`, DOI `10.1051/0004-6361/201118687`.
+- Tempel et al. (2014), SDSS DR8 galaxies and Bisous filament spines, VizieR `J/MNRAS/438/3465`, DOI `10.1093/mnras/stt2456`.
+- Mao et al. (2017), BOSS DR12 LOWZ/CMASS ZOBOV voids, VizieR `J/ApJ/835/161`, DOI `10.3847/1538-4357/835/2/161`.
+
+The deployment retains the SDSS and BOSS angular/radial selection, survey masks, flux limits and incompleteness. Unobserved sky is left empty. There is no separately validated wall geometry, so the Walls control is disabled and reports `Unavailable`; no substitute surface is generated.
+
+- Galaxy and redshift catalog points: `Catalog Observation`.
+- Friends-of-friends groups/clusters and 20 Mpc/h density cells: `Derived Measurement`.
+- Bisous filament spines and ZOBOV void centers/effective radii: `Observation-based Reconstruction`.
+- Point size, line width, void ring and compressed exhibition coordinates: `Representative Visualization`.
+
+The reconstructed structures are not described as a direct photograph of a complete cosmic web. SDSS and BOSS retain their separate source-cosmology metadata; co-rendering in one observer-centered ICRS frame is a comparative visualization, not a joint cosmological fit.
+
+### Runtime, interaction, and continuous LOD
+
+The existing Cesium Viewer, canvas, `PCSDeepSpaceManager`, selected-object store, search, Unified Object Card and four-language state are reused. The runtime adds batched point, polyline and billboard collections only; it does not add a Viewer, canvas, state machine, animation loop, worker, per-object DOM renderer or background Cosmic Web image.
+
+The deterministic deployed display contains 48,041 galaxy catalog points, 2,686 rich groups/clusters, 18,054 density cells, 2,306 filament spines with 102,417 source points, and 1,228 void records. Near/Far scalars and smooth filament alpha blending provide continuous transitions from individual galaxies through group/cluster structure to survey-scale density/filament/void context. Search, selection, focus, wheel/pinch zoom, pan and rotate continue to use the existing navigation path.
+
+### Local validation evidence
+
+- Node suite: 191/191 passing, 0 failed, 0 skipped.
+- Real WebGL: all five available visual classes rendered from deployed catalog records; wall geometry remained 0 / `Unavailable`.
+- Nine ordered scale samples showed monotonic galaxy fade-out and density fade-in with multiple intermediate cross-fade states.
+- Separate catalog-observation-only and reconstruction-only screenshots were inspected; the styles remain visually distinct.
+- Galaxy, group/cluster, filament and void search/focus and Unified Object Card provenance assertions passed.
+- Ten Laniakea ↔ Cosmic Web cycles: primitive growth 0, DataSource growth 0, listener counts stable.
+- Viewer 1; Cesium canvas 1; four runtime languages; 390×844 mobile without horizontal overflow; required Console 0; required Network failures 0.
+- Camera-change sensitivity is narrowed only while Phase 4D is loaded and restored on unload, preventing cross-scale LOD bleed-through.
+
+Local evidence: `test-results/deep-space-phase-4d-local/acceptance-report.json` and eight inspected screenshots.
+
+Production deployment and production WebGL verification remain required before Phase 4D can be marked completed or frozen.
