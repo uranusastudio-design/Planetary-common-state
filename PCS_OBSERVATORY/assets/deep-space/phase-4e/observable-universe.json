@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "pcs-deep-space-phase4e-v1",
+  "model": {
+    "id": "pcs-observable-universe-planck18-table-v1",
+    "name": "Astropy Planck18",
+    "H0KmSPerMpc": 67.66,
+    "OmegaM0": 0.30966,
+    "OmegaLambda0": 0.6888463055445441,
+    "Tcmb0K": 2.7255,
+    "ageGyr": 13.786885302009708,
+    "doi": "10.1051/0004-6361/201833910"
+  },
+  "context": {
+    "id": "pcs:observable-universe:context",
+    "canonicalName": "Observable Universe",
+    "aliases": ["Cosmic horizon", "Past-light-cone scale"],
+    "objectType": "Observable Region",
+    "dataStatus": "Model-defined observer horizon with sparse catalog landmarks",
+    "visualizationStatus": "Observer-centered compressed scale model; not an external view and not a map of all matter",
+    "knownLimitations": [
+      "The observable Universe is observer-dependent and is not the same as the whole Universe.",
+      "Only two literature high-redshift landmarks are deployed; unobserved directions remain empty.",
+      "No CMB anisotropy image is loaded in Phase 4E."
+    ]
+  },
+  "epochMarkers": [
+    {"id":"pcs:cosmic-epoch:z-0.7","canonicalName":"BOSS DR12 outer redshift context","aliases":["z 0.7"],"objectType":"Cosmic Epoch","redshift":0.7,"comovingMpc":2579.197110865,"lookbackGyr":6.489470283,"ageGyr":7.297415019,"role":"Inner survey connector","dataStatus":"Model-derived Measurement","visualizationStatus":"Representative radial scale ring; BOSS coverage is not all-sky"},
+    {"id":"pcs:cosmic-epoch:z-1","canonicalName":"Redshift 1 scale","aliases":["z 1"],"objectType":"Cosmic Epoch","redshift":1,"comovingMpc":3395.634471152,"lookbackGyr":7.935542002,"ageGyr":5.8513433,"role":"Distance scale marker","dataStatus":"Model-derived Measurement","visualizationStatus":"Representative radial scale ring"},
+    {"id":"pcs:cosmic-epoch:z-2","canonicalName":"Cosmic-noon reference scale","aliases":["z 2","Cosmic noon"],"objectType":"Cosmic Epoch","redshift":2,"comovingMpc":5308.188883886,"lookbackGyr":10.510054918,"ageGyr":3.276830384,"role":"Approximate literature epoch label","dataStatus":"Model-derived Measurement","visualizationStatus":"Representative radial scale ring; cosmic noon is not an exact boundary"},
+    {"id":"pcs:cosmic-epoch:z-6","canonicalName":"Reionization-era reference scale","aliases":["z 6","Reionization era"],"objectType":"Cosmic Epoch","redshift":6,"comovingMpc":8425.100014933,"lookbackGyr":12.857620352,"ageGyr":0.92926495,"role":"Approximate literature epoch label","dataStatus":"Model-derived Measurement","visualizationStatus":"Representative radial scale ring; reionization is extended, not a sharp shell"},
+    {"id":"pcs:cosmic-epoch:z-10","canonicalName":"Early-galaxy reference scale","aliases":["z 10"],"objectType":"Cosmic Epoch","redshift":10,"comovingMpc":9636.285079458,"lookbackGyr":13.315470519,"ageGyr":0.471414783,"role":"Distance scale marker","dataStatus":"Model-derived Measurement","visualizationStatus":"Representative radial scale ring"},
+    {"id":"pcs:cosmic-epoch:z-14.1793","canonicalName":"JADES z14 radial scale","aliases":["z 14.1793","JADES z14"],"objectType":"Cosmic Epoch","redshift":14.1793,"comovingMpc":10347.197411943,"lookbackGyr":13.496464978,"ageGyr":0.290420324,"role":"Landmark redshift scale","dataStatus":"Model-derived Measurement from a catalog-observed redshift","visualizationStatus":"Representative radial scale ring"}
+  ],
+  "horizons": [
+    {"id":"pcs:cosmic-horizon:last-scattering","canonicalName":"Last-scattering radial scale","aliases":["Last scattering","z 1089.8"],"objectType":"Cosmological Horizon","redshift":1089.8,"comovingMpc":13884.382223236,"lookbackGyr":13.786512986,"ageGyr":0.000372315,"dataStatus":"Model-derived Measurement","visualizationStatus":"Representative shell marker only; no CMB temperature or polarization map"},
+    {"id":"pcs:cosmic-horizon:particle","canonicalName":"Particle horizon","aliases":["Observable-universe horizon","Cosmic particle horizon"],"objectType":"Cosmological Horizon","redshift":null,"comovingMpc":14165.16703226946,"lookbackGyr":13.786885302009708,"ageGyr":0,"dataStatus":"Model-derived Measurement","visualizationStatus":"Representative observer horizon; not an edge of the whole Universe"}
+  ],
+  "catalogLandmarks": [
+    {"id":"pcs:jades:jades-gs-z14-0","canonicalName":"JADES-GS-z14-0","aliases":["JADES-GS-53.08294-27.85563"],"objectType":"Galaxy","catalogIds":["JADES-GS-53.08294-27.85563"],"raDeg":53.08294,"decDeg":-27.85563,"redshift":14.1793,"redshiftUncertainty":0.0007,"redshiftMethod":"ALMA [O III] 88 μm line, 6.6σ","comovingMpc":10347.197411943,"lookbackGyr":13.496464978,"ageGyr":0.290420324,"positionIcrsComovingMpc":[5494.968859,7314.074696,-4834.67919],"observationStatus":"Catalog Observation — sky direction and spectroscopic redshift","dataStatus":"Catalog Observation plus explicitly model-derived distance and age","visualizationStatus":"Single catalog point; marker size is representative","sourceDoi":"10.3847/1538-4357/adbf1b","discoveryDoi":"10.1038/s41586-024-07860-9"},
+    {"id":"pcs:jades:jades-gs-z14-1","canonicalName":"JADES-GS-z14-1","aliases":["JADES-GS-53.07427-27.88592"],"objectType":"Galaxy","catalogIds":["JADES-GS-53.07427-27.88592"],"raDeg":53.07427,"decDeg":-27.88592,"redshift":13.9,"redshiftUncertainty":0.17,"redshiftMethod":"JWST/NIRSpec Lyman-break spectral fit","comovingMpc":10309.238559767,"lookbackGyr":13.488232464,"ageGyr":0.298652838,"positionIcrsComovingMpc":[5474.38246,7284.377619,-4821.760992],"observationStatus":"Catalog Observation — sky direction and spectroscopic redshift","dataStatus":"Catalog Observation plus explicitly model-derived distance and age","visualizationStatus":"Single catalog point; marker size is representative","sourceDoi":"10.1038/s41586-024-07860-9","discoveryDoi":"10.1038/s41586-024-07860-9"}
+  ],
+  "coverage": {
+    "innerSurvey":"Phase 4D SDSS/BOSS footprint remains sparse and incomplete; it is not expanded to all sky.",
+    "highRedshift":"Two JADES literature landmarks only; no completeness or all-sky claim.",
+    "horizon":"Model-derived radial limits; no assertion about the size or topology of the whole Universe.",
+    "cmb":"No CMB anisotropy map in Phase 4E."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "pcs-phase4e-planck18-reference-v1",
+  "generatedWith": "Astropy 6.0.1 Planck18",
+  "cosmology": {
+    "name": "Planck18",
+    "H0KmSPerMpc": 67.66,
+    "OmegaM0": 0.30966,
+    "OmegaLambda0": 0.6888463055445441,
+    "Tcmb0K": 2.7255,
+    "ageGyr": 13.786885302009708
+  },
+  "distanceTable": [
+    {"redshift": 0.2, "comovingMpc": 843.57789943, "lookbackGyr": 2.512071593, "ageGyr": 11.274813709, "luminosityMpc": 1012.293479315, "angularDiameterMpc": 702.981582858},
+    {"redshift": 0.7, "comovingMpc": 2579.197110865, "lookbackGyr": 6.489470283, "ageGyr": 7.297415019, "luminosityMpc": 4384.635088471, "angularDiameterMpc": 1517.174771097},
+    {"redshift": 1, "comovingMpc": 3395.634471152, "lookbackGyr": 7.935542002, "ageGyr": 5.8513433, "luminosityMpc": 6791.268942303, "angularDiameterMpc": 1697.817235576},
+    {"redshift": 2, "comovingMpc": 5308.188883886, "lookbackGyr": 10.510054918, "ageGyr": 3.276830384, "luminosityMpc": 15924.566651659, "angularDiameterMpc": 1769.396294629},
+    {"redshift": 6, "comovingMpc": 8425.100014933, "lookbackGyr": 12.857620352, "ageGyr": 0.92926495, "luminosityMpc": 58975.700104534, "angularDiameterMpc": 1203.585716419},
+    {"redshift": 10, "comovingMpc": 9636.285079458, "lookbackGyr": 13.315470519, "ageGyr": 0.471414783, "luminosityMpc": 105999.135874033, "angularDiameterMpc": 876.025916314},
+    {"redshift": 13.9, "comovingMpc": 10309.238559767, "lookbackGyr": 13.488232464, "ageGyr": 0.298652838, "luminosityMpc": 153607.654540521, "angularDiameterMpc": 691.895205353},
+    {"redshift": 14.1793, "comovingMpc": 10347.197411943, "lookbackGyr": 13.496464978, "ageGyr": 0.290420324, "luminosityMpc": 157063.213675108, "angularDiameterMpc": 681.664991926},
+    {"redshift": 1089.8, "comovingMpc": 13884.382223236, "lookbackGyr": 13.786512986, "ageGyr": 0.000372315, "luminosityMpc": 15145084.129106054, "angularDiameterMpc": 12.728623234}
+  ],
+  "particleHorizonComovingMpc": 14165.16703226946,
+  "source": {
+    "planckDoi": "10.1051/0004-6361/201833910",
+    "astropyDocs": "https://docs.astropy.org/en/stable/cosmology/realizations.html",
+    "calculationCommand": "Astropy 6.0.1 Planck18.comoving_distance/lookback_time/age; comoving_distance(inf)"
+  },
+  "limitations": [
+    "Distances and ages are model-dependent derived quantities, not direct distance measurements.",
+    "The particle horizon is a model boundary of what can have influenced the observer, not an edge of the whole Universe.",
+    "The last-scattering entry is a radial scale marker only; no CMB temperature or polarization map is included in Phase 4E."
+  ]
+}

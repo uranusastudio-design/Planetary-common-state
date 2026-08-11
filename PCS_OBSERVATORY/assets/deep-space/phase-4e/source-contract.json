@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "pcs-deep-space-phase4e-source-contract-v1",
+  "generatedAt": "2026-08-11",
+  "rawChecksums": {
+    "planck18-astropy-reference.json": "1a917b1de969ebe73603d811e8ac4a709bd33922094eefdfde9b2e23a0559e97",
+    "jades-z14-landmarks.json": "c7ba8de4e447888b0160f5dea19e9d34b68abc38409f7d59679a68d1f7e9d766"
+  },
+  "coordinateContract": {
+    "sourceFrame": "Observer-centered ICRS/J2000 direction",
+    "sourceEpoch": "J2000 angular coordinates; cosmological radial coordinate has no positional epoch",
+    "distanceConvention": "Planck18 model-derived present-day line-of-sight comoving Mpc",
+    "redshiftConvention": "Published spectroscopic redshift for landmarks; named fixed redshift for model scale markers",
+    "cosmologyAssumption": "Astropy Planck18 realization, flat Lambda-CDM with massive-neutrino treatment",
+    "transformVersion": "pcs-observable-universe-planck18-table-v1"
+  },
+  "scientificClasses": {
+    "catalogLandmarkDirectionAndRedshift": "Catalog Observation",
+    "distanceAgeAndHorizon": "Model-derived Measurement",
+    "shellRingAndMarkerSize": "Representative Visualization"
+  },
+  "scope": {
+    "catalogLandmarks": 2,
+    "epochScaleMarkers": 6,
+    "horizonMarkers": 2,
+    "allSkyGalaxyCatalog": "Unavailable",
+    "cmbAnisotropyMap": "Unavailable in Phase 4E; reserved for Phase 4F"
+  },
+  "frozenRules": [
+    "Do not generate, replicate, randomize, or infer galaxies in unobserved directions.",
+    "Do not describe the particle horizon as an edge of the entire Universe.",
+    "Do not describe model-derived comoving distance or cosmic age as direct observation.",
+    "Do not display a CMB texture or anisotropy map in Phase 4E.",
+    "Keep the inner Phase 4D SDSS/BOSS footprint sparse and visibly incomplete."
+  ]
+}

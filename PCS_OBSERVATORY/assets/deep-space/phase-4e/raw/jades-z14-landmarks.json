@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "pcs-phase4e-jades-landmarks-v1",
+  "records": [
+    {
+      "id": "jades-gs-z14-0",
+      "canonicalName": "JADES-GS-z14-0",
+      "catalogName": "JADES-GS-53.08294-27.85563",
+      "raDeg": 53.08294,
+      "decDeg": -27.85563,
+      "spectroscopicRedshift": 14.1793,
+      "redshiftUncertainty": 0.0007,
+      "redshiftMethod": "ALMA [O III] 88 μm line, 6.6σ",
+      "doi": "10.3847/1538-4357/adbf1b",
+      "discoveryDoi": "10.1038/s41586-024-07860-9"
+    },
+    {
+      "id": "jades-gs-z14-1",
+      "canonicalName": "JADES-GS-z14-1",
+      "catalogName": "JADES-GS-53.07427-27.88592",
+      "raDeg": 53.07427,
+      "decDeg": -27.88592,
+      "spectroscopicRedshift": 13.9,
+      "redshiftUncertainty": 0.17,
+      "redshiftMethod": "JWST/NIRSpec Lyman-break spectral fit",
+      "doi": "10.1038/s41586-024-07860-9",
+      "discoveryDoi": "10.1038/s41586-024-07860-9"
+    }
+  ],
+  "coverage": "Two literature landmarks in the 9 arcmin² NIRSpec field within the 58 arcmin² GOODS-S/JADES imaging context; not an all-sky or complete high-redshift galaxy sample.",
+  "limitations": [
+    "Angular positions and spectroscopic redshifts are catalog observations; all displayed cosmological distances and ages are model-derived.",
+    "These two landmarks must not be replicated, randomized, or used to fill unobserved directions.",
+    "The catalog does not represent every known high-redshift galaxy and makes no current-record-holder claim."
+  ]
+}

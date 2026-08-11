@@ -1,6 +1,6 @@
 {
   "schemaVersion": "pcs-astronomical-source-registry-v1",
-  "updatedAt": "2026-08-09",
+  "updatedAt": "2026-08-11",
   "sources": [
     {
       "sourceId": "vizier-j-apj-843-16",
@@ -155,6 +155,50 @@
       "checksum": "ReadMe sha256:298a0fb70094d0e99aab06718d88ae66778a1c08ec887aac817a3833d5847896; table1.dat sha256:d579cfc1dc0bcb8886dab0645221c3788e8b784ba7bea1d2be5f096545971883",
       "updatePolicy": "Staging ingest only; checksum, schema, cosmology, survey-boundary, significance and reconstruction-class review required before production",
       "qualityStatus": "validated for PCS Deep Space Phase 4D void reconstruction layer"
+    },
+    {
+      "sourceId": "planck-2018-cosmological-parameters",
+      "agency": "ESA Planck Collaboration / Astropy",
+      "mission": "Planck",
+      "survey": "Planck 2018 base-Lambda-CDM cosmological parameters",
+      "catalog": "Astropy Planck18 realization",
+      "release": "Planck 2018 results VI, published 2020; Astropy 6.0.1 calculation snapshot",
+      "releaseDate": "2020-09-01",
+      "referenceEpoch": "Cosmological model; not a positional epoch",
+      "coordinateFrame": "Observer-centered cosmological radial distance",
+      "skyCoverage": "All directions only as a homogeneous model assumption; no all-sky object catalog is implied",
+      "redshiftRange": "0 through z=1089.8 plus the z→infinity particle-horizon integral",
+      "distanceType": "Model-derived line-of-sight comoving, luminosity and angular-diameter distances; lookback time and cosmic age",
+      "objectCount": null,
+      "DOI": "10.1051/0004-6361/201833910",
+      "citation": "Planck Collaboration 2020, A&A, 641, A6; Astropy Planck18 realization",
+      "license": "Publication parameters and independently calculated numeric table with attribution; no Planck map redistributed in Phase 4E.",
+      "retrievedAt": "2026-08-11",
+      "checksum": "planck18-astropy-reference.json sha256:1a917b1de969ebe73603d811e8ac4a709bd33922094eefdfde9b2e23a0559e97",
+      "updatePolicy": "Model changes require a new transform version and full distance, age, horizon and visual-regression review",
+      "qualityStatus": "validated for PCS Deep Space Phase 4E model-derived scale markers"
+    },
+    {
+      "sourceId": "jades-z14-landmarks",
+      "agency": "JWST JADES collaboration / ALMA follow-up",
+      "mission": "JWST NIRSpec and ALMA",
+      "survey": "JADES Origins Field high-redshift landmark observations",
+      "catalog": "Two literature records: JADES-GS-z14-0 and JADES-GS-z14-1",
+      "release": "Nature 633, 318–322 and ApJ 981, L37",
+      "releaseDate": "2025-03-01",
+      "referenceEpoch": "ICRS/J2000 sky direction",
+      "coordinateFrame": "ICRS/J2000 direction; Planck18 model-derived radial distance",
+      "skyCoverage": "Two targets in one 9 arcmin² NIRSpec field within the 58 arcmin² GOODS-S/JADES imaging context",
+      "redshiftRange": "13.90–14.1793",
+      "distanceType": "Observed spectroscopic redshift; model-derived comoving distance, lookback time and cosmic age",
+      "objectCount": 2,
+      "DOI": "10.1038/s41586-024-07860-9; 10.3847/1538-4357/adbf1b",
+      "citation": "Carniani et al. 2024, Nature, 633, 318–322; Schouws et al. 2025, ApJ, 981, L37",
+      "license": "Numeric literature metadata with citation; no JWST or ALMA image redistributed.",
+      "retrievedAt": "2026-08-11",
+      "checksum": "jades-z14-landmarks.json sha256:c7ba8de4e447888b0160f5dea19e9d34b68abc38409f7d59679a68d1f7e9d766",
+      "updatePolicy": "New high-redshift records enter staging and do not silently replace deployed landmarks or create completeness claims",
+      "qualityStatus": "validated for PCS Deep Space Phase 4E sparse catalog landmarks"
     }
   ]
 }

@@ -112,10 +112,18 @@ Stable baseline: v2.1.0 — Stable / Frozen
 - Passed 191/191 Node regression and local plus production real-WebGL acceptance on desktop and 390×844 mobile, including search/focus, four languages, nine scale samples and ten lifecycle cycles.
 - Production commit `0c3cdd1` and GitHub Pages run `31456961425` passed with Viewer 1, Cesium canvas 1, primitive/DataSource growth 0, stable listener counts, required Console 0 and required Network failures 0.
 
+### Deep Space Phase 4E — Observable Universe (local release candidate)
+
+- Added a checksum-locked Planck18 radial-scale table and exactly two sparse published JADES landmarks; sky direction and spectroscopic redshift remain catalog observations while distance, age and horizon quantities are explicitly model-derived.
+- Added observer-centered epoch/horizon rings, radial guides and sparse catalog-point layers through the existing Viewer, state, search, focus, Unified Object Card, navigation and four-language runtime.
+- Preserved the frozen inner SDSS/BOSS survey footprint and incompleteness. No random/procedural all-sky matter, unobserved-direction fill, background Universe image or CMB map is deployed.
+- Passed 200/200 Node regression and local real-WebGL acceptance on desktop and 390×844 mobile, including separate catalog/model layer views, search/focus, four languages and ten nested lifecycle cycles.
+- Local acceptance retained Viewer 1, Cesium canvas 1, primitive/DataSource growth 0, restored camera sensitivity, required Console 0 and required Network failures 0. Production deployment and verification remain pending, so Phase 4E is not yet frozen.
+
 ### Current Boundary
 
 - Solar System SS-02 is accepted under the latest human-approved production state.
-- Deep Space Phase 4A–4D are implemented, deployed, production-verified, and frozen through commit `0c3cdd1`; Phase 4E Observable Universe is active.
+- Deep Space Phase 4A–4D are implemented, deployed, production-verified, and frozen through commit `0c3cdd1`; Phase 4E Observable Universe is a locally accepted release candidate pending production verification.
 - v2.2.0 remains Preview; Foundation physical gesture evidence is still open, and Phase 4E is the next active Deep Space phase.
 
 ## [v2.1.0] — 2026-08-01

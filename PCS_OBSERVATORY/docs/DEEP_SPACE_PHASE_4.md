@@ -233,3 +233,31 @@ Local evidence: `test-results/deep-space-phase-4d-local/acceptance-report.json` 
 Production evidence: `test-results/deep-space-phase-4d-production-0c3cdd1/acceptance-report.json` and screenshots.
 
 Phase 4D is frozen at this deployed SDSS/BOSS source snapshot, classification, coordinate, survey-coverage, unavailable-wall, continuous-LOD, single-Viewer and lifecycle contract. The active roadmap is Phase 4E Observable Universe; Phase 4F has not started.
+
+## Phase 4E — Observable Universe
+
+### Source and scientific boundary
+
+Phase 4E uses a checksum-locked Astropy Planck18 calculation snapshot for radial cosmological scales and two sparse published JADES landmarks. The Planck18 parameter reference is Planck Collaboration (2020), DOI `10.1051/0004-6361/201833910`. JADES-GS-z14-0 and JADES-GS-z14-1 use Carniani et al. (2024), DOI `10.1038/s41586-024-07860-9`; the precise `z = 14.1793 ± 0.0007` value for JADES-GS-z14-0 uses the ALMA result of Schouws et al. (2025), DOI `10.3847/1538-4357/adbf1b`.
+
+The two sky directions and published spectroscopic redshifts are `Catalog Observation`. Comoving distances, lookback times, cosmic ages, the six named redshift scales, last-scattering radial scale and particle horizon are `Model-derived Measurement` under the versioned Planck18 table. Ring geometry, line width and compressed display coordinates are `Representative Visualization`.
+
+The observable Universe is observer-dependent and is not the whole Universe. The particle horizon is not shown as an edge of all space. Phase 4E does not deploy an all-sky galaxy distribution, fill unobserved directions, or load a CMB temperature/polarization map. The inner SDSS/BOSS footprint from frozen Phase 4D remains sparse and retains its original survey coverage and incompleteness.
+
+### Runtime and local validation
+
+The implementation reuses the existing Cesium Viewer, canvas, `PCSDeepSpaceManager`, selected-object state, search, focus, Unified Object Card, four-language state and navigation path. One batched point collection contains the two JADES landmarks. Three orthogonal representative rings per scale use one polyline collection; labels and radial guides use batched collections. No second Viewer, canvas, state machine, animation loop, background image, random point generator or procedural matter field was added.
+
+- Static build gates and the checksum-locked Phase 4E ingestion check passed.
+- Node regression: 200/200 passing, 0 failed, 0 skipped.
+- Real WebGL: 6 epoch markers, 2 model horizons, 24 shell polylines, and exactly 2 catalog landmarks.
+- Catalog-only and model-derived-only views were separately captured and inspected; the JADES card distinguishes observed direction/redshift from Planck18-derived distance and age.
+- Search/focus passed for JADES-GS-z14-0, cosmic-noon `z = 2`, last scattering and the particle horizon. The cards reject an all-sky-complete sample, a directly observed spherical epoch, an edge of the whole Universe and a Phase 4E CMB map.
+- Ten Cosmic Web ↔ Observable Universe cycles retained one Viewer, one Cesium canvas, stable listener counts, primitive growth 0 and DataSource growth 0.
+- Nested Phase 4D/4E camera-change sensitivity restored to the Solar baseline, with no cross-scale lifecycle bleed-through.
+- Four runtime languages and 390×844 mobile passed without horizontal overflow; required Console errors 0 and required Network failures 0.
+- Eight desktop/mobile screenshots were manually inspected. Shell scale, sparse catalog landmarks and the inherited incomplete inner survey remained visually distinguishable.
+
+Local evidence: `test-results/deep-space-phase-4e-local/acceptance-report.json` and eight inspected screenshots.
+
+Production deployment and production WebGL verification are still pending. Phase 4E is therefore a local release candidate and is not yet completed or frozen; Phase 4F has not started.
