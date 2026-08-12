@@ -9,7 +9,7 @@ const css = await readFile(new URL("style.css", root), "utf8");
 const app = await readFile(new URL("app.js", root), "utf8");
 const center = await readFile(new URL("release-center.js", root), "utf8");
 const registry = JSON.parse(await readFile(new URL("data/releases.json", root), "utf8"));
-const validRoadmapStatuses = new Set(["completed", "in-progress", "planned", "blocked", "deferred"]);
+const validRoadmapStatuses = new Set(["completed", "in-progress", "waiting", "planned", "blocked", "deferred"]);
 
 test("release center stays in the existing normal-flow update location", () => {
   assert.ok(html.indexOf("</header>") < html.indexOf('id="pcs-update-banner"'));
@@ -27,14 +27,14 @@ test("registry schema, version, date, statuses and ordering are valid", () => {
   assert.equal(registry.plannedVersion, "v2.2.0");
   assert.equal(registry.currentVersion, "v2.2.0");
   assert.equal(registry.currentStatus, "preview");
-  assert.equal(registry.currentPhase, "v2.2.0-foundation");
+  assert.equal(registry.currentPhase, "interstellar-objects");
   for (const release of registry.releases) {
     assert.match(release.version, /^v\d+\.\d+\.\d+$/);
     assert.equal(new Date(`${release.date}T00:00:00Z`).toISOString().slice(0, 10), release.date);
     assert.ok(["stable", "preview", "archived"].includes(release.status));
   }
-  assert.deepEqual(registry.roadmap.slice(0, 5).map(item => item.id), ["deep-space-phase-1", "deep-space-phase-2", "deep-space-phase-3", "v2.2.0-foundation", "deep-space-phase-4"]);
-  assert.deepEqual(registry.roadmap.filter(item => item.status === "in-progress").map(item=>item.id), ["v2.2.0-foundation", "deep-space-phase-4"]);
+  assert.deepEqual(registry.roadmap.slice(0, 8).map(item => item.id), ["deep-space-phase-1", "deep-space-phase-2", "full-orbit-view", "interstellar-objects", "deep-space-phase-3", "laniakea", "observable-universe", "cmb-360"]);
+  assert.deepEqual(registry.roadmap.filter(item => item.status === "in-progress").map(item=>item.id), ["deep-space-phase-3"]);
   assert.ok(registry.roadmap.every(item => validRoadmapStatuses.has(item.status)));
 });
 
@@ -52,14 +52,23 @@ test("commits, compare URLs and documentation are verifiable and deployable", as
   assert.match(center, /rel=\"noopener noreferrer\"/);
 });
 
-test("honest milestone boundaries and known issues are preserved", () => {
+test("frozen milestones and the scientific-scale sequence are explicit", () => {
+  const fullOrbit = registry.roadmap.find(item => item.id === "full-orbit-view");
+  const interstellar = registry.roadmap.find(item => item.id === "interstellar-objects");
   const phase3 = registry.roadmap.find(item => item.id === "deep-space-phase-3");
   const foundation = registry.roadmap.find(item => item.id === "v2.2.0-foundation");
-  const phase4 = registry.roadmap.find(item => item.id === "deep-space-phase-4");
+  const laniakea = registry.roadmap.find(item => item.id === "laniakea");
+  const observable = registry.roadmap.find(item => item.id === "observable-universe");
+  const cmb = registry.roadmap.find(item => item.id === "cmb-360");
   const titania = registry.roadmap.find(item => item.id === "titania-texture");
-  assert.equal(phase3.status, "completed");
-  assert.equal(foundation.status, "in-progress");
-  assert.equal(phase4.status, "in-progress");
+  assert.equal(fullOrbit.statusLabel.en, "Production / Frozen");
+  assert.equal(interstellar.statusLabel.en, "Production / Verified / Frozen");
+  assert.deepEqual(interstellar.items, ["1I/ʻOumuamua", "2I/Borisov", "3I/ATLAS"]);
+  assert.equal(phase3.statusLabel.en, "NEXT — Scientific Scale Anchor");
+  assert.equal(foundation.status, "completed");
+  assert.equal(laniakea.statusLabel.en, "Waiting");
+  assert.equal(observable.statusLabel.en, "Waiting");
+  assert.equal(cmb.statusLabel.en, "Final observational scale");
   assert.equal(titania.status, "deferred");
   assert.ok(registry.releases[0].knownIssues.some(issue => issue.includes("Titania")));
   assert.doesNotMatch(JSON.stringify(registry), /48%|Gaia DR4/i);
@@ -82,14 +91,14 @@ test("tabs, session-only persistence, keyboard and focus behavior are accessible
 
 test("four languages contain every release-center interface term", () => {
   for (const language of ["en", "zh-TW", "ja", "ko"]) assert.ok(center.includes(language === "zh-TW" ? '"zh-TW":' : `${language}:`));
-  for (const key of ["pcsUpdates","latestUpdate","version","date","status","stable","inProgress","planned","deferred","added","changed","fixed","knownIssues","roadmap","releaseNotes","documentation","viewCommit","viewDiff","viewDeployment","expand","collapse","currentDevelopment","next","milestone","assets","knownLimitations","baseline","stableFrozen","scientificCoverage","earth","solarSystem","nearbyStars","milkyWay","localGroup","openObservatory","plannedVersion","restoreBanner"]) assert.match(center, new RegExp(`${key}:`));
+  for (const key of ["pcsUpdates","latestUpdate","version","date","status","stable","inProgress","planned","waiting","deferred","added","changed","fixed","knownIssues","roadmap","releaseNotes","documentation","viewCommit","viewDiff","viewDeployment","expand","collapse","currentDevelopment","next","milestone","assets","knownLimitations","baseline","stableFrozen","scientificCoverage","earth","solarSystem","nearbyStars","milkyWay","localGroup","openObservatory","plannedVersion","restoreBanner"]) assert.match(center, new RegExp(`${key}:`));
 });
 
 test("release banner derives version, status, coverage, and next state from the release registry", () => {
   assert.match(center, /registry\.currentStatus === "stable"/);
   assert.match(center, /status === "in-progress" \|\| status === "preview"/);
   assert.match(center, /registry\.plannedVersion/);
-  assert.match(center, /item\.id === "deep-space-phase-4"/);
+  assert.match(center, /item\.status === "in-progress"/);
   assert.match(center, /coverageLabels/);
   assert.doesNotMatch(center, /v2\.1\.0|v2\.2\.0/);
   assert.doesNotMatch(center, /Phase 4A[^\n]*(?:In Development|in-progress)/i);

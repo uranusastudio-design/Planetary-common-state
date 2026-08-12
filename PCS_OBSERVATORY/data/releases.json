@@ -5,8 +5,8 @@
   "currentVersion": "v2.2.0",
   "currentStatus": "preview",
   "plannedVersion": "v2.2.0",
-  "currentPhase": "v2.2.0-foundation",
-  "updatedAt": "2026-08-12T10:40:00+08:00",
+  "currentPhase": "interstellar-objects",
+  "updatedAt": "2026-08-12T10:53:00+08:00",
   "releases": [
     {
       "version": "v2.2.0",
@@ -58,9 +58,13 @@
   "roadmap": [
     {"id":"deep-space-phase-1","title":"Deep Space Phase 1 — Solar System","status":"completed","detail":"Solar System foundation"},
     {"id":"deep-space-phase-2","title":"Deep Space Phase 2 — Nearby Stars / Gaia","status":"completed","detail":"10 / 25 / 50 / 100 pc"},
-    {"id":"deep-space-phase-3","title":"Deep Space Phase 3 — Milky Way / Local Group","status":"completed","detail":"Milky Way + Local Group"},
-    {"id":"v2.2.0-foundation","title":"v2.2.0 Foundation","status":"in-progress","detail":"Orbit Precision → Pointer-Anchored Navigation → Unified Object Cards"},
-    {"id":"deep-space-phase-4","title":"Deep Space Phase 4 — Cosmic Web / Observable Universe","status":"in-progress","detail":"Phase 4A–4E completed, deployed, production-verified, and frozen; Phase 4F CMB Full Sky active"},
+    {"id":"full-orbit-view","title":"Full Orbit View","status":"completed","symbol":"✅","statusLabel":{"en":"Production / Frozen","zh-TW":"Production／已凍結","ja":"Production／凍結済み","ko":"Production / 동결"},"detail":"Production-verified complete-orbit framing is frozen"},
+    {"id":"interstellar-objects","title":"Interstellar Objects","status":"completed","symbol":"✅","statusLabel":{"en":"Production / Verified / Frozen","zh-TW":"Production／已驗證／已凍結","ja":"Production／検証済み／凍結済み","ko":"Production / 검증 / 동결"},"detail":"Formal open-hyperbolic trajectory layer","items":["1I/ʻOumuamua","2I/Borisov","3I/ATLAS"]},
+    {"id":"deep-space-phase-3","title":"Milky Way","status":"in-progress","symbol":"▶","statusLabel":{"en":"NEXT — Scientific Scale Anchor","zh-TW":"下一步 — 科學尺度錨點","ja":"次 — 科学スケール・アンカー","ko":"다음 — 과학 축척 앵커"},"detail":"Scientific Scale Anchor"},
+    {"id":"laniakea","title":"Laniakea","status":"waiting","symbol":"⏸","statusLabel":{"en":"Waiting","zh-TW":"等待中","ja":"待機中","ko":"대기 중"},"detail":"Scientific Scale Anchor waits for Milky Way"},
+    {"id":"observable-universe","title":"Observable Universe","status":"waiting","symbol":"⏸","statusLabel":{"en":"Waiting","zh-TW":"等待中","ja":"待機中","ko":"대기 중"},"detail":"Scientific Scale Anchor waits for Laniakea"},
+    {"id":"cmb-360","title":"CMB 360°","status":"waiting","symbol":"⏸","statusLabel":{"en":"Final observational scale","zh-TW":"最終觀測尺度","ja":"最終観測スケール","ko":"최종 관측 축척"},"detail":"Final observational scale"},
+    {"id":"v2.2.0-foundation","title":"v2.2.0 Foundation","status":"completed","detail":"Orbit Precision → Pointer-Anchored Navigation → Unified Object Cards"},
     {"id":"solar-system-ss02","title":"Solar System SS-02","status":"completed","detail":"Human-approved production state"},
     {"id":"titania-texture","title":"Titania texture repair","status":"deferred","detail":"Known imagery coverage / projection issue"},
     {"id":"comets-asteroids","title":"Comets","status":"completed","detail":"Nine-object priority subset and meteor relationships validated in SS-02E; not a complete comet catalog"},
@@ -68,7 +72,8 @@
     {"id":"civilization-variables","title":"Civilization-variable analysis","status":"planned","detail":"Not started; no prediction claims"}
   ],
   "latestAdditions": [
-    {"title":"Interstellar Objects","detail":"1I/ʻOumuamua · 2I/Borisov · 3I/ATLAS"},
+    {"title":"Full Orbit View","detail":"✅ Production / Frozen"},
+    {"title":"Interstellar Objects","detail":"✅ Production / Verified / Frozen · 1I/ʻOumuamua · 2I/Borisov · 3I/ATLAS"},
     {"title":"Solar System SS-02A","detail":"One Display Epoch · coherent ephemeris / frame contract"},
     {"title":"Solar System SS-02B","detail":"Promoted major-body ephemeris · solid-body LOD · 46 authoritative comparisons"},
     {"title":"Solar System SS-02C","detail":"Five dwarf planets · 5,365-point adaptive Main Belt · 27 comparisons"},

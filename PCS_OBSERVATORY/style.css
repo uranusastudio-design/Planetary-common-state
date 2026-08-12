@@ -462,10 +462,12 @@ select {
 .pcs-release-status { display: inline-block; padding: 2px 7px; border: 1px solid var(--border); border-radius: 999px; font-size: .68rem; white-space: nowrap; }
 .pcs-release-status[data-status="completed"], .pcs-release-status[data-status="stable"] { color: #8bd5d9; }
 .pcs-release-status[data-status="in-progress"] { color: var(--amber); }
-.pcs-release-status[data-status="planned"], .pcs-release-status[data-status="deferred"] { color: var(--muted); }
+.pcs-release-status[data-status="planned"], .pcs-release-status[data-status="waiting"], .pcs-release-status[data-status="deferred"] { color: var(--muted); }
 .pcs-roadmap { display: grid; gap: 7px; padding: 0; list-style: none; }
 .pcs-roadmap li { display: grid; grid-template-columns: 24px minmax(0, 1fr) auto; gap: 8px; align-items: center; padding: 9px; border: 1px solid var(--border); border-radius: 7px; }
 .pcs-roadmap li div span { display: block; color: var(--muted); }
+.pcs-roadmap .pcs-roadmap-items { margin: 6px 0 0; padding-left: 18px; color: var(--text); }
+.pcs-roadmap .pcs-roadmap-items li { display: list-item; padding: 0; border: 0; border-radius: 0; }
 .pcs-roadmap-symbol { color: var(--cyan); }
 .pcs-release-link-list { padding: 0 !important; list-style: none; }
 .pcs-release-link-list li { display: grid; grid-template-columns: minmax(150px, 1fr) auto auto; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--border); }
