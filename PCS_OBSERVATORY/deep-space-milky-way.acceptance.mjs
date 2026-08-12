@@ -54,10 +54,20 @@ assert(milky.debug.milkyWay.realNearbyCatalogCount===1200,"desktop Gaia/GCNS bri
 assert(milky.debug.milkyWay.realSatelliteCount===2,"LMC and SMC catalog markers");
 assert(milky.debug.milkyWay.representativeTracerCount===11450,"deterministic desktop tracer count");
 assert(milky.debug.milkyWay.seed===4172019,"deterministic seed");
+assert(milky.debug.milkyWay.layerAudit?.visibleLayers?.length===9,"versioned Milky Way layer audit is loaded");
+assert(milky.debug.milkyWay.layerAudit?.syntheticDecorativeVisibleCount===0&&milky.debug.milkyWay.syntheticDecorativeVisibleCount===0,"no synthetic/decorative astronomy is visible");
+assert(milky.debug.scientificFidelity.level==="C"&&milky.debug.scientificFidelity.canonicalName==="Observation-Derived Reconstruction","whole Milky Way defaults to Level C");
+assert(await evaluate("document.querySelector('[data-ds-fidelity-value]').textContent.includes('Observation-Derived Reconstruction')"),"compact scientific fidelity indicator renders Level C");
+assert(await evaluate("document.querySelector('[data-ds-fidelity-badge]').textContent.includes('L C'.replace(' ',''))||document.querySelector('[data-ds-fidelity-badge]').textContent.includes('LC')"),"always-visible header fidelity badge renders Level C");
 
-const searchExpectations={"Milky Way":"Milky Way","Galactic Center":"Galactic Center","Sagittarius A*":"Sagittarius A*","Sgr A*":"Sagittarius A*","Sun":"Sun","Solar System":"Sun","Local Arm":"Local Arm","Orion Spur":"Local Arm","Large Magellanic Cloud":"Large Magellanic Cloud","LMC":"Large Magellanic Cloud","Small Magellanic Cloud":"Small Magellanic Cloud","SMC":"Small Magellanic Cloud"};
+const searchExpectations={"Milky Way":"Milky Way","Galactic Center":"Galactic Center","Sagittarius A*":"Sagittarius A*","Sgr A*":"Sagittarius A*","Sun":"Sun","Solar System":"Sun","Sirius":"Sirius A","Local Arm":"Local Arm","Orion Spur":"Local Arm","Perseus Arm":"Perseus Arm","Large Magellanic Cloud":"Large Magellanic Cloud","LMC":"Large Magellanic Cloud","Small Magellanic Cloud":"Small Magellanic Cloud","SMC":"Small Magellanic Cloud"};
 const searchResults={};
 for(const [query,expected] of Object.entries(searchExpectations)){const result=await evaluate(`PCSDeepSpaceManager.searchPhase3(${JSON.stringify(query)})`);assert(result?.canonicalName===expected,`${query} resolves to ${expected}`);await evaluate("cesiumViewer.camera.completeFlight?.()");const objectCard=await card();assert(!objectCard.hidden&&objectCard.id===result.id,`${query} preserves Unified Object Card identity`);searchResults[query]={id:result.id,canonicalName:result.canonicalName,cardId:objectCard.id};}
+await evaluate("PCSDeepSpaceManager.searchPhase3('Sirius');cesiumViewer.camera.completeFlight?.()");
+assert(await evaluate("PCSDeepSpaceManager.debug().scientificFidelity.level")==="B","selected Gaia star changes fidelity to Level B");
+assert((await card()).text.includes("Catalog-Derived"),"catalog-star Object Card exposes Level B fidelity");
+await evaluate("PCSDeepSpaceManager.searchPhase3('Milky Way');cesiumViewer.camera.completeFlight?.()");
+assert(await evaluate("PCSDeepSpaceManager.debug().scientificFidelity.level")==="C","selected Milky Way structure restores Level C");
 
 await evaluate("PCSDeepSpaceManager.searchPhase3('Local Arm');cesiumViewer.camera.completeFlight?.()");
 await settle(400);
@@ -109,6 +119,9 @@ for(const [language,expected] of Object.entries(languageExpected)){
   const values=await evaluate("[document.querySelector('[data-p3=milkyWay]').textContent,document.querySelector('[data-p3=galacticCenter]').textContent,document.querySelector('[data-mw=plane]').textContent,document.querySelector('[data-mw=youAreHere]').textContent,PCSDeepSpaceManager.debug().viewerCount,document.querySelectorAll('.cesium-widget canvas').length]");
   assert(values[0]===expected[0]&&values[1]===expected[1]&&values[2]===expected[2]&&values[3].includes(expected[3]),`${language} Milky Way runtime translations`);
   assert(values[4]===1&&values[5]===1,`${language} does not recreate Viewer/canvas`);
+  const fidelity=await evaluate("({heading:document.querySelector('[data-ds-fidelity-heading]').textContent,value:document.querySelector('[data-ds-fidelity-value]').textContent,card:document.querySelector('[data-ds-info]').textContent})");
+  assert(fidelity.heading==={en:"Scientific Fidelity","zh-TW":"科學忠實度",ja:"科学的忠実度",ko:"과학적 충실도"}[language],`${language} fidelity heading`);
+  assert(fidelity.value.includes({en:"Observation-Derived Reconstruction","zh-TW":"觀測推導重建",ja:"観測由来の再構成",ko:"관측 기반 재구성"}[language]),`${language} Level C fidelity label`);
   languages[language]=values;
 }
 await evaluate("PCSI18n.setLanguage('en')");
@@ -170,6 +183,25 @@ assert(stabilityAfter.counts.dataSources===stabilityBefore.counts.dataSources,"n
 assert(JSON.stringify(stabilityAfter.listeners)===JSON.stringify(stabilityBefore.listeners),"no Cesium event-listener growth");
 assert(stabilityAfter.counts.debug.milkyWay.realHmsfrCount===199&&stabilityAfter.counts.debug.milkyWay.realNearbyCatalogCount===1200,"no duplicate/missing catalog stars after cycles");
 
+const exactCycles=await evaluate(`(async()=>{
+  for(let index=0;index<30;index++){PCSDeepSpaceManager.returnSolar();cesiumViewer.camera.completeFlight?.();await PCSDeepSpaceManager.enterMilkyWay();cesiumViewer.camera.completeFlight?.();}
+  for(let index=0;index<30;index++){PCSDeepSpaceManager.searchPhase3('Galactic Center');cesiumViewer.camera.completeFlight?.();if(!PCSDeepSpaceManager.restoreCameraHistory())throw new Error('Galactic Center Back failed');cesiumViewer.camera.completeFlight?.();}
+  const terms=['Sirius','Sagittarius A*','Orion Spur','Perseus Arm','Sun'];for(let index=0;index<30;index++){PCSDeepSpaceManager.searchPhase3(terms[index%terms.length]);cesiumViewer.camera.completeFlight?.();if(!PCSDeepSpaceManager.restoreCameraHistory())throw new Error('search/focus/back failed');cesiumViewer.camera.completeFlight?.();}
+  const languages=['zh-TW','en','ja','ko'];for(let index=0;index<20;index++)PCSI18n.setLanguage(languages[index%languages.length]);
+  PCSI18n.setLanguage('en');
+  for(let index=0;index<20;index++){PCSDeepSpaceManager.close();PCSDeepSpaceManager.open();await Promise.resolve();}
+  await PCSDeepSpaceManager.enterMilkyWay();cesiumViewer.camera.completeFlight?.();
+  return PCSDeepSpaceManager.debug();
+})()`);
+await settle(300);
+const exactCyclesAfter={counts:await runtimeCounts(),listeners:await listenerCounts(),heap:await evaluate("performance.memory?.usedJSHeapSize??null")};
+assert(exactCycles.active&&exactCycles.scaleContext==="milky-way","exact cycle matrix ends in active Milky Way");
+assert(exactCycles.viewerCount===1&&exactCyclesAfter.counts.cesiumCanvas===1,"exact cycles retain one Viewer and one Cesium canvas");
+assert(exactCyclesAfter.counts.primitives===stabilityBefore.counts.primitives,"exact cycles do not grow primitive collections");
+assert(exactCyclesAfter.counts.dataSources===stabilityBefore.counts.dataSources,"exact cycles do not grow DataSources");
+assert(JSON.stringify(exactCyclesAfter.listeners)===JSON.stringify(stabilityBefore.listeners),"exact cycles do not grow Cesium listeners");
+assert(exactCycles.milkyWay.realHmsfrCount===199&&exactCycles.milkyWay.realNearbyCatalogCount===1200&&exactCycles.milkyWay.representativeTracerCount===11450,"exact cycles leave no stale/duplicate Milky Way data");
+
 await evaluate("PCSDeepSpaceManager.returnSolar();PCSDeepSpaceManager.searchSolar('1P/Halley');cesiumViewer.camera.completeFlight?.()");
 const orbit=await evaluate("PCSDeepSpaceManager.fitOrbit();cesiumViewer.camera.completeFlight?.();PCSDeepSpaceManager.debug().lastOrbitFit");
 assert(orbit?.completeOrbit&&orbit.pointCount===361,"Full Orbit regression: Halley complete path remains available");
@@ -183,7 +215,7 @@ assert(consoleErrors.length===0,"Console exceptions must be zero");
 const requiredNetworkFailures=networkFailures.filter(item=>item.url.startsWith(new URL(url).origin)&&!/favicon/i.test(item.url));
 assert(requiredNetworkFailures.length===0,"Required network failures must be zero");
 
-const report={generatedAt:new Date().toISOString(),url,browser:"Google Chrome via CDP",startingState:initial,scientificValidation:{sunPositionKpc:[-8.178,0,0.0208],sgrAStarPositionKpc:[0,0,0],localArmSpatiallyAssociated:true,lmcSmcInvariantAcrossTransition:true,realGaiaPreserved:true,representativeTracersNeverCatalogStars:true},searchResults,languages,resolutionMatrix,stability:{required:{nearbyMilkyCycles:50,milkyFitCycles:50,sunFocusCycles:30,galacticCenterFocusCycles:30,lmcSmcFocusCycles:30,searchOperations:30,objectCardSelections:30,orientationChanges:30},before:stabilityBefore,after:stabilityAfter,finalMilkyDebug:stability},browserBack:{supported:false,status:"Deep Space camera history uses blank-space and Back controls; browser history integration is not part of the existing viewer contract"},fullOrbitRegression:orbit,nearbyInitial,nearbyTenBaseline,nearbyFinal,final,heapBefore,heapAfter,heapDelta:heapBefore==null||heapAfter==null?null:heapAfter-heapBefore,consoleErrors,networkFailures,requiredNetworkFailures,screenshots:fs.readdirSync(outputDir).filter(name=>name.endsWith(".png")).sort()};
+const report={generatedAt:new Date().toISOString(),url,browser:"Google Chrome via CDP",startingState:initial,scientificValidation:{sunPositionKpc:[-8.178,0,0.0208],sgrAStarPositionKpc:[0,0,0],localArmSpatiallyAssociated:true,lmcSmcInvariantAcrossTransition:true,realGaiaPreserved:true,representativeTracersNeverCatalogStars:true,syntheticDecorativeVisibleCount:0,wholeMilkyWayFidelity:"Level C",catalogStarFidelity:"Level B"},searchResults,languages,resolutionMatrix,stability:{required:{solarMilkyCycles:30,nearbyMilkyCycles:50,milkyFitCycles:50,galacticCenterFocusBackCycles:30,searchFocusBackCycles:30,sunFocusCycles:30,galacticCenterFocusCycles:30,lmcSmcFocusCycles:30,searchOperations:30,objectCardSelections:30,orientationChanges:30,languageChanges:20,deepSpaceOpenCloseCycles:20},before:stabilityBefore,after:stabilityAfter,exactCyclesAfter,finalMilkyDebug:exactCycles},browserBack:{supported:false,status:"Deep Space camera history uses blank-space and Back controls; browser history integration is not part of the existing viewer contract"},fullOrbitRegression:orbit,nearbyInitial,nearbyTenBaseline,nearbyFinal,final,heapBefore,heapAfter,heapDelta:heapBefore==null||heapAfter==null?null:heapAfter-heapBefore,consoleErrors,networkFailures,requiredNetworkFailures,screenshots:fs.readdirSync(outputDir).filter(name=>name.endsWith(".png")).sort()};
 fs.writeFileSync(path.join(outputDir,"acceptance-report.json"),`${JSON.stringify(report,null,2)}\n`);
 console.log(JSON.stringify({viewer:final.viewer,cesiumCanvas:final.cesiumCanvas,nodeGate:"run separately",milkyWay:stabilityAfter.counts.debug.milkyWay,resolutions:Object.fromEntries(Object.entries(resolutionMatrix).map(([key,value])=>[key,{averageFps:value.performance.averageFps,lowestObservedFps:value.performance.lowestObservedFps,visibleFraction:value.projected.fraction,representativeTracers:value.counts.debug.milkyWay.representativeTracerCount}])),stability:report.stability.required,heapDelta:report.heapDelta,consoleErrors:consoleErrors.length,networkFailures:networkFailures.length,requiredNetworkFailures:requiredNetworkFailures.length,outputDir},null,2));
 socket.close();

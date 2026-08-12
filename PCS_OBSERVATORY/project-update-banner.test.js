@@ -27,7 +27,7 @@ test("registry schema, version, date, statuses and ordering are valid", () => {
   assert.equal(registry.plannedVersion, "v2.2.0");
   assert.equal(registry.currentVersion, "v2.2.0");
   assert.equal(registry.currentStatus, "preview");
-  assert.equal(registry.currentPhase, "interstellar-objects");
+  assert.equal(registry.currentPhase, "deep-space-phase-3");
   for (const release of registry.releases) {
     assert.match(release.version, /^v\d+\.\d+\.\d+$/);
     assert.equal(new Date(`${release.date}T00:00:00Z`).toISOString().slice(0, 10), release.date);
@@ -64,7 +64,7 @@ test("frozen milestones and the scientific-scale sequence are explicit", () => {
   assert.equal(fullOrbit.statusLabel.en, "Production / Frozen");
   assert.equal(interstellar.statusLabel.en, "Production / Verified / Frozen");
   assert.deepEqual(interstellar.items, ["1I/ʻOumuamua", "2I/Borisov", "3I/ATLAS"]);
-  assert.equal(phase3.statusLabel.en, "NEXT — Scientific Scale Anchor");
+  assert.equal(phase3.statusLabel.en, "CURRENT TASK — Scientific Scale Anchor");
   assert.equal(foundation.status, "completed");
   assert.equal(laniakea.statusLabel.en, "Waiting");
   assert.equal(observable.statusLabel.en, "Waiting");

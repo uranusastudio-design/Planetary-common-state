@@ -297,6 +297,34 @@
       "notice": "Only validated LMC/SMC rows are reused inside the Milky Way scale layer; missing distances are never invented."
     }
   ],
+  "layerAudit": {
+    "auditDate": "2026-08-12",
+    "classificationVocabulary": [
+      "catalog-derived",
+      "observation-derived reconstruction",
+      "representative visualization",
+      "synthetic / decorative"
+    ],
+    "visibleLayers": [
+      {"id":"gaia-gcns-nearby-stars","content":"individual catalog stars","classification":"catalog-derived","scientificFidelityLevel":"B","selectable":true,"identityPolicy":"Retains catalog identity"},
+      {"id":"reid2019-hmsfr","content":"199 high-mass star-forming regions","classification":"catalog-derived","scientificFidelityLevel":"B","selectable":true,"identityPolicy":"Retains VizieR/Reid catalog identity"},
+      {"id":"galactic-reference-anchors","content":"Sun, Galactic Center and Sagittarius A* anchors","classification":"catalog-derived","scientificFidelityLevel":"B/C by record","selectable":true,"identityPolicy":"Measured or adopted reference; visibility-enhanced marker size"},
+      {"id":"galactic-disk-density","content":"thin and thick stellar disk density tracers","classification":"representative visualization","scientificFidelityLevel":"C","selectable":false,"identityPolicy":"No star identity; deterministic representative density tracers"},
+      {"id":"galactic-bar-bulge-density","content":"bar and bulge density tracers","classification":"representative visualization","scientificFidelityLevel":"C","selectable":false,"identityPolicy":"No star identity; published observation-derived structure constraints"},
+      {"id":"spiral-arm-reconstruction","content":"six source-bounded Reid 2019 arm segments including Local Arm","classification":"observation-derived reconstruction","scientificFidelityLevel":"C","selectable":true,"identityPolicy":"Structure Object Card; density tracers are not selectable"},
+      {"id":"stellar-halo-density","content":"stellar halo density tracers","classification":"representative visualization","scientificFidelityLevel":"C","selectable":false,"identityPolicy":"No star identity; not a dark-matter halo"},
+      {"id":"magellanic-catalog-anchors","content":"Large and Small Magellanic Clouds","classification":"catalog-derived","scientificFidelityLevel":"B","selectable":true,"identityPolicy":"Catalog direction and distance; representative marker size"},
+      {"id":"galactic-plane-grid","content":"Galactocentric reference rings and axes","classification":"representative visualization","scientificFidelityLevel":"C","selectable":false,"identityPolicy":"Coordinate guide, not an astronomical object"}
+    ],
+    "notRendered": [
+      {"class":"globular clusters","reason":"No validated cluster catalog is packaged in this Milky Way release; PCS does not synthesize entries."},
+      {"class":"open clusters","reason":"No validated cluster catalog is packaged in this Milky Way release; PCS does not synthesize entries."},
+      {"class":"nebulae and star-forming regions beyond the HMSFR catalog","reason":"No additional validated distance-bearing catalog is packaged; no decorative object identities are generated."},
+      {"class":"molecular clouds","reason":"No validated 3D molecular-cloud product is packaged; no arbitrary cloud volumes are rendered."}
+    ],
+    "syntheticDecorativeVisibleCount": 0,
+    "determinism": "All representative tracers use the versioned seed 4172019 and are generated once per layer load, never resampled per frame."
+  },
   "globalLimitations": [
     "This is an observation-constrained 3D reconstruction, not an external photograph of the Milky Way.",
     "Displayed stellar-disk and stellar-halo extents are model display boundaries, not sharp physical edges.",

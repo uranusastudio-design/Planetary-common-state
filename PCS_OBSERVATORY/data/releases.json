@@ -5,7 +5,7 @@
   "currentVersion": "v2.2.0",
   "currentStatus": "preview",
   "plannedVersion": "v2.2.0",
-  "currentPhase": "interstellar-objects",
+  "currentPhase": "deep-space-phase-3",
   "updatedAt": "2026-08-12T10:53:00+08:00",
   "releases": [
     {
@@ -60,7 +60,7 @@
     {"id":"deep-space-phase-2","title":"Deep Space Phase 2 — Nearby Stars / Gaia","status":"completed","detail":"10 / 25 / 50 / 100 pc"},
     {"id":"full-orbit-view","title":"Full Orbit View","status":"completed","symbol":"✅","statusLabel":{"en":"Production / Frozen","zh-TW":"Production／已凍結","ja":"Production／凍結済み","ko":"Production / 동결"},"detail":"Production-verified complete-orbit framing is frozen"},
     {"id":"interstellar-objects","title":"Interstellar Objects","status":"completed","symbol":"✅","statusLabel":{"en":"Production / Verified / Frozen","zh-TW":"Production／已驗證／已凍結","ja":"Production／検証済み／凍結済み","ko":"Production / 검증 / 동결"},"detail":"Formal open-hyperbolic trajectory layer","items":["1I/ʻOumuamua","2I/Borisov","3I/ATLAS"]},
-    {"id":"deep-space-phase-3","title":"Milky Way","status":"in-progress","symbol":"▶","statusLabel":{"en":"NEXT — Scientific Scale Anchor","zh-TW":"下一步 — 科學尺度錨點","ja":"次 — 科学スケール・アンカー","ko":"다음 — 과학 축척 앵커"},"detail":"Scientific Scale Anchor"},
+    {"id":"deep-space-phase-3","title":"Milky Way","status":"in-progress","symbol":"▶","statusLabel":{"en":"CURRENT TASK — Scientific Scale Anchor","zh-TW":"目前任務 — 科學尺度錨點","ja":"現在のタスク — 科学スケール・アンカー","ko":"현재 작업 — 과학 축척 앵커"},"detail":"Scientific Scale Anchor"},
     {"id":"laniakea","title":"Laniakea","status":"waiting","symbol":"⏸","statusLabel":{"en":"Waiting","zh-TW":"等待中","ja":"待機中","ko":"대기 중"},"detail":"Scientific Scale Anchor waits for Milky Way"},
     {"id":"observable-universe","title":"Observable Universe","status":"waiting","symbol":"⏸","statusLabel":{"en":"Waiting","zh-TW":"等待中","ja":"待機中","ko":"대기 중"},"detail":"Scientific Scale Anchor waits for Laniakea"},
     {"id":"cmb-360","title":"CMB 360°","status":"waiting","symbol":"⏸","statusLabel":{"en":"Final observational scale","zh-TW":"最終觀測尺度","ja":"最終観測スケール","ko":"최종 관측 축척"},"detail":"Final observational scale"},

@@ -8,7 +8,7 @@ const window={};vm.runInNewContext(source,{window,Object,Number,String,Math});co
 
 test("the unified model preserves the complete reusable Phase 4 contract",()=>{
   const model=cards.normalize({id:"test",canonicalName:"Test",aliases:[],catalogIds:[],dataSources:[],references:[],knownLimitations:[]});
-  for(const key of ["id","canonicalName","localizedName","aliases","objectType","parentStructure","catalogIds","coordinates","coordinateFrame","distance","distanceType","distanceUncertainty","redshift","velocity","physicalSize","mass","memberCount","membership","survey","release","observationStatus","reconstructionStatus","orbitalData","epoch","astrometry","dataSources","dataStatus","visualizationStatus","references","knownLimitations"])assert.ok(Object.hasOwn(model,key),key);
+  for(const key of ["id","canonicalName","localizedName","aliases","objectType","parentStructure","catalogIds","coordinates","coordinateFrame","distance","distanceType","distanceUncertainty","redshift","velocity","physicalSize","mass","memberCount","membership","survey","release","observationStatus","reconstructionStatus","orbitalData","epoch","astrometry","scientificFidelity","dataSources","dataStatus","visualizationStatus","references","knownLimitations"])assert.ok(Object.hasOwn(model,key),key);
   assert.equal(model.redshift,null);
   assert.equal(model.dataStatus,"Unavailable");
 });
@@ -37,6 +37,14 @@ test("solar, nearby, Phase 3 and reconstruction adapters do not fabricate missin
   assert.equal(arm.redshift,null);
   assert.equal(group.distanceType,"CF3 aggregate");
   assert.equal(group.memberCount,41);
+});
+
+test("reconstructed Galactic coordinates disclose navigation anchors without false decimals",()=>{
+  const galaxy=cards.phase3({id:"milky-way:galaxy",canonicalName:"Milky Way",aliases:["MW"],objectType:"galaxy",scientificFidelityLevel:"C",galactocentricCartesianKpc:[0,0,0],dataStatus:"observation-derived",visualizationStatus:"model-derived structure"},"milky-way");
+  const sun=cards.phase3({id:"milky-way:sun",canonicalName:"Sun",aliases:["Sol"],objectType:"star",scientificFidelityLevel:"B",galactocentricCartesianKpc:[-8.178,0,0.0208],dataStatus:"adopted-reference measurement"},"milky-way");
+  assert.match(galaxy.coordinates,/navigation anchor ≈\[0\.00, 0\.00, 0\.00\] kpc/);
+  assert.match(sun.coordinates,/\[-8\.178, 0\.000, 0\.021\] kpc/);
+  assert.doesNotMatch(galaxy.coordinates,/0\.0000/);
 });
 
 test("all four languages expose exact card labels",()=>{

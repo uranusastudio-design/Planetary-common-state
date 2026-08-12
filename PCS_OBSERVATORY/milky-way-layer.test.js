@@ -55,5 +55,15 @@ test("LMC and SMC reuse catalog directions/distances and remain outside the disp
 });
 
 test("layer lifecycle and scientific visibility controls are complete",()=>{
-  for(const method of ["load(","show()","hide()","unload()","dispose()","setLabels(","setReconstruction(","setCatalog(","setDensity(","setHalo(","setPlane(","fitCoordinates("])assert.ok(source.includes(method));
+  for(const method of ["load(","show()","hide()","unload()","dispose()","setLabels(","translateLabels(","searchNearby(","setReconstruction(","setCatalog(","setDensity(","setHalo(","setPlane(","fitCoordinates("])assert.ok(source.includes(method));
+});
+
+test("layer audit distinguishes catalogs, reconstructions and deterministic representative tracers",()=>{
+  assert.equal(contract.layerAudit.syntheticDecorativeVisibleCount,0);
+  assert.equal(contract.layerAudit.visibleLayers.length,9);
+  assert.deepEqual(new Set(contract.layerAudit.visibleLayers.map(layer=>layer.classification)),new Set(["catalog-derived","observation-derived reconstruction","representative visualization"]));
+  assert.ok(contract.layerAudit.visibleLayers.filter(layer=>layer.classification==="representative visualization").every(layer=>layer.identityPolicy.includes("No ")||layer.id==="galactic-plane-grid"));
+  assert.deepEqual(contract.layerAudit.notRendered.map(layer=>layer.class),["globular clusters","open clusters","nebulae and star-forming regions beyond the HMSFR catalog","molecular clouds"]);
+  assert.match(contract.layerAudit.determinism,/4172019/);
+  assert.match(source,/syntheticDecorativeVisibleCount:0/);
 });

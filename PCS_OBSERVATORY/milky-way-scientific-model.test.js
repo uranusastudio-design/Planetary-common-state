@@ -23,6 +23,9 @@ test("every generated density point is representative rather than a catalog star
   const model=Model.build(contract);
   for(const tracer of [...model.density,...model.armDensity]){
     assert.equal(tracer.visualizationStatus,"representative density visualization");
+    assert.equal(tracer.objectType,"Representative Density Tracer");
+    assert.equal(tracer.scientificFidelityLevel,"C");
+    assert.equal(tracer.scientificDataCategory,"representative visualization");
     assert.notEqual(tracer.dataStatus,"catalog observation");
     assert.equal(Array.isArray(tracer.position),true);
     assert.equal(tracer.position.every(Number.isFinite),true);
@@ -58,6 +61,8 @@ test("catalog coordinate transforms do not mutate the observed input",()=>{
   assert.ok(Math.abs(transformed.galactocentricCartesianKpc[2]-3.0208)<1e-12);
   assert.deepEqual(record.heliocentricGalacticCartesianKpc,[1,2,3]);
   assert.equal(transformed.dataStatus,"catalog-observation");
+  assert.equal(transformed.scientificFidelityLevel,"B");
+  assert.equal(transformed.scientificDataCategory,"catalog-derived");
 });
 
 test("shared astronomical source registry identifies every Milky Way source family",()=>{
