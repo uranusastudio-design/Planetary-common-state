@@ -36,6 +36,15 @@
   const compareUrl = (previous, hash) => `${repositoryUrl()}/compare/${previous}...${hash}`;
 
   function latestRelease() { return registry.releases.find(release => release.version === registry.currentVersion); }
+  function nextRoadmapItem() {
+    const currentIndex = registry.roadmap.findIndex(item => item.id === registry.currentPhase);
+    const candidates = currentIndex >= 0 ? registry.roadmap.slice(currentIndex + 1) : registry.roadmap;
+    return candidates.find(item => item.status === "in-progress")
+      || candidates.find(item => item.status === "waiting")
+      || candidates.find(item => item.status === "planned")
+      || registry.roadmap[currentIndex]
+      || registry.roadmap[0];
+  }
   function metadata(release) {
     const c = copy();
     return `<dl class="pcs-release-metadata"><div><dt>${c.version}</dt><dd>${escapeHtml(release.version)}</dd></div><div><dt>${c.date}</dt><dd><time datetime="${escapeHtml(release.date)}">${escapeHtml(release.date)}</time></dd></div><div><dt>${c.status}</dt><dd><span class="pcs-release-status" data-status="${escapeHtml(release.status)}">${escapeHtml(statusText(release.status))}</span></dd></div></dl>`;
@@ -48,7 +57,7 @@
   function renderLatest(release) {
     const c = copy();
     const active = registry.roadmap.find(item => item.id === registry.currentPhase);
-    const next = registry.roadmap.find(item => item.status === "in-progress");
+    const next = nextRoadmapItem();
     return `${metadata(release)}<div class="pcs-release-grid"><section><h3>${c.latestUpdate}</h3><ul class="pcs-release-checklist">${registry.latestAdditions.map(item => `<li><strong>${escapeHtml(item.title)}</strong><span>${escapeHtml(item.detail)}</span></li>`).join("")}</ul></section><section><h3>${c.milestone}</h3><p><span class="pcs-roadmap-symbol">${escapeHtml(active.symbol || "✅")}</span> <strong>${escapeHtml(active.title)}</strong><br>${escapeHtml(active.detail)} · ${escapeHtml(itemStatusText(active))}</p><h3>${c.next}</h3><p><span class="pcs-roadmap-symbol">${escapeHtml(next.symbol || "▶")}</span> <strong>${escapeHtml(next.title)}</strong><br>${escapeHtml(next.detail)} · ${escapeHtml(itemStatusText(next))}</p></section></div>`;
   }
   function renderChangelog(release) {
@@ -76,7 +85,7 @@
     const coverageLabels = [c.earth, c.solarSystem, c.nearbyStars, c.milkyWay, c.localGroup];
     coverage.innerHTML = coverageLabels.map(label => `<li>${escapeHtml(label)}</li>`).join("");
     coverage.setAttribute("aria-label", c.scientificCoverage);
-    const next = registry.roadmap.find(item => item.status === "in-progress");
+    const next = nextRoadmapItem();
     nextVersion.textContent = registry.currentStatus === "stable" ? `${c.plannedVersion}: ${registry.plannedVersion} — ${itemStatusText(next)}` : `${next.title} — ${itemStatusText(next)}`;
     openObservatory.textContent = c.openObservatory;
     openObservatory.setAttribute("aria-label", c.openObservatory);

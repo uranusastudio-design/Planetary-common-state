@@ -102,6 +102,8 @@ test("release banner derives version, status, coverage, and next state from the 
   assert.match(center, /status === "in-progress" \|\| status === "preview"/);
   assert.match(center, /registry\.plannedVersion/);
   assert.match(center, /item\.status === "in-progress"/);
+  assert.match(center, /item\.status === "waiting"/);
+  assert.match(center, /nextRoadmapItem\(\)/);
   assert.match(center, /coverageLabels/);
   assert.doesNotMatch(center, /v2\.1\.0|v2\.2\.0/);
   assert.doesNotMatch(center, /Phase 4A[^\n]*(?:In Development|in-progress)/i);
