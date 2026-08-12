@@ -37,15 +37,16 @@ const roadmap = await evaluate(`Object.fromEntries([...document.querySelectorAll
 assert(roadmap["Full Orbit View"].symbol === "✅" && roadmap["Full Orbit View"].status === "Production / Frozen", "Full Orbit View freeze status failed");
 assert(roadmap["Interstellar Objects"].symbol === "✅" && roadmap["Interstellar Objects"].status === "Production / Verified / Frozen", "Interstellar Objects freeze status failed");
 assert(JSON.stringify(roadmap["Interstellar Objects"].items) === JSON.stringify(["1I/ʻOumuamua","2I/Borisov","3I/ATLAS"]), "interstellar object list failed");
-assert(roadmap["Milky Way"].symbol === "▶" && roadmap["Milky Way"].status === "NEXT — Scientific Scale Anchor", "Milky Way NEXT status failed");
+assert(roadmap["Milky Way"].symbol === "✅" && roadmap["Milky Way"].status === "Production / Verified / Frozen", "Milky Way frozen status failed");
 assert(roadmap.Laniakea.symbol === "⏸" && roadmap.Laniakea.status === "Waiting", "Laniakea waiting status failed");
 assert(roadmap["Observable Universe"].symbol === "⏸" && roadmap["Observable Universe"].status === "Waiting", "Observable Universe waiting status failed");
 assert(roadmap["CMB 360°"].symbol === "⏸" && roadmap["CMB 360°"].status === "Final observational scale", "CMB final scale status failed");
 
 await evaluate("document.querySelector('[data-release-tab=latest]').click()");
-const latest = await evaluate(`[...document.querySelectorAll('.pcs-release-checklist li')].slice(0,2).map(item=>({title:item.querySelector('strong').textContent,detail:item.querySelector('span').textContent}))`);
-assert(latest[0].title === "Full Orbit View" && /Production \/ Frozen/.test(latest[0].detail), "latest Full Orbit entry failed");
-assert(latest[1].title === "Interstellar Objects" && /1I\/ʻOumuamua.*2I\/Borisov.*3I\/ATLAS/.test(latest[1].detail), "latest interstellar entry failed");
+const latest = await evaluate(`[...document.querySelectorAll('.pcs-release-checklist li')].slice(0,3).map(item=>({title:item.querySelector('strong').textContent,detail:item.querySelector('span').textContent}))`);
+assert(latest[0].title === "Milky Way — Scientific Scale Anchor" && /Production \/ Verified \/ Frozen.*Scientific Fidelity Levels A–E/.test(latest[0].detail), "latest Milky Way entry failed");
+assert(latest[1].title === "Full Orbit View" && /Production \/ Frozen/.test(latest[1].detail), "latest Full Orbit entry failed");
+assert(latest[2].title === "Interstellar Objects" && /1I\/ʻOumuamua.*2I\/Borisov.*3I\/ATLAS/.test(latest[2].detail), "latest interstellar entry failed");
 
 const languages = {};
 for (const language of ["en","zh-TW","ja","ko"]) {

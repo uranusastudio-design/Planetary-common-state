@@ -34,7 +34,7 @@ test("registry schema, version, date, statuses and ordering are valid", () => {
     assert.ok(["stable", "preview", "archived"].includes(release.status));
   }
   assert.deepEqual(registry.roadmap.slice(0, 8).map(item => item.id), ["deep-space-phase-1", "deep-space-phase-2", "full-orbit-view", "interstellar-objects", "deep-space-phase-3", "laniakea", "observable-universe", "cmb-360"]);
-  assert.deepEqual(registry.roadmap.filter(item => item.status === "in-progress").map(item=>item.id), ["deep-space-phase-3"]);
+  assert.deepEqual(registry.roadmap.filter(item => item.status === "in-progress").map(item=>item.id), []);
   assert.ok(registry.roadmap.every(item => validRoadmapStatuses.has(item.status)));
 });
 
@@ -64,7 +64,10 @@ test("frozen milestones and the scientific-scale sequence are explicit", () => {
   assert.equal(fullOrbit.statusLabel.en, "Production / Frozen");
   assert.equal(interstellar.statusLabel.en, "Production / Verified / Frozen");
   assert.deepEqual(interstellar.items, ["1I/ʻOumuamua", "2I/Borisov", "3I/ATLAS"]);
-  assert.equal(phase3.statusLabel.en, "CURRENT TASK — Scientific Scale Anchor");
+  assert.equal(phase3.status, "completed");
+  assert.equal(phase3.statusLabel.en, "Production / Verified / Frozen");
+  assert.equal(registry.latestAdditions[0].title, "Milky Way — Scientific Scale Anchor");
+  assert.match(registry.latestAdditions[0].detail, /Production \/ Verified \/ Frozen.*Scientific Fidelity Levels A–E/);
   assert.equal(foundation.status, "completed");
   assert.equal(laniakea.statusLabel.en, "Waiting");
   assert.equal(observable.statusLabel.en, "Waiting");
