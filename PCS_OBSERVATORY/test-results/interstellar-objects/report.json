@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-08-12T02:35:10.345Z",
+  "generatedAt": "2026-08-12T02:39:59.299Z",
   "stage": "Interstellar Objects",
   "status": "PASS",
-  "url": "http://127.0.0.1:18765/PCS_OBSERVATORY/?v=interstellar-objects",
+  "url": "https://uranusastudio-design.github.io/Planetary-common-state/PCS_OBSERVATORY/?v=0cc6ca8",
   "initial": {
     "viewer": 1,
     "cesiumCanvas": 1,
@@ -120,7 +120,7 @@
   },
   "playback": {
     "beforeEpoch": "2017-09-01T00:00:00.000Z",
-    "afterEpoch": "2017-09-04T00:02:09.588Z",
+    "afterEpoch": "2017-09-04T00:19:26.387Z",
     "advanced": true,
     "moved": true,
     "paused": true,

@@ -6,7 +6,7 @@
   "currentStatus": "preview",
   "plannedVersion": "v2.2.0",
   "currentPhase": "v2.2.0-foundation",
-  "updatedAt": "2026-08-11T23:10:00+08:00",
+  "updatedAt": "2026-08-12T10:40:00+08:00",
   "releases": [
     {
       "version": "v2.2.0",
@@ -68,6 +68,7 @@
     {"id":"civilization-variables","title":"Civilization-variable analysis","status":"planned","detail":"Not started; no prediction claims"}
   ],
   "latestAdditions": [
+    {"title":"Interstellar Objects","detail":"1I/ʻOumuamua · 2I/Borisov · 3I/ATLAS"},
     {"title":"Solar System SS-02A","detail":"One Display Epoch · coherent ephemeris / frame contract"},
     {"title":"Solar System SS-02B","detail":"Promoted major-body ephemeris · solid-body LOD · 46 authoritative comparisons"},
     {"title":"Solar System SS-02C","detail":"Five dwarf planets · 5,365-point adaptive Main Belt · 27 comparisons"},
