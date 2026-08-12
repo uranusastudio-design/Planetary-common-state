@@ -1,0 +1,124 @@
+{
+  "generatedAt": "2026-08-12T02:37:22.915Z",
+  "authority": "NASA/JPL Horizons API live VECTORS",
+  "method": "Six withheld epochs, not present as cache sample nodes; cubic-Hermite cached position compared with live Sun-centered ICRF/J2000-ecliptic Horizons vectors",
+  "status": "PASS",
+  "maximumPositionErrorKm": 0.4412345875120177,
+  "toleranceKm": 100,
+  "comparisons": [
+    {
+      "id": "1I",
+      "designation": "1I/2017 U1 (ʻOumuamua)",
+      "epoch": "2017-09-09T18:00:00 TDB",
+      "jdTdb": 2458006.25,
+      "cachedAu": [
+        -0.1516427400144884,
+        0.06837368295035526,
+        -0.1948891720533847
+      ],
+      "horizonsAu": [
+        -0.15164274001451,
+        0.06837368295037856,
+        -0.1948891720534128
+      ],
+      "positionErrorKm": 0.000006343713923776037,
+      "toleranceKm": 100,
+      "pass": true
+    },
+    {
+      "id": "1I",
+      "designation": "1I/2017 U1 (ʻOumuamua)",
+      "epoch": "2017-10-19T12:00:00 TDB",
+      "jdTdb": 2458046,
+      "cachedAu": [
+        1.10815675273312,
+        0.525495697961092,
+        -0.02576010066016489
+      ],
+      "horizonsAu": [
+        1.108156752733106,
+        0.525495697961163,
+        -0.02576010066037944
+      ],
+      "positionErrorKm": 0.000033875365564289584,
+      "toleranceKm": 100,
+      "pass": true
+    },
+    {
+      "id": "2I",
+      "designation": "2I/Borisov",
+      "epoch": "2019-12-08T18:00:00 TDB",
+      "jdTdb": 2458826.25,
+      "cachedAu": [
+        -1.6356358541991283,
+        0.9410857208788241,
+        -0.6820613590184355
+      ],
+      "horizonsAu": [
+        -1.635635855090776,
+        0.9410857213803498,
+        -0.6820613593970313
+      ],
+      "positionErrorKm": 0.16318504074221027,
+      "toleranceKm": 100,
+      "pass": true
+    },
+    {
+      "id": "2I",
+      "designation": "2I/Borisov",
+      "epoch": "2020-01-20T12:00:00 TDB",
+      "jdTdb": 2458869,
+      "cachedAu": [
+        -1.7906065411606389,
+        0.08455101585660764,
+        -1.3118293691062461
+      ],
+      "horizonsAu": [
+        -1.790606541258382,
+        0.08455101553080466,
+        -1.311829369375288
+      ],
+      "positionErrorKm": 0.06487872688670092,
+      "toleranceKm": 100,
+      "pass": true
+    },
+    {
+      "id": "3I",
+      "designation": "3I/ATLAS",
+      "epoch": "2025-10-29T18:00:00 TDB",
+      "jdTdb": 2460978.25,
+      "cachedAu": [
+        -1.3155093330153282,
+        -0.31826519115375396,
+        0.0904941503050147
+      ],
+      "horizonsAu": [
+        -1.315509335848677,
+        -0.3182651919478627,
+        0.09049415050726725
+      ],
+      "positionErrorKm": 0.4412345875120177,
+      "toleranceKm": 100,
+      "pass": true
+    },
+    {
+      "id": "3I",
+      "designation": "3I/ATLAS",
+      "epoch": "2026-01-10T12:00:00 TDB",
+      "jdTdb": 2461051,
+      "cachedAu": [
+        -1.736535468971587,
+        2.400497538534251,
+        -0.07097422111125552
+      ],
+      "horizonsAu": [
+        -1.736535468458827,
+        2.400497538336607,
+        -0.07097422112431968
+      ],
+      "positionErrorKm": 0.08223213395278345,
+      "toleranceKm": 100,
+      "pass": true
+    }
+  ]
+}

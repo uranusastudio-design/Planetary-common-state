@@ -35,10 +35,10 @@ test("Deep Space uses only its clean primitive field and restores Earth skybox o
 });
 
 test("closing Deep Space clears selected catalog state before a lifecycle reopen", () => {
-  assert.match(manager, /setScaleControls\("solar"\);selected="sun";smallBodySelected=null;meteorSelected=null;nearbySelected=null;phase3Selected=null;phase4Selected=null;focusParent=null;closeObjectCard\(\)/);
+  assert.match(manager, /setScaleControls\("solar"\);selected="sun";smallBodySelected=null;interstellarSelected=null;meteorSelected=null;nearbySelected=null;phase3Selected=null;phase4Selected=null;focusParent=null;closeObjectCard\(\)/);
   assert.match(manager, /if\(!active\|\|dataSource!==openedDataSource\)viewer\.dataSources\.remove\(added,true\)/);
 });
 
 test("Nearby and Phase 3 wheel zoom never resolve a Solar body radius", () => {
-  assert.match(manager, /selectedRadius=scaleContext==="solar"\?\(smallBodySelected\?/);
+  assert.match(manager, /selectedRadius=scaleContext==="solar"\?\(interstellarSelected\?8000:smallBodySelected\?/);
 });

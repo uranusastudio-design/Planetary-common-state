@@ -1,0 +1,180 @@
+{
+  "generatedAt": "2026-08-12T02:35:10.345Z",
+  "stage": "Interstellar Objects",
+  "status": "PASS",
+  "url": "http://127.0.0.1:18765/PCS_OBSERVATORY/?v=interstellar-objects",
+  "initial": {
+    "viewer": 1,
+    "cesiumCanvas": 1,
+    "totalCanvas": 2,
+    "dataSources": 4,
+    "primitives": 4,
+    "records": 3,
+    "segments": 9,
+    "open": true,
+    "segmentKinds": [
+      "derived",
+      "observed",
+      "reconstructed"
+    ],
+    "arcTypes": [
+      0
+    ],
+    "perihelia": 3,
+    "pointShapeClaims": false
+  },
+  "aliases": {
+    "ʻOumuamua": "1I",
+    "Oumuamua": "1I",
+    "1I": "1I",
+    "1I/2017 U1": "1I",
+    "Borisov": "2I",
+    "2I": "2I",
+    "2I/Borisov": "2I",
+    "3I/ATLAS": "3I",
+    "3I": "3I",
+    "ATLAS": "3I"
+  },
+  "passages": {
+    "1I": {
+      "epoch": "2017-09-09T12:10:32.566Z",
+      "selected": "interstellar:1I",
+      "title": "1I/2017 U1 (ʻOumuamua)",
+      "text": "1I/2017 U1 (ʻOumuamua)Use in Scientific AnalysisHistorical ephemeris reconstructionFocusFit open trajectory×INTERSTELLAR TRAJECTORYInterstellar designation1I/2017 U1 (ʻOumuamua)Object classInterstellar ObjectDiscovery surveyPan-STARRS1Discovery date2017-10-19Orbit typeOpen hyperbolic trajectoryHyperbolic excess velocity26.405273 km/s — computed from the authoritative osculating semimajor axis; not a separately cataloged measurementPerihelion0.2559115812959116 AU at 2017-09-09T12:10:32.566 TDBObservation arc80 days; 2017-10-14–2018-01-02; last observational epoch 2018-01-02Trajectory sourceNASA/JPL Horizons API geometric VECTORS; Sun-centered; ICRF/J2000 ecliptic; AU and AU/dayReference Epoch2458080.5 JDTDB; covariance epoch 2458080.5 JDTDBInbound directionICRF RA 276.477096°; Dec +33.152522° — Ephemeris-derived far-field direction at coverage start; not a parent-star associationOutbound directionICRF RA 358.898375°; Dec +24.207333° — Ephemeris-derived far-field direction at coverage end; not a parent-star associationOrigin system statusUnknown / unconstrainedNon-gravitational accelerationIncluded in JPL solution: A1, A2, A3Official name1I/2017 U1 (ʻOumuamua)Localized name1I/2017 U1 (ʻOumuamua)AliasesʻOumuamua, Oumuamua, 1I, 1I/2017 U1, A/2017 U1Object typeInterstellar ObjectParent system / structureInterstellar Objects / Solar System passageCatalog IDMPC 1I, A/2017 U1, JPL SBDB SPK-ID 50788063Coordinates-0.160212946, 0.0611045895, -0.190158020 AUCoordinate frameICRF; Earth mean ecliptic at J2000.0; heliocentric originDistance0.25605084 AUDistance typeHeliocentric geometric ephemeris distanceUncertaintySBDB 1σ: e ±0.000021064; q ±0.0000066635 AU; i ±0.00028826°; Horizons VECTORS supplies no sampled covarianceRedshiftUnavailableVelocity60.768756, 52.269217, -34.574207 km/s heliocentric CartesianPhysical sizeUnavailableMassUnavailableMember countUnavailableMembershipUnavailableSurveyUniversity of Hawaiʻi Pan-STARRS1 survey, HaleakalāReleaseJPL orbit 16; solution 2018-06-26 12:17:57 UTC; JPL#16Observation statusHistorical observed passage; observation arc closed in current JPL solution; 2017-10-14–2018-01-02; 207 observationsReconstruction statushistorical-reconstructedPhysical radiusUnavailableDisplay radiusUnavailableDisplay scale modeUnavailableOrbital datae 1.201133796102373; i 122.7417062847286°; q 0.2559115812959116 AU; a -1.27234500742808 AU; open hyperbola; no periodEvent / relationshipUnavailableEpochReference solution epoch 2458080.5 JDTDB; Display Epoch 2017-09-09T12:10:32.566ZLast updated2018-06-26 12:17:57 UTCData sourcesMinor Planet Center interstellar-names list; NASA/JPL SBDB; NASA/JPL Horizons API geometric VECTORS; Sun-centered; ICRF/J2000 ecliptic; AU and AU/dayData statusJPL ephemerisVisualization statusOpen inbound → perihelion → outbound trajectory; point marker has no claimed physical shapeResearch referenceshttps://data.minorplanetcenter.net/api/listhttps://ssd-api.jpl.nasa.gov/doc/sbdb.htmlhttps://ssd.jpl.nasa.gov/horizons/https://science.nasa.gov/solar-system/comets/oumuamua/https://www.jpl.nasa.gov/news/our-solar-systems-first-known-interstellar-object-gets-unexpected-speed-boost/https://doi.org/10.1038/s41586-018-0254-4Known limitationsNumerically integrated Horizons trajectory. VECTORS supplies no time-varying covariance; the SBDB element uncertainties and observation arc are shown separately.;Exact physical shape is not established; PCS uses a point marker and does not render a fabricated body shape.;The JPL solution includes a fitted non-gravitational acceleration model. Horizons warns that behavior outside the 2017-10-14 to 2018-01-02 observation arc is assumed and can be substantially more uncertain, especially before October 2017.;No parent star or origin system is scientifically established.;The trajectory is unbound and non-periodic; no return is implied.",
+      "pointVisible": true,
+      "fit": {
+        "objectId": "50788063",
+        "center": [
+          1078987.6471184005,
+          -400217.72370906576,
+          752522.0855345612
+        ],
+        "radius": 1773277.5286168961,
+        "range": 5552525.860220932,
+        "near": 1636823.758191608,
+        "far": 163682375.8191608,
+        "margin": 1.28,
+        "pointCount": 1791,
+        "physicalExtentAu": 44.64497670979304,
+        "aspectRatio": 1.2889561270801815,
+        "completeOrbit": false,
+        "openTrajectory": true,
+        "settled": false
+      },
+      "passageLabel": "Historical ephemeris reconstruction"
+    },
+    "2I": {
+      "epoch": "2019-12-08T13:16:05.886Z",
+      "selected": "interstellar:2I",
+      "title": "2I/Borisov",
+      "text": "2I/BorisovUse in Scientific AnalysisHistorical ephemeris reconstructionFocusFit open trajectory×INTERSTELLAR TRAJECTORYInterstellar designation2I/BorisovObject classInterstellar CometDiscovery surveyMARGO ObservatoryDiscovery date2019-08-30Orbit typeOpen hyperbolic trajectoryHyperbolic excess velocity32.277713 km/s — computed from the authoritative osculating semimajor axis; not a separately cataloged measurementPerihelion2.006520878500843 AU at 2019-12-08T13:16:05.886 TDBObservation arc584 days; 2019-02-24–2020-09-30; last observational epoch 2020-09-30Trajectory sourceNASA/JPL Horizons API geometric VECTORS; Sun-centered; ICRF/J2000 ecliptic; AU and AU/dayReference Epoch2458853.5 JDTDB; covariance epoch 2458853.5 JDTDBInbound directionICRF RA 46.881458°; Dec +60.677588° — Ephemeris-derived far-field direction at coverage start; not a parent-star associationOutbound directionICRF RA 271.266285°; Dec -53.789937° — Ephemeris-derived far-field direction at coverage end; not a parent-star associationOrigin system statusUnknown / unconstrainedNon-gravitational accelerationIncluded in JPL solution: A1, A2, A3, DTOfficial name2I/BorisovLocalized name2I/BorisovAliasesBorisov, 2I, 2I/Borisov, C/2019 Q4Object typeInterstellar CometParent system / structureInterstellar Objects / Solar System passageCatalog IDMPC 2I, C/2019 Q4, JPL SBDB SPK-ID 1003639Coordinates-1.63467592, 0.944921457, -0.679038790 AUCoordinate frameICRF; Earth mean ecliptic at J2000.0; heliocentric originDistance2.00652326 AUDistance typeHeliocentric geometric ephemeris distanceUncertaintySBDB 1σ: e ±0.000019039; q ±0.0000032904 AU; i ±0.000016673°; Horizons VECTORS supplies no sampled covarianceRedshiftUnavailableVelocity-8.474975, -33.817902, -26.657442 km/s heliocentric CartesianPhysical sizeUnavailableMassUnavailableMember countUnavailableMembershipUnavailableSurveyDiscovered by Gennady Borisov at MARGO Observatory, Nauchnij, CrimeaReleaseJPL orbit 54; solution 2024-06-24 15:49:04 UTC; JPL#54Observation statusHistorical observed passage; observation arc closed in current JPL solution; 2019-02-24–2020-09-30; 964 observationsReconstruction statusobservational-arc-ephemerisPhysical radiusUnavailableDisplay radiusUnavailableDisplay scale modeUnavailableOrbital datae 3.356475782676596; i 44.05264247909138°; q 2.006520878500843 AU; a -0.8514922551937886 AU; open hyperbola; no periodEvent / relationshipUnavailableEpochReference solution epoch 2458853.5 JDTDB; Display Epoch 2019-12-08T13:16:05.886ZLast updated2024-06-24 15:49:04 UTCData sourcesMinor Planet Center interstellar-names list; NASA/JPL SBDB; NASA/JPL Horizons API geometric VECTORS; Sun-centered; ICRF/J2000 ecliptic; AU and AU/dayData statusJPL ephemerisVisualization statusOpen inbound → perihelion → outbound trajectory; point marker has no claimed physical shapeResearch referenceshttps://data.minorplanetcenter.net/api/listhttps://ssd-api.jpl.nasa.gov/doc/sbdb.htmlhttps://ssd.jpl.nasa.gov/horizons/https://science.nasa.gov/solar-system/comets/2i-borisov/https://www.jpl.nasa.gov/news/newly-discovered-comet-is-likely-interstellar-visitor/Known limitationsNumerically integrated Horizons trajectory. VECTORS supplies no time-varying covariance; the SBDB element uncertainties and observation arc are shown separately.;The nucleus was unresolved in deployed source imagery; PCS uses a point marker and does not invent a physical shape.;The Horizons orbit includes fitted non-gravitational parameters; cached VECTORS provide no covariance samples.;No parent star or origin system is scientifically established.;The trajectory is unbound and non-periodic; no return is implied.",
+      "pointVisible": true,
+      "fit": {
+        "objectId": "1003639",
+        "center": [
+          -27642.12658618763,
+          -458535.932137514,
+          39963.545908152475
+        ],
+        "radius": 2666812.748071145,
+        "range": 8350383.123380202,
+        "near": 2461601.4099585144,
+        "far": 246160140.99585143,
+        "margin": 1.28,
+        "pointCount": 671,
+        "physicalExtentAu": 50.33437745533599,
+        "aspectRatio": 1.2889561270801815,
+        "completeOrbit": false,
+        "openTrajectory": true,
+        "settled": false
+      },
+      "passageLabel": "Historical ephemeris reconstruction"
+    },
+    "3I": {
+      "epoch": "2025-10-29T11:53:10.710Z",
+      "selected": "interstellar:3I",
+      "title": "3I/ATLAS",
+      "text": "3I/ATLASUse in Scientific AnalysisHistorical ephemeris reconstructionFocusFit open trajectory×INTERSTELLAR TRAJECTORYInterstellar designation3I/ATLASObject classInterstellar CometDiscovery surveyATLASDiscovery date2025-07-01Orbit typeOpen hyperbolic trajectoryHyperbolic excess velocity57.986232 km/s — computed from the authoritative osculating semimajor axis; not a separately cataloged measurementPerihelion1.356481057231181 AU at 2025-10-29T11:53:10.710 TDBObservation arc280 days; 2025-05-15–2026-02-19; last observational epoch 2026-02-19Trajectory sourceNASA/JPL Horizons API geometric VECTORS; Sun-centered; ICRF/J2000 ecliptic; AU and AU/dayReference Epoch2461090.5 JDTDB; covariance epoch 2461090.5 JDTDBInbound directionICRF RA 292.318902°; Dec -19.294384° — Ephemeris-derived far-field direction at coverage start; not a parent-star associationOutbound directionICRF RA 96.309717°; Dec +19.820231° — Ephemeris-derived far-field direction at coverage end; not a parent-star associationOrigin system statusUnknown / unconstrainedNon-gravitational accelerationIncluded in JPL solution: A1, A2, A3, DTOfficial name3I/ATLASLocalized name3I/ATLASAliases3I/ATLAS, 3I, ATLAS, C/2025 N1Object typeInterstellar CometParent system / structureInterstellar Objects / Solar System passageCatalog IDMPC 3I, C/2025 N1, JPL SBDB SPK-ID 1004083Coordinates-1.31305153, -0.327966369, 0.0910202192 AUCoordinate frameICRF; Earth mean ecliptic at J2000.0; heliocentric originDistance1.35644792 AUDistance typeHeliocentric geometric ephemeris distanceUncertaintySBDB 1σ: e ±0.00002469; q ±0.0000037743 AU; i ±0.000019023°; Horizons VECTORS supplies no sampled covarianceRedshiftUnavailableVelocity-16.792671, 66.138686, -3.584616 km/s heliocentric CartesianPhysical sizeUnavailableMassUnavailableMember countUnavailableMembershipUnavailableSurveyNASA-funded ATLAS survey telescope, Rio Hurtado, Chile; pre-discovery images extend earlierReleaseJPL orbit 54; solution 2026-02-19 09:10:47 UTC; JPL#54Observation statusHistorical observed passage; observation arc closed in current JPL solution; 2025-05-15–2026-02-19; 782 observationsReconstruction statusobservational-arc-ephemerisPhysical radiusUnavailableDisplay radiusUnavailableDisplay scale modeUnavailableOrbital datae 6.141351449317625; i 175.1164570850441°; q 1.356481057231181 AU; a -0.2638374502507929 AU; open hyperbola; no periodEvent / relationshipUnavailableEpochReference solution epoch 2461090.5 JDTDB; Display Epoch 2025-10-29T11:53:10.710ZLast updated2026-02-19 09:10:47 UTCData sourcesMinor Planet Center interstellar-names list; NASA/JPL SBDB; NASA/JPL Horizons API geometric VECTORS; Sun-centered; ICRF/J2000 ecliptic; AU and AU/dayData statusJPL ephemerisVisualization statusOpen inbound → perihelion → outbound trajectory; point marker has no claimed physical shapeResearch referenceshttps://data.minorplanetcenter.net/api/listhttps://ssd-api.jpl.nasa.gov/doc/sbdb.htmlhttps://ssd.jpl.nasa.gov/horizons/https://science.nasa.gov/solar-system/comets/3i-atlas/https://science.nasa.gov/solar-system/comets/3i-atlas/3i-atlas-facts-and-faqs/Known limitationsNumerically integrated Horizons trajectory. VECTORS supplies no time-varying covariance; the SBDB element uncertainties and observation arc are shown separately.;Physical properties remain under investigation; PCS uses a point marker and does not infer nucleus shape.;The current JPL solution includes a CO₂-law non-gravitational acceleration model; cached VECTORS provide no covariance samples.;No parent star or origin system is scientifically established.;The trajectory is unbound and non-periodic; no return is implied.",
+      "pointVisible": true,
+      "fit": {
+        "objectId": "1004083",
+        "center": [
+          56395.98444923345,
+          382070.2893225595,
+          -40777.866835452856
+        ],
+        "radius": 3012672.6188650564,
+        "range": 9433347.208586715,
+        "near": 2780847.3510956047,
+        "far": 278084735.1095605,
+        "margin": 1.28,
+        "pointCount": 595,
+        "physicalExtentAu": 88.64399986975432,
+        "aspectRatio": 1.2889561270801815,
+        "completeOrbit": false,
+        "openTrajectory": true,
+        "settled": false
+      },
+      "passageLabel": "Historical ephemeris reconstruction"
+    }
+  },
+  "playback": {
+    "beforeEpoch": "2017-09-01T00:00:00.000Z",
+    "afterEpoch": "2017-09-04T00:02:09.588Z",
+    "advanced": true,
+    "moved": true,
+    "paused": true,
+    "sunPresent": true,
+    "planetContext": "solar"
+  },
+  "languages": {
+    "en": "Interstellar Objects",
+    "zh-TW": "星際天體",
+    "ja": "恒星間天体",
+    "ko": "성간 천체"
+  },
+  "lifecycle": {
+    "cycles": 10,
+    "before": {
+      "dataSources": 4,
+      "primitives": 4,
+      "totalCanvas": 2
+    },
+    "final": {
+      "viewer": 1,
+      "cesiumCanvas": 1,
+      "totalCanvas": 2,
+      "dataSources": 3,
+      "primitives": 1,
+      "active": false,
+      "earthOwner": {
+        "owner": "earth",
+        "active": true,
+        "generation": 22,
+        "activeCelestialTargetId": "earth",
+        "geographicRenderingEnabled": true,
+        "visitorDataSource": {
+          "id": "visitorDataSource",
+          "show": true,
+          "entities": 0
+        },
+        "visitorHeatDataSource": {
+          "id": "visitorHeatDataSource",
+          "show": false
+        },
+        "visitorNetworkDataSource": {
+          "id": "visitorNetworkDataSource",
+          "show": false
+        }
+      }
+    }
+  },
+  "console": {
+    "required": 0,
+    "items": []
+  },
+  "network": {
+    "required": 0,
+    "items": []
+  }
+}
