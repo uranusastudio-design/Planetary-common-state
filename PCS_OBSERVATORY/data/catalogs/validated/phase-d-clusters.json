@@ -1,0 +1,926 @@
+{
+  "schemaVersion": "pcs-known-astronomical-objects-v1",
+  "catalogVersion": "phase-d-clusters-2026-08-14",
+  "generatedAt": "2026-08-14",
+  "status": "VALIDATED_NOT_PUBLISHED",
+  "normalizationVersion": "pcs-known-object-normalization-v1",
+  "objectCount": 14,
+  "clusterCount": 12,
+  "starFormingStructureCount": 2,
+  "relationshipCount": 4,
+  "rejectedCount": 0,
+  "unresolvedCount": 0,
+  "renderedCount": 0,
+  "sourceSnapshot": {
+    "sourceId": "cds-simbad-tap",
+    "recordCount": 14,
+    "checksum": "sha256:acbfa5b512ca1c91c88fae54c657002d2c98ba7c5bcf968349fe1fdbb649a4fd"
+  },
+  "objects": [
+    {
+      "pcsObjectId": "pcs:cluster:pleiades",
+      "officialName": "Pleiades",
+      "commonName": "Pleiades",
+      "aliases": [
+        "M45",
+        "Messier 45",
+        "Melotte 22"
+      ],
+      "objectClass": "star-cluster",
+      "objectSubtype": "open cluster",
+      "catalogIdentifiers": [
+        {
+          "catalog": "SIMBAD",
+          "identifier": "Cl Melotte   22"
+        }
+      ],
+      "raDeg": 56.600833333333334,
+      "decDeg": 24.11388888888889,
+      "coordinateFrame": "ICRS",
+      "coordinateEpoch": "J2000",
+      "distance": null,
+      "distanceLower": null,
+      "distanceUpper": null,
+      "distanceUnit": null,
+      "distanceMethod": null,
+      "parallaxMas": null,
+      "properMotionRaMasYr": null,
+      "properMotionDecMasYr": null,
+      "radialVelocityKmS": null,
+      "redshift": null,
+      "physicalSize": null,
+      "angularSize": null,
+      "mass": null,
+      "massMethod": null,
+      "age": null,
+      "temperatureK": null,
+      "spectralType": null,
+      "hostStructure": "Milky Way",
+      "parentObject": null,
+      "associatedObjects": [],
+      "discoveryDate": null,
+      "discoveryMethod": null,
+      "observationStatus": "CATALOG_IDENTITY",
+      "evidenceClass": "CATALOG-DERIVED",
+      "scientificFidelity": "LB",
+      "wavelengths": [],
+      "geometryStatus": "MEASURED_POSITION",
+      "lastUpdated": "2026-08-14",
+      "dataSources": [
+        "cds-simbad-tap"
+      ],
+      "researchReferences": [
+        "2000A&AS..143....9W",
+        "2021A&A...647A..19T"
+      ],
+      "knownLimitations": [
+        "Catalog center does not define a hard physical boundary or complete membership.",
+        "Distance, age, membership probabilities, and internal velocity are unavailable unless separately sourced."
+      ]
+    },
+    {
+      "pcsObjectId": "pcs:cluster:hyades",
+      "officialName": "Hyades",
+      "commonName": "Hyades",
+      "aliases": [
+        "Melotte 25",
+        "Collinder 50"
+      ],
+      "objectClass": "star-cluster",
+      "objectSubtype": "open cluster",
+      "catalogIdentifiers": [
+        {
+          "catalog": "SIMBAD",
+          "identifier": "Cl Melotte   25"
+        }
+      ],
+      "raDeg": 67.44708333333334,
+      "decDeg": 16.948055555555555,
+      "coordinateFrame": "ICRS",
+      "coordinateEpoch": "J2000",
+      "distance": null,
+      "distanceLower": null,
+      "distanceUpper": null,
+      "distanceUnit": null,
+      "distanceMethod": null,
+      "parallaxMas": null,
+      "properMotionRaMasYr": null,
+      "properMotionDecMasYr": null,
+      "radialVelocityKmS": null,
+      "redshift": null,
+      "physicalSize": null,
+      "angularSize": null,
+      "mass": null,
+      "massMethod": null,
+      "age": null,
+      "temperatureK": null,
+      "spectralType": null,
+      "hostStructure": "Milky Way",
+      "parentObject": null,
+      "associatedObjects": [],
+      "discoveryDate": null,
+      "discoveryMethod": null,
+      "observationStatus": "CATALOG_IDENTITY",
+      "evidenceClass": "CATALOG-DERIVED",
+      "scientificFidelity": "LB",
+      "wavelengths": [],
+      "geometryStatus": "MEASURED_POSITION",
+      "lastUpdated": "2026-08-14",
+      "dataSources": [
+        "cds-simbad-tap"
+      ],
+      "researchReferences": [
+        "2000A&AS..143....9W",
+        "2021A&A...647A..19T"
+      ],
+      "knownLimitations": [
+        "Catalog center does not define a hard physical boundary or complete membership.",
+        "Distance, age, membership probabilities, and internal velocity are unavailable unless separately sourced."
+      ]
+    },
+    {
+      "pcsObjectId": "pcs:cluster:omega-centauri",
+      "officialName": "Omega Centauri",
+      "commonName": "Omega Centauri",
+      "aliases": [
+        "NGC 5139",
+        "Omega Cen"
+      ],
+      "objectClass": "star-cluster",
+      "objectSubtype": "globular cluster",
+      "catalogIdentifiers": [
+        {
+          "catalog": "SIMBAD",
+          "identifier": "NGC  5139"
+        }
+      ],
+      "raDeg": 201.69699999999997,
+      "decDeg": -47.47947222222223,
+      "coordinateFrame": "ICRS",
+      "coordinateEpoch": "J2000",
+      "distance": null,
+      "distanceLower": null,
+      "distanceUpper": null,
+      "distanceUnit": null,
+      "distanceMethod": null,
+      "parallaxMas": null,
+      "properMotionRaMasYr": null,
+      "properMotionDecMasYr": null,
+      "radialVelocityKmS": null,
+      "redshift": null,
+      "physicalSize": null,
+      "angularSize": null,
+      "mass": null,
+      "massMethod": null,
+      "age": null,
+      "temperatureK": null,
+      "spectralType": null,
+      "hostStructure": "Milky Way",
+      "parentObject": null,
+      "associatedObjects": [],
+      "discoveryDate": null,
+      "discoveryMethod": null,
+      "observationStatus": "CATALOG_IDENTITY",
+      "evidenceClass": "CATALOG-DERIVED",
+      "scientificFidelity": "LB",
+      "wavelengths": [],
+      "geometryStatus": "MEASURED_POSITION",
+      "lastUpdated": "2026-08-14",
+      "dataSources": [
+        "cds-simbad-tap"
+      ],
+      "researchReferences": [
+        "2000A&AS..143....9W",
+        "2010AJ....140.1830G"
+      ],
+      "knownLimitations": [
+        "Catalog center does not define a hard physical boundary or complete membership.",
+        "Distance, age, membership probabilities, and internal velocity are unavailable unless separately sourced."
+      ]
+    },
+    {
+      "pcsObjectId": "pcs:cluster:47-tucanae",
+      "officialName": "47 Tucanae",
+      "commonName": "47 Tucanae",
+      "aliases": [
+        "NGC 104",
+        "47 Tuc"
+      ],
+      "objectClass": "star-cluster",
+      "objectSubtype": "globular cluster",
+      "catalogIdentifiers": [
+        {
+          "catalog": "SIMBAD",
+          "identifier": "NGC   104"
+        }
+      ],
+      "raDeg": 6.022329166666666,
+      "decDeg": -72.08144444444444,
+      "coordinateFrame": "ICRS",
+      "coordinateEpoch": "J2000",
+      "distance": null,
+      "distanceLower": null,
+      "distanceUpper": null,
+      "distanceUnit": null,
+      "distanceMethod": null,
+      "parallaxMas": null,
+      "properMotionRaMasYr": null,
+      "properMotionDecMasYr": null,
+      "radialVelocityKmS": null,
+      "redshift": null,
+      "physicalSize": null,
+      "angularSize": null,
+      "mass": null,
+      "massMethod": null,
+      "age": null,
+      "temperatureK": null,
+      "spectralType": null,
+      "hostStructure": "Milky Way",
+      "parentObject": null,
+      "associatedObjects": [],
+      "discoveryDate": null,
+      "discoveryMethod": null,
+      "observationStatus": "CATALOG_IDENTITY",
+      "evidenceClass": "CATALOG-DERIVED",
+      "scientificFidelity": "LB",
+      "wavelengths": [],
+      "geometryStatus": "MEASURED_POSITION",
+      "lastUpdated": "2026-08-14",
+      "dataSources": [
+        "cds-simbad-tap"
+      ],
+      "researchReferences": [
+        "2000A&AS..143....9W",
+        "2006AJ....131.1163S"
+      ],
+      "knownLimitations": [
+        "Catalog center does not define a hard physical boundary or complete membership.",
+        "Distance, age, membership probabilities, and internal velocity are unavailable unless separately sourced."
+      ]
+    },
+    {
+      "pcsObjectId": "pcs:cluster:ngc-3603",
+      "officialName": "NGC 3603",
+      "commonName": "NGC 3603",
+      "aliases": [
+        "NGC 3603"
+      ],
+      "objectClass": "star-cluster",
+      "objectSubtype": "young massive cluster / star-forming region",
+      "catalogIdentifiers": [
+        {
+          "catalog": "SIMBAD",
+          "identifier": "NGC  3603"
+        }
+      ],
+      "raDeg": 168.7411,
+      "decDeg": -61.24219999999999,
+      "coordinateFrame": "ICRS",
+      "coordinateEpoch": "J2000",
+      "distance": null,
+      "distanceLower": null,
+      "distanceUpper": null,
+      "distanceUnit": null,
+      "distanceMethod": null,
+      "parallaxMas": null,
+      "properMotionRaMasYr": null,
+      "properMotionDecMasYr": null,
+      "radialVelocityKmS": null,
+      "redshift": null,
+      "physicalSize": null,
+      "angularSize": null,
+      "mass": null,
+      "massMethod": null,
+      "age": null,
+      "temperatureK": null,
+      "spectralType": null,
+      "hostStructure": "Milky Way",
+      "parentObject": null,
+      "associatedObjects": [],
+      "discoveryDate": null,
+      "discoveryMethod": null,
+      "observationStatus": "CATALOG_IDENTITY",
+      "evidenceClass": "CATALOG-DERIVED",
+      "scientificFidelity": "LB",
+      "wavelengths": [],
+      "geometryStatus": "MEASURED_POSITION",
+      "lastUpdated": "2026-08-14",
+      "dataSources": [
+        "cds-simbad-tap"
+      ],
+      "researchReferences": [
+        "2000A&AS..143....9W",
+        "2022A&A...661A..38P"
+      ],
+      "knownLimitations": [
+        "Catalog center does not define a hard physical boundary or complete membership.",
+        "Distance, age, membership probabilities, and internal velocity are unavailable unless separately sourced."
+      ]
+    },
+    {
+      "pcsObjectId": "pcs:cluster:westerlund-1",
+      "officialName": "Westerlund 1",
+      "commonName": "Westerlund 1",
+      "aliases": [
+        "Wd 1"
+      ],
+      "objectClass": "star-cluster",
+      "objectSubtype": "young massive cluster",
+      "catalogIdentifiers": [
+        {
+          "catalog": "SIMBAD",
+          "identifier": "Cl Westerlund    1"
+        }
+      ],
+      "raDeg": 251.76,
+      "decDeg": -45.85194444444445,
+      "coordinateFrame": "ICRS",
+      "coordinateEpoch": "J2000",
+      "distance": null,
+      "distanceLower": null,
+      "distanceUpper": null,
+      "distanceUnit": null,
+      "distanceMethod": null,
+      "parallaxMas": null,
+      "properMotionRaMasYr": null,
+      "properMotionDecMasYr": null,
+      "radialVelocityKmS": null,
+      "redshift": null,
+      "physicalSize": null,
+      "angularSize": null,
+      "mass": null,
+      "massMethod": null,
+      "age": null,
+      "temperatureK": null,
+      "spectralType": null,
+      "hostStructure": "Milky Way",
+      "parentObject": null,
+      "associatedObjects": [],
+      "discoveryDate": null,
+      "discoveryMethod": null,
+      "observationStatus": "CATALOG_IDENTITY",
+      "evidenceClass": "CATALOG-DERIVED",
+      "scientificFidelity": "LB",
+      "wavelengths": [],
+      "geometryStatus": "MEASURED_POSITION",
+      "lastUpdated": "2026-08-14",
+      "dataSources": [
+        "cds-simbad-tap"
+      ],
+      "researchReferences": [
+        "2000A&AS..143....9W",
+        "2021A&A...647A..19T"
+      ],
+      "knownLimitations": [
+        "Catalog center does not define a hard physical boundary or complete membership.",
+        "Distance, age, membership probabilities, and internal velocity are unavailable unless separately sourced."
+      ]
+    },
+    {
+      "pcsObjectId": "pcs:cluster:arches",
+      "officialName": "Arches Cluster",
+      "commonName": "Arches Cluster",
+      "aliases": [],
+      "objectClass": "star-cluster",
+      "objectSubtype": "young massive cluster",
+      "catalogIdentifiers": [
+        {
+          "catalog": "SIMBAD",
+          "identifier": "NAME Arches Cluster"
+        }
+      ],
+      "raDeg": 266.4604166666667,
+      "decDeg": -28.824444444444445,
+      "coordinateFrame": "ICRS",
+      "coordinateEpoch": "J2000",
+      "distance": null,
+      "distanceLower": null,
+      "distanceUpper": null,
+      "distanceUnit": null,
+      "distanceMethod": null,
+      "parallaxMas": null,
+      "properMotionRaMasYr": null,
+      "properMotionDecMasYr": null,
+      "radialVelocityKmS": null,
+      "redshift": null,
+      "physicalSize": null,
+      "angularSize": null,
+      "mass": null,
+      "massMethod": null,
+      "age": null,
+      "temperatureK": null,
+      "spectralType": null,
+      "hostStructure": "Milky Way",
+      "parentObject": null,
+      "associatedObjects": [],
+      "discoveryDate": null,
+      "discoveryMethod": null,
+      "observationStatus": "CATALOG_IDENTITY",
+      "evidenceClass": "CATALOG-DERIVED",
+      "scientificFidelity": "LB",
+      "wavelengths": [],
+      "geometryStatus": "MEASURED_POSITION",
+      "lastUpdated": "2026-08-14",
+      "dataSources": [
+        "cds-simbad-tap"
+      ],
+      "researchReferences": [
+        "2000A&AS..143....9W",
+        "2002ApJ...566..880G"
+      ],
+      "knownLimitations": [
+        "Catalog center does not define a hard physical boundary or complete membership.",
+        "Distance, age, membership probabilities, and internal velocity are unavailable unless separately sourced."
+      ]
+    },
+    {
+      "pcsObjectId": "pcs:cluster:quintuplet",
+      "officialName": "Quintuplet Cluster",
+      "commonName": "Quintuplet Cluster",
+      "aliases": [],
+      "objectClass": "star-cluster",
+      "objectSubtype": "young massive cluster",
+      "catalogIdentifiers": [
+        {
+          "catalog": "SIMBAD",
+          "identifier": "NAME Quintuplet Cluster"
+        }
+      ],
+      "raDeg": 266.55778269545,
+      "decDeg": -28.83003348404491,
+      "coordinateFrame": "ICRS",
+      "coordinateEpoch": "J2000",
+      "distance": null,
+      "distanceLower": null,
+      "distanceUpper": null,
+      "distanceUnit": null,
+      "distanceMethod": null,
+      "parallaxMas": null,
+      "properMotionRaMasYr": null,
+      "properMotionDecMasYr": null,
+      "radialVelocityKmS": null,
+      "redshift": null,
+      "physicalSize": null,
+      "angularSize": null,
+      "mass": null,
+      "massMethod": null,
+      "age": null,
+      "temperatureK": null,
+      "spectralType": null,
+      "hostStructure": "Milky Way",
+      "parentObject": null,
+      "associatedObjects": [],
+      "discoveryDate": null,
+      "discoveryMethod": null,
+      "observationStatus": "CATALOG_IDENTITY",
+      "evidenceClass": "CATALOG-DERIVED",
+      "scientificFidelity": "LB",
+      "wavelengths": [],
+      "geometryStatus": "MEASURED_POSITION",
+      "lastUpdated": "2026-08-14",
+      "dataSources": [
+        "cds-simbad-tap"
+      ],
+      "researchReferences": [
+        "2000A&AS..143....9W",
+        "1988NASAR1190....1B"
+      ],
+      "knownLimitations": [
+        "Catalog center does not define a hard physical boundary or complete membership.",
+        "Distance, age, membership probabilities, and internal velocity are unavailable unless separately sourced."
+      ]
+    },
+    {
+      "pcsObjectId": "pcs:cluster:ngc-2244",
+      "officialName": "NGC 2244",
+      "commonName": "NGC 2244",
+      "aliases": [],
+      "objectClass": "star-cluster",
+      "objectSubtype": "young open cluster",
+      "catalogIdentifiers": [
+        {
+          "catalog": "SIMBAD",
+          "identifier": "NGC  2244"
+        }
+      ],
+      "raDeg": 98.045,
+      "decDeg": 4.91388888888889,
+      "coordinateFrame": "ICRS",
+      "coordinateEpoch": "J2000",
+      "distance": null,
+      "distanceLower": null,
+      "distanceUpper": null,
+      "distanceUnit": null,
+      "distanceMethod": null,
+      "parallaxMas": null,
+      "properMotionRaMasYr": null,
+      "properMotionDecMasYr": null,
+      "radialVelocityKmS": null,
+      "redshift": null,
+      "physicalSize": null,
+      "angularSize": null,
+      "mass": null,
+      "massMethod": null,
+      "age": null,
+      "temperatureK": null,
+      "spectralType": null,
+      "hostStructure": "Milky Way",
+      "parentObject": "pcs:nebula:rosette",
+      "associatedObjects": [],
+      "discoveryDate": null,
+      "discoveryMethod": null,
+      "observationStatus": "CATALOG_IDENTITY",
+      "evidenceClass": "CATALOG-DERIVED",
+      "scientificFidelity": "LB",
+      "wavelengths": [],
+      "geometryStatus": "MEASURED_POSITION",
+      "lastUpdated": "2026-08-14",
+      "dataSources": [
+        "cds-simbad-tap"
+      ],
+      "researchReferences": [
+        "2000A&AS..143....9W",
+        "2021A&A...647A..19T"
+      ],
+      "knownLimitations": [
+        "Catalog center does not define a hard physical boundary or complete membership.",
+        "Distance, age, membership probabilities, and internal velocity are unavailable unless separately sourced."
+      ]
+    },
+    {
+      "pcsObjectId": "pcs:cluster:ngc-6611",
+      "officialName": "NGC 6611",
+      "commonName": "NGC 6611",
+      "aliases": [],
+      "objectClass": "star-cluster",
+      "objectSubtype": "young open cluster",
+      "catalogIdentifiers": [
+        {
+          "catalog": "SIMBAD",
+          "identifier": "M  16"
+        }
+      ],
+      "raDeg": 274.688,
+      "decDeg": -13.792,
+      "coordinateFrame": "ICRS",
+      "coordinateEpoch": "J2000",
+      "distance": null,
+      "distanceLower": null,
+      "distanceUpper": null,
+      "distanceUnit": null,
+      "distanceMethod": null,
+      "parallaxMas": null,
+      "properMotionRaMasYr": null,
+      "properMotionDecMasYr": null,
+      "radialVelocityKmS": null,
+      "redshift": null,
+      "physicalSize": null,
+      "angularSize": null,
+      "mass": null,
+      "massMethod": null,
+      "age": null,
+      "temperatureK": null,
+      "spectralType": null,
+      "hostStructure": "Milky Way",
+      "parentObject": "pcs:nebula:eagle",
+      "associatedObjects": [],
+      "discoveryDate": null,
+      "discoveryMethod": null,
+      "observationStatus": "CATALOG_IDENTITY",
+      "evidenceClass": "CATALOG-DERIVED",
+      "scientificFidelity": "LB",
+      "wavelengths": [],
+      "geometryStatus": "MEASURED_POSITION",
+      "lastUpdated": "2026-08-14",
+      "dataSources": [
+        "cds-simbad-tap"
+      ],
+      "researchReferences": [
+        "2000A&AS..143....9W",
+        "2021A&A...647A..19T"
+      ],
+      "knownLimitations": [
+        "Catalog center does not define a hard physical boundary or complete membership.",
+        "Distance, age, membership probabilities, and internal velocity are unavailable unless separately sourced."
+      ]
+    },
+    {
+      "pcsObjectId": "pcs:cluster:ngc-2070",
+      "officialName": "NGC 2070",
+      "commonName": "NGC 2070",
+      "aliases": [],
+      "objectClass": "star-cluster",
+      "objectSubtype": "young massive cluster / association",
+      "catalogIdentifiers": [
+        {
+          "catalog": "SIMBAD",
+          "identifier": "NGC  2070"
+        }
+      ],
+      "raDeg": 84.675,
+      "decDeg": -69.1,
+      "coordinateFrame": "ICRS",
+      "coordinateEpoch": "J2000",
+      "distance": null,
+      "distanceLower": null,
+      "distanceUpper": null,
+      "distanceUnit": null,
+      "distanceMethod": null,
+      "parallaxMas": null,
+      "properMotionRaMasYr": null,
+      "properMotionDecMasYr": null,
+      "radialVelocityKmS": null,
+      "redshift": null,
+      "physicalSize": null,
+      "angularSize": null,
+      "mass": null,
+      "massMethod": null,
+      "age": null,
+      "temperatureK": null,
+      "spectralType": null,
+      "hostStructure": "Large Magellanic Cloud",
+      "parentObject": "pcs:nebula:tarantula",
+      "associatedObjects": [],
+      "discoveryDate": null,
+      "discoveryMethod": null,
+      "observationStatus": "CATALOG_IDENTITY",
+      "evidenceClass": "CATALOG-DERIVED",
+      "scientificFidelity": "LB",
+      "wavelengths": [],
+      "geometryStatus": "MEASURED_POSITION",
+      "lastUpdated": "2026-08-14",
+      "dataSources": [
+        "cds-simbad-tap"
+      ],
+      "researchReferences": [
+        "2000A&AS..143....9W",
+        "2008MNRAS.389..678B"
+      ],
+      "knownLimitations": [
+        "Catalog center does not define a hard physical boundary or complete membership.",
+        "Distance, age, membership probabilities, and internal velocity are unavailable unless separately sourced."
+      ]
+    },
+    {
+      "pcsObjectId": "pcs:cluster:orion-nebula-cluster",
+      "officialName": "Orion Nebula Cluster",
+      "commonName": "Orion Nebula Cluster",
+      "aliases": [
+        "ONC"
+      ],
+      "objectClass": "star-cluster",
+      "objectSubtype": "young stellar cluster",
+      "catalogIdentifiers": [
+        {
+          "catalog": "SIMBAD",
+          "identifier": "NAME Orion Nebula Cluster"
+        }
+      ],
+      "raDeg": 83.75,
+      "decDeg": -5.483333333333333,
+      "coordinateFrame": "ICRS",
+      "coordinateEpoch": "J2000",
+      "distance": null,
+      "distanceLower": null,
+      "distanceUpper": null,
+      "distanceUnit": null,
+      "distanceMethod": null,
+      "parallaxMas": null,
+      "properMotionRaMasYr": null,
+      "properMotionDecMasYr": null,
+      "radialVelocityKmS": null,
+      "redshift": null,
+      "physicalSize": null,
+      "angularSize": null,
+      "mass": null,
+      "massMethod": null,
+      "age": null,
+      "temperatureK": null,
+      "spectralType": null,
+      "hostStructure": "Milky Way",
+      "parentObject": "pcs:nebula:orion",
+      "associatedObjects": [],
+      "discoveryDate": null,
+      "discoveryMethod": null,
+      "observationStatus": "CATALOG_IDENTITY",
+      "evidenceClass": "CATALOG-DERIVED",
+      "scientificFidelity": "LB",
+      "wavelengths": [],
+      "geometryStatus": "MEASURED_POSITION",
+      "lastUpdated": "2026-08-14",
+      "dataSources": [
+        "cds-simbad-tap"
+      ],
+      "researchReferences": [
+        "2000A&AS..143....9W",
+        "2007MmSAI..78..628M"
+      ],
+      "knownLimitations": [
+        "Catalog center does not define a hard physical boundary or complete membership.",
+        "Distance, age, membership probabilities, and internal velocity are unavailable unless separately sourced."
+      ]
+    },
+    {
+      "pcsObjectId": "pcs:galactic-structure:orion-molecular-cloud",
+      "officialName": "Orion Molecular Cloud Complex",
+      "commonName": "Orion Molecular Cloud Complex",
+      "aliases": [
+        "Orion Molecular Cloud"
+      ],
+      "objectClass": "galactic-structure",
+      "objectSubtype": "molecular-cloud complex",
+      "catalogIdentifiers": [
+        {
+          "catalog": "SIMBAD",
+          "identifier": "NAME Orion Molecular Cloud"
+        }
+      ],
+      "raDeg": 89,
+      "decDeg": -1.8,
+      "coordinateFrame": "ICRS",
+      "coordinateEpoch": "J2000",
+      "distance": null,
+      "distanceLower": null,
+      "distanceUpper": null,
+      "distanceUnit": null,
+      "distanceMethod": null,
+      "parallaxMas": null,
+      "properMotionRaMasYr": null,
+      "properMotionDecMasYr": null,
+      "radialVelocityKmS": null,
+      "redshift": null,
+      "physicalSize": null,
+      "angularSize": null,
+      "mass": null,
+      "massMethod": null,
+      "age": null,
+      "temperatureK": null,
+      "spectralType": null,
+      "hostStructure": "Milky Way",
+      "parentObject": null,
+      "associatedObjects": [],
+      "discoveryDate": null,
+      "discoveryMethod": null,
+      "observationStatus": "CATALOG_IDENTITY",
+      "evidenceClass": "CATALOG-DERIVED",
+      "scientificFidelity": "LB",
+      "wavelengths": [],
+      "geometryStatus": "MEASURED_POSITION",
+      "lastUpdated": "2026-08-14",
+      "dataSources": [
+        "cds-simbad-tap"
+      ],
+      "researchReferences": [
+        "2000A&AS..143....9W"
+      ],
+      "knownLimitations": [
+        "Catalog center does not define a hard physical boundary or complete membership.",
+        "Distance, age, membership probabilities, and internal velocity are unavailable unless separately sourced."
+      ]
+    },
+    {
+      "pcsObjectId": "pcs:galactic-structure:w43",
+      "officialName": "W43",
+      "commonName": "W43",
+      "aliases": [
+        "W 43"
+      ],
+      "objectClass": "galactic-structure",
+      "objectSubtype": "massive star-forming region",
+      "catalogIdentifiers": [
+        {
+          "catalog": "SIMBAD",
+          "identifier": "W 43"
+        }
+      ],
+      "raDeg": 281.885,
+      "decDeg": -1.942,
+      "coordinateFrame": "ICRS",
+      "coordinateEpoch": "J2000",
+      "distance": null,
+      "distanceLower": null,
+      "distanceUpper": null,
+      "distanceUnit": null,
+      "distanceMethod": null,
+      "parallaxMas": null,
+      "properMotionRaMasYr": null,
+      "properMotionDecMasYr": null,
+      "radialVelocityKmS": null,
+      "redshift": null,
+      "physicalSize": null,
+      "angularSize": null,
+      "mass": null,
+      "massMethod": null,
+      "age": null,
+      "temperatureK": null,
+      "spectralType": null,
+      "hostStructure": "Milky Way",
+      "parentObject": null,
+      "associatedObjects": [],
+      "discoveryDate": null,
+      "discoveryMethod": null,
+      "observationStatus": "CATALOG_IDENTITY",
+      "evidenceClass": "CATALOG-DERIVED",
+      "scientificFidelity": "LB",
+      "wavelengths": [],
+      "geometryStatus": "MEASURED_POSITION",
+      "lastUpdated": "2026-08-14",
+      "dataSources": [
+        "cds-simbad-tap"
+      ],
+      "researchReferences": [
+        "2000A&AS..143....9W",
+        "2013A&A...558A..53K"
+      ],
+      "knownLimitations": [
+        "Catalog center does not define a hard physical boundary or complete membership.",
+        "Distance, age, membership probabilities, and internal velocity are unavailable unless separately sourced."
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "from": "pcs:cluster:ngc-2244",
+      "predicate": "part-of",
+      "to": "pcs:nebula:rosette",
+      "evidenceClass": "CATALOG-DERIVED",
+      "sourceIds": [
+        "cds-simbad-tap"
+      ]
+    },
+    {
+      "from": "pcs:cluster:ngc-6611",
+      "predicate": "part-of",
+      "to": "pcs:nebula:eagle",
+      "evidenceClass": "CATALOG-DERIVED",
+      "sourceIds": [
+        "cds-simbad-tap"
+      ]
+    },
+    {
+      "from": "pcs:cluster:ngc-2070",
+      "predicate": "part-of",
+      "to": "pcs:nebula:tarantula",
+      "evidenceClass": "CATALOG-DERIVED",
+      "sourceIds": [
+        "cds-simbad-tap"
+      ]
+    },
+    {
+      "from": "pcs:cluster:orion-nebula-cluster",
+      "predicate": "part-of",
+      "to": "pcs:nebula:orion",
+      "evidenceClass": "CATALOG-DERIVED",
+      "sourceIds": [
+        "cds-simbad-tap"
+      ]
+    }
+  ],
+  "aliasIndex": {
+    "pleiades": "pcs:cluster:pleiades",
+    "m45": "pcs:cluster:pleiades",
+    "messier 45": "pcs:cluster:pleiades",
+    "melotte 22": "pcs:cluster:pleiades",
+    "simbad cl melotte 22": "pcs:cluster:pleiades",
+    "hyades": "pcs:cluster:hyades",
+    "melotte 25": "pcs:cluster:hyades",
+    "collinder 50": "pcs:cluster:hyades",
+    "simbad cl melotte 25": "pcs:cluster:hyades",
+    "omega centauri": "pcs:cluster:omega-centauri",
+    "ngc 5139": "pcs:cluster:omega-centauri",
+    "omega cen": "pcs:cluster:omega-centauri",
+    "simbad ngc 5139": "pcs:cluster:omega-centauri",
+    "47 tucanae": "pcs:cluster:47-tucanae",
+    "ngc 104": "pcs:cluster:47-tucanae",
+    "47 tuc": "pcs:cluster:47-tucanae",
+    "simbad ngc 104": "pcs:cluster:47-tucanae",
+    "ngc 3603": "pcs:cluster:ngc-3603",
+    "simbad ngc 3603": "pcs:cluster:ngc-3603",
+    "westerlund 1": "pcs:cluster:westerlund-1",
+    "wd 1": "pcs:cluster:westerlund-1",
+    "simbad cl westerlund 1": "pcs:cluster:westerlund-1",
+    "arches cluster": "pcs:cluster:arches",
+    "simbad name arches cluster": "pcs:cluster:arches",
+    "quintuplet cluster": "pcs:cluster:quintuplet",
+    "simbad name quintuplet cluster": "pcs:cluster:quintuplet",
+    "ngc 2244": "pcs:cluster:ngc-2244",
+    "simbad ngc 2244": "pcs:cluster:ngc-2244",
+    "ngc 6611": "pcs:cluster:ngc-6611",
+    "simbad m 16": "pcs:cluster:ngc-6611",
+    "ngc 2070": "pcs:cluster:ngc-2070",
+    "simbad ngc 2070": "pcs:cluster:ngc-2070",
+    "orion nebula cluster": "pcs:cluster:orion-nebula-cluster",
+    "onc": "pcs:cluster:orion-nebula-cluster",
+    "simbad name orion nebula cluster": "pcs:cluster:orion-nebula-cluster",
+    "orion molecular cloud complex": "pcs:galactic-structure:orion-molecular-cloud",
+    "orion molecular cloud": "pcs:galactic-structure:orion-molecular-cloud",
+    "simbad name orion molecular cloud": "pcs:galactic-structure:orion-molecular-cloud",
+    "w43": "pcs:galactic-structure:w43",
+    "w 43": "pcs:galactic-structure:w43",
+    "simbad w 43": "pcs:galactic-structure:w43"
+  },
+  "knownLimitations": [
+    "Catalog centers are not cluster boundaries.",
+    "Membership, distance and internal dynamics require later catalog-specific adapters."
+  ]
+}

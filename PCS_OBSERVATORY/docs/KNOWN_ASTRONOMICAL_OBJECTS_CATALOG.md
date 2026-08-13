@@ -104,3 +104,9 @@ SIMBAD supplies ten identity/coordinate rows. Gaia BH1/BH2/BH3 use VizieR Gaia D
 Crab Pulsar is linked to the Phase B Crab Nebula and remains a neutron-star/pulsar record. PSR J1745-2900 remains a magnetar/pulsar. Neither receives `blackHoleStatus`.
 
 Phase C status: `[x] Black holes + compact objects — VALIDATED / NOT FROZEN`
+
+## Phase D — Clusters and star-forming regions
+
+Phase D validates 14 SIMBAD-backed records: 12 clusters and two star-forming/molecular-cloud structures. Imported 14, rejected 0, unresolved 0, relationships 4, rendered 0. NGC 2244 → Rosette, NGC 6611 → Eagle, NGC 2070 → Tarantula, and Orion Nebula Cluster → Orion Nebula remain distinct physical-object relationships. Catalog centers do not become hard boundaries; distance, age, membership and internal dynamics remain unavailable in this phase. Raw snapshot SHA-256: `acbfa5b512ca1c91c88fae54c657002d2c98ba7c5bcf968349fe1fdbb649a4fd`.
+
+Phase D status: `[x] Clusters + star-forming regions — VALIDATED / NOT FROZEN`

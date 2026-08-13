@@ -1,0 +1,92 @@
+{
+  "schemaVersion": "pcs-known-object-phase-d-validation-v1",
+  "generatedAt": "2026-08-13T18:06:25.200Z",
+  "phase": "D",
+  "pass": true,
+  "counts": {
+    "input": 14,
+    "imported": 14,
+    "clusters": 12,
+    "starFormingStructures": 2,
+    "rejected": 0,
+    "unresolved": 0,
+    "relationships": 4,
+    "rendered": 0
+  },
+  "recordResults": [
+    {
+      "id": "pcs:cluster:pleiades",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "id": "pcs:cluster:hyades",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "id": "pcs:cluster:omega-centauri",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "id": "pcs:cluster:47-tucanae",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "id": "pcs:cluster:ngc-3603",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "id": "pcs:cluster:westerlund-1",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "id": "pcs:cluster:arches",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "id": "pcs:cluster:quintuplet",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "id": "pcs:cluster:ngc-2244",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "id": "pcs:cluster:ngc-6611",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "id": "pcs:cluster:ngc-2070",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "id": "pcs:cluster:orion-nebula-cluster",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "id": "pcs:galactic-structure:orion-molecular-cloud",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "id": "pcs:galactic-structure:w43",
+      "valid": true,
+      "errors": []
+    }
+  ],
+  "limitations": [
+    "Catalog centers are not cluster boundaries.",
+    "Membership, distance and internal dynamics require later catalog-specific adapters."
+  ]
+}

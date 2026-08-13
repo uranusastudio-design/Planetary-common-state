@@ -1,0 +1,160 @@
+{
+  "schemaVersion": "pcs-phase-d-simbad-v1",
+  "retrievedAt": "2026-08-14",
+  "rows": [
+    {
+      "seed": "M  45",
+      "row": {
+        "id": "M  45",
+        "main_id": "Cl Melotte   22",
+        "ra": 56.600833333333334,
+        "dec": 24.11388888888889,
+        "otype": "OpC",
+        "coo_bibcode": "2021A&A...647A..19T"
+      }
+    },
+    {
+      "seed": "Melotte 25",
+      "row": {
+        "id": "Cl Melotte   25",
+        "main_id": "Cl Melotte   25",
+        "ra": 67.44708333333334,
+        "dec": 16.948055555555555,
+        "otype": "OpC",
+        "coo_bibcode": "2021A&A...647A..19T"
+      }
+    },
+    {
+      "seed": "NGC  5139",
+      "row": {
+        "id": "NGC  5139",
+        "main_id": "NGC  5139",
+        "ra": 201.69699999999997,
+        "dec": -47.47947222222223,
+        "otype": "GlC",
+        "coo_bibcode": "2010AJ....140.1830G"
+      }
+    },
+    {
+      "seed": "NGC  104",
+      "row": {
+        "id": "NGC   104",
+        "main_id": "NGC   104",
+        "ra": 6.022329166666666,
+        "dec": -72.08144444444444,
+        "otype": "GlC",
+        "coo_bibcode": "2006AJ....131.1163S"
+      }
+    },
+    {
+      "seed": "NGC  3603",
+      "row": {
+        "id": "NGC  3603",
+        "main_id": "NGC  3603",
+        "ra": 168.7411,
+        "dec": -61.24219999999999,
+        "otype": "OpC",
+        "coo_bibcode": "2022A&A...661A..38P"
+      }
+    },
+    {
+      "seed": "Westerlund 1",
+      "row": {
+        "id": "Cl Westerlund    1",
+        "main_id": "Cl Westerlund    1",
+        "ra": 251.76,
+        "dec": -45.85194444444445,
+        "otype": "OpC",
+        "coo_bibcode": "2021A&A...647A..19T"
+      }
+    },
+    {
+      "seed": "NAME Arches Cluster",
+      "row": {
+        "id": "NAME Arches Cluster",
+        "main_id": "NAME Arches Cluster",
+        "ra": 266.4604166666667,
+        "dec": -28.824444444444445,
+        "otype": "Cl*",
+        "coo_bibcode": "2002ApJ...566..880G"
+      }
+    },
+    {
+      "seed": "NAME Quintuplet Cluster",
+      "row": {
+        "id": "NAME Quintuplet Cluster",
+        "main_id": "NAME Quintuplet Cluster",
+        "ra": 266.55778269545,
+        "dec": -28.83003348404491,
+        "otype": "OpC",
+        "coo_bibcode": "1988NASAR1190....1B"
+      }
+    },
+    {
+      "seed": "NGC  2244",
+      "row": {
+        "id": "NGC  2244",
+        "main_id": "NGC  2244",
+        "ra": 98.045,
+        "dec": 4.91388888888889,
+        "otype": "OpC",
+        "coo_bibcode": "2021A&A...647A..19T"
+      }
+    },
+    {
+      "seed": "NGC  6611",
+      "row": {
+        "id": "NGC  6611",
+        "main_id": "M  16",
+        "ra": 274.688,
+        "dec": -13.792,
+        "otype": "OpC",
+        "coo_bibcode": "2021A&A...647A..19T"
+      }
+    },
+    {
+      "seed": "NGC  2070",
+      "row": {
+        "id": "NGC  2070",
+        "main_id": "NGC  2070",
+        "ra": 84.675,
+        "dec": -69.1,
+        "otype": "Cl*",
+        "coo_bibcode": "2008MNRAS.389..678B"
+      }
+    },
+    {
+      "seed": "NAME Orion Nebula Cluster",
+      "row": {
+        "id": "NAME Orion Nebula Cluster",
+        "main_id": "NAME Orion Nebula Cluster",
+        "ra": 83.75,
+        "dec": -5.483333333333333,
+        "otype": "OpC",
+        "coo_bibcode": "2007MmSAI..78..628M"
+      }
+    },
+    {
+      "seed": "NAME Orion Molecular Cloud",
+      "row": {
+        "id": "NAME Orion Molecular Cloud",
+        "main_id": "NAME Orion Molecular Cloud",
+        "ra": 89,
+        "dec": -1.8,
+        "otype": "MoC",
+        "coo_bibcode": null
+      }
+    },
+    {
+      "seed": "W 43",
+      "row": {
+        "id": "W 43",
+        "main_id": "W 43",
+        "ra": 281.885,
+        "dec": -1.942,
+        "otype": "SFR",
+        "coo_bibcode": "2013A&A...558A..53K"
+      }
+    }
+  ]
+}
