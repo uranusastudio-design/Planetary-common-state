@@ -9,6 +9,7 @@
   const majorDataset = global.PCSSolarSystemMajorBodyDataset || null;
   const majorRecords = new Map((majorDataset?.records || []).map(record=>[record.objectId,record]));
   const Core = global.PCSSolarSystemCore;
+  const LongHorizon = global.PCSSolarSystemLongHorizon;
   const planetIds = global.PCSDeepSpaceRegistry?.PLANET_IDS || [];
   if (!Core) return;
 
@@ -100,6 +101,8 @@
   function createDisplaySolution(epoch, bodyIds=planetIds) {
     const date=validEpoch(epoch),ids=[...bodyIds],manifest=cache.manifest||{};
     if(authoritativeCoverage(ids,date)&&majorDataset)return Core.createSolution({id:`${majorDataset.datasetId}:hermite`,displayEpoch:date,bodyIds:ids,source:majorDataset.source,catalogEphemeris:majorDataset.catalogEphemeris,referenceSystem:majorDataset.referenceSystem,referencePlane:majorDataset.referencePlane,referenceFrame:`${majorDataset.referenceSystem}; ${majorDataset.referencePlane}; heliocentric origin`,ephemerisTimeScale:majorDataset.timeScale,positionMode:"Cached ephemeris · cubic Hermite state",orbitMode:"Cached ephemeris states from the same promoted solution",lastDataUpdate:majorDataset.generatedAt,qualityStatus:`Validated local cache · ${Core.timeConversionQuality(date).status}`,uncertainty:"No covariance supplied by Horizons VECTORS; interpolation error is validated per object class",coverage:majorDataset.coverage,validity:majorDataset.coverage,coherent:true,authoritative:true,stale:false,notice:"Every eligible major planet is resolved from the same promoted Horizons dataset and requested Display Epoch."});
+    const longHorizon=LongHorizon?.solutionMetadata(date,ids);
+    if(longHorizon)return Core.createSolution(longHorizon);
     const range=global.PCSDeepSpaceRegistry?.PLANET_VALID_RANGE;
     if(Core.within(date,range))return Core.createSolution({id:"jpl-approximate-elements-1800-2050",displayEpoch:date,bodyIds:ids,source:global.PCSDeepSpaceRegistry.SOURCES.JPL_ELEMENTS,catalogEphemeris:"JPL approximate positions of the major planets (1800–2050)",referenceFrame:Core.REFERENCE_FRAME,positionMode:"Approximate elements · propagated",orbitMode:"Approximate elements · same model as body positions",lastDataUpdate:"Not provided",qualityStatus:"Model-limited fallback; not mission-navigation precision",uncertainty:"JPL supplies no formal covariance with the approximate-element table",validity:range,coherent:true,authoritative:false,stale:false,notice:manifest.promotionStatus==="not-promoted"?"The legacy single-epoch Horizons snapshot is retained for provenance but is not mixed into this coherent fallback solution.":null});
     return Core.createSolution({id:"solar-system-position-unavailable",displayEpoch:date,bodyIds:ids,source:"Unavailable",catalogEphemeris:"Unavailable",referenceFrame:Core.REFERENCE_FRAME,positionMode:"Unavailable",orbitMode:"Unavailable",lastDataUpdate:manifest.lastDataUpdate||"Not provided",qualityStatus:"Requested epoch is outside validated local coverage",uncertainty:"Unavailable",validity:range,coherent:true,authoritative:false,stale:Boolean(manifest.datasetId),notice:"PCS does not silently extrapolate the 1800–2050 approximate-element model outside its published validity interval."});
@@ -107,6 +110,7 @@
 
   function getStateFromSolution(solution, bodyId, epoch=solution?.displayEpoch) {
     const date=validEpoch(epoch);
+    if(solution?.modelVersion&&solution.modelVersion===LongHorizon?.dataset?.modelVersion)return LongHorizon.getBodyState(bodyId,date);
     if(bodyId==="sun")return Object.freeze({bodyId,epoch:date.toISOString(),coordinateFrame:solution?.referenceFrame||Core.REFERENCE_FRAME,positionAu:Object.freeze([0,0,0]),heliocentricDistanceAu:0,dataStatus:solution?.authoritative?"ephemeris-derived":"catalog data",source:solution?.source||global.PCSDeepSpaceRegistry.SOURCES.JPL_HORIZONS,solutionId:solution?.id});
     if(!solution?.bodyIds?.includes(bodyId)||solution.positionMode==="Unavailable")return null;
     const state=solution.authoritative?interpolatedState(bodyId,date):getFallbackOrbitalState(bodyId,date);
@@ -135,6 +139,7 @@
     const periodDays=Math.abs(body.orbitalPeriodDays),pastDays=Number.isFinite(options.pastDays)?Math.max(0,options.pastDays):periodDays/2,futureDays=Number.isFinite(options.futureDays)?Math.max(0,options.futureDays):periodDays/2;
     const span=Math.max(pastDays+futureDays,periodDays/density),samples=[];
     const solution=options.solution||null;
+    if(solution?.modelVersion&&solution.modelVersion===LongHorizon?.dataset?.modelVersion)return LongHorizon.sampleOrbit(bodyId,date,{...options,pastDays,futureDays,sampleDensity:density});
     if(solution&&(!Core.within(new Date(date.getTime()-pastDays*DAY_MS),solution.validity)||!Core.within(new Date(date.getTime()+futureDays*DAY_MS),solution.validity)))return Object.freeze([]);
     for(let index=0;index<=density;index+=1){const epoch=new Date(date.getTime()+(-pastDays+span*index/density)*DAY_MS);const state=body.type==="natural-satellite"?getSatelliteRelativeState(bodyId,epoch):solution?getStateFromSolution(solution,bodyId,epoch):getBodyState(bodyId,epoch);if(state)samples.push(Object.freeze({...state,relativeTo:body.parentBodyId||null}));}
     return Object.freeze(samples);

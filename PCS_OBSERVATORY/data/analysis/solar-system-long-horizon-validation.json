@@ -1,0 +1,2776 @@
+{
+  "initialEpochJdTdb": -1931365.5,
+  "stepDays": 4.0,
+  "integrator": "REBOUND 5.1.1 WHFast corrector 11",
+  "checkpoints": [
+    {
+      "year": -5000,
+      "jdTdb": -105152.5,
+      "bodies": [
+        {
+          "bodyId": "mercury",
+          "positionResidualKm": 1121466.1934148024,
+          "velocityResidualMPerS": 1084.3758753342086,
+          "orbitalPhaseErrorDeg": 1.3903320614843508,
+          "semiMajorAxisDifferenceAu": 6.533873875280705e-08,
+          "eccentricityDifference": -6.060184781775391e-06,
+          "inclinationDifferenceDeg": 0.0012405519569655965
+        },
+        {
+          "bodyId": "venus",
+          "positionResidualKm": 437728.09938078927,
+          "velocityResidualMPerS": 142.33380984580023,
+          "orbitalPhaseErrorDeg": 0.2339569468345746,
+          "semiMajorAxisDifferenceAu": -7.331619755746033e-10,
+          "eccentricityDifference": -2.1876271346279313e-06,
+          "inclinationDifferenceDeg": -3.8584848724099174e-05
+        },
+        {
+          "bodyId": "earth",
+          "positionResidualKm": 248260.89325590787,
+          "velocityResidualMPerS": 48.39133270046777,
+          "orbitalPhaseErrorDeg": 0.09430020775227996,
+          "semiMajorAxisDifferenceAu": 9.904518916137306e-08,
+          "eccentricityDifference": 2.1228459517325104e-07,
+          "inclinationDifferenceDeg": -1.1495185234577932e-05
+        },
+        {
+          "bodyId": "mars",
+          "positionResidualKm": 110736.29709264755,
+          "velocityResidualMPerS": 11.526057364371635,
+          "orbitalPhaseErrorDeg": 0.025613597766077297,
+          "semiMajorAxisDifferenceAu": 1.1738513050474353e-07,
+          "eccentricityDifference": 7.446196156751794e-07,
+          "inclinationDifferenceDeg": 9.379601279668748e-06
+        },
+        {
+          "bodyId": "jupiter",
+          "positionResidualKm": 14694.795561350229,
+          "velocityResidualMPerS": 0.24961702088900425,
+          "orbitalPhaseErrorDeg": 0.0011220018322804764,
+          "semiMajorAxisDifferenceAu": -4.873227208435083e-07,
+          "eccentricityDifference": -2.542852219761249e-08,
+          "inclinationDifferenceDeg": 2.1111081418556665e-06
+        },
+        {
+          "bodyId": "saturn",
+          "positionResidualKm": 3991.707755849053,
+          "velocityResidualMPerS": 0.027293044887408965,
+          "orbitalPhaseErrorDeg": 0.0001510021250924227,
+          "semiMajorAxisDifferenceAu": 8.960571360461245e-07,
+          "eccentricityDifference": -6.586733831970282e-08,
+          "inclinationDifferenceDeg": -2.053355596665085e-06
+        },
+        {
+          "bodyId": "uranus",
+          "positionResidualKm": 10943.834221638428,
+          "velocityResidualMPerS": 0.02629944225270242,
+          "orbitalPhaseErrorDeg": 0.0002268741820449318,
+          "semiMajorAxisDifferenceAu": 2.5366806504223405e-06,
+          "eccentricityDifference": -2.774377001815709e-07,
+          "inclinationDifferenceDeg": 4.337735938775289e-06
+        },
+        {
+          "bodyId": "neptune",
+          "positionResidualKm": 326511.436998855,
+          "velocityResidualMPerS": 0.39529756620111794,
+          "orbitalPhaseErrorDeg": 0.004164076307993534,
+          "semiMajorAxisDifferenceAu": -8.772401013601439e-06,
+          "eccentricityDifference": -5.595860917174955e-08,
+          "inclinationDifferenceDeg": -8.992544149766246e-06
+        }
+      ]
+    },
+    {
+      "year": 1,
+      "jdTdb": 1721425.5,
+      "bodies": [
+        {
+          "bodyId": "mercury",
+          "positionResidualKm": 1473657.1217381486,
+          "velocityResidualMPerS": 1218.8579592062706,
+          "orbitalPhaseErrorDeg": 1.363453833960952,
+          "semiMajorAxisDifferenceAu": 3.3419146894253515e-08,
+          "eccentricityDifference": -1.425011819669586e-05,
+          "inclinationDifferenceDeg": 0.0038641582713809797
+        },
+        {
+          "bodyId": "venus",
+          "positionResidualKm": 872814.9685142721,
+          "velocityResidualMPerS": 282.9314129708791,
+          "orbitalPhaseErrorDeg": 0.4641571468456943,
+          "semiMajorAxisDifferenceAu": 2.4110913932062772e-08,
+          "eccentricityDifference": -8.606843893585632e-06,
+          "inclinationDifferenceDeg": -0.00014118536866236653
+        },
+        {
+          "bodyId": "earth",
+          "positionResidualKm": 466122.14375972416,
+          "velocityResidualMPerS": 96.65409850169304,
+          "orbitalPhaseErrorDeg": 0.18120469990115876,
+          "semiMajorAxisDifferenceAu": 2.5923658553139717e-08,
+          "eccentricityDifference": -9.364961422314577e-08,
+          "inclinationDifferenceDeg": -5.527957899709168e-06
+        },
+        {
+          "bodyId": "mars",
+          "positionResidualKm": 263461.33816793066,
+          "velocityResidualMPerS": 27.51219241004101,
+          "orbitalPhaseErrorDeg": 0.06388606392102283,
+          "semiMajorAxisDifferenceAu": -1.992478781964735e-07,
+          "eccentricityDifference": 3.937903516243457e-06,
+          "inclinationDifferenceDeg": 3.0755445687091765e-05
+        },
+        {
+          "bodyId": "jupiter",
+          "positionResidualKm": 26125.666183568086,
+          "velocityResidualMPerS": 0.43528188271889945,
+          "orbitalPhaseErrorDeg": 0.001842425725168676,
+          "semiMajorAxisDifferenceAu": 5.4457218290338005e-08,
+          "eccentricityDifference": 9.930369001404094e-08,
+          "inclinationDifferenceDeg": 8.094375850253854e-06
+        },
+        {
+          "bodyId": "saturn",
+          "positionResidualKm": 9285.896824062656,
+          "velocityResidualMPerS": 0.06603102822430533,
+          "orbitalPhaseErrorDeg": 0.000394825774201096,
+          "semiMajorAxisDifferenceAu": 1.9979736265440806e-07,
+          "eccentricityDifference": -2.0992633051331033e-07,
+          "inclinationDifferenceDeg": -2.279095417279109e-06
+        },
+        {
+          "bodyId": "uranus",
+          "positionResidualKm": 32214.161550201366,
+          "velocityResidualMPerS": 0.07179278091213714,
+          "orbitalPhaseErrorDeg": 0.0006192778741385848,
+          "semiMajorAxisDifferenceAu": 1.5381435858330406e-07,
+          "eccentricityDifference": -5.527769473406829e-07,
+          "inclinationDifferenceDeg": 8.70584402279384e-06
+        },
+        {
+          "bodyId": "neptune",
+          "positionResidualKm": 642319.3500654578,
+          "velocityResidualMPerS": 0.7671494200496255,
+          "orbitalPhaseErrorDeg": 0.008117963224348664,
+          "semiMajorAxisDifferenceAu": -1.8715744058539485e-05,
+          "eccentricityDifference": 2.657081567781702e-07,
+          "inclinationDifferenceDeg": -1.293717900652247e-05
+        }
+      ]
+    },
+    {
+      "year": 1000,
+      "jdTdb": 2086302.5,
+      "bodies": [
+        {
+          "bodyId": "mercury",
+          "positionResidualKm": 792234.7385975918,
+          "velocityResidualMPerS": 771.7259973943069,
+          "orbitalPhaseErrorDeg": 0.6433363728265982,
+          "semiMajorAxisDifferenceAu": 3.89300552905425e-09,
+          "eccentricityDifference": -1.5075760836091856e-05,
+          "inclinationDifferenceDeg": 0.004366971635537453
+        },
+        {
+          "bodyId": "venus",
+          "positionResidualKm": 948409.785743094,
+          "velocityResidualMPerS": 306.0542388773496,
+          "orbitalPhaseErrorDeg": 0.5006010848733227,
+          "semiMajorAxisDifferenceAu": -3.525166991646955e-08,
+          "eccentricityDifference": -1.1280086774112866e-05,
+          "inclinationDifferenceDeg": -0.00016119609720943728
+        },
+        {
+          "bodyId": "earth",
+          "positionResidualKm": 508956.4037630107,
+          "velocityResidualMPerS": 106.09864706553462,
+          "orbitalPhaseErrorDeg": 0.1982169440374232,
+          "semiMajorAxisDifferenceAu": 1.9620822522270487e-07,
+          "eccentricityDifference": 1.0040653828854995e-07,
+          "inclinationDifferenceDeg": -4.546415180745056e-06
+        },
+        {
+          "bodyId": "mars",
+          "positionResidualKm": 255777.28194378925,
+          "velocityResidualMPerS": 26.50210564983042,
+          "orbitalPhaseErrorDeg": 0.05940394379886214,
+          "semiMajorAxisDifferenceAu": 7.18266357502273e-08,
+          "eccentricityDifference": 5.2911827811974455e-06,
+          "inclinationDifferenceDeg": 3.355939342997161e-05
+        },
+        {
+          "bodyId": "jupiter",
+          "positionResidualKm": 32446.28752672768,
+          "velocityResidualMPerS": 0.5468224626806845,
+          "orbitalPhaseErrorDeg": 0.002383358642253296,
+          "semiMajorAxisDifferenceAu": -6.642921777100241e-07,
+          "eccentricityDifference": 1.6036659573198664e-07,
+          "inclinationDifferenceDeg": 8.567981073070996e-06
+        },
+        {
+          "bodyId": "saturn",
+          "positionResidualKm": 10470.548670007938,
+          "velocityResidualMPerS": 0.07299999924948031,
+          "orbitalPhaseErrorDeg": 0.00044463085566403106,
+          "semiMajorAxisDifferenceAu": 2.671928683639635e-06,
+          "eccentricityDifference": -5.730466971776149e-08,
+          "inclinationDifferenceDeg": -2.0655128154523084e-06
+        },
+        {
+          "bodyId": "uranus",
+          "positionResidualKm": 38702.63947095548,
+          "velocityResidualMPerS": 0.08161340559765871,
+          "orbitalPhaseErrorDeg": 0.0007390746196233082,
+          "semiMajorAxisDifferenceAu": 3.2912578475929877e-06,
+          "eccentricityDifference": 2.5984195489714423e-09,
+          "inclinationDifferenceDeg": 8.408213462818281e-06
+        },
+        {
+          "bodyId": "neptune",
+          "positionResidualKm": 632593.3377336307,
+          "velocityResidualMPerS": 0.7588770574670677,
+          "orbitalPhaseErrorDeg": 0.00801481501479887,
+          "semiMajorAxisDifferenceAu": 2.662118355090115e-06,
+          "eccentricityDifference": 1.9629808000864307e-07,
+          "inclinationDifferenceDeg": -1.3542057563764587e-05
+        }
+      ]
+    },
+    {
+      "year": 1800,
+      "jdTdb": 2378496.5,
+      "bodies": [
+        {
+          "bodyId": "mercury",
+          "positionResidualKm": 2363872.547446587,
+          "velocityResidualMPerS": 2140.9377157624685,
+          "orbitalPhaseErrorDeg": 2.6601313775036735,
+          "semiMajorAxisDifferenceAu": 4.677670389918731e-08,
+          "eccentricityDifference": -1.4480297411439969e-05,
+          "inclinationDifferenceDeg": 0.004735382807914412
+        },
+        {
+          "bodyId": "venus",
+          "positionResidualKm": 1033265.3465986754,
+          "velocityResidualMPerS": 335.8237469867238,
+          "orbitalPhaseErrorDeg": 0.5506906197740856,
+          "semiMajorAxisDifferenceAu": -1.533448197310605e-07,
+          "eccentricityDifference": -1.305300828671925e-05,
+          "inclinationDifferenceDeg": -0.00018256638281366477
+        },
+        {
+          "bodyId": "earth",
+          "positionResidualKm": 544484.167535115,
+          "velocityResidualMPerS": 113.61327413792196,
+          "orbitalPhaseErrorDeg": 0.21209813663199642,
+          "semiMajorAxisDifferenceAu": 4.971625444660788e-08,
+          "eccentricityDifference": -3.5416687663852864e-07,
+          "inclinationDifferenceDeg": 2.495197932217419e-06
+        },
+        {
+          "bodyId": "mars",
+          "positionResidualKm": 310093.99390565226,
+          "velocityResidualMPerS": 32.65981235496858,
+          "orbitalPhaseErrorDeg": 0.07537417942883928,
+          "semiMajorAxisDifferenceAu": -9.181719295980884e-08,
+          "eccentricityDifference": 5.885552491508017e-06,
+          "inclinationDifferenceDeg": 3.6103556030564476e-05
+        },
+        {
+          "bodyId": "jupiter",
+          "positionResidualKm": 36560.912174643476,
+          "velocityResidualMPerS": 0.6154607591067465,
+          "orbitalPhaseErrorDeg": 0.002720800197878007,
+          "semiMajorAxisDifferenceAu": -6.617347452220201e-07,
+          "eccentricityDifference": 8.071120577435309e-08,
+          "inclinationDifferenceDeg": 8.465562581605468e-06
+        },
+        {
+          "bodyId": "saturn",
+          "positionResidualKm": 10853.939235641656,
+          "velocityResidualMPerS": 0.07902996054721971,
+          "orbitalPhaseErrorDeg": 0.0004554560325873318,
+          "semiMajorAxisDifferenceAu": -6.759298027958494e-07,
+          "eccentricityDifference": -4.1759163288412893e-07,
+          "inclinationDifferenceDeg": -2.1772017224641615e-06
+        },
+        {
+          "bodyId": "uranus",
+          "positionResidualKm": 22524.7206959794,
+          "velocityResidualMPerS": 0.05762761810251614,
+          "orbitalPhaseErrorDeg": 0.0004700998953517576,
+          "semiMajorAxisDifferenceAu": 5.284772431224383e-06,
+          "eccentricityDifference": 8.185271387975424e-07,
+          "inclinationDifferenceDeg": 8.15621023064761e-06
+        },
+        {
+          "bodyId": "neptune",
+          "positionResidualKm": 577315.1627689903,
+          "velocityResidualMPerS": 0.6891900771647638,
+          "orbitalPhaseErrorDeg": 0.007292340513620556,
+          "semiMajorAxisDifferenceAu": 8.297139903135076e-06,
+          "eccentricityDifference": -2.3707573534176296e-07,
+          "inclinationDifferenceDeg": -1.3294465666335853e-05
+        }
+      ]
+    },
+    {
+      "year": 2000,
+      "jdTdb": 2451544.5,
+      "bodies": [
+        {
+          "bodyId": "mercury",
+          "positionResidualKm": 815677.1106573541,
+          "velocityResidualMPerS": 819.4257734172749,
+          "orbitalPhaseErrorDeg": 0.6688769353946785,
+          "semiMajorAxisDifferenceAu": -4.994062108298891e-09,
+          "eccentricityDifference": -1.4105852945783814e-05,
+          "inclinationDifferenceDeg": 0.004822163757269848
+        },
+        {
+          "bodyId": "venus",
+          "positionResidualKm": 1045686.6649413826,
+          "velocityResidualMPerS": 339.63253073364586,
+          "orbitalPhaseErrorDeg": 0.5560823763601421,
+          "semiMajorAxisDifferenceAu": 7.316108130428489e-08,
+          "eccentricityDifference": -1.3075688743494074e-05,
+          "inclinationDifferenceDeg": -0.00018289247313685308
+        },
+        {
+          "bodyId": "earth",
+          "positionResidualKm": 553597.8944662684,
+          "velocityResidualMPerS": 115.50073063414202,
+          "orbitalPhaseErrorDeg": 0.21562482335439767,
+          "semiMajorAxisDifferenceAu": -9.71677829308959e-08,
+          "eccentricityDifference": -5.891925136287945e-07,
+          "inclinationDifferenceDeg": -1.2336096213730029e-05
+        },
+        {
+          "bodyId": "mars",
+          "positionResidualKm": 396579.38958742266,
+          "velocityResidualMPerS": 44.409493172879,
+          "orbitalPhaseErrorDeg": 0.10908603156095471,
+          "semiMajorAxisDifferenceAu": 6.859049634933001e-07,
+          "eccentricityDifference": 6.871048436482563e-06,
+          "inclinationDifferenceDeg": 3.584709865589453e-05
+        },
+        {
+          "bodyId": "jupiter",
+          "positionResidualKm": 39893.047745309486,
+          "velocityResidualMPerS": 0.6823202801440054,
+          "orbitalPhaseErrorDeg": 0.003076296914926516,
+          "semiMajorAxisDifferenceAu": 8.037483123501943e-08,
+          "eccentricityDifference": 1.7114443565807713e-07,
+          "inclinationDifferenceDeg": 8.74190321575874e-06
+        },
+        {
+          "bodyId": "saturn",
+          "positionResidualKm": 11803.189710277264,
+          "velocityResidualMPerS": 0.08044698718329944,
+          "orbitalPhaseErrorDeg": 0.0004922210549616151,
+          "semiMajorAxisDifferenceAu": -5.802375238062041e-07,
+          "eccentricityDifference": -3.8809289817920423e-07,
+          "inclinationDifferenceDeg": -1.9187571456136254e-06
+        },
+        {
+          "bodyId": "uranus",
+          "positionResidualKm": 17381.87459888682,
+          "velocityResidualMPerS": 0.041306772324076056,
+          "orbitalPhaseErrorDeg": 0.00033390736930645986,
+          "semiMajorAxisDifferenceAu": 3.604801364076593e-07,
+          "eccentricityDifference": 4.423555457350181e-07,
+          "inclinationDifferenceDeg": 8.486477436231432e-06
+        },
+        {
+          "bodyId": "neptune",
+          "positionResidualKm": 562105.6688459084,
+          "velocityResidualMPerS": 0.676740624571699,
+          "orbitalPhaseErrorDeg": 0.007147453013798581,
+          "semiMajorAxisDifferenceAu": 3.652121700525868e-05,
+          "eccentricityDifference": -8.699676855815353e-08,
+          "inclinationDifferenceDeg": -1.340728906007449e-05
+        }
+      ]
+    },
+    {
+      "year": 2500,
+      "jdTdb": 2634166.5,
+      "bodies": [
+        {
+          "bodyId": "mercury",
+          "positionResidualKm": 873368.6314156845,
+          "velocityResidualMPerS": 864.6485117870465,
+          "orbitalPhaseErrorDeg": 0.71265067927079,
+          "semiMajorAxisDifferenceAu": 1.95159781668508e-08,
+          "eccentricityDifference": -1.4231008423792879e-05,
+          "inclinationDifferenceDeg": 0.0050228230679545405
+        },
+        {
+          "bodyId": "venus",
+          "positionResidualKm": 1094646.0656024117,
+          "velocityResidualMPerS": 354.7908692056274,
+          "orbitalPhaseErrorDeg": 0.5822355407095334,
+          "semiMajorAxisDifferenceAu": 5.07753940448552e-07,
+          "eccentricityDifference": -1.4748731996704761e-05,
+          "inclinationDifferenceDeg": -0.0001922995236887104
+        },
+        {
+          "bodyId": "earth",
+          "positionResidualKm": 576324.3783404247,
+          "velocityResidualMPerS": 120.06621463355226,
+          "orbitalPhaseErrorDeg": 0.224363049830386,
+          "semiMajorAxisDifferenceAu": -4.6169604228651906e-07,
+          "eccentricityDifference": -1.1983563347819914e-06,
+          "inclinationDifferenceDeg": 3.611685409271592e-06
+        },
+        {
+          "bodyId": "mars",
+          "positionResidualKm": 390501.8366657622,
+          "velocityResidualMPerS": 43.0959527184566,
+          "orbitalPhaseErrorDeg": 0.10431672428436797,
+          "semiMajorAxisDifferenceAu": -6.572707245133813e-08,
+          "eccentricityDifference": 7.10863135310047e-06,
+          "inclinationDifferenceDeg": 3.7443841846451775e-05
+        },
+        {
+          "bodyId": "jupiter",
+          "positionResidualKm": 38564.15237897776,
+          "velocityResidualMPerS": 0.6490263905019246,
+          "orbitalPhaseErrorDeg": 0.002863728755795963,
+          "semiMajorAxisDifferenceAu": 6.831458065903462e-09,
+          "eccentricityDifference": 1.0707100786544466e-07,
+          "inclinationDifferenceDeg": 8.510652884874403e-06
+        },
+        {
+          "bodyId": "saturn",
+          "positionResidualKm": 14073.980101233794,
+          "velocityResidualMPerS": 0.09514936808896732,
+          "orbitalPhaseErrorDeg": 0.0005800391373112045,
+          "semiMajorAxisDifferenceAu": -1.4760931570378943e-06,
+          "eccentricityDifference": -3.180651692649694e-07,
+          "inclinationDifferenceDeg": -1.6454955211742117e-06
+        },
+        {
+          "bodyId": "uranus",
+          "positionResidualKm": 10351.214532765549,
+          "velocityResidualMPerS": 0.026866647972256723,
+          "orbitalPhaseErrorDeg": 0.00020041142936529132,
+          "semiMajorAxisDifferenceAu": -4.140844772848595e-06,
+          "eccentricityDifference": 4.220901166362978e-07,
+          "inclinationDifferenceDeg": 9.266656824657993e-06
+        },
+        {
+          "bodyId": "neptune",
+          "positionResidualKm": 518452.8192701657,
+          "velocityResidualMPerS": 0.6258227377502922,
+          "orbitalPhaseErrorDeg": 0.00660504030667893,
+          "semiMajorAxisDifferenceAu": 1.9266455133504223e-05,
+          "eccentricityDifference": -7.662392896047587e-08,
+          "inclinationDifferenceDeg": -1.383042084435182e-05
+        }
+      ]
+    },
+    {
+      "year": 5000,
+      "jdTdb": 3547272.5,
+      "bodies": [
+        {
+          "bodyId": "mercury",
+          "positionResidualKm": 1784635.98925839,
+          "velocityResidualMPerS": 1479.2555038733371,
+          "orbitalPhaseErrorDeg": 1.5121105293153685,
+          "semiMajorAxisDifferenceAu": -3.736983422708562e-08,
+          "eccentricityDifference": -7.610370294064417e-06,
+          "inclinationDifferenceDeg": 0.00569205975049325
+        },
+        {
+          "bodyId": "venus",
+          "positionResidualKm": 1291458.6854019456,
+          "velocityResidualMPerS": 416.5936401086338,
+          "orbitalPhaseErrorDeg": 0.6802044653901517,
+          "semiMajorAxisDifferenceAu": 8.079010971329126e-08,
+          "eccentricityDifference": -2.294948175042815e-05,
+          "inclinationDifferenceDeg": -0.0002471726075774505
+        },
+        {
+          "bodyId": "earth",
+          "positionResidualKm": 700187.3552526699,
+          "velocityResidualMPerS": 143.14176186181723,
+          "orbitalPhaseErrorDeg": 0.270600791128095,
+          "semiMajorAxisDifferenceAu": 2.5686334603758354e-07,
+          "eccentricityDifference": -2.038703618853499e-06,
+          "inclinationDifferenceDeg": -3.924316062686728e-05
+        },
+        {
+          "bodyId": "mars",
+          "positionResidualKm": 506608.99228967633,
+          "velocityResidualMPerS": 57.228679290071284,
+          "orbitalPhaseErrorDeg": 0.1408440470252022,
+          "semiMajorAxisDifferenceAu": 4.712665877537603e-07,
+          "eccentricityDifference": 1.1177810838869373e-05,
+          "inclinationDifferenceDeg": 4.558712658742081e-05
+        },
+        {
+          "bodyId": "jupiter",
+          "positionResidualKm": 51655.0457253714,
+          "velocityResidualMPerS": 0.889665512547976,
+          "orbitalPhaseErrorDeg": 0.003996354113750738,
+          "semiMajorAxisDifferenceAu": 9.469002710815744e-07,
+          "eccentricityDifference": 2.909570396142369e-07,
+          "inclinationDifferenceDeg": 5.69214178613997e-06
+        },
+        {
+          "bodyId": "saturn",
+          "positionResidualKm": 16375.473909246597,
+          "velocityResidualMPerS": 0.1049479147203276,
+          "orbitalPhaseErrorDeg": 0.0006420383496529545,
+          "semiMajorAxisDifferenceAu": 2.2052592978383245e-06,
+          "eccentricityDifference": -4.391627720645719e-07,
+          "inclinationDifferenceDeg": -5.997316554484655e-07
+        },
+        {
+          "bodyId": "uranus",
+          "positionResidualKm": 38123.21120628904,
+          "velocityResidualMPerS": 0.0970412225066348,
+          "orbitalPhaseErrorDeg": 0.0007891713890434464,
+          "semiMajorAxisDifferenceAu": -1.0536240889535975e-05,
+          "eccentricityDifference": -6.41502924815518e-07,
+          "inclinationDifferenceDeg": 1.0260096189318446e-05
+        },
+        {
+          "bodyId": "neptune",
+          "positionResidualKm": 279276.02191262617,
+          "velocityResidualMPerS": 0.3442265838490577,
+          "orbitalPhaseErrorDeg": 0.003583875538103074,
+          "semiMajorAxisDifferenceAu": 2.8344772818655883e-05,
+          "eccentricityDifference": 9.114131724330399e-08,
+          "inclinationDifferenceDeg": -1.605747233712762e-05
+        }
+      ]
+    },
+    {
+      "year": 7500,
+      "jdTdb": 4460378.5,
+      "bodies": [
+        {
+          "bodyId": "mercury",
+          "positionResidualKm": 3561111.801123155,
+          "velocityResidualMPerS": 3245.7738162333967,
+          "orbitalPhaseErrorDeg": 4.044229509726898,
+          "semiMajorAxisDifferenceAu": 4.922024421372129e-08,
+          "eccentricityDifference": 5.000330943583098e-06,
+          "inclinationDifferenceDeg": 0.005595127516862419
+        },
+        {
+          "bodyId": "venus",
+          "positionResidualKm": 1523042.338299256,
+          "velocityResidualMPerS": 494.4007495999877,
+          "orbitalPhaseErrorDeg": 0.8076610951809859,
+          "semiMajorAxisDifferenceAu": 5.308442074802855e-08,
+          "eccentricityDifference": -3.3665602202978887e-05,
+          "inclinationDifferenceDeg": -0.00027360946391619123
+        },
+        {
+          "bodyId": "earth",
+          "positionResidualKm": 837550.6805731596,
+          "velocityResidualMPerS": 166.01414777798547,
+          "orbitalPhaseErrorDeg": 0.3202197168233841,
+          "semiMajorAxisDifferenceAu": -1.4708046980338452e-07,
+          "eccentricityDifference": -2.6779798788095777e-06,
+          "inclinationDifferenceDeg": -7.39554499659123e-05
+        },
+        {
+          "bodyId": "mars",
+          "positionResidualKm": 559326.9785019031,
+          "velocityResidualMPerS": 60.962090203555356,
+          "orbitalPhaseErrorDeg": 0.14807580237160978,
+          "semiMajorAxisDifferenceAu": -9.072334350435085e-08,
+          "eccentricityDifference": 1.4961359112164452e-05,
+          "inclinationDifferenceDeg": 6.30649214716783e-05
+        },
+        {
+          "bodyId": "jupiter",
+          "positionResidualKm": 52815.85501667608,
+          "velocityResidualMPerS": 0.8802906070804445,
+          "orbitalPhaseErrorDeg": 0.003770535567111505,
+          "semiMajorAxisDifferenceAu": 1.7485724868038233e-06,
+          "eccentricityDifference": -2.650279039978498e-08,
+          "inclinationDifferenceDeg": 1.9585168493652105e-06
+        },
+        {
+          "bodyId": "saturn",
+          "positionResidualKm": 18131.356071438546,
+          "velocityResidualMPerS": 0.1112354737051969,
+          "orbitalPhaseErrorDeg": 0.0007027615168910715,
+          "semiMajorAxisDifferenceAu": 4.367823427386952e-06,
+          "eccentricityDifference": -9.21722590922075e-07,
+          "inclinationDifferenceDeg": 9.7072688820532e-07
+        },
+        {
+          "bodyId": "uranus",
+          "positionResidualKm": 32561.985023350328,
+          "velocityResidualMPerS": 0.08047010201808787,
+          "orbitalPhaseErrorDeg": 0.0006645842285029323,
+          "semiMajorAxisDifferenceAu": -1.4432061281155484e-05,
+          "eccentricityDifference": -3.4195206247839005e-07,
+          "inclinationDifferenceDeg": 8.12642226044602e-06
+        },
+        {
+          "bodyId": "neptune",
+          "positionResidualKm": 10756.586245108148,
+          "velocityResidualMPerS": 0.009490861740856596,
+          "orbitalPhaseErrorDeg": 0.00013820324920569123,
+          "semiMajorAxisDifferenceAu": -9.497918920686743e-06,
+          "eccentricityDifference": -8.12436819778474e-07,
+          "inclinationDifferenceDeg": -2.04730155108912e-05
+        }
+      ]
+    },
+    {
+      "year": 9999,
+      "jdTdb": 5373119.5,
+      "bodies": [
+        {
+          "bodyId": "mercury",
+          "positionResidualKm": 2816721.2498449446,
+          "velocityResidualMPerS": 2322.5645423719384,
+          "orbitalPhaseErrorDeg": 2.5423259778179434,
+          "semiMajorAxisDifferenceAu": 3.458281394586038e-08,
+          "eccentricityDifference": 2.595599638324786e-05,
+          "inclinationDifferenceDeg": 0.004487394468076111
+        },
+        {
+          "bodyId": "venus",
+          "positionResidualKm": 1739613.6803722936,
+          "velocityResidualMPerS": 564.5429297487711,
+          "orbitalPhaseErrorDeg": 0.9213054365750925,
+          "semiMajorAxisDifferenceAu": -1.519185935938694e-07,
+          "eccentricityDifference": -4.258650768759363e-05,
+          "inclinationDifferenceDeg": -0.00029641740965979935
+        },
+        {
+          "bodyId": "earth",
+          "positionResidualKm": 976192.0277713059,
+          "velocityResidualMPerS": 188.85205555007556,
+          "orbitalPhaseErrorDeg": 0.3703319263951969,
+          "semiMajorAxisDifferenceAu": 1.9051402766478986e-07,
+          "eccentricityDifference": -5.361457153239477e-06,
+          "inclinationDifferenceDeg": -0.00011196573716631963
+        },
+        {
+          "bodyId": "mars",
+          "positionResidualKm": 535933.8823496563,
+          "velocityResidualMPerS": 56.82275872764682,
+          "orbitalPhaseErrorDeg": 0.13086015101616855,
+          "semiMajorAxisDifferenceAu": 4.879587454098555e-07,
+          "eccentricityDifference": 2.0336044879595838e-05,
+          "inclinationDifferenceDeg": 9.259979593401191e-05
+        },
+        {
+          "bodyId": "jupiter",
+          "positionResidualKm": 61906.081473543796,
+          "velocityResidualMPerS": 1.0289803849301387,
+          "orbitalPhaseErrorDeg": 0.004413821240910673,
+          "semiMajorAxisDifferenceAu": -1.0931984038009546e-06,
+          "eccentricityDifference": 1.1445833895951107e-07,
+          "inclinationDifferenceDeg": -1.2143599184000209e-06
+        },
+        {
+          "bodyId": "saturn",
+          "positionResidualKm": 21868.081065078026,
+          "velocityResidualMPerS": 0.14902762675004927,
+          "orbitalPhaseErrorDeg": 0.0008732472648148643,
+          "semiMajorAxisDifferenceAu": 4.784005980695838e-06,
+          "eccentricityDifference": -3.4048574285017175e-07,
+          "inclinationDifferenceDeg": 2.1652558803708644e-06
+        },
+        {
+          "bodyId": "uranus",
+          "positionResidualKm": 38999.198187691894,
+          "velocityResidualMPerS": 0.08931698083717068,
+          "orbitalPhaseErrorDeg": 0.0007489244805735763,
+          "semiMajorAxisDifferenceAu": -4.120796933904103e-06,
+          "eccentricityDifference": -2.9711750912375656e-07,
+          "inclinationDifferenceDeg": 9.187032436464015e-06
+        },
+        {
+          "bodyId": "neptune",
+          "positionResidualKm": 147739.44507320249,
+          "velocityResidualMPerS": 0.17682943915622465,
+          "orbitalPhaseErrorDeg": 0.0018795141833209481,
+          "semiMajorAxisDifferenceAu": -2.1177900389801607e-05,
+          "eccentricityDifference": 1.315075664389681e-07,
+          "inclinationDifferenceDeg": -2.60547983967907e-05
+        }
+      ]
+    },
+    {
+      "year": 12000,
+      "jdTdb": 6103969.5,
+      "bodies": [
+        {
+          "bodyId": "mercury",
+          "positionResidualKm": 3185356.0384833664,
+          "velocityResidualMPerS": 2632.4168015001906,
+          "orbitalPhaseErrorDeg": 2.9111962685121484,
+          "semiMajorAxisDifferenceAu": -2.5280432414120924e-08,
+          "eccentricityDifference": 5.214639427655876e-05,
+          "inclinationDifferenceDeg": 0.002739714645349167
+        },
+        {
+          "bodyId": "venus",
+          "positionResidualKm": 1943502.1449528,
+          "velocityResidualMPerS": 627.5012470756697,
+          "orbitalPhaseErrorDeg": 1.0303569071752403,
+          "semiMajorAxisDifferenceAu": 3.25581955840093e-08,
+          "eccentricityDifference": -4.8505363426693156e-05,
+          "inclinationDifferenceDeg": -0.00028307463091126195
+        },
+        {
+          "bodyId": "earth",
+          "positionResidualKm": 1079011.7960527171,
+          "velocityResidualMPerS": 207.29668929162665,
+          "orbitalPhaseErrorDeg": 0.4086318437987962,
+          "semiMajorAxisDifferenceAu": -3.384189710686769e-07,
+          "eccentricityDifference": -7.494188629501158e-06,
+          "inclinationDifferenceDeg": -0.00015798441863390522
+        },
+        {
+          "bodyId": "mars",
+          "positionResidualKm": 504435.562744497,
+          "velocityResidualMPerS": 52.665927290664264,
+          "orbitalPhaseErrorDeg": 0.11585470985337101,
+          "semiMajorAxisDifferenceAu": 8.088687963869745e-08,
+          "eccentricityDifference": 2.4943092955378998e-05,
+          "inclinationDifferenceDeg": 0.00011774347649895489
+        },
+        {
+          "bodyId": "jupiter",
+          "positionResidualKm": 83842.86736178136,
+          "velocityResidualMPerS": 1.459798750799407,
+          "orbitalPhaseErrorDeg": 0.006563353687334727,
+          "semiMajorAxisDifferenceAu": -3.5063015335623504e-07,
+          "eccentricityDifference": -3.0504821522947534e-08,
+          "inclinationDifferenceDeg": -2.7418138364154743e-06
+        },
+        {
+          "bodyId": "saturn",
+          "positionResidualKm": 21519.537494467964,
+          "velocityResidualMPerS": 0.15398059178196755,
+          "orbitalPhaseErrorDeg": 0.0008723586554051709,
+          "semiMajorAxisDifferenceAu": 4.865395499820124e-07,
+          "eccentricityDifference": 2.654503251930951e-07,
+          "inclinationDifferenceDeg": 4.319128106278214e-06
+        },
+        {
+          "bodyId": "uranus",
+          "positionResidualKm": 47100.17380092023,
+          "velocityResidualMPerS": 0.1041244633858886,
+          "orbitalPhaseErrorDeg": 0.000909200789155375,
+          "semiMajorAxisDifferenceAu": -1.7816340537990527e-05,
+          "eccentricityDifference": 5.521628109253496e-07,
+          "inclinationDifferenceDeg": 6.505167850612281e-06
+        },
+        {
+          "bodyId": "neptune",
+          "positionResidualKm": 74308.0227776786,
+          "velocityResidualMPerS": 0.09704632859552711,
+          "orbitalPhaseErrorDeg": 0.0009372463284595107,
+          "semiMajorAxisDifferenceAu": 1.2258737918102725e-05,
+          "eccentricityDifference": -2.1511398198489906e-07,
+          "inclinationDifferenceDeg": -3.146968888767532e-05
+        }
+      ]
+    },
+    {
+      "year": 15000,
+      "jdTdb": 7199697.5,
+      "bodies": [
+        {
+          "bodyId": "mercury",
+          "positionResidualKm": 1869289.481746019,
+          "velocityResidualMPerS": 1794.1401940655157,
+          "orbitalPhaseErrorDeg": 1.512070500786353,
+          "semiMajorAxisDifferenceAu": 1.9067581291665192e-08,
+          "eccentricityDifference": 9.840622798842902e-05,
+          "inclinationDifferenceDeg": -0.0014987157344616975
+        },
+        {
+          "bodyId": "venus",
+          "positionResidualKm": 2190698.9591211244,
+          "velocityResidualMPerS": 710.6252816911176,
+          "orbitalPhaseErrorDeg": 1.1604898706099374,
+          "semiMajorAxisDifferenceAu": -1.5020834154277907e-07,
+          "eccentricityDifference": -4.90448035682608e-05,
+          "inclinationDifferenceDeg": -0.00021584582682532272
+        },
+        {
+          "bodyId": "earth",
+          "positionResidualKm": 1208349.954857024,
+          "velocityResidualMPerS": 234.8470203904139,
+          "orbitalPhaseErrorDeg": 0.4596954245758446,
+          "semiMajorAxisDifferenceAu": 2.9110555377354075e-07,
+          "eccentricityDifference": -1.2959045317957607e-05,
+          "inclinationDifferenceDeg": -0.00021382659865287756
+        },
+        {
+          "bodyId": "mars",
+          "positionResidualKm": 570805.4842314083,
+          "velocityResidualMPerS": 59.46291408881403,
+          "orbitalPhaseErrorDeg": 0.13024691257428828,
+          "semiMajorAxisDifferenceAu": 6.319784140451645e-08,
+          "eccentricityDifference": 3.3393400639458726e-05,
+          "inclinationDifferenceDeg": 9.654430054284457e-05
+        },
+        {
+          "bodyId": "jupiter",
+          "positionResidualKm": 95201.44768220525,
+          "velocityResidualMPerS": 1.6323708727561508,
+          "orbitalPhaseErrorDeg": 0.007286786368611291,
+          "semiMajorAxisDifferenceAu": -3.7245324868706575e-07,
+          "eccentricityDifference": -2.568967599481109e-07,
+          "inclinationDifferenceDeg": -3.315377664403485e-06
+        },
+        {
+          "bodyId": "saturn",
+          "positionResidualKm": 21023.09597958489,
+          "velocityResidualMPerS": 0.16475955467885028,
+          "orbitalPhaseErrorDeg": 0.0008473702363842557,
+          "semiMajorAxisDifferenceAu": 8.305023477817031e-07,
+          "eccentricityDifference": 2.134352217068869e-06,
+          "inclinationDifferenceDeg": 7.211340968371616e-06
+        },
+        {
+          "bodyId": "uranus",
+          "positionResidualKm": 43264.7016021354,
+          "velocityResidualMPerS": 0.10948306599950487,
+          "orbitalPhaseErrorDeg": 0.0008982076131667728,
+          "semiMajorAxisDifferenceAu": 7.301283559968397e-07,
+          "eccentricityDifference": 4.2872548587646886e-08,
+          "inclinationDifferenceDeg": 4.3695743920935115e-06
+        },
+        {
+          "bodyId": "neptune",
+          "positionResidualKm": 188081.0367140158,
+          "velocityResidualMPerS": 0.21940172746218523,
+          "orbitalPhaseErrorDeg": 0.002377306157355342,
+          "semiMajorAxisDifferenceAu": -3.7853422192313246e-06,
+          "eccentricityDifference": -2.7113872929501737e-07,
+          "inclinationDifferenceDeg": -3.615463230932647e-05
+        }
+      ]
+    },
+    {
+      "year": 17000,
+      "jdTdb": 7930182.5,
+      "bodies": [
+        {
+          "bodyId": "mercury",
+          "positionResidualKm": 2014695.8165241443,
+          "velocityResidualMPerS": 1934.5998227970558,
+          "orbitalPhaseErrorDeg": 1.6297365397889219,
+          "semiMajorAxisDifferenceAu": -5.2462407418296664e-08,
+          "eccentricityDifference": 0.0001397240644651354,
+          "inclinationDifferenceDeg": -0.00545065434420966
+        },
+        {
+          "bodyId": "venus",
+          "positionResidualKm": 2385201.1678727684,
+          "velocityResidualMPerS": 772.8144725434078,
+          "orbitalPhaseErrorDeg": 1.2650038842348164,
+          "semiMajorAxisDifferenceAu": -7.274030588977354e-08,
+          "eccentricityDifference": -4.406835443775082e-05,
+          "inclinationDifferenceDeg": -0.00014220071179149585
+        },
+        {
+          "bodyId": "earth",
+          "positionResidualKm": 1276307.5828210958,
+          "velocityResidualMPerS": 252.3402587586869,
+          "orbitalPhaseErrorDeg": 0.48813902530704273,
+          "semiMajorAxisDifferenceAu": 6.470659537072265e-07,
+          "eccentricityDifference": -1.8611969642125248e-05,
+          "inclinationDifferenceDeg": -0.00025876476555919403
+        },
+        {
+          "bodyId": "mars",
+          "positionResidualKm": 843268.5995846853,
+          "velocityResidualMPerS": 92.48975166810219,
+          "orbitalPhaseErrorDeg": 0.21992356354715703,
+          "semiMajorAxisDifferenceAu": -5.956447775012919e-07,
+          "eccentricityDifference": 3.807393459522024e-05,
+          "inclinationDifferenceDeg": -2.0199707969459357e-05
+        },
+        {
+          "bodyId": "jupiter",
+          "positionResidualKm": 85603.47183349408,
+          "velocityResidualMPerS": 1.4100256557401531,
+          "orbitalPhaseErrorDeg": 0.005956267939402209,
+          "semiMajorAxisDifferenceAu": 1.5545919991311052e-06,
+          "eccentricityDifference": -5.806756517082179e-07,
+          "inclinationDifferenceDeg": -2.529583103649813e-06
+        },
+        {
+          "bodyId": "saturn",
+          "positionResidualKm": 26889.98431639209,
+          "velocityResidualMPerS": 0.19344635240826813,
+          "orbitalPhaseErrorDeg": 0.0010589443711348852,
+          "semiMajorAxisDifferenceAu": -4.521439198157395e-06,
+          "eccentricityDifference": 3.0141474210380187e-06,
+          "inclinationDifferenceDeg": 8.414445221482936e-06
+        },
+        {
+          "bodyId": "uranus",
+          "positionResidualKm": 55861.57742332329,
+          "velocityResidualMPerS": 0.14131130665162198,
+          "orbitalPhaseErrorDeg": 0.001148418545138403,
+          "semiMajorAxisDifferenceAu": -9.735634545648963e-06,
+          "eccentricityDifference": -6.294418569627314e-07,
+          "inclinationDifferenceDeg": 2.4289380514685988e-06
+        },
+        {
+          "bodyId": "neptune",
+          "positionResidualKm": 390865.7452948725,
+          "velocityResidualMPerS": 0.46844646846136034,
+          "orbitalPhaseErrorDeg": 0.0049704370705795945,
+          "semiMajorAxisDifferenceAu": -4.197648785009278e-06,
+          "eccentricityDifference": -1.9587036983841066e-07,
+          "inclinationDifferenceDeg": -3.7923540570972136e-05
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 1,
+  "datasetId": "pcs-solar-system-long-horizon-de441-nbody-v1",
+  "modelVersion": "PCS-SS-LH-2026.08",
+  "generatedAt": "2026-08-13T15:59:25.717922Z",
+  "de441Coverage": {
+    "startJdTdb": -3100015.5,
+    "endJdTdb": 8000016.5
+  },
+  "sourceFiles": [
+    {
+      "path": "de441_part-1.bsp",
+      "bytes": 1651119104,
+      "sha256": "13757827f5db41b835a24bbd637488636ce79a8ca754062fed17844f7d5b618e",
+      "md5": "7e5fcf9ecb5d08e1ab70c049baa60cd3",
+      "officialMd5": "7e5fcf9ecb5d08e1ab70c049baa60cd3",
+      "checksumStatus": "verified"
+    },
+    {
+      "path": "de441_part-2.bsp",
+      "bytes": 1656830976,
+      "sha256": "3abb17dae2d78dd34880377544aacb54892104a0d4462b322cb9f4454d4887f6",
+      "md5": "ad8dfa4e505ef0e3a5d587a5b4705632",
+      "officialMd5": "ad8dfa4e505ef0e3a5d587a5b4705632",
+      "checksumStatus": "verified"
+    },
+    {
+      "path": "gm_de440.tpc",
+      "bytes": 12406,
+      "sha256": "924ddf4fb9ead9fe8a1aa55780bcabde40b09d00065d58226e24b68d8092f140",
+      "md5": "a6bb37afab6815c9573a3ec208a8199a",
+      "officialMd5": "a6bb37afab6815c9573a3ec208a8199a",
+      "checksumStatus": "verified"
+    }
+  ],
+  "conservation": [
+    {
+      "jdTdb": 8000016.5,
+      "relativeEnergyDrift": -0.0,
+      "relativeAngularMomentumDrift": 0.0
+    },
+    {
+      "jdTdb": 8295424.5,
+      "relativeEnergyDrift": -1.4624499318466905e-13,
+      "relativeAngularMomentumDrift": 2.740589288062621e-14
+    },
+    {
+      "jdTdb": 8660667.5,
+      "relativeEnergyDrift": 2.0309978828792242e-13,
+      "relativeAngularMomentumDrift": 1.7133625552709697e-14
+    },
+    {
+      "jdTdb": 9025909.5,
+      "relativeEnergyDrift": -8.380331070132721e-14,
+      "relativeAngularMomentumDrift": 1.4392003424633433e-14
+    },
+    {
+      "jdTdb": 10852122.5,
+      "relativeEnergyDrift": 1.275124884396665e-13,
+      "relativeAngularMomentumDrift": 2.8144470167102317e-14
+    },
+    {
+      "jdTdb": 19983184.5,
+      "relativeEnergyDrift": -1.0056397284159265e-13,
+      "relativeAngularMomentumDrift": 1.724984142313644e-13
+    },
+    {
+      "jdTdb": 29114247.5,
+      "relativeEnergyDrift": -2.7293588053902846e-13,
+      "relativeAngularMomentumDrift": 8.659402876516724e-14
+    },
+    {
+      "jdTdb": 38245309.5,
+      "relativeEnergyDrift": -3.863168303114123e-13,
+      "relativeAngularMomentumDrift": 9.927864690945724e-14
+    }
+  ],
+  "boundedBrowserInterpolation": {
+    "maximumPropagationDays": 1826.25,
+    "stepDays": 4.0,
+    "checkpoints": [
+      {
+        "anchorYear": -10000,
+        "anchorJdTdb": -1931365.5,
+        "targetJdTdb": -1929539.25,
+        "propagationDays": 1826.25,
+        "bodies": [
+          {
+            "bodyId": "mercury",
+            "positionResidualKm": 1026.5757885665164,
+            "velocityResidualMPerS": 0.9367650971725258,
+            "orbitalPhaseErrorDeg": 0.0011779301227313594,
+            "semiMajorAxisDifferenceAu": 4.2574467895573065e-08,
+            "eccentricityDifference": 1.175643934980819e-07,
+            "inclinationDifferenceDeg": 1.0772756908750125e-08
+          },
+          {
+            "bodyId": "venus",
+            "positionResidualKm": 422.0396179260439,
+            "velocityResidualMPerS": 0.13763414238937818,
+            "orbitalPhaseErrorDeg": 0.00022366914239525153,
+            "semiMajorAxisDifferenceAu": 1.3317140723501097e-09,
+            "eccentricityDifference": 2.8685459533758784e-08,
+            "inclinationDifferenceDeg": -6.079638570355428e-09
+          },
+          {
+            "bodyId": "earth",
+            "positionResidualKm": 255.7962842626554,
+            "velocityResidualMPerS": 0.049099238208515604,
+            "orbitalPhaseErrorDeg": 9.616235679092011e-05,
+            "semiMajorAxisDifferenceAu": -1.004866412301908e-08,
+            "eccentricityDifference": 6.660366150962327e-09,
+            "inclinationDifferenceDeg": 6.096559853618899e-06
+          },
+          {
+            "bodyId": "mars",
+            "positionResidualKm": 159.52302984669237,
+            "velocityResidualMPerS": 0.017303650918876992,
+            "orbitalPhaseErrorDeg": 4.258610623567307e-05,
+            "semiMajorAxisDifferenceAu": 1.1216003237279892e-08,
+            "eccentricityDifference": 1.7324311721300667e-08,
+            "inclinationDifferenceDeg": -2.7891791098966223e-08
+          },
+          {
+            "bodyId": "jupiter",
+            "positionResidualKm": 13.828341728857607,
+            "velocityResidualMPerS": 0.0002486182580827028,
+            "orbitalPhaseErrorDeg": 0.0,
+            "semiMajorAxisDifferenceAu": -1.3996359626844423e-09,
+            "eccentricityDifference": 5.294628221963471e-09,
+            "inclinationDifferenceDeg": -4.754832971798351e-09
+          },
+          {
+            "bodyId": "saturn",
+            "positionResidualKm": 2.4654692393864095,
+            "velocityResidualMPerS": 2.192281248366011e-05,
+            "orbitalPhaseErrorDeg": 1.2074182697257333e-06,
+            "semiMajorAxisDifferenceAu": -6.962075360661402e-09,
+            "eccentricityDifference": 9.195693234653746e-10,
+            "inclinationDifferenceDeg": -6.3804430627811826e-09
+          },
+          {
+            "bodyId": "uranus",
+            "positionResidualKm": 1.7841790120844019,
+            "velocityResidualMPerS": 1.4898795581149971e-05,
+            "orbitalPhaseErrorDeg": 0.0,
+            "semiMajorAxisDifferenceAu": 1.1655746590122362e-08,
+            "eccentricityDifference": 7.335946849984509e-10,
+            "inclinationDifferenceDeg": 3.8693913073650776e-08
+          },
+          {
+            "bodyId": "neptune",
+            "positionResidualKm": 3.127580494675469,
+            "velocityResidualMPerS": 3.447649211341946e-05,
+            "orbitalPhaseErrorDeg": 0.0,
+            "semiMajorAxisDifferenceAu": -4.5349562327601234e-08,
+            "eccentricityDifference": -1.3104491970727938e-10,
+            "inclinationDifferenceDeg": -7.270298540973386e-08
+          }
+        ]
+      },
+      {
+        "anchorYear": -5000,
+        "anchorJdTdb": -105152.5,
+        "targetJdTdb": -103326.25,
+        "propagationDays": 1826.25,
+        "bodies": [
+          {
+            "bodyId": "mercury",
+            "positionResidualKm": 2189.4720137839154,
+            "velocityResidualMPerS": 1.7432347053796458,
+            "orbitalPhaseErrorDeg": 0.001993306778302807,
+            "semiMajorAxisDifferenceAu": -4.7479934095484566e-08,
+            "eccentricityDifference": -1.4439069365157486e-07,
+            "inclinationDifferenceDeg": 1.5389303165136425e-08
+          },
+          {
+            "bodyId": "venus",
+            "positionResidualKm": 463.1198149676233,
+            "velocityResidualMPerS": 0.1517193072574357,
+            "orbitalPhaseErrorDeg": 0.00024766058961326427,
+            "semiMajorAxisDifferenceAu": 6.347822267827041e-11,
+            "eccentricityDifference": 2.236345345019153e-09,
+            "inclinationDifferenceDeg": -1.0526779448127854e-10
+          },
+          {
+            "bodyId": "earth",
+            "positionResidualKm": 303.0761470683057,
+            "velocityResidualMPerS": 0.05938843948914073,
+            "orbitalPhaseErrorDeg": 0.00011512972213722231,
+            "semiMajorAxisDifferenceAu": 1.1273879607642812e-09,
+            "eccentricityDifference": 8.53484241614133e-09,
+            "inclinationDifferenceDeg": -2.3981676510187455e-06
+          },
+          {
+            "bodyId": "mars",
+            "positionResidualKm": 124.08473586530619,
+            "velocityResidualMPerS": 0.01304313813381768,
+            "orbitalPhaseErrorDeg": 3.249951933736744e-05,
+            "semiMajorAxisDifferenceAu": 1.571310281889282e-08,
+            "eccentricityDifference": 2.775533398946539e-08,
+            "inclinationDifferenceDeg": 3.0936138095682963e-09
+          },
+          {
+            "bodyId": "jupiter",
+            "positionResidualKm": 9.001376303685916,
+            "velocityResidualMPerS": 0.00016973251929492785,
+            "orbitalPhaseErrorDeg": 0.0,
+            "semiMajorAxisDifferenceAu": 6.12879968997504e-09,
+            "eccentricityDifference": -5.191193037934472e-09,
+            "inclinationDifferenceDeg": 5.188331098082699e-09
+          },
+          {
+            "bodyId": "saturn",
+            "positionResidualKm": 3.271725280597703,
+            "velocityResidualMPerS": 4.081276320575332e-05,
+            "orbitalPhaseErrorDeg": 0.0,
+            "semiMajorAxisDifferenceAu": -4.134959041834918e-09,
+            "eccentricityDifference": -1.159670776074151e-09,
+            "inclinationDifferenceDeg": -9.423223090720967e-09
+          },
+          {
+            "bodyId": "uranus",
+            "positionResidualKm": 2.7570120454735534,
+            "velocityResidualMPerS": 2.861011385440997e-05,
+            "orbitalPhaseErrorDeg": 0.0,
+            "semiMajorAxisDifferenceAu": 1.426183970920647e-08,
+            "eccentricityDifference": -2.5231389338964405e-09,
+            "inclinationDifferenceDeg": 3.7705565669732266e-08
+          },
+          {
+            "bodyId": "neptune",
+            "positionResidualKm": 1.0384595191809118,
+            "velocityResidualMPerS": 1.6749870297333557e-05,
+            "orbitalPhaseErrorDeg": 8.537736462515939e-07,
+            "semiMajorAxisDifferenceAu": -5.7843244860578125e-08,
+            "eccentricityDifference": -3.686920740930688e-09,
+            "inclinationDifferenceDeg": 6.146265052464628e-09
+          }
+        ]
+      },
+      {
+        "anchorYear": 1,
+        "anchorJdTdb": 1721425.5,
+        "targetJdTdb": 1723251.75,
+        "propagationDays": 1826.25,
+        "bodies": [
+          {
+            "bodyId": "mercury",
+            "positionResidualKm": 693.9242685705815,
+            "velocityResidualMPerS": 0.5860970722071417,
+            "orbitalPhaseErrorDeg": 0.0005691123459350716,
+            "semiMajorAxisDifferenceAu": -2.020806133540276e-08,
+            "eccentricityDifference": -4.251582311209923e-08,
+            "inclinationDifferenceDeg": 2.3030996665340808e-08
+          },
+          {
+            "bodyId": "venus",
+            "positionResidualKm": 457.86129989466144,
+            "velocityResidualMPerS": 0.14979606001305037,
+            "orbitalPhaseErrorDeg": 0.0002442986425472255,
+            "semiMajorAxisDifferenceAu": 6.815591424569334e-10,
+            "eccentricityDifference": 1.8174886509854382e-08,
+            "inclinationDifferenceDeg": 4.109530049589694e-09
+          },
+          {
+            "bodyId": "earth",
+            "positionResidualKm": 295.1347774312114,
+            "velocityResidualMPerS": 0.06068254332163762,
+            "orbitalPhaseErrorDeg": 0.00011473650538932138,
+            "semiMajorAxisDifferenceAu": 2.0227440944431407e-08,
+            "eccentricityDifference": 1.4683140016347185e-08,
+            "inclinationDifferenceDeg": -7.590822241998474e-06
+          },
+          {
+            "bodyId": "mars",
+            "positionResidualKm": 161.54781992221032,
+            "velocityResidualMPerS": 0.017774330930455075,
+            "orbitalPhaseErrorDeg": 4.4174020739496005e-05,
+            "semiMajorAxisDifferenceAu": 1.7930457341108763e-08,
+            "eccentricityDifference": 2.6972355043897167e-08,
+            "inclinationDifferenceDeg": 3.256701575082843e-08
+          },
+          {
+            "bodyId": "jupiter",
+            "positionResidualKm": 14.267355057206235,
+            "velocityResidualMPerS": 0.0002668591659880266,
+            "orbitalPhaseErrorDeg": 8.537736462515939e-07,
+            "semiMajorAxisDifferenceAu": 8.51348680441788e-09,
+            "eccentricityDifference": 8.162574484382734e-09,
+            "inclinationDifferenceDeg": 1.2721324438302872e-08
+          },
+          {
+            "bodyId": "saturn",
+            "positionResidualKm": 0.48343321684304236,
+            "velocityResidualMPerS": 1.8151910537705638e-05,
+            "orbitalPhaseErrorDeg": 8.537736462515939e-07,
+            "semiMajorAxisDifferenceAu": -1.0669740646562786e-08,
+            "eccentricityDifference": -1.5823474613929633e-09,
+            "inclinationDifferenceDeg": -1.2473145183378165e-08
+          },
+          {
+            "bodyId": "uranus",
+            "positionResidualKm": 1.90771934952202,
+            "velocityResidualMPerS": 9.960016558342646e-06,
+            "orbitalPhaseErrorDeg": 8.537736462515939e-07,
+            "semiMajorAxisDifferenceAu": 2.374171614860643e-08,
+            "eccentricityDifference": -4.32205667089125e-10,
+            "inclinationDifferenceDeg": 1.5811374098895215e-08
+          },
+          {
+            "bodyId": "neptune",
+            "positionResidualKm": 1.640743511764964,
+            "velocityResidualMPerS": 2.1260421134439458e-05,
+            "orbitalPhaseErrorDeg": 0.0,
+            "semiMajorAxisDifferenceAu": 3.38639090102788e-08,
+            "eccentricityDifference": 1.9568521837654007e-09,
+            "inclinationDifferenceDeg": -2.2451952075286385e-08
+          }
+        ]
+      },
+      {
+        "anchorYear": 1000,
+        "anchorJdTdb": 2086302.5,
+        "targetJdTdb": 2088128.75,
+        "propagationDays": 1826.25,
+        "bodies": [
+          {
+            "bodyId": "mercury",
+            "positionResidualKm": 378.2535630903239,
+            "velocityResidualMPerS": 0.3325496138857863,
+            "orbitalPhaseErrorDeg": 0.0002979400915558194,
+            "semiMajorAxisDifferenceAu": 6.9352474874051495e-09,
+            "eccentricityDifference": 1.2105933450134998e-08,
+            "inclinationDifferenceDeg": 2.3465352327889377e-08
+          },
+          {
+            "bodyId": "venus",
+            "positionResidualKm": 442.6473312927777,
+            "velocityResidualMPerS": 0.14445529774599403,
+            "orbitalPhaseErrorDeg": 0.0002349382790917443,
+            "semiMajorAxisDifferenceAu": 8.221102687500093e-10,
+            "eccentricityDifference": 3.1871723444459876e-08,
+            "inclinationDifferenceDeg": 3.1945548428780057e-09
+          },
+          {
+            "bodyId": "earth",
+            "positionResidualKm": 211.9711087709365,
+            "velocityResidualMPerS": 0.043817616153899015,
+            "orbitalPhaseErrorDeg": 8.255156767456103e-05,
+            "semiMajorAxisDifferenceAu": -3.831588379910045e-10,
+            "eccentricityDifference": -3.4543501774286778e-09,
+            "inclinationDifferenceDeg": -5.827780676925798e-07
+          },
+          {
+            "bodyId": "mars",
+            "positionResidualKm": 141.6171280322768,
+            "velocityResidualMPerS": 0.015475411195306989,
+            "orbitalPhaseErrorDeg": 3.887249319399265e-05,
+            "semiMajorAxisDifferenceAu": 2.204163140895332e-08,
+            "eccentricityDifference": 3.586235200470078e-08,
+            "inclinationDifferenceDeg": 1.8819714897588824e-08
+          },
+          {
+            "bodyId": "jupiter",
+            "positionResidualKm": 19.29790313961853,
+            "velocityResidualMPerS": 0.00033714992359170135,
+            "orbitalPhaseErrorDeg": 1.2074182697257333e-06,
+            "semiMajorAxisDifferenceAu": -9.875192219510609e-09,
+            "eccentricityDifference": 2.0499532557560762e-09,
+            "inclinationDifferenceDeg": -2.8263373863524066e-09
+          },
+          {
+            "bodyId": "saturn",
+            "positionResidualKm": 1.8242610256489966,
+            "velocityResidualMPerS": 1.3926874082073734e-05,
+            "orbitalPhaseErrorDeg": 0.0,
+            "semiMajorAxisDifferenceAu": 5.809047465277217e-09,
+            "eccentricityDifference": 5.60408303096338e-10,
+            "inclinationDifferenceDeg": -4.985922785749608e-11
+          },
+          {
+            "bodyId": "uranus",
+            "positionResidualKm": 2.5204985313372643,
+            "velocityResidualMPerS": 1.9884735625821205e-05,
+            "orbitalPhaseErrorDeg": 1.4787793334710982e-06,
+            "semiMajorAxisDifferenceAu": 2.3253470260442555e-09,
+            "eccentricityDifference": 1.4336382081481247e-10,
+            "inclinationDifferenceDeg": 5.3945902189767025e-09
+          },
+          {
+            "bodyId": "neptune",
+            "positionResidualKm": 1.8652906776927374,
+            "velocityResidualMPerS": 2.169983663842085e-05,
+            "orbitalPhaseErrorDeg": 0.0,
+            "semiMajorAxisDifferenceAu": 3.494910316703681e-08,
+            "eccentricityDifference": 1.8493942835484667e-09,
+            "inclinationDifferenceDeg": -9.582050930490027e-09
+          }
+        ]
+      },
+      {
+        "anchorYear": 1800,
+        "anchorJdTdb": 2378496.5,
+        "targetJdTdb": 2380322.75,
+        "propagationDays": 1826.25,
+        "bodies": [
+          {
+            "bodyId": "mercury",
+            "positionResidualKm": 2273.8789259197233,
+            "velocityResidualMPerS": 2.0464450393270037,
+            "orbitalPhaseErrorDeg": 0.0024367280209637394,
+            "semiMajorAxisDifferenceAu": -1.02068611895767e-08,
+            "eccentricityDifference": -3.2208296169011774e-08,
+            "inclinationDifferenceDeg": 2.5110812096329482e-08
+          },
+          {
+            "bodyId": "venus",
+            "positionResidualKm": 459.0390267677629,
+            "velocityResidualMPerS": 0.14984504805487397,
+            "orbitalPhaseErrorDeg": 0.0002438073193424968,
+            "semiMajorAxisDifferenceAu": -4.47408332604482e-10,
+            "eccentricityDifference": -2.1044876235762344e-08,
+            "inclinationDifferenceDeg": 4.578561974000195e-09
+          },
+          {
+            "bodyId": "earth",
+            "positionResidualKm": 303.7352969167191,
+            "velocityResidualMPerS": 0.06273590961896912,
+            "orbitalPhaseErrorDeg": 0.00011832082997548243,
+            "semiMajorAxisDifferenceAu": 2.1628707269627512e-08,
+            "eccentricityDifference": 2.2349852669967252e-08,
+            "inclinationDifferenceDeg": -9.538439572145951e-07
+          },
+          {
+            "bodyId": "mars",
+            "positionResidualKm": 119.04922859049175,
+            "velocityResidualMPerS": 0.012027646745277249,
+            "orbitalPhaseErrorDeg": 2.7888487077090034e-05,
+            "semiMajorAxisDifferenceAu": -4.626668603791018e-09,
+            "eccentricityDifference": -1.0258216026626243e-08,
+            "inclinationDifferenceDeg": 2.724829939459994e-08
+          },
+          {
+            "bodyId": "jupiter",
+            "positionResidualKm": 16.349338685267814,
+            "velocityResidualMPerS": 0.0003004113184782102,
+            "orbitalPhaseErrorDeg": 0.0,
+            "semiMajorAxisDifferenceAu": 2.2664661258886554e-09,
+            "eccentricityDifference": -5.634180851032955e-09,
+            "inclinationDifferenceDeg": -3.994081954061812e-09
+          },
+          {
+            "bodyId": "saturn",
+            "positionResidualKm": 2.5155722065299133,
+            "velocityResidualMPerS": 4.243023372697074e-05,
+            "orbitalPhaseErrorDeg": 0.0,
+            "semiMajorAxisDifferenceAu": 3.557028449563404e-09,
+            "eccentricityDifference": -3.484537568210211e-09,
+            "inclinationDifferenceDeg": -2.3957711370314883e-09
+          },
+          {
+            "bodyId": "uranus",
+            "positionResidualKm": 1.3446863482873241,
+            "velocityResidualMPerS": 1.857740544828165e-05,
+            "orbitalPhaseErrorDeg": 0.0,
+            "semiMajorAxisDifferenceAu": 3.508311863242852e-08,
+            "eccentricityDifference": 9.772483100523033e-10,
+            "inclinationDifferenceDeg": 1.3414130917155376e-09
+          },
+          {
+            "bodyId": "neptune",
+            "positionResidualKm": 2.3702051794655206,
+            "velocityResidualMPerS": 2.3420885577919925e-05,
+            "orbitalPhaseErrorDeg": 0.0,
+            "semiMajorAxisDifferenceAu": 7.611676977603565e-08,
+            "eccentricityDifference": 1.466886382327226e-10,
+            "inclinationDifferenceDeg": -5.734237529253505e-09
+          }
+        ]
+      },
+      {
+        "anchorYear": 2000,
+        "anchorJdTdb": 2451544.5,
+        "targetJdTdb": 2453370.75,
+        "propagationDays": 1826.25,
+        "bodies": [
+          {
+            "bodyId": "mercury",
+            "positionResidualKm": 508.2603476949882,
+            "velocityResidualMPerS": 0.41925154637494777,
+            "orbitalPhaseErrorDeg": 0.0004390879091687371,
+            "semiMajorAxisDifferenceAu": 1.6808045455452003e-08,
+            "eccentricityDifference": 3.414481303254391e-08,
+            "inclinationDifferenceDeg": 2.472696536415242e-08
+          },
+          {
+            "bodyId": "venus",
+            "positionResidualKm": 452.5207142263814,
+            "velocityResidualMPerS": 0.14744287368443357,
+            "orbitalPhaseErrorDeg": 0.00023944203300257103,
+            "semiMajorAxisDifferenceAu": -7.028628790095581e-10,
+            "eccentricityDifference": -3.0657279885722144e-08,
+            "inclinationDifferenceDeg": 5.521640034089614e-09
+          },
+          {
+            "bodyId": "earth",
+            "positionResidualKm": 295.29933553237504,
+            "velocityResidualMPerS": 0.061566929279338385,
+            "orbitalPhaseErrorDeg": 0.00011501570092638999,
+            "semiMajorAxisDifferenceAu": 5.8534830316148145e-09,
+            "eccentricityDifference": 5.067429018068559e-09,
+            "inclinationDifferenceDeg": -7.79630631214483e-06
+          },
+          {
+            "bodyId": "mars",
+            "positionResidualKm": 202.78146182525668,
+            "velocityResidualMPerS": 0.020629471745902784,
+            "orbitalPhaseErrorDeg": 4.871001256471787e-05,
+            "semiMajorAxisDifferenceAu": -1.8917460264944452e-08,
+            "eccentricityDifference": -2.8313544606084484e-08,
+            "inclinationDifferenceDeg": 3.2902557123293263e-08
+          },
+          {
+            "bodyId": "jupiter",
+            "positionResidualKm": 23.52394990351045,
+            "velocityResidualMPerS": 0.00040249047606141395,
+            "orbitalPhaseErrorDeg": 1.4787793334710982e-06,
+            "semiMajorAxisDifferenceAu": -2.96905158236882e-08,
+            "eccentricityDifference": -8.193204656392616e-09,
+            "inclinationDifferenceDeg": 7.444986849236557e-10
+          },
+          {
+            "bodyId": "saturn",
+            "positionResidualKm": 5.3176289012839035,
+            "velocityResidualMPerS": 5.7334696418210565e-05,
+            "orbitalPhaseErrorDeg": 0.0,
+            "semiMajorAxisDifferenceAu": -1.900438384438985e-08,
+            "eccentricityDifference": 1.7140184410679993e-10,
+            "inclinationDifferenceDeg": 3.4212188637638974e-10
+          },
+          {
+            "bodyId": "uranus",
+            "positionResidualKm": 1.7246269085211758,
+            "velocityResidualMPerS": 7.202966259478241e-06,
+            "orbitalPhaseErrorDeg": 0.0,
+            "semiMajorAxisDifferenceAu": -1.749699052311371e-08,
+            "eccentricityDifference": 5.221700988267131e-10,
+            "inclinationDifferenceDeg": -1.898694645952048e-09
+          },
+          {
+            "bodyId": "neptune",
+            "positionResidualKm": 1.2909216972510233,
+            "velocityResidualMPerS": 1.2695403396355168e-05,
+            "orbitalPhaseErrorDeg": 0.0,
+            "semiMajorAxisDifferenceAu": -1.402711191644812e-08,
+            "eccentricityDifference": 2.630536083229884e-09,
+            "inclinationDifferenceDeg": 2.267575016645651e-09
+          }
+        ]
+      },
+      {
+        "anchorYear": 2026,
+        "anchorJdTdb": 2461041.5,
+        "targetJdTdb": 2462867.75,
+        "propagationDays": 1826.25,
+        "bodies": [
+          {
+            "bodyId": "mercury",
+            "positionResidualKm": 618.6213414403294,
+            "velocityResidualMPerS": 0.510655892473323,
+            "orbitalPhaseErrorDeg": 0.0005783980920055788,
+            "semiMajorAxisDifferenceAu": 2.354284839301002e-08,
+            "eccentricityDifference": 5.190615928740705e-08,
+            "inclinationDifferenceDeg": 2.378916086342997e-08
+          },
+          {
+            "bodyId": "venus",
+            "positionResidualKm": 431.8462900460277,
+            "velocityResidualMPerS": 0.14033671269088857,
+            "orbitalPhaseErrorDeg": 0.00022715032542805434,
+            "semiMajorAxisDifferenceAu": -1.7476720071130103e-10,
+            "eccentricityDifference": -6.452159585258743e-09,
+            "inclinationDifferenceDeg": 4.455417368376402e-09
+          },
+          {
+            "bodyId": "earth",
+            "positionResidualKm": 223.40963177954262,
+            "velocityResidualMPerS": 0.04633184544894322,
+            "orbitalPhaseErrorDeg": 8.701373502640219e-05,
+            "semiMajorAxisDifferenceAu": -1.450858044815817e-08,
+            "eccentricityDifference": -1.3890955573303554e-08,
+            "inclinationDifferenceDeg": 6.956353735306474e-06
+          },
+          {
+            "bodyId": "mars",
+            "positionResidualKm": 162.68345961917436,
+            "velocityResidualMPerS": 0.016023028435710254,
+            "orbitalPhaseErrorDeg": 3.733246693472806e-05,
+            "semiMajorAxisDifferenceAu": -1.980790931277454e-08,
+            "eccentricityDifference": -3.254242787742445e-08,
+            "inclinationDifferenceDeg": 1.5149254073421048e-08
+          },
+          {
+            "bodyId": "jupiter",
+            "positionResidualKm": 13.069843936556433,
+            "velocityResidualMPerS": 0.00025478179614613896,
+            "orbitalPhaseErrorDeg": 1.2074182697257333e-06,
+            "semiMajorAxisDifferenceAu": 1.1568832114505767e-08,
+            "eccentricityDifference": -2.5673351985999737e-09,
+            "inclinationDifferenceDeg": -1.639317126489459e-09
+          },
+          {
+            "bodyId": "saturn",
+            "positionResidualKm": 1.8295009281949903,
+            "velocityResidualMPerS": 1.4806125131299896e-05,
+            "orbitalPhaseErrorDeg": 0.0,
+            "semiMajorAxisDifferenceAu": -4.034959033560881e-09,
+            "eccentricityDifference": -7.864393858358909e-11,
+            "inclinationDifferenceDeg": -2.0103616549249637e-09
+          },
+          {
+            "bodyId": "uranus",
+            "positionResidualKm": 0.7181833944612056,
+            "velocityResidualMPerS": 1.052847099850388e-05,
+            "orbitalPhaseErrorDeg": 8.537736462515939e-07,
+            "semiMajorAxisDifferenceAu": -3.442079687943078e-08,
+            "eccentricityDifference": 9.426944780344115e-10,
+            "inclinationDifferenceDeg": -9.706593306901823e-09
+          },
+          {
+            "bodyId": "neptune",
+            "positionResidualKm": 2.140004084282591,
+            "velocityResidualMPerS": 1.0975739938815995e-05,
+            "orbitalPhaseErrorDeg": 0.0,
+            "semiMajorAxisDifferenceAu": 3.35356276082166e-09,
+            "eccentricityDifference": 1.0645812321963266e-09,
+            "inclinationDifferenceDeg": 1.9299853493137675e-08
+          }
+        ]
+      },
+      {
+        "anchorYear": 2050,
+        "anchorJdTdb": 2469807.5,
+        "targetJdTdb": 2471633.75,
+        "propagationDays": 1826.25,
+        "bodies": [
+          {
+            "bodyId": "mercury",
+            "positionResidualKm": 2323.555404631951,
+            "velocityResidualMPerS": 2.057018660289181,
+            "orbitalPhaseErrorDeg": 0.0024373208497132795,
+            "semiMajorAxisDifferenceAu": -1.685875589130248e-08,
+            "eccentricityDifference": -5.318995099923285e-08,
+            "inclinationDifferenceDeg": 2.4101264983755755e-08
+          },
+          {
+            "bodyId": "venus",
+            "positionResidualKm": 431.52394675913433,
+            "velocityResidualMPerS": 0.14023741042458665,
+            "orbitalPhaseErrorDeg": 0.00022701069023478804,
+            "semiMajorAxisDifferenceAu": -1.533381199791961e-10,
+            "eccentricityDifference": -4.204954814901463e-09,
+            "inclinationDifferenceDeg": 4.3316941145121746e-09
+          },
+          {
+            "bodyId": "earth",
+            "positionResidualKm": 304.84370343115074,
+            "velocityResidualMPerS": 0.06356290916008271,
+            "orbitalPhaseErrorDeg": 0.00011873594350640688,
+            "semiMajorAxisDifferenceAu": 1.3088350181433839e-08,
+            "eccentricityDifference": 1.2226367133993943e-08,
+            "inclinationDifferenceDeg": 2.0113345335203564e-06
+          },
+          {
+            "bodyId": "mars",
+            "positionResidualKm": 113.4773731874485,
+            "velocityResidualMPerS": 0.011547210801048646,
+            "orbitalPhaseErrorDeg": 2.7467107044607688e-05,
+            "semiMajorAxisDifferenceAu": 3.951067917284945e-09,
+            "eccentricityDifference": 4.396823641283909e-09,
+            "inclinationDifferenceDeg": 1.2148210215556787e-08
+          },
+          {
+            "bodyId": "jupiter",
+            "positionResidualKm": 9.753279885985618,
+            "velocityResidualMPerS": 0.0001892907736568412,
+            "orbitalPhaseErrorDeg": 8.537736462515939e-07,
+            "semiMajorAxisDifferenceAu": 1.2180196407030053e-08,
+            "eccentricityDifference": -1.2272221780462722e-09,
+            "inclinationDifferenceDeg": 2.413578226168056e-10
+          },
+          {
+            "bodyId": "saturn",
+            "positionResidualKm": 3.5248282357929317,
+            "velocityResidualMPerS": 4.5893403759165454e-05,
+            "orbitalPhaseErrorDeg": 0.0,
+            "semiMajorAxisDifferenceAu": -2.933880693944957e-09,
+            "eccentricityDifference": 3.5332807304944147e-09,
+            "inclinationDifferenceDeg": -5.789951185164455e-09
+          },
+          {
+            "bodyId": "uranus",
+            "positionResidualKm": 0.9264838641309657,
+            "velocityResidualMPerS": 4.860009262342935e-06,
+            "orbitalPhaseErrorDeg": 0.0,
+            "semiMajorAxisDifferenceAu": 7.05327352079621e-10,
+            "eccentricityDifference": -3.538856360729703e-10,
+            "inclinationDifferenceDeg": 2.620050842949695e-10
+          },
+          {
+            "bodyId": "neptune",
+            "positionResidualKm": 2.9975910071295426,
+            "velocityResidualMPerS": 2.1908207919065958e-05,
+            "orbitalPhaseErrorDeg": 8.537736462515939e-07,
+            "semiMajorAxisDifferenceAu": 4.839247580434858e-08,
+            "eccentricityDifference": -2.812800010271177e-10,
+            "inclinationDifferenceDeg": -8.795732808764e-09
+          }
+        ]
+      },
+      {
+        "anchorYear": 2100,
+        "anchorJdTdb": 2488069.5,
+        "targetJdTdb": 2489895.75,
+        "propagationDays": 1826.25,
+        "bodies": [
+          {
+            "bodyId": "mercury",
+            "positionResidualKm": 385.20480465902307,
+            "velocityResidualMPerS": 0.36818603566850916,
+            "orbitalPhaseErrorDeg": 0.00031379869352888683,
+            "semiMajorAxisDifferenceAu": -6.676750596845693e-09,
+            "eccentricityDifference": -1.17940564259289e-08,
+            "inclinationDifferenceDeg": 2.406778154551148e-08
+          },
+          {
+            "bodyId": "venus",
+            "positionResidualKm": 444.68266799966733,
+            "velocityResidualMPerS": 0.1451290513999965,
+            "orbitalPhaseErrorDeg": 0.0002360510437368517,
+            "semiMajorAxisDifferenceAu": 7.972897897445819e-10,
+            "eccentricityDifference": 3.203769355364372e-08,
+            "inclinationDifferenceDeg": 4.015757504305384e-09
+          },
+          {
+            "bodyId": "earth",
+            "positionResidualKm": 248.17517857619174,
+            "velocityResidualMPerS": 0.05128546687700729,
+            "orbitalPhaseErrorDeg": 9.665758438993643e-05,
+            "semiMajorAxisDifferenceAu": 9.545872758920382e-09,
+            "eccentricityDifference": 9.678922833350478e-09,
+            "inclinationDifferenceDeg": 6.317888131671112e-06
+          },
+          {
+            "bodyId": "mars",
+            "positionResidualKm": 178.12631160715048,
+            "velocityResidualMPerS": 0.019328563376164475,
+            "orbitalPhaseErrorDeg": 4.735173655176668e-05,
+            "semiMajorAxisDifferenceAu": 9.880154028252264e-09,
+            "eccentricityDifference": 1.145842945526887e-08,
+            "inclinationDifferenceDeg": 1.7086867698523633e-08
+          },
+          {
+            "bodyId": "jupiter",
+            "positionResidualKm": 15.907593817139286,
+            "velocityResidualMPerS": 0.00030623243493888485,
+            "orbitalPhaseErrorDeg": 8.537736462515939e-07,
+            "semiMajorAxisDifferenceAu": 5.916529488558808e-09,
+            "eccentricityDifference": 8.714489720118568e-09,
+            "inclinationDifferenceDeg": 6.946214492487002e-09
+          },
+          {
+            "bodyId": "saturn",
+            "positionResidualKm": 2.0365800345040426,
+            "velocityResidualMPerS": 3.402229474274688e-05,
+            "orbitalPhaseErrorDeg": 0.0,
+            "semiMajorAxisDifferenceAu": -3.6996219421325804e-09,
+            "eccentricityDifference": -1.9827677555372958e-09,
+            "inclinationDifferenceDeg": 1.216667211423328e-09
+          },
+          {
+            "bodyId": "uranus",
+            "positionResidualKm": 2.167553592937522,
+            "velocityResidualMPerS": 1.4005739024173994e-05,
+            "orbitalPhaseErrorDeg": 0.0,
+            "semiMajorAxisDifferenceAu": 1.1446225300915103e-08,
+            "eccentricityDifference": 3.773108422922e-10,
+            "inclinationDifferenceDeg": 1.1583209280630058e-08
+          },
+          {
+            "bodyId": "neptune",
+            "positionResidualKm": 0.9408662365229605,
+            "velocityResidualMPerS": 2.5035975296041194e-05,
+            "orbitalPhaseErrorDeg": 0.0,
+            "semiMajorAxisDifferenceAu": -6.947217912056658e-08,
+            "eccentricityDifference": -6.747501793413768e-10,
+            "inclinationDifferenceDeg": 7.86283349540895e-09
+          }
+        ]
+      },
+      {
+        "anchorYear": 2500,
+        "anchorJdTdb": 2634166.5,
+        "targetJdTdb": 2635992.75,
+        "propagationDays": 1826.25,
+        "bodies": [
+          {
+            "bodyId": "mercury",
+            "positionResidualKm": 576.0969297984274,
+            "velocityResidualMPerS": 0.47392796047297564,
+            "orbitalPhaseErrorDeg": 0.0005229605770633263,
+            "semiMajorAxisDifferenceAu": 2.1040123920901266e-08,
+            "eccentricityDifference": 4.471680600803829e-08,
+            "inclinationDifferenceDeg": 2.4529953179808217e-08
+          },
+          {
+            "bodyId": "venus",
+            "positionResidualKm": 459.53399831575786,
+            "velocityResidualMPerS": 0.15028190238732492,
+            "orbitalPhaseErrorDeg": 0.00024491550285389845,
+            "semiMajorAxisDifferenceAu": 2.0198553940531383e-10,
+            "eccentricityDifference": 1.3090287247392862e-08,
+            "inclinationDifferenceDeg": 1.6892216514463598e-09
+          },
+          {
+            "bodyId": "earth",
+            "positionResidualKm": 201.1494952607407,
+            "velocityResidualMPerS": 0.04155354562936236,
+            "orbitalPhaseErrorDeg": 7.830551986388182e-05,
+            "semiMajorAxisDifferenceAu": -1.0980858222708889e-08,
+            "eccentricityDifference": -9.164959097196501e-09,
+            "inclinationDifferenceDeg": -6.4127525947199615e-06
+          },
+          {
+            "bodyId": "mars",
+            "positionResidualKm": 163.84477021256717,
+            "velocityResidualMPerS": 0.016127598591642416,
+            "orbitalPhaseErrorDeg": 3.759513508802004e-05,
+            "semiMajorAxisDifferenceAu": -1.9610846946349625e-08,
+            "eccentricityDifference": -3.355238607782862e-08,
+            "inclinationDifferenceDeg": 1.9377375037876732e-08
+          },
+          {
+            "bodyId": "jupiter",
+            "positionResidualKm": 12.70352243792082,
+            "velocityResidualMPerS": 0.0002366479550125066,
+            "orbitalPhaseErrorDeg": 0.0,
+            "semiMajorAxisDifferenceAu": 5.459909857563616e-09,
+            "eccentricityDifference": -4.2977863004556305e-09,
+            "inclinationDifferenceDeg": 5.8673950142917874e-09
+          },
+          {
+            "bodyId": "saturn",
+            "positionResidualKm": 1.503897914019967,
+            "velocityResidualMPerS": 2.6869330131534417e-05,
+            "orbitalPhaseErrorDeg": 0.0,
+            "semiMajorAxisDifferenceAu": 1.8391455469668472e-08,
+            "eccentricityDifference": 1.925256586099433e-09,
+            "inclinationDifferenceDeg": -8.399982931450722e-10
+          },
+          {
+            "bodyId": "uranus",
+            "positionResidualKm": 1.9690051508209931,
+            "velocityResidualMPerS": 8.839796540446164e-06,
+            "orbitalPhaseErrorDeg": 0.0,
+            "semiMajorAxisDifferenceAu": 1.5446705248223225e-08,
+            "eccentricityDifference": -1.4004375714637973e-09,
+            "inclinationDifferenceDeg": 5.2749546952668425e-09
+          },
+          {
+            "bodyId": "neptune",
+            "positionResidualKm": 2.3695517119497134,
+            "velocityResidualMPerS": 1.5150491111431452e-05,
+            "orbitalPhaseErrorDeg": 0.0,
+            "semiMajorAxisDifferenceAu": -2.51544776119772e-08,
+            "eccentricityDifference": 2.3093186390932274e-09,
+            "inclinationDifferenceDeg": -3.2049429776748184e-10
+          }
+        ]
+      },
+      {
+        "anchorYear": 5000,
+        "anchorJdTdb": 3547272.5,
+        "targetJdTdb": 3549098.75,
+        "propagationDays": 1826.25,
+        "bodies": [
+          {
+            "bodyId": "mercury",
+            "positionResidualKm": 1350.6005387202997,
+            "velocityResidualMPerS": 1.3187893963798365,
+            "orbitalPhaseErrorDeg": 0.001664652378302797,
+            "semiMajorAxisDifferenceAu": 4.8994592383166946e-08,
+            "eccentricityDifference": 1.457061636900292e-07,
+            "inclinationDifferenceDeg": 2.5571331718765578e-08
+          },
+          {
+            "bodyId": "venus",
+            "positionResidualKm": 438.2584521223045,
+            "velocityResidualMPerS": 0.14265292563192006,
+            "orbitalPhaseErrorDeg": 0.00023133327407913866,
+            "semiMajorAxisDifferenceAu": 3.1357128005282675e-10,
+            "eccentricityDifference": 1.7055801723210584e-08,
+            "inclinationDifferenceDeg": 3.0460318711789114e-09
+          },
+          {
+            "bodyId": "earth",
+            "positionResidualKm": 300.9083442192156,
+            "velocityResidualMPerS": 0.06120030024146572,
+            "orbitalPhaseErrorDeg": 0.0001162919940597703,
+            "semiMajorAxisDifferenceAu": 2.068516558040301e-08,
+            "eccentricityDifference": 1.507507053563617e-08,
+            "inclinationDifferenceDeg": 2.05483197213141e-06
+          },
+          {
+            "bodyId": "mars",
+            "positionResidualKm": 202.36670895794177,
+            "velocityResidualMPerS": 0.020244212316594706,
+            "orbitalPhaseErrorDeg": 4.760505882735609e-05,
+            "semiMajorAxisDifferenceAu": -2.2696840629166104e-08,
+            "eccentricityDifference": -3.526182017210555e-08,
+            "inclinationDifferenceDeg": 1.300479346433292e-08
+          },
+          {
+            "bodyId": "jupiter",
+            "positionResidualKm": 16.064244900653623,
+            "velocityResidualMPerS": 0.00028775121756652875,
+            "orbitalPhaseErrorDeg": 0.0,
+            "semiMajorAxisDifferenceAu": -4.894198823990337e-09,
+            "eccentricityDifference": -6.928827213370514e-09,
+            "inclinationDifferenceDeg": -1.3428043565966163e-08
+          },
+          {
+            "bodyId": "saturn",
+            "positionResidualKm": 2.464332009746364,
+            "velocityResidualMPerS": 2.4722678300047462e-05,
+            "orbitalPhaseErrorDeg": 0.0,
+            "semiMajorAxisDifferenceAu": 1.0988637555442438e-08,
+            "eccentricityDifference": 1.4655002419927676e-09,
+            "inclinationDifferenceDeg": -9.090056707350413e-09
+          },
+          {
+            "bodyId": "uranus",
+            "positionResidualKm": 1.6719439065650756,
+            "velocityResidualMPerS": 1.2397208868149376e-05,
+            "orbitalPhaseErrorDeg": 8.537736462515939e-07,
+            "semiMajorAxisDifferenceAu": -4.0861912964373914e-08,
+            "eccentricityDifference": -2.6146713266728128e-09,
+            "inclinationDifferenceDeg": -9.669434364312224e-09
+          },
+          {
+            "bodyId": "neptune",
+            "positionResidualKm": 1.7821365024948839,
+            "velocityResidualMPerS": 1.6588954803888396e-05,
+            "orbitalPhaseErrorDeg": 0.0,
+            "semiMajorAxisDifferenceAu": 1.8074761243269677e-08,
+            "eccentricityDifference": 2.189309802891337e-09,
+            "inclinationDifferenceDeg": 1.1073673089612157e-09
+          }
+        ]
+      },
+      {
+        "anchorYear": 7500,
+        "anchorJdTdb": 4460378.5,
+        "targetJdTdb": 4462204.75,
+        "propagationDays": 1826.25,
+        "bodies": [
+          {
+            "bodyId": "mercury",
+            "positionResidualKm": 2318.165748749654,
+            "velocityResidualMPerS": 2.0691904723735046,
+            "orbitalPhaseErrorDeg": 0.0024565346802605257,
+            "semiMajorAxisDifferenceAu": -1.385257242247917e-08,
+            "eccentricityDifference": -4.357268715282636e-08,
+            "inclinationDifferenceDeg": 2.5597215902450898e-08
+          },
+          {
+            "bodyId": "venus",
+            "positionResidualKm": 452.2926671787096,
+            "velocityResidualMPerS": 0.14728490293979626,
+            "orbitalPhaseErrorDeg": 0.00023903375091970325,
+            "semiMajorAxisDifferenceAu": -4.950494458810795e-10,
+            "eccentricityDifference": -3.2232849523153306e-08,
+            "inclinationDifferenceDeg": 2.9147750879587875e-10
+          },
+          {
+            "bodyId": "earth",
+            "positionResidualKm": 273.2161898826579,
+            "velocityResidualMPerS": 0.05460748767136093,
+            "orbitalPhaseErrorDeg": 0.00010445040408739946,
+            "semiMajorAxisDifferenceAu": -1.8295146508862103e-09,
+            "eccentricityDifference": -1.8759273261517717e-08,
+            "inclinationDifferenceDeg": 3.6744637950114623e-06
+          },
+          {
+            "bodyId": "mars",
+            "positionResidualKm": 203.8632976690024,
+            "velocityResidualMPerS": 0.021555724342356464,
+            "orbitalPhaseErrorDeg": 5.1488992704906334e-05,
+            "semiMajorAxisDifferenceAu": -7.389826084391871e-09,
+            "eccentricityDifference": -5.302350045144344e-09,
+            "inclinationDifferenceDeg": -1.0714314990778462e-08
+          },
+          {
+            "bodyId": "jupiter",
+            "positionResidualKm": 19.257704753442287,
+            "velocityResidualMPerS": 0.0003473531924416825,
+            "orbitalPhaseErrorDeg": 1.7075472925031877e-06,
+            "semiMajorAxisDifferenceAu": 1.8706733939666265e-09,
+            "eccentricityDifference": 6.715383388256058e-09,
+            "inclinationDifferenceDeg": -1.952699868468244e-08
+          },
+          {
+            "bodyId": "saturn",
+            "positionResidualKm": 4.0823524480165405,
+            "velocityResidualMPerS": 4.454009409462101e-05,
+            "orbitalPhaseErrorDeg": 0.0,
+            "semiMajorAxisDifferenceAu": 4.224640193228879e-09,
+            "eccentricityDifference": 7.593312922882234e-10,
+            "inclinationDifferenceDeg": -1.5913552697810474e-08
+          },
+          {
+            "bodyId": "uranus",
+            "positionResidualKm": 0.5401429449307305,
+            "velocityResidualMPerS": 1.0261727788586995e-05,
+            "orbitalPhaseErrorDeg": 0.0,
+            "semiMajorAxisDifferenceAu": -2.7430388627180946e-08,
+            "eccentricityDifference": -2.916610841730005e-10,
+            "inclinationDifferenceDeg": 5.4883073641320834e-09
+          },
+          {
+            "bodyId": "neptune",
+            "positionResidualKm": 0.6827472800192254,
+            "velocityResidualMPerS": 1.538621873986698e-05,
+            "orbitalPhaseErrorDeg": 0.0,
+            "semiMajorAxisDifferenceAu": -4.6304130307817104e-08,
+            "eccentricityDifference": -2.5311368972991133e-09,
+            "inclinationDifferenceDeg": -1.796838255962996e-08
+          }
+        ]
+      },
+      {
+        "anchorYear": 9999,
+        "anchorJdTdb": 5373119.5,
+        "targetJdTdb": 5374945.75,
+        "propagationDays": 1826.25,
+        "bodies": [
+          {
+            "bodyId": "mercury",
+            "positionResidualKm": 613.9924245368043,
+            "velocityResidualMPerS": 0.5319101638714262,
+            "orbitalPhaseErrorDeg": 0.0005029154369847396,
+            "semiMajorAxisDifferenceAu": -1.7460555112869258e-08,
+            "eccentricityDifference": -3.549901453347992e-08,
+            "inclinationDifferenceDeg": 2.8355365166987667e-08
+          },
+          {
+            "bodyId": "venus",
+            "positionResidualKm": 452.30770039295675,
+            "velocityResidualMPerS": 0.14724198007366096,
+            "orbitalPhaseErrorDeg": 0.00023888885654637455,
+            "semiMajorAxisDifferenceAu": -3.6283243076695726e-10,
+            "eccentricityDifference": -3.043527983413383e-08,
+            "inclinationDifferenceDeg": 1.6015424542104029e-09
+          },
+          {
+            "bodyId": "earth",
+            "positionResidualKm": 282.721390947543,
+            "velocityResidualMPerS": 0.054908289428186485,
+            "orbitalPhaseErrorDeg": 0.0001072497391509919,
+            "semiMajorAxisDifferenceAu": 1.5136682796068612e-08,
+            "eccentricityDifference": -6.198986973043885e-09,
+            "inclinationDifferenceDeg": -8.341651523302573e-06
+          },
+          {
+            "bodyId": "mars",
+            "positionResidualKm": 129.01694206215856,
+            "velocityResidualMPerS": 0.01292865928265299,
+            "orbitalPhaseErrorDeg": 2.9906461203131697e-05,
+            "semiMajorAxisDifferenceAu": -8.757145009141709e-09,
+            "eccentricityDifference": -9.685168764206331e-09,
+            "inclinationDifferenceDeg": -2.2923104303629316e-08
+          },
+          {
+            "bodyId": "jupiter",
+            "positionResidualKm": 21.806846110122528,
+            "velocityResidualMPerS": 0.000389574501149758,
+            "orbitalPhaseErrorDeg": 8.537736462515939e-07,
+            "semiMajorAxisDifferenceAu": -1.564981566559709e-08,
+            "eccentricityDifference": 2.224117147398008e-09,
+            "inclinationDifferenceDeg": 7.3398482847153446e-09
+          },
+          {
+            "bodyId": "saturn",
+            "positionResidualKm": 3.572526842219418,
+            "velocityResidualMPerS": 3.155959510669336e-05,
+            "orbitalPhaseErrorDeg": 0.0,
+            "semiMajorAxisDifferenceAu": -1.723362430539055e-08,
+            "eccentricityDifference": -6.117460392418561e-10,
+            "inclinationDifferenceDeg": -1.069135446840619e-09
+          },
+          {
+            "bodyId": "uranus",
+            "positionResidualKm": 0.574605389270811,
+            "velocityResidualMPerS": 1.364473348418042e-05,
+            "orbitalPhaseErrorDeg": 0.0,
+            "semiMajorAxisDifferenceAu": -1.5635851724482563e-08,
+            "eccentricityDifference": 2.004739318994808e-09,
+            "inclinationDifferenceDeg": -9.675245049578507e-10
+          },
+          {
+            "bodyId": "neptune",
+            "positionResidualKm": 2.3257847781868444,
+            "velocityResidualMPerS": 3.0428183304991493e-05,
+            "orbitalPhaseErrorDeg": 0.0,
+            "semiMajorAxisDifferenceAu": 5.527562407792175e-08,
+            "eccentricityDifference": -5.911176071196622e-09,
+            "inclinationDifferenceDeg": 2.3950998961908e-09
+          }
+        ]
+      },
+      {
+        "anchorYear": 12000,
+        "anchorJdTdb": 6103969.5,
+        "targetJdTdb": 6105795.75,
+        "propagationDays": 1826.25,
+        "bodies": [
+          {
+            "bodyId": "mercury",
+            "positionResidualKm": 647.3773952247891,
+            "velocityResidualMPerS": 0.5548685223932466,
+            "orbitalPhaseErrorDeg": 0.0005300738100283991,
+            "semiMajorAxisDifferenceAu": -1.8604732365812282e-08,
+            "eccentricityDifference": -3.823617858444983e-08,
+            "inclinationDifferenceDeg": 3.012837357374565e-08
+          },
+          {
+            "bodyId": "venus",
+            "positionResidualKm": 460.90655882158495,
+            "velocityResidualMPerS": 0.1504704221056516,
+            "orbitalPhaseErrorDeg": 0.00024483364233501685,
+            "semiMajorAxisDifferenceAu": 2.946388688584989e-10,
+            "eccentricityDifference": 2.386322534150484e-08,
+            "inclinationDifferenceDeg": -1.689446360586544e-09
+          },
+          {
+            "bodyId": "earth",
+            "positionResidualKm": 216.99208004629614,
+            "velocityResidualMPerS": 0.04166373973848262,
+            "orbitalPhaseErrorDeg": 8.21887407831927e-05,
+            "semiMajorAxisDifferenceAu": -3.809510040753139e-09,
+            "eccentricityDifference": 4.961078110821138e-09,
+            "inclinationDifferenceDeg": 8.051069768200136e-06
+          },
+          {
+            "bodyId": "mars",
+            "positionResidualKm": 118.34349691503564,
+            "velocityResidualMPerS": 0.01221608058407276,
+            "orbitalPhaseErrorDeg": 2.9563260939914524e-05,
+            "semiMajorAxisDifferenceAu": 1.0822622575901164e-08,
+            "eccentricityDifference": 1.2926711909222455e-08,
+            "inclinationDifferenceDeg": -7.228071363662991e-09
+          },
+          {
+            "bodyId": "jupiter",
+            "positionResidualKm": 26.08794284779954,
+            "velocityResidualMPerS": 0.00044759830913484083,
+            "orbitalPhaseErrorDeg": 2.091309789151873e-06,
+            "semiMajorAxisDifferenceAu": -2.9054163519504073e-08,
+            "eccentricityDifference": -1.0295939378845986e-08,
+            "inclinationDifferenceDeg": 1.1324787996258578e-08
+          },
+          {
+            "bodyId": "saturn",
+            "positionResidualKm": 1.3897085278833814,
+            "velocityResidualMPerS": 2.9203310096812e-05,
+            "orbitalPhaseErrorDeg": 0.0,
+            "semiMajorAxisDifferenceAu": 1.7575878530351474e-08,
+            "eccentricityDifference": -2.33841005239932e-09,
+            "inclinationDifferenceDeg": 1.7084063053118825e-09
+          },
+          {
+            "bodyId": "uranus",
+            "positionResidualKm": 0.8894990170970355,
+            "velocityResidualMPerS": 1.1477168159916492e-05,
+            "orbitalPhaseErrorDeg": 8.537736462515939e-07,
+            "semiMajorAxisDifferenceAu": 1.2147225447733945e-08,
+            "eccentricityDifference": -1.471303107125621e-09,
+            "inclinationDifferenceDeg": -9.04604058327152e-10
+          },
+          {
+            "bodyId": "neptune",
+            "positionResidualKm": 2.2848860276630334,
+            "velocityResidualMPerS": 2.78530255258127e-05,
+            "orbitalPhaseErrorDeg": 0.0,
+            "semiMajorAxisDifferenceAu": 1.0000025696399462e-08,
+            "eccentricityDifference": -4.51882480826532e-09,
+            "inclinationDifferenceDeg": 7.3218850982215145e-09
+          }
+        ]
+      },
+      {
+        "anchorYear": 15000,
+        "anchorJdTdb": 7199697.5,
+        "targetJdTdb": 7201523.75,
+        "propagationDays": 1826.25,
+        "bodies": [
+          {
+            "bodyId": "mercury",
+            "positionResidualKm": 377.0340054769727,
+            "velocityResidualMPerS": 0.33397195115823397,
+            "orbitalPhaseErrorDeg": 0.0002956683593049341,
+            "semiMajorAxisDifferenceAu": 6.152732323627674e-09,
+            "eccentricityDifference": 1.064683358142915e-08,
+            "inclinationDifferenceDeg": 3.2620556034146375e-08
+          },
+          {
+            "bodyId": "venus",
+            "positionResidualKm": 457.9731846127132,
+            "velocityResidualMPerS": 0.14913311269343335,
+            "orbitalPhaseErrorDeg": 0.00024199626264068187,
+            "semiMajorAxisDifferenceAu": -3.823982241968338e-10,
+            "eccentricityDifference": -3.172352999172498e-08,
+            "inclinationDifferenceDeg": 1.4228471734156756e-09
+          },
+          {
+            "bodyId": "earth",
+            "positionResidualKm": 246.1725661725417,
+            "velocityResidualMPerS": 0.04843128306835771,
+            "orbitalPhaseErrorDeg": 9.365472726934272e-05,
+            "semiMajorAxisDifferenceAu": -9.09544062288603e-09,
+            "eccentricityDifference": 1.4854971456049193e-08,
+            "inclinationDifferenceDeg": -1.363537400767001e-06
+          },
+          {
+            "bodyId": "mars",
+            "positionResidualKm": 119.96782625251143,
+            "velocityResidualMPerS": 0.012578389562850966,
+            "orbitalPhaseErrorDeg": 3.078324659200012e-05,
+            "semiMajorAxisDifferenceAu": 1.6821673387568126e-08,
+            "eccentricityDifference": 1.7862050435968335e-08,
+            "inclinationDifferenceDeg": -3.632105949336051e-09
+          },
+          {
+            "bodyId": "jupiter",
+            "positionResidualKm": 17.79370645536653,
+            "velocityResidualMPerS": 0.00031708772607140024,
+            "orbitalPhaseErrorDeg": 1.4787793334710982e-06,
+            "semiMajorAxisDifferenceAu": 1.890738232646072e-09,
+            "eccentricityDifference": -4.708435571987302e-09,
+            "inclinationDifferenceDeg": 3.053097330507626e-09
+          },
+          {
+            "bodyId": "saturn",
+            "positionResidualKm": 2.454292871251091,
+            "velocityResidualMPerS": 4.446645830472161e-05,
+            "orbitalPhaseErrorDeg": 0.0,
+            "semiMajorAxisDifferenceAu": 5.325318852555938e-09,
+            "eccentricityDifference": 2.435971558148453e-09,
+            "inclinationDifferenceDeg": -3.746868149079319e-09
+          },
+          {
+            "bodyId": "uranus",
+            "positionResidualKm": 1.850126818513676,
+            "velocityResidualMPerS": 1.7451931730286867e-05,
+            "orbitalPhaseErrorDeg": 0.0,
+            "semiMajorAxisDifferenceAu": -1.586241182849335e-08,
+            "eccentricityDifference": -2.4163123099607553e-09,
+            "inclinationDifferenceDeg": 2.668359200264092e-09
+          },
+          {
+            "bodyId": "neptune",
+            "positionResidualKm": 3.3629714116720013,
+            "velocityResidualMPerS": 3.0903623654975914e-05,
+            "orbitalPhaseErrorDeg": 1.2074182697257333e-06,
+            "semiMajorAxisDifferenceAu": -1.2272426630488553e-08,
+            "eccentricityDifference": 3.249282084713534e-09,
+            "inclinationDifferenceDeg": -2.9223651276666374e-08
+          }
+        ]
+      },
+      {
+        "anchorYear": 17000,
+        "anchorJdTdb": 7930182.5,
+        "targetJdTdb": 7932008.75,
+        "propagationDays": 1826.25,
+        "bodies": [
+          {
+            "bodyId": "mercury",
+            "positionResidualKm": 679.926220049388,
+            "velocityResidualMPerS": 0.5657369798473597,
+            "orbitalPhaseErrorDeg": 0.0006560810238353455,
+            "semiMajorAxisDifferenceAu": 2.671473298132554e-08,
+            "eccentricityDifference": 6.10379676246886e-08,
+            "inclinationDifferenceDeg": 3.420029237588551e-08
+          },
+          {
+            "bodyId": "venus",
+            "positionResidualKm": 462.6451308048843,
+            "velocityResidualMPerS": 0.15073206948525472,
+            "orbitalPhaseErrorDeg": 0.00024472643808836914,
+            "semiMajorAxisDifferenceAu": -3.6496672350949666e-10,
+            "eccentricityDifference": -3.303100222029967e-08,
+            "inclinationDifferenceDeg": 2.1358186330644457e-09
+          },
+          {
+            "bodyId": "earth",
+            "positionResidualKm": 266.5340824211417,
+            "velocityResidualMPerS": 0.053240847618719896,
+            "orbitalPhaseErrorDeg": 0.00010195358650201521,
+            "semiMajorAxisDifferenceAu": -2.412357646974783e-09,
+            "eccentricityDifference": 9.09207393921807e-09,
+            "inclinationDifferenceDeg": 7.304019613574297e-07
+          },
+          {
+            "bodyId": "mars",
+            "positionResidualKm": 160.02315255850309,
+            "velocityResidualMPerS": 0.01578788551354495,
+            "orbitalPhaseErrorDeg": 3.6373162246995867e-05,
+            "semiMajorAxisDifferenceAu": -2.0841582015762583e-08,
+            "eccentricityDifference": -2.1532308991378812e-08,
+            "inclinationDifferenceDeg": -1.6227995669471085e-08
+          },
+          {
+            "bodyId": "jupiter",
+            "positionResidualKm": 10.143763960016509,
+            "velocityResidualMPerS": 0.00021644299281040597,
+            "orbitalPhaseErrorDeg": 0.0,
+            "semiMajorAxisDifferenceAu": 3.347233601402877e-08,
+            "eccentricityDifference": 8.531999294569825e-09,
+            "inclinationDifferenceDeg": 4.128887010068638e-09
+          },
+          {
+            "bodyId": "saturn",
+            "positionResidualKm": 4.1455253067291284,
+            "velocityResidualMPerS": 3.96117609890334e-05,
+            "orbitalPhaseErrorDeg": 8.537736462515939e-07,
+            "semiMajorAxisDifferenceAu": -4.177600487764721e-10,
+            "eccentricityDifference": 1.2139240081893155e-09,
+            "inclinationDifferenceDeg": 3.8629608400952975e-09
+          },
+          {
+            "bodyId": "uranus",
+            "positionResidualKm": 2.4338211063536175,
+            "velocityResidualMPerS": 1.3394409108507971e-05,
+            "orbitalPhaseErrorDeg": 1.2074182697257333e-06,
+            "semiMajorAxisDifferenceAu": 4.5292960493270584e-08,
+            "eccentricityDifference": 2.651064041903073e-09,
+            "inclinationDifferenceDeg": 1.1114364983910718e-10
+          },
+          {
+            "bodyId": "neptune",
+            "positionResidualKm": 1.4686736649009395,
+            "velocityResidualMPerS": 2.9683261560087954e-05,
+            "orbitalPhaseErrorDeg": 0.0,
+            "semiMajorAxisDifferenceAu": -4.894642557928819e-08,
+            "eccentricityDifference": 4.830377098308247e-09,
+            "inclinationDifferenceDeg": 1.2756361966737018e-08
+          }
+        ]
+      }
+    ],
+    "purpose": "Validates the browser's bounded integration between deployed DE441 anchors; this is separate from the long holdout experiment."
+  },
+  "timestepConvergence": {
+    "stepDays": [
+      2.0,
+      4.0,
+      8.0
+    ],
+    "checkpoints": [
+      {
+        "year": 20000,
+        "jdTdb": 9025909.5,
+        "invariants": {
+          "2.0": {
+            "relativeEnergyDrift": 5.7512075971499066e-15,
+            "relativeAngularMomentumDrift": 1.5732011134669127e-15
+          },
+          "4.0": {
+            "relativeEnergyDrift": -2.366211125684533e-14,
+            "relativeAngularMomentumDrift": 2.42602468670714e-15
+          },
+          "8.0": {
+            "relativeEnergyDrift": 2.1665784939766066e-11,
+            "relativeAngularMomentumDrift": 1.0494411334975105e-14
+          }
+        },
+        "bodies": [
+          {
+            "bodyId": "mercury",
+            "fineVsNominalPositionKm": 23.979445754750884,
+            "fineVsNominalVelocityMPerS": 0.020108299190746023,
+            "nominalVsCoarsePositionKm": 108339.93443759458,
+            "nominalVsCoarseVelocityMPerS": 90.82037385642312
+          },
+          {
+            "bodyId": "venus",
+            "fineVsNominalPositionKm": 1.2218659168793309,
+            "fineVsNominalVelocityMPerS": 0.00039045203057145613,
+            "nominalVsCoarsePositionKm": 3859.981365589372,
+            "nominalVsCoarseVelocityMPerS": 1.2450771498890458
+          },
+          {
+            "bodyId": "earth",
+            "fineVsNominalPositionKm": 4.755113892297258,
+            "fineVsNominalVelocityMPerS": 0.0009603011416604518,
+            "nominalVsCoarsePositionKm": 113.83824076270862,
+            "nominalVsCoarseVelocityMPerS": 0.022759891650121204
+          },
+          {
+            "bodyId": "mars",
+            "fineVsNominalPositionKm": 57.01306186772684,
+            "fineVsNominalVelocityMPerS": 0.006144666150286996,
+            "nominalVsCoarsePositionKm": 244.3095597039133,
+            "nominalVsCoarseVelocityMPerS": 0.026320297053957928
+          },
+          {
+            "bodyId": "jupiter",
+            "fineVsNominalPositionKm": 0.611607707316869,
+            "fineVsNominalVelocityMPerS": 1.0165375235059887e-05,
+            "nominalVsCoarsePositionKm": 2.3514581828903762,
+            "nominalVsCoarseVelocityMPerS": 5.396379282863871e-05
+          },
+          {
+            "bodyId": "saturn",
+            "fineVsNominalPositionKm": 5.465592934199447,
+            "fineVsNominalVelocityMPerS": 3.2786872751329425e-05,
+            "nominalVsCoarsePositionKm": 22.079706976808552,
+            "nominalVsCoarseVelocityMPerS": 0.00014115059365309545
+          },
+          {
+            "bodyId": "uranus",
+            "fineVsNominalPositionKm": 0.47016827168052694,
+            "fineVsNominalVelocityMPerS": 1.0814691570206813e-06,
+            "nominalVsCoarsePositionKm": 1.533406309977958,
+            "nominalVsCoarseVelocityMPerS": 1.196455027682507e-05
+          },
+          {
+            "bodyId": "neptune",
+            "fineVsNominalPositionKm": 0.009387180517630957,
+            "fineVsNominalVelocityMPerS": 2.0154830628955775e-08,
+            "nominalVsCoarsePositionKm": 0.06365102642243312,
+            "nominalVsCoarseVelocityMPerS": 1.5320247073983664e-05
+          }
+        ]
+      },
+      {
+        "year": 25000,
+        "jdTdb": 10852122.5,
+        "invariants": {
+          "2.0": {
+            "relativeEnergyDrift": 1.7976631746519994e-13,
+            "relativeAngularMomentumDrift": 3.444264379595669e-14
+          },
+          "4.0": {
+            "relativeEnergyDrift": 3.0662152503662075e-13,
+            "relativeAngularMomentumDrift": 3.916762182592931e-14
+          },
+          "8.0": {
+            "relativeEnergyDrift": -1.0108979753618922e-12,
+            "relativeAngularMomentumDrift": 3.162533507163485e-14
+          }
+        },
+        "bodies": [
+          {
+            "bodyId": "mercury",
+            "fineVsNominalPositionKm": 200.28380191369314,
+            "fineVsNominalVelocityMPerS": 0.18571101946378668,
+            "nominalVsCoarsePositionKm": 322512.91642043693,
+            "nominalVsCoarseVelocityMPerS": 299.3037612452122
+          },
+          {
+            "bodyId": "venus",
+            "fineVsNominalPositionKm": 3.7280176941551737,
+            "fineVsNominalVelocityMPerS": 0.0012290804876163885,
+            "nominalVsCoarsePositionKm": 13931.532006340498,
+            "nominalVsCoarseVelocityMPerS": 4.523847590190789
+          },
+          {
+            "bodyId": "earth",
+            "fineVsNominalPositionKm": 15.730771732203632,
+            "fineVsNominalVelocityMPerS": 0.0031376639838264697,
+            "nominalVsCoarsePositionKm": 375.85183384102464,
+            "nominalVsCoarseVelocityMPerS": 0.07488914732213499
+          },
+          {
+            "bodyId": "mars",
+            "fineVsNominalPositionKm": 175.00401293439336,
+            "fineVsNominalVelocityMPerS": 0.020611731787774694,
+            "nominalVsCoarsePositionKm": 692.0168736404306,
+            "nominalVsCoarseVelocityMPerS": 0.08153027535205734
+          },
+          {
+            "bodyId": "jupiter",
+            "fineVsNominalPositionKm": 1.31608071411948,
+            "fineVsNominalVelocityMPerS": 2.487335779972405e-05,
+            "nominalVsCoarsePositionKm": 5.726249225082278,
+            "nominalVsCoarseVelocityMPerS": 0.00013588514960053926
+          },
+          {
+            "bodyId": "saturn",
+            "fineVsNominalPositionKm": 9.675944909448456,
+            "fineVsNominalVelocityMPerS": 7.859913952057875e-05,
+            "nominalVsCoarsePositionKm": 39.627055712406396,
+            "nominalVsCoarseVelocityMPerS": 0.00031064426401976043
+          },
+          {
+            "bodyId": "uranus",
+            "fineVsNominalPositionKm": 1.1990389019901333,
+            "fineVsNominalVelocityMPerS": 2.850210474790498e-06,
+            "nominalVsCoarsePositionKm": 4.185599334835514,
+            "nominalVsCoarseVelocityMPerS": 2.8662866060267834e-05
+          },
+          {
+            "bodyId": "neptune",
+            "fineVsNominalPositionKm": 0.14352935136719264,
+            "fineVsNominalVelocityMPerS": 1.5210906775767585e-07,
+            "nominalVsCoarsePositionKm": 0.16776814620810832,
+            "nominalVsCoarseVelocityMPerS": 3.8847124012008164e-05
+          }
+        ]
+      },
+      {
+        "year": 50000,
+        "jdTdb": 19983184.5,
+        "invariants": {
+          "2.0": {
+            "relativeEnergyDrift": -1.567614870766003e-13,
+            "relativeAngularMomentumDrift": 7.725950593386905e-14
+          },
+          "4.0": {
+            "relativeEnergyDrift": 4.1901655350663606e-13,
+            "relativeAngularMomentumDrift": 3.994685239968726e-14
+          },
+          "8.0": {
+            "relativeEnergyDrift": -1.7018644881051883e-11,
+            "relativeAngularMomentumDrift": 3.523736000355502e-14
+          }
+        },
+        "bodies": [
+          {
+            "bodyId": "mercury",
+            "fineVsNominalPositionKm": 1094.436125866569,
+            "fineVsNominalVelocityMPerS": 1.0608111981148323,
+            "nominalVsCoarsePositionKm": 175204.13992904942,
+            "nominalVsCoarseVelocityMPerS": 169.91706674901917
+          },
+          {
+            "bodyId": "venus",
+            "fineVsNominalPositionKm": 38.70821442578083,
+            "fineVsNominalVelocityMPerS": 0.012568469478262017,
+            "nominalVsCoarsePositionKm": 9229.636162590456,
+            "nominalVsCoarseVelocityMPerS": 2.980569104054524
+          },
+          {
+            "bodyId": "earth",
+            "fineVsNominalPositionKm": 76.51391532850354,
+            "fineVsNominalVelocityMPerS": 0.015054517041695508,
+            "nominalVsCoarsePositionKm": 1798.0583774704028,
+            "nominalVsCoarseVelocityMPerS": 0.35531592219731084
+          },
+          {
+            "bodyId": "mars",
+            "fineVsNominalPositionKm": 663.3220063653985,
+            "fineVsNominalVelocityMPerS": 0.0668068396741328,
+            "nominalVsCoarsePositionKm": 2740.3031971952887,
+            "nominalVsCoarseVelocityMPerS": 0.27600530374488647
+          },
+          {
+            "bodyId": "jupiter",
+            "fineVsNominalPositionKm": 8.169850125568727,
+            "fineVsNominalVelocityMPerS": 0.00014859280860272947,
+            "nominalVsCoarsePositionKm": 18.771562335044045,
+            "nominalVsCoarseVelocityMPerS": 0.00033320630228069495
+          },
+          {
+            "bodyId": "saturn",
+            "fineVsNominalPositionKm": 42.65462341456152,
+            "fineVsNominalVelocityMPerS": 0.00030593037831569083,
+            "nominalVsCoarsePositionKm": 178.69429657038728,
+            "nominalVsCoarseVelocityMPerS": 0.0013136557965355152
+          },
+          {
+            "bodyId": "uranus",
+            "fineVsNominalPositionKm": 3.1634933225639545,
+            "fineVsNominalVelocityMPerS": 6.785953796857166e-06,
+            "nominalVsCoarsePositionKm": 22.446381997828375,
+            "nominalVsCoarseVelocityMPerS": 8.255087377292493e-05
+          },
+          {
+            "bodyId": "neptune",
+            "fineVsNominalPositionKm": 0.7884982707892235,
+            "fineVsNominalVelocityMPerS": 8.166349607524049e-07,
+            "nominalVsCoarsePositionKm": 1.6924579855592607,
+            "nominalVsCoarseVelocityMPerS": 3.316186384436247e-05
+          }
+        ]
+      },
+      {
+        "year": 75000,
+        "jdTdb": 29114247.5,
+        "invariants": {
+          "2.0": {
+            "relativeEnergyDrift": -4.56810203430764e-14,
+            "relativeAngularMomentumDrift": 1.3423051483167839e-14
+          },
+          "4.0": {
+            "relativeEnergyDrift": 3.1220841241670926e-14,
+            "relativeAngularMomentumDrift": 1.333145370985614e-14
+          },
+          "8.0": {
+            "relativeEnergyDrift": -2.4787047462847853e-11,
+            "relativeAngularMomentumDrift": 4.144992970055574e-14
+          }
+        },
+        "bodies": [
+          {
+            "bodyId": "mercury",
+            "fineVsNominalPositionKm": 2634.0573017044658,
+            "fineVsNominalVelocityMPerS": 1.9088089624983846,
+            "nominalVsCoarsePositionKm": 1512072.8565171498,
+            "nominalVsCoarseVelocityMPerS": 1096.8585974316031
+          },
+          {
+            "bodyId": "venus",
+            "fineVsNominalPositionKm": 132.83528284182304,
+            "fineVsNominalVelocityMPerS": 0.04328091253979132,
+            "nominalVsCoarsePositionKm": 29066.691216901516,
+            "nominalVsCoarseVelocityMPerS": 9.493973076185746
+          },
+          {
+            "bodyId": "earth",
+            "fineVsNominalPositionKm": 148.39861521819637,
+            "fineVsNominalVelocityMPerS": 0.029510932589601798,
+            "nominalVsCoarsePositionKm": 2600.1406619969125,
+            "nominalVsCoarseVelocityMPerS": 0.516489153401773
+          },
+          {
+            "bodyId": "mars",
+            "fineVsNominalPositionKm": 1091.741737405337,
+            "fineVsNominalVelocityMPerS": 0.10718888602819528,
+            "nominalVsCoarsePositionKm": 4713.508039026877,
+            "nominalVsCoarseVelocityMPerS": 0.4628329352813948
+          },
+          {
+            "bodyId": "jupiter",
+            "fineVsNominalPositionKm": 21.13529236514111,
+            "fineVsNominalVelocityMPerS": 0.0003752079043957691,
+            "nominalVsCoarsePositionKm": 49.359726847749116,
+            "nominalVsCoarseVelocityMPerS": 0.0008173573045660383
+          },
+          {
+            "bodyId": "saturn",
+            "fineVsNominalPositionKm": 112.10672023328797,
+            "fineVsNominalVelocityMPerS": 0.0007256087133603901,
+            "nominalVsCoarsePositionKm": 473.10121721687915,
+            "nominalVsCoarseVelocityMPerS": 0.0029541170038259556
+          },
+          {
+            "bodyId": "uranus",
+            "fineVsNominalPositionKm": 4.3775369146429295,
+            "fineVsNominalVelocityMPerS": 1.0617858202270755e-05,
+            "nominalVsCoarsePositionKm": 47.95621020744703,
+            "nominalVsCoarseVelocityMPerS": 0.00018757968297301416
+          },
+          {
+            "bodyId": "neptune",
+            "fineVsNominalPositionKm": 1.4112438312093212,
+            "fineVsNominalVelocityMPerS": 1.0283134682692873e-06,
+            "nominalVsCoarsePositionKm": 5.300704977142047,
+            "nominalVsCoarseVelocityMPerS": 0.00019266483626422833
+          }
+        ]
+      },
+      {
+        "year": 100000,
+        "jdTdb": 38245309.5,
+        "invariants": {
+          "2.0": {
+            "relativeEnergyDrift": -1.3162049386620215e-13,
+            "relativeAngularMomentumDrift": 9.655544347342513e-14
+          },
+          "4.0": {
+            "relativeEnergyDrift": -1.3162049386620215e-13,
+            "relativeAngularMomentumDrift": 5.68119419482606e-14
+          },
+          "8.0": {
+            "relativeEnergyDrift": -1.074834971820493e-11,
+            "relativeAngularMomentumDrift": 1.7602419579046383e-14
+          }
+        },
+        "bodies": [
+          {
+            "bodyId": "mercury",
+            "fineVsNominalPositionKm": 4596.051692371637,
+            "fineVsNominalVelocityMPerS": 3.311571438174243,
+            "nominalVsCoarsePositionKm": 2572529.5436089905,
+            "nominalVsCoarseVelocityMPerS": 1850.037028290254
+          },
+          {
+            "bodyId": "venus",
+            "fineVsNominalPositionKm": 222.238174185047,
+            "fineVsNominalVelocityMPerS": 0.07007244950818332,
+            "nominalVsCoarsePositionKm": 48636.15443516221,
+            "nominalVsCoarseVelocityMPerS": 15.403862389823498
+          },
+          {
+            "bodyId": "earth",
+            "fineVsNominalPositionKm": 227.8208431079069,
+            "fineVsNominalVelocityMPerS": 0.04557067024087399,
+            "nominalVsCoarsePositionKm": 3537.3527324745596,
+            "nominalVsCoarseVelocityMPerS": 0.7064495592150111
+          },
+          {
+            "bodyId": "mars",
+            "fineVsNominalPositionKm": 1707.3357291845516,
+            "fineVsNominalVelocityMPerS": 0.18143518381990803,
+            "nominalVsCoarsePositionKm": 7467.485004944702,
+            "nominalVsCoarseVelocityMPerS": 0.7934588222442218
+          },
+          {
+            "bodyId": "jupiter",
+            "fineVsNominalPositionKm": 20.2693444119741,
+            "fineVsNominalVelocityMPerS": 0.000382337448622096,
+            "nominalVsCoarsePositionKm": 51.246465367687435,
+            "nominalVsCoarseVelocityMPerS": 0.001323325624887626
+          },
+          {
+            "bodyId": "saturn",
+            "fineVsNominalPositionKm": 142.15672261655268,
+            "fineVsNominalVelocityMPerS": 0.0007685822056829412,
+            "nominalVsCoarsePositionKm": 609.0795763639301,
+            "nominalVsCoarseVelocityMPerS": 0.0032955573778404366
+          },
+          {
+            "bodyId": "uranus",
+            "fineVsNominalPositionKm": 5.284786467013895,
+            "fineVsNominalVelocityMPerS": 1.141800730063222e-05,
+            "nominalVsCoarsePositionKm": 60.469962573015295,
+            "nominalVsCoarseVelocityMPerS": 0.00021855869449201876
+          },
+          {
+            "bodyId": "neptune",
+            "fineVsNominalPositionKm": 4.009298824049425,
+            "fineVsNominalVelocityMPerS": 5.0469345126844566e-06,
+            "nominalVsCoarsePositionKm": 5.947179169966633,
+            "nominalVsCoarseVelocityMPerS": 0.0003357168756923239
+          }
+        ]
+      }
+    ],
+    "interpretation": "Timestep sensitivity quantifies numerical convergence only; it is not an observational covariance or a guarantee of physical predictability."
+  },
+  "providerBoundaryContinuity": {
+    "jdTdb": 8000016.5,
+    "bodies": [
+      {
+        "bodyId": "mercury",
+        "positionResidualKm": 0.0,
+        "velocityResidualMPerS": 0.0,
+        "orbitalPhaseErrorDeg": 0.0,
+        "semiMajorAxisDifferenceAu": 0.0,
+        "eccentricityDifference": 0.0,
+        "inclinationDifferenceDeg": 0.0
+      },
+      {
+        "bodyId": "venus",
+        "positionResidualKm": 0.0,
+        "velocityResidualMPerS": 0.0,
+        "orbitalPhaseErrorDeg": 1.2074182697257333e-06,
+        "semiMajorAxisDifferenceAu": 0.0,
+        "eccentricityDifference": 0.0,
+        "inclinationDifferenceDeg": 0.0
+      },
+      {
+        "bodyId": "earth",
+        "positionResidualKm": 0.0,
+        "velocityResidualMPerS": 0.0,
+        "orbitalPhaseErrorDeg": 0.0,
+        "semiMajorAxisDifferenceAu": 0.0,
+        "eccentricityDifference": 0.0,
+        "inclinationDifferenceDeg": 0.0
+      },
+      {
+        "bodyId": "mars",
+        "positionResidualKm": 0.0,
+        "velocityResidualMPerS": 0.0,
+        "orbitalPhaseErrorDeg": 0.0,
+        "semiMajorAxisDifferenceAu": 0.0,
+        "eccentricityDifference": 0.0,
+        "inclinationDifferenceDeg": 0.0
+      },
+      {
+        "bodyId": "jupiter",
+        "positionResidualKm": 0.0,
+        "velocityResidualMPerS": 0.0,
+        "orbitalPhaseErrorDeg": 0.0,
+        "semiMajorAxisDifferenceAu": 0.0,
+        "eccentricityDifference": 0.0,
+        "inclinationDifferenceDeg": 0.0
+      },
+      {
+        "bodyId": "saturn",
+        "positionResidualKm": 0.0,
+        "velocityResidualMPerS": 0.0,
+        "orbitalPhaseErrorDeg": 8.537736462515939e-07,
+        "semiMajorAxisDifferenceAu": 0.0,
+        "eccentricityDifference": 0.0,
+        "inclinationDifferenceDeg": 0.0
+      },
+      {
+        "bodyId": "uranus",
+        "positionResidualKm": 0.0,
+        "velocityResidualMPerS": 0.0,
+        "orbitalPhaseErrorDeg": 0.0,
+        "semiMajorAxisDifferenceAu": 0.0,
+        "eccentricityDifference": 0.0,
+        "inclinationDifferenceDeg": 0.0
+      },
+      {
+        "bodyId": "neptune",
+        "positionResidualKm": 0.0,
+        "velocityResidualMPerS": 0.0,
+        "orbitalPhaseErrorDeg": 8.537736462515939e-07,
+        "semiMajorAxisDifferenceAu": 0.0,
+        "eccentricityDifference": 0.0,
+        "inclinationDifferenceDeg": 0.0
+      }
+    ],
+    "method": "The first PCS numerical state is initialized from the exact final DE441 boundary state."
+  },
+  "uncertaintyStatus": "Numerical convergence and ephemeris holdout divergence quantified; no observational covariance ensemble is asserted.",
+  "status": "CANDIDATE \u2014 HUMAN AND SCIENTIFIC REVIEW REQUIRED"
+}

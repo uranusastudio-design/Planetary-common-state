@@ -127,6 +127,13 @@
       bodyIds: Object.freeze([...(input.bodyIds || [])]),
       coherent: Boolean(input.coherent),
       authoritative: Boolean(input.authoritative),
+      provider: input.provider || (input.authoritative ? "AUTHORITATIVE_EPHEMERIS" : null),
+      providerSubtype: input.providerSubtype || null,
+      fidelityLabel: input.fidelityLabel || null,
+      fidelityDetail: input.fidelityDetail || null,
+      integrator: input.integrator || null,
+      modelVersion: input.modelVersion || null,
+      diagnostics: input.diagnostics ? Object.freeze({ ...input.diagnostics }) : null,
       stale: Boolean(input.stale),
       notice: input.notice || null
     });

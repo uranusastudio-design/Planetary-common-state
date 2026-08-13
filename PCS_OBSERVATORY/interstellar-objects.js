@@ -31,7 +31,9 @@
   }
 
   function stateAt(record, epoch) {
-    const date = Core.validDate(epoch), jd = jdTdb(date), pair = bracket(record.samples, jd);
+    const date = Core.validDate(epoch);
+    if (Core.timeConversionQuality(date).status !== "validated") return null;
+    const jd = jdTdb(date), pair = bracket(record.samples, jd);
     if (!pair) return null;
     const [before, after] = pair, span = after[0] - before[0], t = span ? (jd - before[0]) / span : 0;
     const t2 = t * t, t3 = t2 * t;
