@@ -1,6 +1,6 @@
 # PCS Solar System Long-Horizon Analysis
 
-Status: **IMPLEMENTATION CANDIDATE — NOT COMPLETE / NOT FROZEN**
+Status: **PRODUCTION / VERIFIED — AWAITING HUMAN FREEZE**
 
 This document records the current correction work for the real Observatory runtime. Public PCS is bounded at AD 20000. The retained AD 100000 state is research diagnostics labelled **EXPERIMENTAL LONG-HORIZON RECONSTRUCTION**; it is not advertised as a validated public horizon and does not claim an exact Solar-System configuration.
 
@@ -125,7 +125,10 @@ Local candidate generated on 2026-08-13:
 - Fidelity transition verified in the running UI: DE441 historical/long-term ephemeris outside the promoted precision cache; 2026 precision ephemeris; 2050–17000 authoritative long-term ephemeris; 18000 onward PCS N-body numerical analysis.
 - Object Card epoch/provider/fidelity now update at every tested checkpoint rather than retaining the previously selected epoch classification.
 - Dwarf planets, main-belt objects, TNOs, comets, and interstellar current-position markers keep separate validity contracts. They become unavailable/hidden outside their deployed object-specific epoch coverage and cannot block or masquerade as major-planet long-horizon states.
-- Production deployment: authorized; pending integration and production verification.
+- Production runtime deployment: GitHub Pages run `31722145770`, commit `7e4c470c2f70c917ce552cd8a02fe3dc0fa93567`, verified on 2026-08-14.
+- Production acceptance: all required checkpoints from 2026 through AD 20000 rendered finite major-planet states; actual DOM/runtime fidelity changed from precision ephemeris to long-term DE441 and then PCS N-body as required.
+- Production lifecycle: Viewer 1, Cesium canvas 1, DataSources 3 → 3, primitives 1 → 1, zero required console errors, and zero required network failures.
+- Production asset SHA-256: `index.html` `964c42071fca8bee387954eee8806df903afee017099e5d7f5a5e00652c8e9f8`; `deep-space.js` `d6918d9045c31d88026ba232fe222f7a48b444733cba14a915c927b835a90f26`; `solar-system-long-horizon.js` `54497a45af6ab323a444f85901ddf72da02ec5908a5f4c6b23108fbad9105430`; runtime dataset `b90e849e2a499c4b949f49a0178af9305392eb18e0a59faa646439a0c077dcaa`.
 - Human acceptance: pending.
 
 Machine-readable evidence:
@@ -134,5 +137,6 @@ Machine-readable evidence:
 - `data/analysis/solar-system-long-horizon-runtime-checkpoints.json`
 - `test-results/solar-long-horizon-local-2026-08-13/acceptance-report.json`
 - `test-results/solar-long-horizon-release-local-2026-08-14/acceptance-report.json`
+- `test-results/solar-long-horizon-production-2026-08-14/acceptance-report.json`
 
-Therefore the feature remains **OPEN / NOT COMPLETE**.
+Therefore the deployed feature is **PRODUCTION / VERIFIED**, with public coverage through AD 20000 and experimental research diagnostics through AD 100000. It remains **NOT FROZEN** pending human visual acceptance.
