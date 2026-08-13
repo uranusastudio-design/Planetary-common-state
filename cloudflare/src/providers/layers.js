@@ -403,7 +403,7 @@ function normalized(adapter, runtime) {
   };
 }
 
-const LAYERS_CACHE_KEY = "layers:v2";
+const LAYERS_CACHE_KEY = "layers:v3";
 const LAYERS_CACHE_TTL_MS = 5 * 60 * 1000;
 const LAYERS_STALE_TTL_SECONDS = 24 * 60 * 60;
 
