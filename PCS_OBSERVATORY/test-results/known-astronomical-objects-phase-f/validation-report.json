@@ -1,0 +1,77 @@
+{
+  "phase": "F",
+  "status": "VALIDATED_NOT_FROZEN",
+  "date": "2026-08-14",
+  "catalogVersion": "phase-f-runtime-2026-08-14",
+  "counts": {
+    "imported": 55,
+    "rejected": 0,
+    "unresolved": 0,
+    "relationships": 9,
+    "rendered": 0,
+    "byClass": {
+      "nebula": 18,
+      "black-hole": 11,
+      "stellar-object": 2,
+      "star-cluster": 12,
+      "galactic-structure": 2,
+      "exoplanetary-system": 10
+    },
+    "byEvidence": {
+      "MEASURED": 1,
+      "CATALOG-DERIVED": 54,
+      "RECONSTRUCTED": 0,
+      "REPRESENTATIVE": 0
+    }
+  },
+  "sources": [
+    "SIMBAD TAP",
+    "VizieR Gaia DR3 I/355/gaiadr3",
+    "NASA Exoplanet Archive TAP ps default rows",
+    "record-specific peer-reviewed references retained from Phases B-E"
+  ],
+  "aliasResolution": {
+    "query": "M16",
+    "preferredObjectId": "pcs:nebula:eagle",
+    "distinctEmbeddedCluster": "pcs:cluster:ngc-6611",
+    "clusterSearchIdentity": "NGC 6611"
+  },
+  "tests": {
+    "phaseF": {"passed": 7, "failed": 0},
+    "observatoryRegression": {"passed": 294, "failed": 0},
+    "runtimeSearches": [
+      "Pillars of Creation",
+      "M16",
+      "Horsehead",
+      "Barnard 33",
+      "NGC 6543",
+      "M1",
+      "Sgr A*",
+      "Gaia BH3",
+      "M87*",
+      "Kepler-186"
+    ]
+  },
+  "runtime": {
+    "viewerCount": 1,
+    "cesiumCanvasCount": 1,
+    "objectCardGroupCount": 4,
+    "featureExceptions": 0,
+    "featureConsoleErrors": 0,
+    "requiredFeatureNetworkFailures": 0,
+    "ambientLocalhostConsoleErrors": 4,
+    "ambientLocalhostNetworkFailures": 28,
+    "ambientFailureScope": "Optional historical/evidence service requests in the generic localhost environment; not known-object catalog assets or runtime code"
+  },
+  "scientificBoundaries": [
+    "Object-level 3D Focus requires catalog coordinates and a source-published distance.",
+    "A parent object may be used only through an explicit relationship edge.",
+    "Sky-only records focus their supported parent scale and receive no invented distance.",
+    "Database count and rendered count remain separate; Phase G owns LOD rendering."
+  ],
+  "frozenSystemsModified": {
+    "solarSystemLongHorizon": false,
+    "milkyWayLayer": false,
+    "milkyWayScientificModel": false
+  }
+}

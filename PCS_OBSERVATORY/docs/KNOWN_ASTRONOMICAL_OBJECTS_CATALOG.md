@@ -116,3 +116,25 @@ Phase D status: `[x] Clusters + star-forming regions — VALIDATED / NOT FROZEN`
 Phase E validates ten priority systems from the NASA Exoplanet Archive `ps` table with `default_flag=1`: seven Kepler systems, three TESS systems, and 32 confirmed planets. Candidates 0, false positives 0, rejected 0, unresolved 0, rendered 0. Missing radial velocity remains null. Planet lists remain system metadata; planetary orbits are not enlarged or rendered at Galactic scale. Snapshot SHA-256: `496a390aca7f95ce2749eb72ed52e7b453355335235cd191d1f656b345b37ebf`.
 
 Phase E status: `[x] Kepler + TESS confirmed systems — VALIDATED / NOT FROZEN`
+
+## Phase F — Runtime Search, Focus, Object Card, and relationship graph
+
+Status: **VALIDATED RUNTIME CANDIDATE / NOT FROZEN**
+
+Phase F merges the four independently validated catalogs into one deterministic browser index without changing their source records. The runtime contains 55 database records: 18 nebulae, 11 black holes, two other stellar/compact objects, 12 star clusters, two Galactic structures, and ten confirmed exoplanetary systems. Evidence classes are one `MEASURED` object and 54 `CATALOG-DERIVED` objects. Rejected 0, unresolved 0, relationships 9, rendered 0; Phase G owns scale-aware marker rendering and LOD.
+
+Search resolves common names and catalog aliases to one PCS identity. The cross-phase `M 16` collision is not resolved by load order: public `M16` search explicitly selects the Eagle Nebula complex, while the embedded cluster remains a distinct `NGC 6611` record. Runtime acceptance covers Pillars of Creation, M16, Horsehead, Barnard 33, NGC 6543, M1, Sgr A*, Gaia BH3, M87*, and Kepler-186.
+
+Focus uses a three-dimensional position only when source coordinates and a source-published distance are both available. Pillars of Creation may use its explicit Eagle Nebula parent relationship as the navigation anchor. Sagittarius A* and M87* have catalog sky positions but no adopted distance in this catalog phase, so PCS focuses the supported Milky Way or Virgo parent scale and does not invent a 3D coordinate. M87* routes to Virgo; the Andromeda central black hole routes to Local Group; Galactic objects route to Milky Way.
+
+Unified Object Cards expose catalog identities, coordinates/frame/epoch, distance method and range, available motion, mass and black-hole status, confirmed planets, relationship edges, provenance, references, and limitations. Missing radial velocity remains unavailable and is explicitly classified as incomplete 3D velocity for exoplanetary systems.
+
+Validation:
+
+- Phase F contract tests: 7/7 passed.
+- Complete Observatory regression: 294/294 passed.
+- Headless Chromium runtime: all ten searches returned the expected object identity and matching Object Card; four grouped card sections; Viewer 1; Cesium canvas 1; feature exceptions 0; feature Console errors 0; required feature Network failures 0.
+- The generic localhost test page also logged four unrelated optional historical/evidence-service Console failures and 28 corresponding ambient network failures. They are retained in the evidence and are not attributed to the catalog runtime. Production acceptance remains Phase G work.
+- Machine evidence: `test-results/known-astronomical-objects-phase-f/validation-report.json`.
+
+Phase F status: `[x] Runtime Search / Focus / Object Card / relationship graph — VALIDATED / NOT FROZEN`

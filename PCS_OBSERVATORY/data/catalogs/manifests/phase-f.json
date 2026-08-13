@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "pcs-known-object-manifest-v1",
+  "phase": "F",
+  "status": "VALIDATED_RUNTIME_CANDIDATE_NOT_FROZEN",
+  "catalogVersion": "phase-f-runtime-2026-08-14",
+  "generatedAt": "2026-08-14",
+  "counts": {
+    "total": 55,
+    "byClass": {
+      "nebula": 18,
+      "black-hole": 11,
+      "stellar-object": 2,
+      "star-cluster": 12,
+      "galactic-structure": 2,
+      "exoplanetary-system": 10
+    },
+    "byEvidence": {
+      "MEASURED": 1,
+      "CATALOG-DERIVED": 54
+    },
+    "relationships": 9,
+    "rejected": 0,
+    "unresolved": 0,
+    "rendered": 0
+  },
+  "runtimeCatalog": "data/catalogs/runtime/known-astronomical-objects.json",
+  "runtimeChecksum": "sha256:8d52fa0ac88230cce48edfd8dfb0543208184c49f82dc8e429dd27fd130d2890",
+  "inputCatalogs": {
+    "data/catalogs/validated/phase-b-nebulae.json": "sha256:8d213d4c497a765afcb41f4afe3667eaeff35eeb4a866a65e6aa46a4b21acbd4",
+    "data/catalogs/validated/phase-c-compact-objects.json": "sha256:ee376ead45dc847b8b2d1c124079d159c0a1b240118108b77ba8132620f73ad4",
+    "data/catalogs/validated/phase-d-clusters.json": "sha256:a2dd5755810d04750f3eff8ad8963c79652c52b98e7c3a5524adcd33ca5daa45",
+    "data/catalogs/validated/phase-e-exoplanets.json": "sha256:2b32d627db801c5f2a4b81ef7e612311c142b7cb4abc1e5d8c00bcdcce43454b"
+  },
+  "scientificBoundary": "Search and relationship resolution cover all 55 validated records. Object-level 3D Focus requires measured sky coordinates plus a source-published distance; otherwise PCS focuses the scientifically supported parent scale."
+}
