@@ -8,7 +8,7 @@
     updateEpoch(epoch){this.epoch=new Date(epoch);for(let i=0;i<this.points.length;i+=1){const state=SmallBodies.stateAt(this.records[i],this.epoch);this.points[i].show=Boolean(state);if(state)this.points[i].position=this.positionMapper(state);}this.viewer.scene.requestRender();}
     unload(){this.records=[];this.points=[];this.collection.removeAll();}
     dispose(){if(this.collection){this.viewer.scene.primitives.remove(this.collection);this.collection=null;}this.records=[];this.points=[];}
-    debug(){return Object.freeze({datasetId:dataset.datasetId,catalogRecords:this.records.length,pointCount:this.points.length,deterministic:true,selection:dataset.selection,positionMode:dataset.positionMode});}
+    debug(){return Object.freeze({datasetId:dataset.datasetId,catalogRecords:this.records.length,pointCount:this.points.length,visibleCount:this.points.filter(point=>point.show!==false).length,epochSupported:SmallBodies.isEpochSupported(this.epoch),deployedEpochRange:SmallBodies.deployedEpochRange,deterministic:true,selection:dataset.selection,positionMode:dataset.positionMode});}
   }
   global.PCSCometCatalog=Object.freeze({dataset,meteorShowers,CometLayer});
 })(window);

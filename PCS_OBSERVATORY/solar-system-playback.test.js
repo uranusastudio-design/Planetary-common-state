@@ -7,13 +7,15 @@ const vm = require("node:vm");
 const root = __dirname;
 const read = file => fs.readFileSync(path.join(root, file), "utf8");
 
-test("Solar playback exposes a custom 0.01–30 days/second control", () => {
+test("Solar playback exposes provider-bounded fine and long-horizon controls", () => {
   const source = read("deep-space.js");
-  assert.match(source, /MAX_PLAYBACK_DAYS_PER_SECOND=30/);
+  assert.match(source, /MAX_PLAYBACK_DAYS_PER_SECOND=3652500/);
   assert.match(source, /data-ds-speed type="number"[^>]+max="\$\{MAX_PLAYBACK_DAYS_PER_SECOND\}"/);
   assert.match(source, /delta\*playbackDaysPerSecond\*SolarCore\.DAY_MS\/1000/);
   assert.match(source, /Math\.min\(now-lastTick,1000\)/);
-  assert.match(source, /playbackRange:DS\.PLANET_VALID_RANGE/);
+  assert.match(source, /LongHorizon\.jdTdbToDisplayDate/);
+  assert.match(source, /data-ds-step-years/);
+  assert.match(source, /data-ds-custom-year/);
   assert.match(source, /paused=true;translate\(\)/);
 });
 
