@@ -1,6 +1,6 @@
 # PCS Astronomical Scale Architecture
 
-Status: Milky Way reopened implementation human-accepted on 2026-08-13; production deployment and verification pending. Earlier Verified/Frozen labels remain historical evidence until the new production gate passes.
+Status: Milky Way human-accepted, production-verified, and frozen on 2026-08-13. Galactic Center and Magellanic System remain separate unopened acceptance stages.
 
 ## One Observatory
 
@@ -61,7 +61,7 @@ Gaia catalog stars use uniform rectilinear propagation only when ICRS position, 
 
 The following remain static in this candidate because no defensible motion model was adopted here: inner bar, bulge, stellar halo, spiral-arm reconstruction guides, Galactic Center coordinate origin, LMC, and SMC. The arm population tracers may evolve under the circular model, but the reconstructed arm geometry does not claim that stars remain permanently attached to an arm.
 
-The precise model policy and source identifiers are versioned in `assets/deep-space/milky-way-scientific-scale/dynamics-contract.json`. Human-review evidence is indexed in `docs/MILKY_WAY_HUMAN_VISUAL_REVIEW.md`. Human acceptance was recorded on 2026-08-13; production deployment/verification remains required before the new state is frozen. Galactic Center and Magellanic System remain separate, unopened acceptance stages.
+The precise model policy and source identifiers are versioned in `assets/deep-space/milky-way-scientific-scale/dynamics-contract.json`. Human-review and production evidence are indexed in `docs/MILKY_WAY_HUMAN_VISUAL_REVIEW.md`. Human acceptance and production verification were recorded on 2026-08-13. This Milky Way overall-scale contract is frozen; Galactic Center and Magellanic System remain separate, unopened acceptance stages.
 
 ## LOD, provenance, and identity
 

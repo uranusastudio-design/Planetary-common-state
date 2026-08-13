@@ -1,0 +1,8 @@
+{
+  "generatedAt": "2026-08-13T10:24:19.767Z",
+  "status": "PRODUCTION VERIFICATION FAILED",
+  "url": "https://uranusastudio-design.github.io/Planetary-common-state/PCS_OBSERVATORY/?v=milky-way-production-c326c24-gate",
+  "error": "Error: Timeout: window.PCSDeepSpaceManager&&window.PCSCosmicTime&&window.PCSMilkyWayDynamics&&document.querySelector('#intro-enter')\n    at waitFor (file:///Users/alvin/.openclaw/workspace/projects/Planetary-common-state-milky-way/PCS_OBSERVATORY/milky-way-production.acceptance.mjs:23:188)\n    at async file:///Users/alvin/.openclaw/workspace/projects/Planetary-common-state-milky-way/PCS_OBSERVATORY/milky-way-production.acceptance.mjs:38:3",
+  "consoleErrors": [],
+  "networkFailures": []
+}

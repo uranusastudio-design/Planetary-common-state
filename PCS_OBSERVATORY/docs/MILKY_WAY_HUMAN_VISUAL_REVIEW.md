@@ -1,14 +1,16 @@
 # PCS Milky Way Human Visual Review
 
-Status: **HUMAN ACCEPTED / PRODUCTION VERIFICATION PENDING**
+Status: **PRODUCTION / VERIFIED / FROZEN**
 
 Layer status: `[x] Milky Way — human visual acceptance recorded`
 
 Evidence date: 2026-08-13
 
-Starting/final working HEAD: `15a07fde209071b0b1356100c6bfeb3f1d91dad6`
+Starting HEAD: `15a07fde209071b0b1356100c6bfeb3f1d91dad6`
 
-Alvin confirmed the visual evidence on 2026-08-13. Commit, push, deployment, production verification, and the new freeze record still follow this gate. Galactic Center and Magellanic System remain navigation anchors and have not been accepted as independent scales.
+Production implementation commit: `c326c24a92720065c92128ff86f4823537f70df4`
+
+Alvin confirmed the visual evidence on 2026-08-13. Commit `c326c24` was pushed to `main`, GitHub Pages built that exact SHA, and the production gate passed. Galactic Center and Magellanic System remain navigation anchors and have not been accepted as independent scales.
 
 ## Acceptance scope
 
@@ -84,6 +86,24 @@ The T0/+1/+10/+50/+100 Myr captures use identical camera position, direction, an
 
 Machine-readable evidence: `../test-results/milky-way-human-review-2026-08-13/acceptance-report.json`.
 
+## Production verification
+
+- GitHub Pages deployment commit: `c326c24a92720065c92128ff86f4823537f70df4`.
+- Pages build status: `built`; completed 2026-08-13T10:06:35Z.
+- Production URL: `https://uranusastudio-design.github.io/Planetary-common-state/PCS_OBSERVATORY/`.
+- Production face-on coverage: 68.8%; 11,000 visible disk/arm points.
+- Search and Sun Object Card: PASS.
+- Scientific Fidelity Level C: PASS.
+- Traditional Chinese / English / Japanese / Korean runtime: PASS.
+- T0/T100 fixed-camera model-state comparison: PASS.
+- Sun moved; Galactic Center, LMC, and SMC remained static: PASS.
+- Desktop 1920×1080 and mobile 390×844: PASS.
+- Viewer 1; Cesium canvas 1; primitives 12 → 12; DataSources 4 → 4; listeners unchanged.
+- Console exceptions: 0; required production network failures: 0.
+- Machine-readable production evidence: `../test-results/milky-way-production-final-2026-08-13/acceptance-report.json`.
+
+Two earlier production automation attempts are retained as evidence. The first encountered a same-scale reload failure after completing the primary visual/time checks; the second high-load run lost its CDP session during repeated open/close collection. The final bounded production gate passed, while the full 30 time/view and 20 open/close stress remained covered by the successful local acceptance run.
+
 ## Screenshot set
 
 - `../test-results/milky-way-human-review-2026-08-13/01-face-on-1920x1080.png`
@@ -113,7 +133,9 @@ Machine-readable evidence: `../test-results/milky-way-human-review-2026-08-13/ac
 - [x] Milky Way human acceptance recorded.
 - [x] Commit authorized by the acceptance gate.
 - [x] Push/deployment/production verification authorized by the acceptance gate.
-- [ ] Commit/push/deployment completed.
-- [ ] Production verification passed and freeze recorded.
+- [x] Commit `c326c24` pushed to the feature branch and `main`.
+- [x] GitHub Pages built deployment commit `c326c24`.
+- [x] Production verification passed.
+- [x] Milky Way frozen after human and production acceptance.
 
-The current state is **HUMAN ACCEPTED / PRODUCTION VERIFICATION PENDING**. The new implementation is not Production Verified/Frozen until the deployment gate passes.
+The authoritative Milky Way overall-scale state is **PRODUCTION / VERIFIED / FROZEN**. The next authorized scale is Galactic Center, but it has not been started in this work.
