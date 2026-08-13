@@ -193,9 +193,9 @@ def download_payload(authorization: str | None) -> tuple[dict, str]:
         raise DataAccessPending("CWA authorization token is required for live Open Data access.")
 
     query = urlencode({"Authorization": authorization, "format": "JSON"})
-    source_url = f"{ENDPOINT}?{query}"
+    request_url = f"{ENDPOINT}?{query}"
     try:
-        with urlopen(source_url, timeout=30) as response:
+        with urlopen(request_url, timeout=30) as response:
             text = response.read().decode("utf-8", errors="replace")
     except (OSError, URLError) as exc:
         raise DataAccessPending(f"Unable to load CWA Open Data endpoint: {exc}") from exc
@@ -203,7 +203,7 @@ def download_payload(authorization: str | None) -> tuple[dict, str]:
     payload = json.loads(text)
     if isinstance(payload, dict) and str(payload.get("success", "")).lower() == "false":
         raise DataAccessPending(f"CWA Open Data request failed: {payload.get('message') or payload}")
-    return payload, source_url
+    return payload, ENDPOINT
 
 
 def load_payload(source: str | Path | None, authorization: str | None) -> tuple[dict, str]:
@@ -308,7 +308,9 @@ def run_connector(
         return validate_output(output_path)
     except DataAccessPending:
         output_path = write_output([], output)
-        return validate_output(output_path, data_access_pending=True)
+        result = validate_output(output_path, data_access_pending=True)
+        result.update(status="AUTH_REQUIRED", auth_required=True, required_secret="CWA_API_KEY")
+        return result
 
 
 def main() -> None:

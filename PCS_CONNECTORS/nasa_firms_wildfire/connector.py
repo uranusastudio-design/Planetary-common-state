@@ -11,17 +11,22 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import os
 import re
 from pathlib import Path
+from urllib.error import HTTPError, URLError
+from urllib.request import urlopen
 
 
 PROVIDER = "NASA"
 SYSTEM = "FIRMS"
 DATASET = "Fire Information for Resource Management System"
-VERSION = "NASA FIRMS Wildfire connector v1.0"
+VERSION = "NASA FIRMS Wildfire connector v1.1"
 DEFAULT_OUTPUT = Path(__file__).resolve().parents[2] / "PCS_ENGINE" / "input" / "nasa_firms_wildfire_pcs.json"
 FIRMS_API_AREA = "https://firms.modaps.eosdis.nasa.gov/api/area/csv/[MAP_KEY]/[SOURCE]/[AREA_COORDINATES]/[DAY_RANGE]"
 FIRMS_API_AREA_DATE = "https://firms.modaps.eosdis.nasa.gov/api/area/csv/[MAP_KEY]/[SOURCE]/[AREA_COORDINATES]/[DAY_RANGE]/[DATE]"
+FIRMS_LIVE_TEMPLATE = "https://firms.modaps.eosdis.nasa.gov/api/area/csv/{map_key}/VIIRS_NOAA20_NRT/world/1"
+FIRMS_PUBLIC_SOURCE = "https://firms.modaps.eosdis.nasa.gov/api/area/csv/[REDACTED]/VIIRS_NOAA20_NRT/world/1"
 MISSING_MARKERS = {"", "-999", "-999.0", "-9999", "-9999.0", "NaN", "nan", "NA", "N/A", "null", "None"}
 
 
@@ -107,8 +112,8 @@ def make_record(
     }
 
 
-def parse_csv_source(path: Path) -> list[dict[str, object]]:
-    lines = [line for line in path.read_text(encoding="utf-8", errors="replace").splitlines() if line.strip()]
+def parse_csv_text(text: str, source_url: str) -> list[dict[str, object]]:
+    lines = [line for line in text.splitlines() if line.strip()]
     if not lines:
         return []
 
@@ -148,8 +153,8 @@ def parse_csv_source(path: Path) -> list[dict[str, object]]:
             continue
         seen.add(duplicate_key)
 
-        source_url = str(row.get(source_field, "")).strip() if source_field else str(path)
-        source_url = source_url or str(path)
+        row_source_url = str(row.get(source_field, "")).strip() if source_field else source_url
+        row_source_url = row_source_url or source_url
         confidence_value = parse_confidence(row.get(confidence_field, "")) if confidence_field else None
         confidence = confidence_value or "source confidence unavailable"
         base_notes = f"NASA FIRMS active fire record; latitude={latitude}; longitude={longitude}; sensor={sensor}."
@@ -162,7 +167,7 @@ def parse_csv_source(path: Path) -> list[dict[str, object]]:
                 "count",
                 "observed",
                 confidence,
-                source_url,
+                row_source_url,
                 base_notes,
             )
         )
@@ -177,7 +182,7 @@ def parse_csv_source(path: Path) -> list[dict[str, object]]:
                     "MW",
                     "missing" if frp_value is None else "observed",
                     confidence,
-                    source_url,
+                    row_source_url,
                     base_notes,
                 )
             )
@@ -191,7 +196,7 @@ def parse_csv_source(path: Path) -> list[dict[str, object]]:
                     "confidence class",
                     "observed",
                     confidence,
-                    source_url,
+                    row_source_url,
                     base_notes,
                 )
             )
@@ -199,9 +204,25 @@ def parse_csv_source(path: Path) -> list[dict[str, object]]:
     return sorted(records, key=lambda item: (str(item["variable"]), str(item["timestamp"])))
 
 
-def load_records(source: str | Path | None = None) -> list[dict[str, object]]:
+def parse_csv_source(path: Path) -> list[dict[str, object]]:
+    return parse_csv_text(path.read_text(encoding="utf-8", errors="replace"), str(path))
+
+
+def load_records(source: str | Path | None = None, map_key: str | None = None) -> list[dict[str, object]]:
     if source is None:
-        raise DataAccessPending("No local official NASA FIRMS source file provided.")
+        credential = map_key or os.environ.get("FIRMS_MAP_KEY")
+        if not credential:
+            raise DataAccessPending("AUTH_REQUIRED: FIRMS_MAP_KEY is not configured.")
+        try:
+            with urlopen(FIRMS_LIVE_TEMPLATE.format(map_key=credential), timeout=30) as response:
+                text = response.read().decode("utf-8", errors="replace")
+        except HTTPError as exc:
+            if exc.code in {401, 403}:
+                raise DataAccessPending(f"AUTH_BLOCKED: FIRMS rejected MAP_KEY (HTTP {exc.code}).") from exc
+            raise DataAccessPending(f"FIRMS endpoint unavailable (HTTP {exc.code}).") from exc
+        except (OSError, URLError) as exc:
+            raise DataAccessPending(f"FIRMS endpoint unavailable: {exc}") from exc
+        return parse_csv_text(text, FIRMS_PUBLIC_SOURCE)
 
     path = Path(source)
     if not path.exists():
@@ -287,16 +308,18 @@ def validate_output(output_path: str | Path, data_access_pending: bool = False) 
     }
 
 
-def run_connector(source: str | Path | None = None, output: str | Path = DEFAULT_OUTPUT) -> dict[str, object]:
+def run_connector(source: str | Path | None = None, output: str | Path = DEFAULT_OUTPUT, map_key: str | None = None) -> dict[str, object]:
     try:
-        records = load_records(source)
+        records = load_records(source, map_key)
         if not records:
             raise DataAccessPending("No parseable NASA FIRMS records found.")
         output_path = write_output(records, output)
         return validate_output(output_path)
     except DataAccessPending:
         output_path = write_output([], output)
-        return validate_output(output_path, data_access_pending=True)
+        result = validate_output(output_path, data_access_pending=True)
+        result.update(status="AUTH_REQUIRED", auth_required=True, required_secret="FIRMS_MAP_KEY")
+        return result
 
 
 def main() -> None:

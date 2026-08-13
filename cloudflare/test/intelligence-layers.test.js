@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
-import { PCS_LAYER_ADAPTERS, retrieveLayer } from "../src/providers/layers.js";
+import { PCS_LAYER_ADAPTERS, retrieveAllLayers, retrieveLayer } from "../src/providers/layers.js";
 import { ingestDailyBrief, proposeAiAnalysis } from "../src/pcs/intelligence.js";
 import { residualState, validationEvidenceSufficient } from "../src/pcs/routes.js";
 
@@ -68,18 +68,66 @@ test("scientific raster layers publish exact sustainable GIBS products and contr
   }
 });
 
-test("NOAA station values remain station-scoped and use the documented columns and datum", async () => {
+test("NOAA observations retain their documented spatial semantics", async () => {
   const co2 = PCS_LAYER_ADAPTERS.find((item) => item.id === "co2");
   const co2Result = await retrieveLayer(co2, {}, async () => new Response("# header\n2026,6,2026.4583,431.44,429.06,19,0.35,0.15", { status: 200 }), new Date("2026-07-18T00:00:00Z"));
   assert.equal(co2Result.value, 431.44);
   assert.equal(co2Result.details.station, "Mauna Loa Observatory (MLO)");
   assert.match(co2Result.details.spatial_warning, /not a global CO2 surface/);
   const seaLevel = PCS_LAYER_ADAPTERS.find((item) => item.id === "sea-level");
-  const payload = { metadata: { id: "1612340", name: "Honolulu", lat: "21.3033", lon: "-157.8645" }, data: [{ t: "2026-07-18 06:30", v: "0.298", s: "0.024", f: "0,0,0,0", q: "p" }] };
-  const seaLevelResult = await retrieveLayer(seaLevel, {}, async () => new Response(JSON.stringify(payload), { status: 200, headers: { "content-type": "application/json" } }), new Date("2026-07-18T06:35:00Z"));
-  assert.equal(seaLevelResult.details.datum, "MSL");
-  assert.equal(seaLevelResult.details.latitude, 21.3033);
-  assert.match(seaLevelResult.details.spatial_warning, /not global sea level/);
+  const csv = "# NOAA LSA\nyear,TOPEX/Poseidon,Jason-1,Jason-2,Jason-3,Sentinel-6MF\n2025.12880,,,,,80.98";
+  const seaLevelResult = await retrieveLayer(seaLevel, {}, async () => new Response(csv, { status: 200, headers: { "content-type": "text/csv" } }), new Date("2026-07-18T06:35:00Z"));
+  assert.equal(seaLevelResult.value, 80.98);
+  assert.equal(seaLevelResult.unit, "mm relative to 1990 reference");
+  assert.equal(seaLevelResult.details.residual_mapping, "TBD");
+  assert.equal(seaLevelResult.cesium_renderer_available, false);
+});
+
+test("NSIDC binding retrieves Arctic and Antarctic v4 records independently", async () => {
+  const adapter = PCS_LAYER_ADAPTERS.find((item) => item.id === "sea-ice");
+  const result = await retrieveLayer(adapter, {}, async (url) => {
+    const extent = String(url).includes("/south/") ? "18.225" : "7.691";
+    return new Response(`Year,Month,Day,Extent,Missing,Source Data\n2026,8,12,${extent},0.000,NRTSI-G`, { status: 200, headers: { "content-type": "text/csv" } });
+  }, new Date("2026-08-13T00:00:00Z"));
+  assert.equal(result.retrieval_status, "LATEST");
+  assert.equal(result.details.hemispheres.arctic.value, 7.691);
+  assert.equal(result.details.hemispheres.antarctic.value, 18.225);
+  assert.equal(result.details.residual_mapping, "TBD");
+});
+
+test("retry recovers a transient GMSL 503", async () => {
+  const adapter = PCS_LAYER_ADAPTERS.find((item) => item.id === "sea-level");
+  let calls = 0;
+  const result = await retrieveLayer(adapter, {}, async () => {
+    calls += 1;
+    if (calls < 3) return new Response("temporary", { status: 503 });
+    return new Response("year,TOPEX/Poseidon,Jason-1,Jason-2,Jason-3,Sentinel-6MF\n2025.12880,,,,,80.98", { status: 200 });
+  }, new Date("2026-08-13T00:00:00Z"));
+  assert.equal(calls, 3);
+  assert.equal(result.value, 80.98);
+});
+
+test("layers cache expires and serves stale validated data on provider failure", async () => {
+  let stored = null;
+  const cache = {
+    async get() { return stored; },
+    async put(_key, value, options) { stored = JSON.parse(value); assert.equal(options.expirationTtl, 86400); },
+  };
+  const successful = async (url) => {
+    const value = String(url);
+    if (value.includes("slr_sla_gbl")) return new Response("year,TOPEX/Poseidon,Jason-1,Jason-2,Jason-3,Sentinel-6MF\n2025.12880,,,,,80.98", { status: 200 });
+    if (value.includes("seaice_extent")) return new Response("Year,Month,Day,Extent,Missing,Source Data\n2026,8,12,7.691,0.000,NRTSI-G", { status: 200 });
+    if (value.includes("openweathermap")) return new Response(new Uint8Array([0x89,0x50,0x4e,0x47]), { status: 200, headers: { "content-type": "image/png" } });
+    return new Response(JSON.stringify({ feed: { entry: [{ title: "x", time_start: "2026-08-12T00:00:00Z" }] }, data: [{ t: "2026-08-12 00:00", v: "1" }], activeStorms: [], states: [] }), { status: 200, headers: { "content-type": "application/json" } });
+  };
+  const env = { PCS_CACHE: cache, FIRMS_MAP_KEY: "test", OPENWEATHER_API_KEY: "test" };
+  const first = await retrieveAllLayers(env, successful, new Date("2026-08-13T00:00:00Z"));
+  assert.equal(first.cache_status, "miss");
+  const hit = await retrieveAllLayers(env, async () => { throw new Error("must not fetch"); }, new Date("2026-08-13T00:04:00Z"));
+  assert.equal(hit.cache_status, "hit");
+  const stale = await retrieveAllLayers(env, async () => { throw new Error("offline"); }, new Date("2026-08-13T00:06:00Z"));
+  assert.equal(stale.layers.find((item) => item.id === "sea-level").retrieval_status, "STALE");
+  assert.equal(stale.layers.find((item) => item.id === "sea-ice").retrieval_status, "STALE");
 });
 
 test("NHC active storm response retains a normalized center and official GIS products", async () => {

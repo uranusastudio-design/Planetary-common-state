@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import os
 import re
 from pathlib import Path
 
@@ -24,6 +25,8 @@ GPM_DATA_DIRECTORY = "https://gpm.nasa.gov/data/directory"
 IMERG_HALF_HOURLY_PRODUCT = "https://disc.gsfc.nasa.gov/datasets/GPM_3IMERGHH_07/summary"
 IMERG_DAILY_PRODUCT = "https://disc.gsfc.nasa.gov/datasets/GPM_3IMERGDF_07/summary"
 IMERG_MONTHLY_PRODUCT = "https://disc.gsfc.nasa.gov/datasets/GPM_3IMERGM_07/summary"
+EARTHDATA_TOKEN_ENV = "EARTHDATA_TOKEN"
+CMR_GRANULES_ENDPOINT = "https://cmr.earthdata.nasa.gov/search/granules.json?short_name=GPM_3IMERGHH&version=07&page_size=1&sort_key=-start_date"
 MISSING_MARKERS = {"", "-999", "-999.0", "-9999", "-9999.0", "NaN", "nan", "NA", "N/A", "null", "None"}
 ALLOWED_UNITS = {"mm/hr", "mm/day"}
 
@@ -168,7 +171,12 @@ def parse_json_source(path: Path) -> list[dict[str, object]]:
 
 def load_records(source: str | Path | None = None) -> list[dict[str, object]]:
     if source is None:
-        raise DataAccessPending("No local official NASA IMERG source file provided.")
+        if not os.environ.get(EARTHDATA_TOKEN_ENV):
+            raise DataAccessPending("AUTH_REQUIRED: EARTHDATA_TOKEN bearer token is not configured.")
+        raise DataAccessPending(
+            "AUTH_BLOCKED: token is configured but no reviewed IMERG granule download/subset URL was supplied. "
+            "CMR discovery is public; GES DISC data download requires Earthdata Login authorization."
+        )
 
     path = Path(source)
     if not path.exists():
@@ -271,7 +279,9 @@ def run_connector(source: str | Path | None = None, output: str | Path = DEFAULT
         return validate_output(output_path)
     except DataAccessPending:
         output_path = write_output([], output)
-        return validate_output(output_path, data_access_pending=True)
+        result = validate_output(output_path, data_access_pending=True)
+        result.update(status="AUTH_REQUIRED", auth_required=True, required_secret=EARTHDATA_TOKEN_ENV, discovery_endpoint=CMR_GRANULES_ENDPOINT)
+        return result
 
 
 def main() -> None:

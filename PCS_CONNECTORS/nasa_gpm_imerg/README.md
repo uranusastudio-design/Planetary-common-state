@@ -1,5 +1,10 @@
 # NASA GPM IMERG Connector v1.0
 
+CMR discovery is public, but GES DISC granule downloads require Earthdata
+Login authorization. The connector accepts an Earthdata user bearer token only
+through `EARTHDATA_TOKEN`; username/password are not assumed or embedded. User
+tokens currently have a finite lifetime and must be rotated outside Git.
+
 This connector defines the PCS Hydrology connector for NASA Global Precipitation Measurement IMERG precipitation observations.
 
 ## Provider

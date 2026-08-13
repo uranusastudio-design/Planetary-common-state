@@ -249,6 +249,8 @@ Configure runtime secrets:
 ```bash
 wrangler secret put OPENWEATHER_API_KEY
 wrangler secret put EARTHDATA_TOKEN
+wrangler secret put FIRMS_MAP_KEY
+wrangler secret put CWA_API_KEY
 wrangler secret put INGEST_SECRET
 wrangler secret put ADMIN_API_KEY
 ```

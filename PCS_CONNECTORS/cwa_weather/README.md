@@ -1,5 +1,8 @@
 # CWA Weather Connector v0.1
 
+Live access reads the official CWA authorization value from `CWA_API_KEY`.
+Credentials are never hard-coded, returned as `source_url`, or committed.
+
 This connector is a temporary live data integration test for the PCS pipeline.
 
 ## Provider

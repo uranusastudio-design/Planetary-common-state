@@ -1,5 +1,11 @@
 # NASA FIRMS Wildfire Connector v1.0
 
+Live retrieval uses only the official FIRMS Area API and reads `FIRMS_MAP_KEY`
+from the process environment. The key is never written to output or Git. FIRMS
+documents a 5,000-transaction limit per 10-minute interval; PCS requests one
+global one-day VIIRS NOAA-20 NRT snapshot per connector refresh and must rely on
+the backend cache rather than viewer-driven requests.
+
 This connector defines the PCS Biosphere connector for NASA FIRMS wildfire and active fire observations.
 
 ## Provider

@@ -2,13 +2,13 @@ const PUBLIC_DOMAIN = "Public domain / provider terms";
 
 const OBSERVATION_LAYER_ADAPTERS = Object.freeze([
   { id: "global-temperature", provider: "NASA GISS", dataset: "GISTEMP v4 global monthly surface temperature anomaly", endpoint: "https://data.giss.nasa.gov/gistemp/tabledata_v4/GLB.Ts+dSST.csv", parser: "gistemp", spatial_resolution: "global mean", temporal_resolution: "monthly", license: PUBLIC_DOMAIN },
-  { id: "sea-level", provider: "NOAA CO-OPS", dataset: "Verified/Preliminary Water Level, Honolulu 1612340", endpoint: "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?date=latest&station=1612340&product=water_level&datum=MSL&units=metric&time_zone=gmt&format=json", parser: "noaa_water_level", spatial_resolution: "station", temporal_resolution: "6 minutes", license: PUBLIC_DOMAIN },
+  { id: "sea-level", provider: "NOAA Laboratory for Satellite Altimetry", dataset: "Global mean sea level anomaly, annual signals retained", endpoint: "https://www.star.nesdis.noaa.gov/socd/lsa/SeaLevelRise/slr/slr_sla_gbl_keep_ref_90.csv", parser: "noaa_gmsl", spatial_resolution: "global mean, 66°S–66°N", temporal_resolution: "approximately 10 days; provider publication may lag", license: "No-cost use with required NOAA LSA acknowledgment", timeout_ms: 15000, retry_attempts: 3, max_latency_minutes: 730 * 24 * 60 },
   { id: "precipitation", provider: "NASA GES DISC", dataset: "GPM IMERG Early Half-Hourly V07", endpoint: "https://cmr.earthdata.nasa.gov/search/granules.json?short_name=GPM_3IMERGHHE&version=07&page_size=1&sort_key=-start_date", parser: "cmr_granule", spatial_resolution: "0.1 degree", temporal_resolution: "30 minutes", license: PUBLIC_DOMAIN },
   { id: "tropical-cyclones", provider: "NOAA NHC", dataset: "Current Tropical Cyclone Products", endpoint: "https://www.nhc.noaa.gov/CurrentStorms.json", parser: "nhc", spatial_resolution: "storm advisory", temporal_resolution: "advisory cycle", license: PUBLIC_DOMAIN },
   { id: "wildfire", provider: "NASA FIRMS", dataset: "VIIRS NOAA-20 Near Real-Time active fire detections", endpoint: "https://firms.modaps.eosdis.nasa.gov/api/area/csv/{FIRMS_MAP_KEY}/VIIRS_NOAA20_NRT/world/1", parser: "firms", secret: "FIRMS_MAP_KEY", spatial_resolution: "375 m detection", temporal_resolution: "near real-time", license: PUBLIC_DOMAIN },
   { id: "co2", provider: "NOAA GML", dataset: "Mauna Loa monthly mean CO2", endpoint: "https://gml.noaa.gov/webdata/ccgg/trends/co2/co2_mm_mlo.csv", parser: "noaa_co2", spatial_resolution: "Mauna Loa station", temporal_resolution: "monthly", license: PUBLIC_DOMAIN },
   { id: "ndvi", provider: "NASA MODIS", dataset: "MOD13Q1 Terra Vegetation Indices 16-Day L3 Global 250 m V061", endpoint: "https://cmr.earthdata.nasa.gov/search/granules.json?short_name=MOD13Q1&version=061&page_size=1&sort_key=-start_date", parser: "cmr_granule", spatial_resolution: "250 m", temporal_resolution: "16-day composite", license: PUBLIC_DOMAIN },
-  { id: "sea-ice", provider: "NSIDC", dataset: "Sea Ice Index v4 Northern Hemisphere daily extent", endpoint: "https://noaadata.apps.nsidc.org/NOAA/G02135/north/daily/data/N_seaice_extent_daily_v4.0.csv", parser: "nsidc", spatial_resolution: "Northern Hemisphere extent", temporal_resolution: "daily", license: PUBLIC_DOMAIN },
+  { id: "sea-ice", provider: "NOAA / NSIDC", dataset: "Sea Ice Index v4 daily extent", endpoint: "https://noaadata.apps.nsidc.org/NOAA/G02135/north/daily/data/N_seaice_extent_daily_v4.0.csv", secondary_endpoint: "https://noaadata.apps.nsidc.org/NOAA/G02135/south/daily/data/S_seaice_extent_daily_v4.0.csv", parser: "nsidc", spatial_resolution: "Northern and Southern Hemisphere extent", temporal_resolution: "daily", license: "Dataset citation required; DOI 10.7265/a98x-0f50", timeout_ms: 120000, retry_attempts: 3 },
   { id: "shipping", provider: "NOAA Marine Cadastre", dataset: "AccessAIS historical vessel traffic", endpoint: "https://marinecadastre.gov/ais/", parser: "metadata_only", spatial_resolution: "historical track archive", temporal_resolution: "annual archive", license: PUBLIC_DOMAIN, partial_reason: "No sustainable anonymous public live vessel-position API is configured; no vessel positions are inferred." },
   { id: "aviation", provider: "OpenSky Network", dataset: "State Vectors", endpoint: "https://opensky-network.org/api/states/all", parser: "opensky", authOnDenied: true, spatial_resolution: "reported aircraft positions", temporal_resolution: "live state snapshot", license: "OpenSky Network terms" },
   { id: "satellite-observations", provider: "CelesTrak", dataset: "Active Satellites GP (OMM JSON)", endpoint: "https://celestrak.org/NORAD/elements/gp.php?GROUP=active&FORMAT=json", parser: "celestrak", spatial_resolution: "orbital element per active object", temporal_resolution: "latest GP epoch", license: "CelesTrak terms" },
@@ -53,7 +53,7 @@ const LAYER_CAPABILITIES = Object.freeze({
     opacity_control_available: true,
     visualization: gibs("MODIS_Terra_Land_Surface_Temp_Day_TES", "GoogleMapsCompatible_Level7", 7, "https://gibs.earthdata.nasa.gov/legends/MODIS_Land_Surface_Temp_H.svg", "K", "MODIS/Terra MOD21 Land Surface Temperature (Day, TES)", { semantic_note: "The raster is land-surface temperature, not current 2 m weather temperature and not the GISTEMP global anomaly." }),
   },
-  "sea-level": { source_type: "json_station_observation", visualization_type: "cesium_station", spatial_data_available: true, time_series_available: true, cesium_renderer_available: true, checkbox_connected: true, legend_available: true, opacity_control_available: true, visualization: { kind: "station", station_id: "1612340", station_name: "Honolulu", latitude: 21.3033, longitude: -157.8645, datum: "MSL", units: "m", product: "NOAA CO-OPS water level" } },
+  "sea-level": { source_type: "csv_global_time_series", visualization_type: "evidence_metadata", spatial_data_available: false, time_series_available: true, cesium_renderer_available: false, checkbox_connected: false, legend_available: false, opacity_control_available: false, unavailable_reason: "A global mean has no truthful point or raster geometry; it is bound to the observation/evidence API only." },
   precipitation: { source_type: "cmr_granule_plus_raster", visualization_type: "cesium_imagery", spatial_data_available: true, time_series_available: true, cesium_renderer_available: true, checkbox_connected: true, legend_available: true, opacity_control_available: true, visualization: gibs("IMERG_Precipitation_Rate_30min", "GoogleMapsCompatible_Level6", 6, "https://gibs.earthdata.nasa.gov/legends/GPM_Precipitation_Rate_H.svg", "mm/hr", "GPM IMERG V07 precipitation rate, 30-minute") },
   "tropical-cyclones": { source_type: "json_advisory_and_gis_links", visualization_type: "cesium_entities_and_kml", spatial_data_available: true, time_series_available: true, cesium_renderer_available: true, checkbox_connected: true, legend_available: true, opacity_control_available: true, visualization: { kind: "tropical_cyclones", product: "NOAA NHC current centers and advisory GIS products", units: "kt", uncertainty: "Forecast cone communicates probable center-track uncertainty; it is not a storm-size boundary." } },
   wildfire: { source_type: "csv_detection_snapshot", visualization_type: "cesium_detection_points", spatial_data_available: true, time_series_available: false, cesium_renderer_available: true, checkbox_connected: true, legend_available: true, opacity_control_available: true, visualization: { kind: "fire_detections", product: "NASA FIRMS VIIRS NOAA-20 NRT", units: "detections", credential_mode: "backend_secret_only" } },
@@ -124,7 +124,7 @@ function parseNoaaCo2(text) {
   };
 }
 
-function parseNsidc(text) {
+function parseNsidc(text, hemisphere = "north") {
   const line = lastDataLine(text);
   const values = line?.split(",").map((value) => value.trim()) || [];
   if (values.length < 4) throw new Error("NSIDC extent row unavailable");
@@ -133,11 +133,33 @@ function parseNsidc(text) {
     data_state: "OBSERVED", quality_flag: "provider_published_daily_extent",
     uncertainty: "Sea Ice Index uses passive-microwave concentration and a 15% ice-concentration threshold.",
     details: {
-      region: "Northern Hemisphere (Arctic)", hemisphere: "north", definition: "extent, not area; full grid cells with at least 15% sea-ice concentration",
+      region: hemisphere === "north" ? "Northern Hemisphere (Arctic)" : "Southern Hemisphere (Antarctic)", hemisphere, definition: "extent, not area; full grid cells with at least 15% sea-ice concentration",
       seasonal_comparison: "Compare against the NSIDC Sea Ice Index v4 climatology; no comparison is calculated by PCS.",
       map_semantics: "The Cesium raster is global concentration for both Arctic and Antarctic; this number is Arctic extent metadata only.",
     },
   };
+}
+
+function decimalYearDate(raw) {
+  const decimal = Number(raw), year = Math.trunc(decimal);
+  const start = Date.UTC(year, 0, 1), end = Date.UTC(year + 1, 0, 1);
+  return new Date(start + Math.round((decimal - year) * (end - start))).toISOString();
+}
+
+function parseNoaaGmsl(text) {
+  const lines = text.trim().split(/\r?\n/).filter((line) => line.trim() && !line.startsWith("#"));
+  const headers = lines.shift()?.split(",").map((value) => value.trim()) || [];
+  const rows = lines.map((line) => line.split(",").map((value) => value.trim()));
+  for (const row of rows.reverse()) {
+    const value = row.slice(1).filter((item) => item !== "").map(Number).find(Number.isFinite);
+    if (Number.isFinite(value) && Number.isFinite(Number(row[0]))) return {
+      observation_time: decimalYearDate(row[0]), value, unit: "mm relative to 1990 reference",
+      data_state: "OBSERVED", quality_flag: "provider_published_satellite_altimetry_global_mean",
+      uncertainty: "NOAA notes 66°S–66°N coverage, no GIA correction, and experimental non-operational status.",
+      details: { missions: headers.slice(1), coverage: "66°S–66°N", annual_signal: "retained", gia_correction: false, residual_mapping: "TBD", attribution: "Altimetry data are provided by the NOAA Laboratory for Satellite Altimetry." },
+    };
+  }
+  throw new Error("NOAA GMSL observation unavailable");
 }
 
 function normalizedStormClass(classification, id = "") {
@@ -207,6 +229,7 @@ function parsePayload(adapter, body, contentType) {
   if (adapter.parser === "gistemp") return parseGistemp(body);
   if (adapter.parser === "noaa_co2") return parseNoaaCo2(body);
   if (adapter.parser === "nsidc") return parseNsidc(body);
+  if (adapter.parser === "noaa_gmsl") return parseNoaaGmsl(body);
   if (adapter.parser === "metadata_only") return { observation_time: null, value: null, unit: null, data_state: "UNAVAILABLE", quality_flag: "metadata_only", uncertainty: null, details: { limitation: adapter.partial_reason } };
   const payload = contentType.includes("json") ? JSON.parse(body) : JSON.parse(body);
   if (adapter.parser === "cmr_granule") return parseCmr(payload);
@@ -247,8 +270,25 @@ function parsePayload(adapter, body, contentType) {
 function statusFor(adapter, result, latencyMinutes) {
   if (adapter.parser === "metadata_only") return "PARTIAL";
   if (result.data_state === "UNAVAILABLE") return "UNAVAILABLE";
-  if (latencyMinutes !== null && latencyMinutes > 7 * 24 * 60) return "DELAYED";
+  if (latencyMinutes !== null && latencyMinutes > (adapter.max_latency_minutes || 7 * 24 * 60)) return "DELAYED";
   return result.value === null ? "LATEST" : "LIVE";
+}
+
+const RETRYABLE_STATUS = new Set([408, 425, 429, 500, 502, 503, 504]);
+
+async function fetchWithRetry(url, options, fetcher, attempts = 3) {
+  let lastError;
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    try {
+      const response = await fetcher(url, options);
+      if (!RETRYABLE_STATUS.has(response.status) || attempt === attempts) return response;
+      lastError = new Error(`Provider returned retryable HTTP ${response.status}`);
+    } catch (error) {
+      lastError = error;
+      if (error?.name === "AbortError" || attempt === attempts) throw error;
+    }
+  }
+  throw lastError || new Error("Provider retrieval failed");
 }
 
 export async function retrieveLayer(adapter, env, fetcher = fetch, now = new Date()) {
@@ -291,14 +331,27 @@ export async function retrieveLayer(adapter, env, fetcher = fetch, now = new Dat
   }
   const endpoint = adapter.endpoint.replace("{FIRMS_MAP_KEY}", env?.FIRMS_MAP_KEY || "");
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 5000);
+  const timer = setTimeout(() => controller.abort(), adapter.timeout_ms || 5000);
   try {
-    const response = await fetcher(endpoint, { headers: { "user-agent": "PCS-Observatory/2.0 public-research" }, signal: controller.signal, cf: { cacheTtl: 0 } });
+    const options = { headers: { "user-agent": "PCS-Observatory/2.0 public-research" }, signal: controller.signal, cf: { cacheTtl: 0 } };
+    const response = await fetchWithRetry(endpoint, options, fetcher, adapter.retry_attempts || 1);
     if (!response.ok) return normalized(adapter, { endpoint, retrieved_at: retrievedAt, retrieval_status: adapter.authOnDenied && (response.status === 401 || response.status === 403) ? "AUTH_REQUIRED" : "ERROR", quality_flag: `http_${response.status}`, error: `Provider returned HTTP ${response.status}` });
     const body = await response.text();
     let result;
     if (adapter.parser === "firms") result = parseFirms(body);
-    else result = parsePayload(adapter, body, response.headers.get("content-type") || "");
+    else if (adapter.parser === "nsidc" && adapter.secondary_endpoint) {
+      const southResponse = await fetchWithRetry(adapter.secondary_endpoint, options, fetcher, adapter.retry_attempts || 1);
+      if (!southResponse.ok) return normalized(adapter, { retrieved_at: retrievedAt, retrieval_status: "ERROR", quality_flag: `south_http_${southResponse.status}`, error: `Antarctic provider returned HTTP ${southResponse.status}` });
+      const north = parseNsidc(body, "north");
+      const south = parseNsidc(await southResponse.text(), "south");
+      result = {
+        observation_time: [north.observation_time, south.observation_time].filter(Boolean).sort().at(-1) || null,
+        value: null, unit: "million km²", data_state: "OBSERVED",
+        quality_flag: "provider_published_daily_extent_both_hemispheres",
+        uncertainty: north.uncertainty,
+        details: { hemispheres: { arctic: north, antarctic: south }, residual_mapping: "TBD" },
+      };
+    } else result = parsePayload(adapter, body, response.headers.get("content-type") || "");
     const latency = result.observation_time ? Math.max(0, Math.round((now - new Date(result.observation_time)) / 60000)) : null;
     return normalized(adapter, { endpoint, ...result, retrieved_at: retrievedAt, latency, retrieval_status: statusFor(adapter, result, latency), error: null });
   } catch (error) {
@@ -352,6 +405,7 @@ function normalized(adapter, runtime) {
 
 const LAYERS_CACHE_KEY = "layers:v2";
 const LAYERS_CACHE_TTL_MS = 5 * 60 * 1000;
+const LAYERS_STALE_TTL_SECONDS = 24 * 60 * 60;
 
 function buildSourceHealth(layers) {
   const sources = {};
@@ -367,21 +421,39 @@ function buildSourceHealth(layers) {
 }
 
 export async function retrieveAllLayers(env, fetcher = fetch, now = new Date()) {
+  let cached = null;
   if (env?.PCS_CACHE) {
     try {
-      const cached = await env.PCS_CACHE.get(LAYERS_CACHE_KEY, "json");
+      cached = await env.PCS_CACHE.get(LAYERS_CACHE_KEY, "json");
       if (cached && cached.ts && (now.getTime() - cached.ts) < LAYERS_CACHE_TTL_MS) {
         return { ...cached.data, cache_status: "hit", cache_age_ms: now.getTime() - cached.ts };
       }
     } catch { /* cache miss on error, fall through to fresh */ }
   }
-  const layers = await Promise.all(PCS_LAYER_ADAPTERS.map((adapter) => retrieveLayer(adapter, env, fetcher, now)));
+  let layers = await Promise.all(PCS_LAYER_ADAPTERS.map((adapter) => retrieveLayer(adapter, env, fetcher, now)));
+  if (cached?.data?.layers) {
+    const staleById = new Map(cached.data.layers.map((layer) => [layer.id, layer]));
+    layers = layers.map((layer) => {
+      if (!["ERROR", "DELAYED", "UNAVAILABLE"].includes(layer.retrieval_status)) return layer;
+      const stale = staleById.get(layer.id);
+      if (!stale || !["LIVE", "LATEST"].includes(stale.retrieval_status)) return layer;
+      return {
+        ...stale,
+        retrieval_status: "STALE",
+        runtime_status: "STALE",
+        stale: true,
+        stale_age_ms: now.getTime() - cached.ts,
+        failure_reason: layer.error,
+        error: layer.error,
+      };
+    });
+  }
   const { sources, health } = buildSourceHealth(layers);
   const status = health.error === 0 && health.partial === 0 && health.auth_required === 0 ? "ok" : "partial";
   const payload = { generated_at: now.toISOString(), status, sources, health, layers };
   if (env?.PCS_CACHE) {
     try {
-      await env.PCS_CACHE.put(LAYERS_CACHE_KEY, JSON.stringify({ ts: now.getTime(), data: payload }), { expirationTtl: 900 });
+      await env.PCS_CACHE.put(LAYERS_CACHE_KEY, JSON.stringify({ ts: now.getTime(), data: payload }), { expirationTtl: LAYERS_STALE_TTL_SECONDS });
     } catch { /* cache write is best-effort */ }
   }
   return { ...payload, cache_status: "miss", cache_age_ms: 0 };

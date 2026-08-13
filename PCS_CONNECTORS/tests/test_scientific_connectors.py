@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import os
 import tempfile
 import unittest
 from pathlib import Path
@@ -97,6 +98,33 @@ class UnifiedObservationTests(unittest.TestCase):
         evidence = self.module.evidence_record(self.record)
         self.assertIsNone(evidence["normalized_value"])
         self.assertIsNone(evidence["method"])
+
+
+class CredentialConnectorTests(unittest.TestCase):
+    def test_missing_firms_key_is_explicit_and_never_fetches(self):
+        module = load_connector("nasa_firms_wildfire")
+        with tempfile.TemporaryDirectory() as directory:
+            result = module.run_connector(output=Path(directory) / "firms.json", map_key=None)
+        self.assertEqual("AUTH_REQUIRED", result["status"])
+        self.assertEqual("FIRMS_MAP_KEY", result["required_secret"])
+
+    def test_cwa_request_url_is_not_returned_with_secret(self):
+        module = load_connector("cwa_weather")
+        self.assertEqual("https://opendata.cwa.gov.tw/api/v1/rest/datastore/O-A0003-001", module.ENDPOINT)
+        record = module.make_record("Taipei", 25.0, 121.5, "2026-08-13T00:00:00+08:00", "Air Temperature", 30.0, module.ENDPOINT)
+        self.assertNotIn("Authorization", record["source_url"])
+
+    def test_gpm_requires_earthdata_bearer_token(self):
+        module = load_connector("nasa_gpm_imerg")
+        previous = os.environ.pop("EARTHDATA_TOKEN", None)
+        try:
+            with tempfile.TemporaryDirectory() as directory:
+                result = module.run_connector(output=Path(directory) / "gpm.json")
+        finally:
+            if previous is not None:
+                os.environ["EARTHDATA_TOKEN"] = previous
+        self.assertEqual("AUTH_REQUIRED", result["status"])
+        self.assertEqual("EARTHDATA_TOKEN", result["required_secret"])
 
 
 if __name__ == "__main__":
