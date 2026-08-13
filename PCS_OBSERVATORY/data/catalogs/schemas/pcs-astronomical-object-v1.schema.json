@@ -66,6 +66,7 @@
     "dataSources": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true},
     "researchReferences": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
     "knownLimitations": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "knownPlanets": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
     "blackHoleStatus": {"enum": ["CONFIRMED", "DYNAMICALLY_SUPPORTED", "STRONG_CANDIDATE", "CANDIDATE", "UNCERTAIN", null]}
   }
 }

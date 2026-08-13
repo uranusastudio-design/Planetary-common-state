@@ -110,3 +110,9 @@ Phase C status: `[x] Black holes + compact objects — VALIDATED / NOT FROZEN`
 Phase D validates 14 SIMBAD-backed records: 12 clusters and two star-forming/molecular-cloud structures. Imported 14, rejected 0, unresolved 0, relationships 4, rendered 0. NGC 2244 → Rosette, NGC 6611 → Eagle, NGC 2070 → Tarantula, and Orion Nebula Cluster → Orion Nebula remain distinct physical-object relationships. Catalog centers do not become hard boundaries; distance, age, membership and internal dynamics remain unavailable in this phase. Raw snapshot SHA-256: `acbfa5b512ca1c91c88fae54c657002d2c98ba7c5bcf968349fe1fdbb649a4fd`.
 
 Phase D status: `[x] Clusters + star-forming regions — VALIDATED / NOT FROZEN`
+
+## Phase E — Kepler and TESS confirmed systems
+
+Phase E validates ten priority systems from the NASA Exoplanet Archive `ps` table with `default_flag=1`: seven Kepler systems, three TESS systems, and 32 confirmed planets. Candidates 0, false positives 0, rejected 0, unresolved 0, rendered 0. Missing radial velocity remains null. Planet lists remain system metadata; planetary orbits are not enlarged or rendered at Galactic scale. Snapshot SHA-256: `496a390aca7f95ce2749eb72ed52e7b453355335235cd191d1f656b345b37ebf`.
+
+Phase E status: `[x] Kepler + TESS confirmed systems — VALIDATED / NOT FROZEN`

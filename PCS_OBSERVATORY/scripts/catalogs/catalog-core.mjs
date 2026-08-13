@@ -31,6 +31,7 @@ export function normalizeRecord(raw,context={}){
     hostStructure:textOrNull(raw.hostStructure),parentObject:textOrNull(raw.parentObject),associatedObjects:unique(raw.associatedObjects),discoveryDate:textOrNull(raw.discoveryDate),discoveryMethod:textOrNull(raw.discoveryMethod),
     observationStatus:String(raw.observationStatus||"").trim(),evidenceClass:String(raw.evidenceClass||"").trim(),scientificFidelity:String(raw.scientificFidelity||"").trim(),wavelengths:unique(raw.wavelengths),geometryStatus:String(raw.geometryStatus||"UNAVAILABLE").trim(),
     lastUpdated:String(raw.lastUpdated||context.retrievedAt||"").trim(),dataSources:sourceIds,researchReferences:unique(raw.researchReferences),knownLimitations:unique(raw.knownLimitations),
+    ...(raw.knownPlanets!==undefined?{knownPlanets:unique(raw.knownPlanets)}:{}),
     ...(raw.blackHoleStatus!==undefined?{blackHoleStatus:textOrNull(raw.blackHoleStatus)}:{})
   };
 }

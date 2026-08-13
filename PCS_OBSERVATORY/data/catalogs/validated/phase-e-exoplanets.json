@@ -1,0 +1,743 @@
+{
+  "schemaVersion": "pcs-known-astronomical-objects-v1",
+  "catalogVersion": "phase-e-exoplanets-2026-08-14",
+  "generatedAt": "2026-08-14",
+  "status": "VALIDATED_NOT_PUBLISHED",
+  "normalizationVersion": "pcs-known-object-normalization-v1",
+  "objectCount": 10,
+  "keplerSystemCount": 7,
+  "tessSystemCount": 3,
+  "confirmedPlanetCount": 32,
+  "candidateCount": 0,
+  "falsePositiveCount": 0,
+  "rejectedCount": 0,
+  "unresolvedCount": 0,
+  "renderedCount": 0,
+  "sourceSnapshot": {
+    "sourceId": "nasa-exoplanet-archive-tap",
+    "table": "ps",
+    "filter": "default_flag=1",
+    "checksum": "sha256:496a390aca7f95ce2749eb72ed52e7b453355335235cd191d1f656b345b37ebf"
+  },
+  "objects": [
+    {
+      "pcsObjectId": "pcs:exoplanetary-system:kepler-9",
+      "officialName": "Kepler-9",
+      "commonName": "Kepler-9",
+      "aliases": [],
+      "objectClass": "exoplanetary-system",
+      "objectSubtype": "confirmed Kepler planetary system",
+      "catalogIdentifiers": [
+        {
+          "catalog": "NASA Exoplanet Archive",
+          "identifier": "Kepler-9"
+        },
+        {
+          "catalog": "Kepler",
+          "identifier": "Kepler-9"
+        }
+      ],
+      "raDeg": 285.5739904,
+      "decDeg": 38.4008192,
+      "coordinateFrame": "ICRS",
+      "coordinateEpoch": "J2000 catalog presentation",
+      "distance": 628.257,
+      "distanceLower": null,
+      "distanceUpper": null,
+      "distanceUnit": "pc",
+      "distanceMethod": "NASA Exoplanet Archive system distance field",
+      "parallaxMas": 1.56294,
+      "properMotionRaMasYr": 2.49072,
+      "properMotionDecMasYr": -14.7128,
+      "radialVelocityKmS": null,
+      "redshift": null,
+      "physicalSize": null,
+      "angularSize": null,
+      "mass": null,
+      "massMethod": null,
+      "age": null,
+      "temperatureK": null,
+      "spectralType": null,
+      "hostStructure": "Milky Way",
+      "parentObject": null,
+      "associatedObjects": [],
+      "discoveryDate": "2010",
+      "discoveryMethod": "Transit",
+      "observationStatus": "CONFIRMED_EXOPLANET_SYSTEM",
+      "evidenceClass": "CATALOG-DERIVED",
+      "scientificFidelity": "LB",
+      "wavelengths": [
+        "Visible"
+      ],
+      "geometryStatus": "MEASURED_POSITION",
+      "lastUpdated": "2026-08-14",
+      "dataSources": [
+        "nasa-exoplanet-archive-tap"
+      ],
+      "researchReferences": [
+        "NASA Exoplanet Archive ps table; default_flag=1"
+      ],
+      "knownLimitations": [
+        "Only confirmed planets from the default NASA Exoplanet Archive ps rows are included; candidates and false positives are not promoted.",
+        "Planetary orbits are not rendered at Galactic scale.",
+        "Catalog field availability varies by system; missing radial velocity is not replaced with zero."
+      ],
+      "knownPlanets": [
+        "Kepler-9 b",
+        "Kepler-9 c",
+        "Kepler-9 d"
+      ]
+    },
+    {
+      "pcsObjectId": "pcs:exoplanetary-system:kepler-10",
+      "officialName": "Kepler-10",
+      "commonName": "Kepler-10",
+      "aliases": [],
+      "objectClass": "exoplanetary-system",
+      "objectSubtype": "confirmed Kepler planetary system",
+      "catalogIdentifiers": [
+        {
+          "catalog": "NASA Exoplanet Archive",
+          "identifier": "Kepler-10"
+        },
+        {
+          "catalog": "Kepler",
+          "identifier": "Kepler-10"
+        }
+      ],
+      "raDeg": 285.679298,
+      "decDeg": 50.2414842,
+      "coordinateFrame": "ICRS",
+      "coordinateEpoch": "J2000 catalog presentation",
+      "distance": 185.506,
+      "distanceLower": null,
+      "distanceUpper": null,
+      "distanceUnit": "pc",
+      "distanceMethod": "NASA Exoplanet Archive system distance field",
+      "parallaxMas": 5.36185,
+      "properMotionRaMasYr": -18.3937,
+      "properMotionDecMasYr": 41.4481,
+      "radialVelocityKmS": null,
+      "redshift": null,
+      "physicalSize": null,
+      "angularSize": null,
+      "mass": null,
+      "massMethod": null,
+      "age": null,
+      "temperatureK": null,
+      "spectralType": null,
+      "hostStructure": "Milky Way",
+      "parentObject": null,
+      "associatedObjects": [],
+      "discoveryDate": "2011",
+      "discoveryMethod": "Transit; Radial Velocity",
+      "observationStatus": "CONFIRMED_EXOPLANET_SYSTEM",
+      "evidenceClass": "CATALOG-DERIVED",
+      "scientificFidelity": "LB",
+      "wavelengths": [
+        "Visible"
+      ],
+      "geometryStatus": "MEASURED_POSITION",
+      "lastUpdated": "2026-08-14",
+      "dataSources": [
+        "nasa-exoplanet-archive-tap"
+      ],
+      "researchReferences": [
+        "NASA Exoplanet Archive ps table; default_flag=1"
+      ],
+      "knownLimitations": [
+        "Only confirmed planets from the default NASA Exoplanet Archive ps rows are included; candidates and false positives are not promoted.",
+        "Planetary orbits are not rendered at Galactic scale.",
+        "Catalog field availability varies by system; missing radial velocity is not replaced with zero."
+      ],
+      "knownPlanets": [
+        "Kepler-10 b",
+        "Kepler-10 c",
+        "Kepler-10 d"
+      ]
+    },
+    {
+      "pcsObjectId": "pcs:exoplanetary-system:kepler-11",
+      "officialName": "Kepler-11",
+      "commonName": "Kepler-11",
+      "aliases": [],
+      "objectClass": "exoplanetary-system",
+      "objectSubtype": "confirmed Kepler planetary system",
+      "catalogIdentifiers": [
+        {
+          "catalog": "NASA Exoplanet Archive",
+          "identifier": "Kepler-11"
+        },
+        {
+          "catalog": "Kepler",
+          "identifier": "Kepler-11"
+        }
+      ],
+      "raDeg": 297.1150949,
+      "decDeg": 41.9091092,
+      "coordinateFrame": "ICRS",
+      "coordinateEpoch": "J2000 catalog presentation",
+      "distance": 646.346,
+      "distanceLower": null,
+      "distanceUpper": null,
+      "distanceUnit": "pc",
+      "distanceMethod": "NASA Exoplanet Archive system distance field",
+      "parallaxMas": 1.51841,
+      "properMotionRaMasYr": -0.0379221,
+      "properMotionDecMasYr": -7.06918,
+      "radialVelocityKmS": null,
+      "redshift": null,
+      "physicalSize": null,
+      "angularSize": null,
+      "mass": null,
+      "massMethod": null,
+      "age": null,
+      "temperatureK": null,
+      "spectralType": null,
+      "hostStructure": "Milky Way",
+      "parentObject": null,
+      "associatedObjects": [],
+      "discoveryDate": "2010",
+      "discoveryMethod": "Transit",
+      "observationStatus": "CONFIRMED_EXOPLANET_SYSTEM",
+      "evidenceClass": "CATALOG-DERIVED",
+      "scientificFidelity": "LB",
+      "wavelengths": [
+        "Visible"
+      ],
+      "geometryStatus": "MEASURED_POSITION",
+      "lastUpdated": "2026-08-14",
+      "dataSources": [
+        "nasa-exoplanet-archive-tap"
+      ],
+      "researchReferences": [
+        "NASA Exoplanet Archive ps table; default_flag=1"
+      ],
+      "knownLimitations": [
+        "Only confirmed planets from the default NASA Exoplanet Archive ps rows are included; candidates and false positives are not promoted.",
+        "Planetary orbits are not rendered at Galactic scale.",
+        "Catalog field availability varies by system; missing radial velocity is not replaced with zero."
+      ],
+      "knownPlanets": [
+        "Kepler-11 b",
+        "Kepler-11 c",
+        "Kepler-11 d",
+        "Kepler-11 e",
+        "Kepler-11 f",
+        "Kepler-11 g"
+      ]
+    },
+    {
+      "pcsObjectId": "pcs:exoplanetary-system:kepler-22",
+      "officialName": "Kepler-22",
+      "commonName": "Kepler-22",
+      "aliases": [],
+      "objectClass": "exoplanetary-system",
+      "objectSubtype": "confirmed Kepler planetary system",
+      "catalogIdentifiers": [
+        {
+          "catalog": "NASA Exoplanet Archive",
+          "identifier": "Kepler-22"
+        },
+        {
+          "catalog": "Kepler",
+          "identifier": "Kepler-22"
+        }
+      ],
+      "raDeg": 289.2172051,
+      "decDeg": 47.8841427,
+      "coordinateFrame": "ICRS",
+      "coordinateEpoch": "J2000 catalog presentation",
+      "distance": 194.642,
+      "distanceLower": null,
+      "distanceUpper": null,
+      "distanceUnit": "pc",
+      "distanceMethod": "NASA Exoplanet Archive system distance field",
+      "parallaxMas": 5.10883,
+      "properMotionRaMasYr": -39.7173,
+      "properMotionDecMasYr": -66.6869,
+      "radialVelocityKmS": null,
+      "redshift": null,
+      "physicalSize": null,
+      "angularSize": null,
+      "mass": null,
+      "massMethod": null,
+      "age": null,
+      "temperatureK": null,
+      "spectralType": null,
+      "hostStructure": "Milky Way",
+      "parentObject": null,
+      "associatedObjects": [],
+      "discoveryDate": "2011",
+      "discoveryMethod": "Transit",
+      "observationStatus": "CONFIRMED_EXOPLANET_SYSTEM",
+      "evidenceClass": "CATALOG-DERIVED",
+      "scientificFidelity": "LB",
+      "wavelengths": [
+        "Visible"
+      ],
+      "geometryStatus": "MEASURED_POSITION",
+      "lastUpdated": "2026-08-14",
+      "dataSources": [
+        "nasa-exoplanet-archive-tap"
+      ],
+      "researchReferences": [
+        "NASA Exoplanet Archive ps table; default_flag=1"
+      ],
+      "knownLimitations": [
+        "Only confirmed planets from the default NASA Exoplanet Archive ps rows are included; candidates and false positives are not promoted.",
+        "Planetary orbits are not rendered at Galactic scale.",
+        "Catalog field availability varies by system; missing radial velocity is not replaced with zero."
+      ],
+      "knownPlanets": [
+        "Kepler-22 b"
+      ]
+    },
+    {
+      "pcsObjectId": "pcs:exoplanetary-system:kepler-62",
+      "officialName": "Kepler-62",
+      "commonName": "Kepler-62",
+      "aliases": [],
+      "objectClass": "exoplanetary-system",
+      "objectSubtype": "confirmed Kepler planetary system",
+      "catalogIdentifiers": [
+        {
+          "catalog": "NASA Exoplanet Archive",
+          "identifier": "Kepler-62"
+        },
+        {
+          "catalog": "Kepler",
+          "identifier": "Kepler-62"
+        }
+      ],
+      "raDeg": 283.2125621,
+      "decDeg": 45.3496992,
+      "coordinateFrame": "ICRS",
+      "coordinateEpoch": "J2000 catalog presentation",
+      "distance": 300.874,
+      "distanceLower": null,
+      "distanceUpper": null,
+      "distanceUnit": "pc",
+      "distanceMethod": "NASA Exoplanet Archive system distance field",
+      "parallaxMas": 3.29474,
+      "properMotionRaMasYr": -25.1534,
+      "properMotionDecMasYr": -31.1696,
+      "radialVelocityKmS": null,
+      "redshift": null,
+      "physicalSize": null,
+      "angularSize": null,
+      "mass": null,
+      "massMethod": null,
+      "age": null,
+      "temperatureK": null,
+      "spectralType": null,
+      "hostStructure": "Milky Way",
+      "parentObject": null,
+      "associatedObjects": [],
+      "discoveryDate": "2013",
+      "discoveryMethod": "Transit",
+      "observationStatus": "CONFIRMED_EXOPLANET_SYSTEM",
+      "evidenceClass": "CATALOG-DERIVED",
+      "scientificFidelity": "LB",
+      "wavelengths": [
+        "Visible"
+      ],
+      "geometryStatus": "MEASURED_POSITION",
+      "lastUpdated": "2026-08-14",
+      "dataSources": [
+        "nasa-exoplanet-archive-tap"
+      ],
+      "researchReferences": [
+        "NASA Exoplanet Archive ps table; default_flag=1"
+      ],
+      "knownLimitations": [
+        "Only confirmed planets from the default NASA Exoplanet Archive ps rows are included; candidates and false positives are not promoted.",
+        "Planetary orbits are not rendered at Galactic scale.",
+        "Catalog field availability varies by system; missing radial velocity is not replaced with zero."
+      ],
+      "knownPlanets": [
+        "Kepler-62 b",
+        "Kepler-62 c",
+        "Kepler-62 d",
+        "Kepler-62 e",
+        "Kepler-62 f"
+      ]
+    },
+    {
+      "pcsObjectId": "pcs:exoplanetary-system:kepler-186",
+      "officialName": "Kepler-186",
+      "commonName": "Kepler-186",
+      "aliases": [],
+      "objectClass": "exoplanetary-system",
+      "objectSubtype": "confirmed Kepler planetary system",
+      "catalogIdentifiers": [
+        {
+          "catalog": "NASA Exoplanet Archive",
+          "identifier": "Kepler-186"
+        },
+        {
+          "catalog": "Kepler",
+          "identifier": "Kepler-186"
+        }
+      ],
+      "raDeg": 298.652736,
+      "decDeg": 43.9549884,
+      "coordinateFrame": "ICRS",
+      "coordinateEpoch": "J2000 catalog presentation",
+      "distance": 177.594,
+      "distanceLower": null,
+      "distanceUpper": null,
+      "distanceUnit": "pc",
+      "distanceMethod": "NASA Exoplanet Archive system distance field",
+      "parallaxMas": 5.60203,
+      "properMotionRaMasYr": 2.09856,
+      "properMotionDecMasYr": -4.36055,
+      "radialVelocityKmS": null,
+      "redshift": null,
+      "physicalSize": null,
+      "angularSize": null,
+      "mass": null,
+      "massMethod": null,
+      "age": null,
+      "temperatureK": null,
+      "spectralType": null,
+      "hostStructure": "Milky Way",
+      "parentObject": null,
+      "associatedObjects": [],
+      "discoveryDate": "2014",
+      "discoveryMethod": "Transit",
+      "observationStatus": "CONFIRMED_EXOPLANET_SYSTEM",
+      "evidenceClass": "CATALOG-DERIVED",
+      "scientificFidelity": "LB",
+      "wavelengths": [
+        "Visible"
+      ],
+      "geometryStatus": "MEASURED_POSITION",
+      "lastUpdated": "2026-08-14",
+      "dataSources": [
+        "nasa-exoplanet-archive-tap"
+      ],
+      "researchReferences": [
+        "NASA Exoplanet Archive ps table; default_flag=1"
+      ],
+      "knownLimitations": [
+        "Only confirmed planets from the default NASA Exoplanet Archive ps rows are included; candidates and false positives are not promoted.",
+        "Planetary orbits are not rendered at Galactic scale.",
+        "Catalog field availability varies by system; missing radial velocity is not replaced with zero."
+      ],
+      "knownPlanets": [
+        "Kepler-186 b",
+        "Kepler-186 c",
+        "Kepler-186 d",
+        "Kepler-186 e",
+        "Kepler-186 f"
+      ]
+    },
+    {
+      "pcsObjectId": "pcs:exoplanetary-system:kepler-452",
+      "officialName": "Kepler-452",
+      "commonName": "Kepler-452",
+      "aliases": [],
+      "objectClass": "exoplanetary-system",
+      "objectSubtype": "confirmed Kepler planetary system",
+      "catalogIdentifiers": [
+        {
+          "catalog": "NASA Exoplanet Archive",
+          "identifier": "Kepler-452"
+        },
+        {
+          "catalog": "Kepler",
+          "identifier": "Kepler-452"
+        }
+      ],
+      "raDeg": 296.003752,
+      "decDeg": 44.2775861,
+      "coordinateFrame": "ICRS",
+      "coordinateEpoch": "J2000 catalog presentation",
+      "distance": 551.727,
+      "distanceLower": null,
+      "distanceUpper": null,
+      "distanceUnit": "pc",
+      "distanceMethod": "NASA Exoplanet Archive system distance field",
+      "parallaxMas": 1.78375,
+      "properMotionRaMasYr": 9.97399,
+      "properMotionDecMasYr": 9.01192,
+      "radialVelocityKmS": null,
+      "redshift": null,
+      "physicalSize": null,
+      "angularSize": null,
+      "mass": null,
+      "massMethod": null,
+      "age": null,
+      "temperatureK": null,
+      "spectralType": null,
+      "hostStructure": "Milky Way",
+      "parentObject": null,
+      "associatedObjects": [],
+      "discoveryDate": "2015",
+      "discoveryMethod": "Transit",
+      "observationStatus": "CONFIRMED_EXOPLANET_SYSTEM",
+      "evidenceClass": "CATALOG-DERIVED",
+      "scientificFidelity": "LB",
+      "wavelengths": [
+        "Visible"
+      ],
+      "geometryStatus": "MEASURED_POSITION",
+      "lastUpdated": "2026-08-14",
+      "dataSources": [
+        "nasa-exoplanet-archive-tap"
+      ],
+      "researchReferences": [
+        "NASA Exoplanet Archive ps table; default_flag=1"
+      ],
+      "knownLimitations": [
+        "Only confirmed planets from the default NASA Exoplanet Archive ps rows are included; candidates and false positives are not promoted.",
+        "Planetary orbits are not rendered at Galactic scale.",
+        "Catalog field availability varies by system; missing radial velocity is not replaced with zero."
+      ],
+      "knownPlanets": [
+        "Kepler-452 b"
+      ]
+    },
+    {
+      "pcsObjectId": "pcs:exoplanetary-system:toi-700",
+      "officialName": "TOI-700",
+      "commonName": "TOI-700",
+      "aliases": [],
+      "objectClass": "exoplanetary-system",
+      "objectSubtype": "confirmed TESS planetary system",
+      "catalogIdentifiers": [
+        {
+          "catalog": "NASA Exoplanet Archive",
+          "identifier": "TOI-700"
+        },
+        {
+          "catalog": "TESS",
+          "identifier": "TOI-700"
+        }
+      ],
+      "raDeg": 97.0957165,
+      "decDeg": -65.5786149,
+      "coordinateFrame": "ICRS",
+      "coordinateEpoch": "J2000 catalog presentation",
+      "distance": 31.1265,
+      "distanceLower": null,
+      "distanceUpper": null,
+      "distanceUnit": "pc",
+      "distanceMethod": "NASA Exoplanet Archive system distance field",
+      "parallaxMas": 32.098,
+      "properMotionRaMasYr": -102.75,
+      "properMotionDecMasYr": 161.805,
+      "radialVelocityKmS": null,
+      "redshift": null,
+      "physicalSize": null,
+      "angularSize": null,
+      "mass": null,
+      "massMethod": null,
+      "age": null,
+      "temperatureK": null,
+      "spectralType": null,
+      "hostStructure": "Milky Way",
+      "parentObject": null,
+      "associatedObjects": [],
+      "discoveryDate": "2020",
+      "discoveryMethod": "Transit",
+      "observationStatus": "CONFIRMED_EXOPLANET_SYSTEM",
+      "evidenceClass": "CATALOG-DERIVED",
+      "scientificFidelity": "LB",
+      "wavelengths": [
+        "Visible"
+      ],
+      "geometryStatus": "MEASURED_POSITION",
+      "lastUpdated": "2026-08-14",
+      "dataSources": [
+        "nasa-exoplanet-archive-tap"
+      ],
+      "researchReferences": [
+        "NASA Exoplanet Archive ps table; default_flag=1"
+      ],
+      "knownLimitations": [
+        "Only confirmed planets from the default NASA Exoplanet Archive ps rows are included; candidates and false positives are not promoted.",
+        "Planetary orbits are not rendered at Galactic scale.",
+        "Catalog field availability varies by system; missing radial velocity is not replaced with zero."
+      ],
+      "knownPlanets": [
+        "TOI-700 b",
+        "TOI-700 c",
+        "TOI-700 d",
+        "TOI-700 e"
+      ]
+    },
+    {
+      "pcsObjectId": "pcs:exoplanetary-system:toi-270",
+      "officialName": "TOI-270",
+      "commonName": "TOI-270",
+      "aliases": [],
+      "objectClass": "exoplanetary-system",
+      "objectSubtype": "confirmed TESS planetary system",
+      "catalogIdentifiers": [
+        {
+          "catalog": "NASA Exoplanet Archive",
+          "identifier": "TOI-270"
+        },
+        {
+          "catalog": "TESS",
+          "identifier": "TOI-270"
+        }
+      ],
+      "raDeg": 68.4160804,
+      "decDeg": -51.9573937,
+      "coordinateFrame": "ICRS",
+      "coordinateEpoch": "J2000 catalog presentation",
+      "distance": 22.4793,
+      "distanceLower": null,
+      "distanceUpper": null,
+      "distanceUnit": "pc",
+      "distanceMethod": "NASA Exoplanet Archive system distance field",
+      "parallaxMas": 44.4565,
+      "properMotionRaMasYr": 82.9441,
+      "properMotionDecMasYr": -269.755,
+      "radialVelocityKmS": null,
+      "redshift": null,
+      "physicalSize": null,
+      "angularSize": null,
+      "mass": null,
+      "massMethod": null,
+      "age": null,
+      "temperatureK": null,
+      "spectralType": null,
+      "hostStructure": "Milky Way",
+      "parentObject": null,
+      "associatedObjects": [],
+      "discoveryDate": "2019",
+      "discoveryMethod": "Transit",
+      "observationStatus": "CONFIRMED_EXOPLANET_SYSTEM",
+      "evidenceClass": "CATALOG-DERIVED",
+      "scientificFidelity": "LB",
+      "wavelengths": [
+        "Visible"
+      ],
+      "geometryStatus": "MEASURED_POSITION",
+      "lastUpdated": "2026-08-14",
+      "dataSources": [
+        "nasa-exoplanet-archive-tap"
+      ],
+      "researchReferences": [
+        "NASA Exoplanet Archive ps table; default_flag=1"
+      ],
+      "knownLimitations": [
+        "Only confirmed planets from the default NASA Exoplanet Archive ps rows are included; candidates and false positives are not promoted.",
+        "Planetary orbits are not rendered at Galactic scale.",
+        "Catalog field availability varies by system; missing radial velocity is not replaced with zero."
+      ],
+      "knownPlanets": [
+        "TOI-270 b",
+        "TOI-270 c",
+        "TOI-270 d"
+      ]
+    },
+    {
+      "pcsObjectId": "pcs:exoplanetary-system:lhs-3844",
+      "officialName": "LHS 3844",
+      "commonName": "LHS 3844",
+      "aliases": [],
+      "objectClass": "exoplanetary-system",
+      "objectSubtype": "confirmed TESS planetary system",
+      "catalogIdentifiers": [
+        {
+          "catalog": "NASA Exoplanet Archive",
+          "identifier": "LHS 3844"
+        },
+        {
+          "catalog": "TESS",
+          "identifier": "LHS 3844"
+        }
+      ],
+      "raDeg": 340.4962038,
+      "decDeg": -69.1721081,
+      "coordinateFrame": "ICRS",
+      "coordinateEpoch": "J2000 catalog presentation",
+      "distance": 14.8846,
+      "distanceLower": null,
+      "distanceUpper": null,
+      "distanceUnit": "pc",
+      "distanceMethod": "NASA Exoplanet Archive system distance field",
+      "parallaxMas": 67.1548,
+      "properMotionRaMasYr": 334.357,
+      "properMotionDecMasYr": -726.974,
+      "radialVelocityKmS": null,
+      "redshift": null,
+      "physicalSize": null,
+      "angularSize": null,
+      "mass": null,
+      "massMethod": null,
+      "age": null,
+      "temperatureK": null,
+      "spectralType": null,
+      "hostStructure": "Milky Way",
+      "parentObject": null,
+      "associatedObjects": [],
+      "discoveryDate": "2019",
+      "discoveryMethod": "Transit",
+      "observationStatus": "CONFIRMED_EXOPLANET_SYSTEM",
+      "evidenceClass": "CATALOG-DERIVED",
+      "scientificFidelity": "LB",
+      "wavelengths": [
+        "Visible"
+      ],
+      "geometryStatus": "MEASURED_POSITION",
+      "lastUpdated": "2026-08-14",
+      "dataSources": [
+        "nasa-exoplanet-archive-tap"
+      ],
+      "researchReferences": [
+        "NASA Exoplanet Archive ps table; default_flag=1"
+      ],
+      "knownLimitations": [
+        "Only confirmed planets from the default NASA Exoplanet Archive ps rows are included; candidates and false positives are not promoted.",
+        "Planetary orbits are not rendered at Galactic scale.",
+        "Catalog field availability varies by system; missing radial velocity is not replaced with zero."
+      ],
+      "knownPlanets": [
+        "LHS 3844 b"
+      ]
+    }
+  ],
+  "relationships": [],
+  "aliasIndex": {
+    "kepler-9": "pcs:exoplanetary-system:kepler-9",
+    "nasa exoplanet archive kepler-9": "pcs:exoplanetary-system:kepler-9",
+    "kepler kepler-9": "pcs:exoplanetary-system:kepler-9",
+    "kepler-10": "pcs:exoplanetary-system:kepler-10",
+    "nasa exoplanet archive kepler-10": "pcs:exoplanetary-system:kepler-10",
+    "kepler kepler-10": "pcs:exoplanetary-system:kepler-10",
+    "kepler-11": "pcs:exoplanetary-system:kepler-11",
+    "nasa exoplanet archive kepler-11": "pcs:exoplanetary-system:kepler-11",
+    "kepler kepler-11": "pcs:exoplanetary-system:kepler-11",
+    "kepler-22": "pcs:exoplanetary-system:kepler-22",
+    "nasa exoplanet archive kepler-22": "pcs:exoplanetary-system:kepler-22",
+    "kepler kepler-22": "pcs:exoplanetary-system:kepler-22",
+    "kepler-62": "pcs:exoplanetary-system:kepler-62",
+    "nasa exoplanet archive kepler-62": "pcs:exoplanetary-system:kepler-62",
+    "kepler kepler-62": "pcs:exoplanetary-system:kepler-62",
+    "kepler-186": "pcs:exoplanetary-system:kepler-186",
+    "nasa exoplanet archive kepler-186": "pcs:exoplanetary-system:kepler-186",
+    "kepler kepler-186": "pcs:exoplanetary-system:kepler-186",
+    "kepler-452": "pcs:exoplanetary-system:kepler-452",
+    "nasa exoplanet archive kepler-452": "pcs:exoplanetary-system:kepler-452",
+    "kepler kepler-452": "pcs:exoplanetary-system:kepler-452",
+    "toi-700": "pcs:exoplanetary-system:toi-700",
+    "nasa exoplanet archive toi-700": "pcs:exoplanetary-system:toi-700",
+    "tess toi-700": "pcs:exoplanetary-system:toi-700",
+    "toi-270": "pcs:exoplanetary-system:toi-270",
+    "nasa exoplanet archive toi-270": "pcs:exoplanetary-system:toi-270",
+    "tess toi-270": "pcs:exoplanetary-system:toi-270",
+    "lhs 3844": "pcs:exoplanetary-system:lhs-3844",
+    "nasa exoplanet archive lhs 3844": "pcs:exoplanetary-system:lhs-3844",
+    "tess lhs 3844": "pcs:exoplanetary-system:lhs-3844"
+  },
+  "knownLimitations": [
+    "Validated database records are not yet published to runtime.",
+    "This first release is a priority-system subset, not the complete NASA Exoplanet Archive."
+  ]
+}

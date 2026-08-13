@@ -1,0 +1,74 @@
+{
+  "schemaVersion": "pcs-known-object-phase-e-validation-v1",
+  "generatedAt": "2026-08-13T18:10:15.450Z",
+  "phase": "E",
+  "pass": true,
+  "counts": {
+    "inputSystems": 10,
+    "importedSystems": 10,
+    "keplerSystems": 7,
+    "tessSystems": 3,
+    "confirmedPlanets": 32,
+    "candidates": 0,
+    "falsePositives": 0,
+    "rejected": 0,
+    "unresolved": 0,
+    "rendered": 0
+  },
+  "recordResults": [
+    {
+      "id": "pcs:exoplanetary-system:kepler-9",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "id": "pcs:exoplanetary-system:kepler-10",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "id": "pcs:exoplanetary-system:kepler-11",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "id": "pcs:exoplanetary-system:kepler-22",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "id": "pcs:exoplanetary-system:kepler-62",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "id": "pcs:exoplanetary-system:kepler-186",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "id": "pcs:exoplanetary-system:kepler-452",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "id": "pcs:exoplanetary-system:toi-700",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "id": "pcs:exoplanetary-system:toi-270",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "id": "pcs:exoplanetary-system:lhs-3844",
+      "valid": true,
+      "errors": []
+    }
+  ],
+  "limitations": [
+    "Validated database records are not yet published to runtime.",
+    "This first release is a priority-system subset, not the complete NASA Exoplanet Archive."
+  ]
+}
