@@ -65,7 +65,9 @@ test("catalog coordinate transforms do not mutate the observed input",()=>{
   assert.equal(transformed.scientificDataCategory,"catalog-derived");
 });
 
+test("the Gaia bridge preserves both original heliocentric and derived Galactocentric states",()=>{const input={source_id:"1",primaryName:"Test",cartesianPc:[1000,2000,3000],ra:1,dec:2,pmra:3,pmdec:4,radial_velocity:5},result=Model.transformNearbyStar(input,contract.coordinateFrame,[1000,2000,3000]);assert.deepEqual(Array.from(result.heliocentricGalacticCartesianKpc),[1,2,3]);assert.ok(Math.abs(result.galactocentricCartesianKpc[0]+7.178)<1e-12);assert.deepEqual(Array.from(result.galactocentricCartesianKpc).slice(1),[2,3.0208]);assert.deepEqual(input.cartesianPc,[1000,2000,3000]);});
+
 test("shared astronomical source registry identifies every Milky Way source family",()=>{
   const ids=new Set(sourceRegistry.sources.map(source=>source.sourceId));
-  for(const id of ["gravity-2019-galactic-center-distance","vizier-j-apj-885-131","gaia-edr3-gcns","milky-way-structural-model-literature"])assert.ok(ids.has(id),id);
+  for(const id of ["gravity-2019-galactic-center-distance","vizier-j-apj-885-131","gaia-edr3-gcns","milky-way-structural-model-literature","eilers-2019-galactic-rotation-curve"])assert.ok(ids.has(id),id);
 });

@@ -8,6 +8,8 @@ const index=await readFile(new URL("./index.html",import.meta.url),"utf8");
 const registry=JSON.parse(await readFile(new URL("./assets/deep-space/phase-3/milky-way-hmsfr.json",import.meta.url),"utf8"));
 const localGroup=JSON.parse(await readFile(new URL("./assets/deep-space/phase-3/local-group-galaxies.json",import.meta.url),"utf8"));
 const contract=JSON.parse(await readFile(new URL("./assets/deep-space/milky-way-scientific-scale/source-contract.json",import.meta.url),"utf8"));
+const dynamicsContract=JSON.parse(await readFile(new URL("./assets/deep-space/milky-way-scientific-scale/dynamics-contract.json",import.meta.url),"utf8"));
+const sourceRegistry=JSON.parse(await readFile(new URL("./assets/deep-space/astronomical-source-registry.json",import.meta.url),"utf8"));
 
 test("Milky Way layer reuses the existing Cesium Viewer and one canvas",()=>{
   assert.match(source,/PointPrimitiveCollection/);
@@ -55,7 +57,17 @@ test("LMC and SMC reuse catalog directions/distances and remain outside the disp
 });
 
 test("layer lifecycle and scientific visibility controls are complete",()=>{
-  for(const method of ["load(","show()","hide()","unload()","dispose()","setLabels(","translateLabels(","searchNearby(","setReconstruction(","setCatalog(","setDensity(","setHalo(","setPlane(","fitCoordinates("])assert.ok(source.includes(method));
+  for(const method of ["load(","show()","hide()","unload()","dispose()","setLabels(","translateLabels(","searchNearby(","setReconstruction(","setCatalog(","setDensity(","setHalo(","setPlane(","fitCoordinates(","setModelTime(","recordAtModelTime("])assert.ok(source.includes(method));
+});
+
+test("the reopened Milky Way fit and dynamics contracts remain scientifically separate",()=>{
+  assert.match(source,/fitCoordinates\(\{includeSatellites=false,includeHalo=false\}/);
+  assert.match(source,/Dynamics\.evolveRecord/);
+  assert.equal(dynamicsContract.rotationCurve.minimumRadiusKpc,5);
+  assert.equal(dynamicsContract.rotationCurve.maximumRadiusKpc,25);
+  const sourceEntry=sourceRegistry.sources.find(entry=>entry.sourceId==="eilers-2019-galactic-rotation-curve");
+  assert.equal(sourceEntry.DOI,"10.3847/1538-4357/aaf648");
+  assert.match(sourceEntry.qualityStatus,/not a precision future ephemeris/);
 });
 
 test("layer audit distinguishes catalogs, reconstructions and deterministic representative tracers",()=>{

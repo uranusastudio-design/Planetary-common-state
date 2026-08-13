@@ -167,11 +167,22 @@ test("Phase 3 interface vocabulary is complete in all four existing languages", 
 
 test("Milky Way scientific-scale controls and epistemic labels use the existing four-language runtime",()=>{
   const copy=manager.match(/const MILKY_WAY_COPY=Object\.freeze\(\{([\s\S]*?)\n  \}\);/)?.[1]||"";
-  for(const key of ["milkyWay","galacticCenter","sgr","galacticPlane","local","orion","spiral","disk","bulge","stellarHalo","lmc","smc","representative","observationDerived","modelDerived","catalogStar","distanceUncertainty"]){
+  for(const key of ["milkyWay","galacticCenter","sgr","galacticPlane","local","orion","spiral","disk","bulge","stellarHalo","lmc","smc","representative","observationDerived","modelDerived","catalogStar","distanceUncertainty","modelEvolution","dynamicalReconstruction","observationEpoch","playEvolution","pauseEvolution","notExactFuture","modelRate","myr"]){
     assert.equal((copy.match(new RegExp(`${key}:`,"g"))||[]).length,4,`${key} must exist in four Milky Way dictionaries`);
   }
   for(const token of ["data-ds-fit-milky-way","data-ds-focus-sun","data-ds-focus-galactic-center","data-ds-focus-local-arm","data-ds-fit-magellanic","data-ds-mw-view=\"face-on\"","data-ds-mw-view=\"edge-on\"","data-ds-galactic-plane"])assert.ok(manager.includes(token),token);
   assert.match(manager,/searchPhase3\(term\)[\s\S]*scaleContext===\"milky-way\"[\s\S]*focusSelectedObject\(\)/);
+});
+
+test("Milky Way model evolution uses the one Deep Space clock and fixed scientific presets",()=>{
+  assert.match(manager,/CosmicTime\.PRESETS\.map\(value=>`<button type="button" data-ds-mw-time-preset=/);
+  assert.match(manager,/new CosmicTime\.CosmicTimeState\(\)/);
+  assert.match(manager,/cosmicTime\.subscribe\(applyMilkyWayModelTime\)/);
+  assert.match(manager,/function onTick\(\)[\s\S]*scaleContext==="milky-way"[\s\S]*cosmicTime\?\.tick/);
+  assert.match(manager,/milkyWayLayer\.setModelTime\(snapshot\.offsetMyr\)/);
+  assert.match(manager,/dynamicsContract:loaded\.dynamicsContract/);
+  assert.match(manager,/ObjectCard\.withMotion/);
+  assert.doesNotMatch(manager,/Exact Future|Guaranteed Prediction|rotate\(milkyWayRoot\)/);
 });
 
 test("Milky Way navigation extends the shared camera and camera-history systems",()=>{
@@ -187,7 +198,7 @@ test("Milky Way navigation extends the shared camera and camera-history systems"
 
 test("runtime translation rerenders stable scale contexts instead of caching localized Phase 3 titles", () => {
   assert.match(manager, /function renderScaleTitle\(\)/);
-  assert.match(manager, /scaleContext==="milky-way"[\s\S]*p3\(\)\.milkyWay[\s\S]*p3\(\)\.galacticCenter/);
+  assert.match(manager, /scaleContext==="milky-way"[\s\S]*p3\(\)\.milkyWay/);
   assert.match(manager, /scaleContext==="local-group"[\s\S]*p3\(\)\.localGroup/);
   assert.match(manager, /function translate\(\)[\s\S]*renderScaleTitle\(\)/);
   assert.match(manager, /phase3Search\.placeholder=p3\(\)\.searchLabel/);

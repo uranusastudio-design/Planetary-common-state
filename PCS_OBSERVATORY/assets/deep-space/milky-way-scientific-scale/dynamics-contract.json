@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "pcs-milky-way-dynamics-v1",
+  "modelId": "pcs-mw-differential-rotation-eilers2019-v1",
+  "modelName": "Milky Way differential circular-rotation inspection model",
+  "version": "2026.08-human-reopen-v1",
+  "observationEpoch": "Source-native epochs; Gaia bridge J2016.0; structural reconstruction is static",
+  "timeUnit": "Myr relative to observation epoch",
+  "humanReviewOffsetsMyr": [0, 1, 10, 50, 100],
+  "coordinateFrame": "pcs-galactocentric-gravity2019-v2",
+  "rotationCurve": {
+    "sourceId": "eilers-2019-circular-velocity",
+    "sourceDoi": "10.3847/1538-4357/aaf648",
+    "referenceRadiusKpc": 8.178,
+    "referenceCircularVelocityKmS": 229.0,
+    "slopeKmSPerKpc": -1.7,
+    "minimumRadiusKpc": 5.0,
+    "maximumRadiusKpc": 25.0,
+    "orientationSign": -1,
+    "systematicUncertainty": "approximately 2–5 percent; slope systematic uncertainty 0.46 km/s/kpc",
+    "interpretation": "Axisymmetric circular-velocity reconstruction used only where 5 <= R <= 25 kpc. The inner barred region is excluded."
+  },
+  "catalogLinearPropagation": {
+    "sourceId": "gaia-edr3-astrometric-propagation",
+    "sourceUrl": "https://gea.esac.esa.int/archive/documentation/GEDR3/Data_processing/chap_cu3ast/sec_cu3ast_intro/ssec_cu3ast_intro_tansforms.html",
+    "astronomicalUnitKmYrPerS": 4.740470464,
+    "maximumAbsoluteOffsetMyr": 1.0,
+    "requires": ["ICRS position", "distance", "proper motion in RA*", "proper motion in Dec", "radial velocity"],
+    "missingRadialVelocityPolicy": "static; insufficient 3D velocity data; never substitute zero"
+  },
+  "componentPolicies": {
+    "sun": "model-integrated circular orbit within the adopted rotation curve",
+    "hmsfr": "model-integrated circular orbit where Galactocentric radius is inside the adopted curve; source astrometry remains preserved",
+    "nearbyCatalogStar": "Gaia uniform rectilinear catalog propagation only when full 6D inputs exist, capped at plus/minus 1 Myr; otherwise static",
+    "thinDiskRepresentative": "model-integrated differential circular rotation where supported",
+    "thickDiskRepresentative": "model-integrated differential circular rotation where supported",
+    "armPopulationRepresentative": "model-integrated differential circular rotation where supported; static arm reconstruction guides remain separate",
+    "bar": "static; no pattern-speed model adopted in this release",
+    "bulge": "static; no pattern-speed model adopted in this release",
+    "stellarHalo": "static; never rigidly rotated with the disk",
+    "spiralArmReconstruction": "static observation-derived reconstruction guide; not a material stellar orbit",
+    "galacticCenter": "static coordinate origin",
+    "lmcSmc": "static catalog anchors; never attached to disk rotation"
+  },
+  "positionModes": ["static-observation", "catalog-propagated", "model-integrated", "insufficient-motion-data"],
+  "knownLimitations": [
+    "This is a dynamical reconstruction for scientific inspection, not an exact future prediction.",
+    "The axisymmetric circular model excludes R < 5 kpc because the Galactic bar requires a non-axisymmetric model.",
+    "Circular motion omits eccentricity, radial migration, vertical oscillation, spiral transients and interactions.",
+    "Gaia rectilinear propagation is capped at 1 Myr and does not become a Galactic orbit integration.",
+    "HMSFR VLSR values are preserved but are not silently treated as complete Galactocentric 3D velocities.",
+    "No bar pattern speed, halo rotation, spiral-pattern evolution or Magellanic orbital integration is implemented."
+  ]
+}

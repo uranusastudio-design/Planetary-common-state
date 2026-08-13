@@ -1,6 +1,6 @@
 # PCS Astronomical Scale Architecture
 
-Status: Milky Way scientific-scale anchor contract, 2026-08-12.
+Status: Milky Way reopened implementation human-accepted on 2026-08-13; production deployment and verification pending. Earlier Verified/Frozen labels remain historical evidence until the new production gate passes.
 
 ## One Observatory
 
@@ -8,7 +8,7 @@ PCS uses one Observatory, one Cesium Viewer, and one Cesium canvas. A scale chan
 
 The intended observation sequence is:
 
-`Solar System → Interstellar Objects → Nearby Stars → Milky Way → Local Group → Virgo → Laniakea → Cosmic Web → Observable Universe → CMB 360°`
+`Solar System → Interstellar Objects → Nearby Stars → Milky Way → Galactic Center → Magellanic System → Local Group → Nearby Galaxy Groups → Virgo Cluster → Laniakea → Cosmic Web → Observable Universe → CMB 360°`
 
 Local Group, nearby groups, Virgo, and Cosmic Web are scientific transition layers. They do not change the approved primary release milestones.
 
@@ -42,6 +42,26 @@ Source records retain their native ICRS/equatorial or Galactic coordinates and s
 The PCS Galactocentric frame is right-handed, centered on the adopted Galactic Center/Sagittarius A* reference. Positive x points from the Sun toward Galactic longitude `l = 0°`, so the Sun is at negative x. Positive y points toward `l = 90°`; positive z points toward the IAU North Galactic Pole. The deployed anchor is `R₀ = 8.178 kpc`, with statistical and systematic uncertainty retained separately, and `z☉ = 20.8 pc`.
 
 Cesium scene scaling is a display transform applied after the scientific coordinate transform. It changes viewable magnitude, never source coordinates or scientific orientation. Face-on, oblique, below-plane, and edge-on camera presets rotate the camera around the same data; they do not rotate the Galaxy to improve its appearance.
+
+## Milky Way model evolution candidate
+
+The reopened Milky Way layer uses one `CosmicTimeState` shared by its controls and renderer. Observation Epoch, +1 Myr, +10 Myr, +50 Myr, and +100 Myr are scientific-analysis presets. They are labelled Model Evolution / Dynamical Reconstruction and are not exact future predictions. Camera motion never changes model time.
+
+For supported circular-orbit components, the adopted bounded axisymmetric model is:
+
+`Vc(R) = 229.0 km/s - 1.7 km/s/kpc × (R - 8.178 kpc)`
+
+`Ω(R) = Vc(R) / R`
+
+`φ(t) = φ₀ + orientation × Ω(R) × Δt`
+
+The model is applied only for `5 ≤ R ≤ 25 kpc`, following the Eilers et al. (2019) circular-velocity measurement. It drives the Sun, supported HMSFR records, and eligible thin-/thick-disk and arm-population representative tracers at their own radius, producing differential rotation rather than a rigid scene rotation.
+
+Gaia catalog stars use uniform rectilinear propagation only when ICRS position, distance, proper motion in RA/Dec, and radial velocity are all available. This path is capped at `|Δt| ≤ 1 Myr`. Missing radial velocity remains missing and never becomes zero. Outside this cap, catalog stars remain static while the UI discloses the validity boundary.
+
+The following remain static in this candidate because no defensible motion model was adopted here: inner bar, bulge, stellar halo, spiral-arm reconstruction guides, Galactic Center coordinate origin, LMC, and SMC. The arm population tracers may evolve under the circular model, but the reconstructed arm geometry does not claim that stars remain permanently attached to an arm.
+
+The precise model policy and source identifiers are versioned in `assets/deep-space/milky-way-scientific-scale/dynamics-contract.json`. Human-review evidence is indexed in `docs/MILKY_WAY_HUMAN_VISUAL_REVIEW.md`. Human acceptance was recorded on 2026-08-13; production deployment/verification remains required before the new state is frozen. Galactic Center and Magellanic System remain separate, unopened acceptance stages.
 
 ## LOD, provenance, and identity
 

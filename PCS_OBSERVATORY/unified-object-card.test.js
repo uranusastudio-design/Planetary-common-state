@@ -72,3 +72,17 @@ test("the card reuses selection, language, focus, Escape, and safe links",()=>{
   assert.match(source,/noopener noreferrer/);
   assert.doesNotMatch(manager,/objectSelectionStore|selectedObjectStore/);
 });
+
+test("Milky Way cards preserve motion evidence behind four compact information groups",()=>{
+  const base=cards.phase3({id:"milky-way:sun",canonicalName:"Sun",aliases:["Sol"],objectType:"star",scientificFidelityLevel:"B",galactocentricCartesianKpc:[-8.178,0,0.0208],dataStatus:"adopted-reference measurement"},"milky-way");
+  const motion={motionClass:"model-integrated",displayEpoch:"Observation Epoch + 10 Myr",velocitySource:"Eilers et al. 2019",integrationMethod:"axisymmetric-differential-circular-rotation",validityRange:"5–25 kpc",modelVersion:"1.0.0"};
+  const model=cards.withMotion(base,motion);
+  assert.deepEqual({...model.motion},motion);
+  for(const language of ["en","zh-TW","ja","ko"]){
+    const group=cards.GROUP_COPY[language];
+    for(const key of ["primary","scientific","provenance","limitations","motionClass","modelEpoch","velocitySource","integrationMethod","validityRange","modelVersion"])assert.ok(group[key],`${language}:${key}`);
+  }
+  assert.match(source,/appendGroup\(groupCopy\.primary,primary,true\)/);
+  assert.match(source,/appendGroup\(groupCopy\.scientific,scientific\)/);
+  assert.match(source,/details\.className="deep-space-card-group"/);
+});

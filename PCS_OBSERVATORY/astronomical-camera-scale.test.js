@@ -9,4 +9,6 @@ test("bounding sphere encloses a complete asymmetric orbit",()=>{const scale=run
 
 test("fit distance responds to actual aspect ratio rather than display pixel presets",()=>{const scale=runtime(),wide=scale.fitDistance({radius:10,fovY:Math.PI/3,aspectRatio:21/9}),standard=scale.fitDistance({radius:10,fovY:Math.PI/3,aspectRatio:16/9}),portrait=scale.fitDistance({radius:10,fovY:Math.PI/3,aspectRatio:9/16});assert.ok(Math.abs(wide-standard)<1e-12,"vertical FOV limits both wide desktop viewports");assert.ok(portrait>standard,"narrow viewport requires more camera range");assert.ok(scale.clipPlanes({range:standard,radius:10}).far>standard+10);});
 
+test("fit distance permits a bounded close fit for the human-reviewed Milky Way viewport",()=>{const scale=runtime(),normal=scale.fitDistance({radius:100,fovY:Math.PI/3,aspectRatio:1.5,margin:1}),close=scale.fitDistance({radius:100,fovY:Math.PI/3,aspectRatio:1.5,margin:.94}),clamped=scale.fitDistance({radius:100,fovY:Math.PI/3,aspectRatio:1.5,margin:.1});assert.ok(close<normal);assert.ok(clamped<close);assert.ok(clamped>0);});
+
 test("orbit plane is stable and normalized",()=>{const scale=runtime(),plane=scale.orbitPlane([[1,0,0],[0,2,0],[-1,0,0],[0,-2,0]],[0,0,0]);assert.ok(Math.abs(Math.hypot(...plane.normal)-1)<1e-12);assert.ok(Math.abs(Math.hypot(...plane.up)-1)<1e-12);assert.ok(Math.abs(plane.normal[2])>.999);});

@@ -287,6 +287,28 @@
       "checksum": "Model parameters and deterministic seed recorded in milky-way-scientific-scale/source-contract.json",
       "updatePolicy": "Parameter changes require model-version increment, deterministic-output review and visual/scientific revalidation",
       "qualityStatus": "validated as representative density context, not individual catalog stars or a sharp physical boundary"
+    },
+    {
+      "sourceId": "eilers-2019-galactic-rotation-curve",
+      "agency": "Peer-reviewed literature",
+      "mission": null,
+      "survey": "APOGEE red-giant stars with Gaia DR2 astrometry",
+      "catalog": null,
+      "release": "ApJ 871, 120",
+      "releaseDate": "2019-01-29",
+      "referenceEpoch": "Axisymmetric present-day Milky Way rotation-curve model",
+      "coordinateFrame": "Galactocentric cylindrical coordinates (R, phi, z)",
+      "skyCoverage": "Milky Way disk; adopted only for 5 <= R <= 25 kpc",
+      "redshiftRange": "Not applicable",
+      "distanceType": "Spectrophotometric stellar distances used by the published circular-velocity inference",
+      "objectCount": null,
+      "DOI": "10.3847/1538-4357/aaf648",
+      "citation": "Eilers et al. 2019, ApJ, 871, 120",
+      "license": "Published model parameters and citation metadata only; no copyrighted publication figure is redistributed.",
+      "retrievedAt": "2026-08-13",
+      "checksum": "Adopted parameters recorded in milky-way-scientific-scale/dynamics-contract.json",
+      "updatePolicy": "Any curve, radial-range, or orientation change requires a model-version increment plus numerical and fixed-camera visual revalidation",
+      "qualityStatus": "adopted for bounded PCS Milky Way dynamical reconstruction; not a precision future ephemeris"
     }
   ]
 }

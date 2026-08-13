@@ -72,7 +72,7 @@
     return Object.freeze({normal:Object.freeze(normal),up:Object.freeze(up)});
   }
   function fitDistance({radius,fovY,aspectRatio,margin=1.13}){
-    const r=finitePositive(radius,"radius"),vertical=finitePositive(fovY,"fovY"),aspect=finitePositive(aspectRatio,"aspectRatio"),safeMargin=Math.max(1,Number(margin)||1);
+    const r=finitePositive(radius,"radius"),vertical=finitePositive(fovY,"fovY"),aspect=finitePositive(aspectRatio,"aspectRatio"),safeMargin=Math.max(.9,Number(margin)||1);
     const horizontal=2*Math.atan(Math.tan(vertical/2)*aspect),halfAngle=Math.max(.01,Math.min(vertical,horizontal)/2);
     return r*safeMargin/Math.sin(halfAngle);
   }
