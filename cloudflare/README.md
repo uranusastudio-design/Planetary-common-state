@@ -249,6 +249,9 @@ Configure runtime secrets:
 ```bash
 wrangler secret put OPENWEATHER_API_KEY
 wrangler secret put EARTHDATA_TOKEN
+
+# Optional provider credentials. Their absence keeps the corresponding
+# connector at AUTH_REQUIRED and does not block core-source deployment.
 wrangler secret put FIRMS_MAP_KEY
 wrangler secret put CWA_API_KEY
 wrangler secret put INGEST_SECRET
