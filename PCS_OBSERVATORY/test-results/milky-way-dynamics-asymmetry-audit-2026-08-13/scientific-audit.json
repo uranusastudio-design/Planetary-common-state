@@ -1,0 +1,415 @@
+{
+  "generatedAt": "2026-08-13T11:29:49.901Z",
+  "status": "AUDIT — MILKY WAY NOT COMPLETE",
+  "frame": {
+    "id": "pcs-galactocentric-gravity2019-v2",
+    "origin": "Adopted Galactic Center / Sagittarius A* reference",
+    "axes": {
+      "x": "positive from the Sun toward Galactic longitude l=0 degrees; the Sun is on negative x",
+      "y": "positive toward heliocentric Galactic longitude l=90 degrees",
+      "z": "positive toward the IAU Galactic North Pole"
+    },
+    "quadrants": "Q1 x>=0/y>=0; Q2 x<0/y>=0; Q3 x<0/y<0; Q4 x>=0/y<0. Face-on screen left corresponds to negative Galactocentric x, the Sun side."
+  },
+  "dynamics": {
+    "modelId": "pcs-mw-differential-rotation-eilers2019-v1",
+    "modelVersion": "2026.08-human-reopen-v1",
+    "source": "10.3847/1538-4357/aaf648",
+    "method": "axisymmetric differential circular rotation; no rigid root rotation",
+    "diagnostics": [
+      {
+        "radiusKpc": 6,
+        "initialPositionKpc": [
+          -6,
+          7.347880794884119e-16,
+          0
+        ],
+        "initialThetaRad": 3.141592653589793,
+        "circularVelocityKmS": 232.7026,
+        "omegaRadPerMyr": 0.039664629976604485,
+        "epochsMyr": {
+          "1": {
+            "propagatedPositionKpc": [
+              -5.995280770158755,
+              0.23792538108544212,
+              0
+            ],
+            "finalThetaRad": 3.1019280236131888,
+            "deltaThetaRad": -0.039664629976604485,
+            "deltaThetaDeg": -2.2726158936075262
+          },
+          "10": {
+            "propagatedPositionKpc": [
+              -5.5341708253093085,
+              2.3179631740593485,
+              0
+            ],
+            "finalThetaRad": 2.744946353823748,
+            "deltaThetaRad": -0.3966462997660448,
+            "deltaThetaDeg": -22.726158936075258
+          },
+          "50": {
+            "propagatedPositionKpc": [
+              2.405048945215504,
+              5.49688453318039,
+              0
+            ],
+            "finalThetaRad": 1.158361154759569,
+            "deltaThetaRad": -1.9832314988302242,
+            "deltaThetaDeg": -113.6307946803763
+          },
+          "100": {
+            "propagatedPositionKpc": [
+              4.071913190372599,
+              -4.406758782832304,
+              0
+            ],
+            "finalThetaRad": -0.8248703440706553,
+            "deltaThetaRad": -3.9664629976604484,
+            "deltaThetaDeg": -227.2615893607526
+          }
+        }
+      },
+      {
+        "radiusKpc": 8.178,
+        "initialPositionKpc": [
+          -8.178,
+          1.0015161523427055e-15,
+          0
+        ],
+        "initialThetaRad": 3.141592653589793,
+        "circularVelocityKmS": 229,
+        "omegaRadPerMyr": 0.028637941525715218,
+        "epochsMyr": {
+          "1": {
+            "propagatedPositionKpc": [
+              -8.174646710687476,
+              0.23416907448776508,
+              0
+            ],
+            "finalThetaRad": 3.1129547120640777,
+            "deltaThetaRad": -0.028637941525715218,
+            "deltaThetaDeg": -1.6408331833659235
+          },
+          "10": {
+            "propagatedPositionKpc": [
+              -7.844933832521605,
+              2.31012925252201,
+              0
+            ],
+            "finalThetaRad": 2.8552132383326407,
+            "deltaThetaRad": -0.28637941525715216,
+            "deltaThetaDeg": -16.408331833659233
+          },
+          "50": {
+            "propagatedPositionKpc": [
+              -1.1322690475779145,
+              8.099237668070804,
+              0
+            ],
+            "finalThetaRad": 1.7096955773040325,
+            "deltaThetaRad": -1.4318970762857608,
+            "deltaThetaDeg": -82.04165916829616
+          },
+          "100": {
+            "propagatedPositionKpc": [
+              7.864467792589143,
+              2.2427283249043044,
+              0
+            ],
+            "finalThetaRad": 0.27779850101827147,
+            "deltaThetaRad": -2.8637941525715216,
+            "deltaThetaDeg": -164.08331833659233
+          }
+        }
+      },
+      {
+        "radiusKpc": 12,
+        "initialPositionKpc": [
+          -12,
+          1.4695761589768238e-15,
+          0
+        ],
+        "initialThetaRad": 3.141592653589793,
+        "circularVelocityKmS": 222.5026,
+        "omegaRadPerMyr": 0.018963009648006592,
+        "epochsMyr": {
+          "1": {
+            "propagatedPositionKpc": [
+              -11.99784249024431,
+              0.22754247798650648,
+              0
+            ],
+            "finalThetaRad": 3.1226296439417864,
+            "deltaThetaRad": -0.018963009648006592,
+            "deltaThetaDeg": -1.0865004196966386
+          },
+          "10": {
+            "propagatedPositionKpc": [
+              -11.784888330030736,
+              2.2619476228916895,
+              0
+            ],
+            "finalThetaRad": 2.951962557109727,
+            "deltaThetaRad": -0.18963009648006593,
+            "deltaThetaDeg": -10.865004196966387
+          },
+          "50": {
+            "propagatedPositionKpc": [
+              -6.998238240147367,
+              9.748059372723326,
+              0
+            ],
+            "finalThetaRad": 2.1934421711894636,
+            "deltaThetaRad": -0.9481504824003296,
+            "deltaThetaDeg": -54.32502098483193
+          },
+          "100": {
+            "propagatedPositionKpc": [
+              3.8374435890231795,
+              11.369873644903224,
+              0
+            ],
+            "finalThetaRad": 1.2452916887891339,
+            "deltaThetaRad": -1.8963009648006592,
+            "deltaThetaDeg": -108.65004196966386
+          }
+        }
+      }
+    ],
+    "omegaDistinct": true,
+    "sun": {
+      "initialPositionKpc": [
+        -8.178,
+        0,
+        0.0208
+      ],
+      "referenceFrame": "pcs-galactocentric-gravity2019-v2",
+      "displayFrame": "Galactic Center fixed; not Sun-co-moving",
+      "velocitySource": "Eilers et al. 2019 circular-velocity curve",
+      "circularVelocityKmS": 229
+    },
+    "gaia": {
+      "renderedCount": 1200,
+      "full6dCount": 847,
+      "incomplete3dVelocityCount": 353,
+      "referenceEpoch": "J2016.0 for Gaia EDR3/GCNS records; individual supplements preserve their source epoch",
+      "propagation": "uniform rectilinear motion, capped at ±1 Myr; radial velocity required; unavailable is never zero"
+    },
+    "kepler": {
+      "databaseCount": 12719,
+      "gaiaCrossMatchedCount": 1933,
+      "full6dCount": 1083,
+      "incomplete3dVelocityCount": 11636,
+      "referenceEpochs": "KIC ICRS/J2000 preserved; Gaia DR3 cross-matches use J2016.0",
+      "propagation": "only Gaia-cross-matched full-6D records use uniform rectilinear propagation capped at ±1 Myr; all missing radial velocities remain null and static"
+    },
+    "staticPolicies": {
+      "sun": "model-integrated circular orbit within the adopted rotation curve",
+      "hmsfr": "model-integrated circular orbit where Galactocentric radius is inside the adopted curve; source astrometry remains preserved",
+      "nearbyCatalogStar": "Gaia uniform rectilinear catalog propagation only when full 6D inputs exist, capped at plus/minus 1 Myr; otherwise static",
+      "thinDiskRepresentative": "model-integrated differential circular rotation where supported",
+      "thickDiskRepresentative": "model-integrated differential circular rotation where supported",
+      "armPopulationRepresentative": "model-integrated differential circular rotation where supported; static arm reconstruction guides remain separate",
+      "bar": "static; no pattern-speed model adopted in this release",
+      "bulge": "static; no pattern-speed model adopted in this release",
+      "stellarHalo": "static; never rigidly rotated with the disk",
+      "spiralArmReconstruction": "static observation-derived reconstruction guide; not a material stellar orbit",
+      "galacticCenter": "static coordinate origin",
+      "lmcSmc": "static catalog anchors; never attached to disk rotation"
+    }
+  },
+  "asymmetry": {
+    "scientificQuadrants": {
+      "gaiaObservedStars": {
+        "Q1": 0,
+        "Q2": 599,
+        "Q3": 601,
+        "Q4": 0
+      },
+      "hmsfr": {
+        "Q1": 12,
+        "Q2": 164,
+        "Q3": 23,
+        "Q4": 0
+      },
+      "keplerTargets": {
+        "Q1": 14,
+        "Q2": 12705,
+        "Q3": 0,
+        "Q4": 0
+      },
+      "keplerConfirmedHosts": {
+        "Q1": 0,
+        "Q2": 1978,
+        "Q3": 0,
+        "Q4": 0
+      },
+      "keplerCandidateHosts": {
+        "Q1": 0,
+        "Q2": 1628,
+        "Q3": 0,
+        "Q4": 0
+      },
+      "catalogAnchors": {
+        "Q1": 1,
+        "Q2": 1,
+        "Q3": 0,
+        "Q4": 0
+      },
+      "reconstructionArmPopulation": {
+        "Q1": 234,
+        "Q2": 2122,
+        "Q3": 244,
+        "Q4": 0
+      },
+      "representativeDensityTracers": {
+        "Q1": 2501,
+        "Q2": 1925,
+        "Q3": 2444,
+        "Q4": 1980
+      }
+    },
+    "keplerSelection": {
+      "counts": {
+        "upstreamKeplerStellar": 200038,
+        "footprintCoordinateCount": 199991,
+        "deployedRecords": 12719,
+        "ordinaryTargets": 9113,
+        "confirmedHosts": 1978,
+        "candidateHosts": 1628,
+        "recordsWithGaiaDr3": 1933,
+        "full6d": 1083,
+        "incomplete6d": 11636,
+        "confirmedPlanets": 2778,
+        "planetCandidates": 1972,
+        "falsePositiveKois": 4736
+      },
+      "samplePolicy": {
+        "database": "All Q1-Q17 DR25 targets with KOI/confirmed/false-positive flags plus deterministic MOD(kepid,40)=0 field sample",
+        "renderer": "Scale- and device-bounded deterministic subsets; catalog identity never synthesized",
+        "ordinaryTargetModulo": 40
+      },
+      "footprintMethod": "Convex envelope in the local tangent plane of all 200,038 Q1-Q17 DR25 target coordinates; angular observation-footprint guide, not a physical cone or volume"
+    },
+    "representativeComponents": {
+      "thin-disk": {
+        "Q1": 1264,
+        "Q2": 1288,
+        "Q3": 1300,
+        "Q4": 1348
+      },
+      "thick-disk": {
+        "Q1": 321,
+        "Q2": 303,
+        "Q3": 287,
+        "Q4": 289
+      },
+      "galactic-bar": {
+        "Q1": 359,
+        "Q2": 93,
+        "Q3": 347,
+        "Q4": 101
+      },
+      "galactic-bulge": {
+        "Q1": 434,
+        "Q2": 129,
+        "Q3": 407,
+        "Q4": 130
+      },
+      "stellar-halo": {
+        "Q1": 123,
+        "Q2": 112,
+        "Q3": 103,
+        "Q4": 112
+      }
+    },
+    "reconstructionArmSegments": {
+      "norma": {
+        "Q1": 0,
+        "Q2": 248,
+        "Q3": 0,
+        "Q4": 0
+      },
+      "scutum-centaurus": {
+        "Q1": 71,
+        "Q2": 451,
+        "Q3": 4,
+        "Q4": 0
+      },
+      "sagittarius-carina": {
+        "Q1": 35,
+        "Q2": 443,
+        "Q3": 1,
+        "Q4": 0
+      },
+      "local": {
+        "Q1": 0,
+        "Q2": 174,
+        "Q3": 38,
+        "Q4": 0
+      },
+      "perseus": {
+        "Q1": 128,
+        "Q2": 453,
+        "Q3": 115,
+        "Q4": 0
+      },
+      "outer": {
+        "Q1": 0,
+        "Q2": 353,
+        "Q3": 86,
+        "Q4": 0
+      }
+    },
+    "gaiaGalactocentricBoundsKpc": {
+      "x": [
+        -8.201969440000001,
+        -8.153177156000002
+      ],
+      "y": [
+        -0.024154593,
+        0.023651333
+      ]
+    },
+    "diagnosis": [
+      {
+        "cause": "heliocentric survey geometry",
+        "classification": "observational selection",
+        "evidence": "All deployed GCNS stars are within 100 pc of the Sun, so every scientific point lies on the negative-x Sun side. In the fixed whole-Galaxy browser view, the Gaia-only capture shows these points are distance-faded and do not create the current bright arm structure."
+      },
+      {
+        "cause": "point overdraw",
+        "classification": "bounded rendering risk, not the current overview cause",
+        "evidence": "The 1,200 nearby catalog markers occupy a tiny Galactic region, but the runtime NearFarScalar fades them to zero at the audited whole-Galaxy camera distance. They may emerge only at closer LOD and remain independently toggleable."
+      },
+      {
+        "cause": "HMSFR footprint and arm fit coverage",
+        "classification": "observational selection plus reconstruction",
+        "evidence": "Reid HMSFR measurements and source-bounded arm beta ranges are not azimuthally complete and must not be mirrored for symmetry."
+      },
+      {
+        "cause": "representative smooth density",
+        "classification": "model sampling",
+        "evidence": "Thin/thick disk and halo samples are approximately quadrant-balanced; the bar/bulge follow their adopted orientation."
+      },
+      {
+        "cause": "camera clipping / LOD bug",
+        "classification": "not supported",
+        "evidence": "Fixed-camera Gaia-only, HMSFR-only, reconstruction-only and representative-only browser captures show the expected scientific populations without edge clipping. The representative disk remains approximately quadrant-balanced."
+      },
+      {
+        "cause": "Kepler field geometry",
+        "classification": "observational selection",
+        "evidence": "The Kepler target layer is a narrow mission footprint: 12,719 deployed real records from an upstream 200,038-target DR25 table. It is independently toggleable and is not normalized with Gaia or tracers."
+      }
+    ]
+  },
+  "inputChecksums": {
+    "sourceContract": "87664ede29a8adc191cde9c2bb0cc37052d029caa2fbd7d0d3443ed8ce8d4afa",
+    "dynamicsContract": "df476d84986e87eb0d74c14972512704c109a6e0328e4831f6bfdc3f00e812bf",
+    "gaia100pc": "fbe818c5f3f8682dd7a88816ebd950f6c2c209e6fa572f0c0afa08bdb9fcd179",
+    "hmsfr": "b70628f9785553a9953b73e8f330811d4978de71a36153168a983db6b09920ed",
+    "kepler": "4113e1d8685046c3d35ee8acbc321e8e22d88a31260bcce4604e6d28093d5393"
+  }
+}
