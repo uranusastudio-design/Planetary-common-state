@@ -1,0 +1,154 @@
+{
+  "schemaVersion": "pcs-phase-c-source-snapshot-v1",
+  "retrievedAt": "2026-08-14",
+  "simbad": [
+    {
+      "seed": "Sgr A*",
+      "row": {
+        "id": "NAME Sgr A*",
+        "main_id": "NAME Sgr A*",
+        "ra": 266.41681662499997,
+        "dec": -29.00782497222222,
+        "otype": "X",
+        "coo_bibcode": "2011AJ....142...35P"
+      }
+    },
+    {
+      "seed": "Cyg X-1",
+      "row": {
+        "id": "X Cyg X-1",
+        "main_id": "HD 226868",
+        "ra": 299.59031556498,
+        "dec": 35.20160680908,
+        "otype": "HXB",
+        "coo_bibcode": "2020yCat.1350....0G"
+      }
+    },
+    {
+      "seed": "V404 Cyg",
+      "row": {
+        "id": "V* V404 Cyg",
+        "main_id": "V* V404 Cyg",
+        "ra": 306.0159362655975,
+        "dec": 33.86721143190583,
+        "otype": "HXB",
+        "coo_bibcode": "2020yCat.1350....0G"
+      }
+    },
+    {
+      "seed": "GRS 1915+105",
+      "row": {
+        "id": "Granat 1915+105",
+        "main_id": "Granat 1915+105",
+        "ra": 288.798149,
+        "dec": 10.945807,
+        "otype": "HXB",
+        "coo_bibcode": "2003yCat.2246....0C"
+      }
+    },
+    {
+      "seed": "1A 0620-00",
+      "row": {
+        "id": "1A 0620-00",
+        "main_id": "1A 0620-00",
+        "ra": 95.68559327388,
+        "dec": -0.34563623903999996,
+        "otype": "HXB",
+        "coo_bibcode": "2020yCat.1350....0G"
+      }
+    },
+    {
+      "seed": "M87*",
+      "row": {
+        "id": "HIDDEN NAME M87*",
+        "main_id": "M  87",
+        "ra": 187.70593076725,
+        "dec": 12.391123246083334,
+        "otype": "AGN",
+        "coo_bibcode": "2020A&A...644A.159C"
+      }
+    },
+    {
+      "seed": "NGC 4258",
+      "row": {
+        "id": "NGC  4258",
+        "main_id": "M 106",
+        "ra": 184.7400833333333,
+        "dec": 47.30371944444444,
+        "otype": "Sy2",
+        "coo_bibcode": "2006AJ....131.1163S"
+      }
+    },
+    {
+      "seed": "M 31",
+      "row": {
+        "id": "M  31",
+        "main_id": "M  31",
+        "ra": 10.684708333333333,
+        "dec": 41.268750000000004,
+        "otype": "AGN",
+        "coo_bibcode": "2006AJ....131.1163S"
+      }
+    },
+    {
+      "seed": "Crab pulsar",
+      "row": {
+        "id": "NAME Crab Pulsar",
+        "main_id": "V* CM Tau",
+        "ra": 83.63311445609,
+        "dec": 22.01448713834,
+        "otype": "Psr",
+        "coo_bibcode": "2020yCat.1350....0G"
+      }
+    },
+    {
+      "seed": "PSR J1745-2900",
+      "row": {
+        "id": "PSR J1745-2900",
+        "main_id": "PSR J1745-2900",
+        "ra": 266.41735,
+        "dec": -29.008282777777776,
+        "otype": "Psr",
+        "coo_bibcode": "2013MNRAS.435L..29S"
+      }
+    }
+  ],
+  "gaia": [
+    {
+      "sourceId": "4373465352415301632",
+      "row": {
+        "Source": 4373465352415301600,
+        "RA_ICRS": 262.17120727596,
+        "DE_ICRS": -0.58109196267,
+        "Plx": 2.07,
+        "pmRA": -6.437,
+        "pmDE": -25.48,
+        "RV": 23.03
+      }
+    },
+    {
+      "sourceId": "5870569352746779008",
+      "row": {
+        "Source": 5870569352746779000,
+        "RA_ICRS": 207.56971494177,
+        "DE_ICRS": -59.23900523844,
+        "Plx": 0.6721,
+        "pmRA": -7.755,
+        "pmDE": -5.51,
+        "RV": -5.04
+      }
+    },
+    {
+      "sourceId": "4318465066420528000",
+      "row": {
+        "Source": 4318465066420528000,
+        "RA_ICRS": 294.82786250815,
+        "DE_ICRS": 14.93097960861,
+        "Plx": 1.6443,
+        "pmRA": -22.235,
+        "pmDE": -155.276,
+        "RV": -333.18
+      }
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "pcs-known-object-manifest-v1",
+  "phase": "C",
+  "status": "VALIDATED_NOT_PUBLISHED",
+  "catalogVersion": "phase-c-compact-objects-2026-08-14",
+  "generatedAt": "2026-08-14",
+  "counts": {"input": 13, "imported": 13, "blackHoles": 11, "compactObjects": 2, "rejected": 0, "unresolved": 0, "relationships": 1, "rendered": 0},
+  "blackHoleStatusCounts": {"DYNAMICALLY_SUPPORTED": 11, "CONFIRMED": 0, "STRONG_CANDIDATE": 0, "CANDIDATE": 0, "UNCERTAIN": 0},
+  "sources": [
+    {"sourceId": "cds-simbad-tap", "inputRecords": 10},
+    {"sourceId": "cds-vizier-tap", "catalog": "I/355/gaiadr3", "inputRecords": 3}
+  ],
+  "rawSnapshot": "data/catalogs/staging/phase-c-compact-objects/compact-object-sources.json",
+  "rawSnapshotChecksum": "sha256:222cca66faa58911deedf8159c6d654fa27008821f5f0163c8cf36575e4ef3f4",
+  "validatedCatalog": "data/catalogs/validated/phase-c-compact-objects.json",
+  "validationReport": "test-results/known-astronomical-objects-phase-c/validation-report.json",
+  "scientificBoundary": "Dynamically supported status is paper-specific and is not direct imaging or an immutable truth claim; runtime publication is deferred"
+}

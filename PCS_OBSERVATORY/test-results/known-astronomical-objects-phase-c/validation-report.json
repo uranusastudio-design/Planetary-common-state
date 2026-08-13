@@ -1,0 +1,106 @@
+{
+  "schemaVersion": "pcs-known-object-phase-c-validation-v1",
+  "generatedAt": "2026-08-13T18:02:24.415Z",
+  "phase": "C",
+  "pass": true,
+  "counts": {
+    "input": 13,
+    "imported": 13,
+    "blackHoles": 11,
+    "compactObjects": 2,
+    "rejected": 0,
+    "unresolved": 0,
+    "relationships": 1,
+    "rendered": 0
+  },
+  "blackHoleStatusCounts": {
+    "DYNAMICALLY_SUPPORTED": 11,
+    "CONFIRMED": 0,
+    "STRONG_CANDIDATE": 0,
+    "CANDIDATE": 0,
+    "UNCERTAIN": 0
+  },
+  "sources": [
+    {
+      "sourceId": "cds-simbad-tap",
+      "inputRecords": 10
+    },
+    {
+      "sourceId": "cds-vizier-tap",
+      "catalog": "I/355/gaiadr3",
+      "inputRecords": 3
+    }
+  ],
+  "recordResults": [
+    {
+      "pcsObjectId": "pcs:black-hole:sagittarius-a-star",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "pcsObjectId": "pcs:black-hole:cygnus-x-1",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "pcsObjectId": "pcs:black-hole:v404-cygni",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "pcsObjectId": "pcs:black-hole:grs-1915-105",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "pcsObjectId": "pcs:black-hole:a0620-00",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "pcsObjectId": "pcs:black-hole:m87-star",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "pcsObjectId": "pcs:black-hole:ngc-4258-central",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "pcsObjectId": "pcs:black-hole:m31-central",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "pcsObjectId": "pcs:compact-object:crab-pulsar",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "pcsObjectId": "pcs:compact-object:psr-j1745-2900",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "pcsObjectId": "pcs:black-hole:gaia-bh1",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "pcsObjectId": "pcs:black-hole:gaia-bh2",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "pcsObjectId": "pcs:black-hole:gaia-bh3",
+      "valid": true,
+      "errors": []
+    }
+  ],
+  "limitations": [
+    "Validated database records are not yet published to runtime.",
+    "Dynamical support does not mean direct imaging of a black hole or guaranteed immutable mass estimates.",
+    "Host-nucleus coordinates are disclosed where an individual SMBH catalog coordinate is unavailable."
+  ]
+}

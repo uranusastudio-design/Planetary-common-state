@@ -92,3 +92,15 @@ The graph records Pillars of Creation → Eagle Nebula, Horsehead Nebula → IC 
 Validation: 271/271 Observatory tests passed, including 6/6 Phase B tests. Machine evidence: `test-results/known-astronomical-objects-phase-b/validation-report.json`.
 
 Phase B status: `[x] Nebulae — VALIDATED / NOT FROZEN`
+
+## Phase C — Black holes and compact objects
+
+Status: **VALIDATED / NOT PUBLISHED / NOT FROZEN**
+
+Phase C contains 13 records: 11 dynamically supported black holes and two non-black-hole compact remnants. Imported 13, rejected 0, unresolved 0, relationships 1, rendered 0. All 11 black holes retain a paper-specific mass, mass method, status source, and limitations; all are conservatively classified `DYNAMICALLY_SUPPORTED`. No X-ray identity alone is promoted to black-hole confirmation.
+
+SIMBAD supplies ten identity/coordinate rows. Gaia BH1/BH2/BH3 use VizieR Gaia DR3 `I/355/gaiadr3` astrometry and preserve parallax/proper motion/radial velocity without naive parallax inversion. Classification/mass references are retained per record. The source snapshot SHA-256 is `222cca66faa58911deedf8159c6d654fa27008821f5f0163c8cf36575e4ef3f4`.
+
+Crab Pulsar is linked to the Phase B Crab Nebula and remains a neutron-star/pulsar record. PSR J1745-2900 remains a magnetar/pulsar. Neither receives `blackHoleStatus`.
+
+Phase C status: `[x] Black holes + compact objects — VALIDATED / NOT FROZEN`
