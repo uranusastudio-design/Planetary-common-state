@@ -46,6 +46,8 @@ test("extended-year epochs reach AD 100000 without a JavaScript date clamp", () 
   const runtime = fixtureContext();
   assert.equal(runtime.epochFromYear(20000).getUTCFullYear(), 20000);
   assert.equal(runtime.epochFromYear(100000).getUTCFullYear(), 100000);
+  assert.equal(runtime.publicEpochFromYear(20000).getUTCFullYear(), 20000);
+  assert.throws(() => runtime.publicEpochFromYear(20001), /through 20000/);
   assert.match(runtime.epochFromYear(100000).toISOString(), /^\+100000-/);
   assert.throws(() => runtime.epochFromYear(-13200), /-13199 \(13200 BCE\) through 100000/);
   assert.throws(() => runtime.epochFromYear(100001), /-13199 \(13200 BCE\) through 100000/);
@@ -75,16 +77,22 @@ test("the browser interpolator is gravitational and not fixed-period screen anim
   assert.doesNotMatch(read("solar-system-long-horizon.js"), /constantPeriod|screen-coordinate|theta\s*=\s*theta0/);
 });
 
-test("runtime controls expose coarse steps, direct checkpoints and a custom AD 100000 year", () => {
+test("public controls stop at AD 20000 while research diagnostics retain experimental AD 100000", () => {
   const manager = read("deep-space.js"), html = read("index.html"), ephemeris = read("deep-space-ephemeris.js");
-  assert.match(manager, /\[-13199,-10000,-5000,1,1000,1800,2050,2100,2500,5000,7500,10000,15000,17000,18000,19000,20000,25000,50000,75000,100000\]/);
+  assert.match(manager, /\[-13199,-10000,-5000,1,1000,1800,2050,2100,2500,5000,7500,10000,15000,17000,17191,18000,19000,20000\]/);
   assert.match(manager, /\[1,10,100,1000\]/);
   assert.match(manager, /data-ds-custom-year/);
   assert.match(manager, /min=\"-13199\"/);
-  assert.match(manager, /LongHorizon\.epochFromYear/);
+  assert.match(manager, /max=\"20000\"/);
+  assert.match(manager, /LongHorizon\.publicEpochFromYear/);
+  assert.doesNotMatch(manager, /data-ds-year=\"100000\"/);
   assert.doesNotMatch(manager, /Supported major-planet playback: 1800–2050/);
   assert.match(html, /solar-system-long-horizon\.js/);
   assert.match(ephemeris, /LongHorizon\?\.solutionMetadata/);
+  const runtime = fixtureContext(), diagnostics = runtime.diagnostics(runtime.epochFromYear(100000));
+  assert.equal(runtime.PUBLIC_LIMITS.maxYear, 20000);
+  assert.equal(runtime.RESEARCH_LIMITS.maxYear, 100000);
+  assert.equal(diagnostics.experimentalResearchLabel, "EXPERIMENTAL LONG-HORIZON RECONSTRUCTION");
 });
 
 test("release generator records orbital residuals, convergence and boundary continuity", () => {

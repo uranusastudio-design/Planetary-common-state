@@ -13,17 +13,27 @@
   const DAY_SECONDS = 86400;
   const UNIX_EPOCH_JD = 2440587.5;
   const DEFAULT_MAX_STEP_DAYS = 4;
+  const PUBLIC_MIN_YEAR = -13199;
+  const PUBLIC_MAX_YEAR = 20000;
+  const EXPERIMENTAL_RESEARCH_MAX_YEAR = 100000;
+  const EXPERIMENTAL_RESEARCH_LABEL = "EXPERIMENTAL LONG-HORIZON RECONSTRUCTION";
   const BODY_IDS = Object.freeze(["sun", "mercury", "venus", "earth", "mars", "jupiter", "saturn", "uranus", "neptune"]);
   const dataset = global.PCSSolarSystemLongHorizonDataset || null;
   const cache = new Map();
 
   function epochFromYear(year) {
     const numeric = Number(year);
-    if (!Number.isInteger(numeric) || numeric < -13199 || numeric > 100000) throw new RangeError("Long-horizon astronomical year must be an integer from -13199 (13200 BCE) through 100000");
+    if (!Number.isInteger(numeric) || numeric < PUBLIC_MIN_YEAR || numeric > EXPERIMENTAL_RESEARCH_MAX_YEAR) throw new RangeError("Long-horizon astronomical year must be an integer from -13199 (13200 BCE) through 100000");
     const date = new Date(0);
     date.setUTCFullYear(numeric, 0, 1);
     date.setUTCHours(0, 0, 0, 0);
     return date;
+  }
+
+  function publicEpochFromYear(year) {
+    const numeric = Number(year);
+    if (!Number.isInteger(numeric) || numeric < PUBLIC_MIN_YEAR || numeric > PUBLIC_MAX_YEAR) throw new RangeError("Public long-horizon astronomical year must be an integer from -13199 (13200 BCE) through 20000");
+    return epochFromYear(numeric);
   }
 
   function displayDateToJdTdb(value) {
@@ -43,6 +53,24 @@
 
   function segmentForJd(jdTdb) {
     return dataset?.segments?.find(segment => jdTdb >= segment.startJdTdb && jdTdb <= segment.endJdTdb) || null;
+  }
+
+  function segmentDisplayValidity(segment, publicOnly = true) {
+    if (!segment) return null;
+    const publicEndJd = displayDateToJdTdb(epochFromYear(PUBLIC_MAX_YEAR));
+    return Object.freeze({
+      start: jdTdbToDisplayDate(segment.startJdTdb).toISOString(),
+      end: jdTdbToDisplayDate(publicOnly ? Math.min(segment.endJdTdb, publicEndJd) : segment.endJdTdb).toISOString()
+    });
+  }
+
+  function coverageMetadata() {
+    const authoritative = dataset?.segments?.find(segment => segment.provider === PROVIDERS.AUTHORITATIVE_EPHEMERIS) || null;
+    const numerical = dataset?.segments?.find(segment => segment.provider === PROVIDERS.PCS_NUMERICAL_ANALYSIS) || null;
+    return Object.freeze({
+      public: Object.freeze({ minYear: PUBLIC_MIN_YEAR, maxYear: PUBLIC_MAX_YEAR, authoritative: segmentDisplayValidity(authoritative), numerical: segmentDisplayValidity(numerical) }),
+      research: Object.freeze({ maxYear: EXPERIMENTAL_RESEARCH_MAX_YEAR, label: EXPERIMENTAL_RESEARCH_LABEL, numerical: segmentDisplayValidity(numerical, false) })
+    });
   }
 
   function resolveSolarSystemTimeProvider(value) {
@@ -135,7 +163,7 @@
     const sunOffset = 0, offset = index * 6;
     const positionAu = index === 0 ? [0, 0, 0] : [0, 1, 2].map(axis => system.state[offset + axis] - system.state[sunOffset + axis]);
     const velocityAuPerDay = index === 0 ? [0, 0, 0] : [0, 1, 2].map(axis => system.state[offset + 3 + axis] - system.state[sunOffset + 3 + axis]);
-    const segment = system.resolved.segment;
+    const segment = system.resolved.segment, publicValidity = segmentDisplayValidity(segment), experimentalValidity = segmentDisplayValidity(segment, false);
     return Object.freeze({
       bodyId,
       epoch: system.resolved.date.toISOString(),
@@ -153,7 +181,8 @@
       propagationDaysFromAnchor: system.propagationDays,
       integrator: segment.integrator,
       modelVersion: dataset.modelVersion,
-      validityRange: `${segment.startEpoch} → ${segment.endEpoch}`,
+      validityRange: `${publicValidity.start} → ${publicValidity.end}`,
+      experimentalValidityRange: `${experimentalValidity.start} → ${experimentalValidity.end} · ${EXPERIMENTAL_RESEARCH_LABEL}`,
       uncertainty: segment.uncertainty
     });
   }
@@ -179,6 +208,7 @@
   function solutionMetadata(value, bodyIds = BODY_IDS.slice(1)) {
     const resolved = resolveSolarSystemTimeProvider(value), segment = resolved.segment;
     if (!segment) return null;
+    const validity = segmentDisplayValidity(segment);
     return Object.freeze({
       id: segment.id,
       displayEpoch: resolved.date,
@@ -194,8 +224,8 @@
       lastDataUpdate: dataset.generatedAt,
       qualityStatus: segment.qualityStatus,
       uncertainty: segment.uncertainty,
-      coverage: { start: segment.startEpoch, end: segment.endEpoch },
-      validity: { start: segment.startEpoch, end: segment.endEpoch },
+      coverage: validity,
+      validity,
       coherent: true,
       authoritative: resolved.provider === PROVIDERS.AUTHORITATIVE_EPHEMERIS,
       provider: resolved.provider,
@@ -221,7 +251,10 @@
       integrator: system.resolved.segment.integrator,
       referenceFrame: dataset.referenceFrame,
       timeScale: dataset.timeScale,
-      modelVersion: dataset.modelVersion
+      modelVersion: dataset.modelVersion,
+      publicMaxYear: PUBLIC_MAX_YEAR,
+      experimentalResearchMaxYear: EXPERIMENTAL_RESEARCH_MAX_YEAR,
+      experimentalResearchLabel: EXPERIMENTAL_RESEARCH_LABEL
     });
   }
 
@@ -230,8 +263,12 @@
     BODY_IDS,
     AU_KM,
     DAY_SECONDS,
+    PUBLIC_LIMITS: Object.freeze({ minYear: PUBLIC_MIN_YEAR, maxYear: PUBLIC_MAX_YEAR }),
+    RESEARCH_LIMITS: Object.freeze({ maxYear: EXPERIMENTAL_RESEARCH_MAX_YEAR, label: EXPERIMENTAL_RESEARCH_LABEL }),
     dataset,
     epochFromYear,
+    publicEpochFromYear,
+    coverageMetadata,
     displayDateToJdTdb,
     jdTdbToDisplayDate,
     resolveSolarSystemTimeProvider,

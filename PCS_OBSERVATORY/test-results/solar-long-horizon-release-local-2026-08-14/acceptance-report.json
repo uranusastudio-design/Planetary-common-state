@@ -1,0 +1,2757 @@
+{
+  "pass": true,
+  "status": "LOCAL CANDIDATE — HUMAN REVIEW REQUIRED",
+  "generatedAt": "2026-08-13T16:41:20.999Z",
+  "base": "http://127.0.0.1:4174/PCS_OBSERVATORY/",
+  "results": [
+    {
+      "matrix": {
+        "label": "desktop-1920x1080",
+        "width": 1920,
+        "height": 1080,
+        "years": [
+          2026,
+          2050,
+          5000,
+          10000,
+          15000,
+          17000,
+          17191,
+          18000,
+          19000,
+          20000
+        ]
+      },
+      "before": {
+        "viewerCount": 1,
+        "cesiumCanvasCount": 1,
+        "dataSources": 3,
+        "primitives": 1
+      },
+      "providerBoundary": {
+        "authoritativeEndJdTdb": 8000016.5,
+        "numericalStartJdTdb": 8000016.5,
+        "maxPositionAu": 0,
+        "maxVelocityAuPerDay": 0
+      },
+      "checkpoints": [
+        {
+          "year": 2026,
+          "accepted": true,
+          "epoch": "2026-01-01T00:00:00.000Z",
+          "paused": true,
+          "provider": "AUTHORITATIVE_EPHEMERIS",
+          "positionMode": "Cached ephemeris · cubic Hermite state",
+          "fidelity": "LA · Precision Ephemeris",
+          "fidelityLevel": "A",
+          "cardFidelity": {
+            "level": "A",
+            "canonicalName": "Precision Ephemeris",
+            "label": "Precision Ephemeris",
+            "heading": "Scientific Fidelity",
+            "categoryKey": "referenceAnchor",
+            "category": "Measured / adopted reference anchor",
+            "disclaimer": "Positions and time behavior derive from authoritative ephemerides or validated orbital data.",
+            "scaleContext": "solar",
+            "contract": {
+              "id": "solar",
+              "distanceScale": "kilometres to hundreds of AU",
+              "defaultLevel": "A",
+              "datasets": [
+                "NASA/JPL ephemerides",
+                "NASA/JPL SBDB"
+              ],
+              "visibleObjectClasses": [
+                "Solar System bodies",
+                "small bodies",
+                "interstellar objects"
+              ],
+              "lod": "solid body → disc → point; orbit/trajectory by source contract",
+              "coordinateFrame": "ICRF/J2000 heliocentric or parent-relative",
+              "cameraLimits": "km–AU astronomical camera scale",
+              "precisionDisclaimer": "precisionNotice"
+            }
+          },
+          "cardRows": {
+            "Scientific Fidelity": "Level A — Precision Ephemeris",
+            "Official name": "Sun",
+            "Object type": "star",
+            "Distance": "0.00000000 AU",
+            "Coordinate frame": "ICRF; Earth mean ecliptic at J2000.0 (IAU76/80); heliocentric origin",
+            "Data status": "JPL ephemeris",
+            "Localized name": "Sun",
+            "Catalog ID": "NAIF 10",
+            "Coordinates": "0.0000000, 0.0000000, 0.0000000 AU",
+            "Physical size": "Mean radius 695,700 km",
+            "Scientific Fidelity — Data status": "Measured / adopted reference anchor",
+            "Physical radius": "695,700 km",
+            "Display radius": "90,000 scene units — visualization radius compression",
+            "Display scale mode": "Representative display scaling",
+            "Epoch": "2026-01-01T00:00:00.000Z",
+            "Last updated": "2026-08-09T03:04:34.082Z",
+            "Data sources": "NASA/JPL Horizons API",
+            "Research references": "https://ssd.jpl.nasa.gov/horizons/https://ssd.jpl.nasa.gov/planets/approx_pos.html",
+            "Visualization status": "Representative display scaling",
+            "Known limitations": "Solar-system barycentric effects are not represented in the heliocentric exhibition origin.",
+            "Unavailable quantities": "Aliases; Parent system / structure; Distance type; Uncertainty; Redshift; Velocity; Mass; Member count; Membership; Observation status; Reconstruction status; Orbital data; Event / relationship"
+          },
+          "selected": "sun",
+          "objectCardId": "sun",
+          "camera": [
+            827571.5680399587,
+            -1966709.917708182,
+            4824051.436965596,
+            -6.383782391594649e-16,
+            0.48191874977215565,
+            -0.8762159086766471,
+            -6.803585472781035e-15,
+            0.8762159086766471,
+            0.4819187497721557
+          ],
+          "bodyEntityCount": 9,
+          "orbitEntityCount": 4,
+          "duplicateEntityIds": [],
+          "timeControllerCount": 1,
+          "tickListenerActive": true,
+          "objectSpecificVisibility": {
+            "dwarfVisible": 5,
+            "mainBelt": 256,
+            "tno": 1024,
+            "comets": 9
+          },
+          "viewerCount": 1,
+          "cesiumCanvasCount": 1,
+          "dataSources": 4,
+          "primitives": 4,
+          "playbackRange": {
+            "start": "-013200-05-06T00:00:00.000Z",
+            "end": "+020000-01-01T00:00:00.000Z"
+          },
+          "range": "MAJOR PLANET TIME COVERAGE · AUTHORITATIVE: -013200-05-06T00:00:00.000Z → +017191-03-15T00:00:00.000Z · PCS ANALYSIS: +017191-03-15T00:00:00.000Z → AD 20000 · CURRENT MODE: AUTHORITATIVE_EPHEMERIS",
+          "states": {
+            "sun": {
+              "positionAu": [
+                0,
+                0,
+                0
+              ],
+              "velocityAuPerDay": [
+                0,
+                0,
+                0
+              ]
+            },
+            "mercury": {
+              "positionAu": [
+                -0.2151859044584774,
+                -0.40921701409455596,
+                -0.013705450118591539
+              ],
+              "velocityAuPerDay": [
+                0.01923236752962459,
+                -0.011736646491507985,
+                -0.00272312311240917
+              ]
+            },
+            "venus": {
+              "positionAu": [
+                0.08889321519660909,
+                -0.7217604600702306,
+                -0.01504495137569027
+              ],
+              "velocityAuPerDay": [
+                0.019938505459540956,
+                0.002400810300717871,
+                -0.0011174625331046783
+              ]
+            },
+            "earth": {
+              "positionAu": [
+                -0.17428354054320291,
+                0.9677831810007531,
+                -0.00005686586005398366
+              ],
+              "velocityAuPerDay": [
+                -0.017211551766951886,
+                -0.003113894737109566,
+                2.763869991638846e-7
+              ]
+            },
+            "mars": {
+              "positionAu": [
+                0.34059098282857914,
+                -1.3869983803786194,
+                -0.037417427840555316
+              ],
+              "velocityAuPerDay": [
+                0.014119384297527243,
+                0.004540315886152059,
+                -0.0002510823273215836
+              ]
+            },
+            "jupiter": {
+              "positionAu": [
+                -1.6940088200278958,
+                4.928881031845954,
+                0.01742637643021983
+              ],
+              "velocityAuPerDay": [
+                -0.007230613061639962,
+                -0.0021015481172345293,
+                0.00017050089770787263
+              ]
+            },
+            "saturn": {
+              "positionAu": [
+                9.507342994410514,
+                0.25774291365755403,
+                -0.38293559135719824
+              ],
+              "velocityAuPerDay": [
+                -0.0004630871611785513,
+                0.005564672074309787,
+                -0.00007848915379178446
+              ]
+            },
+            "uranus": {
+              "positionAu": [
+                9.880315231537859,
+                16.80001685945945,
+                -0.06571975817620954
+              ],
+              "velocityAuPerDay": [
+                -0.003426401367061052,
+                0.0018103770684095247,
+                0.00005115406546852322
+              ]
+            },
+            "neptune": {
+              "positionAu": [
+                29.872119975390557,
+                0.5189419912631789,
+                -0.6990672257810285
+              ],
+              "velocityAuPerDay": [
+                -0.0000817974926722182,
+                0.0031571073394775074,
+                -0.00006316332232819788
+              ]
+            }
+          },
+          "screenshot": "/private/tmp/pcs-solar-release.gzFTx9/PCS_OBSERVATORY/test-results/solar-long-horizon-release-local-2026-08-14/desktop-1920x1080-2026.png"
+        },
+        {
+          "year": 2050,
+          "accepted": true,
+          "epoch": "2050-01-01T00:00:00.000Z",
+          "paused": true,
+          "provider": "AUTHORITATIVE_EPHEMERIS",
+          "positionMode": "Long-Term Ephemeris anchor + bounded N-body interpolation",
+          "fidelity": "LA · Long-Term",
+          "fidelityLevel": "A",
+          "cardFidelity": {
+            "level": "A",
+            "canonicalName": "Authoritative Long-Term Ephemeris",
+            "label": "Authoritative Long-Term Ephemeris",
+            "heading": "Scientific Fidelity",
+            "categoryKey": "ephemerisDerived",
+            "category": "AUTHORITATIVE_EPHEMERIS",
+            "disclaimer": "DE441-derived state; observational constraint and uncertainty vary with epoch",
+            "scaleContext": "solar",
+            "contract": {
+              "id": "solar",
+              "distanceScale": "kilometres to hundreds of AU",
+              "defaultLevel": "A",
+              "datasets": [
+                "NASA/JPL ephemerides",
+                "NASA/JPL SBDB"
+              ],
+              "visibleObjectClasses": [
+                "Solar System bodies",
+                "small bodies",
+                "interstellar objects"
+              ],
+              "lod": "solid body → disc → point; orbit/trajectory by source contract",
+              "coordinateFrame": "ICRF/J2000 heliocentric or parent-relative",
+              "cameraLimits": "km–AU astronomical camera scale",
+              "precisionDisclaimer": "precisionNotice"
+            }
+          },
+          "cardRows": {
+            "Scientific Fidelity": "Level A — Authoritative Long-Term Ephemeris",
+            "Official name": "Sun",
+            "Object type": "star",
+            "Distance": "0.00000000 AU",
+            "Coordinate frame": "Solar-System barycentric ICRF/J2000 ecliptic scientific state; heliocentric display transform",
+            "Data status": "JPL ephemeris",
+            "Localized name": "Sun",
+            "Catalog ID": "NAIF 10",
+            "Coordinates": "0.0000000, 0.0000000, 0.0000000 AU",
+            "Uncertainty": "DE441 model uncertainty is epoch/body dependent; browser interpolation residual is separately validated",
+            "Velocity": "0, 0, 0 AU/day",
+            "Physical size": "Mean radius 695,700 km",
+            "Scientific Fidelity — Data status": "AUTHORITATIVE_EPHEMERIS",
+            "Physical radius": "695,700 km",
+            "Display radius": "90,000 scene units — visualization radius compression",
+            "Display scale mode": "Representative display scaling",
+            "Epoch": "2050-01-01T00:00:00.000Z",
+            "Motion class": "ephemeris-derived",
+            "Model evolution epoch": "2050-01-01T00:00:00.000Z",
+            "Velocity source": "NASA/JPL DE441 SPICE binary planetary ephemeris",
+            "Integration method": "REBOUND 5.1.1 WHFast corrector 11 for checkpoints; velocity-Verlet max 4 d for bounded browser interpolation",
+            "Validity range": "-013200-05-06T00:00:00.000Z → +017191-03-15T00:00:00.000Z",
+            "Model version": "PCS-SS-LH-2026.08",
+            "Last updated": "2026-08-09T03:04:34.082Z",
+            "Data sources": "NASA/JPL DE441 SPICE binary planetary ephemeris",
+            "Research references": "https://ssd.jpl.nasa.gov/horizons/https://ssd.jpl.nasa.gov/planets/approx_pos.html",
+            "Visualization status": "Representative display scaling",
+            "Known limitations": "DE441 model uncertainty is epoch/body dependent; browser interpolation residual is separately validated; Solar-system barycentric effects are not represented in the heliocentric exhibition origin.",
+            "Unavailable quantities": "Aliases; Parent system / structure; Distance type; Redshift; Mass; Member count; Membership; Observation status; Reconstruction status; Orbital data; Event / relationship"
+          },
+          "selected": "sun",
+          "objectCardId": "sun",
+          "camera": [
+            827571.5680399587,
+            -1966709.917708182,
+            4824051.436965596,
+            -6.383782391594649e-16,
+            0.48191874977215565,
+            -0.8762159086766471,
+            -1.4589024432964948e-14,
+            0.8762159086766471,
+            0.4819187497721558
+          ],
+          "bodyEntityCount": 9,
+          "orbitEntityCount": 4,
+          "duplicateEntityIds": [],
+          "timeControllerCount": 1,
+          "tickListenerActive": true,
+          "objectSpecificVisibility": {
+            "dwarfVisible": 0,
+            "mainBelt": 0,
+            "tno": 0,
+            "comets": 0
+          },
+          "viewerCount": 1,
+          "cesiumCanvasCount": 1,
+          "dataSources": 4,
+          "primitives": 4,
+          "playbackRange": {
+            "start": "-013200-05-06T00:00:00.000Z",
+            "end": "+020000-01-01T00:00:00.000Z"
+          },
+          "range": "MAJOR PLANET TIME COVERAGE · AUTHORITATIVE: -013200-05-06T00:00:00.000Z → +017191-03-15T00:00:00.000Z · PCS ANALYSIS: +017191-03-15T00:00:00.000Z → AD 20000 · CURRENT MODE: AUTHORITATIVE_EPHEMERIS",
+          "states": {
+            "sun": {
+              "positionAu": [
+                0,
+                0,
+                0
+              ],
+              "velocityAuPerDay": [
+                0,
+                0,
+                0
+              ]
+            },
+            "mercury": {
+              "positionAu": [
+                -0.17951404248448502,
+                0.2678117696735194,
+                0.038348303242544846
+              ],
+              "velocityAuPerDay": [
+                -0.029045420958216047,
+                -0.014578802386390175,
+                0.0014703216495276057
+              ]
+            },
+            "venus": {
+              "positionAu": [
+                0.14178222355512918,
+                -0.7133842157318014,
+                -0.018025667745931603
+              ],
+              "velocityAuPerDay": [
+                0.019702025209859867,
+                0.00387300000332485,
+                -0.0010829427229751575
+              ]
+            },
+            "earth": {
+              "positionAu": [
+                -0.17158296236969375,
+                0.9682682880886146,
+                -0.00010814871895384857
+              ],
+              "velocityAuPerDay": [
+                -0.017219879553505166,
+                -0.003067159355751021,
+                5.24990526850226e-7
+              ]
+            },
+            "mars": {
+              "positionAu": [
+                -1.5432316877793695,
+                -0.5035895204729828,
+                0.027201933050069172
+              ],
+              "velocityAuPerDay": [
+                0.004861797714874931,
+                -0.012105051774140214,
+                -0.0003727379416628887
+              ]
+            },
+            "jupiter": {
+              "positionAu": [
+                -2.3910463449319903,
+                4.664074051129192,
+                0.03396564221877784
+              ],
+              "velocityAuPerDay": [
+                -0.00681767578348079,
+                -0.0030967490050257426,
+                0.00016541411530839135
+              ]
+            },
+            "saturn": {
+              "positionAu": [
+                4.766225421471267,
+                -8.7737199327776,
+                -0.03787676542813846
+              ],
+              "velocityAuPerDay": [
+                0.004594510460960311,
+                0.002649472402110742,
+                -0.0002291045475944738
+              ]
+            },
+            "uranus": {
+              "positionAu": [
+                -17.82323641511405,
+                4.071483016564171,
+                0.24585034112133536
+              ],
+              "velocityAuPerDay": [
+                -0.0009101967696381948,
+                -0.0040215373321584235,
+                -0.000003110845750543565
+              ]
+            },
+            "neptune": {
+              "positionAu": [
+                17.39819881068304,
+                24.197783986237972,
+                -0.8992418129822296
+              ],
+              "velocityAuPerDay": [
+                -0.002572492909775958,
+                0.0018503437437782568,
+                0.000021100760424889616
+              ]
+            }
+          },
+          "screenshot": "/private/tmp/pcs-solar-release.gzFTx9/PCS_OBSERVATORY/test-results/solar-long-horizon-release-local-2026-08-14/desktop-1920x1080-2050.png"
+        },
+        {
+          "year": 5000,
+          "accepted": true,
+          "epoch": "5000-01-01T00:00:00.000Z",
+          "paused": true,
+          "provider": "AUTHORITATIVE_EPHEMERIS",
+          "positionMode": "Long-Term Ephemeris anchor + bounded N-body interpolation",
+          "fidelity": "LA · Long-Term",
+          "fidelityLevel": "A",
+          "cardFidelity": {
+            "level": "A",
+            "canonicalName": "Authoritative Long-Term Ephemeris",
+            "label": "Authoritative Long-Term Ephemeris",
+            "heading": "Scientific Fidelity",
+            "categoryKey": "ephemerisDerived",
+            "category": "AUTHORITATIVE_EPHEMERIS",
+            "disclaimer": "DE441-derived state; observational constraint and uncertainty vary with epoch",
+            "scaleContext": "solar",
+            "contract": {
+              "id": "solar",
+              "distanceScale": "kilometres to hundreds of AU",
+              "defaultLevel": "A",
+              "datasets": [
+                "NASA/JPL ephemerides",
+                "NASA/JPL SBDB"
+              ],
+              "visibleObjectClasses": [
+                "Solar System bodies",
+                "small bodies",
+                "interstellar objects"
+              ],
+              "lod": "solid body → disc → point; orbit/trajectory by source contract",
+              "coordinateFrame": "ICRF/J2000 heliocentric or parent-relative",
+              "cameraLimits": "km–AU astronomical camera scale",
+              "precisionDisclaimer": "precisionNotice"
+            }
+          },
+          "cardRows": {
+            "Scientific Fidelity": "Level A — Authoritative Long-Term Ephemeris",
+            "Official name": "Sun",
+            "Object type": "star",
+            "Distance": "0.00000000 AU",
+            "Coordinate frame": "Solar-System barycentric ICRF/J2000 ecliptic scientific state; heliocentric display transform",
+            "Data status": "JPL ephemeris",
+            "Localized name": "Sun",
+            "Catalog ID": "NAIF 10",
+            "Coordinates": "0.0000000, 0.0000000, 0.0000000 AU",
+            "Uncertainty": "DE441 model uncertainty is epoch/body dependent; browser interpolation residual is separately validated",
+            "Velocity": "0, 0, 0 AU/day",
+            "Physical size": "Mean radius 695,700 km",
+            "Scientific Fidelity — Data status": "AUTHORITATIVE_EPHEMERIS",
+            "Physical radius": "695,700 km",
+            "Display radius": "90,000 scene units — visualization radius compression",
+            "Display scale mode": "Representative display scaling",
+            "Epoch": "5000-01-01T00:00:00.000Z",
+            "Motion class": "ephemeris-derived",
+            "Model evolution epoch": "5000-01-01T00:00:00.000Z",
+            "Velocity source": "NASA/JPL DE441 SPICE binary planetary ephemeris",
+            "Integration method": "REBOUND 5.1.1 WHFast corrector 11 for checkpoints; velocity-Verlet max 4 d for bounded browser interpolation",
+            "Validity range": "-013200-05-06T00:00:00.000Z → +017191-03-15T00:00:00.000Z",
+            "Model version": "PCS-SS-LH-2026.08",
+            "Last updated": "2026-08-09T03:04:34.082Z",
+            "Data sources": "NASA/JPL DE441 SPICE binary planetary ephemeris",
+            "Research references": "https://ssd.jpl.nasa.gov/horizons/https://ssd.jpl.nasa.gov/planets/approx_pos.html",
+            "Visualization status": "Representative display scaling",
+            "Known limitations": "DE441 model uncertainty is epoch/body dependent; browser interpolation residual is separately validated; Solar-system barycentric effects are not represented in the heliocentric exhibition origin.",
+            "Unavailable quantities": "Aliases; Parent system / structure; Distance type; Redshift; Mass; Member count; Membership; Observation status; Reconstruction status; Orbital data; Event / relationship"
+          },
+          "selected": "sun",
+          "objectCardId": "sun",
+          "camera": [
+            827571.5680399587,
+            -1966709.917708182,
+            4824051.436965596,
+            -6.383782391594649e-16,
+            0.48191874977215565,
+            -0.8762159086766471,
+            -2.096239848370373e-14,
+            0.8762159086766471,
+            0.48191874977215576
+          ],
+          "bodyEntityCount": 9,
+          "orbitEntityCount": 4,
+          "duplicateEntityIds": [],
+          "timeControllerCount": 1,
+          "tickListenerActive": true,
+          "objectSpecificVisibility": {
+            "dwarfVisible": 0,
+            "mainBelt": 0,
+            "tno": 0,
+            "comets": 0
+          },
+          "viewerCount": 1,
+          "cesiumCanvasCount": 1,
+          "dataSources": 4,
+          "primitives": 4,
+          "playbackRange": {
+            "start": "-013200-05-06T00:00:00.000Z",
+            "end": "+020000-01-01T00:00:00.000Z"
+          },
+          "range": "MAJOR PLANET TIME COVERAGE · AUTHORITATIVE: -013200-05-06T00:00:00.000Z → +017191-03-15T00:00:00.000Z · PCS ANALYSIS: +017191-03-15T00:00:00.000Z → AD 20000 · CURRENT MODE: AUTHORITATIVE_EPHEMERIS",
+          "states": {
+            "sun": {
+              "positionAu": [
+                0,
+                0,
+                0
+              ],
+              "velocityAuPerDay": [
+                0,
+                0,
+                0
+              ]
+            },
+            "mercury": {
+              "positionAu": [
+                -0.3815230916329789,
+                -0.1584813715065967,
+                0.0184720578200809
+              ],
+              "velocityAuPerDay": [
+                0.004894684065435741,
+                -0.025221665917830118,
+                -0.0025654145049663767
+              ]
+            },
+            "venus": {
+              "positionAu": [
+                0.5583811316288613,
+                -0.4640994066604109,
+                -0.04031441117924193
+              ],
+              "velocityAuPerDay": [
+                0.01282760358114148,
+                0.015494477259024466,
+                -0.00035936062096559635
+              ]
+            },
+            "earth": {
+              "positionAu": [
+                0.5244942056348494,
+                0.8407883635696158,
+                -0.006229879184686709
+              ],
+              "velocityAuPerDay": [
+                -0.01484026901556385,
+                0.00900321208370334,
+                -0.000037562349583451824
+              ]
+            },
+            "mars": {
+              "positionAu": [
+                1.3681008150277267,
+                -0.15917086981069767,
+                -0.02772125931797563
+              ],
+              "velocityAuPerDay": [
+                0.0018746460838381961,
+                0.015225357135458868,
+                0.0002889358575450727
+              ]
+            },
+            "jupiter": {
+              "positionAu": [
+                4.939595879010943,
+                -0.2639930777831151,
+                -0.103828956364395
+              ],
+              "velocityAuPerDay": [
+                0.00025926932459380557,
+                0.00792067525475306,
+                -0.000055171043685899825
+              ]
+            },
+            "saturn": {
+              "positionAu": [
+                9.5677918828585,
+                -1.8687159684652557,
+                -0.38322327744909157
+              ],
+              "velocityAuPerDay": [
+                0.0008256138064321312,
+                0.005395653161273117,
+                -0.00009977326620375963
+              ]
+            },
+            "uranus": {
+              "positionAu": [
+                -15.943906474233462,
+                -9.378624155932428,
+                0.1688137296947006
+              ],
+              "velocityAuPerDay": [
+                0.0019781440224074546,
+                -0.0035514221178954536,
+                -0.00003497405915229341
+              ]
+            },
+            "neptune": {
+              "positionAu": [
+                28.316207850185226,
+                9.383184875156681,
+                -0.8502403363136909
+              ],
+              "velocityAuPerDay": [
+                -0.001009872364902349,
+                0.003006247419208093,
+                -0.000038385988432991115
+              ]
+            }
+          },
+          "screenshot": "/private/tmp/pcs-solar-release.gzFTx9/PCS_OBSERVATORY/test-results/solar-long-horizon-release-local-2026-08-14/desktop-1920x1080-5000.png"
+        },
+        {
+          "year": 10000,
+          "accepted": true,
+          "epoch": "+010000-01-01T00:00:00.000Z",
+          "paused": true,
+          "provider": "AUTHORITATIVE_EPHEMERIS",
+          "positionMode": "Long-Term Ephemeris anchor + bounded N-body interpolation",
+          "fidelity": "LA · Long-Term",
+          "fidelityLevel": "A",
+          "cardFidelity": {
+            "level": "A",
+            "canonicalName": "Authoritative Long-Term Ephemeris",
+            "label": "Authoritative Long-Term Ephemeris",
+            "heading": "Scientific Fidelity",
+            "categoryKey": "ephemerisDerived",
+            "category": "AUTHORITATIVE_EPHEMERIS",
+            "disclaimer": "DE441-derived state; observational constraint and uncertainty vary with epoch",
+            "scaleContext": "solar",
+            "contract": {
+              "id": "solar",
+              "distanceScale": "kilometres to hundreds of AU",
+              "defaultLevel": "A",
+              "datasets": [
+                "NASA/JPL ephemerides",
+                "NASA/JPL SBDB"
+              ],
+              "visibleObjectClasses": [
+                "Solar System bodies",
+                "small bodies",
+                "interstellar objects"
+              ],
+              "lod": "solid body → disc → point; orbit/trajectory by source contract",
+              "coordinateFrame": "ICRF/J2000 heliocentric or parent-relative",
+              "cameraLimits": "km–AU astronomical camera scale",
+              "precisionDisclaimer": "precisionNotice"
+            }
+          },
+          "cardRows": {
+            "Scientific Fidelity": "Level A — Authoritative Long-Term Ephemeris",
+            "Official name": "Sun",
+            "Object type": "star",
+            "Distance": "0.00000000 AU",
+            "Coordinate frame": "Solar-System barycentric ICRF/J2000 ecliptic scientific state; heliocentric display transform",
+            "Data status": "JPL ephemeris",
+            "Localized name": "Sun",
+            "Catalog ID": "NAIF 10",
+            "Coordinates": "0.0000000, 0.0000000, 0.0000000 AU",
+            "Uncertainty": "DE441 model uncertainty is epoch/body dependent; browser interpolation residual is separately validated",
+            "Velocity": "0, 0, 0 AU/day",
+            "Physical size": "Mean radius 695,700 km",
+            "Scientific Fidelity — Data status": "AUTHORITATIVE_EPHEMERIS",
+            "Physical radius": "695,700 km",
+            "Display radius": "90,000 scene units — visualization radius compression",
+            "Display scale mode": "Representative display scaling",
+            "Epoch": "+010000-01-01T00:00:00.000Z",
+            "Motion class": "ephemeris-derived",
+            "Model evolution epoch": "+010000-01-01T00:00:00.000Z",
+            "Velocity source": "NASA/JPL DE441 SPICE binary planetary ephemeris",
+            "Integration method": "REBOUND 5.1.1 WHFast corrector 11 for checkpoints; velocity-Verlet max 4 d for bounded browser interpolation",
+            "Validity range": "-013200-05-06T00:00:00.000Z → +017191-03-15T00:00:00.000Z",
+            "Model version": "PCS-SS-LH-2026.08",
+            "Last updated": "2026-08-09T03:04:34.082Z",
+            "Data sources": "NASA/JPL DE441 SPICE binary planetary ephemeris",
+            "Research references": "https://ssd.jpl.nasa.gov/horizons/https://ssd.jpl.nasa.gov/planets/approx_pos.html",
+            "Visualization status": "Representative display scaling",
+            "Known limitations": "DE441 model uncertainty is epoch/body dependent; browser interpolation residual is separately validated; Solar-system barycentric effects are not represented in the heliocentric exhibition origin.",
+            "Unavailable quantities": "Aliases; Parent system / structure; Distance type; Redshift; Mass; Member count; Membership; Observation status; Reconstruction status; Orbital data; Event / relationship"
+          },
+          "selected": "sun",
+          "objectCardId": "sun",
+          "camera": [
+            827571.5680399587,
+            -1966709.917708182,
+            4824051.436965596,
+            -6.383782391594649e-16,
+            0.48191874977215565,
+            -0.8762159086766471,
+            -2.7269853042355404e-14,
+            0.8762159086766471,
+            0.4819187497721558
+          ],
+          "bodyEntityCount": 9,
+          "orbitEntityCount": 4,
+          "duplicateEntityIds": [],
+          "timeControllerCount": 1,
+          "tickListenerActive": true,
+          "objectSpecificVisibility": {
+            "dwarfVisible": 0,
+            "mainBelt": 0,
+            "tno": 0,
+            "comets": 0
+          },
+          "viewerCount": 1,
+          "cesiumCanvasCount": 1,
+          "dataSources": 4,
+          "primitives": 4,
+          "playbackRange": {
+            "start": "-013200-05-06T00:00:00.000Z",
+            "end": "+020000-01-01T00:00:00.000Z"
+          },
+          "range": "MAJOR PLANET TIME COVERAGE · AUTHORITATIVE: -013200-05-06T00:00:00.000Z → +017191-03-15T00:00:00.000Z · PCS ANALYSIS: +017191-03-15T00:00:00.000Z → AD 20000 · CURRENT MODE: AUTHORITATIVE_EPHEMERIS",
+          "states": {
+            "sun": {
+              "positionAu": [
+                0,
+                0,
+                0
+              ],
+              "velocityAuPerDay": [
+                0,
+                0,
+                0
+              ]
+            },
+            "mercury": {
+              "positionAu": [
+                0.23777569642896412,
+                0.22117888218852502,
+                0.003437210911234157
+              ],
+              "velocityAuPerDay": [
+                -0.02498381871967903,
+                0.020508960710053304,
+                0.0036188096148685777
+              ]
+            },
+            "venus": {
+              "positionAu": [
+                0.2473339872080317,
+                0.6777107030015563,
+                0.011233623299223833
+              ],
+              "velocityAuPerDay": [
+                -0.01904801846875918,
+                0.00687017060918608,
+                0.0010589529802138534
+              ]
+            },
+            "earth": {
+              "positionAu": [
+                0.9932808483007118,
+                -0.1806054426156557,
+                -0.004089198987810292
+              ],
+              "velocityAuPerDay": [
+                0.0029093480286666155,
+                0.016785753896053763,
+                -0.0002788258859606934
+              ]
+            },
+            "mars": {
+              "positionAu": [
+                -0.7507802873774172,
+                1.3638033186903913,
+                0.027991524654637848
+              ],
+              "velocityAuPerDay": [
+                -0.01252868429734129,
+                -0.005376653479334418,
+                -0.000017792439452439084
+              ]
+            },
+            "jupiter": {
+              "positionAu": [
+                -5.442249398710825,
+                -0.45523324204553794,
+                0.12222578747223253
+              ],
+              "velocityAuPerDay": [
+                0.00038389975175675796,
+                -0.007165804238831764,
+                0.0000650548004617127
+              ]
+            },
+            "saturn": {
+              "positionAu": [
+                -1.5148448000525037,
+                -9.514699530187134,
+                0.08166910760821833
+              ],
+              "velocityAuPerDay": [
+                0.005425980471047664,
+                -0.0010085416535763898,
+                -0.00022516717205707016
+              ]
+            },
+            "uranus": {
+              "positionAu": [
+                17.686926026406105,
+                9.14023341343829,
+                -0.18977412809264707
+              ],
+              "velocityAuPerDay": [
+                -0.0018116388994003604,
+                0.0033139155261676365,
+                0.000026084629616660653
+              ]
+            },
+            "neptune": {
+              "positionAu": [
+                -24.46164945441401,
+                17.51095277707554,
+                0.21357412172523585
+              ],
+              "velocityAuPerDay": [
+                -0.0018464542669537308,
+                -0.002540797043479276,
+                0.00009559148256380829
+              ]
+            }
+          },
+          "screenshot": "/private/tmp/pcs-solar-release.gzFTx9/PCS_OBSERVATORY/test-results/solar-long-horizon-release-local-2026-08-14/desktop-1920x1080-10000.png"
+        },
+        {
+          "year": 15000,
+          "accepted": true,
+          "epoch": "+015000-01-01T00:00:00.000Z",
+          "paused": true,
+          "provider": "AUTHORITATIVE_EPHEMERIS",
+          "positionMode": "Long-Term Ephemeris anchor + bounded N-body interpolation",
+          "fidelity": "LA · Long-Term",
+          "fidelityLevel": "A",
+          "cardFidelity": {
+            "level": "A",
+            "canonicalName": "Authoritative Long-Term Ephemeris",
+            "label": "Authoritative Long-Term Ephemeris",
+            "heading": "Scientific Fidelity",
+            "categoryKey": "ephemerisDerived",
+            "category": "AUTHORITATIVE_EPHEMERIS",
+            "disclaimer": "DE441-derived state; observational constraint and uncertainty vary with epoch",
+            "scaleContext": "solar",
+            "contract": {
+              "id": "solar",
+              "distanceScale": "kilometres to hundreds of AU",
+              "defaultLevel": "A",
+              "datasets": [
+                "NASA/JPL ephemerides",
+                "NASA/JPL SBDB"
+              ],
+              "visibleObjectClasses": [
+                "Solar System bodies",
+                "small bodies",
+                "interstellar objects"
+              ],
+              "lod": "solid body → disc → point; orbit/trajectory by source contract",
+              "coordinateFrame": "ICRF/J2000 heliocentric or parent-relative",
+              "cameraLimits": "km–AU astronomical camera scale",
+              "precisionDisclaimer": "precisionNotice"
+            }
+          },
+          "cardRows": {
+            "Scientific Fidelity": "Level A — Authoritative Long-Term Ephemeris",
+            "Official name": "Sun",
+            "Object type": "star",
+            "Distance": "0.00000000 AU",
+            "Coordinate frame": "Solar-System barycentric ICRF/J2000 ecliptic scientific state; heliocentric display transform",
+            "Data status": "JPL ephemeris",
+            "Localized name": "Sun",
+            "Catalog ID": "NAIF 10",
+            "Coordinates": "0.0000000, 0.0000000, 0.0000000 AU",
+            "Uncertainty": "DE441 model uncertainty is epoch/body dependent; browser interpolation residual is separately validated",
+            "Velocity": "0, 0, 0 AU/day",
+            "Physical size": "Mean radius 695,700 km",
+            "Scientific Fidelity — Data status": "AUTHORITATIVE_EPHEMERIS",
+            "Physical radius": "695,700 km",
+            "Display radius": "90,000 scene units — visualization radius compression",
+            "Display scale mode": "Representative display scaling",
+            "Epoch": "+015000-01-01T00:00:00.000Z",
+            "Motion class": "ephemeris-derived",
+            "Model evolution epoch": "+015000-01-01T00:00:00.000Z",
+            "Velocity source": "NASA/JPL DE441 SPICE binary planetary ephemeris",
+            "Integration method": "REBOUND 5.1.1 WHFast corrector 11 for checkpoints; velocity-Verlet max 4 d for bounded browser interpolation",
+            "Validity range": "-013200-05-06T00:00:00.000Z → +017191-03-15T00:00:00.000Z",
+            "Model version": "PCS-SS-LH-2026.08",
+            "Last updated": "2026-08-09T03:04:34.082Z",
+            "Data sources": "NASA/JPL DE441 SPICE binary planetary ephemeris",
+            "Research references": "https://ssd.jpl.nasa.gov/horizons/https://ssd.jpl.nasa.gov/planets/approx_pos.html",
+            "Visualization status": "Representative display scaling",
+            "Known limitations": "DE441 model uncertainty is epoch/body dependent; browser interpolation residual is separately validated; Solar-system barycentric effects are not represented in the heliocentric exhibition origin.",
+            "Unavailable quantities": "Aliases; Parent system / structure; Distance type; Redshift; Mass; Member count; Membership; Observation status; Reconstruction status; Orbital data; Event / relationship"
+          },
+          "selected": "sun",
+          "objectCardId": "sun",
+          "camera": [
+            827571.5680399587,
+            -1966709.917708182,
+            4824051.436965596,
+            -6.383782391594649e-16,
+            0.48191874977215565,
+            -0.8762159086766471,
+            -3.377159663031648e-14,
+            0.8762159086766472,
+            0.4819187497721558
+          ],
+          "bodyEntityCount": 9,
+          "orbitEntityCount": 4,
+          "duplicateEntityIds": [],
+          "timeControllerCount": 1,
+          "tickListenerActive": true,
+          "objectSpecificVisibility": {
+            "dwarfVisible": 0,
+            "mainBelt": 0,
+            "tno": 0,
+            "comets": 0
+          },
+          "viewerCount": 1,
+          "cesiumCanvasCount": 1,
+          "dataSources": 4,
+          "primitives": 4,
+          "playbackRange": {
+            "start": "-013200-05-06T00:00:00.000Z",
+            "end": "+020000-01-01T00:00:00.000Z"
+          },
+          "range": "MAJOR PLANET TIME COVERAGE · AUTHORITATIVE: -013200-05-06T00:00:00.000Z → +017191-03-15T00:00:00.000Z · PCS ANALYSIS: +017191-03-15T00:00:00.000Z → AD 20000 · CURRENT MODE: AUTHORITATIVE_EPHEMERIS",
+          "states": {
+            "sun": {
+              "positionAu": [
+                0,
+                0,
+                0
+              ],
+              "velocityAuPerDay": [
+                0,
+                0,
+                0
+              ]
+            },
+            "mercury": {
+              "positionAu": [
+                0.18251435116354928,
+                -0.4224541824550692,
+                -0.050650117774110555
+              ],
+              "velocityAuPerDay": [
+                0.02012633620331441,
+                0.010430195579271941,
+                -0.00012251278097402825
+              ]
+            },
+            "venus": {
+              "positionAu": [
+                -0.7220956253969795,
+                -0.028381680887320532,
+                0.020168216058168875
+              ],
+              "velocityAuPerDay": [
+                0.0007042932933655065,
+                -0.020209154407291957,
+                -0.0008001240355047093
+              ]
+            },
+            "earth": {
+              "positionAu": [
+                0.23565855722201146,
+                -0.9785638740332637,
+                0.016773437120436954
+              ],
+              "velocityAuPerDay": [
+                0.016637415309065026,
+                0.0038819459000613344,
+                -0.00033144139107391677
+              ]
+            },
+            "mars": {
+              "positionAu": [
+                -1.2628025067750845,
+                -1.1051774017585052,
+                -0.013639670364651765
+              ],
+              "velocityAuPerDay": [
+                0.00846847320982693,
+                -0.009313274805102885,
+                -0.000030453446339397863
+              ]
+            },
+            "jupiter": {
+              "positionAu": [
+                4.989501365035963,
+                -0.1674843272498611,
+                -0.11803104787331814
+              ],
+              "velocityAuPerDay": [
+                -0.0000848719856931615,
+                0.007853611356920757,
+                -0.00010146596818949839
+              ]
+            },
+            "saturn": {
+              "positionAu": [
+                -9.03548290350932,
+                2.909557759537728,
+                0.3393345076749719
+              ],
+              "velocityAuPerDay": [
+                -0.0016474310456240904,
+                -0.005340338253456484,
+                0.000028777256137717294
+              ]
+            },
+            "uranus": {
+              "positionAu": [
+                -14.959918011733105,
+                -10.792818157211125,
+                0.1631471700034348
+              ],
+              "velocityAuPerDay": [
+                0.0023065223557858644,
+                -0.00336429206679453,
+                -0.000026346335413545657
+              ]
+            },
+            "neptune": {
+              "positionAu": [
+                -1.7435937063587033,
+                -30.242045428234064,
+                0.664248834810923
+              ],
+              "velocityAuPerDay": [
+                0.0031100921044547687,
+                -0.00015716069665865293,
+                -0.00007072044041891221
+              ]
+            }
+          },
+          "screenshot": "/private/tmp/pcs-solar-release.gzFTx9/PCS_OBSERVATORY/test-results/solar-long-horizon-release-local-2026-08-14/desktop-1920x1080-15000.png"
+        },
+        {
+          "year": 17000,
+          "accepted": true,
+          "epoch": "+017000-01-01T00:00:00.000Z",
+          "paused": true,
+          "provider": "AUTHORITATIVE_EPHEMERIS",
+          "positionMode": "Long-Term Ephemeris anchor + bounded N-body interpolation",
+          "fidelity": "LA · Long-Term",
+          "fidelityLevel": "A",
+          "cardFidelity": {
+            "level": "A",
+            "canonicalName": "Authoritative Long-Term Ephemeris",
+            "label": "Authoritative Long-Term Ephemeris",
+            "heading": "Scientific Fidelity",
+            "categoryKey": "ephemerisDerived",
+            "category": "AUTHORITATIVE_EPHEMERIS",
+            "disclaimer": "DE441-derived state; observational constraint and uncertainty vary with epoch",
+            "scaleContext": "solar",
+            "contract": {
+              "id": "solar",
+              "distanceScale": "kilometres to hundreds of AU",
+              "defaultLevel": "A",
+              "datasets": [
+                "NASA/JPL ephemerides",
+                "NASA/JPL SBDB"
+              ],
+              "visibleObjectClasses": [
+                "Solar System bodies",
+                "small bodies",
+                "interstellar objects"
+              ],
+              "lod": "solid body → disc → point; orbit/trajectory by source contract",
+              "coordinateFrame": "ICRF/J2000 heliocentric or parent-relative",
+              "cameraLimits": "km–AU astronomical camera scale",
+              "precisionDisclaimer": "precisionNotice"
+            }
+          },
+          "cardRows": {
+            "Scientific Fidelity": "Level A — Authoritative Long-Term Ephemeris",
+            "Official name": "Sun",
+            "Object type": "star",
+            "Distance": "0.00000000 AU",
+            "Coordinate frame": "Solar-System barycentric ICRF/J2000 ecliptic scientific state; heliocentric display transform",
+            "Data status": "JPL ephemeris",
+            "Localized name": "Sun",
+            "Catalog ID": "NAIF 10",
+            "Coordinates": "0.0000000, 0.0000000, 0.0000000 AU",
+            "Uncertainty": "DE441 model uncertainty is epoch/body dependent; browser interpolation residual is separately validated",
+            "Velocity": "0, 0, 0 AU/day",
+            "Physical size": "Mean radius 695,700 km",
+            "Scientific Fidelity — Data status": "AUTHORITATIVE_EPHEMERIS",
+            "Physical radius": "695,700 km",
+            "Display radius": "90,000 scene units — visualization radius compression",
+            "Display scale mode": "Representative display scaling",
+            "Epoch": "+017000-01-01T00:00:00.000Z",
+            "Motion class": "ephemeris-derived",
+            "Model evolution epoch": "+017000-01-01T00:00:00.000Z",
+            "Velocity source": "NASA/JPL DE441 SPICE binary planetary ephemeris",
+            "Integration method": "REBOUND 5.1.1 WHFast corrector 11 for checkpoints; velocity-Verlet max 4 d for bounded browser interpolation",
+            "Validity range": "-013200-05-06T00:00:00.000Z → +017191-03-15T00:00:00.000Z",
+            "Model version": "PCS-SS-LH-2026.08",
+            "Last updated": "2026-08-09T03:04:34.082Z",
+            "Data sources": "NASA/JPL DE441 SPICE binary planetary ephemeris",
+            "Research references": "https://ssd.jpl.nasa.gov/horizons/https://ssd.jpl.nasa.gov/planets/approx_pos.html",
+            "Visualization status": "Representative display scaling",
+            "Known limitations": "DE441 model uncertainty is epoch/body dependent; browser interpolation residual is separately validated; Solar-system barycentric effects are not represented in the heliocentric exhibition origin.",
+            "Unavailable quantities": "Aliases; Parent system / structure; Distance type; Redshift; Mass; Member count; Membership; Observation status; Reconstruction status; Orbital data; Event / relationship"
+          },
+          "selected": "sun",
+          "objectCardId": "sun",
+          "camera": [
+            827571.5680399587,
+            -1966709.917708182,
+            4824051.436965596,
+            -6.383782391594649e-16,
+            0.48191874977215565,
+            -0.8762159086766471,
+            -4.166111899905899e-14,
+            0.876215908676647,
+            0.4819187497721559
+          ],
+          "bodyEntityCount": 9,
+          "orbitEntityCount": 4,
+          "duplicateEntityIds": [],
+          "timeControllerCount": 1,
+          "tickListenerActive": true,
+          "objectSpecificVisibility": {
+            "dwarfVisible": 0,
+            "mainBelt": 0,
+            "tno": 0,
+            "comets": 0
+          },
+          "viewerCount": 1,
+          "cesiumCanvasCount": 1,
+          "dataSources": 4,
+          "primitives": 4,
+          "playbackRange": {
+            "start": "-013200-05-06T00:00:00.000Z",
+            "end": "+020000-01-01T00:00:00.000Z"
+          },
+          "range": "MAJOR PLANET TIME COVERAGE · AUTHORITATIVE: -013200-05-06T00:00:00.000Z → +017191-03-15T00:00:00.000Z · PCS ANALYSIS: +017191-03-15T00:00:00.000Z → AD 20000 · CURRENT MODE: AUTHORITATIVE_EPHEMERIS",
+          "states": {
+            "sun": {
+              "positionAu": [
+                0,
+                0,
+                0
+              ],
+              "velocityAuPerDay": [
+                0,
+                0,
+                0
+              ]
+            },
+            "mercury": {
+              "positionAu": [
+                -0.06510276706715239,
+                -0.4543927905558917,
+                -0.04109484124471854
+              ],
+              "velocityAuPerDay": [
+                0.022192080065154204,
+                -0.004969599770287802,
+                -0.0015895374483936278
+              ]
+            },
+            "venus": {
+              "positionAu": [
+                -0.6512774131230292,
+                0.3106364476778216,
+                0.02722832299222348
+              ],
+              "velocityAuPerDay": [
+                -0.008792306181286928,
+                -0.01824677530441276,
+                -0.00051321759818285
+              ]
+            },
+            "earth": {
+              "positionAu": [
+                -0.23629093368103987,
+                -0.9726445823574353,
+                0.02559732695480069
+              ],
+              "velocityAuPerDay": [
+                0.016658600394785318,
+                -0.004196492062796457,
+                -0.0002204174528195504
+              ]
+            },
+            "mars": {
+              "positionAu": [
+                1.266247416369857,
+                -0.7143949436467829,
+                0.00825001799651282
+              ],
+              "velocityAuPerDay": [
+                0.00594546149191408,
+                0.013322767758019834,
+                0.0000684350782930535
+              ]
+            },
+            "jupiter": {
+              "positionAu": [
+                -4.136816431518262,
+                -3.6261795793937215,
+                0.15591245276021717
+              ],
+              "velocityAuPerDay": [
+                0.004617593746313962,
+                -0.00542031309457349,
+                -0.00004333941255477928
+              ]
+            },
+            "saturn": {
+              "positionAu": [
+                -5.601728715820315,
+                7.878851614503922,
+                0.23671516977743765
+              ],
+              "velocityAuPerDay": [
+                -0.004451128333158716,
+                -0.0032272030712865458,
+                0.00011947181889118306
+              ]
+            },
+            "uranus": {
+              "positionAu": [
+                -14.239284941795232,
+                12.00869144311563,
+                0.15238913985404912
+              ],
+              "velocityAuPerDay": [
+                -0.0025092662826167065,
+                -0.0031793174877345967,
+                0.000028370695921165005
+              ]
+            },
+            "neptune": {
+              "positionAu": [
+                21.283031586399208,
+                -21.31016943376003,
+                -0.07088484594394885
+              ],
+              "velocityAuPerDay": [
+                0.0021971142716705667,
+                0.002228698608579295,
+                -0.00009845849323873559
+              ]
+            }
+          },
+          "screenshot": "/private/tmp/pcs-solar-release.gzFTx9/PCS_OBSERVATORY/test-results/solar-long-horizon-release-local-2026-08-14/desktop-1920x1080-17000.png"
+        },
+        {
+          "year": 17191,
+          "accepted": true,
+          "epoch": "+017191-01-01T00:00:00.000Z",
+          "paused": true,
+          "provider": "AUTHORITATIVE_EPHEMERIS",
+          "positionMode": "Long-Term Ephemeris anchor + bounded N-body interpolation",
+          "fidelity": "LA · Long-Term",
+          "fidelityLevel": "A",
+          "cardFidelity": {
+            "level": "A",
+            "canonicalName": "Authoritative Long-Term Ephemeris",
+            "label": "Authoritative Long-Term Ephemeris",
+            "heading": "Scientific Fidelity",
+            "categoryKey": "ephemerisDerived",
+            "category": "AUTHORITATIVE_EPHEMERIS",
+            "disclaimer": "DE441-derived state; observational constraint and uncertainty vary with epoch",
+            "scaleContext": "solar",
+            "contract": {
+              "id": "solar",
+              "distanceScale": "kilometres to hundreds of AU",
+              "defaultLevel": "A",
+              "datasets": [
+                "NASA/JPL ephemerides",
+                "NASA/JPL SBDB"
+              ],
+              "visibleObjectClasses": [
+                "Solar System bodies",
+                "small bodies",
+                "interstellar objects"
+              ],
+              "lod": "solid body → disc → point; orbit/trajectory by source contract",
+              "coordinateFrame": "ICRF/J2000 heliocentric or parent-relative",
+              "cameraLimits": "km–AU astronomical camera scale",
+              "precisionDisclaimer": "precisionNotice"
+            }
+          },
+          "cardRows": {
+            "Scientific Fidelity": "Level A — Authoritative Long-Term Ephemeris",
+            "Official name": "Sun",
+            "Object type": "star",
+            "Distance": "0.00000000 AU",
+            "Coordinate frame": "Solar-System barycentric ICRF/J2000 ecliptic scientific state; heliocentric display transform",
+            "Data status": "JPL ephemeris",
+            "Localized name": "Sun",
+            "Catalog ID": "NAIF 10",
+            "Coordinates": "0.0000000, 0.0000000, 0.0000000 AU",
+            "Uncertainty": "DE441 model uncertainty is epoch/body dependent; browser interpolation residual is separately validated",
+            "Velocity": "0, 0, 0 AU/day",
+            "Physical size": "Mean radius 695,700 km",
+            "Scientific Fidelity — Data status": "AUTHORITATIVE_EPHEMERIS",
+            "Physical radius": "695,700 km",
+            "Display radius": "90,000 scene units — visualization radius compression",
+            "Display scale mode": "Representative display scaling",
+            "Epoch": "+017191-01-01T00:00:00.000Z",
+            "Motion class": "ephemeris-derived",
+            "Model evolution epoch": "+017191-01-01T00:00:00.000Z",
+            "Velocity source": "NASA/JPL DE441 SPICE binary planetary ephemeris",
+            "Integration method": "REBOUND 5.1.1 WHFast corrector 11 for checkpoints; velocity-Verlet max 4 d for bounded browser interpolation",
+            "Validity range": "-013200-05-06T00:00:00.000Z → +017191-03-15T00:00:00.000Z",
+            "Model version": "PCS-SS-LH-2026.08",
+            "Last updated": "2026-08-09T03:04:34.082Z",
+            "Data sources": "NASA/JPL DE441 SPICE binary planetary ephemeris",
+            "Research references": "https://ssd.jpl.nasa.gov/horizons/https://ssd.jpl.nasa.gov/planets/approx_pos.html",
+            "Visualization status": "Representative display scaling",
+            "Known limitations": "DE441 model uncertainty is epoch/body dependent; browser interpolation residual is separately validated; Solar-system barycentric effects are not represented in the heliocentric exhibition origin.",
+            "Unavailable quantities": "Aliases; Parent system / structure; Distance type; Redshift; Mass; Member count; Membership; Observation status; Reconstruction status; Orbital data; Event / relationship"
+          },
+          "selected": "sun",
+          "objectCardId": "sun",
+          "camera": [
+            827571.5680399587,
+            -1966709.917708182,
+            4824051.436965596,
+            -6.383782391594649e-16,
+            0.48191874977215565,
+            -0.8762159086766471,
+            -4.789224572476768e-14,
+            0.8762159086766468,
+            0.48191874977215626
+          ],
+          "bodyEntityCount": 9,
+          "orbitEntityCount": 4,
+          "duplicateEntityIds": [],
+          "timeControllerCount": 1,
+          "tickListenerActive": true,
+          "objectSpecificVisibility": {
+            "dwarfVisible": 0,
+            "mainBelt": 0,
+            "tno": 0,
+            "comets": 0
+          },
+          "viewerCount": 1,
+          "cesiumCanvasCount": 1,
+          "dataSources": 4,
+          "primitives": 4,
+          "playbackRange": {
+            "start": "-013200-05-06T00:00:00.000Z",
+            "end": "+020000-01-01T00:00:00.000Z"
+          },
+          "range": "MAJOR PLANET TIME COVERAGE · AUTHORITATIVE: -013200-05-06T00:00:00.000Z → +017191-03-15T00:00:00.000Z · PCS ANALYSIS: +017191-03-15T00:00:00.000Z → AD 20000 · CURRENT MODE: AUTHORITATIVE_EPHEMERIS",
+          "states": {
+            "sun": {
+              "positionAu": [
+                0,
+                0,
+                0
+              ],
+              "velocityAuPerDay": [
+                0,
+                0,
+                0
+              ]
+            },
+            "mercury": {
+              "positionAu": [
+                0.031517197272933874,
+                -0.4608801689108576,
+                -0.0465936412842343
+              ],
+              "velocityAuPerDay": [
+                0.022586315734230318,
+                -0.00006375812713998094,
+                -0.0011174822977113794
+              ]
+            },
+            "venus": {
+              "positionAu": [
+                0.5591343423337308,
+                -0.4653369959691545,
+                -0.030832428849008588
+              ],
+              "velocityAuPerDay": [
+                0.012782638895071276,
+                0.015500518580525334,
+                0.0003213816075818544
+              ]
+            },
+            "earth": {
+              "positionAu": [
+                -0.28592765889754024,
+                -0.9594043953286915,
+                0.026397125546906756
+              ],
+              "velocityAuPerDay": [
+                0.016423902909417212,
+                -0.005026992418002172,
+                -0.00020346236016517268
+              ]
+            },
+            "mars": {
+              "positionAu": [
+                -1.6394454290557285,
+                -0.16648756048986493,
+                -0.012946641997573926
+              ],
+              "velocityAuPerDay": [
+                0.0004628799375214668,
+                -0.012833500440491639,
+                -0.000012044243970004477
+              ]
+            },
+            "jupiter": {
+              "positionAu": [
+                -1.545722216653849,
+                -5.26842014634012,
+                0.11272993408460485
+              ],
+              "velocityAuPerDay": [
+                0.006886681526186225,
+                -0.0018669453233254227,
+                -0.0001512789218754256
+              ]
+            },
+            "saturn": {
+              "positionAu": [
+                4.956931713469471,
+                -8.004568783823384,
+                -0.21622609910119722
+              ],
+              "velocityAuPerDay": [
+                0.004828596681088465,
+                0.002938755744987227,
+                -0.00013148733849434763
+              ]
+            },
+            "uranus": {
+              "positionAu": [
+                -7.710456113293176,
+                -17.08137421005087,
+                0.09021748229840379
+              ],
+              "velocityAuPerDay": [
+                0.00361512136842546,
+                -0.0017851962933377594,
+                -0.00003895624551785497
+              ]
+            },
+            "neptune": {
+              "positionAu": [
+                29.108746636468393,
+                6.5526584720055725,
+                -0.8315231120492653
+              ],
+              "velocityAuPerDay": [
+                -0.0007087875964231821,
+                0.0030781178406632907,
+                -0.0000463486608184513
+              ]
+            }
+          },
+          "screenshot": "/private/tmp/pcs-solar-release.gzFTx9/PCS_OBSERVATORY/test-results/solar-long-horizon-release-local-2026-08-14/desktop-1920x1080-17191.png"
+        },
+        {
+          "year": 18000,
+          "accepted": true,
+          "epoch": "+018000-01-01T00:00:00.000Z",
+          "paused": true,
+          "provider": "PCS_NUMERICAL_ANALYSIS",
+          "positionMode": "PCS Numerical Analysis",
+          "fidelity": "PCS · N-body",
+          "fidelityLevel": "C",
+          "cardFidelity": {
+            "level": "C",
+            "canonicalName": "Long-Horizon Dynamical Reconstruction",
+            "label": "PCS Numerical Dynamical Analysis",
+            "heading": "Scientific Fidelity",
+            "categoryKey": "modelIntegrated",
+            "category": "PCS_NUMERICAL_ANALYSIS",
+            "disclaimer": "Long-horizon reconstruction — not a deterministic prediction",
+            "scaleContext": "solar",
+            "contract": {
+              "id": "solar",
+              "distanceScale": "kilometres to hundreds of AU",
+              "defaultLevel": "A",
+              "datasets": [
+                "NASA/JPL ephemerides",
+                "NASA/JPL SBDB"
+              ],
+              "visibleObjectClasses": [
+                "Solar System bodies",
+                "small bodies",
+                "interstellar objects"
+              ],
+              "lod": "solid body → disc → point; orbit/trajectory by source contract",
+              "coordinateFrame": "ICRF/J2000 heliocentric or parent-relative",
+              "cameraLimits": "km–AU astronomical camera scale",
+              "precisionDisclaimer": "precisionNotice"
+            }
+          },
+          "cardRows": {
+            "Scientific Fidelity": "Level C — PCS Numerical Dynamical Analysis",
+            "Official name": "Sun",
+            "Object type": "star",
+            "Distance": "0.00000000 AU",
+            "Coordinate frame": "Solar-System barycentric ICRF/J2000 ecliptic scientific state; heliocentric display transform",
+            "Data status": "model-integrated",
+            "Localized name": "Sun",
+            "Catalog ID": "NAIF 10",
+            "Coordinates": "0.0000000, 0.0000000, 0.0000000 AU",
+            "Uncertainty": "Numerical convergence is quantified; observational/model uncertainty and chaotic divergence grow with propagation age",
+            "Velocity": "0, 0, 0 AU/day",
+            "Physical size": "Mean radius 695,700 km",
+            "Scientific Fidelity — Data status": "PCS_NUMERICAL_ANALYSIS",
+            "Physical radius": "695,700 km",
+            "Display radius": "90,000 scene units — visualization radius compression",
+            "Display scale mode": "Representative display scaling",
+            "Epoch": "+018000-01-01T00:00:00.000Z",
+            "Motion class": "model-integrated",
+            "Model evolution epoch": "+018000-01-01T00:00:00.000Z",
+            "Velocity source": "PCS numerical analysis initialized from JPL DE441 boundary (8000016.5 JDTDB)",
+            "Integration method": "REBOUND 5.1.1 WHFast corrector 11 for checkpoints; velocity-Verlet max 4 d for bounded browser interpolation",
+            "Validity range": "+017191-03-15T00:00:00.000Z → +020000-01-01T00:00:00.000Z",
+            "Model version": "PCS-SS-LH-2026.08",
+            "Last updated": "2026-08-09T03:04:34.082Z",
+            "Data sources": "PCS numerical analysis initialized from JPL DE441 boundary (8000016.5 JDTDB)",
+            "Research references": "https://ssd.jpl.nasa.gov/horizons/https://ssd.jpl.nasa.gov/planets/approx_pos.html",
+            "Visualization status": "Representative display scaling",
+            "Known limitations": "Numerical convergence is quantified; observational/model uncertainty and chaotic divergence grow with propagation age; Solar-system barycentric effects are not represented in the heliocentric exhibition origin.",
+            "Unavailable quantities": "Aliases; Parent system / structure; Distance type; Redshift; Mass; Member count; Membership; Observation status; Reconstruction status; Orbital data; Event / relationship"
+          },
+          "selected": "sun",
+          "objectCardId": "sun",
+          "camera": [
+            827571.5680399587,
+            -1966709.917708182,
+            4824051.436965596,
+            -6.383782391594649e-16,
+            0.48191874977215565,
+            -0.8762159086766471,
+            -5.576789030570239e-14,
+            0.8762159086766466,
+            0.4819187497721568
+          ],
+          "bodyEntityCount": 9,
+          "orbitEntityCount": 4,
+          "duplicateEntityIds": [],
+          "timeControllerCount": 1,
+          "tickListenerActive": true,
+          "objectSpecificVisibility": {
+            "dwarfVisible": 0,
+            "mainBelt": 0,
+            "tno": 0,
+            "comets": 0
+          },
+          "viewerCount": 1,
+          "cesiumCanvasCount": 1,
+          "dataSources": 4,
+          "primitives": 4,
+          "playbackRange": {
+            "start": "-013200-05-06T00:00:00.000Z",
+            "end": "+020000-01-01T00:00:00.000Z"
+          },
+          "range": "MAJOR PLANET TIME COVERAGE · AUTHORITATIVE: -013200-05-06T00:00:00.000Z → +017191-03-15T00:00:00.000Z · PCS ANALYSIS: +017191-03-15T00:00:00.000Z → AD 20000 · CURRENT MODE: PCS_NUMERICAL_ANALYSIS",
+          "states": {
+            "sun": {
+              "positionAu": [
+                0,
+                0,
+                0
+              ],
+              "velocityAuPerDay": [
+                0,
+                0,
+                0
+              ]
+            },
+            "mercury": {
+              "positionAu": [
+                -0.19521084417504725,
+                -0.3956713413669573,
+                -0.029812917761917045
+              ],
+              "velocityAuPerDay": [
+                0.019602624945770863,
+                -0.013584854227836838,
+                -0.0022532911779689717
+              ]
+            },
+            "venus": {
+              "positionAu": [
+                0.548586502608671,
+                -0.4731205847000454,
+                -0.02944151204591847
+              ],
+              "velocityAuPerDay": [
+                0.013146616848018022,
+                0.015304898841580736,
+                0.0003388946516286158
+              ]
+            },
+            "earth": {
+              "positionAu": [
+                -0.46726104610252844,
+                -0.8821847525907588,
+                0.029031244601513403
+              ],
+              "velocityAuPerDay": [
+                0.015157928546185502,
+                -0.008178958503142824,
+                -0.00013165774696028638
+              ]
+            },
+            "mars": {
+              "positionAu": [
+                -1.2706095891286702,
+                -1.1029942128626344,
+                -0.009752924124144934
+              ],
+              "velocityAuPerDay": [
+                0.008164691012421496,
+                -0.009531348224901134,
+                0.00008306017627510261
+              ]
+            },
+            "jupiter": {
+              "positionAu": [
+                4.063077679422165,
+                -3.2673162410828764,
+                -0.061518388289855244
+              ],
+              "velocityAuPerDay": [
+                0.004366844223964585,
+                0.006129992943962492,
+                -0.00020088712721577694
+              ]
+            },
+            "saturn": {
+              "positionAu": [
+                -2.9533407992409866,
+                9.233396761545425,
+                0.16040265956927865
+              ],
+              "velocityAuPerDay": [
+                -0.0052135606136373734,
+                -0.001663657566156075,
+                0.00014400830796602182
+              ]
+            },
+            "uranus": {
+              "positionAu": [
+                -4.025696562593482,
+                18.63434910907292,
+                0.034165818907590434
+              ],
+              "velocityAuPerDay": [
+                -0.0038246154475964898,
+                -0.0009919851312440184,
+                0.00004206265630902876
+              ]
+            },
+            "neptune": {
+              "positionAu": [
+                28.26754112857831,
+                -9.995509911810238,
+                -0.4720607021991005
+              ],
+              "velocityAuPerDay": [
+                0.0010234685750655918,
+                0.0029817776905559216,
+                -0.00008580813466069208
+              ]
+            }
+          },
+          "screenshot": "/private/tmp/pcs-solar-release.gzFTx9/PCS_OBSERVATORY/test-results/solar-long-horizon-release-local-2026-08-14/desktop-1920x1080-18000.png"
+        },
+        {
+          "year": 19000,
+          "accepted": true,
+          "epoch": "+019000-01-01T00:00:00.000Z",
+          "paused": true,
+          "provider": "PCS_NUMERICAL_ANALYSIS",
+          "positionMode": "PCS Numerical Analysis",
+          "fidelity": "PCS · N-body",
+          "fidelityLevel": "C",
+          "cardFidelity": {
+            "level": "C",
+            "canonicalName": "Long-Horizon Dynamical Reconstruction",
+            "label": "PCS Numerical Dynamical Analysis",
+            "heading": "Scientific Fidelity",
+            "categoryKey": "modelIntegrated",
+            "category": "PCS_NUMERICAL_ANALYSIS",
+            "disclaimer": "Long-horizon reconstruction — not a deterministic prediction",
+            "scaleContext": "solar",
+            "contract": {
+              "id": "solar",
+              "distanceScale": "kilometres to hundreds of AU",
+              "defaultLevel": "A",
+              "datasets": [
+                "NASA/JPL ephemerides",
+                "NASA/JPL SBDB"
+              ],
+              "visibleObjectClasses": [
+                "Solar System bodies",
+                "small bodies",
+                "interstellar objects"
+              ],
+              "lod": "solid body → disc → point; orbit/trajectory by source contract",
+              "coordinateFrame": "ICRF/J2000 heliocentric or parent-relative",
+              "cameraLimits": "km–AU astronomical camera scale",
+              "precisionDisclaimer": "precisionNotice"
+            }
+          },
+          "cardRows": {
+            "Scientific Fidelity": "Level C — PCS Numerical Dynamical Analysis",
+            "Official name": "Sun",
+            "Object type": "star",
+            "Distance": "0.00000000 AU",
+            "Coordinate frame": "Solar-System barycentric ICRF/J2000 ecliptic scientific state; heliocentric display transform",
+            "Data status": "model-integrated",
+            "Localized name": "Sun",
+            "Catalog ID": "NAIF 10",
+            "Coordinates": "0.0000000, 0.0000000, 0.0000000 AU",
+            "Uncertainty": "Numerical convergence is quantified; observational/model uncertainty and chaotic divergence grow with propagation age",
+            "Velocity": "0, 0, 0 AU/day",
+            "Physical size": "Mean radius 695,700 km",
+            "Scientific Fidelity — Data status": "PCS_NUMERICAL_ANALYSIS",
+            "Physical radius": "695,700 km",
+            "Display radius": "90,000 scene units — visualization radius compression",
+            "Display scale mode": "Representative display scaling",
+            "Epoch": "+019000-01-01T00:00:00.000Z",
+            "Motion class": "model-integrated",
+            "Model evolution epoch": "+019000-01-01T00:00:00.000Z",
+            "Velocity source": "PCS numerical analysis initialized from JPL DE441 boundary (8000016.5 JDTDB)",
+            "Integration method": "REBOUND 5.1.1 WHFast corrector 11 for checkpoints; velocity-Verlet max 4 d for bounded browser interpolation",
+            "Validity range": "+017191-03-15T00:00:00.000Z → +020000-01-01T00:00:00.000Z",
+            "Model version": "PCS-SS-LH-2026.08",
+            "Last updated": "2026-08-09T03:04:34.082Z",
+            "Data sources": "PCS numerical analysis initialized from JPL DE441 boundary (8000016.5 JDTDB)",
+            "Research references": "https://ssd.jpl.nasa.gov/horizons/https://ssd.jpl.nasa.gov/planets/approx_pos.html",
+            "Visualization status": "Representative display scaling",
+            "Known limitations": "Numerical convergence is quantified; observational/model uncertainty and chaotic divergence grow with propagation age; Solar-system barycentric effects are not represented in the heliocentric exhibition origin.",
+            "Unavailable quantities": "Aliases; Parent system / structure; Distance type; Redshift; Mass; Member count; Membership; Observation status; Reconstruction status; Orbital data; Event / relationship"
+          },
+          "selected": "sun",
+          "objectCardId": "sun",
+          "camera": [
+            827571.5680399587,
+            -1966709.917708182,
+            4824051.436965596,
+            -6.383782391594649e-16,
+            0.48191874977215565,
+            -0.8762159086766471,
+            -5.766567778842102e-14,
+            0.8762159086766464,
+            0.4819187497721571
+          ],
+          "bodyEntityCount": 9,
+          "orbitEntityCount": 4,
+          "duplicateEntityIds": [],
+          "timeControllerCount": 1,
+          "tickListenerActive": true,
+          "objectSpecificVisibility": {
+            "dwarfVisible": 0,
+            "mainBelt": 0,
+            "tno": 0,
+            "comets": 0
+          },
+          "viewerCount": 1,
+          "cesiumCanvasCount": 1,
+          "dataSources": 4,
+          "primitives": 4,
+          "playbackRange": {
+            "start": "-013200-05-06T00:00:00.000Z",
+            "end": "+020000-01-01T00:00:00.000Z"
+          },
+          "range": "MAJOR PLANET TIME COVERAGE · AUTHORITATIVE: -013200-05-06T00:00:00.000Z → +017191-03-15T00:00:00.000Z · PCS ANALYSIS: +017191-03-15T00:00:00.000Z → AD 20000 · CURRENT MODE: PCS_NUMERICAL_ANALYSIS",
+          "states": {
+            "sun": {
+              "positionAu": [
+                0,
+                0,
+                0
+              ],
+              "velocityAuPerDay": [
+                0,
+                0,
+                0
+              ]
+            },
+            "mercury": {
+              "positionAu": [
+                -0.28527200685067466,
+                -0.30480620843056433,
+                -0.01777898130143781
+              ],
+              "velocityAuPerDay": [
+                0.014923883245263062,
+                -0.0205412091213953,
+                -0.002690246616353275
+              ]
+            },
+            "venus": {
+              "positionAu": [
+                -0.4314502375775675,
+                0.5771996880570043,
+                0.029628136852932935
+              ],
+              "velocityAuPerDay": [
+                -0.016278662624559553,
+                -0.012100943537094505,
+                -0.00019964402679477895
+              ]
+            },
+            "earth": {
+              "positionAu": [
+                -0.657252946276605,
+                -0.74866453944108,
+                0.03126883326547393
+              ],
+              "velocityAuPerDay": [
+                0.012899138220996418,
+                -0.011466122042098391,
+                -0.00003569438085359245
+              ]
+            },
+            "mars": {
+              "positionAu": [
+                -0.48467146218868207,
+                1.3506113796495456,
+                -0.010630582888638274
+              ],
+              "velocityAuPerDay": [
+                -0.014286466959782163,
+                -0.003755523713843475,
+                -0.00012218112707743943
+              ]
+            },
+            "jupiter": {
+              "positionAu": [
+                1.0094268368076877,
+                4.804702425963056,
+                -0.09484899832564503
+              ],
+              "velocityAuPerDay": [
+                -0.00777916139086625,
+                0.0017785492842325099,
+                0.00018651487572621115
+              ]
+            },
+            "saturn": {
+              "positionAu": [
+                -0.061299075852957845,
+                9.727149408895976,
+                0.07853235363609373
+              ],
+              "velocityAuPerDay": [
+                -0.005473068258714074,
+                0.000027357854347828485,
+                0.0001541129096498617
+              ]
+            },
+            "uranus": {
+              "positionAu": [
+                7.798340032811578,
+                17.96237990178485,
+                -0.09796863931968823
+              ],
+              "velocityAuPerDay": [
+                -0.003600300253440936,
+                0.0013921619717289096,
+                0.00003809974934075283
+              ]
+            },
+            "neptune": {
+              "positionAu": [
+                29.700823027104555,
+                3.0880075333308348,
+                -0.777280640220535
+              ],
+              "velocityAuPerDay": [
+                -0.0003579598459499796,
+                0.003142303644880511,
+                -0.00005593733538242415
+              ]
+            }
+          },
+          "screenshot": "/private/tmp/pcs-solar-release.gzFTx9/PCS_OBSERVATORY/test-results/solar-long-horizon-release-local-2026-08-14/desktop-1920x1080-19000.png"
+        },
+        {
+          "year": 20000,
+          "accepted": true,
+          "epoch": "+020000-01-01T00:00:00.000Z",
+          "paused": true,
+          "provider": "PCS_NUMERICAL_ANALYSIS",
+          "positionMode": "PCS Numerical Analysis",
+          "fidelity": "PCS · N-body",
+          "fidelityLevel": "C",
+          "cardFidelity": {
+            "level": "C",
+            "canonicalName": "Long-Horizon Dynamical Reconstruction",
+            "label": "PCS Numerical Dynamical Analysis",
+            "heading": "Scientific Fidelity",
+            "categoryKey": "modelIntegrated",
+            "category": "PCS_NUMERICAL_ANALYSIS",
+            "disclaimer": "Long-horizon reconstruction — not a deterministic prediction",
+            "scaleContext": "solar",
+            "contract": {
+              "id": "solar",
+              "distanceScale": "kilometres to hundreds of AU",
+              "defaultLevel": "A",
+              "datasets": [
+                "NASA/JPL ephemerides",
+                "NASA/JPL SBDB"
+              ],
+              "visibleObjectClasses": [
+                "Solar System bodies",
+                "small bodies",
+                "interstellar objects"
+              ],
+              "lod": "solid body → disc → point; orbit/trajectory by source contract",
+              "coordinateFrame": "ICRF/J2000 heliocentric or parent-relative",
+              "cameraLimits": "km–AU astronomical camera scale",
+              "precisionDisclaimer": "precisionNotice"
+            }
+          },
+          "cardRows": {
+            "Scientific Fidelity": "Level C — PCS Numerical Dynamical Analysis",
+            "Official name": "Sun",
+            "Object type": "star",
+            "Distance": "0.00000000 AU",
+            "Coordinate frame": "Solar-System barycentric ICRF/J2000 ecliptic scientific state; heliocentric display transform",
+            "Data status": "model-integrated",
+            "Localized name": "Sun",
+            "Catalog ID": "NAIF 10",
+            "Coordinates": "0.0000000, 0.0000000, 0.0000000 AU",
+            "Uncertainty": "Numerical convergence is quantified; observational/model uncertainty and chaotic divergence grow with propagation age",
+            "Velocity": "0, 0, 0 AU/day",
+            "Physical size": "Mean radius 695,700 km",
+            "Scientific Fidelity — Data status": "PCS_NUMERICAL_ANALYSIS",
+            "Physical radius": "695,700 km",
+            "Display radius": "90,000 scene units — visualization radius compression",
+            "Display scale mode": "Representative display scaling",
+            "Epoch": "+020000-01-01T00:00:00.000Z",
+            "Motion class": "model-integrated",
+            "Model evolution epoch": "+020000-01-01T00:00:00.000Z",
+            "Velocity source": "PCS numerical analysis initialized from JPL DE441 boundary (8000016.5 JDTDB)",
+            "Integration method": "REBOUND 5.1.1 WHFast corrector 11 for checkpoints; velocity-Verlet max 4 d for bounded browser interpolation",
+            "Validity range": "+017191-03-15T00:00:00.000Z → +020000-01-01T00:00:00.000Z",
+            "Model version": "PCS-SS-LH-2026.08",
+            "Last updated": "2026-08-09T03:04:34.082Z",
+            "Data sources": "PCS numerical analysis initialized from JPL DE441 boundary (8000016.5 JDTDB)",
+            "Research references": "https://ssd.jpl.nasa.gov/horizons/https://ssd.jpl.nasa.gov/planets/approx_pos.html",
+            "Visualization status": "Representative display scaling",
+            "Known limitations": "Numerical convergence is quantified; observational/model uncertainty and chaotic divergence grow with propagation age; Solar-system barycentric effects are not represented in the heliocentric exhibition origin.",
+            "Unavailable quantities": "Aliases; Parent system / structure; Distance type; Redshift; Mass; Member count; Membership; Observation status; Reconstruction status; Orbital data; Event / relationship"
+          },
+          "selected": "sun",
+          "objectCardId": "sun",
+          "camera": [
+            827571.5680399587,
+            -1966709.917708182,
+            4824051.436965596,
+            -6.383782391594649e-16,
+            0.48191874977215565,
+            -0.8762159086766471,
+            -5.766567778842102e-14,
+            0.8762159086766464,
+            0.4819187497721571
+          ],
+          "bodyEntityCount": 9,
+          "orbitEntityCount": 4,
+          "duplicateEntityIds": [],
+          "timeControllerCount": 1,
+          "tickListenerActive": true,
+          "objectSpecificVisibility": {
+            "dwarfVisible": 0,
+            "mainBelt": 0,
+            "tno": 0,
+            "comets": 0
+          },
+          "viewerCount": 1,
+          "cesiumCanvasCount": 1,
+          "dataSources": 4,
+          "primitives": 4,
+          "playbackRange": {
+            "start": "-013200-05-06T00:00:00.000Z",
+            "end": "+020000-01-01T00:00:00.000Z"
+          },
+          "range": "MAJOR PLANET TIME COVERAGE · AUTHORITATIVE: -013200-05-06T00:00:00.000Z → +017191-03-15T00:00:00.000Z · PCS ANALYSIS: +017191-03-15T00:00:00.000Z → AD 20000 · CURRENT MODE: PCS_NUMERICAL_ANALYSIS",
+          "states": {
+            "sun": {
+              "positionAu": [
+                0,
+                0,
+                0
+              ],
+              "velocityAuPerDay": [
+                0,
+                0,
+                0
+              ]
+            },
+            "mercury": {
+              "positionAu": [
+                -0.35015781908356114,
+                -0.15190873442185734,
+                -0.000973170312563363
+              ],
+              "velocityAuPerDay": [
+                0.005536286155862652,
+                -0.027325798743190185,
+                -0.002957610922680363
+              ]
+            },
+            "venus": {
+              "positionAu": [
+                0.2683592497720526,
+                -0.6736940727176335,
+                -0.029420966933212323
+              ],
+              "velocityAuPerDay": [
+                0.018715249556100582,
+                0.007488591834155237,
+                0.000035227164308515314
+              ]
+            },
+            "earth": {
+              "positionAu": [
+                -0.8216738886374022,
+                -0.5608416691439434,
+                0.032258321182692284
+              ],
+              "velocityAuPerDay": [
+                0.009683674951442003,
+                -0.01431430447562955,
+                0.00008025749763056378
+              ]
+            },
+            "mars": {
+              "positionAu": [
+                1.2465075021254968,
+                -0.826636179068618,
+                0.019287534502220666
+              ],
+              "velocityAuPerDay": [
+                0.006576038357324409,
+                0.012577693973689295,
+                -0.00002811282757309039
+              ]
+            },
+            "jupiter": {
+              "positionAu": [
+                -5.296889544495819,
+                -0.9076931598076295,
+                0.16100340547887165
+              ],
+              "velocityAuPerDay": [
+                0.0008962006050892516,
+                -0.007241595278314618,
+                0.00007624036087922397
+              ]
+            },
+            "saturn": {
+              "positionAu": [
+                2.888476511847747,
+                9.215976954215606,
+                -0.0029556797120954916
+              ],
+              "velocityAuPerDay": [
+                -0.005213382633921558,
+                0.0017490751340327323,
+                0.00015004316318882382
+              ]
+            },
+            "uranus": {
+              "positionAu": [
+                16.493417325746748,
+                11.295570517058419,
+                -0.1894065360537456
+              ],
+              "velocityAuPerDay": [
+                -0.0021917510832307604,
+                0.00305942309366235,
+                0.00002082002820875448
+              ]
+            },
+            "neptune": {
+              "positionAu": [
+                25.680929134983607,
+                15.053086756962697,
+                -0.9275641347768626
+              ],
+              "velocityAuPerDay": [
+                -0.0016146487946807038,
+                0.0027213352760281167,
+                -0.000017003528518063173
+              ]
+            }
+          },
+          "screenshot": "/private/tmp/pcs-solar-release.gzFTx9/PCS_OBSERVATORY/test-results/solar-long-horizon-release-local-2026-08-14/desktop-1920x1080-20000.png"
+        }
+      ],
+      "card": {
+        "title": "Earth",
+        "text": "EarthUse in Scientific AnalysisHistorical ephemeris reconstructionFocusFIT ORBIT×PRIMARYScientific FidelityLevel C — PCS Numerical Dynamical AnalysisOfficial nameEarthObject typeplanetDistance0.99535519 AUCoordinate frameSolar-System barycentric ICRF/J2000 ecliptic scientific state; heliocentric display transformData statusmodel-integratedSCIENTIFICLocalized nameEarthParent system / structuresunCatalog IDNAIF 399Coordinates-0.82167389, -0.56084167, 0.032258321 AUUncertaintyNumerical convergence is quantified; observational/model uncertainty and chaotic divergence grow with propagation ageVelocity0.009683674951442003, -0.01431430447562955, 0.00008025749763056378 AU/dayPhysical sizeMean radius 6,371.008 kmScientific Fidelity — Data statusPCS_NUMERICAL_ANALYSISPhysical radius6,371.008 kmDisplay radius14,078.09 scene units — visualization radius enlargementDisplay scale modeRepresentative display scalingOrbital dataPeriod 365.256 d; periapsis 147,098,290 km; apoapsis 152,098,232 km; inclination -0.00001531°Epoch+020000-01-01T00:00:00.000ZMotion classmodel-integratedModel evolution epoch+020000-01-01T00:00:00.000ZVelocity sourcePCS numerical analysis initialized from JPL DE441 boundary (8000016.5 JDTDB)Integration methodREBOUND 5.1.1 WHFast corrector 11 for checkpoints; velocity-Verlet max 4 d for bounded browser interpolationValidity range+017191-03-15T00:00:00.000Z → +020000-01-01T00:00:00.000ZModel versionPCS-SS-LH-2026.08PROVENANCELast updated2026-08-09T03:04:34.082ZData sourcesPCS numerical analysis initialized from JPL DE441 boundary (8000016.5 JDTDB); https://ssd.jpl.nasa.gov/planets/approx_pos.htmlResearch referenceshttps://ssd.jpl.nasa.gov/horizons/https://ssd.jpl.nasa.gov/planets/approx_pos.htmlLIMITATIONSVisualization statusRepresentative display scalingKnown limitationsNumerical convergence is quantified; observational/model uncertainty and chaotic divergence grow with propagation age; Orbital-element approximation — not mission-navigation precisionUnavailable quantitiesAliases; Distance type; Redshift; Mass; Member count; Membership; Observation status; Reconstruction status; Event / relationship",
+        "fidelity": {
+          "level": "C",
+          "canonicalName": "Long-Horizon Dynamical Reconstruction",
+          "label": "PCS Numerical Dynamical Analysis",
+          "heading": "Scientific Fidelity",
+          "categoryKey": "modelIntegrated",
+          "category": "PCS_NUMERICAL_ANALYSIS",
+          "disclaimer": "Long-horizon reconstruction — not a deterministic prediction",
+          "scaleContext": "solar",
+          "contract": {
+            "id": "solar",
+            "distanceScale": "kilometres to hundreds of AU",
+            "defaultLevel": "A",
+            "datasets": [
+              "NASA/JPL ephemerides",
+              "NASA/JPL SBDB"
+            ],
+            "visibleObjectClasses": [
+              "Solar System bodies",
+              "small bodies",
+              "interstellar objects"
+            ],
+            "lod": "solid body → disc → point; orbit/trajectory by source contract",
+            "coordinateFrame": "ICRF/J2000 heliocentric or parent-relative",
+            "cameraLimits": "km–AU astronomical camera scale",
+            "precisionDisclaimer": "precisionNotice"
+          }
+        },
+        "screenshot": "/private/tmp/pcs-solar-release.gzFTx9/PCS_OBSERVATORY/test-results/solar-long-horizon-release-local-2026-08-14/desktop-1920x1080-20000-earth-card.png"
+      },
+      "researchDiagnostics": {
+        "publicRejected": true,
+        "publicEpoch": "+020000-01-01T00:00:00.000Z",
+        "limits": {
+          "maxYear": 100000,
+          "label": "EXPERIMENTAL LONG-HORIZON RECONSTRUCTION"
+        },
+        "diagnostics": {
+          "provider": "PCS_NUMERICAL_ANALYSIS",
+          "segmentId": "pcs-nbody-de441-boundary-to-ad100000",
+          "displayJdTdb": 38245309.5,
+          "anchorJdTdb": 38245309.5,
+          "propagationDaysFromAnchor": 0,
+          "integrator": "REBOUND 5.1.1 WHFast corrector 11 for checkpoints; velocity-Verlet max 4 d for bounded browser interpolation",
+          "referenceFrame": "Solar-System barycentric ICRF/J2000 ecliptic scientific state; heliocentric display transform",
+          "timeScale": "TDB",
+          "modelVersion": "PCS-SS-LH-2026.08",
+          "publicMaxYear": 20000,
+          "experimentalResearchMaxYear": 100000,
+          "experimentalResearchLabel": "EXPERIMENTAL LONG-HORIZON RECONSTRUCTION"
+        },
+        "finite": true
+      },
+      "after": {
+        "viewerCount": 1,
+        "cesiumCanvasCount": 1,
+        "dataSources": 3,
+        "primitives": 1,
+        "tickListenerActive": false
+      }
+    },
+    {
+      "matrix": {
+        "label": "mobile-390x844",
+        "width": 390,
+        "height": 844,
+        "mobile": true,
+        "years": [
+          20000
+        ]
+      },
+      "before": {
+        "viewerCount": 1,
+        "cesiumCanvasCount": 1,
+        "dataSources": 3,
+        "primitives": 1
+      },
+      "providerBoundary": {
+        "authoritativeEndJdTdb": 8000016.5,
+        "numericalStartJdTdb": 8000016.5,
+        "maxPositionAu": 0,
+        "maxVelocityAuPerDay": 0
+      },
+      "checkpoints": [
+        {
+          "year": 20000,
+          "accepted": true,
+          "epoch": "+020000-01-01T00:00:00.000Z",
+          "paused": true,
+          "provider": "PCS_NUMERICAL_ANALYSIS",
+          "positionMode": "PCS Numerical Analysis",
+          "fidelity": "PCS · N-body",
+          "fidelityLevel": "C",
+          "cardFidelity": {
+            "level": "C",
+            "canonicalName": "Long-Horizon Dynamical Reconstruction",
+            "label": "PCS Numerical Dynamical Analysis",
+            "heading": "Scientific Fidelity",
+            "categoryKey": "modelIntegrated",
+            "category": "PCS_NUMERICAL_ANALYSIS",
+            "disclaimer": "Long-horizon reconstruction — not a deterministic prediction",
+            "scaleContext": "solar",
+            "contract": {
+              "id": "solar",
+              "distanceScale": "kilometres to hundreds of AU",
+              "defaultLevel": "A",
+              "datasets": [
+                "NASA/JPL ephemerides",
+                "NASA/JPL SBDB"
+              ],
+              "visibleObjectClasses": [
+                "Solar System bodies",
+                "small bodies",
+                "interstellar objects"
+              ],
+              "lod": "solid body → disc → point; orbit/trajectory by source contract",
+              "coordinateFrame": "ICRF/J2000 heliocentric or parent-relative",
+              "cameraLimits": "km–AU astronomical camera scale",
+              "precisionDisclaimer": "precisionNotice"
+            }
+          },
+          "cardRows": {
+            "Scientific Fidelity": "Level C — PCS Numerical Dynamical Analysis",
+            "Official name": "Sun",
+            "Object type": "star",
+            "Distance": "0.00000000 AU",
+            "Coordinate frame": "Solar-System barycentric ICRF/J2000 ecliptic scientific state; heliocentric display transform",
+            "Data status": "model-integrated",
+            "Localized name": "Sun",
+            "Catalog ID": "NAIF 10",
+            "Coordinates": "0.0000000, 0.0000000, 0.0000000 AU",
+            "Uncertainty": "Numerical convergence is quantified; observational/model uncertainty and chaotic divergence grow with propagation age",
+            "Velocity": "0, 0, 0 AU/day",
+            "Physical size": "Mean radius 695,700 km",
+            "Scientific Fidelity — Data status": "PCS_NUMERICAL_ANALYSIS",
+            "Physical radius": "695,700 km",
+            "Display radius": "90,000 scene units — visualization radius compression",
+            "Display scale mode": "Representative display scaling",
+            "Epoch": "+020000-01-01T00:00:00.000Z",
+            "Motion class": "model-integrated",
+            "Model evolution epoch": "+020000-01-01T00:00:00.000Z",
+            "Velocity source": "PCS numerical analysis initialized from JPL DE441 boundary (8000016.5 JDTDB)",
+            "Integration method": "REBOUND 5.1.1 WHFast corrector 11 for checkpoints; velocity-Verlet max 4 d for bounded browser interpolation",
+            "Validity range": "+017191-03-15T00:00:00.000Z → +020000-01-01T00:00:00.000Z",
+            "Model version": "PCS-SS-LH-2026.08",
+            "Last updated": "2026-08-09T03:04:34.082Z",
+            "Data sources": "PCS numerical analysis initialized from JPL DE441 boundary (8000016.5 JDTDB)",
+            "Research references": "https://ssd.jpl.nasa.gov/horizons/https://ssd.jpl.nasa.gov/planets/approx_pos.html",
+            "Visualization status": "Representative display scaling",
+            "Known limitations": "Numerical convergence is quantified; observational/model uncertainty and chaotic divergence grow with propagation age; Solar-system barycentric effects are not represented in the heliocentric exhibition origin.",
+            "Unavailable quantities": "Aliases; Parent system / structure; Distance type; Redshift; Mass; Member count; Membership; Observation status; Reconstruction status; Orbital data; Event / relationship"
+          },
+          "selected": "sun",
+          "objectCardId": "sun",
+          "camera": [
+            827571.4480769257,
+            -1497473.7017065147,
+            3970895.3469702657,
+            2.220446049250313e-16,
+            0.48191874977215615,
+            -0.876215908676647,
+            -2.2828960943854777e-15,
+            0.8762159086766461,
+            0.48191874977215743
+          ],
+          "bodyEntityCount": 9,
+          "orbitEntityCount": 4,
+          "duplicateEntityIds": [],
+          "timeControllerCount": 1,
+          "tickListenerActive": true,
+          "objectSpecificVisibility": {
+            "dwarfVisible": 0,
+            "mainBelt": 0,
+            "tno": 0,
+            "comets": 0
+          },
+          "viewerCount": 1,
+          "cesiumCanvasCount": 1,
+          "dataSources": 4,
+          "primitives": 4,
+          "playbackRange": {
+            "start": "-013200-05-06T00:00:00.000Z",
+            "end": "+020000-01-01T00:00:00.000Z"
+          },
+          "range": "MAJOR PLANET TIME COVERAGE · AUTHORITATIVE: -013200-05-06T00:00:00.000Z → +017191-03-15T00:00:00.000Z · PCS ANALYSIS: +017191-03-15T00:00:00.000Z → AD 20000 · CURRENT MODE: PCS_NUMERICAL_ANALYSIS",
+          "states": {
+            "sun": {
+              "positionAu": [
+                0,
+                0,
+                0
+              ],
+              "velocityAuPerDay": [
+                0,
+                0,
+                0
+              ]
+            },
+            "mercury": {
+              "positionAu": [
+                -0.35015781908356114,
+                -0.15190873442185734,
+                -0.000973170312563363
+              ],
+              "velocityAuPerDay": [
+                0.005536286155862652,
+                -0.027325798743190185,
+                -0.002957610922680363
+              ]
+            },
+            "venus": {
+              "positionAu": [
+                0.2683592497720526,
+                -0.6736940727176335,
+                -0.029420966933212323
+              ],
+              "velocityAuPerDay": [
+                0.018715249556100582,
+                0.007488591834155237,
+                0.000035227164308515314
+              ]
+            },
+            "earth": {
+              "positionAu": [
+                -0.8216738886374022,
+                -0.5608416691439434,
+                0.032258321182692284
+              ],
+              "velocityAuPerDay": [
+                0.009683674951442003,
+                -0.01431430447562955,
+                0.00008025749763056378
+              ]
+            },
+            "mars": {
+              "positionAu": [
+                1.2465075021254968,
+                -0.826636179068618,
+                0.019287534502220666
+              ],
+              "velocityAuPerDay": [
+                0.006576038357324409,
+                0.012577693973689295,
+                -0.00002811282757309039
+              ]
+            },
+            "jupiter": {
+              "positionAu": [
+                -5.296889544495819,
+                -0.9076931598076295,
+                0.16100340547887165
+              ],
+              "velocityAuPerDay": [
+                0.0008962006050892516,
+                -0.007241595278314618,
+                0.00007624036087922397
+              ]
+            },
+            "saturn": {
+              "positionAu": [
+                2.888476511847747,
+                9.215976954215606,
+                -0.0029556797120954916
+              ],
+              "velocityAuPerDay": [
+                -0.005213382633921558,
+                0.0017490751340327323,
+                0.00015004316318882382
+              ]
+            },
+            "uranus": {
+              "positionAu": [
+                16.493417325746748,
+                11.295570517058419,
+                -0.1894065360537456
+              ],
+              "velocityAuPerDay": [
+                -0.0021917510832307604,
+                0.00305942309366235,
+                0.00002082002820875448
+              ]
+            },
+            "neptune": {
+              "positionAu": [
+                25.680929134983607,
+                15.053086756962697,
+                -0.9275641347768626
+              ],
+              "velocityAuPerDay": [
+                -0.0016146487946807038,
+                0.0027213352760281167,
+                -0.000017003528518063173
+              ]
+            }
+          },
+          "screenshot": "/private/tmp/pcs-solar-release.gzFTx9/PCS_OBSERVATORY/test-results/solar-long-horizon-release-local-2026-08-14/mobile-390x844-20000.png"
+        }
+      ],
+      "card": null,
+      "researchDiagnostics": null,
+      "after": {
+        "viewerCount": 1,
+        "cesiumCanvasCount": 1,
+        "dataSources": 3,
+        "primitives": 1,
+        "tickListenerActive": false
+      }
+    }
+  ],
+  "consoleErrors": [
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+    "Failed to load resource: net::ERR_CONNECTION_REFUSED"
+  ],
+  "requiredConsoleErrors": [],
+  "networkFailures": [
+    {
+      "url": "http://127.0.0.1:8787/api/regional/observation?region=global",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/health/openweather",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/history/status",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/layers",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/visitors/register",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/visitors/register",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/visitors/analytics?range=24h",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/visitors/stats",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/visitors/locations",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/domain-readiness",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/events?limit=20",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/evidence-ledger",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/mass-gatherings",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/daily-brief",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/system-status",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/evidence-explorer",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/events?limit=20",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/domain-readiness",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/daily-brief",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/evidence-ledger",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/mass-gatherings",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/system-status",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/domain-readiness",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/events?limit=20",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/evidence-ledger",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/daily-brief",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/mass-gatherings",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/system-status",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/regional/observation?region=global",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/health/openweather",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/history/status",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/layers",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/visitors/register",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/visitors/register",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/visitors/stats",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/visitors/locations",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/visitors/analytics?range=24h",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/domain-readiness",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/events?limit=20",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/evidence-ledger",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/mass-gatherings",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/daily-brief",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/system-status",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/evidence-explorer",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/domain-readiness",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/events?limit=20",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/daily-brief",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/system-status",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/domain-readiness",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/evidence-ledger",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/mass-gatherings",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/daily-brief",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/events?limit=20",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/mass-gatherings",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/system-status",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://127.0.0.1:8787/api/evidence-ledger",
+      "error": "net::ERR_CONNECTION_REFUSED"
+    }
+  ],
+  "requiredNetworkFailures": []
+}
