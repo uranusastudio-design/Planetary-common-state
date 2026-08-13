@@ -1,0 +1,145 @@
+{
+  "schemaVersion": "pcs-known-object-phase-b-validation-v1",
+  "generatedAt": "2026-08-13T17:54:25.807Z",
+  "phase": "B",
+  "pass": true,
+  "counts": {
+    "input": 18,
+    "imported": 18,
+    "rejected": 0,
+    "unresolved": 0,
+    "relationships": 3,
+    "withDistance": 12,
+    "withoutDistance": 6,
+    "rendered": 0
+  },
+  "evidenceClasses": {
+    "MEASURED": 1,
+    "CATALOG-DERIVED": 17,
+    "RECONSTRUCTED": 0,
+    "REPRESENTATIVE": 0
+  },
+  "subtypes": {
+    "dark nebula": 1,
+    "emission nebula / H II region": 6,
+    "emission nebula / H II region complex": 1,
+    "emission nebula / star-forming region": 2,
+    "emission, reflection, and dark nebula complex": 1,
+    "observed photoionized molecular-cloud substructure": 1,
+    "planetary nebula": 3,
+    "supernova remnant": 2,
+    "supernova-remnant filament": 1
+  },
+  "sources": [
+    {
+      "sourceId": "cds-simbad-tap",
+      "inputRecords": 17,
+      "snapshot": "data/catalogs/staging/phase-b-nebulae/simbad-nebulae.json",
+      "checksum": "sha256:5cccc03fedf8bbf93df45c4bba9902c111f9addf0e4477de596022febfe8beb8"
+    },
+    {
+      "sourceId": "hester-1996-m16-pillars",
+      "inputRecords": 1,
+      "reference": "1996AJ....111.2349H / DOI 10.1086/117985"
+    }
+  ],
+  "recordResults": [
+    {
+      "pcsObjectId": "pcs:nebula:pillars-of-creation",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "pcsObjectId": "pcs:nebula:eagle",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "pcsObjectId": "pcs:nebula:horsehead",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "pcsObjectId": "pcs:nebula:ic-434",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "pcsObjectId": "pcs:nebula:cats-eye",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "pcsObjectId": "pcs:nebula:orion",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "pcsObjectId": "pcs:nebula:carina",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "pcsObjectId": "pcs:nebula:helix",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "pcsObjectId": "pcs:nebula:ring",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "pcsObjectId": "pcs:nebula:crab",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "pcsObjectId": "pcs:nebula:cygnus-loop",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "pcsObjectId": "pcs:nebula:veil-west",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "pcsObjectId": "pcs:nebula:rosette",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "pcsObjectId": "pcs:nebula:lagoon",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "pcsObjectId": "pcs:nebula:trifid",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "pcsObjectId": "pcs:nebula:omega",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "pcsObjectId": "pcs:nebula:north-america",
+      "valid": true,
+      "errors": []
+    },
+    {
+      "pcsObjectId": "pcs:nebula:tarantula",
+      "valid": true,
+      "errors": []
+    }
+  ],
+  "aliasConflictCount": 0,
+  "unresolvedRelationshipCount": 0,
+  "limitations": [
+    "This Phase B catalog is validated but not yet published to runtime.",
+    "No nebula receives an invented 3D volume, physical size, distance, or wavelength coverage.",
+    "SIMBAD preferred identities for some Messier nebular landmarks include associated open-cluster classifications; the ambiguity is disclosed per record."
+  ]
+}

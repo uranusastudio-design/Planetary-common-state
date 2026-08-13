@@ -62,3 +62,33 @@ Validation result: 265/265 Observatory tests passed, including six Phase A contr
 The Solar System Long-Horizon numerical engine and frozen Milky Way architecture are not dependencies of Phase A and are not modified. Later scale routing will consume the catalog through adapters without rewriting those frozen systems.
 
 Phase A status: `[x] Catalog architecture / adapters / normalization / provenance`
+
+## Phase B — Nebulae
+
+Status: **VALIDATED / NOT PUBLISHED / NOT FROZEN**
+
+Phase B validates 18 database objects and three explicit structural relationships. Runtime rendering remains zero until Phases F–G.
+
+Counts:
+
+- Input: 18
+- Imported: 18
+- Rejected: 0
+- Unresolved: 0
+- Relationships: 3
+- With a source-published preferred distance: 12
+- Distance unavailable: 6
+- Rendered: 0
+
+Evidence classes are 1 `MEASURED` observed substructure and 17 `CATALOG-DERIVED` objects; no record is classified as reconstructed or representative. All physical sizes and exact 3D geometry remain unavailable.
+
+Authoritative inputs:
+
+- 17 SIMBAD TAP identity/ICRS-coordinate/preferred-distance snapshots retrieved 2026-08-14, raw SHA-256 `5cccc03fedf8bbf93df45c4bba9902c111f9addf0e4477de596022febfe8beb8`;
+- Hester et al. 1996, AJ 111, 2349 (`1996AJ....111.2349H`, DOI `10.1086/117985`) for the observed Pillars of Creation substructure, with no independent coordinate or 3D geometry adopted.
+
+The graph records Pillars of Creation → Eagle Nebula, Horsehead Nebula → IC 434, and Western Veil → Cygnus Loop. M16/IC 4703, M8/NGC 6523, M17/NGC 6618, NGC 7000, Rosette component names, and 30 Doradus/NGC 2070 naming ambiguities are explicitly documented rather than hidden by alias merging.
+
+Validation: 271/271 Observatory tests passed, including 6/6 Phase B tests. Machine evidence: `test-results/known-astronomical-objects-phase-b/validation-report.json`.
+
+Phase B status: `[x] Nebulae — VALIDATED / NOT FROZEN`

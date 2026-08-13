@@ -79,6 +79,19 @@
       "retrievedAt": "2026-08-14",
       "retrievalScope": "Service metadata only; no production object rows fetched in Phase A",
       "promotionPolicy": "Pin mission collection/product, license and checksum; validate metadata separately from scientific object identity; human review before promotion"
+    },
+    {
+      "sourceId": "hester-1996-m16-pillars",
+      "authority": "Hester et al. / The Astronomical Journal",
+      "service": "Peer-reviewed publication metadata",
+      "endpoint": "https://doi.org/10.1086/117985",
+      "protocol": "DOI",
+      "release": "Hester et al. 1996, AJ, 111, 2349",
+      "coordinateFrame": "No independent catalog coordinate adopted by PCS Phase B",
+      "use": "Observed identity and physical interpretation of the M16 elephant-trunk structures known as the Pillars of Creation",
+      "retrievedAt": "2026-08-14",
+      "retrievalScope": "Citation metadata only; no copyrighted figure or invented 3D geometry",
+      "promotionPolicy": "The named substructure remains linked to the Eagle Nebula; position and 3D geometry stay unavailable unless a reviewed measurement source is added"
     }
   ]
 }

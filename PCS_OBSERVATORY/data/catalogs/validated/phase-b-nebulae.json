@@ -1,0 +1,1345 @@
+{
+  "schemaVersion": "pcs-known-astronomical-objects-v1",
+  "catalogVersion": "phase-b-nebulae-2026-08-14",
+  "generatedAt": "2026-08-14",
+  "status": "VALIDATED_NOT_PUBLISHED",
+  "normalizationVersion": "pcs-known-object-normalization-v1",
+  "objectCount": 18,
+  "relationshipCount": 3,
+  "rejectedCount": 0,
+  "unresolvedCount": 0,
+  "renderedCount": 0,
+  "sourceSnapshots": [
+    {
+      "sourceId": "cds-simbad-tap",
+      "recordCount": 17,
+      "retrievedAt": "2026-08-14",
+      "checksum": "sha256:5cccc03fedf8bbf93df45c4bba9902c111f9addf0e4477de596022febfe8beb8"
+    },
+    {
+      "sourceId": "hester-1996-m16-pillars",
+      "recordCount": 1,
+      "retrievedAt": "2026-08-14",
+      "checksum": "citation-metadata-only:1996AJ....111.2349H"
+    }
+  ],
+  "objects": [
+    {
+      "pcsObjectId": "pcs:nebula:pillars-of-creation",
+      "officialName": "Pillars of Creation",
+      "commonName": "Pillars of Creation",
+      "aliases": [
+        "M16 Pillars",
+        "Eagle Nebula Pillars"
+      ],
+      "objectClass": "nebula",
+      "objectSubtype": "observed photoionized molecular-cloud substructure",
+      "catalogIdentifiers": [],
+      "raDeg": null,
+      "decDeg": null,
+      "coordinateFrame": null,
+      "coordinateEpoch": null,
+      "distance": null,
+      "distanceLower": null,
+      "distanceUpper": null,
+      "distanceUnit": null,
+      "distanceMethod": null,
+      "parallaxMas": null,
+      "properMotionRaMasYr": null,
+      "properMotionDecMasYr": null,
+      "radialVelocityKmS": null,
+      "redshift": null,
+      "physicalSize": null,
+      "angularSize": null,
+      "mass": null,
+      "massMethod": null,
+      "age": null,
+      "temperatureK": null,
+      "spectralType": null,
+      "hostStructure": "Eagle Nebula",
+      "parentObject": "pcs:nebula:eagle",
+      "associatedObjects": [],
+      "discoveryDate": null,
+      "discoveryMethod": "HST imaging and ground-based spectroscopy",
+      "observationStatus": "PEER_REVIEWED_OBSERVED_SUBSTRUCTURE",
+      "evidenceClass": "MEASURED",
+      "scientificFidelity": "LB",
+      "wavelengths": [
+        "Visible"
+      ],
+      "geometryStatus": "OBSERVED_ANGULAR_EXTENT",
+      "lastUpdated": "2026-08-14",
+      "dataSources": [
+        "hester-1996-m16-pillars"
+      ],
+      "researchReferences": [
+        "1996AJ....111.2349H",
+        "10.1086/117985"
+      ],
+      "knownLimitations": [
+        "No independent catalog position is adopted in Phase B; navigation must use the Eagle Nebula parent context.",
+        "The observed image morphology is not an exact 3D model."
+      ]
+    },
+    {
+      "pcsObjectId": "pcs:nebula:eagle",
+      "officialName": "Eagle Nebula",
+      "commonName": "Eagle Nebula",
+      "aliases": [
+        "M16",
+        "Messier 16",
+        "IC 4703"
+      ],
+      "objectClass": "nebula",
+      "objectSubtype": "emission nebula / H II region complex",
+      "catalogIdentifiers": [
+        {
+          "catalog": "Messier",
+          "identifier": "M16"
+        },
+        {
+          "catalog": "IC",
+          "identifier": "IC 4703"
+        },
+        {
+          "catalog": "SIMBAD",
+          "identifier": "M  16"
+        }
+      ],
+      "raDeg": 274.688,
+      "decDeg": -13.792,
+      "coordinateFrame": "ICRS",
+      "coordinateEpoch": "J2000",
+      "distance": 1715,
+      "distanceLower": null,
+      "distanceUpper": null,
+      "distanceUnit": "pc",
+      "distanceMethod": "SIMBAD preferred literature distance",
+      "parallaxMas": null,
+      "properMotionRaMasYr": null,
+      "properMotionDecMasYr": null,
+      "radialVelocityKmS": null,
+      "redshift": null,
+      "physicalSize": null,
+      "angularSize": null,
+      "mass": null,
+      "massMethod": null,
+      "age": null,
+      "temperatureK": null,
+      "spectralType": null,
+      "hostStructure": "Milky Way",
+      "parentObject": null,
+      "associatedObjects": [],
+      "discoveryDate": null,
+      "discoveryMethod": null,
+      "observationStatus": "CATALOG_IDENTITY",
+      "evidenceClass": "CATALOG-DERIVED",
+      "scientificFidelity": "LB",
+      "wavelengths": [],
+      "geometryStatus": "MEASURED_POSITION",
+      "lastUpdated": "2026-08-14",
+      "dataSources": [
+        "cds-simbad-tap"
+      ],
+      "researchReferences": [
+        "2000A&AS..143....9W",
+        "2021A&A...647A..19T",
+        "2017AstBu..72..257L"
+      ],
+      "knownLimitations": [
+        "Catalog sky position and any literature distance do not define exact 3D nebular geometry.",
+        "Any future volumetric rendering must remain Representative Visualization unless a reviewed 3D reconstruction is supplied.",
+        "SIMBAD resolves M16 and IC 4703 to an open-cluster/H II complex; PCS preserves this catalog ambiguity instead of claiming the stellar cluster and nebular gas are one measured geometry."
+      ]
+    },
+    {
+      "pcsObjectId": "pcs:nebula:horsehead",
+      "officialName": "Horsehead Nebula",
+      "commonName": "Horsehead Nebula",
+      "aliases": [
+        "Barnard 33",
+        "B33"
+      ],
+      "objectClass": "nebula",
+      "objectSubtype": "dark nebula",
+      "catalogIdentifiers": [
+        {
+          "catalog": "Barnard",
+          "identifier": "B 33"
+        },
+        {
+          "catalog": "SIMBAD",
+          "identifier": "NAME Horsehead Nebula"
+        }
+      ],
+      "raDeg": 85.24583333333334,
+      "decDeg": -2.4583333333333335,
+      "coordinateFrame": "ICRS",
+      "coordinateEpoch": "J2000",
+      "distance": null,
+      "distanceLower": null,
+      "distanceUpper": null,
+      "distanceUnit": null,
+      "distanceMethod": null,
+      "parallaxMas": null,
+      "properMotionRaMasYr": null,
+      "properMotionDecMasYr": null,
+      "radialVelocityKmS": null,
+      "redshift": null,
+      "physicalSize": null,
+      "angularSize": null,
+      "mass": null,
+      "massMethod": null,
+      "age": null,
+      "temperatureK": null,
+      "spectralType": null,
+      "hostStructure": "Orion Molecular Cloud Complex",
+      "parentObject": "pcs:nebula:ic-434",
+      "associatedObjects": [],
+      "discoveryDate": null,
+      "discoveryMethod": null,
+      "observationStatus": "CATALOG_IDENTITY",
+      "evidenceClass": "CATALOG-DERIVED",
+      "scientificFidelity": "LB",
+      "wavelengths": [],
+      "geometryStatus": "MEASURED_POSITION",
+      "lastUpdated": "2026-08-14",
+      "dataSources": [
+        "cds-simbad-tap"
+      ],
+      "researchReferences": [
+        "2000A&AS..143....9W"
+      ],
+      "knownLimitations": [
+        "Catalog sky position and any literature distance do not define exact 3D nebular geometry.",
+        "Any future volumetric rendering must remain Representative Visualization unless a reviewed 3D reconstruction is supplied.",
+        "The silhouette is foreground dark material against IC 434; the catalog position is not an exact 3D surface model."
+      ]
+    },
+    {
+      "pcsObjectId": "pcs:nebula:ic-434",
+      "officialName": "IC 434",
+      "commonName": "IC 434",
+      "aliases": [
+        "IC434",
+        "Horsehead emission background"
+      ],
+      "objectClass": "nebula",
+      "objectSubtype": "emission nebula / H II region",
+      "catalogIdentifiers": [
+        {
+          "catalog": "IC",
+          "identifier": "IC 434"
+        },
+        {
+          "catalog": "SIMBAD",
+          "identifier": "IC  434"
+        }
+      ],
+      "raDeg": 85.25,
+      "decDeg": -2.5,
+      "coordinateFrame": "ICRS",
+      "coordinateEpoch": "J2000",
+      "distance": null,
+      "distanceLower": null,
+      "distanceUpper": null,
+      "distanceUnit": null,
+      "distanceMethod": null,
+      "parallaxMas": null,
+      "properMotionRaMasYr": null,
+      "properMotionDecMasYr": null,
+      "radialVelocityKmS": null,
+      "redshift": null,
+      "physicalSize": null,
+      "angularSize": null,
+      "mass": null,
+      "massMethod": null,
+      "age": null,
+      "temperatureK": null,
+      "spectralType": null,
+      "hostStructure": "Orion Molecular Cloud Complex",
+      "parentObject": null,
+      "associatedObjects": [],
+      "discoveryDate": null,
+      "discoveryMethod": null,
+      "observationStatus": "CATALOG_IDENTITY",
+      "evidenceClass": "CATALOG-DERIVED",
+      "scientificFidelity": "LB",
+      "wavelengths": [],
+      "geometryStatus": "MEASURED_POSITION",
+      "lastUpdated": "2026-08-14",
+      "dataSources": [
+        "cds-simbad-tap"
+      ],
+      "researchReferences": [
+        "2000A&AS..143....9W"
+      ],
+      "knownLimitations": [
+        "Catalog sky position and any literature distance do not define exact 3D nebular geometry.",
+        "Any future volumetric rendering must remain Representative Visualization unless a reviewed 3D reconstruction is supplied.",
+        "Association with the Horsehead Nebula is recorded as a relationship, not a claim that both names identify one physical object."
+      ]
+    },
+    {
+      "pcsObjectId": "pcs:nebula:cats-eye",
+      "officialName": "Cat's Eye Nebula",
+      "commonName": "Cat's Eye Nebula",
+      "aliases": [
+        "NGC 6543",
+        "Cat Eye Nebula"
+      ],
+      "objectClass": "nebula",
+      "objectSubtype": "planetary nebula",
+      "catalogIdentifiers": [
+        {
+          "catalog": "NGC",
+          "identifier": "NGC 6543"
+        },
+        {
+          "catalog": "SIMBAD",
+          "identifier": "NGC  6543"
+        }
+      ],
+      "raDeg": 269.63918316137,
+      "decDeg": 66.632986315,
+      "coordinateFrame": "ICRS",
+      "coordinateEpoch": "J2000",
+      "distance": 1.607,
+      "distanceLower": 1.286,
+      "distanceUpper": 1.928,
+      "distanceUnit": "kpc",
+      "distanceMethod": "SIMBAD preferred literature distance",
+      "parallaxMas": null,
+      "properMotionRaMasYr": null,
+      "properMotionDecMasYr": null,
+      "radialVelocityKmS": null,
+      "redshift": null,
+      "physicalSize": null,
+      "angularSize": null,
+      "mass": null,
+      "massMethod": null,
+      "age": null,
+      "temperatureK": null,
+      "spectralType": null,
+      "hostStructure": "Milky Way",
+      "parentObject": null,
+      "associatedObjects": [],
+      "discoveryDate": null,
+      "discoveryMethod": null,
+      "observationStatus": "CATALOG_IDENTITY",
+      "evidenceClass": "CATALOG-DERIVED",
+      "scientificFidelity": "LB",
+      "wavelengths": [],
+      "geometryStatus": "MEASURED_POSITION",
+      "lastUpdated": "2026-08-14",
+      "dataSources": [
+        "cds-simbad-tap"
+      ],
+      "researchReferences": [
+        "2000A&AS..143....9W",
+        "2020yCat.1350....0G",
+        "2010ApJ...714.1096S"
+      ],
+      "knownLimitations": [
+        "Catalog sky position and any literature distance do not define exact 3D nebular geometry.",
+        "Any future volumetric rendering must remain Representative Visualization unless a reviewed 3D reconstruction is supplied."
+      ]
+    },
+    {
+      "pcsObjectId": "pcs:nebula:orion",
+      "officialName": "Orion Nebula",
+      "commonName": "Orion Nebula",
+      "aliases": [
+        "M42",
+        "Messier 42",
+        "NGC 1976"
+      ],
+      "objectClass": "nebula",
+      "objectSubtype": "emission nebula / H II region",
+      "catalogIdentifiers": [
+        {
+          "catalog": "Messier",
+          "identifier": "M42"
+        },
+        {
+          "catalog": "NGC",
+          "identifier": "NGC 1976"
+        },
+        {
+          "catalog": "SIMBAD",
+          "identifier": "M  42"
+        }
+      ],
+      "raDeg": 83.8201,
+      "decDeg": -5.3876,
+      "coordinateFrame": "ICRS",
+      "coordinateEpoch": "J2000",
+      "distance": 488,
+      "distanceLower": null,
+      "distanceUpper": null,
+      "distanceUnit": "pc",
+      "distanceMethod": "SIMBAD preferred literature distance",
+      "parallaxMas": null,
+      "properMotionRaMasYr": null,
+      "properMotionDecMasYr": null,
+      "radialVelocityKmS": null,
+      "redshift": null,
+      "physicalSize": null,
+      "angularSize": null,
+      "mass": null,
+      "massMethod": null,
+      "age": null,
+      "temperatureK": null,
+      "spectralType": null,
+      "hostStructure": "Orion Molecular Cloud Complex",
+      "parentObject": null,
+      "associatedObjects": [],
+      "discoveryDate": null,
+      "discoveryMethod": null,
+      "observationStatus": "CATALOG_IDENTITY",
+      "evidenceClass": "CATALOG-DERIVED",
+      "scientificFidelity": "LB",
+      "wavelengths": [],
+      "geometryStatus": "MEASURED_POSITION",
+      "lastUpdated": "2026-08-14",
+      "dataSources": [
+        "cds-simbad-tap"
+      ],
+      "researchReferences": [
+        "2000A&AS..143....9W",
+        "2022A&A...661A..38P",
+        "2017AstBu..72..257L"
+      ],
+      "knownLimitations": [
+        "Catalog sky position and any literature distance do not define exact 3D nebular geometry.",
+        "Any future volumetric rendering must remain Representative Visualization unless a reviewed 3D reconstruction is supplied."
+      ]
+    },
+    {
+      "pcsObjectId": "pcs:nebula:carina",
+      "officialName": "Carina Nebula",
+      "commonName": "Carina Nebula",
+      "aliases": [
+        "NGC 3372",
+        "Eta Carinae Nebula"
+      ],
+      "objectClass": "nebula",
+      "objectSubtype": "emission nebula / H II region",
+      "catalogIdentifiers": [
+        {
+          "catalog": "NGC",
+          "identifier": "NGC 3372"
+        },
+        {
+          "catalog": "SIMBAD",
+          "identifier": "NGC  3372"
+        }
+      ],
+      "raDeg": 161.25929166666666,
+      "decDeg": -59.699944444444434,
+      "coordinateFrame": "ICRS",
+      "coordinateEpoch": "J2000",
+      "distance": 2620,
+      "distanceLower": 2370,
+      "distanceUpper": 2930,
+      "distanceUnit": "pc",
+      "distanceMethod": "SIMBAD preferred literature distance (paral)",
+      "parallaxMas": null,
+      "properMotionRaMasYr": null,
+      "properMotionDecMasYr": null,
+      "radialVelocityKmS": null,
+      "redshift": null,
+      "physicalSize": null,
+      "angularSize": null,
+      "mass": null,
+      "massMethod": null,
+      "age": null,
+      "temperatureK": null,
+      "spectralType": null,
+      "hostStructure": "Milky Way",
+      "parentObject": null,
+      "associatedObjects": [],
+      "discoveryDate": null,
+      "discoveryMethod": null,
+      "observationStatus": "CATALOG_IDENTITY",
+      "evidenceClass": "CATALOG-DERIVED",
+      "scientificFidelity": "LB",
+      "wavelengths": [],
+      "geometryStatus": "MEASURED_POSITION",
+      "lastUpdated": "2026-08-14",
+      "dataSources": [
+        "cds-simbad-tap"
+      ],
+      "researchReferences": [
+        "2000A&AS..143....9W",
+        "2019ApJ...870...32K"
+      ],
+      "knownLimitations": [
+        "Catalog sky position and any literature distance do not define exact 3D nebular geometry.",
+        "Any future volumetric rendering must remain Representative Visualization unless a reviewed 3D reconstruction is supplied."
+      ]
+    },
+    {
+      "pcsObjectId": "pcs:nebula:helix",
+      "officialName": "Helix Nebula",
+      "commonName": "Helix Nebula",
+      "aliases": [
+        "NGC 7293"
+      ],
+      "objectClass": "nebula",
+      "objectSubtype": "planetary nebula",
+      "catalogIdentifiers": [
+        {
+          "catalog": "NGC",
+          "identifier": "NGC 7293"
+        },
+        {
+          "catalog": "SIMBAD",
+          "identifier": "NGC  7293"
+        }
+      ],
+      "raDeg": 337.41060585298,
+      "decDeg": -20.837152011779995,
+      "coordinateFrame": "ICRS",
+      "coordinateEpoch": "J2000",
+      "distance": 0.16,
+      "distanceLower": 0.128,
+      "distanceUpper": 0.192,
+      "distanceUnit": "kpc",
+      "distanceMethod": "SIMBAD preferred literature distance",
+      "parallaxMas": null,
+      "properMotionRaMasYr": null,
+      "properMotionDecMasYr": null,
+      "radialVelocityKmS": null,
+      "redshift": null,
+      "physicalSize": null,
+      "angularSize": null,
+      "mass": null,
+      "massMethod": null,
+      "age": null,
+      "temperatureK": null,
+      "spectralType": null,
+      "hostStructure": "Milky Way",
+      "parentObject": null,
+      "associatedObjects": [],
+      "discoveryDate": null,
+      "discoveryMethod": null,
+      "observationStatus": "CATALOG_IDENTITY",
+      "evidenceClass": "CATALOG-DERIVED",
+      "scientificFidelity": "LB",
+      "wavelengths": [],
+      "geometryStatus": "MEASURED_POSITION",
+      "lastUpdated": "2026-08-14",
+      "dataSources": [
+        "cds-simbad-tap"
+      ],
+      "researchReferences": [
+        "2000A&AS..143....9W",
+        "2020yCat.1350....0G",
+        "2010ApJ...714.1096S"
+      ],
+      "knownLimitations": [
+        "Catalog sky position and any literature distance do not define exact 3D nebular geometry.",
+        "Any future volumetric rendering must remain Representative Visualization unless a reviewed 3D reconstruction is supplied."
+      ]
+    },
+    {
+      "pcsObjectId": "pcs:nebula:ring",
+      "officialName": "Ring Nebula",
+      "commonName": "Ring Nebula",
+      "aliases": [
+        "M57",
+        "Messier 57",
+        "NGC 6720"
+      ],
+      "objectClass": "nebula",
+      "objectSubtype": "planetary nebula",
+      "catalogIdentifiers": [
+        {
+          "catalog": "Messier",
+          "identifier": "M57"
+        },
+        {
+          "catalog": "NGC",
+          "identifier": "NGC 6720"
+        },
+        {
+          "catalog": "SIMBAD",
+          "identifier": "M  57"
+        }
+      ],
+      "raDeg": 283.39623652463,
+      "decDeg": 33.029134246539996,
+      "coordinateFrame": "ICRS",
+      "coordinateEpoch": "J2000",
+      "distance": 0.842,
+      "distanceLower": 0.6739999999999999,
+      "distanceUpper": 1.01,
+      "distanceUnit": "kpc",
+      "distanceMethod": "SIMBAD preferred literature distance",
+      "parallaxMas": null,
+      "properMotionRaMasYr": null,
+      "properMotionDecMasYr": null,
+      "radialVelocityKmS": null,
+      "redshift": null,
+      "physicalSize": null,
+      "angularSize": null,
+      "mass": null,
+      "massMethod": null,
+      "age": null,
+      "temperatureK": null,
+      "spectralType": null,
+      "hostStructure": "Milky Way",
+      "parentObject": null,
+      "associatedObjects": [],
+      "discoveryDate": null,
+      "discoveryMethod": null,
+      "observationStatus": "CATALOG_IDENTITY",
+      "evidenceClass": "CATALOG-DERIVED",
+      "scientificFidelity": "LB",
+      "wavelengths": [],
+      "geometryStatus": "MEASURED_POSITION",
+      "lastUpdated": "2026-08-14",
+      "dataSources": [
+        "cds-simbad-tap"
+      ],
+      "researchReferences": [
+        "2000A&AS..143....9W",
+        "2020yCat.1350....0G",
+        "2010ApJ...714.1096S"
+      ],
+      "knownLimitations": [
+        "Catalog sky position and any literature distance do not define exact 3D nebular geometry.",
+        "Any future volumetric rendering must remain Representative Visualization unless a reviewed 3D reconstruction is supplied."
+      ]
+    },
+    {
+      "pcsObjectId": "pcs:nebula:crab",
+      "officialName": "Crab Nebula",
+      "commonName": "Crab Nebula",
+      "aliases": [
+        "M1",
+        "Messier 1",
+        "NGC 1952"
+      ],
+      "objectClass": "nebula",
+      "objectSubtype": "supernova remnant",
+      "catalogIdentifiers": [
+        {
+          "catalog": "Messier",
+          "identifier": "M1"
+        },
+        {
+          "catalog": "NGC",
+          "identifier": "NGC 1952"
+        },
+        {
+          "catalog": "SIMBAD",
+          "identifier": "M   1"
+        }
+      ],
+      "raDeg": 83.6324,
+      "decDeg": 22.0174,
+      "coordinateFrame": "ICRS",
+      "coordinateEpoch": "J2000",
+      "distance": 2,
+      "distanceLower": null,
+      "distanceUpper": null,
+      "distanceUnit": "kpc",
+      "distanceMethod": "SIMBAD preferred literature distance",
+      "parallaxMas": null,
+      "properMotionRaMasYr": null,
+      "properMotionDecMasYr": null,
+      "radialVelocityKmS": null,
+      "redshift": null,
+      "physicalSize": null,
+      "angularSize": null,
+      "mass": null,
+      "massMethod": null,
+      "age": null,
+      "temperatureK": null,
+      "spectralType": null,
+      "hostStructure": "Milky Way",
+      "parentObject": null,
+      "associatedObjects": [],
+      "discoveryDate": null,
+      "discoveryMethod": null,
+      "observationStatus": "CATALOG_IDENTITY",
+      "evidenceClass": "CATALOG-DERIVED",
+      "scientificFidelity": "LB",
+      "wavelengths": [],
+      "geometryStatus": "MEASURED_POSITION",
+      "lastUpdated": "2026-08-14",
+      "dataSources": [
+        "cds-simbad-tap"
+      ],
+      "researchReferences": [
+        "2000A&AS..143....9W",
+        "2022A&A...661A..38P",
+        "1973PASP...85..579T"
+      ],
+      "knownLimitations": [
+        "Catalog sky position and any literature distance do not define exact 3D nebular geometry.",
+        "Any future volumetric rendering must remain Representative Visualization unless a reviewed 3D reconstruction is supplied.",
+        "The associated Crab Pulsar is a separate physical object and is deferred to the compact-object phase."
+      ]
+    },
+    {
+      "pcsObjectId": "pcs:nebula:cygnus-loop",
+      "officialName": "Cygnus Loop",
+      "commonName": "Cygnus Loop",
+      "aliases": [
+        "Cygnus Loop Supernova Remnant"
+      ],
+      "objectClass": "nebula",
+      "objectSubtype": "supernova remnant",
+      "catalogIdentifiers": [
+        {
+          "catalog": "SIMBAD",
+          "identifier": "NAME Cyg Loop"
+        }
+      ],
+      "raDeg": 312.75,
+      "decDeg": 30.666666666666668,
+      "coordinateFrame": "ICRS",
+      "coordinateEpoch": "J2000",
+      "distance": null,
+      "distanceLower": null,
+      "distanceUpper": null,
+      "distanceUnit": null,
+      "distanceMethod": null,
+      "parallaxMas": null,
+      "properMotionRaMasYr": null,
+      "properMotionDecMasYr": null,
+      "radialVelocityKmS": null,
+      "redshift": null,
+      "physicalSize": null,
+      "angularSize": null,
+      "mass": null,
+      "massMethod": null,
+      "age": null,
+      "temperatureK": null,
+      "spectralType": null,
+      "hostStructure": "Milky Way",
+      "parentObject": null,
+      "associatedObjects": [],
+      "discoveryDate": null,
+      "discoveryMethod": null,
+      "observationStatus": "CATALOG_IDENTITY",
+      "evidenceClass": "CATALOG-DERIVED",
+      "scientificFidelity": "LB",
+      "wavelengths": [],
+      "geometryStatus": "MEASURED_POSITION",
+      "lastUpdated": "2026-08-14",
+      "dataSources": [
+        "cds-simbad-tap"
+      ],
+      "researchReferences": [
+        "2000A&AS..143....9W",
+        "2009BASI...37...45G"
+      ],
+      "knownLimitations": [
+        "Catalog sky position and any literature distance do not define exact 3D nebular geometry.",
+        "Any future volumetric rendering must remain Representative Visualization unless a reviewed 3D reconstruction is supplied."
+      ]
+    },
+    {
+      "pcsObjectId": "pcs:nebula:veil-west",
+      "officialName": "Veil Nebula (Western Veil)",
+      "commonName": "Veil Nebula (Western Veil)",
+      "aliases": [
+        "Veil Nebula",
+        "NGC 6960",
+        "Witch's Broom Nebula"
+      ],
+      "objectClass": "nebula",
+      "objectSubtype": "supernova-remnant filament",
+      "catalogIdentifiers": [
+        {
+          "catalog": "NGC",
+          "identifier": "NGC 6960"
+        },
+        {
+          "catalog": "SIMBAD",
+          "identifier": "NGC  6960"
+        }
+      ],
+      "raDeg": 311.4083333333333,
+      "decDeg": 30.708333333333332,
+      "coordinateFrame": "ICRS",
+      "coordinateEpoch": "J2000",
+      "distance": null,
+      "distanceLower": null,
+      "distanceUpper": null,
+      "distanceUnit": null,
+      "distanceMethod": null,
+      "parallaxMas": null,
+      "properMotionRaMasYr": null,
+      "properMotionDecMasYr": null,
+      "radialVelocityKmS": null,
+      "redshift": null,
+      "physicalSize": null,
+      "angularSize": null,
+      "mass": null,
+      "massMethod": null,
+      "age": null,
+      "temperatureK": null,
+      "spectralType": null,
+      "hostStructure": "Milky Way",
+      "parentObject": "pcs:nebula:cygnus-loop",
+      "associatedObjects": [],
+      "discoveryDate": null,
+      "discoveryMethod": null,
+      "observationStatus": "CATALOG_IDENTITY",
+      "evidenceClass": "CATALOG-DERIVED",
+      "scientificFidelity": "LB",
+      "wavelengths": [],
+      "geometryStatus": "MEASURED_POSITION",
+      "lastUpdated": "2026-08-14",
+      "dataSources": [
+        "cds-simbad-tap"
+      ],
+      "researchReferences": [
+        "2000A&AS..143....9W"
+      ],
+      "knownLimitations": [
+        "Catalog sky position and any literature distance do not define exact 3D nebular geometry.",
+        "Any future volumetric rendering must remain Representative Visualization unless a reviewed 3D reconstruction is supplied.",
+        "This record anchors the western NGC 6960 segment; the full Cygnus Loop is a separate parent object."
+      ]
+    },
+    {
+      "pcsObjectId": "pcs:nebula:rosette",
+      "officialName": "Rosette Nebula",
+      "commonName": "Rosette Nebula",
+      "aliases": [
+        "Caldwell 49"
+      ],
+      "objectClass": "nebula",
+      "objectSubtype": "emission nebula / H II region",
+      "catalogIdentifiers": [
+        {
+          "catalog": "SIMBAD",
+          "identifier": "NAME Rosette Nebula"
+        }
+      ],
+      "raDeg": 98.11149999999999,
+      "decDeg": 4.7936388888888875,
+      "coordinateFrame": "ICRS",
+      "coordinateEpoch": "J2000",
+      "distance": 1560,
+      "distanceLower": 1470,
+      "distanceUpper": 1670,
+      "distanceUnit": "pc",
+      "distanceMethod": "SIMBAD preferred literature distance (paral)",
+      "parallaxMas": null,
+      "properMotionRaMasYr": null,
+      "properMotionDecMasYr": null,
+      "radialVelocityKmS": null,
+      "redshift": null,
+      "physicalSize": null,
+      "angularSize": null,
+      "mass": null,
+      "massMethod": null,
+      "age": null,
+      "temperatureK": null,
+      "spectralType": null,
+      "hostStructure": "Milky Way",
+      "parentObject": null,
+      "associatedObjects": [],
+      "discoveryDate": null,
+      "discoveryMethod": null,
+      "observationStatus": "CATALOG_IDENTITY",
+      "evidenceClass": "CATALOG-DERIVED",
+      "scientificFidelity": "LB",
+      "wavelengths": [],
+      "geometryStatus": "MEASURED_POSITION",
+      "lastUpdated": "2026-08-14",
+      "dataSources": [
+        "cds-simbad-tap"
+      ],
+      "researchReferences": [
+        "2000A&AS..143....9W",
+        "2019ApJ...870...32K"
+      ],
+      "knownLimitations": [
+        "Catalog sky position and any literature distance do not define exact 3D nebular geometry.",
+        "Any future volumetric rendering must remain Representative Visualization unless a reviewed 3D reconstruction is supplied.",
+        "NGC 2237/2238 and NGC 2244 identify components or the central cluster and are not silently merged into this whole-region record."
+      ]
+    },
+    {
+      "pcsObjectId": "pcs:nebula:lagoon",
+      "officialName": "Lagoon Nebula",
+      "commonName": "Lagoon Nebula",
+      "aliases": [
+        "M8",
+        "Messier 8",
+        "NGC 6523"
+      ],
+      "objectClass": "nebula",
+      "objectSubtype": "emission nebula / star-forming region",
+      "catalogIdentifiers": [
+        {
+          "catalog": "Messier",
+          "identifier": "M8"
+        },
+        {
+          "catalog": "NGC",
+          "identifier": "NGC 6523"
+        },
+        {
+          "catalog": "SIMBAD",
+          "identifier": "M   8"
+        }
+      ],
+      "raDeg": 270.90416666666664,
+      "decDeg": -24.386666666666667,
+      "coordinateFrame": "ICRS",
+      "coordinateEpoch": "J2000",
+      "distance": 1272,
+      "distanceLower": 1264,
+      "distanceUpper": 1282,
+      "distanceUnit": "pc",
+      "distanceMethod": "SIMBAD preferred literature distance (plx)",
+      "parallaxMas": null,
+      "properMotionRaMasYr": null,
+      "properMotionDecMasYr": null,
+      "radialVelocityKmS": null,
+      "redshift": null,
+      "physicalSize": null,
+      "angularSize": null,
+      "mass": null,
+      "massMethod": null,
+      "age": null,
+      "temperatureK": null,
+      "spectralType": null,
+      "hostStructure": "Milky Way",
+      "parentObject": null,
+      "associatedObjects": [],
+      "discoveryDate": null,
+      "discoveryMethod": null,
+      "observationStatus": "CATALOG_IDENTITY",
+      "evidenceClass": "CATALOG-DERIVED",
+      "scientificFidelity": "LB",
+      "wavelengths": [],
+      "geometryStatus": "MEASURED_POSITION",
+      "lastUpdated": "2026-08-14",
+      "dataSources": [
+        "cds-simbad-tap"
+      ],
+      "researchReferences": [
+        "2000A&AS..143....9W",
+        "2020A&A...633A..51Z"
+      ],
+      "knownLimitations": [
+        "Catalog sky position and any literature distance do not define exact 3D nebular geometry.",
+        "Any future volumetric rendering must remain Representative Visualization unless a reviewed 3D reconstruction is supplied.",
+        "SIMBAD's preferred M8 identity includes an open-cluster classification; PCS records the nebular landmark without inventing a separate gas geometry."
+      ]
+    },
+    {
+      "pcsObjectId": "pcs:nebula:trifid",
+      "officialName": "Trifid Nebula",
+      "commonName": "Trifid Nebula",
+      "aliases": [
+        "M20",
+        "Messier 20",
+        "NGC 6514"
+      ],
+      "objectClass": "nebula",
+      "objectSubtype": "emission, reflection, and dark nebula complex",
+      "catalogIdentifiers": [
+        {
+          "catalog": "Messier",
+          "identifier": "M20"
+        },
+        {
+          "catalog": "NGC",
+          "identifier": "NGC 6514"
+        },
+        {
+          "catalog": "SIMBAD",
+          "identifier": "M  20"
+        }
+      ],
+      "raDeg": 270.675,
+      "decDeg": -22.971666666666664,
+      "coordinateFrame": "ICRS",
+      "coordinateEpoch": "J2000",
+      "distance": 821,
+      "distanceLower": null,
+      "distanceUpper": null,
+      "distanceUnit": "pc",
+      "distanceMethod": "SIMBAD preferred literature distance",
+      "parallaxMas": null,
+      "properMotionRaMasYr": null,
+      "properMotionDecMasYr": null,
+      "radialVelocityKmS": null,
+      "redshift": null,
+      "physicalSize": null,
+      "angularSize": null,
+      "mass": null,
+      "massMethod": null,
+      "age": null,
+      "temperatureK": null,
+      "spectralType": null,
+      "hostStructure": "Milky Way",
+      "parentObject": null,
+      "associatedObjects": [],
+      "discoveryDate": null,
+      "discoveryMethod": null,
+      "observationStatus": "CATALOG_IDENTITY",
+      "evidenceClass": "CATALOG-DERIVED",
+      "scientificFidelity": "LB",
+      "wavelengths": [],
+      "geometryStatus": "MEASURED_POSITION",
+      "lastUpdated": "2026-08-14",
+      "dataSources": [
+        "cds-simbad-tap"
+      ],
+      "researchReferences": [
+        "2000A&AS..143....9W",
+        "2009MNRAS.399.2146W",
+        "2017AstBu..72..257L"
+      ],
+      "knownLimitations": [
+        "Catalog sky position and any literature distance do not define exact 3D nebular geometry.",
+        "Any future volumetric rendering must remain Representative Visualization unless a reviewed 3D reconstruction is supplied.",
+        "The mixed emission/reflection/dark components are not represented as an exact 3D volume."
+      ]
+    },
+    {
+      "pcsObjectId": "pcs:nebula:omega",
+      "officialName": "Omega Nebula",
+      "commonName": "Omega Nebula",
+      "aliases": [
+        "M17",
+        "Messier 17",
+        "Swan Nebula",
+        "NGC 6618"
+      ],
+      "objectClass": "nebula",
+      "objectSubtype": "emission nebula / H II region",
+      "catalogIdentifiers": [
+        {
+          "catalog": "Messier",
+          "identifier": "M17"
+        },
+        {
+          "catalog": "NGC",
+          "identifier": "NGC 6618"
+        },
+        {
+          "catalog": "SIMBAD",
+          "identifier": "NGC  6618"
+        }
+      ],
+      "raDeg": 275.1958333333333,
+      "decDeg": -16.171666666666663,
+      "coordinateFrame": "ICRS",
+      "coordinateEpoch": "J2000",
+      "distance": 1814,
+      "distanceLower": null,
+      "distanceUpper": null,
+      "distanceUnit": "pc",
+      "distanceMethod": "SIMBAD preferred literature distance",
+      "parallaxMas": null,
+      "properMotionRaMasYr": null,
+      "properMotionDecMasYr": null,
+      "radialVelocityKmS": null,
+      "redshift": null,
+      "physicalSize": null,
+      "angularSize": null,
+      "mass": null,
+      "massMethod": null,
+      "age": null,
+      "temperatureK": null,
+      "spectralType": null,
+      "hostStructure": "Milky Way",
+      "parentObject": null,
+      "associatedObjects": [],
+      "discoveryDate": null,
+      "discoveryMethod": null,
+      "observationStatus": "CATALOG_IDENTITY",
+      "evidenceClass": "CATALOG-DERIVED",
+      "scientificFidelity": "LB",
+      "wavelengths": [],
+      "geometryStatus": "MEASURED_POSITION",
+      "lastUpdated": "2026-08-14",
+      "dataSources": [
+        "cds-simbad-tap"
+      ],
+      "researchReferences": [
+        "2000A&AS..143....9W",
+        "2009MNRAS.399.2146W",
+        "2017AstBu..72..257L"
+      ],
+      "knownLimitations": [
+        "Catalog sky position and any literature distance do not define exact 3D nebular geometry.",
+        "Any future volumetric rendering must remain Representative Visualization unless a reviewed 3D reconstruction is supplied.",
+        "SIMBAD's preferred NGC 6618 identity includes an open-cluster classification; the record preserves the H II-region context and the ambiguity."
+      ]
+    },
+    {
+      "pcsObjectId": "pcs:nebula:north-america",
+      "officialName": "North America Nebula",
+      "commonName": "North America Nebula",
+      "aliases": [
+        "NGC 7000",
+        "Caldwell 20"
+      ],
+      "objectClass": "nebula",
+      "objectSubtype": "emission nebula / H II region",
+      "catalogIdentifiers": [
+        {
+          "catalog": "NGC",
+          "identifier": "NGC 7000"
+        },
+        {
+          "catalog": "SIMBAD",
+          "identifier": "NGC  7000"
+        }
+      ],
+      "raDeg": 314.6958333333333,
+      "decDeg": 44.330000000000005,
+      "coordinateFrame": "ICRS",
+      "coordinateEpoch": "J2000",
+      "distance": 809,
+      "distanceLower": 791,
+      "distanceUpper": 836,
+      "distanceUnit": "pc",
+      "distanceMethod": "SIMBAD preferred literature distance (plx)",
+      "parallaxMas": null,
+      "properMotionRaMasYr": null,
+      "properMotionDecMasYr": null,
+      "radialVelocityKmS": null,
+      "redshift": null,
+      "physicalSize": null,
+      "angularSize": null,
+      "mass": null,
+      "massMethod": null,
+      "age": null,
+      "temperatureK": null,
+      "spectralType": null,
+      "hostStructure": "Milky Way",
+      "parentObject": null,
+      "associatedObjects": [],
+      "discoveryDate": null,
+      "discoveryMethod": null,
+      "observationStatus": "CATALOG_IDENTITY",
+      "evidenceClass": "CATALOG-DERIVED",
+      "scientificFidelity": "LB",
+      "wavelengths": [],
+      "geometryStatus": "MEASURED_POSITION",
+      "lastUpdated": "2026-08-14",
+      "dataSources": [
+        "cds-simbad-tap"
+      ],
+      "researchReferences": [
+        "2000A&AS..143....9W",
+        "2020A&A...633A..51Z"
+      ],
+      "knownLimitations": [
+        "Catalog sky position and any literature distance do not define exact 3D nebular geometry.",
+        "Any future volumetric rendering must remain Representative Visualization unless a reviewed 3D reconstruction is supplied.",
+        "SIMBAD's preferred identity includes a stellar-cluster classification; the observed nebular outline is not an exact 3D boundary."
+      ]
+    },
+    {
+      "pcsObjectId": "pcs:nebula:tarantula",
+      "officialName": "Tarantula Nebula",
+      "commonName": "Tarantula Nebula",
+      "aliases": [
+        "30 Doradus",
+        "30 Dor Nebula"
+      ],
+      "objectClass": "nebula",
+      "objectSubtype": "emission nebula / star-forming region",
+      "catalogIdentifiers": [
+        {
+          "catalog": "SIMBAD",
+          "identifier": "NAME 30 Dor Nebula"
+        }
+      ],
+      "raDeg": 84.64999999999999,
+      "decDeg": -69.08638888888889,
+      "coordinateFrame": "ICRS",
+      "coordinateEpoch": "J2000",
+      "distance": null,
+      "distanceLower": null,
+      "distanceUpper": null,
+      "distanceUnit": null,
+      "distanceMethod": null,
+      "parallaxMas": null,
+      "properMotionRaMasYr": null,
+      "properMotionDecMasYr": null,
+      "radialVelocityKmS": null,
+      "redshift": null,
+      "physicalSize": null,
+      "angularSize": null,
+      "mass": null,
+      "massMethod": null,
+      "age": null,
+      "temperatureK": null,
+      "spectralType": null,
+      "hostStructure": "Large Magellanic Cloud",
+      "parentObject": null,
+      "associatedObjects": [],
+      "discoveryDate": null,
+      "discoveryMethod": null,
+      "observationStatus": "CATALOG_IDENTITY",
+      "evidenceClass": "CATALOG-DERIVED",
+      "scientificFidelity": "LB",
+      "wavelengths": [],
+      "geometryStatus": "MEASURED_POSITION",
+      "lastUpdated": "2026-08-14",
+      "dataSources": [
+        "cds-simbad-tap"
+      ],
+      "researchReferences": [
+        "2000A&AS..143....9W",
+        "2012ApJ...755...40P"
+      ],
+      "knownLimitations": [
+        "Catalog sky position and any literature distance do not define exact 3D nebular geometry.",
+        "Any future volumetric rendering must remain Representative Visualization unless a reviewed 3D reconstruction is supplied.",
+        "NGC 2070 and R136 are stellar systems within the wider 30 Doradus environment and are not merged into this nebular-region identity."
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "from": "pcs:nebula:pillars-of-creation",
+      "predicate": "part-of",
+      "to": "pcs:nebula:eagle",
+      "evidenceClass": "MEASURED",
+      "sourceIds": [
+        "hester-1996-m16-pillars"
+      ]
+    },
+    {
+      "from": "pcs:nebula:horsehead",
+      "predicate": "part-of",
+      "to": "pcs:nebula:ic-434",
+      "evidenceClass": "CATALOG-DERIVED",
+      "sourceIds": [
+        "cds-simbad-tap"
+      ]
+    },
+    {
+      "from": "pcs:nebula:veil-west",
+      "predicate": "part-of",
+      "to": "pcs:nebula:cygnus-loop",
+      "evidenceClass": "CATALOG-DERIVED",
+      "sourceIds": [
+        "cds-simbad-tap"
+      ]
+    }
+  ],
+  "aliasIndex": {
+    "pillars of creation": "pcs:nebula:pillars-of-creation",
+    "m16 pillars": "pcs:nebula:pillars-of-creation",
+    "eagle nebula pillars": "pcs:nebula:pillars-of-creation",
+    "eagle nebula": "pcs:nebula:eagle",
+    "m16": "pcs:nebula:eagle",
+    "messier 16": "pcs:nebula:eagle",
+    "ic 4703": "pcs:nebula:eagle",
+    "messier m16": "pcs:nebula:eagle",
+    "ic ic 4703": "pcs:nebula:eagle",
+    "simbad m 16": "pcs:nebula:eagle",
+    "horsehead nebula": "pcs:nebula:horsehead",
+    "barnard 33": "pcs:nebula:horsehead",
+    "b33": "pcs:nebula:horsehead",
+    "barnard b 33": "pcs:nebula:horsehead",
+    "simbad name horsehead nebula": "pcs:nebula:horsehead",
+    "ic 434": "pcs:nebula:ic-434",
+    "ic434": "pcs:nebula:ic-434",
+    "horsehead emission background": "pcs:nebula:ic-434",
+    "ic ic 434": "pcs:nebula:ic-434",
+    "simbad ic 434": "pcs:nebula:ic-434",
+    "cat's eye nebula": "pcs:nebula:cats-eye",
+    "ngc 6543": "pcs:nebula:cats-eye",
+    "cat eye nebula": "pcs:nebula:cats-eye",
+    "ngc ngc 6543": "pcs:nebula:cats-eye",
+    "simbad ngc 6543": "pcs:nebula:cats-eye",
+    "orion nebula": "pcs:nebula:orion",
+    "m42": "pcs:nebula:orion",
+    "messier 42": "pcs:nebula:orion",
+    "ngc 1976": "pcs:nebula:orion",
+    "messier m42": "pcs:nebula:orion",
+    "ngc ngc 1976": "pcs:nebula:orion",
+    "simbad m 42": "pcs:nebula:orion",
+    "carina nebula": "pcs:nebula:carina",
+    "ngc 3372": "pcs:nebula:carina",
+    "eta carinae nebula": "pcs:nebula:carina",
+    "ngc ngc 3372": "pcs:nebula:carina",
+    "simbad ngc 3372": "pcs:nebula:carina",
+    "helix nebula": "pcs:nebula:helix",
+    "ngc 7293": "pcs:nebula:helix",
+    "ngc ngc 7293": "pcs:nebula:helix",
+    "simbad ngc 7293": "pcs:nebula:helix",
+    "ring nebula": "pcs:nebula:ring",
+    "m57": "pcs:nebula:ring",
+    "messier 57": "pcs:nebula:ring",
+    "ngc 6720": "pcs:nebula:ring",
+    "messier m57": "pcs:nebula:ring",
+    "ngc ngc 6720": "pcs:nebula:ring",
+    "simbad m 57": "pcs:nebula:ring",
+    "crab nebula": "pcs:nebula:crab",
+    "m1": "pcs:nebula:crab",
+    "messier 1": "pcs:nebula:crab",
+    "ngc 1952": "pcs:nebula:crab",
+    "messier m1": "pcs:nebula:crab",
+    "ngc ngc 1952": "pcs:nebula:crab",
+    "simbad m 1": "pcs:nebula:crab",
+    "cygnus loop": "pcs:nebula:cygnus-loop",
+    "cygnus loop supernova remnant": "pcs:nebula:cygnus-loop",
+    "simbad name cyg loop": "pcs:nebula:cygnus-loop",
+    "veil nebula (western veil)": "pcs:nebula:veil-west",
+    "veil nebula": "pcs:nebula:veil-west",
+    "ngc 6960": "pcs:nebula:veil-west",
+    "witch's broom nebula": "pcs:nebula:veil-west",
+    "ngc ngc 6960": "pcs:nebula:veil-west",
+    "simbad ngc 6960": "pcs:nebula:veil-west",
+    "rosette nebula": "pcs:nebula:rosette",
+    "caldwell 49": "pcs:nebula:rosette",
+    "simbad name rosette nebula": "pcs:nebula:rosette",
+    "lagoon nebula": "pcs:nebula:lagoon",
+    "m8": "pcs:nebula:lagoon",
+    "messier 8": "pcs:nebula:lagoon",
+    "ngc 6523": "pcs:nebula:lagoon",
+    "messier m8": "pcs:nebula:lagoon",
+    "ngc ngc 6523": "pcs:nebula:lagoon",
+    "simbad m 8": "pcs:nebula:lagoon",
+    "trifid nebula": "pcs:nebula:trifid",
+    "m20": "pcs:nebula:trifid",
+    "messier 20": "pcs:nebula:trifid",
+    "ngc 6514": "pcs:nebula:trifid",
+    "messier m20": "pcs:nebula:trifid",
+    "ngc ngc 6514": "pcs:nebula:trifid",
+    "simbad m 20": "pcs:nebula:trifid",
+    "omega nebula": "pcs:nebula:omega",
+    "m17": "pcs:nebula:omega",
+    "messier 17": "pcs:nebula:omega",
+    "swan nebula": "pcs:nebula:omega",
+    "ngc 6618": "pcs:nebula:omega",
+    "messier m17": "pcs:nebula:omega",
+    "ngc ngc 6618": "pcs:nebula:omega",
+    "simbad ngc 6618": "pcs:nebula:omega",
+    "north america nebula": "pcs:nebula:north-america",
+    "ngc 7000": "pcs:nebula:north-america",
+    "caldwell 20": "pcs:nebula:north-america",
+    "ngc ngc 7000": "pcs:nebula:north-america",
+    "simbad ngc 7000": "pcs:nebula:north-america",
+    "tarantula nebula": "pcs:nebula:tarantula",
+    "30 doradus": "pcs:nebula:tarantula",
+    "30 dor nebula": "pcs:nebula:tarantula",
+    "simbad name 30 dor nebula": "pcs:nebula:tarantula"
+  },
+  "knownLimitations": [
+    "This Phase B catalog is validated but not yet published to runtime.",
+    "No nebula receives an invented 3D volume, physical size, distance, or wavelength coverage.",
+    "SIMBAD preferred identities for some Messier nebular landmarks include associated open-cluster classifications; the ambiguity is disclosed per record."
+  ]
+}

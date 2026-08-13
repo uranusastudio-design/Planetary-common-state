@@ -1,6 +1,6 @@
 {
   "schemaVersion": "pcs-known-object-phase-a-validation-v1",
-  "generatedAt": "2026-08-13T17:41:52.913Z",
+  "generatedAt": "2026-08-13T17:55:22.152Z",
   "phase": "A",
   "pass": true,
   "productionCounts": {
@@ -17,7 +17,8 @@
     "unresolved": 1
   },
   "sourceCapabilityCount": 6,
-  "sourceRegistryChecksum": "be0650a2baad2a8430eecdba4db3b8e52ef3f839766dd538ec4338285a130bf1",
+  "sourceRegistryRecordCount": 7,
+  "sourceRegistryChecksum": "c521fa4ede20952ccadf6e3a28574d360ef47938dfdabbd9fd0ba70515391425",
   "schemaChecksum": "87ac6dad3fae9d0e516962edd70a94b2b4b773ea0c9efb72a9b12e29ff30036e",
   "capabilities": [
     {
