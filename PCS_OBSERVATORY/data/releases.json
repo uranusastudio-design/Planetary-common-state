@@ -6,7 +6,7 @@
   "currentStatus": "preview",
   "plannedVersion": "v2.2.0",
   "currentPhase": "deep-space-phase-3",
-  "updatedAt": "2026-08-14T00:46:55+08:00",
+  "updatedAt": "2026-08-14T01:30:12+08:00",
   "releases": [
     {
       "version": "v2.2.0",
@@ -66,14 +66,14 @@
     {"id":"cmb-360","title":"CMB 360°","status":"waiting","symbol":"⏸","statusLabel":{"en":"Final observational scale","zh-TW":"最終觀測尺度","ja":"最終観測スケール","ko":"최종 관측 축척"},"detail":"Final observational scale"},
     {"id":"v2.2.0-foundation","title":"v2.2.0 Foundation","status":"completed","detail":"Orbit Precision → Pointer-Anchored Navigation → Unified Object Cards"},
     {"id":"solar-system-ss02","title":"Solar System SS-02","status":"completed","detail":"Human-approved production state"},
-    {"id":"solar-system-long-horizon","title":"Solar System Long-Horizon Dynamical Reconstruction","status":"completed","symbol":"✅","statusLabel":{"en":"Production / Verified","zh-TW":"Production／已驗證","ja":"Production／検証済み","ko":"Production / 검증"},"detail":"Authoritative Ephemeris → PCS N-body → public AD 20000; AD 100000 remains experimental research diagnostics; awaiting human freeze"},
+    {"id":"solar-system-long-horizon","title":"Solar System Long-Horizon Dynamical Reconstruction","status":"completed","symbol":"✅","statusLabel":{"en":"Production / Verified / Frozen","zh-TW":"Production／已驗證／已凍結","ja":"Production／検証済み／凍結済み","ko":"Production / 검증 / 동결"},"detail":"Authoritative Ephemeris → PCS N-body → public AD 20000; AD 100000 remains experimental research diagnostics; human-accepted architecture frozen"},
     {"id":"titania-texture","title":"Titania texture repair","status":"deferred","detail":"Known imagery coverage / projection issue"},
     {"id":"comets-asteroids","title":"Comets","status":"completed","detail":"Nine-object priority subset and meteor relationships validated in SS-02E; not a complete comet catalog"},
     {"id":"orbital-uncertainty","title":"Orbital uncertainty bands","status":"planned","detail":"Method not yet implemented"},
     {"id":"civilization-variables","title":"Civilization-variable analysis","status":"planned","detail":"Not started; no prediction claims"}
   ],
   "latestAdditions": [
-    {"title":"Solar System Long-Horizon Dynamical Reconstruction","detail":"✅ Production / Verified · Authoritative Ephemeris → PCS N-body → public AD 20000 · ADMIN/research AD 100000 experimental · Awaiting human freeze"},
+    {"title":"Solar System Long-Horizon Dynamical Reconstruction","detail":"✅ Production / Verified / Frozen · Authoritative Ephemeris → PCS N-body → public AD 20000 · ADMIN/research AD 100000 experimental"},
     {"title":"Milky Way — Dynamics + Observational Asymmetry Audit","detail":"⏸ Reopened / Ready for Human Visual Review · Differential-rotation diagnostics · Gaia/HMSFR/reconstruction/representative debug separation · Kepler DR25 + Gaia DR3 observational layer"},
     {"title":"Full Orbit View","detail":"✅ Production / Frozen"},
     {"title":"Interstellar Objects","detail":"✅ Production / Verified / Frozen · 1I/ʻOumuamua · 2I/Borisov · 3I/ATLAS"},

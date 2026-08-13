@@ -1,6 +1,6 @@
 # PCS Solar System Long-Horizon Analysis
 
-Status: **PRODUCTION / VERIFIED — AWAITING HUMAN FREEZE**
+Status: **PRODUCTION / VERIFIED / FROZEN**
 
 This document records the current correction work for the real Observatory runtime. Public PCS is bounded at AD 20000. The retained AD 100000 state is research diagnostics labelled **EXPERIMENTAL LONG-HORIZON RECONSTRUCTION**; it is not advertised as a validated public horizon and does not claim an exact Solar-System configuration.
 
@@ -129,7 +129,8 @@ Local candidate generated on 2026-08-13:
 - Production acceptance: all required checkpoints from 2026 through AD 20000 rendered finite major-planet states; actual DOM/runtime fidelity changed from precision ephemeris to long-term DE441 and then PCS N-body as required.
 - Production lifecycle: Viewer 1, Cesium canvas 1, DataSources 3 → 3, primitives 1 → 1, zero required console errors, and zero required network failures.
 - Production asset SHA-256: `index.html` `964c42071fca8bee387954eee8806df903afee017099e5d7f5a5e00652c8e9f8`; `deep-space.js` `d6918d9045c31d88026ba232fe222f7a48b444733cba14a915c927b835a90f26`; `solar-system-long-horizon.js` `54497a45af6ab323a444f85901ddf72da02ec5908a5f4c6b23108fbad9105430`; runtime dataset `b90e849e2a499c4b949f49a0178af9305392eb18e0a59faa646439a0c077dcaa`.
-- Human acceptance: pending.
+- Human acceptance: approved on 2026-08-14. Public range AD 20000 and ADMIN/research experimental range AD 100000 are frozen at the validated architecture.
+- Freeze boundary: future changes to the provider resolver, DE441/PCS transition, numerical model, public/research range separation, fidelity mapping, validation evidence, or scientific wording require a new explicitly authorized phase and full revalidation.
 
 Machine-readable evidence:
 
@@ -139,4 +140,4 @@ Machine-readable evidence:
 - `test-results/solar-long-horizon-release-local-2026-08-14/acceptance-report.json`
 - `test-results/solar-long-horizon-production-2026-08-14/acceptance-report.json`
 
-Therefore the deployed feature is **PRODUCTION / VERIFIED**, with public coverage through AD 20000 and experimental research diagnostics through AD 100000. It remains **NOT FROZEN** pending human visual acceptance.
+Therefore the deployed feature is **PRODUCTION / VERIFIED / FROZEN**, with public coverage through AD 20000 and experimental research diagnostics through AD 100000. All recorded residuals, model omissions, and the distinction between numerical conservation and positional accuracy remain part of the frozen scientific contract.

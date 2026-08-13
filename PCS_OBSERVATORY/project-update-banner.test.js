@@ -69,11 +69,10 @@ test("frozen baselines, reopened Milky Way, and the scientific-scale sequence ar
   assert.equal(phase3.statusLabel.en, "Reopened / Ready for Human Visual Review");
   assert.match(phase3.detail, /prior frozen state.*historical release evidence/i);
   assert.equal(longHorizon.status, "completed");
-  assert.equal(longHorizon.statusLabel.en, "Production / Verified");
-  assert.doesNotMatch(longHorizon.statusLabel.en, /Frozen/i);
-  assert.match(longHorizon.detail, /public AD 20000.*AD 100000.*experimental.*awaiting human freeze/i);
+  assert.equal(longHorizon.statusLabel.en, "Production / Verified / Frozen");
+  assert.match(longHorizon.detail, /public AD 20000.*AD 100000.*experimental.*human-accepted architecture frozen/i);
   assert.equal(registry.latestAdditions[0].title, "Solar System Long-Horizon Dynamical Reconstruction");
-  assert.match(registry.latestAdditions[0].detail, /Production \/ Verified.*public AD 20000.*AD 100000 experimental.*Awaiting human freeze/);
+  assert.match(registry.latestAdditions[0].detail, /Production \/ Verified \/ Frozen.*public AD 20000.*AD 100000 experimental/);
   assert.equal(registry.latestAdditions[1].title, "Milky Way — Dynamics + Observational Asymmetry Audit");
   assert.match(registry.latestAdditions[1].detail, /Reopened \/ Ready for Human Visual Review.*Kepler DR25 \+ Gaia DR3/);
   assert.ok(registry.releases[0].changed.some(item => item.includes("Milky Way Scientific Scale Anchor")));
