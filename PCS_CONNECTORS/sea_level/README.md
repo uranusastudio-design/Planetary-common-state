@@ -1,34 +1,29 @@
-# Sea Level Connector v0.1
+# Sea Level Connector v1.0
 
 This connector prepares PCS for Global Mean Sea Level data from satellite altimetry.
 
 ## Scope
 
 - Dataset category: Global Mean Sea Level, satellite altimetry.
-- Preferred providers: NASA Sea Level Change / NASA JPL / PO.DAAC, AVISO / CNES, Copernicus Marine Service.
-- Variable: Global Mean Sea Level.
-- Unit: millimeters or meters relative to a reference baseline, depending on the selected provider product.
+- Provider: NOAA Laboratory for Satellite Altimetry (LSA).
+- Variable: Global Mean Sea Level Anomaly.
+- Unit: millimeters relative to the source's 1990 reference.
 - Output: `PCS_ENGINE/input/sea_level_pcs.json`.
 
 ## Current Status
 
-Connector structure implemented v0.1.
+Connector implementation v1.0 uses NOAA LSA's public CSV. Runtime validation
+is required before a release matrix may mark it `CONNECTED`. NOAA describes
+this as an experimental, non-operational product.
 
-Data access is pending unless a real source file is supplied or the NASA PO.DAAC protected endpoint is available with valid Earthdata access.
-
-## Source Candidates
-
-NASA Sea Level Change portal:
+## Source
 
 ```text
-https://sealevel.nasa.gov/understanding-sea-level/key-indicators/global-mean-sea-level/
+https://www.star.nesdis.noaa.gov/socd/lsa/SeaLevelRise/slr/slr_sla_gbl_keep_ref_90.csv
 ```
 
-NASA PO.DAAC protected data file identified by the NASA portal:
-
-```text
-https://archive.podaac.earthdata.nasa.gov/podaac-ops-cumulus-protected/NASA_SSH_GMSL_INDICATOR/NASA_SSH_GMSL_INDICATOR.txt
-```
+Data are distributed at no cost. Publications, presentations, and web pages
+must acknowledge that altimetry data are provided by NOAA LSA.
 
 ## Rules
 

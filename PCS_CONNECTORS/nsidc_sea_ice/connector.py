@@ -16,12 +16,17 @@ from urllib.error import URLError
 from urllib.request import urlopen
 
 
-ARCTIC_DAILY_URL = "https://noaadata.apps.nsidc.org/NOAA/G02135/north/daily/data/N_seaice_extent_daily_v3.0.csv"
-ANTARCTIC_DAILY_URL = "https://noaadata.apps.nsidc.org/NOAA/G02135/south/daily/data/S_seaice_extent_daily_v3.0.csv"
-PROVIDER = "NSIDC"
-DATASET = "Sea Ice Index"
+ARCTIC_DAILY_URL = "https://noaadata.apps.nsidc.org/NOAA/G02135/north/daily/data/N_seaice_extent_daily_v4.0.csv"
+ANTARCTIC_DAILY_URL = "https://noaadata.apps.nsidc.org/NOAA/G02135/south/daily/data/S_seaice_extent_daily_v4.0.csv"
+PROVIDER = "NOAA / NSIDC"
+DATASET = "Sea Ice Index, Version 4 (G02135)"
 UNIT = "million km^2"
-VERSION = "NSIDC Sea Ice connector v1.0"
+VERSION = "NSIDC Sea Ice connector v1.1"
+DATASET_DOI = "https://doi.org/10.7265/a98x-0f50"
+ATTRIBUTION = (
+    "Fetterer, F., Knowles, K., Meier, W. N., Savoie, M., Windnagel, A. K. "
+    "& Stafford, T. (2025). Sea Ice Index (G02135, Version 4). NSIDC."
+)
 DEFAULT_OUTPUT = Path(__file__).resolve().parents[2] / "PCS_ENGINE" / "input" / "nsidc_sea_ice_pcs.json"
 MISSING_MARKERS = {"", "-999", "-999.0", "-999.00", "NaN", "nan", "NA", "N/A", "null"}
 
@@ -41,7 +46,7 @@ def read_text(source: str | Path) -> tuple[str, str]:
         return path.read_text(encoding="utf-8", errors="replace"), str(path)
 
     try:
-        with urlopen(source_text, timeout=30) as response:
+        with urlopen(source_text, timeout=120) as response:
             text = response.read().decode("utf-8", errors="replace")
     except (OSError, URLError) as exc:
         raise DataAccessPending(f"Unable to load NSIDC source: {exc}") from exc
@@ -106,9 +111,9 @@ def make_record(
         "quality": "missing" if value is None else "observed",
         "confidence": "official source record when source data are available",
         "source_url": source_url,
-        "license": "Source-specific terms; see NSIDC dataset documentation",
+        "license": "Use requires dataset citation; see NSIDC data-use documentation",
         "version": VERSION,
-        "notes": "NSIDC Sea Ice Index connector record.",
+        "notes": f"{ATTRIBUTION} DOI: {DATASET_DOI}",
     }
 
 
