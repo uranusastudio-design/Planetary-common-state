@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "pcs-known-object-manifest-v1",
+  "phase": "A",
+  "status": "VALIDATED_ARCHITECTURE",
+  "catalogVersion": "phase-a-architecture-only",
+  "normalizationVersion": "pcs-known-object-normalization-v1",
+  "generatedAt": "2026-08-14",
+  "productionCounts": {"imported": 0, "rejected": 0, "unresolved": 0, "rendered": 0},
+  "sourceCapabilityCount": 6,
+  "validation": {"observatoryTestsPassed": 265, "phaseContractTestsPassed": 6, "onlineCapabilitiesPassed": 6, "report": "test-results/known-astronomical-objects-phase-a/validation-report.json"},
+  "promotionRequires": ["staged catalog checksum", "validation report", "diff report", "human review receipt"],
+  "scientificBoundary": "No Phase B–E object data is included in this architecture baseline"
+}

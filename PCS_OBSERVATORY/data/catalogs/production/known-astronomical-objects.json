@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "pcs-known-astronomical-objects-v1",
+  "catalogVersion": "phase-a-architecture-only",
+  "generatedAt": "2026-08-14",
+  "status": "EMPTY_ARCHITECTURE_BASELINE",
+  "normalizationVersion": "pcs-known-object-normalization-v1",
+  "objectCount": 0,
+  "relationshipCount": 0,
+  "objects": [],
+  "relationships": [],
+  "limitations": [
+    "Phase A establishes architecture only; no astronomical object has been promoted.",
+    "Later phase database counts and renderer LOD counts must be reported separately.",
+    "A staged dataset cannot replace this production file without an approved review receipt."
+  ]
+}

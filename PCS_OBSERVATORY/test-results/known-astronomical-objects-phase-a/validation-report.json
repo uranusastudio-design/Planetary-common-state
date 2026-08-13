@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "pcs-known-object-phase-a-validation-v1",
+  "generatedAt": "2026-08-13T17:41:52.913Z",
+  "phase": "A",
+  "pass": true,
+  "productionCounts": {
+    "imported": 0,
+    "rejected": 0,
+    "unresolved": 0,
+    "rendered": 0
+  },
+  "architectureValidationFixture": {
+    "scope": "NON_PRODUCTION_TEST_FIXTURE",
+    "input": 4,
+    "imported": 2,
+    "rejected": 1,
+    "unresolved": 1
+  },
+  "sourceCapabilityCount": 6,
+  "sourceRegistryChecksum": "be0650a2baad2a8430eecdba4db3b8e52ef3f839766dd538ec4338285a130bf1",
+  "schemaChecksum": "87ac6dad3fae9d0e516962edd70a94b2b4b773ea0c9efb72a9b12e29ff30036e",
+  "capabilities": [
+    {
+      "adapterId": "simbad-tap-v1",
+      "url": "https://simbad.cds.unistra.fr/simbad/sim-tap/capabilities",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "adapterId": "vizier-tap-v1",
+      "url": "https://tapvizier.cds.unistra.fr/TAPVizieR/tap/capabilities",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "adapterId": "ned-tap-v1",
+      "url": "https://ned.ipac.caltech.edu/tap/capabilities",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "adapterId": "heasarc-tap-v1",
+      "url": "https://heasarc.gsfc.nasa.gov/xamin/vo/tap/capabilities",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "adapterId": "nasa-exoplanet-archive-tap-v1",
+      "url": "https://exoplanetarchive.ipac.caltech.edu/TAP/capabilities",
+      "status": 200,
+      "ok": true
+    },
+    {
+      "adapterId": "mast-rest-v1",
+      "url": "https://mast.stsci.edu/api/v0/_services.html",
+      "status": 200,
+      "ok": true
+    }
+  ],
+  "scientificBoundary": "No Phase B-E astronomical object rows were imported or rendered"
+}

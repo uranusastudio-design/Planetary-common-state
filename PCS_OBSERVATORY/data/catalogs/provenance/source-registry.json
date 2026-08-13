@@ -1,0 +1,84 @@
+{
+  "schemaVersion": "pcs-known-object-source-registry-v1",
+  "updatedAt": "2026-08-14",
+  "sources": [
+    {
+      "sourceId": "cds-simbad-tap",
+      "authority": "CDS, Université de Strasbourg / CNRS",
+      "service": "SIMBAD TAP",
+      "endpoint": "https://simbad.cds.unistra.fr/simbad/sim-tap",
+      "protocol": "IVOA TAP",
+      "release": "Live service; query result snapshots must record retrieval date and query checksum",
+      "coordinateFrame": "Source-column dependent; main identifiers and ICRS coordinates require explicit field mapping",
+      "use": "Identity resolution, aliases, coordinates, classifications, bibliography",
+      "retrievedAt": "2026-08-14",
+      "retrievalScope": "Capability metadata only; no production object rows fetched in Phase A",
+      "promotionPolicy": "Snapshot, checksum, normalize, cross-match, validate, human review, then promote"
+    },
+    {
+      "sourceId": "cds-vizier-tap",
+      "authority": "CDS, Université de Strasbourg / CNRS",
+      "service": "VizieR TAP",
+      "endpoint": "https://tapvizier.cds.unistra.fr/TAPVizieR/tap",
+      "protocol": "IVOA TAP",
+      "release": "Catalog-specific; every adapter must pin catalog and release metadata",
+      "coordinateFrame": "Catalog-specific",
+      "use": "Authoritative catalog tables and published measurement metadata",
+      "retrievedAt": "2026-08-14",
+      "retrievalScope": "Capability metadata only; no production object rows fetched in Phase A",
+      "promotionPolicy": "Pin catalog/release/query, retain raw snapshot and checksum, validate, human review, then promote"
+    },
+    {
+      "sourceId": "nasa-ipac-ned-tap",
+      "authority": "NASA/IPAC Extragalactic Database",
+      "service": "NED TAP",
+      "endpoint": "https://ned.ipac.caltech.edu/tap",
+      "protocol": "IVOA TAP",
+      "release": "Live service; query result snapshots must be versioned by retrieval date and checksum",
+      "coordinateFrame": "Source-column dependent; preserve NED reference codes and measurement qualifiers",
+      "use": "External-galaxy identity, redshift, distance and host metadata",
+      "retrievedAt": "2026-08-14",
+      "retrievalScope": "Capability metadata only; no production object rows fetched in Phase A",
+      "promotionPolicy": "Snapshot, preserve original measurement rows, cross-check, human review, then promote"
+    },
+    {
+      "sourceId": "nasa-heasarc-tap",
+      "authority": "NASA HEASARC",
+      "service": "HEASARC Xamin TAP",
+      "endpoint": "https://heasarc.gsfc.nasa.gov/xamin/vo/tap",
+      "protocol": "IVOA TAP",
+      "release": "Catalog-specific; adapter metadata must pin mission catalog/version",
+      "coordinateFrame": "Catalog-specific",
+      "use": "X-ray/gamma-ray sources, compact objects and mission catalog cross-identities",
+      "retrievedAt": "2026-08-14",
+      "retrievalScope": "Capability metadata only; no production object rows fetched in Phase A",
+      "promotionPolicy": "Pin mission catalog/release, preserve flags and uncertainty, cross-match, review, then promote"
+    },
+    {
+      "sourceId": "nasa-exoplanet-archive-tap",
+      "authority": "NASA Exoplanet Science Institute / IPAC",
+      "service": "NASA Exoplanet Archive TAP",
+      "endpoint": "https://exoplanetarchive.ipac.caltech.edu/TAP",
+      "protocol": "IVOA TAP",
+      "release": "Table-specific live archive; snapshots must record retrieval date, query and checksum",
+      "coordinateFrame": "Table-specific; preserve source epoch and catalog identifiers",
+      "use": "Confirmed planets, candidates, stellar hosts, Kepler and TESS identifiers/status",
+      "retrievedAt": "2026-08-14",
+      "retrievalScope": "Capability metadata only; no production object rows fetched in Phase A",
+      "promotionPolicy": "Keep confirmed/candidate/false-positive status distinct; snapshot, validate, review, then promote"
+    },
+    {
+      "sourceId": "stsci-mast-api",
+      "authority": "Space Telescope Science Institute",
+      "service": "MAST API",
+      "endpoint": "https://mast.stsci.edu/api/v0",
+      "protocol": "MAST REST API",
+      "release": "Mission/product specific",
+      "coordinateFrame": "Mission/product specific",
+      "use": "Mission observation metadata and data-product provenance; imagery is never inferred from catalog metadata",
+      "retrievedAt": "2026-08-14",
+      "retrievalScope": "Service metadata only; no production object rows fetched in Phase A",
+      "promotionPolicy": "Pin mission collection/product, license and checksum; validate metadata separately from scientific object identity; human review before promotion"
+    }
+  ]
+}
