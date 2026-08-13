@@ -17,13 +17,18 @@ A headless Chrome runtime bound the four scoped layer records from the local
 Worker. Required console errors, JavaScript exceptions, and network failures
 were all zero in the isolated EARTH connection harness.
 
-## Production preflight
+## Production acceptance
 
-`https://pcs-backend.uranusastudio.workers.dev/api/layers` was reachable, but
-the deployed version still identifies `sea-level` as the NOAA CO-OPS Honolulu
-tide gauge and `sea-ice` as Northern Hemisphere only. Therefore neither local
-release candidate is labelled `CONNECTED` yet. Deploying the Worker is a
-production change and requires explicit human approval.
+`https://pcs-backend.uranusastudio.workers.dev/api/layers` is deployed at
+commit `4e608b2`. Three consecutive endpoint probes and an independent Chrome
+fetch returned NOAA LSA GMSL `LIVE` at 80.98 mm relative to the 1990 reference,
+plus NSIDC v4 Arctic 5.726 and Antarctic 15.971 million km² at 2026-08-12.
+The second request used the versioned cache. Console errors, JavaScript
+exceptions, and required network failures were zero. GMSL and NSIDC are
+therefore `CONNECTED`; residual mapping remains `TBD`.
+
+Confirmed core sources are now four: NASA GISTEMP, NOAA Mauna Loa CO₂, NOAA
+LSA Global Mean Sea Level, and NOAA/NSIDC Sea Ice Index v4.
 
 ## Authentication blockers
 
