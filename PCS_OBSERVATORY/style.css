@@ -89,6 +89,36 @@ select {
   font-weight: 700;
 }
 
+.support-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  margin-top: 6px;
+  padding: 7px 11px;
+  border: 1px solid #41b6f2;
+  border-radius: 7px;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 800;
+  line-height: 1;
+  text-decoration: none;
+  background: #0070ba;
+  box-shadow: 0 6px 18px rgba(0, 112, 186, 0.28);
+  transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease;
+}
+
+.support-button:hover {
+  border-color: #78cff8;
+  background: #005ea6;
+  transform: translateY(-1px);
+}
+
+.support-button:focus-visible {
+  outline: 3px solid rgba(34, 211, 238, 0.45);
+  outline-offset: 3px;
+}
+
 .nav-status {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

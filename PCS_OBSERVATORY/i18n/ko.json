@@ -1,5 +1,6 @@
 {
   "app_title": "행성 공통 상태",
+  "support_pcs": "PayPal로 PCS 후원",
   "pcs_observatory": "PCS 관측소",
   "prototype_pcs_estimate": "PCS 원형 추정값",
   "observation_coverage": "관측 범위",
