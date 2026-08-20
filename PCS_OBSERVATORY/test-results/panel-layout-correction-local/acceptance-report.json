@@ -1,0 +1,961 @@
+{
+  "generatedAt": "2026-08-20T10:59:34.797Z",
+  "url": "http://127.0.0.1:8765/projects/Planetary-common-state/PCS_OBSERVATORY/?v=panel-correction-2",
+  "correctionCheckpoint": "0bcda38e9aca414d555bcdc4d55fb207366b6a4f",
+  "webgl": {
+    "canvas": true,
+    "context": true,
+    "errorPanel": false
+  },
+  "viewports": [
+    {
+      "width": 1920,
+      "height": 1080,
+      "screenshot": "1920-desktop.png",
+      "geometry": {
+        "viewport": {
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": false,
+        "dashboard": {
+          "left": 80,
+          "right": 1840,
+          "top": 870.53125,
+          "bottom": 4298.015625,
+          "width": 1760,
+          "height": 3427.484375
+        },
+        "left": {
+          "left": 80,
+          "right": 513,
+          "top": 870.53125,
+          "bottom": 3315.828125,
+          "width": 433,
+          "height": 2445.296875
+        },
+        "center": {
+          "left": 527,
+          "right": 1393,
+          "top": 870.53125,
+          "bottom": 4298.015625,
+          "width": 866,
+          "height": 3427.484375
+        },
+        "right": {
+          "left": 1407,
+          "right": 1840,
+          "top": 870.53125,
+          "bottom": 2731.3125,
+          "width": 433,
+          "height": 1860.78125
+        },
+        "blue": {
+          "left": 80,
+          "right": 513,
+          "top": 1907.75,
+          "bottom": 3315.828125,
+          "width": 433,
+          "height": 1408.078125
+        },
+        "red": {
+          "left": 80,
+          "right": 1393,
+          "top": 3496.03125,
+          "bottom": 4298.015625,
+          "width": 1313,
+          "height": 801.984375
+        },
+        "yellow": {
+          "left": 80,
+          "right": 1345.84375,
+          "top": 4434.078125,
+          "bottom": 5914.109375,
+          "width": 1265.84375,
+          "height": 1480.03125
+        },
+        "redStyle": {
+          "width": "1313px",
+          "maxWidth": "none",
+          "marginLeft": "-447px"
+        },
+        "timeline": {
+          "left": 527,
+          "right": 1393,
+          "top": 2909.96875,
+          "bottom": 3482.03125,
+          "width": 866,
+          "height": 572.0625
+        },
+        "domains": {
+          "left": 80,
+          "right": 1345.84375,
+          "top": 4312.015625,
+          "bottom": 4420.078125,
+          "width": 1265.84375,
+          "height": 108.0625
+        },
+        "daily": {
+          "left": 1359.84375,
+          "right": 1840,
+          "top": 4312.015625,
+          "bottom": 5914.109375,
+          "width": 480.15625,
+          "height": 1602.09375
+        },
+        "brand": {
+          "left": 24,
+          "right": 441.28125,
+          "top": 23.75,
+          "bottom": 113.9375,
+          "width": 417.28125,
+          "height": 90.1875
+        },
+        "canvasCount": 1,
+        "viewerCount": 1,
+        "audit": {
+          "queueLength": 0,
+          "existingModuleRelocation": false,
+          "responsiveZoneOrder": false,
+          "brandCenterDelta": {
+            "title": 0,
+            "support": 0
+          },
+          "zones": {
+            "blue": {},
+            "red": {},
+            "yellow": {}
+          },
+          "viewportWidth": 1920,
+          "horizontalOverflow": false
+        },
+        "parents": {
+          "satellite": "column right-column",
+          "daily": "bottom-grid",
+          "visitor": "column right-column"
+        }
+      }
+    },
+    {
+      "width": 1728,
+      "height": 1117,
+      "geometry": {
+        "viewport": {
+          "width": 1728,
+          "height": 1117
+        },
+        "overflow": false,
+        "dashboard": {
+          "left": 75.203125,
+          "right": 1652.796875,
+          "top": 828.8125,
+          "bottom": 4299.234375,
+          "width": 1577.59375,
+          "height": 3470.421875
+        },
+        "left": {
+          "left": 75.203125,
+          "right": 462.59375,
+          "top": 828.8125,
+          "bottom": 3287.109375,
+          "width": 387.390625,
+          "height": 2458.296875
+        },
+        "center": {
+          "left": 476.59375,
+          "right": 1251.390625,
+          "top": 828.8125,
+          "bottom": 4299.234375,
+          "width": 774.796875,
+          "height": 3470.421875
+        },
+        "right": {
+          "left": 1265.390625,
+          "right": 1652.796875,
+          "top": 828.8125,
+          "bottom": 2689.59375,
+          "width": 387.40625,
+          "height": 1860.78125
+        },
+        "blue": {
+          "left": 75.203125,
+          "right": 462.59375,
+          "top": 1866.03125,
+          "bottom": 3287.109375,
+          "width": 387.390625,
+          "height": 1421.078125
+        },
+        "red": {
+          "left": 75.203125,
+          "right": 1251.390625,
+          "top": 3475.78125,
+          "bottom": 4299.234375,
+          "width": 1176.1875,
+          "height": 823.453125
+        },
+        "yellow": {
+          "left": 75.203125,
+          "right": 1208.796875,
+          "top": 4435.296875,
+          "bottom": 5915.328125,
+          "width": 1133.59375,
+          "height": 1480.03125
+        },
+        "redStyle": {
+          "width": "1176.19px",
+          "maxWidth": "none",
+          "marginLeft": "-401.391px"
+        },
+        "timeline": {
+          "left": 476.59375,
+          "right": 1251.390625,
+          "top": 2889.71875,
+          "bottom": 3461.78125,
+          "width": 774.796875,
+          "height": 572.0625
+        },
+        "domains": {
+          "left": 75.203125,
+          "right": 1208.796875,
+          "top": 4313.234375,
+          "bottom": 4421.296875,
+          "width": 1133.59375,
+          "height": 108.0625
+        },
+        "daily": {
+          "left": 1222.796875,
+          "right": 1652.796875,
+          "top": 4313.234375,
+          "bottom": 5915.328125,
+          "width": 430,
+          "height": 1602.09375
+        },
+        "brand": {
+          "left": 24,
+          "right": 397.921875,
+          "top": 30.59375,
+          "bottom": 120.78125,
+          "width": 373.921875,
+          "height": 90.1875
+        },
+        "canvasCount": 1,
+        "viewerCount": 1,
+        "audit": {
+          "queueLength": 0,
+          "existingModuleRelocation": false,
+          "responsiveZoneOrder": false,
+          "brandCenterDelta": {
+            "title": 0.0078125,
+            "support": 0.0078125
+          },
+          "zones": {
+            "blue": {},
+            "red": {},
+            "yellow": {}
+          },
+          "viewportWidth": 1728,
+          "horizontalOverflow": false
+        },
+        "parents": {
+          "satellite": "column right-column",
+          "daily": "bottom-grid",
+          "visitor": "column right-column"
+        }
+      }
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "screenshot": "1440-desktop.png",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "overflow": false,
+        "dashboard": {
+          "left": 64.796875,
+          "right": 1375.203125,
+          "top": 759.640625,
+          "bottom": 4040.359375,
+          "width": 1310.40625,
+          "height": 3280.71875
+        },
+        "left": {
+          "left": 64.796875,
+          "right": 385.390625,
+          "top": 759.640625,
+          "bottom": 3315.953125,
+          "width": 320.59375,
+          "height": 2556.3125
+        },
+        "center": {
+          "left": 399.390625,
+          "right": 1040.59375,
+          "top": 759.640625,
+          "bottom": 4040.359375,
+          "width": 641.203125,
+          "height": 3280.71875
+        },
+        "right": {
+          "left": 1054.59375,
+          "right": 1375.203125,
+          "top": 759.640625,
+          "bottom": 2750.6875,
+          "width": 320.609375,
+          "height": 1991.046875
+        },
+        "blue": {
+          "left": 64.796875,
+          "right": 385.390625,
+          "top": 1843.5,
+          "bottom": 3315.953125,
+          "width": 320.59375,
+          "height": 1472.453125
+        },
+        "red": {
+          "left": 64.796875,
+          "right": 1040.59375,
+          "top": 3346.109375,
+          "bottom": 4040.359375,
+          "width": 975.796875,
+          "height": 694.25
+        },
+        "yellow": {
+          "left": 64.796875,
+          "right": 1004.6875,
+          "top": 4173.078125,
+          "bottom": 5649.765625,
+          "width": 939.890625,
+          "height": 1476.6875
+        },
+        "redStyle": {
+          "width": "975.797px",
+          "maxWidth": "none",
+          "marginLeft": "-334.594px"
+        },
+        "timeline": {
+          "left": 399.390625,
+          "right": 1040.59375,
+          "top": 2729.390625,
+          "bottom": 3332.109375,
+          "width": 641.203125,
+          "height": 602.71875
+        },
+        "domains": {
+          "left": 64.796875,
+          "right": 1004.6875,
+          "top": 4054.359375,
+          "bottom": 4159.078125,
+          "width": 939.890625,
+          "height": 104.71875
+        },
+        "daily": {
+          "left": 1018.6875,
+          "right": 1375.203125,
+          "top": 4054.359375,
+          "bottom": 5649.765625,
+          "width": 356.515625,
+          "height": 1595.40625
+        },
+        "brand": {
+          "left": 20.15625,
+          "right": 330.78125,
+          "top": 36.59375,
+          "bottom": 126.78125,
+          "width": 310.625,
+          "height": 90.1875
+        },
+        "canvasCount": 1,
+        "viewerCount": 1,
+        "audit": {
+          "queueLength": 0,
+          "existingModuleRelocation": false,
+          "responsiveZoneOrder": false,
+          "brandCenterDelta": {
+            "title": 0,
+            "support": 0
+          },
+          "zones": {
+            "blue": {},
+            "red": {},
+            "yellow": {}
+          },
+          "viewportWidth": 1440,
+          "horizontalOverflow": false
+        },
+        "parents": {
+          "satellite": "column right-column",
+          "daily": "bottom-grid",
+          "visitor": "column right-column"
+        }
+      }
+    },
+    {
+      "width": 1366,
+      "height": 768,
+      "geometry": {
+        "viewport": {
+          "width": 1366,
+          "height": 768
+        },
+        "overflow": false,
+        "dashboard": {
+          "left": 61.46875,
+          "right": 1304.53125,
+          "top": 739.203125,
+          "bottom": 4022.078125,
+          "width": 1243.0625,
+          "height": 3282.875
+        },
+        "left": {
+          "left": 61.46875,
+          "right": 365.234375,
+          "top": 739.203125,
+          "bottom": 3325.765625,
+          "width": 303.765625,
+          "height": 2586.5625
+        },
+        "center": {
+          "left": 379.234375,
+          "right": 986.765625,
+          "top": 739.203125,
+          "bottom": 4022.078125,
+          "width": 607.53125,
+          "height": 3282.875
+        },
+        "right": {
+          "left": 1000.765625,
+          "right": 1304.53125,
+          "top": 739.203125,
+          "bottom": 2743.90625,
+          "width": 303.765625,
+          "height": 2004.703125
+        },
+        "blue": {
+          "left": 61.46875,
+          "right": 365.234375,
+          "top": 1805.390625,
+          "bottom": 3325.765625,
+          "width": 303.765625,
+          "height": 1520.375
+        },
+        "red": {
+          "left": 61.46875,
+          "right": 986.765625,
+          "top": 3330.96875,
+          "bottom": 4022.078125,
+          "width": 925.296875,
+          "height": 691.109375
+        },
+        "yellow": {
+          "left": 61.46875,
+          "right": 952.53125,
+          "top": 4153.65625,
+          "bottom": 5648.75,
+          "width": 891.0625,
+          "height": 1495.09375
+        },
+        "redStyle": {
+          "width": "925.297px",
+          "maxWidth": "none",
+          "marginLeft": "-317.766px"
+        },
+        "timeline": {
+          "left": 379.234375,
+          "right": 986.765625,
+          "top": 2715.390625,
+          "bottom": 3316.96875,
+          "width": 607.53125,
+          "height": 601.578125
+        },
+        "domains": {
+          "left": 61.46875,
+          "right": 952.53125,
+          "top": 4036.078125,
+          "bottom": 4139.65625,
+          "width": 891.0625,
+          "height": 103.578125
+        },
+        "daily": {
+          "left": 966.53125,
+          "right": 1304.53125,
+          "top": 4036.078125,
+          "bottom": 5648.75,
+          "width": 338,
+          "height": 1612.671875
+        },
+        "brand": {
+          "left": 19.109375,
+          "right": 313.5,
+          "top": 36.59375,
+          "bottom": 126.78125,
+          "width": 294.390625,
+          "height": 90.1875
+        },
+        "canvasCount": 1,
+        "viewerCount": 1,
+        "audit": {
+          "queueLength": 0,
+          "existingModuleRelocation": false,
+          "responsiveZoneOrder": false,
+          "brandCenterDelta": {
+            "title": 0.0078125,
+            "support": 0
+          },
+          "zones": {
+            "blue": {},
+            "red": {},
+            "yellow": {}
+          },
+          "viewportWidth": 1366,
+          "horizontalOverflow": false
+        },
+        "parents": {
+          "satellite": "column right-column",
+          "daily": "bottom-grid",
+          "visitor": "column right-column"
+        }
+      }
+    },
+    {
+      "width": 1024,
+      "height": 768,
+      "geometry": {
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "overflow": false,
+        "dashboard": {
+          "left": 46.0625,
+          "right": 977.921875,
+          "top": 905.828125,
+          "bottom": 9811.109375,
+          "width": 931.859375,
+          "height": 8905.28125
+        },
+        "left": {
+          "left": 46.0625,
+          "right": 977.921875,
+          "top": 7360.359375,
+          "bottom": 8059.9375,
+          "width": 931.859375,
+          "height": 699.578125
+        },
+        "center": {
+          "left": 46.0625,
+          "right": 977.921875,
+          "top": 2262.75,
+          "bottom": 5812.84375,
+          "width": 931.859375,
+          "height": 3550.09375
+        },
+        "right": {
+          "left": 46.0625,
+          "right": 977.921875,
+          "top": 8073.9375,
+          "bottom": 9811.109375,
+          "width": 931.859375,
+          "height": 1737.171875
+        },
+        "blue": {
+          "left": 46.0625,
+          "right": 977.921875,
+          "top": 905.828125,
+          "bottom": 2248.75,
+          "width": 931.859375,
+          "height": 1342.921875
+        },
+        "red": {
+          "left": 46.0625,
+          "right": 977.921875,
+          "top": 5010.765625,
+          "bottom": 5812.84375,
+          "width": 931.859375,
+          "height": 802.078125
+        },
+        "yellow": {
+          "left": 46.0625,
+          "right": 977.921875,
+          "top": 5826.84375,
+          "bottom": 7346.359375,
+          "width": 931.859375,
+          "height": 1519.515625
+        },
+        "redStyle": {
+          "width": "931.859px",
+          "maxWidth": "100%",
+          "marginLeft": "0px"
+        },
+        "timeline": {
+          "left": 46.0625,
+          "right": 977.921875,
+          "top": 4405.21875,
+          "bottom": 4996.765625,
+          "width": 931.859375,
+          "height": 591.546875
+        },
+        "domains": {
+          "left": 46.0625,
+          "right": 977.921875,
+          "top": 9825.109375,
+          "bottom": 9926.65625,
+          "width": 931.859375,
+          "height": 101.546875
+        },
+        "daily": {
+          "left": 46.0625,
+          "right": 977.921875,
+          "top": 9940.65625,
+          "bottom": 10058.65625,
+          "width": 931.859375,
+          "height": 118
+        },
+        "brand": {
+          "left": 14.328125,
+          "right": 1009.671875,
+          "top": 10,
+          "bottom": 100.1875,
+          "width": 995.34375,
+          "height": 90.1875
+        },
+        "canvasCount": 1,
+        "viewerCount": 1,
+        "audit": {
+          "queueLength": 0,
+          "existingModuleRelocation": false,
+          "responsiveZoneOrder": true,
+          "brandCenterDelta": {
+            "title": 0,
+            "support": 0
+          },
+          "zones": {
+            "blue": {},
+            "red": {},
+            "yellow": {}
+          },
+          "viewportWidth": 1024,
+          "horizontalOverflow": false
+        },
+        "parents": {
+          "satellite": "column right-column",
+          "daily": "bottom-grid",
+          "visitor": "column right-column"
+        }
+      }
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "mobile": true,
+      "screenshot": "390-mobile.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "overflow": false,
+        "dashboard": {
+          "left": 10,
+          "right": 380,
+          "top": 1421.703125,
+          "bottom": 12939.015625,
+          "width": 370,
+          "height": 11517.3125
+        },
+        "left": {
+          "left": 10,
+          "right": 380,
+          "top": 10105.46875,
+          "bottom": 10987.6875,
+          "width": 370,
+          "height": 882.21875
+        },
+        "center": {
+          "left": 10,
+          "right": 380,
+          "top": 2984.265625,
+          "bottom": 7279.859375,
+          "width": 370,
+          "height": 4295.59375
+        },
+        "right": {
+          "left": 10,
+          "right": 380,
+          "top": 11001.6875,
+          "bottom": 12939.015625,
+          "width": 370,
+          "height": 1937.328125
+        },
+        "blue": {
+          "left": 10,
+          "right": 380,
+          "top": 1421.703125,
+          "bottom": 2970.265625,
+          "width": 370,
+          "height": 1548.5625
+        },
+        "red": {
+          "left": 10,
+          "right": 380,
+          "top": 6272.625,
+          "bottom": 7279.859375,
+          "width": 370,
+          "height": 1007.234375
+        },
+        "yellow": {
+          "left": 10,
+          "right": 380,
+          "top": 7293.859375,
+          "bottom": 10091.46875,
+          "width": 370,
+          "height": 2797.609375
+        },
+        "redStyle": {
+          "width": "370px",
+          "maxWidth": "100%",
+          "marginLeft": "0px"
+        },
+        "timeline": {
+          "left": 10,
+          "right": 380,
+          "top": 5258.53125,
+          "bottom": 6258.625,
+          "width": 370,
+          "height": 1000.09375
+        },
+        "domains": {
+          "left": 10,
+          "right": 380,
+          "top": 12953.015625,
+          "bottom": 13054.5625,
+          "width": 370,
+          "height": 101.546875
+        },
+        "daily": {
+          "left": 10,
+          "right": 380,
+          "top": 13068.5625,
+          "bottom": 13186.5625,
+          "width": 370,
+          "height": 118
+        },
+        "brand": {
+          "left": 10,
+          "right": 380,
+          "top": 10,
+          "bottom": 100.1875,
+          "width": 370,
+          "height": 90.1875
+        },
+        "canvasCount": 1,
+        "viewerCount": 1,
+        "audit": {
+          "queueLength": 0,
+          "existingModuleRelocation": false,
+          "responsiveZoneOrder": true,
+          "brandCenterDelta": {
+            "title": 0,
+            "support": 0
+          },
+          "zones": {
+            "blue": {},
+            "red": {},
+            "yellow": {}
+          },
+          "viewportWidth": 390,
+          "horizontalOverflow": false
+        },
+        "parents": {
+          "satellite": "column right-column",
+          "daily": "bottom-grid",
+          "visitor": "column right-column"
+        }
+      }
+    }
+  ],
+  "interactions": {
+    "queue": {
+      "length": 2,
+      "analyzeDisabled": false,
+      "status": "INPUTS QUEUED / ANALYSIS PIPELINE PENDING"
+    },
+    "toolbar": {
+      "activeRegionId": "global",
+      "viewerMode": "normal",
+      "viewerCount": 1,
+      "cesiumCanvasCount": 1,
+      "camera": {
+        "positionWC": {
+          "x": -17093307.503736794,
+          "y": 29606477.065870482,
+          "z": 12428301.087598817
+        },
+        "heading": 6.283185307179586,
+        "pitch": -1.5707963267948966,
+        "roll": 0,
+        "height": 30000000.000000007
+      },
+      "cameraPreservationResults": [],
+      "markers": [],
+      "activeLayers": []
+    },
+    "deepSpace": {
+      "open": true,
+      "canvasCount": 1
+    },
+    "earth": {
+      "activeRegionId": "global",
+      "viewerMode": "normal",
+      "viewerCount": 1,
+      "cesiumCanvasCount": 1,
+      "camera": {
+        "positionWC": {
+          "x": 31902043.58182074,
+          "y": 2399779.451205901,
+          "z": 5840029.458289051
+        },
+        "heading": 6.283185307179586,
+        "pitch": -1.5707963267948966,
+        "roll": 0,
+        "height": 26143396.00287761
+      },
+      "cameraPreservationResults": [],
+      "markers": [],
+      "activeLayers": []
+    }
+  },
+  "unexpectedRuntimeErrors": [],
+  "optionalRuntimeErrors": [
+    "[PCS_OBSERVATORY] historical status initialization failed: TypeError: Failed to fetch\n    at loadHistoryStatus (http://127.0.0.1:8765/projects/Planetary-common-state/PCS_OBSERVATORY/app.js?v=20260801-release-center-1:3097:26)\n    at runSafeAsync (http://127.0.0.1:8765/projects/Planetary-common-state/PCS_OBSERVATORY/app.js?v=20260801-release-center-1:3811:11)\n    at initializeHistoricalMode (http://127.0.0.1:8765/projects/Planetary-common-state/PCS_OBSERVATORY/app.js?v=20260801-release-center-1:3247:8)\n    at runSafe (http://127.0.0.1:8765/projects/Planetary-common-state/PCS_OBSERVATORY/app.js?v=20260801-release-center-1:3803:5)\n    at initializeApp (http://127.0.0.1:8765/projects/Planetary-common-state/PCS_OBSERVATORY/app.js?v=20260801-release-center-1:5331:3)",
+    "[PCS_OBSERVATORY] Evidence Explorer event loading failed: TypeError: Failed to fetch\n    at loadEvidenceExplorer (http://127.0.0.1:8765/projects/Planetary-common-state/PCS_OBSERVATORY/app.js?v=20260801-release-center-1:5235:26)\n    at http://127.0.0.1:8765/projects/Planetary-common-state/PCS_OBSERVATORY/app.js?v=20260801-release-center-1:5336:63\n    at runSafeAsync (http://127.0.0.1:8765/projects/Planetary-common-state/PCS_OBSERVATORY/app.js?v=20260801-release-center-1:3811:11)\n    at initializeApp (http://127.0.0.1:8765/projects/Planetary-common-state/PCS_OBSERVATORY/app.js?v=20260801-release-center-1:5336:9)"
+  ],
+  "optionalResourceErrors": [
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/regional/observation?region=global"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/health/openweather"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/history/status"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/layers"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/register"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/stats"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/locations"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/analytics?range=24h"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/domain-readiness"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/evidence-ledger"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/events?limit=20"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/mass-gatherings"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/daily-brief"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/system-status"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/evidence-explorer"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/domain-readiness"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/events?limit=20"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/evidence-ledger"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/mass-gatherings"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/daily-brief"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/system-status"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/domain-readiness"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/events?limit=20"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/evidence-ledger"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/mass-gatherings"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/daily-brief"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/system-status"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/ping"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/stats"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/astronomy/planet-image/mars"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/astronomy/body/mars"
+    }
+  ],
+  "unexpectedResourceErrors": []
+}

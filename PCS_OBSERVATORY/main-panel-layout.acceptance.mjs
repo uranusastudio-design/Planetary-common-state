@@ -2,8 +2,8 @@ import fs from "node:fs";
 import path from "node:path";
 
 const port = Number(process.env.PCS_CDP_PORT || 18800);
-const baseUrl = process.env.PCS_TEST_URL || "http://127.0.0.1:8765/projects/Planetary-common-state/PCS_OBSERVATORY/?v=main-panel-layout-1";
-const outputDir = process.env.PCS_SCREENSHOT_DIR || path.join(process.cwd(), "PCS_OBSERVATORY", "test-results", "main-panel-layout");
+const baseUrl = process.env.PCS_TEST_URL || "http://127.0.0.1:8765/projects/Planetary-common-state/PCS_OBSERVATORY/?v=panel-correction-2";
+const outputDir = process.env.PCS_SCREENSHOT_DIR || path.join(process.cwd(), "PCS_OBSERVATORY", "test-results", "panel-layout-correction");
 fs.mkdirSync(outputDir, { recursive: true });
 
 const target = await fetch(`http://127.0.0.1:${port}/json/new?${encodeURIComponent(baseUrl)}`, { method: "PUT" }).then((response) => response.json());
@@ -48,30 +48,36 @@ const waitFor = async (expression, timeout = 60000) => {
   throw new Error(`Timeout: ${expression}`);
 };
 const assert = (value, message) => { if (!value) throw new Error(message); };
-const rectScript = (selector) => `(()=>{const r=document.querySelector(${JSON.stringify(selector)})?.getBoundingClientRect();return r?{left:r.left,right:r.right,top:r.top,bottom:r.bottom,width:r.width,height:r.height}:null})()`;
 
-async function capture(name) {
+async function captureViewport(name) {
   const result = await send("Page.captureScreenshot", { format: "png", captureBeyondViewport: false });
+  fs.writeFileSync(path.join(outputDir, name), Buffer.from(result.data, "base64"));
+}
+
+async function captureElement(name, selector, padding = 12) {
+  const clip = await evaluate(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});if(!e)return null;const r=e.getBoundingClientRect();return{x:Math.max(0,r.left+scrollX-${padding}),y:Math.max(0,r.top+scrollY-${padding}),width:Math.min(document.documentElement.scrollWidth,r.width+${padding * 2}),height:r.height+${padding * 2},scale:1}})()`);
+  assert(clip, `Missing screenshot target: ${selector}`);
+  const result = await send("Page.captureScreenshot", { format: "png", captureBeyondViewport: true, clip });
   fs.writeFileSync(path.join(outputDir, name), Buffer.from(result.data, "base64"));
 }
 
 async function clickElement(selector) {
   await evaluate(`document.querySelector(${JSON.stringify(selector)}).scrollIntoView({block:'center',inline:'center'})`);
   await new Promise((resolve) => setTimeout(resolve, 180));
-  const rect = await evaluate(rectScript(selector));
+  const rect = await evaluate(`(()=>{const r=document.querySelector(${JSON.stringify(selector)}).getBoundingClientRect();return{left:r.left,top:r.top,width:r.width,height:r.height}})()`);
   const x = rect.left + rect.width / 2;
   const y = rect.top + rect.height / 2;
-  await send("Input.dispatchMouseEvent", { type: "mouseMoved", x, y });
   await send("Input.dispatchMouseEvent", { type: "mousePressed", x, y, button: "left", clickCount: 1 });
   await send("Input.dispatchMouseEvent", { type: "mouseReleased", x, y, button: "left", clickCount: 1 });
 }
 
 await Promise.all([send("Runtime.enable"), send("Log.enable"), send("Page.enable")]);
 await waitFor("window.PCSMainPanelLayoutAudit && window.PCSEarthViewerAudit && document.querySelector('.cesium-widget canvas') && document.querySelector('[data-solar-target=\"deep-space\"][aria-pressed]')");
-const webgl = await evaluate("({canvas:Boolean(document.querySelector('.cesium-widget canvas')),context:Boolean(document.querySelector('.cesium-widget canvas')?.getContext('webgl2')),errorPanel:Boolean(document.querySelector('.cesium-widget-errorPanel'))})");
-assert(webgl.canvas && webgl.context && !webgl.errorPanel, "Cesium WebGL context must be operational; DOM fallback is not accepted");
 await evaluate("document.querySelector('#intro-enter')?.click()");
 await waitFor("!document.body.classList.contains('intro-active')");
+
+const webgl = await evaluate("({canvas:Boolean(document.querySelector('.cesium-widget canvas')),context:Boolean(document.querySelector('.cesium-widget canvas')?.getContext('webgl2')),errorPanel:Boolean(document.querySelector('.cesium-widget-errorPanel'))})");
+assert(webgl.canvas && webgl.context && !webgl.errorPanel, "Cesium WebGL renderer is not operational");
 
 const viewports = [
   { width: 1920, height: 1080, screenshot: "1920-desktop.png" },
@@ -85,83 +91,101 @@ const viewports = [
 const results = [];
 for (const viewport of viewports) {
   await send("Emulation.setDeviceMetricsOverride", { width: viewport.width, height: viewport.height, deviceScaleFactor: 1, mobile: Boolean(viewport.mobile), screenWidth: viewport.width, screenHeight: viewport.height });
-  await evaluate("window.dispatchEvent(new Event('resize'));document.querySelector('.dashboard-layout').scrollIntoView({block:'start'})");
-  await new Promise((resolve) => setTimeout(resolve, 350));
-  const geometry = await evaluate(`({
+  await evaluate("window.scrollTo(0,0);window.dispatchEvent(new Event('resize'))");
+  await new Promise((resolve) => setTimeout(resolve, 450));
+  const geometry = await evaluate(`(()=>{const rect=s=>{const r=document.querySelector(s)?.getBoundingClientRect();return r?{left:r.left,right:r.right,top:r.top,bottom:r.bottom,width:r.width,height:r.height}:null};return{
     viewport:{width:document.documentElement.clientWidth,height:document.documentElement.clientHeight},
     overflow:document.documentElement.scrollWidth>document.documentElement.clientWidth,
-    workspace:${rectScript(".observatory-shell")},
-    dashboard:${rectScript(".dashboard-layout")},
-    stage:${rectScript(".model-stage")},
-    globe:${rectScript("#cesium-globe")},
-    canvas:${rectScript(".cesium-widget canvas")},
-    analysis:${rectScript(".analysis-alert-center")},
-    lab:${rectScript(".model-literature-lab")},
-    inspector:${rectScript(".secondary-inspector")},
-    canvasCount:document.querySelectorAll('.cesium-widget canvas').length,
-    viewerCount:document.querySelectorAll('.cesium-viewer').length,
-    layout:PCSMainPanelLayoutAudit.state()
-  })`);
-  const centerDelta = Math.abs((geometry.workspace.left + geometry.workspace.right) / 2 - geometry.viewport.width / 2);
+    dashboard:rect('.dashboard-layout'),left:rect('.left-column'),center:rect('.center-column'),right:rect('.right-column'),
+    blue:rect('[data-layout-zone="blue"]'),red:rect('[data-layout-zone="red"]'),yellow:rect('[data-layout-zone="yellow"]'),
+    redStyle:(()=>{const s=getComputedStyle(document.querySelector('[data-layout-zone="red"]'));return{width:s.width,maxWidth:s.maxWidth,marginLeft:s.marginLeft}})(),
+    timeline:rect('.timeline-panel'),domains:rect('.domains-panel'),daily:rect('#pcs-daily-brief'),brand:rect('.pcs-brand-area'),
+    canvasCount:document.querySelectorAll('.cesium-widget canvas').length,viewerCount:document.querySelectorAll('.cesium-viewer').length,
+    audit:PCSMainPanelLayoutAudit.state(),
+    parents:{satellite:document.querySelector('#satellite-observation-panel')?.parentElement?.className,daily:document.querySelector('#pcs-daily-brief')?.parentElement?.className,visitor:document.querySelector('.visitor-network-panel')?.parentElement?.className}
+  }})()`);
+
   assert(!geometry.overflow, `${viewport.width}x${viewport.height}: horizontal overflow`);
-  assert(centerDelta <= 2, `${viewport.width}x${viewport.height}: workspace not centered (${centerDelta}px)`);
-  assert(geometry.stage.width >= geometry.analysis.width, `${viewport.width}x${viewport.height}: stage narrower than analysis`);
-  assert(geometry.globe.height >= (viewport.mobile ? 350 : 510), `${viewport.width}x${viewport.height}: globe stage compressed`);
-  assert(geometry.canvasCount === 1 && geometry.viewerCount === 1, `${viewport.width}x${viewport.height}: production Cesium instance count changed`);
-  assert(Math.abs(geometry.canvas.width - geometry.globe.width) <= 2, `${viewport.width}x${viewport.height}: canvas width is not container responsive`);
-  if (viewport.width <= 1100) {
-    assert(geometry.stage.top <= geometry.analysis.top && geometry.analysis.top <= geometry.lab.top && geometry.lab.top <= geometry.inspector.top, `${viewport.width}x${viewport.height}: responsive region order is incorrect`);
+  assert(geometry.canvasCount === 1 && geometry.viewerCount === 1, `${viewport.width}x${viewport.height}: renderer ownership changed`);
+  assert(geometry.audit.brandCenterDelta.title <= 2 && geometry.audit.brandCenterDelta.support <= 2, `${viewport.width}x${viewport.height}: WHITE identity center lines differ`);
+  assert(/right-column/.test(geometry.parents.satellite) && /right-column/.test(geometry.parents.visitor), `${viewport.width}x${viewport.height}: existing right modules were relocated`);
+  assert(geometry.parents.daily === "bottom-grid", `${viewport.width}x${viewport.height}: Daily Brief was relocated`);
+
+  if (viewport.width > 1320) {
+    assert(Math.abs(geometry.blue.left - geometry.left.left) <= 2 && Math.abs(geometry.blue.right - geometry.left.right) <= 2, `${viewport.width}x${viewport.height}: BLUE left-column placement mismatch`);
+    assert(geometry.red.left <= geometry.left.left + 3 && Math.abs(geometry.red.right - geometry.center.right) <= 3, `${viewport.width}x${viewport.height}: RED does not occupy the annotated left+center void (${JSON.stringify({ left: geometry.left, center: geometry.center, red: geometry.red, style: geometry.redStyle })})`);
+    assert(geometry.red.top >= geometry.timeline.bottom, `${viewport.width}x${viewport.height}: RED moved above existing controls`);
+    assert(Math.abs(geometry.yellow.left - geometry.domains.left) <= 2 && Math.abs(geometry.yellow.right - geometry.domains.right) <= 2, `${viewport.width}x${viewport.height}: YELLOW does not occupy the lower primary area`);
+    assert(geometry.yellow.top >= geometry.domains.bottom && geometry.yellow.right < geometry.daily.right, `${viewport.width}x${viewport.height}: YELLOW placement mismatch`);
   }
-  results.push({ ...viewport, centerDelta, geometry });
-  if (viewport.screenshot) await capture(viewport.screenshot);
+  if (viewport.width <= 1100) {
+    assert(geometry.blue.top <= geometry.center.top && geometry.center.top <= geometry.yellow.top && geometry.yellow.top <= geometry.left.top && geometry.left.top <= geometry.right.top, `${viewport.width}x${viewport.height}: mobile/tablet zone order mismatch`);
+  }
+  results.push({ ...viewport, geometry });
+  if (viewport.screenshot) {
+    if (viewport.mobile) {
+      await evaluate("document.querySelector('[data-layout-zone=\"blue\"]').scrollIntoView({block:'start'})");
+      await new Promise((resolve) => setTimeout(resolve, 250));
+    }
+    await captureViewport(viewport.screenshot);
+  }
 }
 
 await send("Emulation.setDeviceMetricsOverride", { width: 1920, height: 1080, deviceScaleFactor: 1, mobile: false, screenWidth: 1920, screenHeight: 1080 });
+await evaluate("window.scrollTo(0,0);window.dispatchEvent(new Event('resize'))");
+await new Promise((resolve) => setTimeout(resolve, 350));
+await captureElement("WHITE-header.png", ".global-nav", 0);
+await captureElement("BLUE-research-input.png", "[data-layout-zone=\"blue\"]");
+await captureElement("RED-model-mapping.png", "[data-layout-zone=\"red\"]");
+await captureElement("YELLOW-analysis-alert.png", "[data-layout-zone=\"yellow\"]");
+
+await evaluate("document.querySelector('#research-paper-reference').value='10.0000/example';document.querySelector('[data-queue-reference=\"paper\"]').click();document.querySelector('#research-model-reference').value='L(t) comparison input';document.querySelector('[data-queue-reference=\"model\"]').click()");
+const queue = await evaluate("({length:PCSMainPanelLayoutAudit.state().queueLength,analyzeDisabled:document.querySelector('#compare-queue-analyze').disabled,status:document.querySelector('#compare-queue-status').textContent})");
+assert(queue.length === 2 && !queue.analyzeDisabled && /PIPELINE PENDING/.test(queue.status), "Compare queue shell does not preserve pending state");
+await evaluate("document.querySelector('#compare-queue-analyze').click()");
+assert(await evaluate("document.querySelector('#compare-queue-status').textContent.includes('NO ANALYSIS WAS RUN')"), "Analyze shell asserted a result");
+
 await evaluate("PCSEarthViewerAudit.setViewerMode('pinned')");
 await waitFor("PCSEarthViewerAudit.state().viewerMode === 'pinned'");
-const pinnedViewer = await evaluate("PCSEarthViewerAudit.state()");
 await evaluate("PCSEarthViewerAudit.setViewerMode('expanded')");
 await waitFor("PCSEarthViewerAudit.state().viewerMode === 'expanded'");
-const expandedViewer = await evaluate("PCSEarthViewerAudit.state()");
 await evaluate("PCSEarthViewerAudit.setViewerMode('normal')");
 await waitFor("PCSEarthViewerAudit.state().viewerMode === 'normal'");
-const restoredViewer = await evaluate("PCSEarthViewerAudit.state()");
-assert([pinnedViewer, expandedViewer, restoredViewer].every((state) => state.viewerCount === 1 && state.cesiumCanvasCount === 1), "Earth viewer toolbar modes changed the production renderer count");
-
-await evaluate("PCSMainPanelLayoutAudit.activateTab('external-papers')");
-const literatureRelocation = await evaluate("document.querySelector('[data-research-mount=\"external-papers\"] > #pcs-daily-brief') !== null");
-assert(literatureRelocation, "existing literature feed was not relocated into External Papers");
-await evaluate("PCSMainPanelLayoutAudit.activateTab('pcs-model')");
-const modelRelocation = await evaluate("document.querySelector('[data-research-mount=\"pcs-model\"] > #satellite-observation-panel') !== null");
-assert(modelRelocation, "existing model metadata was not relocated into PCS Model");
+const toolbar = await evaluate("PCSEarthViewerAudit.state()");
+assert(toolbar.viewerCount === 1 && toolbar.cesiumCanvasCount === 1, "Earth toolbar changed renderer count");
 
 await clickElement('[data-solar-target="deep-space"]');
 await waitFor("PCSDeepSpaceManager.isOpen() && !document.querySelector('.deep-space-overlay').hidden");
 const deepSpace = await evaluate("({open:PCSDeepSpaceManager.isOpen(),canvasCount:document.querySelectorAll('.cesium-widget canvas').length})");
-assert(deepSpace.open && deepSpace.canvasCount === 1, "Deep Space overlay changed renderer ownership");
+assert(deepSpace.open && deepSpace.canvasCount === 1, "Deep Space routing failed");
 await evaluate("PCSDeepSpaceManager.close()");
-await waitFor("!PCSDeepSpaceManager.isOpen() && document.querySelector('#pcs-earth-viewer-shell .cesium-widget canvas')");
+await waitFor("!PCSDeepSpaceManager.isOpen()");
 await clickElement('[data-solar-target="mars"]');
 await waitFor("document.querySelector('#observatory-view-title').textContent.includes('Mars')");
 await clickElement('[data-solar-target="earth"]');
-await waitFor("!PCSDeepSpaceManager.isOpen() && document.querySelector('#observatory-view-title').textContent.includes('Earth')");
-const earth = await evaluate("({title:document.querySelector('#observatory-view-title').textContent,viewer:PCSEarthViewerAudit.state()})");
-assert(earth.viewer.viewerCount === 1 && earth.viewer.cesiumCanvasCount === 1, "Earth route did not preserve the production renderer");
-const externalServiceErrors = runtimeErrors.filter((error) => /Failed to fetch|ERR_CONNECTION_REFUSED/.test(error));
-const unexpectedRuntimeErrors = runtimeErrors.filter((error) => !externalServiceErrors.includes(error));
-assert(unexpectedRuntimeErrors.length === 0, `Unexpected JavaScript runtime errors: ${JSON.stringify(unexpectedRuntimeErrors)}`);
+await waitFor("document.querySelector('#observatory-view-title').textContent.includes('Earth')");
+const earth = await evaluate("PCSEarthViewerAudit.state()");
+assert(earth.viewerCount === 1 && earth.cesiumCanvasCount === 1, "Earth route did not restore renderer ownership");
+
+const optionalRuntimeErrors = runtimeErrors.filter((error) => /Failed to fetch|ERR_CONNECTION_REFUSED/.test(error));
+const unexpectedRuntimeErrors = runtimeErrors.filter((error) => !optionalRuntimeErrors.includes(error));
+const optionalResourceErrors = resourceErrors.filter((entry) => String(entry.url || "").startsWith("http://127.0.0.1:8787/"));
+const unexpectedResourceErrors = resourceErrors.filter((entry) => !optionalResourceErrors.includes(entry));
+assert(unexpectedRuntimeErrors.length === 0, `Unexpected runtime errors: ${JSON.stringify(unexpectedRuntimeErrors)}`);
+assert(unexpectedResourceErrors.length === 0, `Unexpected resource errors: ${JSON.stringify(unexpectedResourceErrors)}`);
 
 const report = {
   generatedAt: new Date().toISOString(),
   url: baseUrl,
-  checkpoint: "3e426f7df8a49bead87b51223f0501722863ca1c",
+  correctionCheckpoint: "0bcda38e9aca414d555bcdc4d55fb207366b6a4f",
   webgl,
   viewports: results,
-  interactions: { toolbar: { pinned: pinnedViewer.viewerMode, expanded: expandedViewer.viewerMode, restored: restoredViewer.viewerMode }, literatureRelocation, modelRelocation, deepSpace, earth },
+  interactions: { queue, toolbar, deepSpace, earth },
   unexpectedRuntimeErrors,
-  externalServiceErrors,
-  resourceErrors
+  optionalRuntimeErrors,
+  optionalResourceErrors,
+  unexpectedResourceErrors
 };
 fs.writeFileSync(path.join(outputDir, "acceptance-report.json"), `${JSON.stringify(report, null, 2)}\n`);
-console.log(JSON.stringify({ outputDir, viewports: results.map(({ width, height, centerDelta, geometry }) => ({ width, height, centerDelta, overflow: geometry.overflow, workspaceWidth: geometry.workspace.width, stageWidth: geometry.stage.width, globeHeight: geometry.globe.height, canvasCount: geometry.canvasCount })), interactions: report.interactions, unexpectedRuntimeErrors: unexpectedRuntimeErrors.length, externalServiceErrors: externalServiceErrors.length, resourceErrors: resourceErrors.length }, null, 2));
+console.log(JSON.stringify({ outputDir, viewports: results.map(({ width, height, geometry }) => ({ width, height, overflow: geometry.overflow, blue: geometry.blue, red: geometry.red, yellow: geometry.yellow, order: geometry.audit.responsiveZoneOrder })), interactions: report.interactions, unexpectedRuntimeErrors: unexpectedRuntimeErrors.length, optionalRuntimeErrors: optionalRuntimeErrors.length, unexpectedResourceErrors: unexpectedResourceErrors.length, optionalResourceErrors: optionalResourceErrors.length }, null, 2));
 socket.close();

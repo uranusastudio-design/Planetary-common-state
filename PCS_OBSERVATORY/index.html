@@ -6,7 +6,7 @@
     <title>PCS Observatory | Uranus A Studio</title>
     <link rel="icon" href="./assets/uranus-a-studio-logo.jpeg">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cesium@1.120.0/Build/Cesium/Widgets/widgets.css">
-    <link rel="stylesheet" href="./style.css?v=2.1.0-release-banner">
+    <link rel="stylesheet" href="./style.css?v=panel-layout-correction-4">
     <link rel="stylesheet" href="./intro-screen.css">
     <script>
       window.CESIUM_BASE_URL = "https://cdn.jsdelivr.net/npm/cesium@1.120.0/Build/Cesium/";
@@ -44,7 +44,7 @@
     </main>
 
     <nav class="global-nav" aria-label="PCS Observatory global navigation" data-observatory-content inert aria-hidden="true">
-      <div class="nav-brand">
+      <div class="nav-brand pcs-brand-area">
         <strong data-i18n="pcs_observatory">PCS Observatory</strong>
         <span data-i18n="app_title">Planetary Common State</span>
         <a class="support-button" href="https://www.paypal.com/ncp/payment/6ZVVA5WATVUF4" target="_blank" rel="noopener noreferrer" data-i18n="support_pcs" data-i18n-aria-label="support_pcs">Support PCS via PayPal</a>
@@ -188,13 +188,8 @@
         </script>
       </section>
 
-      <section class="dashboard-layout" data-pcs-research-grid aria-label="PCS planetary monitoring dashboard">
-        <aside class="column left-column secondary-inspector" aria-label="Secondary inspector and source metadata">
-          <header class="research-zone-heading secondary-zone-heading">
-            <span class="panel-label">Secondary Inspector</span>
-            <h2>State, Source &amp; Metadata</h2>
-            <p>Runtime identity, freshness, coverage, connected sources, and supporting metadata.</p>
-          </header>
+      <section class="dashboard-layout" data-pcs-correction-layout aria-label="PCS planetary monitoring dashboard">
+        <aside class="column left-column" aria-label="PCS estimate, source status, and research input">
           <article class="panel hero-panel" data-live-context>
             <span id="pcs-state-label" class="panel-label" data-i18n="prototype_pcs_estimate">Prototype PCS Estimate</span>
             <strong id="current-state" class="state-value">Loading</strong>
@@ -230,9 +225,80 @@
             <strong><span data-i18n="connected_datasets">Connected datasets</span>: <span id="connected-dataset-count">—</span></strong>
             <ul id="connected-dataset-list" class="status-list"><li data-i18n="loading">Loading</li></ul>
           </article>
+
+          <section class="panel research-input-panel" aria-labelledby="research-input-title" data-layout-zone="blue">
+            <div class="panel-heading">
+              <div>
+                <span class="panel-label">Research Input &amp; Comparison</span>
+                <h2 id="research-input-title">Paper / Model Input</h2>
+              </div>
+              <span class="status-pill status-attention">PIPELINE PENDING</span>
+            </div>
+            <p class="panel-note">Send verified research inputs into a comparison queue. No document or model analysis is performed in this UI-only phase.</p>
+
+            <section class="research-input-block" aria-labelledby="upload-paper-title">
+              <h3 id="upload-paper-title">UPLOAD PAPER</h3>
+              <label class="research-file-drop">
+                <span>PDF · TXT · MARKDOWN</span>
+                <input id="research-paper-file" type="file" accept=".pdf,.txt,.md,text/plain,text/markdown,application/pdf">
+              </label>
+              <label class="research-field">
+                <span>DOI / arXiv URL / paper URL</span>
+                <input id="research-paper-reference" type="text" inputmode="url" placeholder="10.xxxx/... or https://arxiv.org/...">
+              </label>
+              <button class="framework-button" type="button" data-queue-reference="paper">ADD PAPER TO QUEUE</button>
+              <p class="research-connection-state">ANALYSIS PIPELINE PENDING</p>
+            </section>
+
+            <section class="research-input-block" aria-labelledby="upload-model-title">
+              <h3 id="upload-model-title">UPLOAD MODEL</h3>
+              <label class="research-file-drop">
+                <span>EQUATIONS · JSON · CSV · MODEL DESCRIPTION</span>
+                <input id="research-model-file" type="file" accept=".txt,.md,.json,.csv,text/plain,text/markdown,application/json,text/csv">
+              </label>
+              <label class="research-field">
+                <span>Equation / model reference</span>
+                <textarea id="research-model-reference" rows="3" placeholder="Equation, parameter set, model description, or URL"></textarea>
+              </label>
+              <button class="framework-button" type="button" data-queue-reference="model">ADD MODEL TO QUEUE</button>
+              <p class="research-connection-state">MODEL PARSER PENDING</p>
+            </section>
+
+            <section class="research-input-block" aria-labelledby="pcs-research-title">
+              <h3 id="pcs-research-title">PCS PAPERS / PCS MODELS</h3>
+              <div class="research-library-grid">
+                <label><span>PCS PAPERS</span><select id="pcs-paper-selector" disabled><option>REGISTRY NOT CONNECTED</option></select></label>
+                <label><span>PCS MODELS</span><select id="pcs-model-selector" disabled><option>REGISTRY NOT CONNECTED</option></select></label>
+              </div>
+              <p class="research-connection-state">COMING / DATA PENDING</p>
+            </section>
+
+            <section class="research-input-block" aria-labelledby="external-research-title">
+              <h3 id="external-research-title">SEARCH EXTERNAL RESEARCH</h3>
+              <div class="research-search-row">
+                <input id="external-research-query" type="search" placeholder="Search papers, models, DOI, topic..." aria-label="Search papers, models, DOI, or topic">
+                <button class="framework-button" type="button" id="external-research-search">SEARCH</button>
+              </div>
+              <p class="panel-note">Search opens Google Scholar in a new tab. No scraping or search-result ingestion occurs here.</p>
+              <p class="research-connection-state">SEARCH CONNECTOR NOT CONNECTED</p>
+            </section>
+
+            <section class="research-input-block compare-queue-block" aria-labelledby="compare-queue-title">
+              <div class="queue-heading">
+                <h3 id="compare-queue-title">COMPARE QUEUE</h3>
+                <span id="compare-queue-count">0 ITEMS</span>
+              </div>
+              <ol id="compare-queue-list" class="compare-queue-list"><li class="queue-empty">No research selected.</li></ol>
+              <div class="queue-actions">
+                <button class="framework-button" type="button" id="compare-queue-clear" disabled>CLEAR</button>
+                <button class="framework-button" type="button" id="compare-queue-analyze" disabled>ANALYZE</button>
+              </div>
+              <p id="compare-queue-status" class="framework-status" role="status" aria-live="polite">ANALYSIS PIPELINE PENDING</p>
+            </section>
+          </section>
         </aside>
 
-        <section class="column model-stage" aria-label="Model and globe stage">
+        <section class="column center-column" aria-label="3D Earth, model visualization, and layer controls">
           <article class="panel globe-panel">
             <div class="panel-heading">
               <div>
@@ -254,10 +320,6 @@
               Loading 3D Earth view.
             </p>
           </article>
-
-        </section>
-
-        <section class="column center-column model-controls-workspace" aria-label="Model, globe, layer, and timeline controls">
 
           <article class="panel solar-system-panel" aria-labelledby="solar-system-title">
             <div class="panel-heading">
@@ -524,28 +586,41 @@
               Timeline playback will activate after validated time-series data is available.
             </p>
           </article>
+
+          <section class="panel model-mapping-panel" aria-labelledby="model-mapping-title" data-layout-zone="red" data-mapping-state="neutral">
+            <div class="panel-heading">
+              <div>
+                <span class="panel-label">Model Mapping Stage</span>
+                <h2 id="model-mapping-title">Generic Model Space</h2>
+              </div>
+              <span class="status-pill status-muted" id="mapping-state-label">NO MODEL LOADED</span>
+            </div>
+            <div class="mapping-toolbar" role="toolbar" aria-label="Model mapping controls">
+              <label><span>VIEW</span><select id="mapping-view"><option>Original</option><option>PCS Mapping</option><option>Model A</option><option>Model B</option><option>Difference</option></select></label>
+              <label><span>MODE</span><select id="mapping-mode"><option>Neutral sphere</option><option>Field</option><option>Network</option><option>Phase space</option><option>Orbital / deep space</option></select></label>
+              <label><span>TIME</span><select id="mapping-time" disabled><option>UNAVAILABLE</option></select></label>
+              <label><span>LAYER</span><select id="mapping-layer" disabled><option>UNAVAILABLE</option></select></label>
+              <label><span>MODEL</span><select id="mapping-model" disabled><option>NOT CONNECTED</option></select></label>
+              <button class="framework-button" type="button" id="mapping-reset">RESET</button>
+              <button class="framework-button" type="button" id="mapping-compare" disabled>COMPARE</button>
+            </div>
+            <div class="mapping-viewport" aria-describedby="mapping-stage-instruction">
+              <div class="neutral-sphere" role="img" aria-label="Empty neutral model sphere">
+                <span class="neutral-sphere-axis neutral-sphere-axis-x"></span>
+                <span class="neutral-sphere-axis neutral-sphere-axis-y"></span>
+                <span class="neutral-sphere-axis neutral-sphere-axis-z"></span>
+              </div>
+              <div class="mapping-empty-state">
+                <strong>No model loaded.</strong>
+                <p id="mapping-stage-instruction">Upload or select a paper/model to begin mapping.</p>
+                <span>NO VALIDATED SPATIAL MAPPING</span>
+              </div>
+            </div>
+            <p class="mapping-scope-note">Sphere, field, graph, network, phase-space, and orbital views are reserved visualization modes. PCS will not force non-spatial research into an Earth mapping.</p>
+          </section>
         </section>
 
-        <aside class="column right-column analysis-alert-center" aria-label="Analysis and alert center">
-          <header class="research-zone-heading analysis-zone-heading">
-            <span class="panel-label">Analysis / Alert Center</span>
-            <h2>PCS Judgment Layer</h2>
-            <p>Existing runtime status is shown below. Unimplemented interpretation fields remain explicitly pending.</p>
-          </header>
-          <article class="panel analysis-capability-panel" aria-labelledby="analysis-capability-title">
-            <div class="panel-heading">
-              <div><span class="panel-label">Analysis</span><h2 id="analysis-capability-title">Runtime Capability Map</h2></div>
-              <span class="status-pill status-attention">PARTIAL</span>
-            </div>
-            <dl class="analysis-capability-grid">
-              <div><dt>L(t)</dt><dd>Existing runtime status below</dd></div>
-              <div><dt>L<sub>T</sub> / L<sub>F</sub> / L<sub>C</sub> / L<sub>I</sub> / L<sub>S</sub></dt><dd>Existing component readouts below</dd></div>
-              <div><dt>Trend</dt><dd>COMING / DATA PENDING</dd></div>
-              <div><dt>Persistence</dt><dd>COMING / DATA PENDING</dd></div>
-              <div><dt>Confidence</dt><dd>COMING / DATA PENDING</dd></div>
-              <div><dt>Normalization</dt><dd>Runtime component metadata only</dd></div>
-            </dl>
-          </article>
+        <aside class="column right-column" aria-label="Body information, domain values, alerts, and health">
           <article id="regional-observation-panel" class="panel regional-observation-panel" aria-labelledby="regional-observation-title">
             <div class="panel-heading">
               <div><span class="panel-label">Regional observation & hazards</span><h2 id="regional-observation-title">Global</h2></div>
@@ -709,58 +784,91 @@
           </article>
         </aside>
 
-        <section class="column model-literature-lab" aria-labelledby="model-literature-title">
-          <article class="panel research-lab-panel">
-            <div class="panel-heading research-lab-heading">
-              <div>
-                <span class="panel-label">Model &amp; Literature Lab</span>
-                <h2 id="model-literature-title">Research Comparison Workspace</h2>
-              </div>
-              <span class="status-pill status-cyan">UI SHELL</span>
-            </div>
-            <div class="research-tabs" role="tablist" aria-label="Model and literature views">
-              <button type="button" role="tab" id="research-tab-pcs-model" data-research-tab="pcs-model" aria-controls="research-panel-pcs-model" aria-selected="true">PCS MODEL</button>
-              <button type="button" role="tab" id="research-tab-pcs-papers" data-research-tab="pcs-papers" aria-controls="research-panel-pcs-papers" aria-selected="false" tabindex="-1">PCS PAPERS</button>
-              <button type="button" role="tab" id="research-tab-external-papers" data-research-tab="external-papers" aria-controls="research-panel-external-papers" aria-selected="false" tabindex="-1">EXTERNAL PAPERS</button>
-              <button type="button" role="tab" id="research-tab-cross-comparison" data-research-tab="cross-comparison" aria-controls="research-panel-cross-comparison" aria-selected="false" tabindex="-1">CROSS COMPARISON</button>
-            </div>
-            <section id="research-panel-pcs-model" class="research-tab-panel" role="tabpanel" aria-labelledby="research-tab-pcs-model" data-research-panel="pcs-model">
-              <div class="research-status-card">
-                <span class="panel-label">Current PCS Runtime</span>
-                <h3>PCS Observatory v2.0 Shell</h3>
-                <p>Residual components exposed by the existing runtime: L<sub>T</sub>, L<sub>F</sub>, L<sub>C</sub>, L<sub>I</sub>, and L<sub>S</sub>.</p>
-                <p>Validated L(t) aggregation formula and weights: <strong>COMING / DATA PENDING</strong></p>
-              </div>
-              <div data-research-mount="pcs-model"></div>
-            </section>
-            <section id="research-panel-pcs-papers" class="research-tab-panel" role="tabpanel" aria-labelledby="research-tab-pcs-papers" data-research-panel="pcs-papers" hidden>
-              <div class="research-empty-state"><strong>COMING / DATA PENDING</strong><p>No Alvin Lin / PCS publication registry is connected in the current runtime. Zenodo and DOI records will appear only after a verified source is integrated.</p></div>
-            </section>
-            <section id="research-panel-external-papers" class="research-tab-panel" role="tabpanel" aria-labelledby="research-tab-external-papers" data-research-panel="external-papers" hidden>
-              <div class="research-status-card"><strong>Existing evidence feed</strong><p>Current connected literature and publication metadata are shown without claiming automated agreement analysis.</p></div>
-              <div data-research-mount="external-papers"></div>
-            </section>
-            <section id="research-panel-cross-comparison" class="research-tab-panel" role="tabpanel" aria-labelledby="research-tab-cross-comparison" data-research-panel="cross-comparison" hidden>
-              <div class="research-empty-state"><strong>ANALYSIS PIPELINE PENDING</strong><p>No AI literature comparison backend is connected. The labels below are the reserved review vocabulary, not analysis results.</p></div>
-              <div class="comparison-status-key" aria-label="Reserved cross-comparison statuses">
-                <span>AGREEMENT</span><span>PARTIAL AGREEMENT</span><span>CONFLICT</span><span>GAP</span><span>UNSUPPORTED</span><span>NEEDS REVIEW</span>
-              </div>
-            </section>
-          </article>
-        </section>
       </section>
 
       <section class="bottom-grid" aria-label="Domain panels and PCS pipeline">
-        <article class="panel domains-panel" data-live-context>
-          <div class="panel-heading">
-            <div>
-              <span class="panel-label" data-i18n="scientific_domain_panels">Scientific Domain Panels</span>
-              <h2>Domain Readiness</h2>
+        <div class="bottom-primary-column">
+          <article class="panel domains-panel" data-live-context>
+            <div class="panel-heading">
+              <div>
+                <span class="panel-label" data-i18n="scientific_domain_panels">Scientific Domain Panels</span>
+                <h2>Domain Readiness</h2>
+              </div>
             </div>
-          </div>
-          <p id="domain-readiness-status" class="framework-status" role="status" aria-live="polite" data-i18n="loading">Loading</p>
-          <div id="domain-readiness-grid" class="domain-grid" aria-live="polite"></div>
-        </article>
+            <p id="domain-readiness-status" class="framework-status" role="status" aria-live="polite" data-i18n="loading">Loading</p>
+            <div id="domain-readiness-grid" class="domain-grid" aria-live="polite"></div>
+          </article>
+
+          <section class="panel event-analysis-center" aria-labelledby="event-analysis-title" data-layout-zone="yellow">
+            <div class="panel-heading">
+              <div>
+                <span class="panel-label">PCS Analysis &amp; Alert Center</span>
+                <h2 id="event-analysis-title">Event Interpretation Workspace</h2>
+              </div>
+              <span class="status-pill status-muted">NO VALIDATED EVENT SELECTED</span>
+            </div>
+            <p class="panel-note">Daily observations and research inputs will appear only when their sources and validation states are available. Empty capacity is intentional.</p>
+
+            <section class="event-stream-section" aria-labelledby="event-stream-title">
+              <div class="event-section-heading">
+                <div><span class="panel-label">Live / Recent Events</span><h3 id="event-stream-title">EVENT STREAM</h3></div>
+                <span id="event-stream-count">0 EVENTS</span>
+              </div>
+              <div class="event-filter-bar" role="search" aria-label="Event stream filters">
+                <input id="event-search" type="search" placeholder="Search events" aria-label="Search events">
+                <select id="event-category-filter" aria-label="Filter event category"><option value="all">ALL CATEGORIES</option><option>Earth system</option><option>Climate</option><option>Astronomy</option><option>Satellite</option><option>Research</option></select>
+                <select id="event-severity-filter" aria-label="Filter alert severity"><option value="all">ALL SEVERITIES</option><option>INFO</option><option>WATCH</option><option>WARNING</option><option>CRITICAL</option></select>
+                <select id="event-source-filter" aria-label="Filter event source"><option value="all">ALL SOURCES</option></select>
+                <label><span>FROM</span><input id="event-date-from" type="date"></label>
+                <label><span>TO</span><input id="event-date-to" type="date"></label>
+              </div>
+              <div class="event-table" role="table" aria-label="PCS event stream">
+                <div class="event-table-head" role="row">
+                  <span role="columnheader">TIME</span><span role="columnheader">CATEGORY</span><span role="columnheader">EVENT</span><span role="columnheader">SOURCE</span><span role="columnheader">STATUS</span><span role="columnheader">CONFIDENCE</span>
+                </div>
+                <div id="event-stream-list" class="event-stream-list" role="rowgroup">
+                  <div class="event-empty-state" role="row"><strong>UNAVAILABLE</strong><p>No validated event feed is connected to this panel.</p></div>
+                </div>
+              </div>
+            </section>
+
+            <section class="selected-event-section" aria-labelledby="selected-event-title">
+              <div class="event-section-heading">
+                <div><span class="panel-label">Selected Event</span><h3 id="selected-event-title">PCS ANALYSIS</h3></div>
+                <span>ANALYSIS UNAVAILABLE</span>
+              </div>
+              <dl class="selected-event-grid">
+                <div><dt>WHAT HAPPENED</dt><dd>UNAVAILABLE</dd></div>
+                <div><dt>WHY PCS FLAGGED IT</dt><dd>INSUFFICIENT EVIDENCE</dd></div>
+                <div><dt>OBSERVATION</dt><dd>UNAVAILABLE</dd></div>
+                <div><dt>MODEL</dt><dd>NOT CONNECTED</dd></div>
+                <div><dt>BASELINE</dt><dd>UNAVAILABLE</dd></div>
+                <div><dt>DEVIATION</dt><dd>UNAVAILABLE</dd></div>
+                <div><dt>RESIDUAL</dt><dd>UNAVAILABLE</dd></div>
+                <div><dt>TREND</dt><dd>UNAVAILABLE</dd></div>
+                <div><dt>PERSISTENCE</dt><dd>UNAVAILABLE</dd></div>
+                <div><dt>CONFIDENCE</dt><dd>UNAVAILABLE</dd></div>
+                <div><dt>RELATED PAPERS</dt><dd>NOT CONNECTED</dd></div>
+                <div><dt>RELATED EVENTS</dt><dd>UNAVAILABLE</dd></div>
+              </dl>
+            </section>
+
+            <section class="alert-evidence-section" aria-labelledby="alert-evidence-title">
+              <div class="event-section-heading">
+                <div><span class="panel-label">Alert / Evidence / Related Research</span><h3 id="alert-evidence-title">ALERT EXPLANATION</h3></div>
+                <span>NO ALERT ASSERTED</span>
+              </div>
+              <div class="alert-severity-key" aria-label="Reserved alert severities"><span>INFO</span><span>WATCH</span><span>WARNING</span><span>CRITICAL</span></div>
+              <dl class="alert-evidence-grid">
+                <div><dt>Trigger</dt><dd>UNAVAILABLE</dd></div><div><dt>Evidence</dt><dd>INSUFFICIENT EVIDENCE</dd></div>
+                <div><dt>Source</dt><dd>NOT CONNECTED</dd></div><div><dt>Timestamp</dt><dd>UNAVAILABLE</dd></div>
+                <div><dt>Confidence</dt><dd>UNAVAILABLE</dd></div><div><dt>Reason</dt><dd>ANALYSIS UNAVAILABLE</dd></div>
+                <div><dt>Related model</dt><dd>NOT CONNECTED</dd></div><div><dt>Related observations</dt><dd>UNAVAILABLE</dd></div>
+                <div><dt>Related literature</dt><dd>NOT CONNECTED</dd></div>
+              </dl>
+            </section>
+          </section>
+        </div>
 
         <article class="panel pcs-analysis-panel" id="pcs-daily-brief" data-live-context>
           <span class="panel-label" data-i18n="daily_brief">Daily Brief</span>
@@ -897,7 +1005,7 @@
     <script src="./cosmic-web-layer.js?v=phase-4d"></script>
     <script src="./observable-universe-layer.js?v=phase-4e"></script>
     <script src="./deep-space.js?v=solar-long-horizon-public-20000-1"></script>
-    <script src="./main-panel-layout.js?v=main-panel-layout-1"></script>
+    <script src="./main-panel-layout.js?v=panel-layout-correction-1"></script>
     <script src="./app.js?v=20260801-release-center-1"></script>
     <script src="./release-center.js?v=20260812-milky-way-freeze-1"></script>
   </body>
