@@ -871,18 +871,67 @@
         </div>
 
         <article class="panel pcs-analysis-panel" id="pcs-daily-brief" data-live-context>
-          <span class="panel-label" data-i18n="daily_brief">Daily Brief</span>
-          <h2 data-i18n="retrospective_analysis">PCS Retrospective Analysis</h2>
-          <p id="daily-brief-status" class="framework-status" role="status" aria-live="polite"></p>
-          <div id="daily-brief-list" class="pcs-card-list"><p data-i18n="loading">Loading</p></div>
-          <details id="more-intelligence"><summary data-i18n="more_intelligence">More Intelligence</summary><div id="more-intelligence-list" class="pcs-card-list"></div></details>
+          <div class="daily-brief-feed pcs-scroll-feed" tabindex="0" aria-label="Scrollable PCS Daily Brief feed">
+            <header class="daily-brief-header pcs-feed-sticky-header">
+              <div class="feed-title-row">
+                <div>
+                  <span class="panel-label" data-i18n="daily_brief">Daily Brief</span>
+                  <h2 data-i18n="retrospective_analysis">PCS Retrospective Analysis</h2>
+                </div>
+                <span id="daily-brief-count" class="feed-count">0 ITEMS</span>
+              </div>
+              <p id="daily-brief-status" class="framework-status" role="status" aria-live="polite">PENDING</p>
+              <div class="daily-brief-filter-bar" aria-label="Daily Brief filters">
+                <div class="feed-filter-chips" role="group" aria-label="Daily Brief category">
+                  <button type="button" class="feed-filter-chip is-active" data-daily-brief-filter="all" aria-pressed="true">ALL</button>
+                  <button type="button" class="feed-filter-chip" data-daily-brief-filter="earth" aria-pressed="false">EARTH</button>
+                  <button type="button" class="feed-filter-chip" data-daily-brief-filter="climate" aria-pressed="false">CLIMATE</button>
+                  <button type="button" class="feed-filter-chip" data-daily-brief-filter="space" aria-pressed="false">SPACE</button>
+                  <button type="button" class="feed-filter-chip" data-daily-brief-filter="research" aria-pressed="false">RESEARCH</button>
+                  <button type="button" class="feed-filter-chip" data-daily-brief-filter="population" aria-pressed="false">POPULATION</button>
+                  <button type="button" class="feed-filter-chip" data-daily-brief-filter="alert" aria-pressed="false">ALERT</button>
+                </div>
+                <label class="feed-sort-control"><span>ORDER</span><select id="daily-brief-sort"><option value="newest">NEWEST</option><option value="oldest">OLDEST</option><option value="priority">PRIORITY / DATA PENDING</option></select></label>
+              </div>
+            </header>
+            <div id="daily-brief-list" class="pcs-card-list daily-brief-list"><p class="feed-empty-state">DATA PENDING</p></div>
+            <details id="more-intelligence"><summary data-i18n="more_intelligence">More Intelligence</summary><div id="more-intelligence-list" class="pcs-card-list"></div></details>
+          </div>
         </article>
 
         <article class="panel pcs-analysis-panel" id="pcs-mass-gatherings" data-live-context>
-          <span class="panel-label" data-i18n="human_mobility">Human Mobility &amp; Mass Gathering</span>
-          <h2>R<sub>gathering</sub>(c,t)</h2>
-          <p class="panel-note" data-i18n="aggregate_only">Public statistics and aggregate flows only; no personal identity data.</p>
-          <div id="mass-gathering-list" class="pcs-card-list"><p data-i18n="loading">Loading</p></div>
+          <div class="population-event-stream pcs-scroll-feed" tabindex="0" aria-label="Scrollable population concentration and large-scale gathering event feed">
+            <header class="population-event-stream-header pcs-feed-sticky-header">
+              <div class="feed-title-row">
+                <div>
+                  <span class="panel-label" data-i18n="human_mobility">Human Mobility &amp; Mass Gathering</span>
+                  <h2>Population / Large-scale Events</h2>
+                </div>
+                <span id="mass-gathering-count" class="feed-count">0 EVENTS</span>
+              </div>
+              <p class="panel-note" data-i18n="aggregate_only">Public statistics and aggregate flows only; no personal identity data.</p>
+              <div class="population-filter-bar" aria-label="Population and gathering event filters">
+                <div class="feed-filter-chips" role="group" aria-label="Population event type">
+                  <button type="button" class="feed-filter-chip is-active" data-population-filter="all" aria-pressed="true">ALL</button>
+                  <button type="button" class="feed-filter-chip" data-population-filter="population" aria-pressed="false">POPULATION</button>
+                  <button type="button" class="feed-filter-chip" data-population-filter="gathering" aria-pressed="false">GATHERING</button>
+                  <button type="button" class="feed-filter-chip" data-population-filter="transport" aria-pressed="false">TRANSPORT</button>
+                  <button type="button" class="feed-filter-chip" data-population-filter="urban" aria-pressed="false">URBAN</button>
+                  <button type="button" class="feed-filter-chip" data-population-filter="event" aria-pressed="false">EVENT</button>
+                  <button type="button" class="feed-filter-chip" data-population-filter="anomaly" aria-pressed="false">ANOMALY</button>
+                </div>
+                <div class="population-filter-selects">
+                  <label><span>REGION</span><select id="population-region-filter"><option value="all">ALL REGIONS</option></select></label>
+                  <label><span>TIME</span><select id="population-time-filter"><option value="all">ALL TIME</option><option value="reported">REPORTED TIME</option><option value="pending">TIME DATA PENDING</option></select></label>
+                  <label><span>SOURCE</span><select id="population-source-filter"><option value="all">ALL SOURCES</option></select></label>
+                  <label><span>SCALE</span><select id="population-scale-filter"><option value="all">ALL SCALE</option><option value="reported">REPORTED SCALE</option><option value="pending">SCALE DATA PENDING</option></select></label>
+                </div>
+              </div>
+              <button id="population-new-events" class="new-events-button" type="button" hidden>↑ 0 NEW EVENTS</button>
+            </header>
+            <div class="population-event-columns" aria-hidden="true"><span>TIME / LOCATION</span><span>EVENT TYPE</span><span>SCALE</span><span>SOURCE / CONFIDENCE</span><span>STATUS</span></div>
+            <div id="mass-gathering-list" class="pcs-card-list population-event-list" aria-live="polite"><p class="feed-empty-state">DATA PENDING</p></div>
+          </div>
         </article>
 
         <article class="panel pcs-analysis-panel" id="pcs-evidence-ledger" data-live-context>

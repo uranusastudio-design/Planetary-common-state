@@ -1,0 +1,824 @@
+{
+  "generatedAt": "2026-08-20T11:44:18.594Z",
+  "phase": "before",
+  "url": "http://127.0.0.1:8765/projects/Planetary-common-state/PCS_OBSERVATORY/?v=panel-scale-event-stream",
+  "checkpoint": "a1d0ce498589a7f79f5c8a8244c2df4afc17b0ba",
+  "webgl": {
+    "canvas": true,
+    "context": true,
+    "errorPanel": false
+  },
+  "viewports": [
+    {
+      "width": 1920,
+      "height": 1080,
+      "screenshot": "1920-desktop.png",
+      "geometry": {
+        "viewport": {
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": false,
+        "globe": {
+          "left": 527,
+          "right": 1393,
+          "top": 870.53125,
+          "bottom": 1614.984375,
+          "width": 866,
+          "height": 744.453125
+        },
+        "globeViewport": {
+          "left": 544,
+          "right": 1376,
+          "top": 942.046875,
+          "bottom": 1568.4375,
+          "width": 832,
+          "height": 626.390625
+        },
+        "mapping": {
+          "left": 80,
+          "right": 1393,
+          "top": 3496.03125,
+          "bottom": 4298.015625,
+          "width": 1313,
+          "height": 801.984375
+        },
+        "mappingViewport": {
+          "left": 97,
+          "right": 1376,
+          "top": 3628.546875,
+          "bottom": 4254.9375,
+          "width": 1279,
+          "height": 626.390625
+        },
+        "sphere": {
+          "left": 521.5,
+          "right": 951.5,
+          "top": 3726.734375,
+          "bottom": 4156.734375,
+          "width": 430,
+          "height": 430
+        },
+        "population": {
+          "left": 80,
+          "right": 1345.84375,
+          "top": 5928.109375,
+          "bottom": 6072.546875,
+          "width": 1265.84375,
+          "height": 144.4375
+        },
+        "populationFeed": null,
+        "daily": {
+          "left": 1359.84375,
+          "right": 1840,
+          "top": 4312.015625,
+          "bottom": 5914.109375,
+          "width": 480.15625,
+          "height": 1602.09375
+        },
+        "dailyFeed": null,
+        "populationScroll": {
+          "clientHeight": 0,
+          "scrollHeight": 0,
+          "style": null,
+          "header": null
+        },
+        "dailyScroll": {
+          "clientHeight": 0,
+          "scrollHeight": 0,
+          "style": null,
+          "header": null
+        },
+        "centerGaps": [
+          {
+            "after": "panel globe-panel",
+            "before": "panel solar-system-panel",
+            "gap": 14
+          },
+          {
+            "after": "panel solar-system-panel",
+            "before": "panel observatory-mode-panel",
+            "gap": 14
+          },
+          {
+            "after": "panel observatory-mode-panel",
+            "before": "panel location-panel",
+            "gap": 14
+          },
+          {
+            "after": "panel location-panel",
+            "before": "panel layer-control-panel",
+            "gap": 14
+          },
+          {
+            "after": "panel layer-control-panel",
+            "before": "panel timeline-panel",
+            "gap": 14
+          },
+          {
+            "after": "panel timeline-panel",
+            "before": "panel model-mapping-panel",
+            "gap": 14
+          }
+        ],
+        "canvasCount": 1,
+        "viewerCount": 1
+      }
+    },
+    {
+      "width": 1728,
+      "height": 1117,
+      "geometry": {
+        "viewport": {
+          "width": 1728,
+          "height": 1117
+        },
+        "overflow": false,
+        "globe": {
+          "left": 476.59375,
+          "right": 1251.390625,
+          "top": 828.8125,
+          "bottom": 1594.734375,
+          "width": 774.796875,
+          "height": 765.921875
+        },
+        "globeViewport": {
+          "left": 493.59375,
+          "right": 1234.390625,
+          "top": 900.328125,
+          "bottom": 1548.1875,
+          "width": 740.796875,
+          "height": 647.859375
+        },
+        "mapping": {
+          "left": 75.203125,
+          "right": 1251.390625,
+          "top": 3475.78125,
+          "bottom": 4299.234375,
+          "width": 1176.1875,
+          "height": 823.453125
+        },
+        "mappingViewport": {
+          "left": 92.203125,
+          "right": 1234.390625,
+          "top": 3608.296875,
+          "bottom": 4256.15625,
+          "width": 1142.1875,
+          "height": 647.859375
+        },
+        "sphere": {
+          "left": 448.296875,
+          "right": 878.296875,
+          "top": 3717.21875,
+          "bottom": 4147.21875,
+          "width": 430,
+          "height": 430
+        },
+        "population": {
+          "left": 75.203125,
+          "right": 1208.796875,
+          "top": 5929.328125,
+          "bottom": 6073.765625,
+          "width": 1133.59375,
+          "height": 144.4375
+        },
+        "populationFeed": null,
+        "daily": {
+          "left": 1222.796875,
+          "right": 1652.796875,
+          "top": 4313.234375,
+          "bottom": 5915.328125,
+          "width": 430,
+          "height": 1602.09375
+        },
+        "dailyFeed": null,
+        "populationScroll": {
+          "clientHeight": 0,
+          "scrollHeight": 0,
+          "style": null,
+          "header": null
+        },
+        "dailyScroll": {
+          "clientHeight": 0,
+          "scrollHeight": 0,
+          "style": null,
+          "header": null
+        },
+        "centerGaps": [
+          {
+            "after": "panel globe-panel",
+            "before": "panel solar-system-panel",
+            "gap": 14
+          },
+          {
+            "after": "panel solar-system-panel",
+            "before": "panel observatory-mode-panel",
+            "gap": 14
+          },
+          {
+            "after": "panel observatory-mode-panel",
+            "before": "panel location-panel",
+            "gap": 14
+          },
+          {
+            "after": "panel location-panel",
+            "before": "panel layer-control-panel",
+            "gap": 14
+          },
+          {
+            "after": "panel layer-control-panel",
+            "before": "panel timeline-panel",
+            "gap": 14
+          },
+          {
+            "after": "panel timeline-panel",
+            "before": "panel model-mapping-panel",
+            "gap": 14
+          }
+        ],
+        "canvasCount": 1,
+        "viewerCount": 1
+      }
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "screenshot": "1440-desktop.png",
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "overflow": false,
+        "globe": {
+          "left": 399.390625,
+          "right": 1040.59375,
+          "top": 759.640625,
+          "bottom": 1396.359375,
+          "width": 641.203125,
+          "height": 636.71875
+        },
+        "globeViewport": {
+          "left": 416.390625,
+          "right": 1023.59375,
+          "top": 827.8125,
+          "bottom": 1349.8125,
+          "width": 607.203125,
+          "height": 522
+        },
+        "mapping": {
+          "left": 64.796875,
+          "right": 1040.59375,
+          "top": 3346.109375,
+          "bottom": 4040.359375,
+          "width": 975.796875,
+          "height": 694.25
+        },
+        "mappingViewport": {
+          "left": 81.796875,
+          "right": 1023.59375,
+          "top": 3475.28125,
+          "bottom": 3997.28125,
+          "width": 941.796875,
+          "height": 522
+        },
+        "sphere": {
+          "left": 337.6875,
+          "right": 767.6875,
+          "top": 3521.28125,
+          "bottom": 3951.28125,
+          "width": 430,
+          "height": 430
+        },
+        "population": {
+          "left": 64.796875,
+          "right": 1004.6875,
+          "top": 5663.765625,
+          "bottom": 5804.8125,
+          "width": 939.890625,
+          "height": 141.046875
+        },
+        "populationFeed": null,
+        "daily": {
+          "left": 1018.6875,
+          "right": 1375.203125,
+          "top": 4054.359375,
+          "bottom": 5649.765625,
+          "width": 356.515625,
+          "height": 1595.40625
+        },
+        "dailyFeed": null,
+        "populationScroll": {
+          "clientHeight": 0,
+          "scrollHeight": 0,
+          "style": null,
+          "header": null
+        },
+        "dailyScroll": {
+          "clientHeight": 0,
+          "scrollHeight": 0,
+          "style": null,
+          "header": null
+        },
+        "centerGaps": [
+          {
+            "after": "panel globe-panel",
+            "before": "panel solar-system-panel",
+            "gap": 14
+          },
+          {
+            "after": "panel solar-system-panel",
+            "before": "panel observatory-mode-panel",
+            "gap": 14
+          },
+          {
+            "after": "panel observatory-mode-panel",
+            "before": "panel location-panel",
+            "gap": 14
+          },
+          {
+            "after": "panel location-panel",
+            "before": "panel layer-control-panel",
+            "gap": 14
+          },
+          {
+            "after": "panel layer-control-panel",
+            "before": "panel timeline-panel",
+            "gap": 14
+          },
+          {
+            "after": "panel timeline-panel",
+            "before": "panel model-mapping-panel",
+            "gap": 14
+          }
+        ],
+        "canvasCount": 1,
+        "viewerCount": 1
+      }
+    },
+    {
+      "width": 1366,
+      "height": 768,
+      "geometry": {
+        "viewport": {
+          "width": 1366,
+          "height": 768
+        },
+        "overflow": false,
+        "globe": {
+          "left": 379.234375,
+          "right": 986.765625,
+          "top": 739.203125,
+          "bottom": 1372.78125,
+          "width": 607.53125,
+          "height": 633.578125
+        },
+        "globeViewport": {
+          "left": 396.234375,
+          "right": 969.765625,
+          "top": 806.234375,
+          "bottom": 1326.234375,
+          "width": 573.53125,
+          "height": 520
+        },
+        "mapping": {
+          "left": 61.46875,
+          "right": 986.765625,
+          "top": 3330.96875,
+          "bottom": 4022.078125,
+          "width": 925.296875,
+          "height": 691.109375
+        },
+        "mappingViewport": {
+          "left": 78.46875,
+          "right": 969.765625,
+          "top": 3459,
+          "bottom": 3979,
+          "width": 891.296875,
+          "height": 520
+        },
+        "sphere": {
+          "left": 309.109375,
+          "right": 739.109375,
+          "top": 3504,
+          "bottom": 3934,
+          "width": 430,
+          "height": 430
+        },
+        "population": {
+          "left": 61.46875,
+          "right": 952.53125,
+          "top": 5662.75,
+          "bottom": 5802.640625,
+          "width": 891.0625,
+          "height": 139.890625
+        },
+        "populationFeed": null,
+        "daily": {
+          "left": 966.53125,
+          "right": 1304.53125,
+          "top": 4036.078125,
+          "bottom": 5648.75,
+          "width": 338,
+          "height": 1612.671875
+        },
+        "dailyFeed": null,
+        "populationScroll": {
+          "clientHeight": 0,
+          "scrollHeight": 0,
+          "style": null,
+          "header": null
+        },
+        "dailyScroll": {
+          "clientHeight": 0,
+          "scrollHeight": 0,
+          "style": null,
+          "header": null
+        },
+        "centerGaps": [
+          {
+            "after": "panel globe-panel",
+            "before": "panel solar-system-panel",
+            "gap": 14
+          },
+          {
+            "after": "panel solar-system-panel",
+            "before": "panel observatory-mode-panel",
+            "gap": 14
+          },
+          {
+            "after": "panel observatory-mode-panel",
+            "before": "panel location-panel",
+            "gap": 14
+          },
+          {
+            "after": "panel location-panel",
+            "before": "panel layer-control-panel",
+            "gap": 14
+          },
+          {
+            "after": "panel layer-control-panel",
+            "before": "panel timeline-panel",
+            "gap": 14
+          },
+          {
+            "after": "panel timeline-panel",
+            "before": "panel model-mapping-panel",
+            "gap": 14
+          }
+        ],
+        "canvasCount": 1,
+        "viewerCount": 1
+      }
+    },
+    {
+      "width": 1024,
+      "height": 768,
+      "geometry": {
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "overflow": false,
+        "globe": {
+          "left": 46.0625,
+          "right": 977.921875,
+          "top": 2262.75,
+          "bottom": 2894.296875,
+          "width": 931.859375,
+          "height": 631.546875
+        },
+        "globeViewport": {
+          "left": 63.0625,
+          "right": 960.921875,
+          "top": 2327.75,
+          "bottom": 2847.75,
+          "width": 897.859375,
+          "height": 520
+        },
+        "mapping": {
+          "left": 46.0625,
+          "right": 977.921875,
+          "top": 5010.765625,
+          "bottom": 5812.84375,
+          "width": 931.859375,
+          "height": 802.078125
+        },
+        "mappingViewport": {
+          "left": 63.0625,
+          "right": 960.921875,
+          "top": 5249.765625,
+          "bottom": 5769.765625,
+          "width": 897.859375,
+          "height": 520
+        },
+        "sphere": {
+          "left": 348.15625,
+          "right": 675.828125,
+          "top": 5345.921875,
+          "bottom": 5673.59375,
+          "width": 327.671875,
+          "height": 327.671875
+        },
+        "population": {
+          "left": 46.0625,
+          "right": 977.921875,
+          "top": 10072.65625,
+          "bottom": 10210.5,
+          "width": 931.859375,
+          "height": 137.84375
+        },
+        "populationFeed": null,
+        "daily": {
+          "left": 46.0625,
+          "right": 977.921875,
+          "top": 9940.65625,
+          "bottom": 10058.65625,
+          "width": 931.859375,
+          "height": 118
+        },
+        "dailyFeed": null,
+        "populationScroll": {
+          "clientHeight": 0,
+          "scrollHeight": 0,
+          "style": null,
+          "header": null
+        },
+        "dailyScroll": {
+          "clientHeight": 0,
+          "scrollHeight": 0,
+          "style": null,
+          "header": null
+        },
+        "centerGaps": [
+          {
+            "after": "panel globe-panel",
+            "before": "panel solar-system-panel",
+            "gap": 14
+          },
+          {
+            "after": "panel solar-system-panel",
+            "before": "panel observatory-mode-panel",
+            "gap": 14
+          },
+          {
+            "after": "panel observatory-mode-panel",
+            "before": "panel location-panel",
+            "gap": 14
+          },
+          {
+            "after": "panel location-panel",
+            "before": "panel layer-control-panel",
+            "gap": 14
+          },
+          {
+            "after": "panel layer-control-panel",
+            "before": "panel timeline-panel",
+            "gap": 14
+          },
+          {
+            "after": "panel timeline-panel",
+            "before": "panel model-mapping-panel",
+            "gap": 14
+          }
+        ],
+        "canvasCount": 1,
+        "viewerCount": 1
+      }
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "mobile": true,
+      "screenshot": "390-mobile.png",
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "overflow": false,
+        "globe": {
+          "left": 10,
+          "right": 380,
+          "top": 2984.265625,
+          "bottom": 3603.234375,
+          "width": 370,
+          "height": 618.96875
+        },
+        "globeViewport": {
+          "left": 27,
+          "right": 363,
+          "top": 3098.265625,
+          "bottom": 3537.140625,
+          "width": 336,
+          "height": 438.875
+        },
+        "mapping": {
+          "left": 10,
+          "right": 380,
+          "top": 6272.625,
+          "bottom": 7279.859375,
+          "width": 370,
+          "height": 1007.234375
+        },
+        "mappingViewport": {
+          "left": 27,
+          "right": 363,
+          "top": 6774.625,
+          "bottom": 7204.625,
+          "width": 336,
+          "height": 430
+        },
+        "sphere": {
+          "left": 55,
+          "right": 335,
+          "top": 6849.625,
+          "bottom": 7129.625,
+          "width": 280,
+          "height": 280
+        },
+        "population": {
+          "left": 10,
+          "right": 380,
+          "top": 13200.5625,
+          "bottom": 13357.953125,
+          "width": 370,
+          "height": 157.390625
+        },
+        "populationFeed": null,
+        "daily": {
+          "left": 10,
+          "right": 380,
+          "top": 13068.5625,
+          "bottom": 13186.5625,
+          "width": 370,
+          "height": 118
+        },
+        "dailyFeed": null,
+        "populationScroll": {
+          "clientHeight": 0,
+          "scrollHeight": 0,
+          "style": null,
+          "header": null
+        },
+        "dailyScroll": {
+          "clientHeight": 0,
+          "scrollHeight": 0,
+          "style": null,
+          "header": null
+        },
+        "centerGaps": [
+          {
+            "after": "panel globe-panel",
+            "before": "panel solar-system-panel",
+            "gap": 14
+          },
+          {
+            "after": "panel solar-system-panel",
+            "before": "panel observatory-mode-panel",
+            "gap": 14
+          },
+          {
+            "after": "panel observatory-mode-panel",
+            "before": "panel location-panel",
+            "gap": 14
+          },
+          {
+            "after": "panel location-panel",
+            "before": "panel layer-control-panel",
+            "gap": 14
+          },
+          {
+            "after": "panel layer-control-panel",
+            "before": "panel timeline-panel",
+            "gap": 14
+          },
+          {
+            "after": "panel timeline-panel",
+            "before": "panel model-mapping-panel",
+            "gap": 14
+          }
+        ],
+        "canvasCount": 1,
+        "viewerCount": 1
+      }
+    }
+  ],
+  "scrollInteraction": null,
+  "unexpectedRuntimeErrors": [],
+  "optionalRuntimeErrors": [
+    "[PCS_OBSERVATORY] historical status initialization failed: TypeError: Failed to fetch\n    at loadHistoryStatus (http://127.0.0.1:8765/projects/Planetary-common-state/PCS_OBSERVATORY/app.js?v=20260801-release-center-1:3097:26)\n    at runSafeAsync (http://127.0.0.1:8765/projects/Planetary-common-state/PCS_OBSERVATORY/app.js?v=20260801-release-center-1:3811:11)\n    at initializeHistoricalMode (http://127.0.0.1:8765/projects/Planetary-common-state/PCS_OBSERVATORY/app.js?v=20260801-release-center-1:3247:8)\n    at runSafe (http://127.0.0.1:8765/projects/Planetary-common-state/PCS_OBSERVATORY/app.js?v=20260801-release-center-1:3803:5)\n    at initializeApp (http://127.0.0.1:8765/projects/Planetary-common-state/PCS_OBSERVATORY/app.js?v=20260801-release-center-1:5331:3)",
+    "[PCS_OBSERVATORY] Evidence Explorer event loading failed: TypeError: Failed to fetch\n    at loadEvidenceExplorer (http://127.0.0.1:8765/projects/Planetary-common-state/PCS_OBSERVATORY/app.js?v=20260801-release-center-1:5235:26)\n    at http://127.0.0.1:8765/projects/Planetary-common-state/PCS_OBSERVATORY/app.js?v=20260801-release-center-1:5336:63\n    at runSafeAsync (http://127.0.0.1:8765/projects/Planetary-common-state/PCS_OBSERVATORY/app.js?v=20260801-release-center-1:3811:11)\n    at initializeApp (http://127.0.0.1:8765/projects/Planetary-common-state/PCS_OBSERVATORY/app.js?v=20260801-release-center-1:5336:9)"
+  ],
+  "optionalResourceErrors": [
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/regional/observation?region=global"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/health/openweather"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/history/status"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/layers"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/register"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/stats"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/locations"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/analytics?range=24h"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/domain-readiness"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/events?limit=20"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/evidence-ledger"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/mass-gatherings"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/daily-brief"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/system-status"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/evidence-explorer"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/domain-readiness"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/events?limit=20"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/mass-gatherings"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/evidence-ledger"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/daily-brief"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/events?limit=20"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/system-status"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/domain-readiness"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/evidence-ledger"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/mass-gatherings"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/daily-brief"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/system-status"
+    }
+  ],
+  "unexpectedResourceErrors": []
+}

@@ -5,6 +5,7 @@ import { readFile } from "node:fs/promises";
 const html = await readFile(new URL("./index.html", import.meta.url), "utf8");
 const css = await readFile(new URL("./style.css", import.meta.url), "utf8");
 const layout = await readFile(new URL("./main-panel-layout.js", import.meta.url), "utf8");
+const app = await readFile(new URL("./app.js", import.meta.url), "utf8");
 
 test("WHITE centers only the header identity group", () => {
   assert.match(html, /class="nav-brand pcs-brand-area"/);
@@ -67,4 +68,28 @@ test("desktop retains the long-page three-column structure and mobile reorders o
   assert.match(layout, /dashboard\.insertBefore\(blueZone, centerColumn\)/);
   assert.match(layout, /dashboard\.insertBefore\(yellowZone, leftColumn\)/);
   assert.match(css, /overflow-x:\s*hidden/);
+});
+
+test("visual panels scale proportionally without changing their locations", () => {
+  assert.match(css, /--pcs-panel-gap:\s*14px/);
+  assert.match(css, /\.cesium-globe\s*\{[^}]*height:\s*clamp\(560px, 64vh, 820px\)/s);
+  assert.match(css, /\.mapping-viewport\s*\{[^}]*height:\s*clamp\(560px, 66vh, 820px\)/s);
+  assert.match(css, /\.neutral-sphere\s*\{[^}]*width:\s*clamp\(430px, 83cqh, 620px\)[^}]*aspect-ratio:\s*1/s);
+  assert.ok(html.indexOf('class="panel globe-panel"') < html.indexOf('class="panel timeline-panel"'));
+  assert.ok(html.indexOf('class="panel timeline-panel"') < html.indexOf('class="panel model-mapping-panel"'));
+});
+
+test("population and Daily Brief panels are independent accessible information feeds", () => {
+  for (const className of ["population-event-stream", "population-event-stream-header", "daily-brief-feed", "daily-brief-header"]) assert.match(html, new RegExp(`class="[^"]*${className}`));
+  for (const id of ["population-region-filter", "population-time-filter", "population-source-filter", "population-scale-filter", "daily-brief-sort", "mass-gathering-count", "daily-brief-count"]) assert.match(html, new RegExp(`id="${id}"`));
+  for (const category of ["population", "gathering", "transport", "urban", "event", "anomaly"]) assert.match(html, new RegExp(`data-population-filter="${category}"`));
+  for (const category of ["earth", "climate", "space", "research", "population", "alert"]) assert.match(html, new RegExp(`data-daily-brief-filter="${category}"`));
+  assert.match(css, /#pcs-mass-gatherings\s*\{[^}]*height:\s*clamp\(520px, 62vh, 780px\)/s);
+  assert.match(css, /#pcs-daily-brief\s*\{[^}]*height:\s*clamp\(420px, 56vh, 620px\)/s);
+  assert.match(css, /\.pcs-scroll-feed\s*\{[^}]*overflow-x:\s*hidden;[^}]*overflow-y:\s*auto/s);
+  assert.match(css, /\.pcs-feed-sticky-header\s*\{[^}]*position:\s*sticky;[^}]*top:\s*0/s);
+  assert.match(css, /\.pcs-scroll-feed::\-webkit-scrollbar\s*\{[^}]*width:\s*9px/s);
+  assert.match(app, /function renderMassGatherings\(rows\)/);
+  assert.match(app, /DATA PENDING/);
+  assert.doesNotMatch(app, /Scale HIGH|Confidence 0\.82/);
 });

@@ -438,8 +438,17 @@ const selectors = {
   connectedDatasetList: document.querySelector("#connected-dataset-list"),
   dailyBriefList: document.querySelector("#daily-brief-list"),
   dailyBriefStatus: document.querySelector("#daily-brief-status"),
+  dailyBriefCount: document.querySelector("#daily-brief-count"),
+  dailyBriefFilters: document.querySelectorAll("[data-daily-brief-filter]"),
+  dailyBriefSort: document.querySelector("#daily-brief-sort"),
   moreIntelligenceList: document.querySelector("#more-intelligence-list"),
   massGatheringList: document.querySelector("#mass-gathering-list"),
+  massGatheringCount: document.querySelector("#mass-gathering-count"),
+  populationFilters: document.querySelectorAll("[data-population-filter]"),
+  populationRegionFilter: document.querySelector("#population-region-filter"),
+  populationTimeFilter: document.querySelector("#population-time-filter"),
+  populationSourceFilter: document.querySelector("#population-source-filter"),
+  populationScaleFilter: document.querySelector("#population-scale-filter"),
   evidenceLedgerList: document.querySelector("#evidence-ledger-list"),
   pcsApiStatus: document.querySelector("#pcs-api-status"),
   systemModules: document.querySelectorAll("[data-system-module]"),
@@ -5085,6 +5094,8 @@ function renderDailyBrief(events, target = selectors.dailyBriefList) {
   const items = events.map((event) => {
     const details = document.createElement("details");
     details.className = "pcs-event-card";
+    details.dataset.feedCategory = normalizeFeedCategory(event.category || event.event_type);
+    details.dataset.feedTime = event.observed_event_time || event.published_at || "";
     const summary = document.createElement("summary");
     summary.textContent = `${event.title} · ${event.region}`;
     const meta = document.createElement("p");
@@ -5116,9 +5127,59 @@ function renderDailyBrief(events, target = selectors.dailyBriefList) {
   target.replaceChildren(...items);
 }
 
+function normalizeFeedCategory(value) {
+  const category = String(value || "").toLowerCase();
+  if (/population|mobility|gather|crowd|transport|urban/.test(category)) return "population";
+  if (/research|paper|journal|publication|model/.test(category)) return "research";
+  if (/space|solar|astronom|orbit|satellite/.test(category)) return "space";
+  if (/climate|weather|atmosphere|ocean/.test(category)) return "climate";
+  if (/alert|warning|critical|hazard/.test(category)) return "alert";
+  if (/earth|geolog|seismic|volcan/.test(category)) return "earth";
+  return "other";
+}
+
+function activeDailyBriefFilter() {
+  return [...selectors.dailyBriefFilters].find((button) => button.getAttribute("aria-pressed") === "true")?.dataset.dailyBriefFilter || "all";
+}
+
+function applyDailyBriefView() {
+  const filter = activeDailyBriefFilter();
+  const containers = [selectors.dailyBriefList, selectors.moreIntelligenceList].filter(Boolean);
+  let visible = 0;
+  let total = 0;
+  containers.forEach((container) => {
+    const cards = [...container.children].filter((item) => item.matches(".brief-item, .pcs-event-card"));
+    cards.forEach((card) => {
+      total += 1;
+      const show = filter === "all" || card.dataset.feedCategory === filter;
+      card.hidden = !show;
+      if (show) visible += 1;
+    });
+    if (selectors.dailyBriefSort?.value !== "priority") {
+      const direction = selectors.dailyBriefSort?.value === "oldest" ? 1 : -1;
+      cards.sort((a, b) => direction * ((Date.parse(a.dataset.feedTime || "") || 0) - (Date.parse(b.dataset.feedTime || "") || 0))).forEach((card) => container.append(card));
+    }
+  });
+  updateText(selectors.dailyBriefCount, filter === "all" ? `${total} ITEMS` : `${visible} / ${total} ITEMS`);
+}
+
+function initializeDailyBriefFeed() {
+  selectors.dailyBriefFilters.forEach((button) => button.addEventListener("click", () => {
+    selectors.dailyBriefFilters.forEach((candidate) => {
+      const active = candidate === button;
+      candidate.classList.toggle("is-active", active);
+      candidate.setAttribute("aria-pressed", String(active));
+    });
+    applyDailyBriefView();
+  }));
+  selectors.dailyBriefSort?.addEventListener("change", applyDailyBriefView);
+}
+
 function createBriefCard(item) {
   const card = document.createElement("article");
   card.className = "pcs-ledger-entry brief-item";
+  card.dataset.feedCategory = normalizeFeedCategory(item.category || item.event_type);
+  card.dataset.feedTime = item.published_at || "";
   const title = document.createElement("strong"); title.textContent = item.title;
   const badge = document.createElement("span"); badge.className = "pcs-evidence-tag active"; badge.textContent = item.data_state || "PUBLICATION_METADATA";
   const summary = document.createElement("p"); summary.textContent = item.summary || t("summary_unavailable");
@@ -5143,6 +5204,7 @@ function renderDailyBriefPayload(payload, eventDetails) {
     renderDailyBrief(eventDetails || [], temporary);
     selectors.moreIntelligenceList.replaceChildren(...(payload.more_intelligence || []).map(createBriefCard), ...temporary.children);
   }
+  applyDailyBriefView();
 }
 
 function renderEvidenceLedger(entries) {
@@ -5169,21 +5231,120 @@ function renderEvidenceLedger(entries) {
   selectors.evidenceLedgerList.replaceChildren(...items);
 }
 
-function renderMassGatherings(rows) {
+let massGatheringRows = [];
+
+function populationEventKind(row) {
+  const category = String(row.event_category || "").toLowerCase();
+  if (category.includes("population")) return "population";
+  if (category.includes("transport")) return "transport";
+  if (category.includes("urban")) return "urban";
+  if (category.includes("anomaly")) return "anomaly";
+  if (category.includes("event")) return "event";
+  return "gathering";
+}
+
+function populationEventScale(row) {
+  const values = [];
+  const hasNumber = (value) => value !== null && value !== undefined && value !== "" && Number.isFinite(Number(value));
+  if (hasNumber(row.estimated_attendance)) values.push(`Attendance ${Number(row.estimated_attendance).toLocaleString()}`);
+  if (hasNumber(row.crowd_density)) values.push(`Density ${row.crowd_density}`);
+  if (hasNumber(row.risk_index)) values.push(`Risk index ${Number(row.risk_index).toFixed(2)}`);
+  return values.join(" · ") || "DATA PENDING";
+}
+
+function createPopulationField(label, primary, secondary = "") {
+  const field = document.createElement("dl");
+  field.className = "population-event-field";
+  const term = document.createElement("dt");
+  term.textContent = label;
+  const value = document.createElement("dd");
+  value.textContent = primary || "DATA PENDING";
+  field.append(term, value);
+  if (secondary) {
+    const extra = document.createElement("dd");
+    extra.textContent = secondary;
+    field.append(extra);
+  }
+  return field;
+}
+
+function createPopulationEventRow(row) {
+  const item = document.createElement("article");
+  item.className = "population-event-row";
+  item.dataset.populationKind = populationEventKind(row);
+  item.dataset.populationRegion = row.region || row.country || "";
+  item.dataset.populationSource = row.source || "";
+  item.dataset.populationTimeState = row.start_time ? "reported" : "pending";
+  item.dataset.populationScaleState = populationEventScale(row) === "DATA PENDING" ? "pending" : "reported";
+  const location = [row.city, row.region, row.country].filter(Boolean).join(", ") || "DATA PENDING";
+  const source = row.source || "DATA PENDING";
+  const confidence = row.confidence !== null && row.confidence !== undefined && row.confidence !== "" && Number.isFinite(Number(row.confidence)) ? `Confidence ${Number(row.confidence).toFixed(2)}` : "Confidence DATA PENDING";
+  const status = row.data_status ? pcsStatusLabel(row.data_status) : "DATA PENDING";
+  item.append(
+    createPopulationField("TIME / LOCATION", row.start_time ? formatPcsTime(row.start_time) : "DATA PENDING", location),
+    createPopulationField("EVENT TYPE", row.event_name || "DATA PENDING", row.event_category || "DATA PENDING"),
+    createPopulationField("SCALE", populationEventScale(row)),
+    createPopulationField("SOURCE / CONFIDENCE", source, confidence),
+    createPopulationField("STATUS", status, row.source_limitations || ""),
+  );
+  return item;
+}
+
+function activePopulationFilter() {
+  return [...selectors.populationFilters].find((button) => button.getAttribute("aria-pressed") === "true")?.dataset.populationFilter || "all";
+}
+
+function replaceFilterOptions(select, values, allLabel) {
+  if (!select) return;
+  const previous = select.value;
+  const options = [new Option(allLabel, "all"), ...[...new Set(values.filter(Boolean))].sort().map((value) => new Option(value, value))];
+  select.replaceChildren(...options);
+  select.value = options.some((option) => option.value === previous) ? previous : "all";
+}
+
+function applyPopulationEventView() {
   if (!selectors.massGatheringList) return;
-  selectors.massGatheringList.replaceChildren(...rows.map((row) => {
-    const item = document.createElement("article");
-    item.className = "pcs-ledger-entry";
-    const title = document.createElement("strong");
-    title.textContent = `${row.city} · ${row.event_name}`;
-    const badge = document.createElement("span");
-    badge.className = `pcs-evidence-tag ${pcsStatusClass(row.data_status)}`;
-    badge.textContent = pcsStatusLabel(row.data_status);
-    const note = document.createElement("p");
-    note.textContent = `${row.source} · ${row.source_limitations || ""}`;
-    item.append(title, badge, note);
-    return item;
+  const kind = activePopulationFilter();
+  const region = selectors.populationRegionFilter?.value || "all";
+  const source = selectors.populationSourceFilter?.value || "all";
+  const time = selectors.populationTimeFilter?.value || "all";
+  const scale = selectors.populationScaleFilter?.value || "all";
+  const visibleRows = massGatheringRows.filter((row) => {
+    if (kind !== "all" && populationEventKind(row) !== kind) return false;
+    if (region !== "all" && (row.region || row.country || "") !== region) return false;
+    if (source !== "all" && (row.source || "") !== source) return false;
+    if (time !== "all" && (row.start_time ? "reported" : "pending") !== time) return false;
+    if (scale !== "all" && (populationEventScale(row) === "DATA PENDING" ? "pending" : "reported") !== scale) return false;
+    return true;
+  });
+  if (!visibleRows.length) {
+    const empty = document.createElement("p");
+    empty.className = "feed-empty-state";
+    empty.textContent = massGatheringRows.length ? "NO MATCHING VERIFIED EVENTS" : "DATA PENDING";
+    selectors.massGatheringList.replaceChildren(empty);
+  } else {
+    selectors.massGatheringList.replaceChildren(...visibleRows.map(createPopulationEventRow));
+  }
+  updateText(selectors.massGatheringCount, kind === "all" && region === "all" && source === "all" && time === "all" && scale === "all" ? `${massGatheringRows.length} EVENTS` : `${visibleRows.length} / ${massGatheringRows.length} EVENTS`);
+}
+
+function renderMassGatherings(rows) {
+  massGatheringRows = Array.isArray(rows) ? rows : [];
+  replaceFilterOptions(selectors.populationRegionFilter, massGatheringRows.map((row) => row.region || row.country), "ALL REGIONS");
+  replaceFilterOptions(selectors.populationSourceFilter, massGatheringRows.map((row) => row.source), "ALL SOURCES");
+  applyPopulationEventView();
+}
+
+function initializePopulationEventFeed() {
+  selectors.populationFilters.forEach((button) => button.addEventListener("click", () => {
+    selectors.populationFilters.forEach((candidate) => {
+      const active = candidate === button;
+      candidate.classList.toggle("is-active", active);
+      candidate.setAttribute("aria-pressed", String(active));
+    });
+    applyPopulationEventView();
   }));
+  [selectors.populationRegionFilter, selectors.populationTimeFilter, selectors.populationSourceFilter, selectors.populationScaleFilter].forEach((select) => select?.addEventListener("change", applyPopulationEventView));
 }
 
 function evidenceParameters() {
@@ -5295,6 +5456,11 @@ async function loadPcsEvidencePanels() {
     updateText(selectors.pcsApiStatus, `${t("last_update")}: ${formatPcsTime(readiness.generated_at)}`);
     refreshAnimationStatus();
   } catch (error) {
+    renderMassGatherings([]);
+    selectors.dailyBriefList?.replaceChildren(Object.assign(document.createElement("p"), { className: "feed-empty-state", textContent: "DATA PENDING" }));
+    selectors.moreIntelligenceList?.replaceChildren();
+    updateText(selectors.dailyBriefCount, "0 ITEMS");
+    updateText(selectors.dailyBriefStatus, "NOT CONNECTED");
     updateText(selectors.pcsApiStatus, t("pcs_api_unavailable"));
   }
 }
@@ -5324,6 +5490,8 @@ async function initializeApp() {
   runSafe("Earth viewer toolbar initialization", initializeEarthViewerToolbar);
   runSafe("animation status initialization", refreshAnimationStatus);
   runSafe("placeholder selector initialization", initializePlaceholderSelectors);
+  runSafe("Daily Brief feed initialization", initializeDailyBriefFeed);
+  runSafe("population event feed initialization", initializePopulationEventFeed);
   runSafe("framework controls initialization", initializeFrameworkControls);
   runSafe("layer controls initialization", initializeLayerControls);
   runSafe("Evidence Explorer initialization", initializeEvidenceExplorer);
