@@ -1,0 +1,751 @@
+{
+  "generatedAt": "2026-08-20T08:49:13.162Z",
+  "url": "http://127.0.0.1:8765/projects/Planetary-common-state/PCS_OBSERVATORY/?v=main-panel-layout-1",
+  "checkpoint": "3e426f7df8a49bead87b51223f0501722863ca1c",
+  "webgl": {
+    "canvas": true,
+    "context": true,
+    "errorPanel": false
+  },
+  "viewports": [
+    {
+      "width": 1920,
+      "height": 1080,
+      "screenshot": "1920-desktop.png",
+      "centerDelta": 0,
+      "geometry": {
+        "viewport": {
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": false,
+        "workspace": {
+          "left": 120,
+          "right": 1800,
+          "top": -692.625,
+          "bottom": 6193.203125,
+          "width": 1680,
+          "height": 6885.828125
+        },
+        "dashboard": {
+          "left": 144,
+          "right": 1776,
+          "top": 0.34375,
+          "bottom": 4682.1875,
+          "width": 1632,
+          "height": 4681.84375
+        },
+        "stage": {
+          "left": 144,
+          "right": 1776,
+          "top": 0.34375,
+          "bottom": 744.796875,
+          "width": 1632,
+          "height": 744.453125
+        },
+        "globe": {
+          "left": 161,
+          "right": 1759,
+          "top": 71.859375,
+          "bottom": 698.25,
+          "width": 1598,
+          "height": 626.390625
+        },
+        "canvas": {
+          "left": 162,
+          "right": 1758,
+          "top": 72.859375,
+          "bottom": 697.25,
+          "width": 1596,
+          "height": 624.390625
+        },
+        "analysis": {
+          "left": 712.09375,
+          "right": 1342.03125,
+          "top": 758.796875,
+          "bottom": 2857.734375,
+          "width": 629.9375,
+          "height": 2098.9375
+        },
+        "lab": {
+          "left": 144,
+          "right": 698.09375,
+          "top": 758.796875,
+          "bottom": 1380.3125,
+          "width": 554.09375,
+          "height": 621.515625
+        },
+        "inspector": {
+          "left": 1356.03125,
+          "right": 1776,
+          "top": 758.796875,
+          "bottom": 1994.78125,
+          "width": 419.96875,
+          "height": 1235.984375
+        },
+        "canvasCount": 1,
+        "viewerCount": 1,
+        "layout": {
+          "activeTab": "pcs-model",
+          "dashboardOrder": [
+            "column model-stage",
+            "column right-column analysis-alert-center",
+            "column model-literature-lab",
+            "column left-column secondary-inspector",
+            "column center-column model-controls-workspace"
+          ],
+          "movedModules": {
+            "satelliteModel": true,
+            "externalLiterature": true,
+            "visitorMetadata": true
+          },
+          "workspaceWidth": 1680,
+          "viewportWidth": 1920,
+          "horizontalOverflow": false
+        }
+      }
+    },
+    {
+      "width": 1728,
+      "height": 1117,
+      "centerDelta": 0,
+      "geometry": {
+        "viewport": {
+          "width": 1728,
+          "height": 1117
+        },
+        "overflow": false,
+        "workspace": {
+          "left": 34.5625,
+          "right": 1693.4375,
+          "top": -686.625,
+          "bottom": 6214.25,
+          "width": 1658.875,
+          "height": 6900.875
+        },
+        "dashboard": {
+          "left": 58.5625,
+          "right": 1669.4375,
+          "top": -0.078125,
+          "bottom": 4703.234375,
+          "width": 1610.875,
+          "height": 4703.3125
+        },
+        "stage": {
+          "left": 58.5625,
+          "right": 1669.421875,
+          "top": -0.078125,
+          "bottom": 765.84375,
+          "width": 1610.859375,
+          "height": 765.921875
+        },
+        "globe": {
+          "left": 75.5625,
+          "right": 1652.421875,
+          "top": 71.4375,
+          "bottom": 719.296875,
+          "width": 1576.859375,
+          "height": 647.859375
+        },
+        "canvas": {
+          "left": 76.5625,
+          "right": 1651.421875,
+          "top": 72.4375,
+          "bottom": 718.296875,
+          "width": 1574.859375,
+          "height": 645.859375
+        },
+        "analysis": {
+          "left": 619.359375,
+          "right": 1241,
+          "top": 779.84375,
+          "bottom": 2878.78125,
+          "width": 621.640625,
+          "height": 2098.9375
+        },
+        "lab": {
+          "left": 58.5625,
+          "right": 605.359375,
+          "top": 779.84375,
+          "bottom": 1401.359375,
+          "width": 546.796875,
+          "height": 621.515625
+        },
+        "inspector": {
+          "left": 1255,
+          "right": 1669.421875,
+          "top": 779.84375,
+          "bottom": 2015.828125,
+          "width": 414.421875,
+          "height": 1235.984375
+        },
+        "canvasCount": 1,
+        "viewerCount": 1,
+        "layout": {
+          "activeTab": "pcs-model",
+          "dashboardOrder": [
+            "column model-stage",
+            "column right-column analysis-alert-center",
+            "column model-literature-lab",
+            "column left-column secondary-inspector",
+            "column center-column model-controls-workspace"
+          ],
+          "movedModules": {
+            "satelliteModel": true,
+            "externalLiterature": true,
+            "visitorMetadata": true
+          },
+          "workspaceWidth": 1658.875,
+          "viewportWidth": 1728,
+          "horizontalOverflow": false
+        }
+      }
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "screenshot": "1440-desktop.png",
+      "centerDelta": 0.0078125,
+      "geometry": {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "overflow": false,
+        "workspace": {
+          "left": 28.796875,
+          "right": 1411.1875,
+          "top": -604.625,
+          "bottom": 6151.890625,
+          "width": 1382.390625,
+          "height": 6756.515625
+        },
+        "dashboard": {
+          "left": 48.953125,
+          "right": 1391.03125,
+          "top": 0.265625,
+          "bottom": 4624.71875,
+          "width": 1342.078125,
+          "height": 4624.453125
+        },
+        "stage": {
+          "left": 48.953125,
+          "right": 1391.03125,
+          "top": 0.265625,
+          "bottom": 636.984375,
+          "width": 1342.078125,
+          "height": 636.71875
+        },
+        "globe": {
+          "left": 65.953125,
+          "right": 1374.03125,
+          "top": 68.4375,
+          "bottom": 590.4375,
+          "width": 1308.078125,
+          "height": 522
+        },
+        "canvas": {
+          "left": 66.953125,
+          "right": 1373.03125,
+          "top": 69.4375,
+          "bottom": 589.4375,
+          "width": 1306.078125,
+          "height": 520
+        },
+        "analysis": {
+          "left": 516.90625,
+          "right": 1032.96875,
+          "top": 650.984375,
+          "bottom": 2816.15625,
+          "width": 516.0625,
+          "height": 2165.171875
+        },
+        "lab": {
+          "left": 48.953125,
+          "right": 502.90625,
+          "top": 650.984375,
+          "bottom": 1269.15625,
+          "width": 453.953125,
+          "height": 618.171875
+        },
+        "inspector": {
+          "left": 1046.96875,
+          "right": 1391.03125,
+          "top": 650.984375,
+          "bottom": 1852.5,
+          "width": 344.0625,
+          "height": 1201.515625
+        },
+        "canvasCount": 1,
+        "viewerCount": 1,
+        "layout": {
+          "activeTab": "pcs-model",
+          "dashboardOrder": [
+            "column model-stage",
+            "column right-column analysis-alert-center",
+            "column model-literature-lab",
+            "column left-column secondary-inspector",
+            "column center-column model-controls-workspace"
+          ],
+          "movedModules": {
+            "satelliteModel": true,
+            "externalLiterature": true,
+            "visitorMetadata": true
+          },
+          "workspaceWidth": 1382.390625,
+          "viewportWidth": 1440,
+          "horizontalOverflow": false
+        }
+      }
+    },
+    {
+      "width": 1366,
+      "height": 768,
+      "centerDelta": 0.0078125,
+      "geometry": {
+        "viewport": {
+          "width": 1366,
+          "height": 768
+        },
+        "overflow": false,
+        "workspace": {
+          "left": 27.3125,
+          "right": 1338.671875,
+          "top": -583.625,
+          "bottom": 6169.265625,
+          "width": 1311.359375,
+          "height": 6752.890625
+        },
+        "dashboard": {
+          "left": 46.421875,
+          "right": 1319.5625,
+          "top": 0.328125,
+          "bottom": 4643.25,
+          "width": 1273.140625,
+          "height": 4642.921875
+        },
+        "stage": {
+          "left": 46.421875,
+          "right": 1319.5625,
+          "top": 0.328125,
+          "bottom": 633.90625,
+          "width": 1273.140625,
+          "height": 633.578125
+        },
+        "globe": {
+          "left": 63.421875,
+          "right": 1302.5625,
+          "top": 67.359375,
+          "bottom": 587.359375,
+          "width": 1239.140625,
+          "height": 520
+        },
+        "canvas": {
+          "left": 64.421875,
+          "right": 1301.5625,
+          "top": 68.359375,
+          "bottom": 586.359375,
+          "width": 1237.140625,
+          "height": 518
+        },
+        "analysis": {
+          "left": 490.546875,
+          "right": 979.546875,
+          "top": 647.90625,
+          "bottom": 2809.65625,
+          "width": 489,
+          "height": 2161.75
+        },
+        "lab": {
+          "left": 46.421875,
+          "right": 476.546875,
+          "top": 647.90625,
+          "bottom": 1264.9375,
+          "width": 430.125,
+          "height": 617.03125
+        },
+        "inspector": {
+          "left": 993.546875,
+          "right": 1319.5625,
+          "top": 647.90625,
+          "bottom": 1834.625,
+          "width": 326.015625,
+          "height": 1186.71875
+        },
+        "canvasCount": 1,
+        "viewerCount": 1,
+        "layout": {
+          "activeTab": "pcs-model",
+          "dashboardOrder": [
+            "column model-stage",
+            "column right-column analysis-alert-center",
+            "column model-literature-lab",
+            "column left-column secondary-inspector",
+            "column center-column model-controls-workspace"
+          ],
+          "movedModules": {
+            "satelliteModel": true,
+            "externalLiterature": true,
+            "visitorMetadata": true
+          },
+          "workspaceWidth": 1311.359375,
+          "viewportWidth": 1366,
+          "horizontalOverflow": false
+        }
+      }
+    },
+    {
+      "width": 1024,
+      "height": 768,
+      "centerDelta": 0,
+      "geometry": {
+        "viewport": {
+          "width": 1024,
+          "height": 768
+        },
+        "overflow": false,
+        "workspace": {
+          "left": 20.484375,
+          "right": 1003.515625,
+          "top": -553.46875,
+          "bottom": 8340.546875,
+          "width": 983.03125,
+          "height": 8894.015625
+        },
+        "dashboard": {
+          "left": 34.8125,
+          "right": 989.1875,
+          "top": -0.34375,
+          "bottom": 6336.984375,
+          "width": 954.375,
+          "height": 6337.328125
+        },
+        "stage": {
+          "left": 34.8125,
+          "right": 989.1875,
+          "top": -0.34375,
+          "bottom": 631.203125,
+          "width": 954.375,
+          "height": 631.546875
+        },
+        "globe": {
+          "left": 51.8125,
+          "right": 972.1875,
+          "top": 64.65625,
+          "bottom": 584.65625,
+          "width": 920.375,
+          "height": 520
+        },
+        "canvas": {
+          "left": 52.8125,
+          "right": 971.1875,
+          "top": 65.65625,
+          "bottom": 583.65625,
+          "width": 918.375,
+          "height": 518
+        },
+        "analysis": {
+          "left": 34.8125,
+          "right": 989.1875,
+          "top": 645.203125,
+          "bottom": 2685.6875,
+          "width": 954.375,
+          "height": 2040.484375
+        },
+        "lab": {
+          "left": 34.8125,
+          "right": 989.1875,
+          "top": 2699.6875,
+          "bottom": 3314.6875,
+          "width": 954.375,
+          "height": 615
+        },
+        "inspector": {
+          "left": 34.8125,
+          "right": 989.1875,
+          "top": 3328.6875,
+          "bottom": 4234.515625,
+          "width": 954.375,
+          "height": 905.828125
+        },
+        "canvasCount": 1,
+        "viewerCount": 1,
+        "layout": {
+          "activeTab": "pcs-model",
+          "dashboardOrder": [
+            "column model-stage",
+            "column right-column analysis-alert-center",
+            "column model-literature-lab",
+            "column left-column secondary-inspector",
+            "column center-column model-controls-workspace"
+          ],
+          "movedModules": {
+            "satelliteModel": true,
+            "externalLiterature": true,
+            "visitorMetadata": true
+          },
+          "workspaceWidth": 983.03125,
+          "viewportWidth": 1024,
+          "horizontalOverflow": false
+        }
+      }
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "mobile": true,
+      "screenshot": "390-mobile.png",
+      "centerDelta": 0,
+      "geometry": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "overflow": false,
+        "workspace": {
+          "left": 10,
+          "right": 380,
+          "top": -830.46875,
+          "bottom": 9941.5625,
+          "width": 370,
+          "height": 10772.03125
+        },
+        "dashboard": {
+          "left": 10,
+          "right": 380,
+          "top": -0.296875,
+          "bottom": 7527.125,
+          "width": 370,
+          "height": 7527.421875
+        },
+        "stage": {
+          "left": 10,
+          "right": 380,
+          "top": -0.296875,
+          "bottom": 618.671875,
+          "width": 370,
+          "height": 618.96875
+        },
+        "globe": {
+          "left": 27,
+          "right": 363,
+          "top": 113.703125,
+          "bottom": 552.578125,
+          "width": 336,
+          "height": 438.875
+        },
+        "canvas": {
+          "left": 28,
+          "right": 362,
+          "top": 114.703125,
+          "bottom": 551.578125,
+          "width": 334,
+          "height": 436.875
+        },
+        "analysis": {
+          "left": 10,
+          "right": 380,
+          "top": 632.671875,
+          "bottom": 3116.265625,
+          "width": 370,
+          "height": 2483.59375
+        },
+        "lab": {
+          "left": 10,
+          "right": 380,
+          "top": 3130.265625,
+          "bottom": 3769.265625,
+          "width": 370,
+          "height": 639
+        },
+        "inspector": {
+          "left": 10,
+          "right": 380,
+          "top": 3783.265625,
+          "bottom": 4871.734375,
+          "width": 370,
+          "height": 1088.46875
+        },
+        "canvasCount": 1,
+        "viewerCount": 1,
+        "layout": {
+          "activeTab": "pcs-model",
+          "dashboardOrder": [
+            "column model-stage",
+            "column right-column analysis-alert-center",
+            "column model-literature-lab",
+            "column left-column secondary-inspector",
+            "column center-column model-controls-workspace"
+          ],
+          "movedModules": {
+            "satelliteModel": true,
+            "externalLiterature": true,
+            "visitorMetadata": true
+          },
+          "workspaceWidth": 370,
+          "viewportWidth": 390,
+          "horizontalOverflow": false
+        }
+      }
+    }
+  ],
+  "interactions": {
+    "toolbar": {
+      "pinned": "pinned",
+      "expanded": "expanded",
+      "restored": "normal"
+    },
+    "literatureRelocation": true,
+    "modelRelocation": true,
+    "deepSpace": {
+      "open": true,
+      "canvasCount": 1
+    },
+    "earth": {
+      "title": "Earth — Living Planet",
+      "viewer": {
+        "activeRegionId": "global",
+        "viewerMode": "normal",
+        "viewerCount": 1,
+        "cesiumCanvasCount": 1,
+        "camera": {
+          "positionWC": {
+            "x": 31899632.97118008,
+            "y": 326001.1104122211,
+            "z": 5645624.854026297
+          },
+          "heading": 6.283185307179586,
+          "pitch": -1.5707963267948966,
+          "roll": 0,
+          "height": 26019517.29616086
+        },
+        "cameraPreservationResults": [],
+        "markers": [],
+        "activeLayers": []
+      }
+    }
+  },
+  "unexpectedRuntimeErrors": [],
+  "externalServiceErrors": [
+    "[PCS_OBSERVATORY] historical status initialization failed: TypeError: Failed to fetch\n    at loadHistoryStatus (http://127.0.0.1:8765/projects/Planetary-common-state/PCS_OBSERVATORY/app.js?v=20260801-release-center-1:3097:26)\n    at runSafeAsync (http://127.0.0.1:8765/projects/Planetary-common-state/PCS_OBSERVATORY/app.js?v=20260801-release-center-1:3811:11)\n    at initializeHistoricalMode (http://127.0.0.1:8765/projects/Planetary-common-state/PCS_OBSERVATORY/app.js?v=20260801-release-center-1:3247:8)\n    at runSafe (http://127.0.0.1:8765/projects/Planetary-common-state/PCS_OBSERVATORY/app.js?v=20260801-release-center-1:3803:5)\n    at initializeApp (http://127.0.0.1:8765/projects/Planetary-common-state/PCS_OBSERVATORY/app.js?v=20260801-release-center-1:5331:3)",
+    "[PCS_OBSERVATORY] Evidence Explorer event loading failed: TypeError: Failed to fetch\n    at loadEvidenceExplorer (http://127.0.0.1:8765/projects/Planetary-common-state/PCS_OBSERVATORY/app.js?v=20260801-release-center-1:5235:26)\n    at http://127.0.0.1:8765/projects/Planetary-common-state/PCS_OBSERVATORY/app.js?v=20260801-release-center-1:5336:63\n    at runSafeAsync (http://127.0.0.1:8765/projects/Planetary-common-state/PCS_OBSERVATORY/app.js?v=20260801-release-center-1:3811:11)\n    at initializeApp (http://127.0.0.1:8765/projects/Planetary-common-state/PCS_OBSERVATORY/app.js?v=20260801-release-center-1:5336:9)"
+  ],
+  "resourceErrors": [
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/regional/observation?region=global"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/health/openweather"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/history/status"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/layers"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/register"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/stats"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/locations"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/visitors/analytics?range=24h"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/events?limit=20"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/domain-readiness"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/evidence-ledger"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/mass-gatherings"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/daily-brief"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/system-status"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/evidence-explorer"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/domain-readiness"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/events?limit=20"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/evidence-ledger"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/mass-gatherings"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/daily-brief"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/system-status"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/domain-readiness"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/events?limit=20"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/evidence-ledger"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/mass-gatherings"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/daily-brief"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/system-status"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/astronomy/planet-image/mars"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "url": "http://127.0.0.1:8787/api/astronomy/body/mars"
+    }
+  ]
+}

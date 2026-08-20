@@ -188,8 +188,13 @@
         </script>
       </section>
 
-      <section class="dashboard-layout" aria-label="PCS planetary monitoring dashboard">
-        <aside class="column left-column" aria-label="PCS estimate and source status">
+      <section class="dashboard-layout" data-pcs-research-grid aria-label="PCS planetary monitoring dashboard">
+        <aside class="column left-column secondary-inspector" aria-label="Secondary inspector and source metadata">
+          <header class="research-zone-heading secondary-zone-heading">
+            <span class="panel-label">Secondary Inspector</span>
+            <h2>State, Source &amp; Metadata</h2>
+            <p>Runtime identity, freshness, coverage, connected sources, and supporting metadata.</p>
+          </header>
           <article class="panel hero-panel" data-live-context>
             <span id="pcs-state-label" class="panel-label" data-i18n="prototype_pcs_estimate">Prototype PCS Estimate</span>
             <strong id="current-state" class="state-value">Loading</strong>
@@ -227,11 +232,11 @@
           </article>
         </aside>
 
-        <section class="column center-column" aria-label="3D Earth and layer controls">
+        <section class="column model-stage" aria-label="Model and globe stage">
           <article class="panel globe-panel">
             <div class="panel-heading">
               <div>
-                <span id="observatory-view-label" class="panel-label">3D Earth Observatory</span>
+                <span id="observatory-view-label" class="panel-label">Model / Globe Stage · 3D Earth Observatory</span>
                 <h2 id="observatory-view-title">Earth — Living Planet</h2>
               </div>
               <span class="status-pill status-cyan">Visualization only</span>
@@ -249,6 +254,10 @@
               Loading 3D Earth view.
             </p>
           </article>
+
+        </section>
+
+        <section class="column center-column model-controls-workspace" aria-label="Model, globe, layer, and timeline controls">
 
           <article class="panel solar-system-panel" aria-labelledby="solar-system-title">
             <div class="panel-heading">
@@ -517,7 +526,26 @@
           </article>
         </section>
 
-        <aside class="column right-column" aria-label="Body information, domain values, alerts, and health">
+        <aside class="column right-column analysis-alert-center" aria-label="Analysis and alert center">
+          <header class="research-zone-heading analysis-zone-heading">
+            <span class="panel-label">Analysis / Alert Center</span>
+            <h2>PCS Judgment Layer</h2>
+            <p>Existing runtime status is shown below. Unimplemented interpretation fields remain explicitly pending.</p>
+          </header>
+          <article class="panel analysis-capability-panel" aria-labelledby="analysis-capability-title">
+            <div class="panel-heading">
+              <div><span class="panel-label">Analysis</span><h2 id="analysis-capability-title">Runtime Capability Map</h2></div>
+              <span class="status-pill status-attention">PARTIAL</span>
+            </div>
+            <dl class="analysis-capability-grid">
+              <div><dt>L(t)</dt><dd>Existing runtime status below</dd></div>
+              <div><dt>L<sub>T</sub> / L<sub>F</sub> / L<sub>C</sub> / L<sub>I</sub> / L<sub>S</sub></dt><dd>Existing component readouts below</dd></div>
+              <div><dt>Trend</dt><dd>COMING / DATA PENDING</dd></div>
+              <div><dt>Persistence</dt><dd>COMING / DATA PENDING</dd></div>
+              <div><dt>Confidence</dt><dd>COMING / DATA PENDING</dd></div>
+              <div><dt>Normalization</dt><dd>Runtime component metadata only</dd></div>
+            </dl>
+          </article>
           <article id="regional-observation-panel" class="panel regional-observation-panel" aria-labelledby="regional-observation-title">
             <div class="panel-heading">
               <div><span class="panel-label">Regional observation & hazards</span><h2 id="regional-observation-title">Global</h2></div>
@@ -574,31 +602,31 @@
             <span class="panel-label" data-i18n="pcs_residual_status">PCS Residual Status</span>
             <div class="value-grid">
               <div class="value-card">
-                <span data-i18n="thermal_residual">Thermal Residual</span>
+                <span><b>L<sub>T</sub></b> · <span data-i18n="thermal_residual">Thermal Residual</span></span>
                 <strong id="projection-thermal">UNAVAILABLE</strong>
                 <small data-residual-reason="thermal">Formula and validation method are not configured.</small>
                 <div class="progress-track"><span id="progress-thermal" class="progress-fill"></span></div>
               </div>
               <div class="value-card">
-                <span data-i18n="chemical_residual">Chemical Residual</span>
+                <span><b>L<sub>C</sub></b> · <span data-i18n="chemical_residual">Chemical Residual</span></span>
                 <strong id="projection-chemical">UNAVAILABLE</strong>
                 <small data-residual-reason="chemical">Formula and validation method are not configured.</small>
                 <div class="progress-track"><span id="progress-chemical" class="progress-fill"></span></div>
               </div>
               <div class="value-card">
-                <span data-i18n="structural_residual">Structural Residual</span>
+                <span><b>L<sub>S</sub></b> · <span data-i18n="structural_residual">Structural Residual</span></span>
                 <strong id="projection-structural">UNAVAILABLE</strong>
                 <small data-residual-reason="structural">Formula and validation method are not configured.</small>
                 <div class="progress-track"><span id="progress-structural" class="progress-fill"></span></div>
               </div>
               <div class="value-card">
-                <span data-i18n="informational_residual">Informational Residual</span>
+                <span><b>L<sub>I</sub></b> · <span data-i18n="informational_residual">Informational Residual</span></span>
                 <strong id="projection-informational">UNAVAILABLE</strong>
                 <small data-residual-reason="informational">Formula and validation method are not configured.</small>
                 <div class="progress-track"><span id="progress-informational" class="progress-fill"></span></div>
               </div>
               <div class="value-card">
-                <span data-i18n="flow_residual">Flow Residual</span>
+                <span><b>L<sub>F</sub></b> · <span data-i18n="flow_residual">Flow Residual</span></span>
                 <strong id="projection-flow">UNAVAILABLE</strong>
                 <small data-residual-reason="flow">Formula and validation method are not configured.</small>
               </div>
@@ -608,15 +636,15 @@
 
           <article class="panel alert-panel" data-live-context>
             <span class="panel-label" data-i18n="alert_status">Alert Status</span>
-            <strong class="status-text">Current state: <span data-i18n="normal">Normal</span></strong>
-            <p>No validated alert model implemented yet.</p>
-            <div class="alert-levels" aria-label="Alert levels">
-              <span class="status-pill status-normal" data-i18n="normal">Normal</span>
-              <span class="status-pill status-notice" data-i18n="notice">Notice</span>
-              <span class="status-pill status-attention" data-i18n="attention">Attention</span>
-              <span class="status-pill status-warning" data-i18n="warning">Warning</span>
-              <span class="status-pill status-critical" data-i18n="critical">Critical</span>
+            <strong class="status-text">Alert evaluation: UNAVAILABLE</strong>
+            <p>No validated alert model is implemented; no alert determination is being asserted.</p>
+            <div class="alert-levels" aria-label="Planned alert severity vocabulary">
+              <span class="status-pill status-notice">INFO</span>
+              <span class="status-pill status-attention">WATCH</span>
+              <span class="status-pill status-warning">WARNING</span>
+              <span class="status-pill status-critical">CRITICAL</span>
             </div>
+            <details class="alert-schema"><summary>Required evidence for every future alert</summary><p>Trigger · Evidence · Source · Time · Confidence · Reason · Related model</p><strong>ANALYSIS PIPELINE PENDING</strong></details>
           </article>
 
           <article class="panel health-panel" data-live-context>
@@ -680,6 +708,46 @@
             </details>
           </article>
         </aside>
+
+        <section class="column model-literature-lab" aria-labelledby="model-literature-title">
+          <article class="panel research-lab-panel">
+            <div class="panel-heading research-lab-heading">
+              <div>
+                <span class="panel-label">Model &amp; Literature Lab</span>
+                <h2 id="model-literature-title">Research Comparison Workspace</h2>
+              </div>
+              <span class="status-pill status-cyan">UI SHELL</span>
+            </div>
+            <div class="research-tabs" role="tablist" aria-label="Model and literature views">
+              <button type="button" role="tab" id="research-tab-pcs-model" data-research-tab="pcs-model" aria-controls="research-panel-pcs-model" aria-selected="true">PCS MODEL</button>
+              <button type="button" role="tab" id="research-tab-pcs-papers" data-research-tab="pcs-papers" aria-controls="research-panel-pcs-papers" aria-selected="false" tabindex="-1">PCS PAPERS</button>
+              <button type="button" role="tab" id="research-tab-external-papers" data-research-tab="external-papers" aria-controls="research-panel-external-papers" aria-selected="false" tabindex="-1">EXTERNAL PAPERS</button>
+              <button type="button" role="tab" id="research-tab-cross-comparison" data-research-tab="cross-comparison" aria-controls="research-panel-cross-comparison" aria-selected="false" tabindex="-1">CROSS COMPARISON</button>
+            </div>
+            <section id="research-panel-pcs-model" class="research-tab-panel" role="tabpanel" aria-labelledby="research-tab-pcs-model" data-research-panel="pcs-model">
+              <div class="research-status-card">
+                <span class="panel-label">Current PCS Runtime</span>
+                <h3>PCS Observatory v2.0 Shell</h3>
+                <p>Residual components exposed by the existing runtime: L<sub>T</sub>, L<sub>F</sub>, L<sub>C</sub>, L<sub>I</sub>, and L<sub>S</sub>.</p>
+                <p>Validated L(t) aggregation formula and weights: <strong>COMING / DATA PENDING</strong></p>
+              </div>
+              <div data-research-mount="pcs-model"></div>
+            </section>
+            <section id="research-panel-pcs-papers" class="research-tab-panel" role="tabpanel" aria-labelledby="research-tab-pcs-papers" data-research-panel="pcs-papers" hidden>
+              <div class="research-empty-state"><strong>COMING / DATA PENDING</strong><p>No Alvin Lin / PCS publication registry is connected in the current runtime. Zenodo and DOI records will appear only after a verified source is integrated.</p></div>
+            </section>
+            <section id="research-panel-external-papers" class="research-tab-panel" role="tabpanel" aria-labelledby="research-tab-external-papers" data-research-panel="external-papers" hidden>
+              <div class="research-status-card"><strong>Existing evidence feed</strong><p>Current connected literature and publication metadata are shown without claiming automated agreement analysis.</p></div>
+              <div data-research-mount="external-papers"></div>
+            </section>
+            <section id="research-panel-cross-comparison" class="research-tab-panel" role="tabpanel" aria-labelledby="research-tab-cross-comparison" data-research-panel="cross-comparison" hidden>
+              <div class="research-empty-state"><strong>ANALYSIS PIPELINE PENDING</strong><p>No AI literature comparison backend is connected. The labels below are the reserved review vocabulary, not analysis results.</p></div>
+              <div class="comparison-status-key" aria-label="Reserved cross-comparison statuses">
+                <span>AGREEMENT</span><span>PARTIAL AGREEMENT</span><span>CONFLICT</span><span>GAP</span><span>UNSUPPORTED</span><span>NEEDS REVIEW</span>
+              </div>
+            </section>
+          </article>
+        </section>
       </section>
 
       <section class="bottom-grid" aria-label="Domain panels and PCS pipeline">
@@ -829,6 +897,7 @@
     <script src="./cosmic-web-layer.js?v=phase-4d"></script>
     <script src="./observable-universe-layer.js?v=phase-4e"></script>
     <script src="./deep-space.js?v=solar-long-horizon-public-20000-1"></script>
+    <script src="./main-panel-layout.js?v=main-panel-layout-1"></script>
     <script src="./app.js?v=20260801-release-center-1"></script>
     <script src="./release-center.js?v=20260812-milky-way-freeze-1"></script>
   </body>
