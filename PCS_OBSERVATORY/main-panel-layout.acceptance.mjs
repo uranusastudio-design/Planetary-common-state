@@ -109,7 +109,7 @@ for (const viewport of viewports) {
   assert(geometry.canvasCount === 1 && geometry.viewerCount === 1, `${viewport.width}x${viewport.height}: renderer ownership changed`);
   assert(geometry.audit.brandCenterDelta.title <= 2 && geometry.audit.brandCenterDelta.support <= 2, `${viewport.width}x${viewport.height}: WHITE identity center lines differ`);
   assert(/right-column/.test(geometry.parents.satellite) && /right-column/.test(geometry.parents.visitor), `${viewport.width}x${viewport.height}: existing right modules were relocated`);
-  assert(geometry.parents.daily === "bottom-grid", `${viewport.width}x${viewport.height}: Daily Brief was relocated`);
+  assert(geometry.parents.daily === "secondary-workspace", `${viewport.width}x${viewport.height}: Daily Brief left the independent right-side flow`);
 
   if (viewport.width > 1320) {
     assert(Math.abs(geometry.blue.left - geometry.left.left) <= 2 && Math.abs(geometry.blue.right - geometry.left.right) <= 2, `${viewport.width}x${viewport.height}: BLUE left-column placement mismatch`);

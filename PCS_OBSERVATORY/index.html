@@ -6,7 +6,7 @@
     <title>PCS Observatory | Uranus A Studio</title>
     <link rel="icon" href="./assets/uranus-a-studio-logo.jpeg">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cesium@1.120.0/Build/Cesium/Widgets/widgets.css">
-    <link rel="stylesheet" href="./style.css?v=panel-layout-correction-4">
+    <link rel="stylesheet" href="./style.css?v=zero-dead-space-3">
     <link rel="stylesheet" href="./intro-screen.css">
     <script>
       window.CESIUM_BASE_URL = "https://cdn.jsdelivr.net/npm/cesium@1.120.0/Build/Cesium/";
@@ -189,6 +189,8 @@
       </section>
 
       <section class="dashboard-layout" data-pcs-correction-layout aria-label="PCS planetary monitoring dashboard">
+        <div class="primary-workspace">
+          <div class="upper-workspace-grid">
         <aside class="column left-column" aria-label="PCS estimate, source status, and research input">
           <article class="panel hero-panel" data-live-context>
             <span id="pcs-state-label" class="panel-label" data-i18n="prototype_pcs_estimate">Prototype PCS Estimate</span>
@@ -620,6 +622,10 @@
           </section>
         </section>
 
+          </div>
+        </div>
+
+        <div class="secondary-workspace">
         <aside class="column right-column" aria-label="Body information, domain values, alerts, and health">
           <article id="regional-observation-panel" class="panel regional-observation-panel" aria-labelledby="regional-observation-title">
             <div class="panel-heading">
@@ -784,6 +790,8 @@
           </article>
         </aside>
 
+        </div>
+
       </section>
 
       <section class="bottom-grid" aria-label="Domain panels and PCS pipeline">
@@ -807,7 +815,7 @@
               </div>
               <span class="status-pill status-muted">NO VALIDATED EVENT SELECTED</span>
             </div>
-            <p class="panel-note">Daily observations and research inputs will appear only when their sources and validation states are available. Empty capacity is intentional.</p>
+            <p class="panel-note">Daily observations and research inputs appear only when their sources and validation states are available. Detailed sections expand when validated data is selected.</p>
 
             <section class="event-stream-section" aria-labelledby="event-stream-title">
               <div class="event-section-heading">
@@ -832,11 +840,12 @@
               </div>
             </section>
 
-            <section class="selected-event-section" aria-labelledby="selected-event-title">
+            <section class="selected-event-section" aria-labelledby="selected-event-title" data-state="empty">
               <div class="event-section-heading">
                 <div><span class="panel-label">Selected Event</span><h3 id="selected-event-title">PCS ANALYSIS</h3></div>
                 <span>ANALYSIS UNAVAILABLE</span>
               </div>
+              <p class="compact-empty-state">NO EVENT SELECTED · ANALYSIS UNAVAILABLE</p>
               <dl class="selected-event-grid">
                 <div><dt>WHAT HAPPENED</dt><dd>UNAVAILABLE</dd></div>
                 <div><dt>WHY PCS FLAGGED IT</dt><dd>INSUFFICIENT EVIDENCE</dd></div>
@@ -853,11 +862,12 @@
               </dl>
             </section>
 
-            <section class="alert-evidence-section" aria-labelledby="alert-evidence-title">
+            <section class="alert-evidence-section" aria-labelledby="alert-evidence-title" data-state="empty">
               <div class="event-section-heading">
                 <div><span class="panel-label">Alert / Evidence / Related Research</span><h3 id="alert-evidence-title">ALERT EXPLANATION</h3></div>
                 <span>NO ALERT ASSERTED</span>
               </div>
+              <p class="compact-empty-state">NO ALERT ASSERTED · INSUFFICIENT EVIDENCE</p>
               <div class="alert-severity-key" aria-label="Reserved alert severities"><span>INFO</span><span>WATCH</span><span>WARNING</span><span>CRITICAL</span></div>
               <dl class="alert-evidence-grid">
                 <div><dt>Trigger</dt><dd>UNAVAILABLE</dd></div><div><dt>Evidence</dt><dd>INSUFFICIENT EVIDENCE</dd></div>
@@ -1054,7 +1064,7 @@
     <script src="./cosmic-web-layer.js?v=phase-4d"></script>
     <script src="./observable-universe-layer.js?v=phase-4e"></script>
     <script src="./deep-space.js?v=solar-long-horizon-public-20000-1"></script>
-    <script src="./main-panel-layout.js?v=panel-layout-correction-1"></script>
+    <script src="./main-panel-layout.js?v=zero-dead-space-1"></script>
     <script src="./app.js?v=20260801-release-center-1"></script>
     <script src="./release-center.js?v=20260812-milky-way-freeze-1"></script>
   </body>

@@ -41,7 +41,9 @@ test("RED is a neutral model mapping stage below existing controls", () => {
 
 test("YELLOW reserves a large event, analysis, and explainable-alert workspace", () => {
   assert.match(html, /data-layout-zone="yellow"/);
-  assert.match(css, /\.event-analysis-center\s*\{[^}]*min-height:\s*1320px/s);
+  assert.match(css, /\.event-analysis-center\s*\{[^}]*min-height:\s*0/s);
+  assert.match(html, /NO EVENT SELECTED · ANALYSIS UNAVAILABLE/);
+  assert.match(html, /NO ALERT ASSERTED · INSUFFICIENT EVIDENCE/);
   for (const field of ["TIME", "CATEGORY", "EVENT", "SOURCE", "STATUS", "CONFIDENCE"]) assert.match(html, new RegExp(`>${field}<`));
   for (const field of ["WHAT HAPPENED", "WHY PCS FLAGGED IT", "OBSERVATION", "MODEL", "BASELINE", "DEVIATION", "RESIDUAL", "TREND", "PERSISTENCE", "RELATED PAPERS", "RELATED EVENTS"]) assert.match(html, new RegExp(`>${field}<`));
   for (const severity of ["INFO", "WATCH", "WARNING", "CRITICAL"]) assert.match(html, new RegExp(`>${severity}<`));
@@ -50,23 +52,30 @@ test("YELLOW reserves a large event, analysis, and explainable-alert workspace",
   assert.match(html, /INSUFFICIENT EVIDENCE/);
 });
 
-test("existing modules remain unique and are not relocated", () => {
+test("existing modules remain unique and only receive independent flow wrappers", () => {
   for (const id of ["cesium-globe", "satellite-observation-panel", "pcs-daily-brief", "visitor-network-details", "total-l-status"]) {
     assert.equal((html.match(new RegExp(`id="${id}"`, "g")) || []).length, 1, id);
   }
   assert.doesNotMatch(layout, /moveExistingModule/);
   assert.doesNotMatch(layout, /data-research-mount/);
-  assert.match(layout, /existingModuleRelocation:\s*false/);
+  assert.match(layout, /existingModuleRelocation:\s*"layout-wrapper-only"/);
+  assert.match(layout, /integrateIndependentPanelFlows/);
+  assert.match(layout, /primaryWorkspace\.append\(domainsPanel, yellowZone, populationFeed, pipelinePanel, audioPanel\)/);
+  assert.match(layout, /secondaryWorkspace\.append\(dailyBrief, evidenceLedger, animationPanel, evidenceExplorer\)/);
   assert.ok(html.indexOf("main-panel-layout.js") < html.indexOf("app.js"));
 });
 
-test("desktop retains the long-page three-column structure and mobile reorders only new zones", () => {
-  assert.match(css, /grid-template-columns:\s*minmax\(250px, 1fr\) minmax\(620px, 2fr\) minmax\(250px, 1fr\)/);
+test("desktop retains the long-page three-column proportions through independent primary and secondary flows", () => {
+  assert.match(html, /class="primary-workspace"/);
+  assert.match(html, /class="upper-workspace-grid"/);
+  assert.match(html, /class="secondary-workspace"/);
+  assert.match(css, /\.dashboard-layout\s*\{[^}]*grid-template-columns:\s*minmax\(0, 3fr\) minmax\(250px, 1fr\)/s);
+  assert.match(css, /\.upper-workspace-grid\s*\{[^}]*grid-template-columns:\s*minmax\(250px, 1fr\) minmax\(620px, 2fr\)/s);
   assert.doesNotMatch(css, /"stage stage stage"/);
-  assert.match(css, /\.bottom-grid\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1\.45fr\) minmax\(0, 0\.55fr\)/s);
+  assert.match(css, /\.primary-workspace,[\s\S]*?\.bottom-secondary-column\s*\{[^}]*display:\s*flex;[^}]*flex-direction:\s*column/s);
   assert.match(css, /@media \(max-width: 1100px\)/);
-  assert.match(layout, /dashboard\.insertBefore\(blueZone, centerColumn\)/);
-  assert.match(layout, /dashboard\.insertBefore\(yellowZone, leftColumn\)/);
+  assert.match(layout, /primaryWorkspace\.append\(blueZone, yellowZone\)/);
+  assert.match(layout, /primaryWorkspace\.insertBefore\(yellowZone, populationFeed\)/);
   assert.match(css, /overflow-x:\s*hidden/);
 });
 
@@ -84,12 +93,23 @@ test("population and Daily Brief panels are independent accessible information f
   for (const id of ["population-region-filter", "population-time-filter", "population-source-filter", "population-scale-filter", "daily-brief-sort", "mass-gathering-count", "daily-brief-count"]) assert.match(html, new RegExp(`id="${id}"`));
   for (const category of ["population", "gathering", "transport", "urban", "event", "anomaly"]) assert.match(html, new RegExp(`data-population-filter="${category}"`));
   for (const category of ["earth", "climate", "space", "research", "population", "alert"]) assert.match(html, new RegExp(`data-daily-brief-filter="${category}"`));
-  assert.match(css, /#pcs-mass-gatherings\s*\{[^}]*height:\s*clamp\(520px, 62vh, 780px\)/s);
-  assert.match(css, /#pcs-daily-brief\s*\{[^}]*height:\s*clamp\(420px, 56vh, 620px\)/s);
+  assert.match(css, /#pcs-daily-brief,[\s\S]*?#pcs-mass-gatherings\s*\{[^}]*height:\s*auto;[^}]*min-height:\s*0/s);
+  assert.match(css, /\.daily-brief-feed\s*\{[^}]*max-height:\s*clamp\(360px, 52vh, 640px\)/s);
+  assert.match(css, /\.population-event-stream\s*\{[^}]*max-height:\s*clamp\(320px, 48vh, 620px\)/s);
   assert.match(css, /\.pcs-scroll-feed\s*\{[^}]*overflow-x:\s*hidden;[^}]*overflow-y:\s*auto/s);
   assert.match(css, /\.pcs-feed-sticky-header\s*\{[^}]*position:\s*sticky;[^}]*top:\s*0/s);
   assert.match(css, /\.pcs-scroll-feed::\-webkit-scrollbar\s*\{[^}]*width:\s*9px/s);
   assert.match(app, /function renderMassGatherings\(rows\)/);
   assert.match(app, /DATA PENDING/);
   assert.doesNotMatch(app, /Scale HIGH|Confidence 0\.82/);
+});
+
+test("zero-dead-space rules remove artificial empty capacity", () => {
+  assert.match(css, /\.research-input-panel\s*\{[^}]*min-height:\s*0/s);
+  assert.match(css, /\.event-stream-list\s*\{[^}]*min-height:\s*0;[^}]*max-height:\s*clamp\(320px, 48vh, 620px\)/s);
+  assert.match(css, /\.event-empty-state\s*\{[^}]*min-height:\s*64px/s);
+  assert.match(css, /\.feed-empty-state\s*\{[^}]*min-height:\s*64px/s);
+  assert.match(css, /\.data-message:empty\s*\{\s*display:\s*none;/s);
+  assert.doesNotMatch(css, /\.event-analysis-center\s*\{[^}]*min-height:\s*1320px/s);
+  assert.doesNotMatch(css, /\.research-input-panel\s*\{[^}]*min-height:\s*980px/s);
 });

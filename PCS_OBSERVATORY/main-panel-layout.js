@@ -23,12 +23,30 @@
   };
   const responsiveLayout = global.matchMedia("(max-width: 1100px)");
   const dashboard = document.querySelector("[data-pcs-correction-layout]");
-  const leftColumn = dashboard?.querySelector(":scope > .left-column");
-  const centerColumn = dashboard?.querySelector(":scope > .center-column");
-  const rightColumn = dashboard?.querySelector(":scope > .right-column");
+  const leftColumn = dashboard?.querySelector(".left-column");
+  const centerColumn = dashboard?.querySelector(".center-column");
+  const rightColumn = dashboard?.querySelector(".right-column");
+  const primaryWorkspace = dashboard?.querySelector(":scope > .primary-workspace");
+  const secondaryWorkspace = dashboard?.querySelector(":scope > .secondary-workspace");
   const blueZone = document.querySelector('[data-layout-zone="blue"]');
   const yellowZone = document.querySelector('[data-layout-zone="yellow"]');
-  const bottomPrimary = document.querySelector(".bottom-primary-column");
+  const bottomGrid = document.querySelector(".bottom-grid");
+  const domainsPanel = document.querySelector(".domains-panel");
+  const dailyBrief = document.querySelector("#pcs-daily-brief");
+  const populationFeed = document.querySelector("#pcs-mass-gatherings");
+  const evidenceLedger = document.querySelector("#pcs-evidence-ledger");
+  const pipelinePanel = document.querySelector(".pipeline-panel");
+  const animationPanel = document.querySelector(".animation-panel");
+  const audioPanel = document.querySelector(".audio-panel");
+  const evidenceExplorer = document.querySelector(".evidence-panel");
+
+  function integrateIndependentPanelFlows() {
+    if (!primaryWorkspace || !secondaryWorkspace || !bottomGrid || !domainsPanel || !yellowZone || !populationFeed || !pipelinePanel || !audioPanel || !dailyBrief || !evidenceLedger || !animationPanel || !evidenceExplorer) return;
+    primaryWorkspace.append(domainsPanel, yellowZone, populationFeed, pipelinePanel, audioPanel);
+    secondaryWorkspace.append(dailyBrief, evidenceLedger, animationPanel, evidenceExplorer);
+    bottomGrid.dataset.integrated = "true";
+    bottomGrid.hidden = true;
+  }
 
   function extensionOf(filename) {
     return String(filename || "").split(".").pop().toLowerCase();
@@ -138,17 +156,17 @@
   });
 
   function applyResponsiveZoneOrder() {
-    if (!dashboard || !leftColumn || !centerColumn || !rightColumn || !blueZone || !yellowZone || !bottomPrimary) return;
+    if (!dashboard || !primaryWorkspace || !leftColumn || !centerColumn || !rightColumn || !blueZone || !yellowZone || !populationFeed) return;
     if (responsiveLayout.matches) {
-      dashboard.insertBefore(blueZone, centerColumn);
-      dashboard.insertBefore(yellowZone, leftColumn);
+      primaryWorkspace.append(blueZone, yellowZone);
     } else {
       leftColumn.append(blueZone);
-      bottomPrimary.append(yellowZone);
+      primaryWorkspace.insertBefore(yellowZone, populationFeed);
     }
     global.dispatchEvent(new Event("resize"));
   }
 
+  integrateIndependentPanelFlows();
   responsiveLayout.addEventListener?.("change", applyResponsiveZoneOrder);
   applyResponsiveZoneOrder();
 
@@ -176,7 +194,7 @@
       const support = document.querySelector(".pcs-brand-area .support-button")?.getBoundingClientRect();
       return {
         queueLength: queue.length,
-        existingModuleRelocation: false,
+        existingModuleRelocation: "layout-wrapper-only",
         responsiveZoneOrder: responsiveLayout.matches,
         brandCenterDelta: brand && title && support ? {
           title: Math.abs((title.left + title.width / 2) - (brand.left + brand.width / 2)),
