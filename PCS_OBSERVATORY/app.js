@@ -4134,6 +4134,14 @@ function geographicCartesianPosition(coordinates, options = {}) {
 
 function applyEntityOpacity(entry, config, opacity) {
   const color = entityColor(config, opacity);
+  if (entry.points?.length) {
+    const outline = Cesium.Color.YELLOW.withAlpha(opacity);
+    entry.points.forEach((point) => {
+      if (!point) return;
+      point.color = color;
+      point.outlineColor = outline;
+    });
+  }
   [...(entry.entities || []), ...(entry.dataSources || []).flatMap((source) => source.entities?.values || [])].forEach((entity) => {
     if (entity.point) entity.point.color = color;
     if (entity.label) entity.label.fillColor = color;
@@ -4299,25 +4307,42 @@ class CesiumLayerRuntimeController {
   }
 
   createFireEntry(config, viewer) {
-    const detections = config.record.details?.detections || [];
+    const detections = (config.record.details?.detections || [])
+      .filter((detection) => Number.isFinite(detection.latitude) && Number.isFinite(detection.longitude));
     if (!detections.length) {
       const error = new Error("NASA FIRMS returned no usable fire detections.");
       error.runtimeStatus = config.record.runtime_status === "AUTH_REQUIRED" ? "AUTH_REQUIRED" : "UNAVAILABLE";
       throw error;
     }
-    const entities = detections.map((detection) => upsertGeographicEntity({
-      layerId: config.id,
-      markerId: [detection.satellite, detection.instrument, detection.observation_time, detection.latitude, detection.longitude].join("|"),
-      coordinates: detection,
-      type: "fire-point",
-      metadata: detection,
-      entityOptions: {
-        name: `${detection.satellite} ${detection.instrument} fire detection`,
-        point: { pixelSize: 6, color: entityColor(config, config.opacity), outlineColor: Cesium.Color.YELLOW, outlineWidth: 1, heightReference: Cesium.HeightReference.NONE },
+    // Global VIIRS detections can number in the thousands. Render as a single
+    // batched PointPrimitiveCollection instead of one Cesium Entity per point,
+    // so the globe stays responsive regardless of detection count.
+    const color = entityColor(config, config.opacity);
+    const collection = new Cesium.PointPrimitiveCollection();
+    const points = detections.map((detection) => collection.add({
+      position: Cesium.Cartesian3.fromDegrees(detection.longitude, detection.latitude),
+      color,
+      pixelSize: 6,
+      outlineColor: Cesium.Color.YELLOW.withAlpha(config.opacity),
+      outlineWidth: 1,
+      scaleByDistance: new Cesium.NearFarScalar(1.0e6, 1.4, 2.0e7, 0.55),
+      id: {
+        layerId: config.id,
+        type: "fire-point",
+        detection,
         description: layerEntityDescription([["Acquired", formatPcsTime(detection.observation_time)], ["Satellite", detection.satellite], ["Sensor", detection.instrument], ["Confidence", detection.confidence], ["Status", detection.status]]),
       },
-    })).filter(Boolean);
-    return { kind: "entities", entities, dataSources: [], timestamps: { observationTime: config.record.latest_observation_time, retrievalTime: config.record.latest_retrieval_time } };
+    }));
+    viewer.scene.primitives.add(collection);
+    return {
+      kind: "primitives",
+      primitiveCollection: collection,
+      points,
+      entities: [],
+      dataSources: [],
+      detectionCount: detections.length,
+      timestamps: { observationTime: config.record.latest_observation_time, retrievalTime: config.record.latest_retrieval_time },
+    };
   }
 
   async regionalPayload() {
@@ -4386,6 +4411,7 @@ class CesiumLayerRuntimeController {
         if (entry.layer) viewer.imageryLayers.remove(entry.layer, true);
         (entry.entities || []).forEach((entity) => viewer.entities.remove(entity));
         (entry.dataSources || []).forEach((source) => viewer.dataSources.remove(source, true));
+        if (entry.primitiveCollection) viewer.scene.primitives.remove(entry.primitiveCollection);
         geographicMarkers.removeLayer(layerId);
         this.recordCameraPreservation(layerId, "activate-stale", cameraBefore, viewer);
         return { ok: false, stale: true, layerId };
@@ -4446,6 +4472,7 @@ class CesiumLayerRuntimeController {
         if (entry.layer) viewer.imageryLayers.remove(entry.layer, true);
         (entry.entities || []).forEach((entity) => viewer.entities.remove(entity));
         (entry.dataSources || []).forEach((source) => viewer.dataSources.remove(source, true));
+        if (entry.primitiveCollection) viewer.scene.primitives.remove(entry.primitiveCollection);
       }
       activeEarthLayers.delete(layerId);
     }
