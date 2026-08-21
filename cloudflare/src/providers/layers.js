@@ -10,8 +10,8 @@ const OBSERVATION_LAYER_ADAPTERS = Object.freeze([
   { id: "ndvi", provider: "NASA MODIS", dataset: "MOD13Q1 Terra Vegetation Indices 16-Day L3 Global 250 m V061", endpoint: "https://cmr.earthdata.nasa.gov/search/granules.json?short_name=MOD13Q1&version=061&page_size=1&sort_key=-start_date", parser: "cmr_granule", spatial_resolution: "250 m", temporal_resolution: "16-day composite", license: PUBLIC_DOMAIN },
   { id: "sea-ice", provider: "NOAA / NSIDC", dataset: "Sea Ice Index v4 daily extent", endpoint: "https://noaadata.apps.nsidc.org/NOAA/G02135/north/daily/data/N_seaice_extent_daily_v4.0.csv", secondary_endpoint: "https://noaadata.apps.nsidc.org/NOAA/G02135/south/daily/data/S_seaice_extent_daily_v4.0.csv", parser: "nsidc", spatial_resolution: "Northern and Southern Hemisphere extent", temporal_resolution: "daily", license: "Dataset citation required; DOI 10.7265/a98x-0f50", timeout_ms: 120000, retry_attempts: 3 },
   { id: "shipping", provider: "NOAA Marine Cadastre", dataset: "AccessAIS historical vessel traffic", endpoint: "https://marinecadastre.gov/ais/", parser: "metadata_only", spatial_resolution: "historical track archive", temporal_resolution: "annual archive", license: PUBLIC_DOMAIN, partial_reason: "No sustainable anonymous public live vessel-position API is configured; no vessel positions are inferred." },
-  { id: "aviation", provider: "OpenSky Network", dataset: "State Vectors", endpoint: "https://opensky-network.org/api/states/all", parser: "opensky", authOnDenied: true, spatial_resolution: "reported aircraft positions", temporal_resolution: "live state snapshot", license: "OpenSky Network terms" },
-  { id: "satellite-observations", provider: "CelesTrak", dataset: "Active Satellites GP (OMM JSON)", endpoint: "https://celestrak.org/NORAD/elements/gp.php?GROUP=active&FORMAT=json", parser: "celestrak", spatial_resolution: "orbital element per active object", temporal_resolution: "latest GP epoch", license: "CelesTrak terms" },
+  { id: "aviation", provider: "OpenSky Network", dataset: "State Vectors", endpoint: "https://opensky-network.org/api/states/all", parser: "opensky", authOnDenied: true, spatial_resolution: "reported aircraft positions", temporal_resolution: "live state snapshot", license: "OpenSky Network terms", timeout_ms: 20000, retry_attempts: 2 },
+  { id: "satellite-observations", provider: "CelesTrak", dataset: "Active Satellites GP (OMM JSON)", endpoint: "https://celestrak.org/NORAD/elements/gp.php?GROUP=active&FORMAT=json", parser: "celestrak", user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0 Safari/537.36", timeout_ms: 20000, retry_attempts: 2, spatial_resolution: "orbital element per active object", temporal_resolution: "latest GP epoch", license: "CelesTrak terms" },
 ]);
 
 const OPENWEATHER_LAYER_ADAPTERS = Object.freeze([
@@ -333,7 +333,7 @@ export async function retrieveLayer(adapter, env, fetcher = fetch, now = new Dat
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), adapter.timeout_ms || 5000);
   try {
-    const options = { headers: { "user-agent": "PCS-Observatory/2.0 public-research" }, signal: controller.signal, cf: { cacheTtl: 0 } };
+    const options = { headers: { "user-agent": adapter.user_agent || "PCS-Observatory/2.0 public-research" }, signal: controller.signal, cf: { cacheTtl: 0 } };
     const response = await fetchWithRetry(endpoint, options, fetcher, adapter.retry_attempts || 1);
     if (!response.ok) return normalized(adapter, { endpoint, retrieved_at: retrievedAt, retrieval_status: adapter.authOnDenied && (response.status === 401 || response.status === 403) ? "AUTH_REQUIRED" : "ERROR", quality_flag: `http_${response.status}`, error: `Provider returned HTTP ${response.status}` });
     const body = await response.text();
