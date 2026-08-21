@@ -458,3 +458,67 @@ export async function retrieveAllLayers(env, fetcher = fetch, now = new Date()) 
   }
   return { ...payload, cache_status: "miss", cache_age_ms: 0 };
 }
+
+// Hourly FIRMS-only refresh. Fetches ONLY the wildfire adapter and merges the
+// result into the existing layers:v3 KV bundle, leaving every other provider's
+// cached record untouched (no other upstream is contacted). If FIRMS is
+// temporarily unavailable, the last successful wildfire record is preserved and
+// marked STALE — never zeroed, never fabricated.
+export async function refreshWildfireLayer(env, fetcher = fetch, now = new Date()) {
+  const adapter = PCS_LAYER_ADAPTERS.find((item) => item.id === "wildfire");
+  if (!adapter) return { ok: false, reason: "wildfire adapter is not configured" };
+
+  let cached = null;
+  if (env?.PCS_CACHE) {
+    try { cached = await env.PCS_CACHE.get(LAYERS_CACHE_KEY, "json"); } catch { /* treat as no cache */ }
+  }
+  const prevLayers = Array.isArray(cached?.data?.layers) ? cached.data.layers : null;
+  const prevWildfire = prevLayers?.find((layer) => layer.id === "wildfire") || null;
+
+  let wildfire = await retrieveLayer(adapter, env, fetcher, now);
+
+  const failed = ["ERROR", "DELAYED", "UNAVAILABLE"].includes(wildfire.retrieval_status);
+  const prevHasData = prevWildfire
+    && ["LIVE", "LATEST", "STALE"].includes(prevWildfire.retrieval_status)
+    && ((prevWildfire.details?.detections?.length || 0) > 0 || Number(prevWildfire.value) > 0);
+  if (failed && prevHasData) {
+    // Preserve last successful detections, flag STALE; do not zero, do not fake.
+    wildfire = {
+      ...prevWildfire,
+      retrieval_status: "STALE",
+      runtime_status: "STALE",
+      stale: true,
+      stale_age_ms: cached?.ts ? (now.getTime() - cached.ts) : null,
+      failure_reason: wildfire.error,
+      error: wildfire.error,
+    };
+  }
+
+  if (!prevLayers) {
+    // No existing bundle to merge into; refuse to write a partial bundle that
+    // would drop the other providers. A visitor request will populate it.
+    return { ok: false, reason: "no existing layers:v3 bundle to merge into", wildfire_status: wildfire.retrieval_status };
+  }
+
+  const mergedLayers = prevLayers.map((layer) => (layer.id === "wildfire" ? wildfire : layer));
+  const { sources, health } = buildSourceHealth(mergedLayers);
+  const status = health.error === 0 && health.partial === 0 && health.auth_required === 0 ? "ok" : "partial";
+  const payload = {
+    generated_at: cached?.data?.generated_at || now.toISOString(),
+    wildfire_refreshed_at: now.toISOString(),
+    status, sources, health, layers: mergedLayers,
+  };
+  if (env?.PCS_CACHE) {
+    try {
+      await env.PCS_CACHE.put(LAYERS_CACHE_KEY, JSON.stringify({ ts: now.getTime(), data: payload }), { expirationTtl: LAYERS_STALE_TTL_SECONDS });
+    } catch { /* best-effort */ }
+  }
+  return {
+    ok: true,
+    wildfire_status: wildfire.retrieval_status,
+    detections: wildfire.value ?? null,
+    observation_time: wildfire.observation_time ?? null,
+    retrieved_at: wildfire.retrieved_at ?? null,
+    other_layers_preserved: mergedLayers.length - 1,
+  };
+}

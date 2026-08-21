@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
-import { PCS_LAYER_ADAPTERS, retrieveAllLayers, retrieveLayer } from "../src/providers/layers.js";
+import { PCS_LAYER_ADAPTERS, retrieveAllLayers, retrieveLayer, refreshWildfireLayer } from "../src/providers/layers.js";
 import { ingestDailyBrief, proposeAiAnalysis } from "../src/pcs/intelligence.js";
 import { residualState, validationEvidenceSufficient } from "../src/pcs/routes.js";
 
@@ -150,6 +150,61 @@ test("configured FIRMS adapter returns coordinates without exposing its secret",
   assert.equal(result.details.detections[0].latitude, 23.5);
   assert.equal(result.details.detections[0].confidence, "h");
   assert.doesNotMatch(JSON.stringify(result), /server-secret/);
+});
+
+function seededWildfireBundle(ts) {
+  const otherLayer = { id: "sea-level", provider: "NOAA Laboratory for Satellite Altimetry", retrieval_status: "LIVE", value: 80.98, error: null, details: { fixture: true } };
+  const wildfire = { id: "wildfire", provider: "NASA FIRMS", retrieval_status: "LIVE", value: 3, observation_time: "2026-08-13T00:00:00.000Z", retrieved_at: "2026-08-13T00:00:00.000Z", error: null, details: { detections: [{ latitude: 1, longitude: 2 }, { latitude: 3, longitude: 4 }, { latitude: 5, longitude: 6 }], returned_count: 3 } };
+  return { ts, data: { generated_at: "2026-08-13T00:00:00.000Z", status: "ok", sources: {}, health: {}, layers: [otherLayer, wildfire] } };
+}
+
+test("hourly FIRMS refresh updates only wildfire and preserves other cached layers", async () => {
+  let stored = seededWildfireBundle(Date.parse("2026-08-13T00:00:00Z"));
+  const cache = { async get() { return stored; }, async put(_k, v) { stored = JSON.parse(v); } };
+  const csv = "latitude,longitude,brightness,scan,track,acq_date,acq_time,satellite,instrument,confidence,type\n23.5,121.0,330,0.4,0.4,2026-08-13,0600,N20,VIIRS,h,0\n24.1,120.5,320,0.4,0.4,2026-08-13,0600,N20,VIIRS,n,0";
+  const fetchedUrls = [];
+  const fetcher = async (url) => {
+    fetchedUrls.push(String(url));
+    assert.match(String(url), /firms\.modaps\.eosdis\.nasa\.gov/); // only FIRMS is contacted
+    assert.match(String(url), /server-secret/);
+    return new Response(csv, { status: 200, headers: { "content-type": "text/csv" } });
+  };
+  const env = { PCS_CACHE: cache, FIRMS_MAP_KEY: "server-secret" };
+  const result = await refreshWildfireLayer(env, fetcher, new Date("2026-08-13T01:00:00Z"));
+  assert.equal(result.ok, true);
+  assert.equal(result.wildfire_status, "LIVE");
+  assert.equal(result.detections, 2);
+  assert.equal(result.other_layers_preserved, 1);
+  assert.equal(fetchedUrls.length, 1); // exactly one upstream request, FIRMS only
+  const seaLevel = stored.data.layers.find((l) => l.id === "sea-level");
+  assert.equal(seaLevel.value, 80.98); // untouched
+  assert.equal(seaLevel.details.fixture, true);
+  const wildfire = stored.data.layers.find((l) => l.id === "wildfire");
+  assert.equal(wildfire.details.detections.length, 2);
+  assert.equal(stored.ts, Date.parse("2026-08-13T01:00:00Z"));
+  assert.equal(stored.data.wildfire_refreshed_at, "2026-08-13T01:00:00.000Z");
+  assert.doesNotMatch(JSON.stringify(stored), /server-secret/); // secret never persisted
+});
+
+test("hourly FIRMS refresh preserves last data as STALE on upstream failure (never zero, never fake)", async () => {
+  let stored = seededWildfireBundle(Date.parse("2026-08-13T00:00:00Z"));
+  const cache = { async get() { return stored; }, async put(_k, v) { stored = JSON.parse(v); } };
+  const env = { PCS_CACHE: cache, FIRMS_MAP_KEY: "server-secret" };
+  const result = await refreshWildfireLayer(env, async () => { throw new Error("FIRMS offline"); }, new Date("2026-08-13T02:00:00Z"));
+  assert.equal(result.wildfire_status, "STALE");
+  const wildfire = stored.data.layers.find((l) => l.id === "wildfire");
+  assert.equal(wildfire.retrieval_status, "STALE");
+  assert.equal(wildfire.details.detections.length, 3); // last successful detections preserved
+  assert.notEqual(wildfire.value, 0); // not zeroed
+  assert.equal(stored.data.layers.find((l) => l.id === "sea-level").value, 80.98); // others untouched
+});
+
+test("hourly FIRMS refresh refuses to write a partial bundle when no cache exists", async () => {
+  const cache = { async get() { return null; }, async put() { throw new Error("must not write partial bundle"); } };
+  const env = { PCS_CACHE: cache, FIRMS_MAP_KEY: "server-secret" };
+  const csv = "latitude,longitude,brightness,scan,track,acq_date,acq_time,satellite,instrument,confidence,type\n23.5,121.0,330,0.4,0.4,2026-08-13,0600,N20,VIIRS,h,0";
+  const result = await refreshWildfireLayer(env, async () => new Response(csv, { status: 200, headers: { "content-type": "text/csv" } }), new Date("2026-08-13T03:00:00Z"));
+  assert.equal(result.ok, false);
 });
 
 test("daily brief produces ten deduplicated publication items and no measurements or automatic events", async () => {

@@ -3,9 +3,13 @@ import { handleAstronomyRequest, ASTRONOMY_ROUTES } from "./astronomy.js";
 import { handleVisitorRequest, VISITOR_ROUTES } from "./visitors.js";
 import { handlePcsRequest, PCS_ROUTES } from "./pcs/routes.js";
 import { runScheduledJobs } from "./pcs/jobs.js";
+import { refreshWildfireLayer } from "./providers/layers.js";
 import { handleRegionalRequest } from "./regional.js";
 import { handleHistoryRequest, HISTORY_ADMIN_PREFIX, HISTORY_PUBLIC_PREFIX } from "./history/routes.js";
 import { handleProjectUpdateRequest, PROJECT_UPDATE_ADMIN_PREFIX, PROJECT_UPDATE_PREFIX } from "./project-updates/routes.js";
+
+// Hourly cron dedicated to a FIRMS-only wildfire refresh (see scheduled()).
+const HOURLY_FIRMS_CRON = "0 * * * *";
 
 const DATASETS = [
   {
@@ -550,6 +554,12 @@ export default {
 });
   },
   async scheduled(controller, env, ctx) {
+    // Hourly trigger does a FIRMS-only refresh: it must NOT run the full
+    // scheduled job set and must NOT re-fetch any other provider.
+    if (controller.cron === HOURLY_FIRMS_CRON) {
+      ctx.waitUntil(refreshWildfireLayer(env));
+      return;
+    }
     ctx.waitUntil(runScheduledJobs(env, controller.cron));
   }
 };    
