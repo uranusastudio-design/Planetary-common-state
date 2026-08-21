@@ -20,7 +20,9 @@ function loadDataRuntime() {
 test("Deep Space preserves the single existing Cesium Viewer and adds no animation loop", () => {
   assert.equal((app.match(/new Cesium\.Viewer\(/g) || []).length, 1);
   assert.equal((manager.match(/new Cesium\.Viewer\(/g) || []).length, 0);
-  assert.doesNotMatch(manager, /requestAnimationFrame|setInterval|setTimeout/);
+  assert.doesNotMatch(manager, /requestAnimationFrame|setInterval/);
+  assert.match(manager, /new ResizeObserver\(scheduleViewportResize\)/);
+  assert.match(manager, /viewportResizeObserver\?\.disconnect\(\)/);
   assert.match(manager, /viewer\.clock\.onTick\.addEventListener/);
   assert.match(manager, /tickRemover\(\)/);
   assert.match(manager, /PCSEarthRenderOwnership\?\.deactivateForDeepSpace/);
@@ -190,9 +192,13 @@ test("Milky Way navigation extends the shared camera and camera-history systems"
   assert.match(manager,/function setMilkyWayCamera\([\s\S]*?viewer\.resize\(\)/);
   assert.match(manager,/CameraScale\.fitDistance\(/);
   assert.match(manager,/CameraScale\.clipPlanes\(/);
-  assert.match(manager,/pushCameraHistory\(`milky-way-view:/);
-  assert.match(manager,/\[\"solar\",\"milky-way\"\]\.includes\(scaleContext\)/);
-  assert.match(manager,/else if\(scaleContext===\"milky-way\"\)/);
+  assert.match(manager,/beginFocusHistory\(`milky-way-view:/);
+  assert.match(manager,/function usableViewportBounds\(\)/);
+  assert.match(manager,/transform:Cesium\.Matrix4\.clone\(viewer\.camera\.transform\)/);
+  assert.match(manager,/rightWC:Cesium\.Cartesian3\.clone\(viewer\.camera\.rightWC\)/);
+  assert.match(manager,/const snapshot=cameraHistory\.at\(-1\)/);
+  assert.match(manager,/if\(cameraHistory\.at\(-1\)\?\.id===snapshot\.id\)cameraHistory\.pop\(\)/);
+  assert.doesNotMatch(manager,/\[\"solar\",\"milky-way\"\]\.includes\(scaleContext\)/);
   assert.doesNotMatch(manager,/new Cesium\.Viewer|createElement\(["']canvas|requestAnimationFrame/);
 });
 
@@ -217,7 +223,7 @@ test("Phase 4A uses the same state, selection card, language store, and cleanup 
   assert.match(manager,/galaxyGroupsLayer\?\.unload\(\)/);
   assert.match(manager,/galaxyGroupsLayer\?\.dispose\(\)/);
   assert.match(manager,/ObjectCard\.phase4/);
-  assert.match(manager,/phase4=picked\?\.id\?\.phase4Object/);
+  assert.match(manager,/candidate\.phase4Object/);
   assert.match(manager,/data-ds-return-local-group/);
   const phase4Copy=manager.match(/const PHASE4_COPY=Object\.freeze\(\{([\s\S]*?)\n  \}\);/)?.[1]||"";
   for(const key of ["nearbyGroups","search","searchLabel","catalogObservation","derivedMeasurement","reconstruction","representative","notice","returnLocal"])assert.equal((phase4Copy.match(new RegExp(`${key}:`,"g"))||[]).length,4,`${key} must exist in four Phase 4 dictionaries`);

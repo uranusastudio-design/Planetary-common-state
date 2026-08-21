@@ -84,8 +84,8 @@ test("scientific scale and selection reframe targets while comet context reaches
   const app = read("app.js");
   const html = read("index.html");
   assert.match(manager, /else\{renderAll\(\);if\(smallBodySelected\|\|selected!=="sun"\)focusSelectedObject\(\);else setCamera\("inclined"\);\}/);
-  assert.match(manager, /renderAll\(\);renderInfo\(\);focusSelectedObject\(\)/);
-  assert.match(manager, /selectSmallBody\(smallBody\.spkid,\{focus:true\}\)/);
+  assert.match(manager, /renderAll\(\);renderInfo\(\);focusSelectedObject\(\{history:false\}\)/);
+  assert.match(manager, /function selectSmallBody\([\s\S]*?if\(options\.focus\)focusSelectedObject\(\{history:false\}\)/);
   assert.match(manager, /new CustomEvent\("pcs:analysis-context"/);
   assert.match(app, /addEventListener\("pcs:analysis-context"/);
   assert.match(app, /selectedScientificAnalysisContext = model/);

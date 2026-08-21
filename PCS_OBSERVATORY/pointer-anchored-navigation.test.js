@@ -26,17 +26,27 @@ test("anchored motion stays on the camera-anchor ray and respects surface cleara
   assert.equal(navigation.anchoredPosition([0,0,0],[0,0,0],1),null);
 });
 
+test("pointer ray intersects a stable camera-facing focus plane without a GPU pick",()=>{
+  const center=navigation.viewPlaneAnchor([0,0,10],[0,0,-1],[0,0,0],[0,0,-1]);
+  const pointer=navigation.viewPlaneAnchor([0,0,10],[.2,.1,-1],[0,0,0],[0,0,-1]);
+  assert.deepEqual([...center],[0,0,0]);
+  assert.deepEqual([...pointer],[2,1,0]);
+  assert.equal(navigation.viewPlaneAnchor([0,0,10],[1,0,0],[0,0,0],[0,0,-1]),null);
+});
+
 test("touch metrics use the gesture center and separation",()=>{
   const metrics=navigation.touchMetrics([{clientX:20,clientY:30},{clientX:80,clientY:110}],{left:10,top:10});
   assert.deepEqual([...metrics.center],[40,60]);
   assert.equal(metrics.distance,100);
 });
 
-test("Deep Space installs one abortable pointer lifecycle and rejects orbit-line anchors",()=>{
+test("Deep Space installs one abortable pointer lifecycle and keeps GPU picking off the zoom hot path",()=>{
   assert.match(html,/pointer-anchored-navigation\.js/);
   assert.match(manager,/navigationAbort=new AbortController\(\)/);
   assert.match(manager,/navigationAbort\?\.abort\(\)/);
-  assert.match(manager,/orbitId[\s\S]*selected-object-after-orbit-rejection/);
+  assert.match(manager,/PointerNavigation\.viewPlaneAnchor/);
+  const navigationBody=manager.match(/function navigationAnchor\([\s\S]*?\n  \}/)?.[0]||"";
+  assert.doesNotMatch(navigationBody,/scene\.pick|scene\.drillPick|pickPosition/);
   assert.match(manager,/event\.ctrlKey\?"trackpad-pinch":"mouse-wheel"/);
   assert.match(manager,/event\.touches\.length!==2/);
   assert.match(manager,/viewer\.scene\.screenSpaceCameraController\.enableZoom=false/);

@@ -38,8 +38,10 @@ test("normal catalog point rendering and selection identities remain intact", ()
   assert.match(milkyWay, /phase3Object:record/);
   assert.match(localGroup, /new Cesium\.PointPrimitiveCollection\(\)/);
   assert.match(localGroup, /phase3Object:record/);
-  assert.match(runtime, /star=picked\?\.id\?\.nearbyStar/);
-  assert.match(runtime, /phase3=picked\?\.id\?\.phase3Object/);
+  assert.match(runtime, /function selectablePick\(picked\)/);
+  assert.match(runtime, /candidate\.nearbyStar/);
+  assert.match(runtime, /candidate\.phase3Object/);
+  assert.match(runtime, /scene\.drillPick/);
 });
 
 test("v2.2.0 history records removal and exposes no active trail roadmap item", () => {

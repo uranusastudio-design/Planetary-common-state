@@ -65,7 +65,7 @@ test("the card reuses selection, language, focus, Escape, and safe links",()=>{
   assert.match(manager,/ObjectCard\.phase3/);
   assert.match(manager,/ObjectCard\.reconstruction/);
   assert.match(manager,/ObjectCard\.phase4/);
-  assert.match(manager,/function focusSelectedObject\(\)/);
+  assert.match(manager,/function focusSelectedObject\(options=\{\}\)/);
   assert.match(manager,/data-object-card-focus/);
   assert.match(manager,/event\.key==="Escape"[\s\S]*closeObjectCard/);
   assert.doesNotMatch(source,/fetch\(|XMLHttpRequest/);

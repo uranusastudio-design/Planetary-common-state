@@ -221,7 +221,9 @@
       this.scenePositions = new Map();
       this.filamentEntries = [];
       this.cameraRemover = null;
+      this.cameraMoveEndRemover = null;
       this.previousCameraPercentageChanged = null;
+      this.lodMetrics = { hotPathUpdates: 0, visualUpdates: 0, hotPathTotalMs: 0, visualTotalMs: 0, maximumMs: 0 };
     }
 
     load(catalog, mode = "exhibition") {
@@ -304,9 +306,10 @@
 
       this.previousCameraPercentageChanged = this.viewer.camera.percentageChanged;
       this.viewer.camera.percentageChanged = Math.min(0.01, this.viewer.camera.percentageChanged);
-      this.cameraRemover = this.viewer.camera.changed.addEventListener(() => this.updateLod());
+      this.cameraRemover = this.viewer.camera.changed.addEventListener(() => this.updateLod(false));
+      this.cameraMoveEndRemover = this.viewer.camera.moveEnd.addEventListener(() => this.updateLod(true));
       this.applyFlags();
-      this.updateLod();
+      this.updateLod(true);
       this.viewer.scene.requestRender();
       return this.debug();
     }
@@ -322,8 +325,9 @@
       return Cesium.Cartesian3.distance(this.viewer.camera.positionWC, target);
     }
 
-    updateLod() {
+    updateLod(applyVisual = false) {
       if (!this.viewer) return;
+      const started = performance.now();
       const near = Coordinates.sceneRadiusMpc(95, this.mode, "cosmic-web");
       const far = Coordinates.sceneRadiusMpc(760, this.mode, "cosmic-web");
       const range = this.currentRange();
@@ -338,14 +342,20 @@
         filaments: 0.1 + 0.9 * mediumMix * (1 - 0.32 * surveyMix),
         voids: mediumMix * (0.2 + 0.8 * surveyMix),
       };
-      for (const entry of this.filamentEntries) {
-        const selected = entry.record.id === this.selectedId;
-        entry.primitive.material.uniforms.color = selected
-          ? Cesium.Color.WHITE.withAlpha(1)
-          : color("filament", Math.max(0.035, 0.56 * this.lodBlend.filaments));
+      if (applyVisual) {
+        for (const entry of this.filamentEntries) {
+          const selected = entry.record.id === this.selectedId;
+          entry.primitive.material.uniforms.color = selected
+            ? Cesium.Color.WHITE.withAlpha(1)
+            : color("filament", Math.max(0.035, 0.56 * this.lodBlend.filaments));
+        }
+        this.applyFlags();
+        this.viewer.scene.requestRender();
       }
-      this.applyFlags();
-      this.viewer.scene.requestRender();
+      const duration = performance.now() - started;
+      if (applyVisual) { this.lodMetrics.visualUpdates += 1; this.lodMetrics.visualTotalMs += duration; }
+      else { this.lodMetrics.hotPathUpdates += 1; this.lodMetrics.hotPathTotalMs += duration; }
+      this.lodMetrics.maximumMs = Math.max(this.lodMetrics.maximumMs, duration);
     }
 
     applyFlags() {
@@ -401,6 +411,8 @@
     unload() {
       this.cameraRemover?.();
       this.cameraRemover = null;
+      this.cameraMoveEndRemover?.();
+      this.cameraMoveEndRemover = null;
       if (this.previousCameraPercentageChanged != null && this.viewer) {
         this.viewer.camera.percentageChanged = this.previousCameraPercentageChanged;
       }
@@ -437,6 +449,8 @@
         selectedId: this.selectedId,
         flags: { ...this.flags },
         cameraListener: Boolean(this.cameraRemover),
+        cameraMoveEndListener: Boolean(this.cameraMoveEndRemover),
+        lodMetrics: { ...this.lodMetrics },
         cameraPercentageChanged: this.viewer?.camera?.percentageChanged ?? null,
       };
     }
