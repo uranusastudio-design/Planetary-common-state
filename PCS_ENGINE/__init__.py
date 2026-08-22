@@ -1,2 +1,0 @@
-"""PCS Engine core package."""
-
